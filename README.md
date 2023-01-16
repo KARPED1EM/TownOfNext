@@ -26,7 +26,7 @@ AmongUs 版本: **2022.12.14**
 
 ### 3. 游戏结果显示的顺序微调
 
-### 4. 房主名称显示微调
+### 4. 房主公开房间后的名称显示微调
 
    <img src="Images/HostName.webp" alt="HostName" style="zoom: 50%;" />
 
@@ -36,11 +36,11 @@ AmongUs 版本: **2022.12.14**
 
 ### 6. 增加自动踢出催开始的人的功能，需要在设置打开，如上图所示
 
-   <img src="Images/AutoKickStart.png" alt="AutoKickStart" style="zoom:33%;" />
+   <img src="Images/AutoKickStart.webp" alt="AutoKickStart" style="zoom:33%;" />
 
 ### 7. 隐藏游戏设置后自定义显示的内容，您可以在 `.\Language\SChinese.dat` 文件中修改 `Message.NowOverrideText` 词条。
 
-   <img src="Images/DIYNow.png" alt="DIYNow" style="zoom:33%;" />
+   <img src="Images/DIYNow.webp" alt="DIYNow" style="zoom:33%;" />
 
 ### 8. 增加修改等级的指令（仅限房主）
 

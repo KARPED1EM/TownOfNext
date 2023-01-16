@@ -3,10 +3,9 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
-    <Description>Town Of Host Edited</Description>
-    <Authors>KARPED1EM</Authors>
+    <Description>Town Of Host</Description>
+    <Authors>tukasa0001(EmptyBottle), integral0131</Authors>
     <langVersion>preview</langVersion>
-    <UserSecretsId>d3e312d3-68f5-4c57-ba89-ae15e8c1ec35</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,13 +25,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-  </ItemGroup>
-    
-  <ItemGroup>
-    <None Update="LICENSE">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
   </ItemGroup>
 
   <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
