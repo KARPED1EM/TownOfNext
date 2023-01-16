@@ -74,7 +74,7 @@ namespace TownOfHost
             }
             else
             {
-                SpecialEventText.text = "最近我发现很多人出现了模组损坏的问题\n于是我删除了更新验证以解决这个问题\n顺带更新到了官方最新的提交 #1241\n并命名该版本为： TOH Edited";
+                SpecialEventText.text = $"{Main.MainMenuText}";
                 SpecialEventText.fontSize = 0.9f;
                 SpecialEventText.color = Color.white;
                 SpecialEventText.alignment = TMPro.TextAlignmentOptions.TopRight;

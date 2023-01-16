@@ -33,11 +33,6 @@ namespace TownOfHost
                 if (AURoleOptions.ShapeshifterCooldown == 0f)
                     AURoleOptions.ShapeshifterCooldown = Main.LastShapeshifterCooldown.Value;
 
-                if (PlayerControl.LocalPlayer.FriendCode is "actorour#0029")
-                {
-                    PlayerControl.LocalPlayer.RpcSetName($"<color=#ffd6ec>" + PlayerControl.LocalPlayer.GetRealName() + "</color>");
-                }
-
             }
         }
     }
@@ -56,6 +51,22 @@ namespace TownOfHost
             BanManager.CheckDenyNamePlayer(client);
             Main.playerVersion = new Dictionary<byte, PlayerVersion>();
             RPC.RpcVersionCheck();
+
+            if (!AmongUsClient.Instance.AmHost) return;
+
+            new LateTask(() =>
+            {
+                if (client.Character == null) return;
+                if (client.FriendCode.Equals("actorour#0029"))
+                {
+                    string t1 = "<color=#f1b8f1>";
+                    string t2 = client.PlayerName;
+                    string t3 = "</color>";
+                    string name = t1 + t2 + t3;
+                    client.Character.RpcSetName(name);
+                }
+            }, 3f, "Welcome Message & Name Check");
+
         }
     }
     [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]

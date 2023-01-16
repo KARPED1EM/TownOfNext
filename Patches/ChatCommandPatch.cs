@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using Assets.CoreScripts;
+using BepInEx.IL2CPP.UnityEngine;
 using HarmonyLib;
 using Hazel;
 using Il2CppSystem.Runtime.Remoting.Messaging;
@@ -16,20 +17,6 @@ namespace TownOfHost
     [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
     class ChatCommands
     {
-        [DllImport("kernel32.dll", EntryPoint = "LCMapStringA")]
-        public static extern int LCMapString(int Locale, int dwMapFlags, byte[] lpSrcStr, int cchSrc, byte[] lpDestStr, int cchDest);
-        const int LCMAP_SIMPLIFIED_CHINESE = 0x02000000;
-        const int LCMAP_TRADITIONAL_CHINESE = 0x04000000;
-
-        //转化方法
-        public static string ToTraditional(string source, int type)
-        {
-            byte[] srcByte2 = Encoding.Default.GetBytes(source);
-            byte[] desByte2 = new byte[srcByte2.Length];
-            LCMapString(2052, type, srcByte2, -1, desByte2, srcByte2.Length);
-            string des2 = Encoding.Default.GetString(desByte2);
-            return des2;
-        }
 
         public static List<string> ChatHistory = new();
 
@@ -198,19 +185,19 @@ namespace TownOfHost
                         Utils.SendMessage(GetString("Message.NowOverrideText"), PlayerControl.LocalPlayer.PlayerId);
                         //TemplateManager.SendTemplate("now", noErr: true);
                         break;
-
-                        subArgs = args.Length < 2 ? "" : args[1];
-                        switch (subArgs)
-                        {
-                            case "r":
-                            case "roles":
-                                Utils.ShowActiveRoles();
-                                break;
-                            default:
-                                Utils.ShowActiveSettings();
-                                break;
-                        }
-                        break;
+                        
+                        //subArgs = args.Length < 2 ? "" : args[1];
+                        //switch (subArgs)
+                        //{
+                        //    case "r":
+                        //    case "roles":
+                        //        Utils.ShowActiveRoles();
+                        //        break;
+                        //    default:
+                        //        Utils.ShowActiveSettings();
+                        //        break;
+                        //}
+                        //break;
 
                     case "/dis":
                         canceled = true;
@@ -368,6 +355,54 @@ namespace TownOfHost
             return !canceled;
         }
 
+        public static string ToSimplified(string text)
+        {
+            switch (text)
+            {
+                case "管理員": case "管理": return "管理员";
+                case "賞金獵人": case "赏金": return "赏金猎人";
+                case "邪惡的追踪者": case "邪恶追踪者": return "邪恶的追踪者";
+                case "煙花商人": case "烟花": return "烟花商人";
+                case "夢魘": return "梦魇";
+                case "黑手黨": return "黑手党";
+                case "嗜血殺手": case "嗜血": return "嗜血杀手";
+                case "蝕時者": case "蚀时": return "蚀时者";
+                case "狙擊手": case "狙击": return "狙击手";
+                case "傀儡師": case "傀儡": return "傀儡师";
+                case "吸血鬼": case "吸血": return "吸血鬼";
+                case "術士": return "术士";
+                case "女巫": return "女巫";
+                case "背叛的守衛": case "背叛守卫": return "背叛的守卫";
+                case "叛徒": return "叛徒";
+                case "背叛的告密者": case "背叛告密": return "背叛的告密者";
+                case "叛徒跟班": return "叛徒跟班";
+                case "窺視者": case "窥视": return "窥视者";
+                case "誘餌": case "大奖": return "诱饵";
+                case "獨裁者": case "独裁": return "独裁者";
+                case "醫生": return "医生";
+                case "執燈人": case "执灯": case "灯人": return "执灯人";
+                case "市長": return "市长";
+                case "修理大師": case "修理大师": case "维修大师": return "修理大师";
+                case "靈媒": return "灵媒";
+                case "警長": return "警长";
+                case "告密者": case "告密": return "告密者";
+                case "增速者": case "增速": return "增速者";
+                case "陷阱師": case "陷阱": case "小奖": return "陷阱师";
+                case "縱火犯": case "纵火": return "纵火犯";
+                case "野心家": case "野心": return "野心家";
+                case "處刑人": case "处刑": return "处刑人";
+                case "小丑": return "小丑";
+                case "投機者": case "投机": return "投机者";
+                case "薛定諤的貓": case "薛定谔猫": case "猫": return "薛定谔的猫";
+                case "恐怖分子": case "恐怖": return "恐怖分子";
+                case "豺狼": return "豺狼";
+                case "情人": case "愛人": case "链子": return "恋人";
+                case "狐狸": return "狐狸";
+                case "巨魔": return "巨魔";
+                default: return text;
+            }
+
+        }
         public static void GetRolesInfo(string role, PlayerControl player)
         {
             var roleList = new Dictionary<CustomRoles, string>
@@ -437,7 +472,7 @@ namespace TownOfHost
                 Utils.SendMessage("指令格式：/r [职业]\n例如：/r 灵媒", player.PlayerId);
                 return;
             }
-            role = ToTraditional(role, LCMAP_SIMPLIFIED_CHINESE);   //繁体转简体
+            role = ToSimplified(role);
 
             var msg = "";
             var rolemsg = $"{GetString("Command.h_args")}";
@@ -472,8 +507,8 @@ namespace TownOfHost
             Utils.SendMessage("请正确拼写您要查询的职业哦~", player.PlayerId);
             return;
 
-            msg += rolemsg;
-            Utils.SendMessage(msg);
+            //msg += rolemsg;
+            //Utils.SendMessage(msg);
         }
         public static void OnReceiveChat(PlayerControl player, string text)
         {
@@ -495,20 +530,20 @@ namespace TownOfHost
                     //TemplateManager.SendTemplate("now", noErr: true);
                     break;
 
-                    subArgs = args.Length < 2 ? "" : args[1];
-                    switch (subArgs)
-                    {
+                    //subArgs = args.Length < 2 ? "" : args[1];
+                    //switch (subArgs)
+                    //{
 
-                        case "r":
-                        case "roles":
-                            Utils.ShowActiveRoles(player.PlayerId);
-                            break;
+                    //    case "r":
+                    //    case "roles":
+                    //        Utils.ShowActiveRoles(player.PlayerId);
+                    //        break;
 
-                        default:
-                            Utils.ShowActiveSettings(player.PlayerId);
-                            break;
-                    }
-                    break;
+                    //    default:
+                    //        Utils.ShowActiveSettings(player.PlayerId);
+                    //        break;
+                    //}
+                    //break;
 
                 case "/r":
                 case "/roles":

@@ -20,6 +20,7 @@
   </ItemGroup>
     
   <ItemGroup>
+    <PackageReference Include="Chinese.Words" Version="0.0.1" />
     <PackageReference Include="Costura.Fody" Version="5.7.0">
       <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>

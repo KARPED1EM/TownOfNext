@@ -43,6 +43,8 @@ namespace TownOfHost
         public const string DebugKeySalt = "59687b";
         // デバッグキーのコンフィグ入力
         public static ConfigEntry<string> DebugKeyInput { get; private set; }
+        // 首页右上角的说明文本
+        public static readonly string MainMenuText = "做着玩玩  更新随缘  感谢支持";
 
         // ==========
         //Sorry for many Japanese comments.

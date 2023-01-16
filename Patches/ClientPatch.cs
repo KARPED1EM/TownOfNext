@@ -72,7 +72,7 @@ namespace TownOfHost
 #if DEBUG
             canOnline = true;
             return;
-            if (CultureInfo.CurrentCulture.Name != "ja-JP") canOnline = false;
+            //if (CultureInfo.CurrentCulture.Name != "ja-JP") canOnline = false;
 #endif
         }
     }
