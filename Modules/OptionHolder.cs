@@ -236,6 +236,9 @@ namespace TownOfHost
         // プリセット対象外
         public static OptionItem NoGameEnd;
         public static OptionItem AutoDisplayLastResult;
+        public static OptionItem AutoKickStart;
+        public static OptionItem AutoKickStopWords;
+        public static OptionItem AutoWarnStopWords;
         public static OptionItem SuffixMode;
         public static OptionItem HideGameSettings;
         public static OptionItem ColorNameMode;
@@ -647,6 +650,12 @@ namespace TownOfHost
             // プリセット対象外
             AutoDisplayLastResult = BooleanOptionItem.Create(1_000_000, "AutoDisplayLastResult", true, TabGroup.MainSettings, false)
                 .SetHeader(true)
+                .SetGameMode(CustomGameMode.All);
+            AutoKickStart = BooleanOptionItem.Create(1_000_010, "AutoKickStart", false, TabGroup.MainSettings, false)
+                .SetGameMode(CustomGameMode.All);
+            AutoKickStopWords = BooleanOptionItem.Create(1_000_011, "AutoKickStopWords", false, TabGroup.MainSettings, false)
+                .SetGameMode(CustomGameMode.All);
+            AutoWarnStopWords = BooleanOptionItem.Create(1_000_012, "AutoWarnStopWords", false, TabGroup.MainSettings, false)
                 .SetGameMode(CustomGameMode.All);
             SuffixMode = StringOptionItem.Create(1_000_001, "SuffixMode", suffixModes, 0, TabGroup.MainSettings, true)
                 .SetGameMode(CustomGameMode.All);

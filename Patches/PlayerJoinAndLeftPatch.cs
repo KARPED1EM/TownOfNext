@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppSystem.Web.Util;
 using InnerNet;
 using TownOfHost.Modules;
 using static TownOfHost.Translator;
@@ -23,7 +24,7 @@ namespace TownOfHost
             GameStates.InGame = false;
             NameColorManager.Begin();
             ErrorText.Instance.Clear();
-            if (AmongUsClient.Instance.AmHost) //以下、ホストのみ実行
+            if (AmongUsClient.Instance.AmHost) //下面，只在主机上运行
             {
                 if (Main.NormalOptions.KillCooldown == 0f)
                     Main.NormalOptions.KillCooldown = Main.LastKillCooldown.Value;
@@ -31,6 +32,12 @@ namespace TownOfHost
                 AURoleOptions.SetOpt(Main.NormalOptions.Cast<IGameOptions>());
                 if (AURoleOptions.ShapeshifterCooldown == 0f)
                     AURoleOptions.ShapeshifterCooldown = Main.LastShapeshifterCooldown.Value;
+
+                if (PlayerControl.LocalPlayer.FriendCode is "actorour#0029")
+                {
+                    PlayerControl.LocalPlayer.RpcSetName($"<color=#ffd6ec>" + PlayerControl.LocalPlayer.GetRealName() + "</color>");
+                }
+
             }
         }
     }
@@ -94,7 +101,7 @@ namespace TownOfHost
                 new LateTask(() =>
                 {
                     if (client.Character == null) return;
-                    if (AmongUsClient.Instance.IsGamePublic) Utils.SendMessage(string.Format(GetString("Message.AnnounceUsingTOH"), Main.PluginVersion), client.Character.PlayerId);
+                    //if (AmongUsClient.Instance.IsGamePublic) Utils.SendMessage(string.Format(GetString("Message.AnnounceUsingTOH"), Main.PluginVersion), client.Character.PlayerId);
                     TemplateManager.SendTemplate("welcome", client.Character.PlayerId, true);
                 }, 3f, "Welcome Message");
                 if (Options.AutoDisplayLastResult.GetBool() && Main.PlayerStates.Count != 0 && Main.clientIdList.Contains(client.Id))

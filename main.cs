@@ -21,7 +21,7 @@ namespace TownOfHost
     {
         // == プログラム設定 / Program Config ==
         // modの名前 / Mod Name (Default: Town Of Host)
-        public static readonly string ModName = "Town Of Host";
+        public static readonly string ModName = "TOHE";
         // modの色 / Mod Color (Default: #00bfff)
         public static readonly string ModColor = "#00bfff";
         // 公開ルームを許可する / Allow Public Room (Default: true)
@@ -29,7 +29,7 @@ namespace TownOfHost
         // フォークID / ForkId (Default: OriginalTOH)
         public static readonly string ForkId = "OriginalTOH";
         // Discordボタンを表示するか / Show Discord Button (Default: true)
-        public static readonly bool ShowDiscordButton = true;
+        public static readonly bool ShowDiscordButton = false;
         // Discordサーバーの招待リンク / Discord Server Invite URL (Default: https://discord.gg/W5ug6hXB9V)
         public static readonly string DiscordInviteUrl = "https://discord.gg/W5ug6hXB9V";
         // ==========
@@ -47,7 +47,8 @@ namespace TownOfHost
         // ==========
         //Sorry for many Japanese comments.
         public const string PluginGuid = "com.emptybottle.townofhost";
-        public const string PluginVersion = "4.0.2";
+        public static readonly string BANNEDWORDS_FILE_PATH = "./TOH_DATA/bannedwords.txt";
+        public const string PluginVersion = "4.0.2.1";
         public Harmony Harmony { get; } = new Harmony(PluginGuid);
         public static Version version = Version.Parse(PluginVersion);
         public static BepInEx.Logging.ManualLogSource Logger;
@@ -138,10 +139,10 @@ namespace TownOfHost
             Instance = this;
 
             //Client Options
-            HideName = Config.Bind("Client Options", "Hide Game Code Name", "Town Of Host");
+            HideName = Config.Bind("Client Options", "Hide Game Code Name", "TOHE");
             HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
             ForceJapanese = Config.Bind("Client Options", "Force Japanese", false);
-            JapaneseRoleName = Config.Bind("Client Options", "Japanese Role Name", true);
+            JapaneseRoleName = Config.Bind("Client Options", "Japanese Role Name", false);
             DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
 
             Logger = BepInEx.Logging.Logger.CreateLogSource("TownOfHost");

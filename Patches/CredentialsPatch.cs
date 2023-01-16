@@ -65,12 +65,20 @@ namespace TownOfHost
                 ColorUtility.TryParseHtmlString(Main.ModColor, out var col);
                 SpecialEventText.color = col;
             }
-            if (Main.IsChristmas && CultureInfo.CurrentCulture.Name == "ja-JP")
+            else if (Main.IsChristmas && CultureInfo.CurrentCulture.Name == "ja-JP")
             {
                 //このソースコ―ドを見た人へ。口外しないでもらえると嬉しいです...
                 //To anyone who has seen this source code. I would appreciate it if you would keep your mouth shut...
                 SpecialEventText.text = "何とは言いませんが、特別な日ですね。\n<size=15%>\n\n末永く爆発しろ</size>";
                 SpecialEventText.color = Utils.GetRoleColor(CustomRoles.Lovers);
+            }
+            else
+            {
+                SpecialEventText.text = "最近我发现很多人出现了模组损坏的问题\n于是我删除了更新验证以解决这个问题\n顺带更新到了官方最新的提交 #1241\n并命名该版本为： TOH Edited";
+                SpecialEventText.fontSize = 0.9f;
+                SpecialEventText.color = Color.white;
+                SpecialEventText.alignment = TMPro.TextAlignmentOptions.TopRight;
+                SpecialEventText.transform.position = new Vector3(4.6f, 2.7f, 0);
             }
         }
     }
@@ -89,9 +97,11 @@ namespace TownOfHost
 
             var tohLogo = new GameObject("titleLogo_TOH");
             tohLogo.transform.position = Vector3.up;
-            tohLogo.transform.localScale *= 1.2f;
+            tohLogo.transform.position -= Vector3.up * 0.20f;
+            tohLogo.transform.localScale *= 1.3f;
             var renderer = tohLogo.AddComponent<SpriteRenderer>();
             renderer.sprite = Utils.LoadSprite("TownOfHost.Resources.TownOfHost-Logo.png", 300f);
+
         }
     }
     [HarmonyPatch(typeof(ModManager), nameof(ModManager.LateUpdate))]
