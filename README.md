@@ -1,14 +1,18 @@
 # Town Of Host Edited
 
+<img src="Images/Cover.webp" alt="HostName"  />
+
 ## 关于这个模组
 
 该模组不隶属于我们之中或 Innersloth LLC，其中包含的内容未经 Innersloth LLC 认可或以其他方式赞助。 此处包含的部分材料是 Innersloth LLC 的财产。 © Innersloth LLC。
+
+---
 
 ## 资源
 
 AmongUs 版本: **2022.12.14**
 
-**修改最新版: [点我](https://github.com/KARPED1EM/TownOfHostEdited/releases/latest)**
+**最新版: [点我](https://github.com/KARPED1EM/TownOfHostEdited/releases/latest)**
 
 官方原版: [点我](https://github.com/tukasa0001/TownOfHost/releases)
 
