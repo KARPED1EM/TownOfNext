@@ -501,9 +501,8 @@ namespace TownOfHost
                 SendMessage(GetString("CantUse.lastresult"), PlayerId);
                 return;
             }
-            var text = GetString("LastResult") + ":";
+            var text = "玩家信息:";
             List<byte> cloneRoles = new(Main.PlayerStates.Keys);
-            text += $"\n{SetEverythingUpPatch.LastWinsText}\n";
             foreach (var id in Main.winnerList)
             {
                 text += $"\n★ " + EndGamePatch.SummaryText[id].RemoveHtmlTags();
@@ -513,8 +512,13 @@ namespace TownOfHost
             {
                 text += $"\n　 " + EndGamePatch.SummaryText[id].RemoveHtmlTags();
             }
+
+            var sumText = GetString("LastResult") + ": ";
+            sumText += $"{SetEverythingUpPatch.LastWinsText}";
+
             SendMessage(text, PlayerId);
             SendMessage(EndGamePatch.KillLog, PlayerId);
+            SendMessage(sumText, PlayerId);
         }
 
 
@@ -604,7 +608,7 @@ namespace TownOfHost
             else
             {
                 if (AmongUsClient.Instance.IsGamePublic)
-                    name = $"<color={Main.ModColor}>TownOfHost v{Main.PluginVersion}</color>\r\n" + name;
+                    name = $"<color=#ffd6ec>TOH</color><color=#baf7ca>★</color>" + name;
                 switch (Options.GetSuffixMode())
                 {
                     case SuffixModes.None:

@@ -18,7 +18,7 @@ namespace TownOfHost
 
             Color color = on ? new Color(0f, 1f, 0.16470589f, 1f) : Color.white;
             button.Background.color = color;
-            button.Text.text = $"{text}{(on ? "On" : "Off")}";
+            button.Text.text = $"{text}{(on ? "开" : "关")}";
             if (button.Rollover) button.Rollover.ChangeOutColor(color);
         }
         private static ToggleButtonBehaviour CreateCustomToggle(string text, bool on, Vector3 offset, UnityEngine.Events.UnityAction onClick, OptionsMenuBehaviour __instance)
@@ -64,22 +64,22 @@ namespace TownOfHost
 
             if (ForceJapanese == null || ForceJapanese?.gameObject == null)
             {
-                ForceJapanese = CreateCustomToggle("Force Japanese: ", Main.ForceJapanese.Value, new Vector3(-0.375f, yOffset, 0), (UnityEngine.Events.UnityAction)ForceJapaneseButtonToggle, __instance);
+                ForceJapanese = CreateCustomToggle("强制显示为日语: ", Main.ForceJapanese.Value, new Vector3(-0.375f, yOffset, 0), (UnityEngine.Events.UnityAction)ForceJapaneseButtonToggle, __instance);
 
                 void ForceJapaneseButtonToggle()
                 {
                     Main.ForceJapanese.Value = !Main.ForceJapanese.Value;
-                    UpdateToggle(ForceJapanese, "Force Japanese: ", Main.ForceJapanese.Value);
+                    UpdateToggle(ForceJapanese, "强制显示为日语: ", Main.ForceJapanese.Value);
                 }
             }
             if (JapaneseRoleName == null || JapaneseRoleName.gameObject == null)
             {
-                JapaneseRoleName = CreateCustomToggle("Japanese Role Name: ", Main.JapaneseRoleName.Value, new Vector3(1.375f, yOffset, 0), (UnityEngine.Events.UnityAction)LangModeButtonToggle, __instance);
+                JapaneseRoleName = CreateCustomToggle("用日语显示职业: ", Main.JapaneseRoleName.Value, new Vector3(1.375f, yOffset, 0), (UnityEngine.Events.UnityAction)LangModeButtonToggle, __instance);
 
                 void LangModeButtonToggle()
                 {
                     Main.JapaneseRoleName.Value = !Main.JapaneseRoleName.Value;
-                    UpdateToggle(JapaneseRoleName, "Japanese Role Name: ", Main.JapaneseRoleName.Value);
+                    UpdateToggle(JapaneseRoleName, "用日语显示职业: ", Main.JapaneseRoleName.Value);
                 }
             }
         }

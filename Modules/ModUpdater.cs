@@ -100,8 +100,10 @@ namespace TownOfHost
             }
             catch (Exception ex)
             {
-                isBroken = true;
-                Logger.Error($"リリースのチェックに失敗しました。\n{ex}", "CheckRelease", false);
+                isChecked = true;
+                isBroken = false;
+                //这他妈居然是检查更新失败造成的
+                Logger.Error($"检查更新失败了，但是谁在乎呢？\n{ex}", "CheckRelease", false);
                 return false;
             }
             return true;
