@@ -292,7 +292,7 @@ namespace TownOfHost
             {
 
                 List<int> funList = new();
-                for (int i = 0; i < 39; i++)
+                for (int i = 0; i < 40; i++)
                 {
                     funList.Add(i);
                 }
@@ -320,12 +320,9 @@ namespace TownOfHost
                         case 2: AssignCustomRolesFromList(CustomRoles.Jester, Crewmates); break;
                         case 3: AssignCustomRolesFromList(CustomRoles.Madmate, Engineers); break;
                         case 4: AssignCustomRolesFromList(CustomRoles.Bait, Crewmates); break;
-                        case 36: AssignCustomRolesFromList(CustomRoles.Needy, Crewmates); break;
                         case 5: AssignCustomRolesFromList(CustomRoles.MadGuardian, Crewmates); break;
                         case 6: AssignCustomRolesFromList(CustomRoles.MadSnitch, Options.MadSnitchCanVent.GetBool() ? Engineers : Crewmates); break;
                         case 7: AssignCustomRolesFromList(CustomRoles.Mayor, Options.MayorHasPortableButton.GetBool() ? Engineers : Crewmates); break;
-                        case 32: AssignCustomRolesFromList(CustomRoles.Paranoia, Engineers); break;
-                        case 34: AssignCustomRolesFromList(CustomRoles.Psychic, Crewmates); break;
                         case 8: AssignCustomRolesFromList(CustomRoles.Opportunist, Crewmates); break;
                         case 9: AssignCustomRolesFromList(CustomRoles.Snitch, Crewmates); break;
                         case 10: AssignCustomRolesFromList(CustomRoles.SabotageMaster, Crewmates); break;
@@ -336,12 +333,8 @@ namespace TownOfHost
                         case 15: AssignCustomRolesFromList(CustomRoles.BountyHunter, Shapeshifters); break;
                         case 16: AssignCustomRolesFromList(CustomRoles.Witch, Impostors); break;
                         case 17: AssignCustomRolesFromList(CustomRoles.Warlock, Shapeshifters); break;
-                        case 38: AssignCustomRolesFromList(CustomRoles.Hacker, Impostors); break;
-                        case 33: AssignCustomRolesFromList(CustomRoles.Miner, Shapeshifters); break;
                         case 18: AssignCustomRolesFromList(CustomRoles.SerialKiller, Shapeshifters); break;
                         case 19: AssignCustomRolesFromList(CustomRoles.Lighter, Crewmates); break;
-                        case 37: AssignCustomRolesFromList(CustomRoles.SuperStar, Crewmates); break;
-                        case 35: AssignCustomRolesFromList(CustomRoles.Plumber, Engineers); break;
                         case 20: AssignCustomRolesFromList(CustomRoles.SpeedBooster, Crewmates); break;
                         case 21: AssignCustomRolesFromList(CustomRoles.Trapper, Crewmates); break;
                         case 22: AssignCustomRolesFromList(CustomRoles.Dictator, Crewmates); break;
@@ -354,6 +347,13 @@ namespace TownOfHost
                         case 29: AssignCustomRolesFromList(CustomRoles.TimeThief, Impostors); break;
                         case 30: AssignCustomRolesFromList(CustomRoles.EvilTracker, Shapeshifters); break;
                         case 31: AssignCustomRolesFromList(CustomRoles.Seer, Crewmates); break;
+                        case 32: AssignCustomRolesFromList(CustomRoles.Paranoia, Engineers); break;
+                        case 33: AssignCustomRolesFromList(CustomRoles.Miner, Shapeshifters); break;
+                        case 34: AssignCustomRolesFromList(CustomRoles.Psychic, Crewmates); break;
+                        case 35: AssignCustomRolesFromList(CustomRoles.Plumber, Engineers); break;
+                        case 36: AssignCustomRolesFromList(CustomRoles.Needy, Crewmates); break;
+                        case 37: AssignCustomRolesFromList(CustomRoles.SuperStar, Crewmates); break;
+                        case 38: AssignCustomRolesFromList(CustomRoles.Hacker, Impostors); break;
                     }
                 }
 
@@ -367,6 +367,7 @@ namespace TownOfHost
                 foreach (var pair in Main.PlayerStates)
                 {
                     ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
+
 
                     foreach (var subRole in pair.Value.SubRoles)
                         ExtendedPlayerControl.RpcSetCustomRole(pair.Key, subRole);
@@ -502,16 +503,10 @@ namespace TownOfHost
         {
             if (!role.IsEnable()) return;
 
-            if (CustomRolesHelper.IsNK(role) && Main.assignedNK >= Main.needOfNK)
-            {
-                Main.assignedNK++;
-                return;
-            }
-            if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK)
-            {
-                Main.assignedNNK++;
-                return;
-            }
+            if (CustomRolesHelper.IsNK(role) && Main.assignedNK >= Main.needOfNK) return;
+            if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK) return;
+            if (CustomRolesHelper.IsNK(role)) Main.assignedNK++;
+            if (CustomRolesHelper.IsNNK(role)) Main.assignedNNK++;
 
             var hostId = PlayerControl.LocalPlayer.PlayerId;
             var rand = IRandom.Instance;
@@ -576,16 +571,10 @@ namespace TownOfHost
             var count = Math.Clamp(RawCount, 0, players.Count);
             if (RawCount == -1) count = Math.Clamp(role.GetCount(), 0, players.Count);
             if (count <= 0) return null;
-            if (CustomRolesHelper.IsNK(role) && Main.assignedNK >= Main.needOfNK)
-            {
-                Main.assignedNK++;
-                return null;
-            }
-            if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK)
-            {
-                Main.assignedNNK++;
-                return null;
-            }
+            if (CustomRolesHelper.IsNK(role) && Main.assignedNK >= Main.needOfNK) return null;
+            if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK) return null;
+            if (CustomRolesHelper.IsNK(role)) Main.assignedNK++;
+            if (CustomRolesHelper.IsNNK(role)) Main.assignedNNK++;
             List<PlayerControl> AssignedPlayers = new();
             SetColorPatch.IsAntiGlitchDisabled = true;
             for (var i = 0; i < count; i++)

@@ -156,6 +156,7 @@ namespace TownOfHost
                     case CustomRoles.Warlock:
                         if (!Main.CheckShapeshift[killer.PlayerId] && !Main.isCurseAndKill[killer.PlayerId])
                         { //Warlockが変身時以外にキルしたら、呪われる処理
+                            if (target.Is(CustomRoles.Needy)) return false;
                             Main.isCursed = true;
                             killer.SetKillCooldown();
                             Main.CursedPlayers[killer.PlayerId] = target;
@@ -179,6 +180,7 @@ namespace TownOfHost
                         }
                         break;
                     case CustomRoles.Puppeteer:
+                        if (target.Is(CustomRoles.Needy)) return false;
                         Main.PuppeteerList[target.PlayerId] = killer.PlayerId;
                         killer.SetKillCooldown();
                         Utils.NotifyRoles(SpecifySeer: killer);
@@ -241,13 +243,10 @@ namespace TownOfHost
                 Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Kill;
             }
 
-            Logger.Info("将进入击杀事件", "MurderPlayer");
-
             bool hackKilled = false;
             //骇客击杀
             if (killer.GetCustomRole() == CustomRoles.Hacker && Main.HackerUsedCount.TryGetValue(killer.PlayerId, out var count) && count < Options.HackUsedMaxTime.GetInt())
             {
-                Logger.Info("已进入击杀事件", "MurderPlayer");
                 hackKilled = true;
                 Main.HackerUsedCount[killer.PlayerId] += 1;
                 List<PlayerControl> playerList = new();
