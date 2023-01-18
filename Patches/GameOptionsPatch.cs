@@ -44,7 +44,7 @@ namespace TownOfHost
 
             if (forced)
             {
-                ((TMPro.TMP_Text)__instance.ChanceText).text = "Always";
+                ((TMPro.TMP_Text)__instance.ChanceText).text = "禁用概率";
             }
         }
     }

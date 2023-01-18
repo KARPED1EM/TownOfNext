@@ -676,9 +676,9 @@ namespace TownOfHost
                 .SetGameMode(CustomGameMode.All);
             GhostCanSeeOtherVotes = BooleanOptionItem.Create(900_011, "GhostCanSeeOtherVotes", true, TabGroup.MainSettings, false)
                 .SetGameMode(CustomGameMode.All);
-            GhostCanSeeDeathReason = BooleanOptionItem.Create(900_014, "GhostCanSeeDeathReason", false, TabGroup.MainSettings, false)
+            GhostCanSeeDeathReason = BooleanOptionItem.Create(900_014, "GhostCanSeeDeathReason", true, TabGroup.MainSettings, false)
                 .SetGameMode(CustomGameMode.All);
-            GhostIgnoreTasks = BooleanOptionItem.Create(900_012, "GhostIgnoreTasks", false, TabGroup.MainSettings, false)
+            GhostIgnoreTasks = BooleanOptionItem.Create(900_012, "GhostIgnoreTasks", true, TabGroup.MainSettings, false)
                 .SetGameMode(CustomGameMode.All);
             CommsCamouflage = BooleanOptionItem.Create(900_013, "CommsCamouflage", false, TabGroup.MainSettings, false)
                 .SetGameMode(CustomGameMode.All);

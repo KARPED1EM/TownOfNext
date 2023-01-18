@@ -400,8 +400,8 @@ namespace TownOfHost
                 case "大明星": case "明星": return "大明星";
                 case "管道工": case "管道": return "管道工";
                 case "市長": return "市长";
-                case "被害妄想症": case "被害妄想": case "被害": case "妄想": case "妄想症": return "被害妄想症";
-                case "精神病": case "精神": return "精神病";
+                case "被害妄想症": case "被害妄想":  case "被迫害妄想症": case "被害": case "妄想": case "妄想症": return "被害妄想症";
+                case "精神病": case "精神": case "神经病": return "精神病";
                 case "修理大師": case "修理大师": case "维修大师": return "修理大师";
                 case "靈媒": return "灵媒";
                 case "警長": return "警长";

@@ -103,6 +103,8 @@ namespace TownOfHost
         public static int assignedNK;
         public static int assignedNNK;
 
+        public static List<int> funList = new();
+
         /// <summary>
         /// 基本的に速度の代入は禁止.スピードは増減で対応してください.
         /// </summary>

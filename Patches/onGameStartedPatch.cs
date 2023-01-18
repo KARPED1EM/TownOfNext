@@ -4,6 +4,7 @@ using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using Sentry.Internal.Http;
 using TownOfHost.Modules;
 using static TownOfHost.Translator;
 
@@ -144,7 +145,7 @@ namespace TownOfHost
             Main.needOfNNK = rd.Next(0, Options.MaxNNK.GetInt() + 1);
             if (Main.needOfNNK > Options.MaxNNK.GetInt()) Main.needOfNNK = Options.MaxNNK.GetInt();
 
-            //CustomRpcSenderとRpcSetRoleReplacerの初期化
+            //初始化 CustomRpcSender 和 RpcSetRoleReplacer
             Dictionary<byte, CustomRpcSender> senders = new();
             foreach (var pc in Main.AllPlayerControls)
             {
@@ -276,8 +277,8 @@ namespace TownOfHost
                 }
 
                 //后期设定流程
-                AssignCustomRolesFromList(CustomRoles.HASFox, Crewmates);
-                AssignCustomRolesFromList(CustomRoles.HASTroll, Crewmates);
+                AssignCustomRolesFromList(-1, CustomRoles.HASFox, Crewmates);
+                AssignCustomRolesFromList(-1, CustomRoles.HASTroll, Crewmates);
                 foreach (var pair in Main.PlayerStates)
                 {
                     //通过 RPC 同步
@@ -291,71 +292,125 @@ namespace TownOfHost
             else
             {
 
-                List<int> funList = new();
-                for (int i = 0; i < 40; i++)
-                {
-                    funList.Add(i);
-                }
 
+                
+                for (int i = 0; i <= 38; i++)
+                {
+                    Main.funList.Add(i);
+                }
+                
                 Random rd = new();
                 int index = 0;
                 int temp;
-                for (int i = 0; i < funList.Count; i++)
+                for (int i = 0; i < Main.funList.Count; i++)
                 {
-                    index = rd.Next(0, funList.Count - 1);
+                    index = rd.Next(0, Main.funList.Count - 1);
                     if (index != i)
                     {
-                        temp = funList[i];
-                        funList[i] = funList[index];
-                        funList[index] = temp;
+                        temp = Main.funList[i];
+                        Main.funList[i] = Main.funList[index];
+                        Main.funList[index] = temp;
                     }
                 }
 
-                foreach (int i in funList)
+                if(Main.funList.Remove(38)) Main.funList.Insert(0, 38);
+
+                int retryTimes = 0;
+                Retry: retryTimes++;
+                foreach (int i in Main.funList)
                 {
                     switch (i)
                     {
-                        case 0: AssignCustomRolesFromList(CustomRoles.FireWorks, Shapeshifters); break;
-                        case 1: AssignCustomRolesFromList(CustomRoles.Sniper, Shapeshifters); break;
-                        case 2: AssignCustomRolesFromList(CustomRoles.Jester, Crewmates); break;
-                        case 3: AssignCustomRolesFromList(CustomRoles.Madmate, Engineers); break;
-                        case 4: AssignCustomRolesFromList(CustomRoles.Bait, Crewmates); break;
-                        case 5: AssignCustomRolesFromList(CustomRoles.MadGuardian, Crewmates); break;
-                        case 6: AssignCustomRolesFromList(CustomRoles.MadSnitch, Options.MadSnitchCanVent.GetBool() ? Engineers : Crewmates); break;
-                        case 7: AssignCustomRolesFromList(CustomRoles.Mayor, Options.MayorHasPortableButton.GetBool() ? Engineers : Crewmates); break;
-                        case 8: AssignCustomRolesFromList(CustomRoles.Opportunist, Crewmates); break;
-                        case 9: AssignCustomRolesFromList(CustomRoles.Snitch, Crewmates); break;
-                        case 10: AssignCustomRolesFromList(CustomRoles.SabotageMaster, Crewmates); break;
-                        case 11: AssignCustomRolesFromList(CustomRoles.Mafia, Impostors); break;
-                        case 12: AssignCustomRolesFromList(CustomRoles.Terrorist, Engineers); break;
-                        case 13: AssignCustomRolesFromList(CustomRoles.Executioner, Crewmates); break;
-                        case 14: AssignCustomRolesFromList(CustomRoles.Vampire, Impostors); break;
-                        case 15: AssignCustomRolesFromList(CustomRoles.BountyHunter, Shapeshifters); break;
-                        case 16: AssignCustomRolesFromList(CustomRoles.Witch, Impostors); break;
-                        case 17: AssignCustomRolesFromList(CustomRoles.Warlock, Shapeshifters); break;
-                        case 18: AssignCustomRolesFromList(CustomRoles.SerialKiller, Shapeshifters); break;
-                        case 19: AssignCustomRolesFromList(CustomRoles.Lighter, Crewmates); break;
-                        case 20: AssignCustomRolesFromList(CustomRoles.SpeedBooster, Crewmates); break;
-                        case 21: AssignCustomRolesFromList(CustomRoles.Trapper, Crewmates); break;
-                        case 22: AssignCustomRolesFromList(CustomRoles.Dictator, Crewmates); break;
-                        case 23: AssignCustomRolesFromList(CustomRoles.SchrodingerCat, Crewmates); break;
-                        case 24: if (Options.IsEvilWatcher) AssignCustomRolesFromList(CustomRoles.Watcher, Impostors); else AssignCustomRolesFromList(CustomRoles.Watcher, Crewmates); break;
-                        case 25: if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1) AssignCustomRolesFromList(CustomRoles.Egoist, Shapeshifters); break;
-                        case 26: AssignCustomRolesFromList(CustomRoles.Mare, Impostors); break;
-                        case 27: AssignCustomRolesFromList(CustomRoles.Doctor, Scientists); break;
-                        case 28: AssignCustomRolesFromList(CustomRoles.Puppeteer, Impostors); break;
-                        case 29: AssignCustomRolesFromList(CustomRoles.TimeThief, Impostors); break;
-                        case 30: AssignCustomRolesFromList(CustomRoles.EvilTracker, Shapeshifters); break;
-                        case 31: AssignCustomRolesFromList(CustomRoles.Seer, Crewmates); break;
-                        case 32: AssignCustomRolesFromList(CustomRoles.Paranoia, Engineers); break;
-                        case 33: AssignCustomRolesFromList(CustomRoles.Miner, Shapeshifters); break;
-                        case 34: AssignCustomRolesFromList(CustomRoles.Psychic, Crewmates); break;
-                        case 35: AssignCustomRolesFromList(CustomRoles.Plumber, Engineers); break;
-                        case 36: AssignCustomRolesFromList(CustomRoles.Needy, Crewmates); break;
-                        case 37: AssignCustomRolesFromList(CustomRoles.SuperStar, Crewmates); break;
-                        case 38: AssignCustomRolesFromList(CustomRoles.Hacker, Impostors); break;
+                        case 0: AssignCustomRolesFromList(i, CustomRoles.FireWorks, Shapeshifters); break;
+                        case 1: AssignCustomRolesFromList(i, CustomRoles.Sniper, Shapeshifters); break;
+                        case 2: AssignCustomRolesFromList(i, CustomRoles.Jester, Crewmates); break;
+                        case 3: AssignCustomRolesFromList(i, CustomRoles.Madmate, Engineers); break;
+                        case 4: AssignCustomRolesFromList(i, CustomRoles.Bait, Crewmates); break;
+                        case 5: AssignCustomRolesFromList(i, CustomRoles.MadGuardian, Crewmates); break;
+                        case 6: AssignCustomRolesFromList(i, CustomRoles.MadSnitch, Options.MadSnitchCanVent.GetBool() ? Engineers : Crewmates); break;
+                        case 7: AssignCustomRolesFromList(i, CustomRoles.Mayor, Options.MayorHasPortableButton.GetBool() ? Engineers : Crewmates); break;
+                        case 8: AssignCustomRolesFromList(i, CustomRoles.Opportunist, Crewmates); break;
+                        case 9: AssignCustomRolesFromList(i, CustomRoles.Snitch, Crewmates); break;
+                        case 10: AssignCustomRolesFromList(i, CustomRoles.SabotageMaster, Crewmates); break;
+                        case 11: AssignCustomRolesFromList(i, CustomRoles.Mafia, Impostors); break;
+                        case 12: AssignCustomRolesFromList(i, CustomRoles.Terrorist, Engineers); break;
+                        case 13: AssignCustomRolesFromList(i, CustomRoles.Executioner, Crewmates); break;
+                        case 14: AssignCustomRolesFromList(i, CustomRoles.Vampire, Impostors); break;
+                        case 15: AssignCustomRolesFromList(i, CustomRoles.BountyHunter, Shapeshifters); break;
+                        case 16: AssignCustomRolesFromList(i, CustomRoles.Witch, Impostors); break;
+                        case 17: AssignCustomRolesFromList(i, CustomRoles.Warlock, Shapeshifters); break;
+                        case 18: AssignCustomRolesFromList(i, CustomRoles.SerialKiller, Shapeshifters); break;
+                        case 19: AssignCustomRolesFromList(i, CustomRoles.Lighter, Crewmates); break;
+                        case 20: AssignCustomRolesFromList(i, CustomRoles.SpeedBooster, Crewmates); break;
+                        case 21: AssignCustomRolesFromList(i, CustomRoles.Trapper, Crewmates); break;
+                        case 22: AssignCustomRolesFromList(i, CustomRoles.Dictator, Crewmates); break;
+                        case 23: AssignCustomRolesFromList(i, CustomRoles.SchrodingerCat, Crewmates); break;
+                        case 24: if (Options.IsEvilWatcher) AssignCustomRolesFromList(i, CustomRoles.Watcher, Impostors); else AssignCustomRolesFromList(i, CustomRoles.Watcher, Crewmates); break;
+                        case 25: if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1) AssignCustomRolesFromList(i, CustomRoles.Egoist, Shapeshifters); break;
+                        case 26: AssignCustomRolesFromList(i, CustomRoles.Mare, Impostors); break;
+                        case 27: AssignCustomRolesFromList(i, CustomRoles.Doctor, Scientists); break;
+                        case 28: AssignCustomRolesFromList(i, CustomRoles.Puppeteer, Impostors); break;
+                        case 29: AssignCustomRolesFromList(i, CustomRoles.TimeThief, Impostors); break;
+                        case 30: AssignCustomRolesFromList(i, CustomRoles.EvilTracker, Shapeshifters); break;
+                        case 31: AssignCustomRolesFromList(i, CustomRoles.Seer, Crewmates); break;
+                        case 32: AssignCustomRolesFromList(i, CustomRoles.Paranoia, Engineers); break;
+                        case 33: AssignCustomRolesFromList(i, CustomRoles.Miner, Shapeshifters); break;
+                        case 34: AssignCustomRolesFromList(i, CustomRoles.Psychic, Crewmates); break;
+                        case 35: AssignCustomRolesFromList(i, CustomRoles.Plumber, Engineers); break;
+                        case 36: AssignCustomRolesFromList(i, CustomRoles.Needy, Crewmates); break;
+                        case 37: AssignCustomRolesFromList(i, CustomRoles.SuperStar, Crewmates); break;
+                        case 38: AssignCustomRolesFromList(i, CustomRoles.Hacker, Impostors); break;
                     }
                 }
+
+                if (retryTimes < 3)
+                {
+                    foreach (PlayerControl pc in Impostors)
+                    {
+                        Logger.Info("存在未注册的内鬼职业，尝试改为变形重新分配", "Assign Roles");
+                        Main.PlayerStates[pc.PlayerId].MainRole = CustomRoles.Shapeshifter;
+                        Impostors.Remove(pc);
+                        Shapeshifters.Add(pc);
+                        goto Retry;
+                    }
+                    foreach (PlayerControl pc in Shapeshifters)
+                    {
+                        Logger.Info("存在未注册的变形职业，尝试改为内鬼重新分配", "Assign Roles");
+                        Main.PlayerStates[pc.PlayerId].MainRole = CustomRoles.Impostor;
+                        Shapeshifters.Remove(pc);
+                        Impostors.Add(pc);
+                        goto Retry;
+                    }
+                    foreach (PlayerControl pc in Engineers)
+                    {
+                        Logger.Info("存在未注册的工程师职业，尝试改为船员重新分配", "Assign Roles");
+                        Main.PlayerStates[pc.PlayerId].MainRole = CustomRoles.Crewmate;
+                        Engineers.Remove(pc);
+                        Crewmates.Add(pc);
+                        goto Retry;
+                    }
+                    foreach (PlayerControl pc in Crewmates)
+                    {
+                        Logger.Info("存在未注册的船员职业，尝试改为科学家重新分配", "Assign Roles");
+                        Main.PlayerStates[pc.PlayerId].MainRole = CustomRoles.Scientist;
+                        Crewmates.Remove(pc);
+                        Scientists.Add(pc);
+                        goto Retry;
+                    }
+                    foreach (PlayerControl pc in Scientists)
+                    {
+                        Logger.Info("存在未注册的科学家职业，尝试改为工程师重新分配", "Assign Roles");
+                        Main.PlayerStates[pc.PlayerId].MainRole = CustomRoles.Engineer;
+                        Scientists.Remove(pc);
+                        Engineers.Add(pc);
+                        goto Retry;
+                    }
+                }
+                else
+                {
+                    Logger.Error("存在未注册的职业，五次分配均无效", "Assign Roles");
+                }
+                
 
 
                 //通过 RPC 同步
@@ -564,7 +619,7 @@ namespace TownOfHost
             }
         }
 
-        private static List<PlayerControl> AssignCustomRolesFromList(CustomRoles role, List<PlayerControl> players, int RawCount = -1)
+        private static List<PlayerControl> AssignCustomRolesFromList(int ID, CustomRoles role, List<PlayerControl> players, int RawCount = -1)
         {
             if (players == null || players.Count <= 0) return null;
             var rand = IRandom.Instance;
@@ -575,6 +630,7 @@ namespace TownOfHost
             if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK) return null;
             if (CustomRolesHelper.IsNK(role)) Main.assignedNK++;
             if (CustomRolesHelper.IsNNK(role)) Main.assignedNNK++;
+            if (ID != -1) Main.funList.Remove(ID);
             List<PlayerControl> AssignedPlayers = new();
             SetColorPatch.IsAntiGlitchDisabled = true;
             for (var i = 0; i < count; i++)
