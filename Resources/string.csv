@@ -81,7 +81,7 @@ HASFox,Fox,狐,狐狸,狐妖,Fox,Raposa
 HASTroll,Troll,トロール,巨魔,誘捕者,Troll,Troll
 
 # GM
-GM,GM,GM,GM(管理员),GM(遊戲大師),GM (Призрак),GM(Fantasma)
+GM,GM,GM,管理员,GM(遊戲大師),GM (Призрак),GM(Fantasma)
 
 # 属性
 LastImpostor,Last Impostor,ラストインポスター,绝境者,絕境者,Последний Предатель,Último Impostor
@@ -355,8 +355,8 @@ DisableDevicesInfo,DisableDevices:\nVarious devices can be disabled.,デバイ�
 ## 詳細設定
 MinNK,MinNeutralNum,MinNeutralNum,最小带刀中立人数,最少帶刀中立人數,,
 MaxNK,MaxNeutralNum,MaxNeutralNum,最大带刀中立人数,最多帶刀中立人數,,
-MinNonNK,MinNeutralNum,MinNeutralNum,最小无刀中立人数,最少無刀中立人數,,
-MaxNonNK,MaxNeutralNum,MaxNeutralNum,最大无刀中立人数,最多無刀中立人數,,
+MinNNK,MinNeutralNum,MinNeutralNum,最小无刀中立人数,最少無刀中立人數,,
+MaxNNK,MaxNeutralNum,MaxNeutralNum,最大无刀中立人数,最多無刀中立人數,,
 Cooldown,Cooldown,クールダウン,冷却时间,冷卻時間,Откат,Tempo de Recarga
 KillCooldown,Kill Cooldown,キルクール,击杀冷却时间,殺人冷卻時間,Откат Убийства,Tempo de Recarga (abate)
 CanVent,Can Vent,ベントを使える,可以使用通风管道,可以使用通風口,Может Использовать Вентиляцию,Pode Usar Dutos

@@ -124,7 +124,7 @@ namespace TownOfHost
             var cancelVal = "";
             Main.isChatCommand = true;
             Logger.Info(text, "SendChat");
-            if (text.Substring(0, 2) == "/r" && text.Substring(0, 3) != "/rn") args[0] = "/r";
+            if (text.Length>=3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
             switch (args[0])
             {
                 case "/dump":
@@ -543,7 +543,7 @@ namespace TownOfHost
             if (ProhibitedCheck(player, text)) return;
             string[] args = text.Split(' ');
             string subArgs = "";
-            if (text.Substring(0, 2) == "/r" && text.Substring(0, 3) != "/rn") args[0] = "/r";
+            if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
             switch (args[0])
             {
                 case "/l":

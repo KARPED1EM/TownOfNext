@@ -73,11 +73,8 @@ namespace TownOfHost
             "Rate60", "Rate70", "Rate80", "Rate90", */"Rate100",
         };
 
-        public static OptionItem MinNK;
         public static OptionItem MaxNK;
-        public static OptionItem MinNNK;
         public static OptionItem MaxNNK;
-
 
         // 各役職の詳細設定
         public static OptionItem EnableGM;
@@ -342,6 +339,14 @@ namespace TownOfHost
                 .SetHeader(true)
                 .SetGameMode(CustomGameMode.All);
 
+            MaxNK = IntegerOptionItem.Create(49991, "MaxNK", new(0, 15, 1), 0, TabGroup.NeutralRoles, false)
+                .SetHeader(true)
+                .SetValueFormat(OptionFormat.Players)
+                .SetGameMode(CustomGameMode.Standard);
+            MaxNNK = IntegerOptionItem.Create(49993, "MaxNNK", new(0, 15, 1), 0, TabGroup.NeutralRoles, false)
+                .SetValueFormat(OptionFormat.Players)
+                .SetGameMode(CustomGameMode.Standard);
+
             #region 役職・詳細設定
             CustomRoleCounts = new();
             CustomRoleSpawnChances = new();
@@ -456,12 +461,6 @@ namespace TownOfHost
             SetupRoleOptions(21000, TabGroup.CrewmateRoles, CustomRoles.Seer);
 
             // Neutral
-            MinNK = IntegerOptionItem.Create(49990, "MinNK", new(0, 15, 1) ,0, TabGroup.NeutralRoles, false)
-                .SetHeader(true);
-            MaxNK = IntegerOptionItem.Create(49991, "MaxNK", new(0, 15, 1) ,0, TabGroup.NeutralRoles, false);
-            MinNNK = IntegerOptionItem.Create(49992, "MinNonNK", new(0, 15, 1), 0, TabGroup.NeutralRoles, false);
-            MaxNNK = IntegerOptionItem.Create(49993, "MaxNonNK", new(0, 15, 1), 0, TabGroup.NeutralRoles, false);
-
             SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);
             ArsonistDouseTime = FloatOptionItem.Create(50510, "ArsonistDouseTime", new(1f, 10f, 1f), 3f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Arsonist])
                 .SetValueFormat(OptionFormat.Seconds);

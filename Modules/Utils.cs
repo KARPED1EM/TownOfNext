@@ -603,18 +603,35 @@ namespace TownOfHost
                     {
                         case RoleType.Crewmate:
                             if (!Options.CkshowEvil.GetBool()) break;
-                            if (role is CustomRoles.Sheriff) badPlayers.Add(pc); isGood[pc.PlayerId] = false;
+                            if (role is CustomRoles.Sheriff)
+                            {
+                                badPlayers.Add(pc);
+                                isGood[pc.PlayerId] = false;
+                            }
                             break;
                         case RoleType.Impostor:
                             badPlayers.Add(pc); isGood[pc.PlayerId] = false;
                             break;
                         case RoleType.Neutral:
                             if (Options.NBshowEvil.GetBool())
-                                if (role is CustomRoles.Opportunist or CustomRoles.SchrodingerCat) badPlayers.Add(pc); isGood[pc.PlayerId] = false;
+                                if (role is CustomRoles.Opportunist or CustomRoles.SchrodingerCat)
+                                {
+                                    badPlayers.Add(pc);
+                                    isGood[pc.PlayerId] = false;
+                                } 
                             if (Options.NEshowEvil.GetBool())
                             {
-                                if (role.IsNeutralKilling()) badPlayers.Add(pc); isGood[pc.PlayerId] = false;
-                                if (role is CustomRoles.Jester or CustomRoles.Terrorist or CustomRoles.Executioner) badPlayers.Add(pc); isGood[pc.PlayerId] = false;
+                                if (role.IsNeutralKilling())
+                                {
+                                    badPlayers.Add(pc);
+                                    isGood[pc.PlayerId] = false;
+                                }
+                                    
+                                if (role is CustomRoles.Jester or CustomRoles.Terrorist or CustomRoles.Executioner)
+                                {
+                                    badPlayers.Add(pc);
+                                    isGood[pc.PlayerId] = false;
+                                }
                             }
                             break;
                     }

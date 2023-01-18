@@ -139,28 +139,17 @@ namespace TownOfHost
             Main.assignedNNK = 0;
 
             Random rd = new();
-            if (Options.MinNK.GetInt() <= Options.MaxNK.GetInt())
-            {
-                Main.needOfNK = rd.Next(Options.MinNK.GetInt(), Options.MaxNK.GetInt() + 1);
-                if (Main.needOfNK > Options.MaxNK.GetInt()) Main.needOfNK = Options.MaxNK.GetInt();
-            }
-            else Main.needOfNK = 0;
-
-            if (Options.MinNNK.GetInt() <= Options.MaxNNK.GetInt())
-            {
-                Main.needOfNNK = rd.Next(Options.MinNNK.GetInt(), Options.MaxNNK.GetInt() + 1);
-                if (Main.needOfNNK > Options.MaxNNK.GetInt()) Main.needOfNNK = Options.MaxNNK.GetInt();
-            }
-            else Main.needOfNNK = 0;
-
-
+            Main.needOfNK = rd.Next(0, Options.MaxNK.GetInt() + 1);
+            if (Main.needOfNK > Options.MaxNK.GetInt()) Main.needOfNK = Options.MaxNK.GetInt();
+            Main.needOfNNK = rd.Next(0, Options.MaxNNK.GetInt() + 1);
+            if (Main.needOfNNK > Options.MaxNNK.GetInt()) Main.needOfNNK = Options.MaxNNK.GetInt();
 
             //CustomRpcSenderとRpcSetRoleReplacerの初期化
             Dictionary<byte, CustomRpcSender> senders = new();
             foreach (var pc in Main.AllPlayerControls)
             {
                 senders[pc.PlayerId] = new CustomRpcSender($"{pc.name}'s SetRole Sender", SendOption.Reliable, false)
-                        .StartMessage(pc.GetClientId());
+                    .StartMessage(pc.GetClientId());
             }
             RpcSetRoleReplacer.StartReplace(senders);
 
