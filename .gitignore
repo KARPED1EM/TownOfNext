@@ -1,5 +1,5 @@
 FodyWeavers.xsd
-*.psd
+**.psd
 
 ### C.gitignore ###
 # Prerequisites

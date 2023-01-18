@@ -50,7 +50,7 @@ namespace TownOfHost
         //Sorry for many Japanese comments.
         public const string PluginGuid = "com.emptybottle.townofhost";
         public static readonly string BANNEDWORDS_FILE_PATH = "./TOH_DATA/bannedwords.txt";
-        public const string PluginVersion = "4.0.2.1";
+        public const string PluginVersion = "4.0.2.2";
         public Harmony Harmony { get; } = new Harmony(PluginGuid);
         public static Version version = Version.Parse(PluginVersion);
         public static BepInEx.Logging.ManualLogSource Logger;
@@ -79,6 +79,7 @@ namespace TownOfHost
         public static ConfigEntry<string> BetaBuildURL { get; private set; }
         public static ConfigEntry<float> LastKillCooldown { get; private set; }
         public static ConfigEntry<float> LastShapeshifterCooldown { get; private set; }
+
         public static OptionBackupData RealOptionsData;
         public static Dictionary<byte, PlayerState> PlayerStates = new();
         public static Dictionary<byte, string> AllPlayerNames;
@@ -97,6 +98,11 @@ namespace TownOfHost
         public static bool isLoversDead = true;
         public static Dictionary<byte, float> AllPlayerKillCooldown = new();
 
+        public static int needOfNK;
+        public static int needOfNNK;
+        public static int assignedNK;
+        public static int assignedNNK;
+
         /// <summary>
         /// 基本的に速度の代入は禁止.スピードは増減で対応してください.
         /// </summary>
@@ -108,6 +114,16 @@ namespace TownOfHost
         public static Dictionary<byte, bool> isCurseAndKill = new();
         public static Dictionary<(byte, byte), bool> isDoused = new();
         public static Dictionary<byte, (PlayerControl, float)> ArsonistTimer = new();
+
+        /// 开肝
+
+        public static Dictionary<byte, Vent> LastEnteredVent = new();
+        public static Dictionary<byte, Vector2> LastEnteredVentLocation = new();
+
+        public static Dictionary<byte, int> HackerUsedCount = new();
+
+        /// 开肝
+
         /// <summary>
         /// Key: ターゲットのPlayerId, Value: パペッティアのPlayerId
         /// </summary>
@@ -213,11 +229,16 @@ namespace TownOfHost
                     //特殊クルー役職
                     {CustomRoles.NiceWatcher, "#800080"}, //ウォッチャーの派生
                     {CustomRoles.Bait, "#00f7ff"},
+                    {CustomRoles.Needy, "#a4dffe"},
                     {CustomRoles.SabotageMaster, "#0000ff"},
                     {CustomRoles.Snitch, "#b8fb4f"},
                     {CustomRoles.Mayor, "#204d42"},
+                    {CustomRoles.Paranoia, "#c993f5"},
+                    {CustomRoles.Psychic, "#6F698C"},
                     {CustomRoles.Sheriff, "#f8cd46"},
                     {CustomRoles.Lighter, "#eee5be"},
+                    {CustomRoles.SuperStar, "#f6f657"},
+                    {CustomRoles.Plumber,"#962d00" },
                     {CustomRoles.SpeedBooster, "#00ffff"},
                     {CustomRoles.Doctor, "#80ffdd"},
                     {CustomRoles.Trapper, "#5a8fd0"},
@@ -302,6 +323,8 @@ namespace TownOfHost
         Vampire,
         Witch,
         Warlock,
+        Hacker,
+        Miner,
         Mare,
         Puppeteer,
         TimeThief,
@@ -320,8 +343,13 @@ namespace TownOfHost
         Scientist,
         //Crewmate
         Bait,
+        Needy,
         Lighter,
+        SuperStar,
+        Plumber,
         Mayor,
+        Paranoia,
+        Psychic,
         NiceWatcher,
         SabotageMaster,
         Sheriff,

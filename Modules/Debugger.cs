@@ -102,5 +102,10 @@ namespace TownOfHost
             StackFrame stack = new(1);
             Logger.Msg($"\"{stack.GetMethod().ReflectedType.Name}.{stack.GetMethod().Name}\" Called in \"{Path.GetFileName(fileName)}({lineNumber})\"", "Method");
         }
+
+        internal static void Error(int numOfPsychicBad, string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

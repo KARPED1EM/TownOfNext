@@ -46,6 +46,12 @@ namespace TownOfHost
                 return;
             }
 
+            bool hasCommonTasks = false;
+            int NumLongTasks = 0;
+            int NumShortTasks = 0;
+
+            if (!Utils.GetPlayerById(playerId).Is(CustomRoles.Needy))
+            {
             CustomRoles? RoleNullable = Utils.GetPlayerById(playerId)?.GetCustomRole();
             if (RoleNullable == null) return;
             CustomRoles role = RoleNullable.Value;
@@ -56,12 +62,14 @@ namespace TownOfHost
             if (!data.doOverride.GetBool()) return; // タスク数を上書きするかどうか
                                                     // falseの時、タスクの内容が変更される前にReturnされる。
 
-            bool hasCommonTasks = data.assignCommonTasks.GetBool(); // コモンタスク(通常タスク)を割り当てるかどうか
+            hasCommonTasks = data.assignCommonTasks.GetBool(); // コモンタスク(通常タスク)を割り当てるかどうか
                                                                     // 割り当てる場合でも再割り当てはされず、他のクルーと同じコモンタスクが割り当てられる。
 
-            int NumLongTasks = (int)data.numLongTasks.GetFloat(); // 割り当てるロングタスクの数
-            int NumShortTasks = (int)data.numShortTasks.GetFloat(); // 割り当てるショートタスクの数
+            NumLongTasks = (int)data.numLongTasks.GetFloat(); // 割り当てるロングタスクの数
+            NumShortTasks = (int)data.numShortTasks.GetFloat(); // 割り当てるショートタスクの数
                                                                     // ロングとショートは常時再割り当てが行われる。
+            }
+
             if (!hasCommonTasks && NumLongTasks == 0 && NumShortTasks == 0) NumShortTasks = 1; //タスク0対策
 
             //割り当て可能なタスクのIDが入ったリスト

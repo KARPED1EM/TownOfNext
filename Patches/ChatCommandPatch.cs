@@ -44,9 +44,17 @@ namespace TownOfHost
             if (text.Contains("现")) return false;
             if (text.Contains("不")) return false;
             if (text.Contains("可")) return false;
+            if (text.Contains("刚")) return false;
+            if (text.Contains("的")) return false;
+            if (text.Contains("打")) return false;
+            if (text.Contains("门")) return false;
+            if (text.Contains("关")) return false;
+            if (text.Contains("怎")) return false;
+            if (text.Contains("要")) return false;
+            if (text.Contains("《")) return false;
             if (text.Contains("?")) return false;
             if (text.Contains("？")) return false;
-            if (text.Length >= 6) return false;
+            if (text.Length >= 3) return false;
             if (text.Contains("start")) return true;
             if (text.Contains("s t a r t")) return true;
             if (text.Contains("begin")) return true;
@@ -65,7 +73,7 @@ namespace TownOfHost
             {
                 if (ContainsStart(text) && GameStates.IsLobby && player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
                 {
-                    Utils.SendMessage($"{name} 被请离\n请不要催促开始，很抱歉这是设定");
+                    Utils.SendMessage($"{name} 被系统请离\n请不要催开始，可能会被判定为违规信息");
                     AmongUsClient.Instance.KickPlayer(player.GetClientId(), false);
                     Logger.Msg($"{name} 因催促开始被请离", "Blocked Word");
                     return true;
@@ -116,6 +124,7 @@ namespace TownOfHost
             var cancelVal = "";
             Main.isChatCommand = true;
             Logger.Info(text, "SendChat");
+            if (text.Substring(0, 2) == "/r" && text.Substring(0, 3) != "/rn") args[0] = "/r";
             switch (args[0])
             {
                 case "/dump":
@@ -223,9 +232,13 @@ namespace TownOfHost
                         break;
 
                     case "/r":
+                        canceled = true;
+                        subArgs = text.Remove(0, 2);
+                        GetRolesInfo(subArgs, PlayerControl.LocalPlayer);
+                        break;
                     case "/roles":
                         canceled = true;
-                        subArgs = args.Length < 2 ? "" : args[1];
+                        subArgs = text.Remove(0, 6);
                         GetRolesInfo(subArgs, PlayerControl.LocalPlayer);
                         break;
 
@@ -371,17 +384,24 @@ namespace TownOfHost
                 case "傀儡師": case "傀儡": return "傀儡师";
                 case "吸血鬼": case "吸血": return "吸血鬼";
                 case "術士": return "术士";
+                case "駭客": case "黑客": return "骇客";
+                case "礦工": return "矿工";
                 case "女巫": return "女巫";
                 case "背叛的守衛": case "背叛守卫": return "背叛的守卫";
                 case "叛徒": return "叛徒";
                 case "背叛的告密者": case "背叛告密": return "背叛的告密者";
                 case "叛徒跟班": return "叛徒跟班";
                 case "窺視者": case "窥视": return "窥视者";
-                case "誘餌": case "大奖": return "诱饵";
+                case "誘餌": case "大奖": case "头奖": return "诱饵";
+                case "擺爛人": case "摆烂": return "摆烂人";
                 case "獨裁者": case "独裁": return "独裁者";
                 case "醫生": return "医生";
                 case "執燈人": case "执灯": case "灯人": return "执灯人";
+                case "大明星": case "明星": return "大明星";
+                case "管道工": case "管道": return "管道工";
                 case "市長": return "市长";
+                case "被害妄想症": case "被害妄想": case "被害": case "妄想": case "妄想症": return "被害妄想症";
+                case "精神病": case "精神": return "精神病";
                 case "修理大師": case "修理大师": case "维修大师": return "修理大师";
                 case "靈媒": return "灵媒";
                 case "警長": return "警长";
@@ -423,6 +443,8 @@ namespace TownOfHost
                 { CustomRoles.Puppeteer, "傀儡师" },
                 { CustomRoles.Vampire, "吸血鬼" },
                 { CustomRoles.Warlock, "术士" },
+                { CustomRoles.Hacker, "骇客" },
+                { CustomRoles.Miner, "矿工" },
                 { CustomRoles.Witch, "女巫" },
                 //Madmate役職
                 { (CustomRoles)(-2), $"== {GetString("Madmate")} ==" }, //区切り用
@@ -436,10 +458,15 @@ namespace TownOfHost
                 //Crewmate役職
                 { (CustomRoles)(-4), $"== {GetString("Crewmate")} ==" }, //区切り用
                 { CustomRoles.Bait, "诱饵" },
+                { CustomRoles.Needy, "摆烂人" },
                 { CustomRoles.Dictator, "独裁者" },
                 { CustomRoles.Doctor, "医生" },
                 { CustomRoles.Lighter, "执灯人" },
+                { CustomRoles.SuperStar, "大明星" },
+                { CustomRoles.Plumber, "管道工" },
                 { CustomRoles.Mayor, "市长" },
+                { CustomRoles.Paranoia, "被害妄想症" },
+                { CustomRoles.Psychic, "精神病" },
                 { CustomRoles.SabotageMaster, "修理大师" },
                 { CustomRoles.Seer,"灵媒" },
                 { CustomRoles.Sheriff, "警长" },
@@ -516,6 +543,7 @@ namespace TownOfHost
             if (ProhibitedCheck(player, text)) return;
             string[] args = text.Split(' ');
             string subArgs = "";
+            if (text.Substring(0, 2) == "/r" && text.Substring(0, 3) != "/rn") args[0] = "/r";
             switch (args[0])
             {
                 case "/l":
@@ -546,8 +574,11 @@ namespace TownOfHost
                     //break;
 
                 case "/r":
+                    subArgs = text.Remove(0, 2);
+                    GetRolesInfo(subArgs, player);
+                    break;
                 case "/roles":
-                    subArgs = args.Length < 2 ? "" : args[1];
+                    subArgs = text.Remove(0, 6);
                     GetRolesInfo(subArgs, player);
                     break;
 

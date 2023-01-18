@@ -241,8 +241,36 @@ namespace TownOfHost
                 Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Kill;
             }
 
+            Logger.Info("将进入击杀事件", "MurderPlayer");
+
+            bool hackKilled = false;
+            //骇客击杀
+            if (killer.GetCustomRole() == CustomRoles.Hacker && Main.HackerUsedCount.TryGetValue(killer.PlayerId, out var count) && count < Options.HackUsedMaxTime.GetInt())
+            {
+                Logger.Info("已进入击杀事件", "MurderPlayer");
+                hackKilled = true;
+                Main.HackerUsedCount[killer.PlayerId] += 1;
+                List<PlayerControl> playerList = new();
+                foreach (PlayerControl pc in PlayerControl.AllPlayerControls)
+                    if (!pc.Data.IsDead && !(pc.GetCustomRole() == CustomRoles.Hacker) && !(pc.GetCustomRole() == CustomRoles.Needy)) playerList.Add(pc);
+                if (playerList.Count < 1)
+                {
+                    Logger.Info(target?.Data?.PlayerName + "被骇客击杀，但无法找到骇入目标", "MurderPlayer");
+                    new LateTask(() => killer.CmdReportDeadBody(target.Data), 0.15f, "Hacker Self Report");
+                }
+                else
+                {
+                    System.Random rd = new();
+                    int hackinPlayer = rd.Next(0, playerList.Count);
+                    if (playerList[hackinPlayer] == null) hackinPlayer = 0;
+                    Logger.Info(target?.Data?.PlayerName + "被骇客击杀，随机报告者：" + playerList[hackinPlayer]?.Data?.PlayerName, "MurderPlayer");
+                    new LateTask(() => playerList[hackinPlayer].CmdReportDeadBody(target.Data), 0.15f, "Hacker Hackin Report");
+                }
+                
+            }
+
             //When Bait is killed
-            if (target.GetCustomRole() == CustomRoles.Bait && killer.PlayerId != target.PlayerId)
+            if (target.GetCustomRole() == CustomRoles.Bait && killer.PlayerId != target.PlayerId && !hackKilled)
             {
                 Logger.Info(target?.Data?.PlayerName + "はBaitだった", "MurderPlayer");
                 new LateTask(() => killer.CmdReportDeadBody(target.Data), 0.15f, "Bait Self Report");
@@ -274,6 +302,7 @@ namespace TownOfHost
             Utils.SyncAllSettings();
             Utils.NotifyRoles();
             Utils.TargetDies(__instance, target);
+            Logger.Info("击杀事件结束", "MurderPlayer");
         }
     }
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]
@@ -291,6 +320,18 @@ namespace TownOfHost
             Main.ShapeshiftTarget[shapeshifter.PlayerId] = target.PlayerId;
 
             if (!shapeshifting) Camouflage.RpcSetSkin(__instance);
+            
+            if (shapeshifter.Is(CustomRoles.Miner))
+            {
+                if (Main.LastEnteredVent.ContainsKey(shapeshifter.PlayerId))
+                {
+                    int ventId = Main.LastEnteredVent[shapeshifter.PlayerId].Id;
+                    var vent = Main.LastEnteredVent[shapeshifter.PlayerId];
+                    var position = Main.LastEnteredVentLocation[shapeshifter.PlayerId];
+                    Logger.Msg($"{shapeshifter.GetNameWithRole()}:{position}", "MinerTeleport");
+                    Utils.TP(shapeshifter.NetTransform, new Vector2(position.x, position.y + 0.3636f));
+                }
+            }
 
             if (shapeshifter.Is(CustomRoles.Warlock))
             {
@@ -1012,8 +1053,22 @@ namespace TownOfHost
     {
         public static void Postfix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
         {
+            if (Main.LastEnteredVent.ContainsKey(pc.PlayerId))
+                Main.LastEnteredVent.Remove(pc.PlayerId);
+            Main.LastEnteredVent.Add(pc.PlayerId, __instance);
+            if (Main.LastEnteredVentLocation.ContainsKey(pc.PlayerId))
+                Main.LastEnteredVentLocation.Remove(pc.PlayerId);
+            Main.LastEnteredVentLocation.Add(pc.PlayerId, pc.GetTruePosition());
+
             if (Options.CurrentGameMode == CustomGameMode.HideAndSeek && Options.IgnoreVent.GetBool())
                 pc.MyPhysics.RpcBootFromVent(__instance.Id);
+
+            if (pc.Is(CustomRoles.Paranoia))
+            {
+                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
+                pc?.NoCheckStartMeeting(pc?.Data);
+            }
+
             if (pc.Is(CustomRoles.Mayor))
             {
                 if (Main.MayorUsedButtonCount.TryGetValue(pc.PlayerId, out var count) && count < Options.MayorNumOfUseButton.GetInt())

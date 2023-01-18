@@ -96,6 +96,8 @@ namespace TownOfHost
                 pc.ResetKillCooldown();
                 if (Options.MayorHasPortableButton.GetBool() && pc.Is(CustomRoles.Mayor))
                     pc.RpcResetAbilityCooldown();
+                //if (pc.Is(CustomRoles.Paranoia))
+                //    pc.RpcResetAbilityCooldown();
                 if (pc.Is(CustomRoles.Warlock))
                 {
                     Main.CursedPlayers[pc.PlayerId] = null;

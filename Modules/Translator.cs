@@ -14,9 +14,9 @@ namespace TownOfHost
         public const string LANGUAGE_FOLDER_NAME = "Language";
         public static void Init()
         {
-            Logger.Info("Language Dictionary Initialize...", "Translator");
+            Logger.Info("加载语言文件...", "Translator");
             LoadLangs();
-            Logger.Info("Language Dictionary Initialize Finished", "Translator");
+            Logger.Info("加载语言文件成功", "Translator");
         }
         public static void LoadLangs()
         {

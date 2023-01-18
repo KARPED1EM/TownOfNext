@@ -104,6 +104,9 @@ namespace TownOfHost.Modules
                 case CustomRoles.Warlock:
                     AURoleOptions.ShapeshifterCooldown = Main.isCursed ? 1f : Options.DefaultKillCooldown;
                     break;
+                case CustomRoles.Miner:
+                    AURoleOptions.ShapeshifterCooldown = Options.DefaultKillCooldown;
+                    break;
                 case CustomRoles.SerialKiller:
                     SerialKiller.ApplyGameOptions(player);
                     break;
@@ -146,6 +149,13 @@ namespace TownOfHost.Modules
                         : 300f;
                     AURoleOptions.EngineerInVentMaxTime = 1;
                     break;
+                case CustomRoles.Paranoia:
+                    //AURoleOptions.EngineerCooldown = Options.ParanoiaVentCooldown.GetFloat();
+                    AURoleOptions.EngineerCooldown = opt.GetInt(Int32OptionNames.EmergencyCooldown);
+                    AURoleOptions.EngineerInVentMaxTime = 1;
+                    break;
+                case CustomRoles.Plumber:
+                    goto InfinityVent;
                 case CustomRoles.Mare:
                     Mare.ApplyGameOptions(player.PlayerId);
                     break;
@@ -156,7 +166,6 @@ namespace TownOfHost.Modules
                 case CustomRoles.JSchrodingerCat:
                     Jackal.ApplyGameOptions(opt);
                     break;
-
 
                 InfinityVent:
                     AURoleOptions.EngineerCooldown = 0;

@@ -76,6 +76,9 @@ namespace TownOfHost
                             __instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
                         }
                         break;
+                    case CustomRoles.Miner:
+                        __instance.AbilityButton.OverrideText($"{GetString("MinerTeleButtonText")}");
+                        break;
                     case CustomRoles.Witch:
                         Witch.GetAbilityButtonText(__instance);
                         break;

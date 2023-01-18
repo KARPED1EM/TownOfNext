@@ -28,7 +28,11 @@ namespace TownOfHost
             Main.SKMadmateNowCount = 0;
             Main.isCursed = false;
             Main.PuppeteerList = new Dictionary<byte, byte>();
+            Main.HackerUsedCount = new Dictionary<byte, int>();
 
+            Main.LastEnteredVent = new Dictionary<byte, Vent>();
+            Main.LastEnteredVentLocation = new Dictionary<byte, UnityEngine.Vector2>();
+            
             Main.AfterMeetingDeathPlayers = new();
             Main.ResetCamPlayerList = new();
             Main.clientIdList = new();
@@ -130,6 +134,27 @@ namespace TownOfHost
         public static void Prefix()
         {
             if (!AmongUsClient.Instance.AmHost) return;
+
+            Main.assignedNK = 0;
+            Main.assignedNNK = 0;
+
+            Random rd = new();
+            if (Options.MinNK.GetInt() <= Options.MaxNK.GetInt())
+            {
+                Main.needOfNK = rd.Next(Options.MinNK.GetInt(), Options.MaxNK.GetInt() + 1);
+                if (Main.needOfNK > Options.MaxNK.GetInt()) Main.needOfNK = Options.MaxNK.GetInt();
+            }
+            else Main.needOfNK = 0;
+
+            if (Options.MinNNK.GetInt() <= Options.MaxNNK.GetInt())
+            {
+                Main.needOfNNK = rd.Next(Options.MinNNK.GetInt(), Options.MaxNNK.GetInt() + 1);
+                if (Main.needOfNNK > Options.MaxNNK.GetInt()) Main.needOfNNK = Options.MaxNNK.GetInt();
+            }
+            else Main.needOfNNK = 0;
+
+
+
             //CustomRpcSenderとRpcSetRoleReplacerの初期化
             Dictionary<byte, CustomRpcSender> senders = new();
             foreach (var pc in Main.AllPlayerControls)
@@ -152,7 +177,7 @@ namespace TownOfHost
 
                 int EngineerNum = roleOpt.GetNumPerGame(RoleTypes.Engineer);
 
-                int AdditionalEngineerNum = CustomRoles.Madmate.GetCount() + CustomRoles.Terrorist.GetCount();// - EngineerNum;
+                int AdditionalEngineerNum = CustomRoles.Madmate.GetCount() + CustomRoles.Terrorist.GetCount() + CustomRoles.Paranoia.GetCount() + CustomRoles.Plumber.GetCount();// - EngineerNum;
 
                 if (Options.MayorHasPortableButton.GetBool())
                     AdditionalEngineerNum += CustomRoles.Mayor.GetCount();
@@ -163,7 +188,7 @@ namespace TownOfHost
                 roleOpt.SetRoleRate(RoleTypes.Engineer, EngineerNum + AdditionalEngineerNum, AdditionalEngineerNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Engineer));
 
                 int ShapeshifterNum = roleOpt.GetNumPerGame(RoleTypes.Shapeshifter);
-                int AdditionalShapeshifterNum = CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount()/* + CustomRoles.ShapeMaster.GetCount()*/ + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();//- ShapeshifterNum;
+                int AdditionalShapeshifterNum = CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount() + CustomRoles.Miner.GetCount() + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();//- ShapeshifterNum;
                 if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1)
                     AdditionalShapeshifterNum += CustomRoles.Egoist.GetCount();
                 roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum + AdditionalShapeshifterNum, AdditionalShapeshifterNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
@@ -188,7 +213,7 @@ namespace TownOfHost
                 AssignDesyncRole(CustomRoles.Jackal, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
                 MakeDesyncSender(senders, rolesMap);
             }
-            //以下是原本游戏方面的位置分配
+            //以下是原本游戏的职位分配
         }
         public static void Postfix()
         {
@@ -278,7 +303,7 @@ namespace TownOfHost
             {
 
                 List<int> funList = new();
-                for (int i = 0; i < 32; i++)
+                for (int i = 0; i < 39; i++)
                 {
                     funList.Add(i);
                 }
@@ -306,9 +331,12 @@ namespace TownOfHost
                         case 2: AssignCustomRolesFromList(CustomRoles.Jester, Crewmates); break;
                         case 3: AssignCustomRolesFromList(CustomRoles.Madmate, Engineers); break;
                         case 4: AssignCustomRolesFromList(CustomRoles.Bait, Crewmates); break;
+                        case 36: AssignCustomRolesFromList(CustomRoles.Needy, Crewmates); break;
                         case 5: AssignCustomRolesFromList(CustomRoles.MadGuardian, Crewmates); break;
                         case 6: AssignCustomRolesFromList(CustomRoles.MadSnitch, Options.MadSnitchCanVent.GetBool() ? Engineers : Crewmates); break;
                         case 7: AssignCustomRolesFromList(CustomRoles.Mayor, Options.MayorHasPortableButton.GetBool() ? Engineers : Crewmates); break;
+                        case 32: AssignCustomRolesFromList(CustomRoles.Paranoia, Engineers); break;
+                        case 34: AssignCustomRolesFromList(CustomRoles.Psychic, Crewmates); break;
                         case 8: AssignCustomRolesFromList(CustomRoles.Opportunist, Crewmates); break;
                         case 9: AssignCustomRolesFromList(CustomRoles.Snitch, Crewmates); break;
                         case 10: AssignCustomRolesFromList(CustomRoles.SabotageMaster, Crewmates); break;
@@ -319,24 +347,18 @@ namespace TownOfHost
                         case 15: AssignCustomRolesFromList(CustomRoles.BountyHunter, Shapeshifters); break;
                         case 16: AssignCustomRolesFromList(CustomRoles.Witch, Impostors); break;
                         case 17: AssignCustomRolesFromList(CustomRoles.Warlock, Shapeshifters); break;
+                        case 38: AssignCustomRolesFromList(CustomRoles.Hacker, Impostors); break;
+                        case 33: AssignCustomRolesFromList(CustomRoles.Miner, Shapeshifters); break;
                         case 18: AssignCustomRolesFromList(CustomRoles.SerialKiller, Shapeshifters); break;
                         case 19: AssignCustomRolesFromList(CustomRoles.Lighter, Crewmates); break;
+                        case 37: AssignCustomRolesFromList(CustomRoles.SuperStar, Crewmates); break;
+                        case 35: AssignCustomRolesFromList(CustomRoles.Plumber, Engineers); break;
                         case 20: AssignCustomRolesFromList(CustomRoles.SpeedBooster, Crewmates); break;
                         case 21: AssignCustomRolesFromList(CustomRoles.Trapper, Crewmates); break;
                         case 22: AssignCustomRolesFromList(CustomRoles.Dictator, Crewmates); break;
                         case 23: AssignCustomRolesFromList(CustomRoles.SchrodingerCat, Crewmates); break;
-                        case 24:
-                            {
-                                if (Options.IsEvilWatcher) AssignCustomRolesFromList(CustomRoles.Watcher, Impostors);
-                                else AssignCustomRolesFromList(CustomRoles.Watcher, Crewmates);
-                                break;
-                            }
-                        case 25:
-                            {
-                                if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1)
-                                    AssignCustomRolesFromList(CustomRoles.Egoist, Shapeshifters);
-                                break;
-                            }
+                        case 24: if (Options.IsEvilWatcher) AssignCustomRolesFromList(CustomRoles.Watcher, Impostors); else AssignCustomRolesFromList(CustomRoles.Watcher, Crewmates); break;
+                        case 25: if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1) AssignCustomRolesFromList(CustomRoles.Egoist, Shapeshifters); break;
                         case 26: AssignCustomRolesFromList(CustomRoles.Mare, Impostors); break;
                         case 27: AssignCustomRolesFromList(CustomRoles.Doctor, Scientists); break;
                         case 28: AssignCustomRolesFromList(CustomRoles.Puppeteer, Impostors); break;
@@ -419,6 +441,9 @@ namespace TownOfHost
                         case CustomRoles.EvilTracker:
                             EvilTracker.Add(pc.PlayerId);
                             break;
+                        case CustomRoles.Hacker:
+                            Main.HackerUsedCount[pc.PlayerId] = 0;
+                            break;
                     }
                     pc.ResetKillCooldown();
 
@@ -442,7 +467,7 @@ namespace TownOfHost
 
                 int EngineerNum = roleOpt.GetNumPerGame(RoleTypes.Engineer);
 
-                EngineerNum -= CustomRoles.Madmate.GetCount() + CustomRoles.Terrorist.GetCount();
+                EngineerNum -= CustomRoles.Madmate.GetCount() + CustomRoles.Terrorist.GetCount() + CustomRoles.Paranoia.GetCount() + CustomRoles.Plumber.GetCount();
 
                 if (Options.MayorHasPortableButton.GetBool())
                     EngineerNum -= CustomRoles.Mayor.GetCount();
@@ -453,7 +478,7 @@ namespace TownOfHost
                 roleOpt.SetRoleRate(RoleTypes.Engineer, EngineerNum, roleOpt.GetChancePerGame(RoleTypes.Engineer));
 
                 int ShapeshifterNum = roleOpt.GetNumPerGame(RoleTypes.Shapeshifter);
-                ShapeshifterNum -= CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount()/* + CustomRoles.ShapeMaster.GetCount()*/ + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();
+                ShapeshifterNum -= CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount() + CustomRoles.Miner.GetCount() + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();
                 if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1)
                     ShapeshifterNum -= CustomRoles.Egoist.GetCount();
                 roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum, roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
@@ -487,6 +512,17 @@ namespace TownOfHost
         private static void AssignDesyncRole(CustomRoles role, List<PlayerControl> AllPlayers, Dictionary<byte, CustomRpcSender> senders, Dictionary<(byte, byte), RoleTypes> rolesMap, RoleTypes BaseRole, RoleTypes hostBaseRole = RoleTypes.Crewmate)
         {
             if (!role.IsEnable()) return;
+
+            if (CustomRolesHelper.IsNK(role) && Main.assignedNK >= Main.needOfNK)
+            {
+                Main.assignedNK++;
+                return;
+            }
+            if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK)
+            {
+                Main.assignedNNK++;
+                return;
+            }
 
             var hostId = PlayerControl.LocalPlayer.PlayerId;
             var rand = IRandom.Instance;
@@ -551,6 +587,16 @@ namespace TownOfHost
             var count = Math.Clamp(RawCount, 0, players.Count);
             if (RawCount == -1) count = Math.Clamp(role.GetCount(), 0, players.Count);
             if (count <= 0) return null;
+            if (CustomRolesHelper.IsNK(role) && Main.assignedNK >= Main.needOfNK)
+            {
+                Main.assignedNK++;
+                return null;
+            }
+            if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK)
+            {
+                Main.assignedNNK++;
+                return null;
+            }
             List<PlayerControl> AssignedPlayers = new();
             SetColorPatch.IsAntiGlitchDisabled = true;
             for (var i = 0; i < count; i++)
