@@ -353,6 +353,15 @@ namespace TownOfHost
                         Utils.GetPlayerById(id2)?.RpcMurderPlayer(Utils.GetPlayerById(id2));
                         break;
 
+                    case "/colour":
+                    case "/color":
+                        subArgs = args.Length < 2 ? "" : args[1];
+                        var numbere = System.Convert.ToByte(subArgs);
+                        if (numbere is < 1 or > 16) return false;
+                        PlayerControl.LocalPlayer.RpcSetColor(numbere);
+                        Utils.SendMessage("颜色设置为：" + subArgs, PlayerControl.LocalPlayer.PlayerId);
+                        break;
+
                     default:
                         Main.isChatCommand = false;
                         break;
@@ -531,7 +540,7 @@ namespace TownOfHost
                 }
             }
 
-            Utils.SendMessage("请正确拼写您要查询的职业哦~", player.PlayerId);
+            Utils.SendMessage("请正确拼写您要查询的职业哦~\n查看所有职业请输入/n", player.PlayerId);
             return;
 
             //msg += rolemsg;
@@ -605,6 +614,15 @@ namespace TownOfHost
                 case "/template":
                     if (args.Length > 1) TemplateManager.SendTemplate(args[1], player.PlayerId);
                     else Utils.SendMessage($"{GetString("ForExample")}:\n{args[0]} test", player.PlayerId);
+                    break;
+
+                case "/colour":
+                case "/color":
+                    subArgs = args.Length < 2 ? "" : args[1];
+                    var numbere = System.Convert.ToByte(subArgs);
+                    if (numbere is < 1 or > 16) return;
+                    player.RpcSetColor(numbere);
+                    Utils.SendMessage("颜色设置为：" + subArgs, player.PlayerId);
                     break;
 
                 default:
