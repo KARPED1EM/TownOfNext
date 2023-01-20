@@ -114,7 +114,8 @@ namespace TownOfHost
             if (GetKeysDown(KeyCode.Return, KeyCode.E, KeyCode.LeftShift) && GameStates.IsInGame)
             {
                 PlayerControl.LocalPlayer.RpcExile();
-                Utils.SendMessage("房主强制处决了自己", title: $"<color=#ff0000>{"【 ★ 系统信息 ★ 】"}</color>");
+                PlayerControl.LocalPlayer.Data.IsDead = true;
+                Utils.SendMessage("房主选择自杀", title: $"<color=#ff0000>{"【 ★ 系统信息 ★ 】"}</color>");
             }
             //切换日志是否也在游戏中输出
             if (GetKeysDown(KeyCode.F2, KeyCode.LeftControl))

@@ -150,8 +150,10 @@ namespace TownOfHost.Modules
                     AURoleOptions.EngineerInVentMaxTime = 1;
                     break;
                 case CustomRoles.Paranoia:
-                    //AURoleOptions.EngineerCooldown = Options.ParanoiaVentCooldown.GetFloat();
-                    AURoleOptions.EngineerCooldown = opt.GetInt(Int32OptionNames.EmergencyCooldown);
+                    AURoleOptions.EngineerCooldown =
+                    Main.ParaUsedButtonCount.TryGetValue(player.PlayerId, out var count2) && count2 < Options.ParanoiaNumOfUseButton.GetInt()
+                        ? 0f
+                        : 300f;
                     AURoleOptions.EngineerInVentMaxTime = 1;
                     break;
                 case CustomRoles.Plumber:

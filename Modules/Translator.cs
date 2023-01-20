@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using Csv;
 using HarmonyLib;
+using static Il2CppSystem.Net.ServicePointManager;
 
 namespace TownOfHost
 {
@@ -41,7 +42,7 @@ namespace TownOfHost
                         dic[id] = line.Values[i].Replace("\\n", "\n").Replace("\\r", "\r");
                     }
                     if (!translateMaps.TryAdd(line.Values[0], dic))
-                        Logger.Warn($"翻訳用CSVに重複があります。{line.Index}行目: \"{line.Values[0]}\"", "Translator");
+                        Logger.Warn($"待翻译的 CSV 文件中存在重复项。{line.Index}行: \"{line.Values[0]}\"", "Translator");
                 }
                 catch (Exception ex)
                 {
@@ -51,7 +52,7 @@ namespace TownOfHost
 
             // カスタム翻訳ファイルの読み込み
             if (!Directory.Exists(LANGUAGE_FOLDER_NAME)) Directory.CreateDirectory(LANGUAGE_FOLDER_NAME);
-
+            
             // 翻訳テンプレートの作成
             CreateTemplateFile();
             foreach (var lang in Enum.GetValues(typeof(SupportedLangs)))
@@ -63,8 +64,7 @@ namespace TownOfHost
 
         public static string GetString(string s, Dictionary<string, string> replacementDic = null)
         {
-            var langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.English;
-            if (Main.ForceJapanese.Value) langId = SupportedLangs.Japanese;
+            var langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.SChinese;
             string str = GetString(s, langId);
             if (replacementDic != null)
                 foreach (var rd in replacementDic)
@@ -76,35 +76,28 @@ namespace TownOfHost
 
         public static string GetString(string str, SupportedLangs langId)
         {
+
+            if (langId != SupportedLangs.SChinese || langId != SupportedLangs.TChinese) langId = SupportedLangs.SChinese;
             var res = $"<INVALID:{str}>";
-            if (translateMaps.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "")) //strに該当する&無効なlangIdかresが空
+            try
             {
-                res = $"*{dic[0]}";
-            }
-            if (langId == SupportedLangs.Japanese)
-            {
-                //このソースコ―ドを見た人へ。口外しないでもらえると嬉しいです...
-                //To anyone who has seen this source code. I would appreciate it if you would keep your mouth shut...
-                if (Main.IsChristmas)
+                if (translateMaps.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "")) //匹配 str & 无效的 langId 或 res 为空
                 {
-                    res = str switch
-                    {
-                        "Lovers" => "リア充",
-                        "LoversInfo" => "爆ぜろ",
-                        _ => res
-                    };
+                    res = $"*{dic[0]}";
                 }
+            }
+            catch (Exception Ex)
+            {
+                Logger.Fatal(str, "Translator");
+                Logger.Error(Ex.ToString(), "Translator");
             }
             return res;
         }
         public static string GetRoleString(string str)
         {
             var CurrentLanguage = TranslationController.Instance.currentLanguage.languageID;
+            if (CurrentLanguage != SupportedLangs.SChinese || CurrentLanguage != SupportedLangs.TChinese) CurrentLanguage = SupportedLangs.SChinese;
             var lang = CurrentLanguage;
-            if (Main.ForceJapanese.Value && Main.JapaneseRoleName.Value)
-                lang = SupportedLangs.Japanese;
-            else if (CurrentLanguage == SupportedLangs.Japanese && !Main.JapaneseRoleName.Value)
-                lang = SupportedLangs.English;
 
             return GetString(str, lang);
         }
@@ -144,9 +137,6 @@ namespace TownOfHost
             var text = "";
             foreach (var title in translateMaps) text += $"{title.Key}:\n";
             File.WriteAllText(@$"./{LANGUAGE_FOLDER_NAME}/template.dat", text);
-            text = "";
-            foreach (var title in translateMaps) text += $"{title.Key}:{title.Value[0].Replace("\n", "\\n").Replace("\r", "\\r")}\n";
-            File.WriteAllText(@$"./{LANGUAGE_FOLDER_NAME}/template_English.dat", text);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace TownOfHost
         public static void Postfix(AmongUsClient __instance)
         {
             while (!Options.IsLoaded) System.Threading.Tasks.Task.Delay(1);
-            Logger.Info($"{__instance.GameId}に参加", "OnGameJoined");
+            Logger.Info($"{__instance.GameId} 加入", "OnGameJoined");
             Main.playerVersion = new Dictionary<byte, PlayerVersion>();
             RPC.RpcVersionCheck();
             SoundManager.Instance.ChangeAmbienceVolume(DataManager.Settings.Audio.AmbienceVolume);
@@ -41,7 +41,7 @@ namespace TownOfHost
     {
         public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData client)
         {
-            Logger.Info($"{client.PlayerName}(ClientID:{client.Id})が参加", "Session");
+            Logger.Info($"{client.PlayerName}(ClientID:{client.Id}) 加入", "Session");
             if (DestroyableSingleton<FriendsListManager>.Instance.IsPlayerBlockedUsername(client.FriendCode) && AmongUsClient.Instance.AmHost)
             {
                 AmongUsClient.Instance.KickPlayer(client.Id, true);
@@ -59,7 +59,7 @@ namespace TownOfHost
                 if (client.Character == null) return;
                 if (client.FriendCode.Equals("actorour#0029"))
                 {
-                    string t1 = "<color=#f1b8f1>";
+                    string t1 = "<color=#ffc0cb>";
                     string t2 = client.PlayerName;
                     string t3 = "</color>";
                     string name = t1 + t2 + t3;

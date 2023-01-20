@@ -8,8 +8,6 @@ namespace TownOfHost
     class OptionsMenuBehaviourStartPatch
     {
         private static Vector3? origin;
-        private static ToggleButtonBehaviour ForceJapanese;
-        private static ToggleButtonBehaviour JapaneseRoleName;
         public static float xOffset = 1.75f;
         public static float yOffset = -0.25f;
         private static void UpdateToggle(ToggleButtonBehaviour button, string text, bool on)
@@ -37,51 +35,30 @@ namespace TownOfHost
             return null;
         }
 
-        public static void Postfix(OptionsMenuBehaviour __instance)
-        {
-            if (__instance.CensorChatButton != null)
-            {
-                if (origin == null) origin = __instance.CensorChatButton.transform.localPosition;
-                __instance.CensorChatButton.transform.localPosition = origin.Value + Vector3.left * 0.375f + Vector3.up * 0.08f;
-                __instance.CensorChatButton.transform.localScale = Vector3.one * 0.7f;
-            }
-            if (__instance.EnableFriendInvitesButton != null)
-            {
-                if (origin == null) origin = __instance.EnableFriendInvitesButton.transform.localPosition;
-                __instance.EnableFriendInvitesButton.transform.localPosition = origin.Value + Vector3.right * 3.125f + Vector3.up * 0.08f;
-                __instance.EnableFriendInvitesButton.transform.localScale = Vector3.one * 0.7f;
-            }
-            if (__instance.ColorBlindButton != null)
-            {
-                if (origin == null) origin = __instance.ColorBlindButton.transform.localPosition;
-                __instance.ColorBlindButton.transform.localPosition = origin.Value + Vector3.right * 3.125f + Vector3.up * 0.74f;
-                __instance.ColorBlindButton.transform.localScale = Vector3.one * 0.7f;
-            }
-            if (__instance.StreamerModeButton != null)
-                if (origin == null) origin = __instance.StreamerModeButton.transform.localPosition;
-            __instance.StreamerModeButton.transform.localPosition = origin.Value + Vector3.right * 1.375f + Vector3.up * 1.071f;
-            __instance.StreamerModeButton.transform.localScale = Vector3.one * 0.7f;
-
-            if (ForceJapanese == null || ForceJapanese?.gameObject == null)
-            {
-                ForceJapanese = CreateCustomToggle("强制显示为日语: ", Main.ForceJapanese.Value, new Vector3(-0.375f, yOffset, 0), (UnityEngine.Events.UnityAction)ForceJapaneseButtonToggle, __instance);
-
-                void ForceJapaneseButtonToggle()
-                {
-                    Main.ForceJapanese.Value = !Main.ForceJapanese.Value;
-                    UpdateToggle(ForceJapanese, "强制显示为日语: ", Main.ForceJapanese.Value);
-                }
-            }
-            if (JapaneseRoleName == null || JapaneseRoleName.gameObject == null)
-            {
-                JapaneseRoleName = CreateCustomToggle("用日语显示职业: ", Main.JapaneseRoleName.Value, new Vector3(1.375f, yOffset, 0), (UnityEngine.Events.UnityAction)LangModeButtonToggle, __instance);
-
-                void LangModeButtonToggle()
-                {
-                    Main.JapaneseRoleName.Value = !Main.JapaneseRoleName.Value;
-                    UpdateToggle(JapaneseRoleName, "用日语显示职业: ", Main.JapaneseRoleName.Value);
-                }
-            }
-        }
+        //public static void Postfix(OptionsMenuBehaviour __instance)
+        //{
+        //    if (__instance.CensorChatButton != null)
+        //    {
+        //        if (origin == null) origin = __instance.CensorChatButton.transform.localPosition;
+        //        __instance.CensorChatButton.transform.localPosition = origin.Value + Vector3.left * 0.375f + Vector3.up * 0.08f;
+        //        __instance.CensorChatButton.transform.localScale = Vector3.one * 0.7f;
+        //    }
+        //    if (__instance.EnableFriendInvitesButton != null)
+        //    {
+        //        if (origin == null) origin = __instance.EnableFriendInvitesButton.transform.localPosition;
+        //        __instance.EnableFriendInvitesButton.transform.localPosition = origin.Value + Vector3.right * 3.125f + Vector3.up * 0.08f;
+        //        __instance.EnableFriendInvitesButton.transform.localScale = Vector3.one * 0.7f;
+        //    }
+        //    if (__instance.ColorBlindButton != null)
+        //    {
+        //        if (origin == null) origin = __instance.ColorBlindButton.transform.localPosition;
+        //        __instance.ColorBlindButton.transform.localPosition = origin.Value + Vector3.right * 3.125f + Vector3.up * 0.74f;
+        //        __instance.ColorBlindButton.transform.localScale = Vector3.one * 0.7f;
+        //    }
+        //    if (__instance.StreamerModeButton != null)
+        //        if (origin == null) origin = __instance.StreamerModeButton.transform.localPosition;
+        //    __instance.StreamerModeButton.transform.localPosition = origin.Value + Vector3.right * 1.375f + Vector3.up * 1.071f;
+        //    __instance.StreamerModeButton.transform.localScale = Vector3.one * 0.7f;
+        //}
     }
 }

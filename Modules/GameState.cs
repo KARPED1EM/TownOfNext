@@ -149,7 +149,7 @@ namespace TownOfHost
             //FIXME:SpeedBooster class transplant
             if (!player.Data.IsDead
             && player.Is(CustomRoles.SpeedBooster)
-            && ((CompletedTasksCount + 1) <= Options.SpeedBoosterTaskTrigger.GetInt()))
+            && ((CompletedTasksCount + 1) <= Options.SpeedBoosterTimes.GetInt()))
             {
                 Logger.Info("增速者触发加速:" + player.cosmetics.nameText.text, "SpeedBooster");
                 Main.AllPlayerSpeed[player.PlayerId] += Options.SpeedBoosterUpSpeed.GetFloat();

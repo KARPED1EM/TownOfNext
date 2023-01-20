@@ -23,11 +23,11 @@ namespace TownOfHost
         // modの名前 / Mod Name (Default: Town Of Host)
         public static readonly string ModName = "TOHE";
         // modの色 / Mod Color (Default: #00bfff)
-        public static readonly string ModColor = "#00bfff";
+        public static readonly string ModColor = "#ffc0cb";
         // 公開ルームを許可する / Allow Public Room (Default: true)
         public static readonly bool AllowPublicRoom = true;
         // フォークID / ForkId (Default: OriginalTOH)
-        public static readonly string ForkId = "OriginalTOH";
+        public static readonly string ForkId = "TOHE";
         // Discordボタンを表示するか / Show Discord Button (Default: true)
         public static readonly bool ShowDiscordButton = false;
         // Discordサーバーの招待リンク / Discord Server Invite URL (Default: https://discord.gg/W5ug6hXB9V)
@@ -44,11 +44,11 @@ namespace TownOfHost
         // デバッグキーのコンフィグ入力
         public static ConfigEntry<string> DebugKeyInput { get; private set; }
         // 首页右上角的说明文本
-        public static readonly string MainMenuText = "做着玩玩  更新随缘  感谢支持";
+        public static readonly string MainMenuText = "Bug一堆 做着玩玩  更新随缘  感谢支持";
 
         // ==========
         //Sorry for many Japanese comments.
-        public const string PluginGuid = "com.emptybottle.townofhost";
+        public const string PluginGuid = "com.karped1em.townofhost";
         public static readonly string BANNEDWORDS_FILE_PATH = "./TOH_DATA/bannedwords.txt";
         public const string PluginVersion = "4.0.2.2";
         public Harmony Harmony { get; } = new Harmony(PluginGuid);
@@ -63,8 +63,6 @@ namespace TownOfHost
         //Client Options
         public static ConfigEntry<string> HideName { get; private set; }
         public static ConfigEntry<string> HideColor { get; private set; }
-        public static ConfigEntry<bool> ForceJapanese { get; private set; }
-        public static ConfigEntry<bool> JapaneseRoleName { get; private set; }
         public static ConfigEntry<int> MessageWait { get; private set; }
 
         public static Dictionary<byte, PlayerVersion> playerVersion = new();
@@ -80,6 +78,7 @@ namespace TownOfHost
         public static ConfigEntry<float> LastKillCooldown { get; private set; }
         public static ConfigEntry<float> LastShapeshifterCooldown { get; private set; }
 
+        public static int updateTime;
         public static OptionBackupData RealOptionsData;
         public static Dictionary<byte, PlayerState> PlayerStates = new();
         public static Dictionary<byte, string> AllPlayerNames;
@@ -103,6 +102,7 @@ namespace TownOfHost
         public static int assignedNK;
         public static int assignedNNK;
 
+        public static List<CustomRoles> assignedRoles = new();
         public static List<int> funList = new();
 
         /// <summary>
@@ -123,6 +123,7 @@ namespace TownOfHost
         public static Dictionary<byte, Vector2> LastEnteredVentLocation = new();
 
         public static Dictionary<byte, int> HackerUsedCount = new();
+        public static Dictionary<byte, List<byte>> PsychicTarget = new();
 
         /// 开肝
 
@@ -132,6 +133,7 @@ namespace TownOfHost
         public static Dictionary<byte, byte> PuppeteerList = new();
         public static Dictionary<byte, byte> SpeedBoostTarget = new();
         public static Dictionary<byte, int> MayorUsedButtonCount = new();
+        public static Dictionary<byte, int> ParaUsedButtonCount = new();
         public static int AliveImpostorCount;
         public static int SKMadmateNowCount;
         public static bool isCursed;
@@ -161,8 +163,6 @@ namespace TownOfHost
             //Client Options
             HideName = Config.Bind("Client Options", "Hide Game Code Name", "TOHE");
             HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
-            ForceJapanese = Config.Bind("Client Options", "Force Japanese", false);
-            JapaneseRoleName = Config.Bind("Client Options", "Japanese Role Name", false);
             DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
 
             Logger = BepInEx.Logging.Logger.CreateLogSource("TownOfHost");

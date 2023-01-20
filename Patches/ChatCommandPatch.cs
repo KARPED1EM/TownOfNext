@@ -22,6 +22,7 @@ namespace TownOfHost
 
         public static bool ContainsStart(string text)
         {
+            text = text.Trim();
             if (text == "Start") return true;
             if (text == "start") return true;
             if (text == "开") return true;
@@ -190,25 +191,30 @@ namespace TownOfHost
                     case "/n":
                     case "/now":
                         canceled = true;
+                        if (Options.DIYGameSettings.GetBool())
+                        {
+                            Utils.SendMessage(GetString("Message.NowOverrideText"), PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
+                        else
+                        {
+                            subArgs = args.Length < 2 ? "" : args[1];
+                            switch (subArgs)
+                            {
+                                case "r":
+                                case "roles":
+                                    Utils.ShowActiveRoles(PlayerControl.LocalPlayer.PlayerId);
+                                    break;
 
-                        Utils.SendMessage(GetString("Message.NowOverrideText"), PlayerControl.LocalPlayer.PlayerId);
-                        //TemplateManager.SendTemplate("now", noErr: true);
+                                default:
+                                    Utils.ShowActiveSettings(PlayerControl.LocalPlayer.PlayerId);
+                                    break;
+                            }
+                        }
                         break;
-                        
-                        //subArgs = args.Length < 2 ? "" : args[1];
-                        //switch (subArgs)
-                        //{
-                        //    case "r":
-                        //    case "roles":
-                        //        Utils.ShowActiveRoles();
-                        //        break;
-                        //    default:
-                        //        Utils.ShowActiveSettings();
-                        //        break;
-                        //}
-                        //break;
 
                     case "/dis":
+                    case "/disconnect":
                         canceled = true;
                         subArgs = args.Length < 2 ? "" : args[1];
                         switch (subArgs)
@@ -245,67 +251,7 @@ namespace TownOfHost
                     case "/h":
                     case "/help":
                         canceled = true;
-                        subArgs = args.Length < 2 ? "" : args[1];
-                        switch (subArgs)
-                        {
-                            
-                            case "a":
-                            case "addons":
-                                subArgs = args.Length < 3 ? "" : args[2];
-                                switch (subArgs)
-                                {
-                                    case "lastimpostor":
-                                    case "limp":
-                                        Utils.SendMessage(Utils.GetRoleName(CustomRoles.LastImpostor) + GetString("LastImpostorInfoLong"));
-                                        break;
-
-                                    default:
-                                        Utils.SendMessage($"{GetString("Command.h_args")}:\n lastimpostor(limp)");
-                                        break;
-                                }
-                                break;
-
-                            case "m":
-                            case "modes":
-                                subArgs = args.Length < 3 ? "" : args[2];
-                                switch (subArgs)
-                                {
-                                    case "hideandseek":
-                                    case "has":
-                                        Utils.SendMessage(GetString("HideAndSeekInfo"));
-                                        break;
-
-                                    case "nogameend":
-                                    case "nge":
-                                        Utils.SendMessage(GetString("NoGameEndInfo"));
-                                        break;
-
-                                    case "syncbuttonmode":
-                                    case "sbm":
-                                        Utils.SendMessage(GetString("SyncButtonModeInfo"));
-                                        break;
-
-                                    case "randommapsmode":
-                                    case "rmm":
-                                        Utils.SendMessage(GetString("RandomMapsModeInfo"));
-                                        break;
-
-                                    default:
-                                        Utils.SendMessage($"{GetString("Command.h_args")}:\n hideandseek(has), nogameend(nge), syncbuttonmode(sbm), randommapsmode(rmm)");
-                                        break;
-                                }
-                                break;
-
-
-                            case "n":
-                            case "now":
-                                Utils.ShowActiveSettingsHelp();
-                                break;
-
-                            default:
-                                Utils.ShowHelp();
-                                break;
-                        }
+                        Utils.ShowHelp(PlayerControl.LocalPlayer.PlayerId);
                         break;
 
                     case "/m":
@@ -343,23 +289,43 @@ namespace TownOfHost
 
                     case "/exe":
                         canceled = true;
+                        if (GameStates.IsLobby)
+                        {
+                            Utils.SendMessage("准备阶段无法使用执行指令", PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
                         if (args.Length < 2 || !int.TryParse(args[1], out int id)) break;
                         Utils.GetPlayerById(id)?.RpcExileV2();
                         break;
 
                     case "/kill":
                         canceled = true;
+                        if (GameStates.IsLobby)
+                        {
+                            Utils.SendMessage("准备阶段无法使用击杀指令", PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
                         if (args.Length < 2 || !int.TryParse(args[1], out int id2)) break;
                         Utils.GetPlayerById(id2)?.RpcMurderPlayer(Utils.GetPlayerById(id2));
                         break;
 
                     case "/colour":
                     case "/color":
+                        canceled = true;
                         subArgs = args.Length < 2 ? "" : args[1];
-                        var numbere = System.Convert.ToByte(subArgs);
-                        if (numbere is < 1 or > 16) return false;
-                        PlayerControl.LocalPlayer.RpcSetColor(numbere);
+                        var color = Utils.MsgToColor(subArgs);
+                        if (color == Convert.ToByte(99))
+                        {
+                            Utils.SendMessage(GetString("IllegalColor"), PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
+                        PlayerControl.LocalPlayer.RpcSetColor(color);
                         Utils.SendMessage("颜色设置为：" + subArgs, PlayerControl.LocalPlayer.PlayerId);
+                        break;
+
+                    case "/quit":
+                    case "/qt":
+                        Utils.SendMessage("很抱歉，房主无法使用该指令", PlayerControl.LocalPlayer.PlayerId);
                         break;
 
                     default:
@@ -407,10 +373,10 @@ namespace TownOfHost
                 case "醫生": return "医生";
                 case "執燈人": case "执灯": case "灯人": return "执灯人";
                 case "大明星": case "明星": return "大明星";
-                case "管道工": case "管道": return "管道工";
+                case "工程師": case "工程": return "工程师";
                 case "市長": return "市长";
                 case "被害妄想症": case "被害妄想":  case "被迫害妄想症": case "被害": case "妄想": case "妄想症": return "被害妄想症";
-                case "精神病": case "精神": case "神经病": return "精神病";
+                case "愚者": case "愚": return "愚者";
                 case "修理大師": case "修理大师": case "维修大师": return "修理大师";
                 case "靈媒": return "灵媒";
                 case "警長": return "警长";
@@ -472,10 +438,10 @@ namespace TownOfHost
                 { CustomRoles.Doctor, "医生" },
                 { CustomRoles.Lighter, "执灯人" },
                 { CustomRoles.SuperStar, "大明星" },
-                { CustomRoles.Plumber, "管道工" },
+                { CustomRoles.Plumber, "工程师" },
                 { CustomRoles.Mayor, "市长" },
                 { CustomRoles.Paranoia, "被害妄想症" },
-                { CustomRoles.Psychic, "精神病" },
+                { CustomRoles.Psychic, "愚者" },
                 { CustomRoles.SabotageMaster, "修理大师" },
                 { CustomRoles.Seer,"灵媒" },
                 { CustomRoles.Sheriff, "警长" },
@@ -542,9 +508,6 @@ namespace TownOfHost
 
             Utils.SendMessage("请正确拼写您要查询的职业哦~\n查看所有职业请输入/n", player.PlayerId);
             return;
-
-            //msg += rolemsg;
-            //Utils.SendMessage(msg);
         }
         public static void OnReceiveChat(PlayerControl player, string text)
         {
@@ -562,25 +525,27 @@ namespace TownOfHost
 
                 case "/n":
                 case "/now":
+                    if (Options.DIYGameSettings.GetBool())
+                    {
+                        Utils.SendMessage(GetString("Message.NowOverrideText"), player.PlayerId);
+                        break;
+                    }
+                    else
+                    {
+                        subArgs = args.Length < 2 ? "" : args[1];
+                        switch (subArgs)
+                        {
+                            case "r":
+                            case "roles":
+                                Utils.ShowActiveRoles(player.PlayerId);
+                                break;
 
-                    Utils.SendMessage(GetString("Message.NowOverrideText"), player.PlayerId);
-                    //TemplateManager.SendTemplate("now", noErr: true);
+                            default:
+                                Utils.ShowActiveSettings(player.PlayerId);
+                                break;
+                        }
+                    }
                     break;
-
-                    //subArgs = args.Length < 2 ? "" : args[1];
-                    //switch (subArgs)
-                    //{
-
-                    //    case "r":
-                    //    case "roles":
-                    //        Utils.ShowActiveRoles(player.PlayerId);
-                    //        break;
-
-                    //    default:
-                    //        Utils.ShowActiveSettings(player.PlayerId);
-                    //        break;
-                    //}
-                    //break;
 
                 case "/r":
                     subArgs = text.Remove(0, 2);
@@ -594,13 +559,7 @@ namespace TownOfHost
                 case "/h":
                 case "/help":
                     subArgs = args.Length < 2 ? "" : args[1];
-                    switch (subArgs)
-                    {
-                        case "n":
-                        case "now":
-                            Utils.ShowActiveSettingsHelp(player.PlayerId);
-                            break;
-                    }
+                    Utils.ShowHelpToClient(player.PlayerId);
                     break;
 
                 case "/m":
@@ -618,11 +577,37 @@ namespace TownOfHost
 
                 case "/colour":
                 case "/color":
+                    if (Options.PlayerCanSerColor.GetBool())
+                    {
+                        subArgs = args.Length < 2 ? "" : args[1];
+                        var color = Utils.MsgToColor(subArgs);
+                        if (color == Convert.ToByte(99))
+                        {
+                            Utils.SendMessage(GetString("IllegalColor"), PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
+                        PlayerControl.LocalPlayer.RpcSetColor(color);
+                        Utils.SendMessage("颜色设置为：" + subArgs, player.PlayerId);
+                    }
+                    else
+                    {
+                        Utils.SendMessage(GetString("DisableUseCommand"), player.PlayerId);
+                    }
+                    break;
+
+                case "/quit":
+                case "/qt":
                     subArgs = args.Length < 2 ? "" : args[1];
-                    var numbere = System.Convert.ToByte(subArgs);
-                    if (numbere is < 1 or > 16) return;
-                    player.RpcSetColor(numbere);
-                    Utils.SendMessage("颜色设置为：" + subArgs, player.PlayerId);
+                    if(subArgs.Equals("sure"))
+                    {
+                        string name = player.GetRealName();
+                        Utils.SendMessage($"{name} 选择自愿离开\n很抱歉给大家带来了糟糕的游戏体验\n我们真的很努力地在进步了");
+                        AmongUsClient.Instance.KickPlayer(player.GetClientId(), true);
+                    }
+                    else
+                    {
+                        Utils.SendMessage(GetString("SureUse.quit"), player.PlayerId);
+                    }
                     break;
 
                 default:

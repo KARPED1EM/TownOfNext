@@ -14,118 +14,131 @@ namespace TownOfHost
     {
         public static void Postfix(AmongUsClient __instance)
         {
-            //注：暂未设置标题
-            Main.PlayerStates = new();
 
-            Main.AllPlayerKillCooldown = new Dictionary<byte, float>();
-            Main.AllPlayerSpeed = new Dictionary<byte, float>();
-            Main.BitPlayers = new Dictionary<byte, (byte, float)>();
-            Main.WarlockTimer = new Dictionary<byte, float>();
-            Main.isDoused = new Dictionary<(byte, byte), bool>();
-            Main.ArsonistTimer = new Dictionary<byte, (PlayerControl, float)>();
-            Main.CursedPlayers = new Dictionary<byte, PlayerControl>();
-            Main.isCurseAndKill = new Dictionary<byte, bool>();
-            Main.SKMadmateNowCount = 0;
-            Main.isCursed = false;
-            Main.PuppeteerList = new Dictionary<byte, byte>();
-            Main.HackerUsedCount = new Dictionary<byte, int>();
+            try
+            {
+                Main.PlayerStates = new();
 
-            Main.LastEnteredVent = new Dictionary<byte, Vent>();
-            Main.LastEnteredVentLocation = new Dictionary<byte, UnityEngine.Vector2>();
+                Main.AllPlayerKillCooldown = new Dictionary<byte, float>();
+                Main.AllPlayerSpeed = new Dictionary<byte, float>();
+                Main.BitPlayers = new Dictionary<byte, (byte, float)>();
+                Main.WarlockTimer = new Dictionary<byte, float>();
+                Main.isDoused = new Dictionary<(byte, byte), bool>();
+                Main.ArsonistTimer = new Dictionary<byte, (PlayerControl, float)>();
+                Main.CursedPlayers = new Dictionary<byte, PlayerControl>();
+                Main.isCurseAndKill = new Dictionary<byte, bool>();
+                Main.SKMadmateNowCount = 0;
+                Main.isCursed = false;
+                Main.PuppeteerList = new Dictionary<byte, byte>();
+                Main.HackerUsedCount = new Dictionary<byte, int>();
+
+                Main.LastEnteredVent = new Dictionary<byte, Vent>();
+                Main.LastEnteredVentLocation = new Dictionary<byte, UnityEngine.Vector2>();
+
+                Main.AfterMeetingDeathPlayers = new();
+                Main.ResetCamPlayerList = new();
+                Main.clientIdList = new();
+
+                Main.CheckShapeshift = new();
+                Main.ShapeshiftTarget = new();
+                Main.SpeedBoostTarget = new Dictionary<byte, byte>();
+                Main.MayorUsedButtonCount = new Dictionary<byte, int>();
+                Main.ParaUsedButtonCount = new Dictionary<byte, int>();
+                Main.targetArrows = new();
+
+                ReportDeadBodyPatch.CanReport = new();
+
+                Options.UsedButtonCount = 0;
+                Main.RealOptionsData = new OptionBackupData(GameOptionsManager.Instance.CurrentGameOptions);
+
+                Main.introDestroyed = false;
+
+                RandomSpawn.CustomNetworkTransformPatch.NumOfTP = new();
+
+                Main.DiscussionTime = Main.RealOptionsData.GetInt(Int32OptionNames.DiscussionTime);
+                Main.VotingTime = Main.RealOptionsData.GetInt(Int32OptionNames.VotingTime);
+                Main.DefaultCrewmateVision = Main.RealOptionsData.GetFloat(FloatOptionNames.CrewLightMod);
+                Main.DefaultImpostorVision = Main.RealOptionsData.GetFloat(FloatOptionNames.ImpostorLightMod);
+
+                NameColorManager.Instance.RpcReset();
+                Main.LastNotifyNames = new();
+
+                Main.currentDousingTarget = 255;
+                Main.PlayerColors = new();
+                //名字记录
+                Main.AllPlayerNames = new();
+
+                foreach (var target in Main.AllPlayerControls)
+                {
+                    foreach (var seer in Main.AllPlayerControls)
+                    {
+                        var pair = (target.PlayerId, seer.PlayerId);
+                        Main.LastNotifyNames[pair] = target.name;
+                    }
+                }
+                foreach (var pc in Main.AllPlayerControls)
+                {
+                    if (AmongUsClient.Instance.AmHost && Options.ColorNameMode.GetBool()) pc.RpcSetName(Palette.GetColorName(pc.Data.DefaultOutfit.ColorId));
+                    Main.PlayerStates[pc.PlayerId] = new(pc.PlayerId);
+                    Main.AllPlayerNames[pc.PlayerId] = pc?.Data?.PlayerName;
+
+                    Main.PlayerColors[pc.PlayerId] = Palette.PlayerColors[pc.Data.DefaultOutfit.ColorId];
+                    Main.AllPlayerSpeed[pc.PlayerId] = Main.RealOptionsData.GetFloat(FloatOptionNames.PlayerSpeedMod); //移動速度をデフォルトの移動速度に変更
+                    ReportDeadBodyPatch.CanReport[pc.PlayerId] = true;
+                    ReportDeadBodyPatch.WaitReport[pc.PlayerId] = new();
+                    pc.cosmetics.nameText.text = pc.name;
+
+                    RandomSpawn.CustomNetworkTransformPatch.NumOfTP.Add(pc.PlayerId, 0);
+                    var outfit = pc.Data.DefaultOutfit;
+                    Camouflage.PlayerSkins[pc.PlayerId] = new GameData.PlayerOutfit().Set(outfit.PlayerName, outfit.ColorId, outfit.HatId, outfit.SkinId, outfit.VisorId, outfit.PetId);
+                    Main.clientIdList.Add(pc.GetClientId());
+                }
+                Main.VisibleTasksCount = true;
+                if (__instance.AmHost)
+                {
+                    RPC.SyncCustomSettingsRPC();
+                    Main.RefixCooldownDelay = 0;
+                    if (Options.CurrentGameMode == CustomGameMode.HideAndSeek)
+                    {
+                        Options.HideAndSeekKillDelayTimer = Options.KillDelay.GetFloat();
+                    }
+                    if (Options.IsStandardHAS)
+                    {
+                        Options.HideAndSeekKillDelayTimer = Options.StandardHASWaitingTime.GetFloat();
+                    }
+                }
+                FallFromLadder.Reset();
+                BountyHunter.Init();
+                SerialKiller.Init();
+                FireWorks.Init();
+                Sniper.Init();
+                TimeThief.Init();
+                Mare.Init();
+                Witch.Init();
+                SabotageMaster.Init();
+                Egoist.Init();
+                Executioner.Init();
+                Jackal.Init();
+                Sheriff.Init();
+                EvilTracker.Init();
+                LastImpostor.Init();
+                CustomWinnerHolder.Reset();
+                AntiBlackout.Reset();
+                IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
+
+                MeetingStates.MeetingCalled = false;
+                MeetingStates.FirstMeeting = true;
+                GameStates.AlreadyDied = false;
+            }
+            catch
+            {
+                Logger.Fatal("Change Role Setting Postfix 错误，触发防黑屏措施", "Anti-black");
+                CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Draw);
+                GameManager.Instance.LogicFlow.CheckEndCriteria();
+                Utils.SendMessage("由于未知错误发生，已终止游戏以防止黑屏\n若您是房主，如果可以的话请发送/dump并将桌面上的文件发送给咔皮呆，非常感谢您的贡献！\n");
+                RPC.ForceEndGame();
+            }
             
-            Main.AfterMeetingDeathPlayers = new();
-            Main.ResetCamPlayerList = new();
-            Main.clientIdList = new();
-
-            Main.CheckShapeshift = new();
-            Main.ShapeshiftTarget = new();
-            Main.SpeedBoostTarget = new Dictionary<byte, byte>();
-            Main.MayorUsedButtonCount = new Dictionary<byte, int>();
-            Main.targetArrows = new();
-
-            ReportDeadBodyPatch.CanReport = new();
-
-            Options.UsedButtonCount = 0;
-            Main.RealOptionsData = new OptionBackupData(GameOptionsManager.Instance.CurrentGameOptions);
-
-            Main.introDestroyed = false;
-
-            RandomSpawn.CustomNetworkTransformPatch.NumOfTP = new();
-
-            Main.DiscussionTime = Main.RealOptionsData.GetInt(Int32OptionNames.DiscussionTime);
-            Main.VotingTime = Main.RealOptionsData.GetInt(Int32OptionNames.VotingTime);
-            Main.DefaultCrewmateVision = Main.RealOptionsData.GetFloat(FloatOptionNames.CrewLightMod);
-            Main.DefaultImpostorVision = Main.RealOptionsData.GetFloat(FloatOptionNames.ImpostorLightMod);
-
-            NameColorManager.Instance.RpcReset();
-            Main.LastNotifyNames = new();
-
-            Main.currentDousingTarget = 255;
-            Main.PlayerColors = new();
-            //名字记录
-            Main.AllPlayerNames = new();
-
-            foreach (var target in Main.AllPlayerControls)
-            {
-                foreach (var seer in Main.AllPlayerControls)
-                {
-                    var pair = (target.PlayerId, seer.PlayerId);
-                    Main.LastNotifyNames[pair] = target.name;
-                }
-            }
-            foreach (var pc in Main.AllPlayerControls)
-            {
-                if (AmongUsClient.Instance.AmHost && Options.ColorNameMode.GetBool()) pc.RpcSetName(Palette.GetColorName(pc.Data.DefaultOutfit.ColorId));
-                Main.PlayerStates[pc.PlayerId] = new(pc.PlayerId);
-                Main.AllPlayerNames[pc.PlayerId] = pc?.Data?.PlayerName;
-
-                Main.PlayerColors[pc.PlayerId] = Palette.PlayerColors[pc.Data.DefaultOutfit.ColorId];
-                Main.AllPlayerSpeed[pc.PlayerId] = Main.RealOptionsData.GetFloat(FloatOptionNames.PlayerSpeedMod); //移動速度をデフォルトの移動速度に変更
-                ReportDeadBodyPatch.CanReport[pc.PlayerId] = true;
-                ReportDeadBodyPatch.WaitReport[pc.PlayerId] = new();
-                pc.cosmetics.nameText.text = pc.name;
-
-                RandomSpawn.CustomNetworkTransformPatch.NumOfTP.Add(pc.PlayerId, 0);
-                var outfit = pc.Data.DefaultOutfit;
-                Camouflage.PlayerSkins[pc.PlayerId] = new GameData.PlayerOutfit().Set(outfit.PlayerName, outfit.ColorId, outfit.HatId, outfit.SkinId, outfit.VisorId, outfit.PetId);
-                Main.clientIdList.Add(pc.GetClientId());
-            }
-            Main.VisibleTasksCount = true;
-            if (__instance.AmHost)
-            {
-                RPC.SyncCustomSettingsRPC();
-                Main.RefixCooldownDelay = 0;
-                if (Options.CurrentGameMode == CustomGameMode.HideAndSeek)
-                {
-                    Options.HideAndSeekKillDelayTimer = Options.KillDelay.GetFloat();
-                }
-                if (Options.IsStandardHAS)
-                {
-                    Options.HideAndSeekKillDelayTimer = Options.StandardHASWaitingTime.GetFloat();
-                }
-            }
-            FallFromLadder.Reset();
-            BountyHunter.Init();
-            SerialKiller.Init();
-            FireWorks.Init();
-            Sniper.Init();
-            TimeThief.Init();
-            Mare.Init();
-            Witch.Init();
-            SabotageMaster.Init();
-            Egoist.Init();
-            Executioner.Init();
-            Jackal.Init();
-            Sheriff.Init();
-            EvilTracker.Init();
-            LastImpostor.Init();
-            CustomWinnerHolder.Reset();
-            AntiBlackout.Reset();
-            IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
-
-            MeetingStates.MeetingCalled = false;
-            MeetingStates.FirstMeeting = true;
-            GameStates.AlreadyDied = false;
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -133,75 +146,91 @@ namespace TownOfHost
     {
         public static void Prefix()
         {
-            if (!AmongUsClient.Instance.AmHost) return;
 
-            Main.assignedNK = 0;
-            Main.assignedNNK = 0;
+            Main.assignedRoles.Clear();
 
-            Random rd = new();
-            Main.needOfNK = rd.Next(0, Options.MaxNK.GetInt() + 1);
-            if (Main.needOfNK > Options.MaxNK.GetInt()) Main.needOfNK = Options.MaxNK.GetInt();
-            Main.needOfNNK = rd.Next(0, Options.MaxNNK.GetInt() + 1);
-            if (Main.needOfNNK > Options.MaxNNK.GetInt()) Main.needOfNNK = Options.MaxNNK.GetInt();
-
-            //初始化 CustomRpcSender 和 RpcSetRoleReplacer
-            Dictionary<byte, CustomRpcSender> senders = new();
-            foreach (var pc in Main.AllPlayerControls)
+            try
             {
-                senders[pc.PlayerId] = new CustomRpcSender($"{pc.name}'s SetRole Sender", SendOption.Reliable, false)
-                    .StartMessage(pc.GetClientId());
-            }
-            RpcSetRoleReplacer.StartReplace(senders);
+                if (!AmongUsClient.Instance.AmHost) return;
 
-            //抽取观察者的阵营
-            Options.SetWatcherTeam(Options.EvilWatcherChance.GetFloat());
+                Main.assignedNK = 0;
+                Main.assignedNNK = 0;
 
-            if (Options.CurrentGameMode != CustomGameMode.HideAndSeek)
-            {
-                //指定各角色人数
-                var roleOpt = Main.NormalOptions.roleOptions;
-                int ScientistNum = roleOpt.GetNumPerGame(RoleTypes.Scientist);
-                int AdditionalScientistNum = CustomRoles.Doctor.GetCount();
-                roleOpt.SetRoleRate(RoleTypes.Scientist, ScientistNum + AdditionalScientistNum, AdditionalScientistNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Scientist));
+                Random rd = new();
+                Main.needOfNK = rd.Next(0, Options.MaxNK.GetInt() + 1);
+                if (Main.needOfNK > Options.MaxNK.GetInt()) Main.needOfNK = Options.MaxNK.GetInt();
+                Main.needOfNNK = rd.Next(0, Options.MaxNNK.GetInt() + 1);
+                if (Main.needOfNNK > Options.MaxNNK.GetInt()) Main.needOfNNK = Options.MaxNNK.GetInt();
 
-                int EngineerNum = roleOpt.GetNumPerGame(RoleTypes.Engineer);
-
-                int AdditionalEngineerNum = CustomRoles.Madmate.GetCount() + CustomRoles.Terrorist.GetCount() + CustomRoles.Paranoia.GetCount() + CustomRoles.Plumber.GetCount();// - EngineerNum;
-
-                if (Options.MayorHasPortableButton.GetBool())
-                    AdditionalEngineerNum += CustomRoles.Mayor.GetCount();
-
-                if (Options.MadSnitchCanVent.GetBool())
-                    AdditionalEngineerNum += CustomRoles.MadSnitch.GetCount();
-
-                roleOpt.SetRoleRate(RoleTypes.Engineer, EngineerNum + AdditionalEngineerNum, AdditionalEngineerNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Engineer));
-
-                int ShapeshifterNum = roleOpt.GetNumPerGame(RoleTypes.Shapeshifter);
-                int AdditionalShapeshifterNum = CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount() + CustomRoles.Miner.GetCount() + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();//- ShapeshifterNum;
-                if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1)
-                    AdditionalShapeshifterNum += CustomRoles.Egoist.GetCount();
-                roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum + AdditionalShapeshifterNum, AdditionalShapeshifterNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
-
-
-                List<PlayerControl> AllPlayers = new();
+                //初始化 CustomRpcSender 和 RpcSetRoleReplacer
+                Dictionary<byte, CustomRpcSender> senders = new();
                 foreach (var pc in Main.AllPlayerControls)
                 {
-                    AllPlayers.Add(pc);
+                    senders[pc.PlayerId] = new CustomRpcSender($"{pc.name}'s SetRole Sender", SendOption.Reliable, false)
+                        .StartMessage(pc.GetClientId());
                 }
+                RpcSetRoleReplacer.StartReplace(senders);
 
-                if (Options.EnableGM.GetBool())
+                //抽取观察者的阵营
+                Options.SetWatcherTeam(Options.EvilWatcherChance.GetFloat());
+
+                if (Options.CurrentGameMode != CustomGameMode.HideAndSeek)
                 {
-                    AllPlayers.RemoveAll(x => x == PlayerControl.LocalPlayer);
-                    PlayerControl.LocalPlayer.RpcSetCustomRole(CustomRoles.GM);
-                    PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
-                    PlayerControl.LocalPlayer.Data.IsDead = true;
+                    //指定各角色人数
+                    var roleOpt = Main.NormalOptions.roleOptions;
+                    int ScientistNum = roleOpt.GetNumPerGame(RoleTypes.Scientist);
+                    int AdditionalScientistNum = CustomRoles.Doctor.GetCount();
+                    roleOpt.SetRoleRate(RoleTypes.Scientist, ScientistNum + AdditionalScientistNum, AdditionalScientistNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Scientist));
+
+                    int EngineerNum = roleOpt.GetNumPerGame(RoleTypes.Engineer);
+
+                    int AdditionalEngineerNum = CustomRoles.Madmate.GetCount() + CustomRoles.Terrorist.GetCount() + CustomRoles.Paranoia.GetCount() + CustomRoles.Plumber.GetCount();// - EngineerNum;
+
+                    if (Options.MayorHasPortableButton.GetBool())
+                        AdditionalEngineerNum += CustomRoles.Mayor.GetCount();
+
+                    if (Options.MadSnitchCanVent.GetBool())
+                        AdditionalEngineerNum += CustomRoles.MadSnitch.GetCount();
+
+                    roleOpt.SetRoleRate(RoleTypes.Engineer, EngineerNum + AdditionalEngineerNum, AdditionalEngineerNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Engineer));
+
+                    int ShapeshifterNum = roleOpt.GetNumPerGame(RoleTypes.Shapeshifter);
+                    int AdditionalShapeshifterNum = CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount() + CustomRoles.Miner.GetCount() + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();//- ShapeshifterNum;
+                    if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1)
+                        AdditionalShapeshifterNum += CustomRoles.Egoist.GetCount();
+                    roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum + AdditionalShapeshifterNum, AdditionalShapeshifterNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
+
+
+                    List<PlayerControl> AllPlayers = new();
+                    foreach (var pc in Main.AllPlayerControls)
+                    {
+                        AllPlayers.Add(pc);
+                    }
+
+                    if (Options.EnableGM.GetBool())
+                    {
+                        AllPlayers.RemoveAll(x => x == PlayerControl.LocalPlayer);
+                        PlayerControl.LocalPlayer.RpcSetCustomRole(CustomRoles.GM);
+                        PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
+                        PlayerControl.LocalPlayer.Data.IsDead = true;
+                    }
+                    Dictionary<(byte, byte), RoleTypes> rolesMap = new();
+                    AssignDesyncRole(CustomRoles.Sheriff, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
+                    AssignDesyncRole(CustomRoles.Arsonist, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
+                    AssignDesyncRole(CustomRoles.Jackal, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
+                    MakeDesyncSender(senders, rolesMap);
                 }
-                Dictionary<(byte, byte), RoleTypes> rolesMap = new();
-                AssignDesyncRole(CustomRoles.Sheriff, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
-                AssignDesyncRole(CustomRoles.Arsonist, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
-                AssignDesyncRole(CustomRoles.Jackal, AllPlayers, senders, rolesMap, BaseRole: RoleTypes.Impostor);
-                MakeDesyncSender(senders, rolesMap);
             }
+            catch
+            {
+                Logger.Fatal("Select Roles Prefix 错误，触发防黑屏措施", "Anti-black");
+                CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Draw);
+                GameManager.Instance.LogicFlow.CheckEndCriteria();
+                Utils.SendMessage("由于未知错误发生，已终止游戏以防止黑屏\n若您是房主，如果可以的话请发送/dump并将桌面上的文件发送给咔皮呆，非常感谢您的贡献！\n");
+                RPC.ForceEndGame();
+            }
+
+            
             //以下是原本游戏的职位分配
         }
         public static void Postfix()
@@ -231,6 +260,7 @@ namespace TownOfHost
                 pc.Data.IsDead = false; //プレイヤーの死を解除する
                 if (Main.PlayerStates[pc.PlayerId].MainRole != CustomRoles.NotAssigned) continue; //如果已分配自定义角色则跳过
                 var role = CustomRoles.NotAssigned;
+                Random rd = Utils.RandomSeedByGuid();
                 switch (pc.Data.Role.Role)
                 {
                     case RoleTypes.Crewmate:
@@ -242,26 +272,58 @@ namespace TownOfHost
                         role = CustomRoles.Impostor;
                         break;
                     case RoleTypes.Scientist:
-                        Scientists.Add(pc);
-                        role = CustomRoles.Scientist;
+                        if (rd.Next(1, 100) > 20 && Options.TestAssignMode.GetBool())
+                        {
+                            Logger.Fatal("依照概率科学家改为工程师", "XXXXXXXXXXXXXXXXXXX");
+                            Engineers.Add(pc);
+                            role = CustomRoles.Engineer;
+                        }
+                        else
+                        {
+                            Scientists.Add(pc);
+                            role = CustomRoles.Scientist;
+                        }
                         break;
                     case RoleTypes.Engineer:
-                        Engineers.Add(pc);
-                        role = CustomRoles.Engineer;
+                        if (rd.Next(1, 100) > 40 && Options.TestAssignMode.GetBool())
+                        {
+                            Logger.Fatal("依照概率工程师改为船员", "XXXXXXXXXXXXXXXXXXX");
+                            Crewmates.Add(pc);
+                            role = CustomRoles.Crewmate;
+                        }
+                        else
+                        {
+                            Engineers.Add(pc);
+                            role = CustomRoles.Engineer;
+                        }
                         break;
                     case RoleTypes.GuardianAngel:
                         GuardianAngels.Add(pc);
                         role = CustomRoles.GuardianAngel;
                         break;
                     case RoleTypes.Shapeshifter:
-                        Shapeshifters.Add(pc);
-                        role = CustomRoles.Shapeshifter;
+                        if (rd.Next(1, 100) > 40 && Options.TestAssignMode.GetBool())
+                        {
+                            Logger.Fatal("依照概率变形者改为内鬼", "XXXXXXXXXXXXXXXXXXX");
+                            Impostors.Add(pc);
+                            role = CustomRoles.Impostor;
+                        }
+                        else
+                        {
+                            Shapeshifters.Add(pc);
+                            role = CustomRoles.Shapeshifter;
+                        }
                         break;
                     default:
                         Logger.SendInGame(string.Format(GetString("Error.InvalidRoleAssignment"), pc?.Data?.PlayerName));
                         break;
                 }
                 Main.PlayerStates[pc.PlayerId].MainRole = role;
+                if (pc.Data.Role.Role.ToString() != role.ToString() && Options.TestAssignMode.GetBool())
+                {
+                    Logger.Fatal("重新设置玩家的原生职业", "XXXXXXXXXXXXXXXXXXX");
+                    pc.RpcSetCustomRole(role);
+                }
             }
 
             if (Options.CurrentGameMode == CustomGameMode.HideAndSeek)
@@ -277,7 +339,7 @@ namespace TownOfHost
 
                 //后期设定流程
                 AssignCustomRolesFromList(CustomRoles.HASFox, Crewmates);
-                AssignCustomRolesFromList( CustomRoles.HASTroll, Crewmates);
+                AssignCustomRolesFromList(CustomRoles.HASTroll, Crewmates);
                 foreach (var pair in Main.PlayerStates)
                 {
                     //通过 RPC 同步
@@ -290,7 +352,6 @@ namespace TownOfHost
             }
             else
             {
-
                 for (int i = 0; i <= 38; i++)
                 {
                     Main.funList.Add(i);
@@ -310,12 +371,14 @@ namespace TownOfHost
                     }
                 }
 
-                if(Main.funList.Remove(38)) Main.funList.Insert(0, 38);
-
+                //if(Main.funList.Remove(38)) Main.funList.Insert(0, 38);
+                Dictionary<byte, int> tryTime = new();
+                Retry:
                 foreach (int i in Main.funList)
                 {
                     switch (i)
                     {
+
                         case 0: AssignCustomRolesFromList(CustomRoles.FireWorks, Shapeshifters); break;
                         case 1: AssignCustomRolesFromList(CustomRoles.Sniper, Shapeshifters); break;
                         case 2: AssignCustomRolesFromList(CustomRoles.Jester, Crewmates); break;
@@ -357,6 +420,92 @@ namespace TownOfHost
                         case 38: AssignCustomRolesFromList(CustomRoles.Hacker, Impostors); break;
                     }
                 }
+
+                if (Options.TestAssignMode.GetBool())
+                {
+                    if (Impostors.Count > 0)
+                    {
+
+                        List<PlayerControl> imp = new();
+                        Impostors.ForEach(imp.Add);
+                        foreach (var pcImp in imp)
+                        {
+                            if (tryTime.ContainsKey(pcImp.PlayerId))
+                            {
+                                if (tryTime.TryGetValue(pcImp.PlayerId, out int x) && x > 2) break;
+                            }
+                            else tryTime.Add(pcImp.PlayerId, 0);
+                            tryTime[pcImp.PlayerId]++;
+                            Main.PlayerStates[pcImp.PlayerId].MainRole = CustomRoles.Shapeshifter;
+                            pcImp.RpcSetCustomRole(CustomRoles.Shapeshifter);
+                            Impostors.Remove(pcImp);
+                            Shapeshifters.Add(pcImp);
+                            Logger.Fatal("原生内鬼数量超出，将改为变形重新尝试分配", "XXXXXXXXXXXXXXXXXXX");
+                            goto Retry;
+                        }
+                    }
+                    if (Shapeshifters.Count > 0)
+                    {
+                        List<PlayerControl> ss = new();
+                        Shapeshifters.ForEach(ss.Add);
+                        foreach (var pcSs in ss)
+                        {
+                            if (tryTime.ContainsKey(pcSs.PlayerId))
+                            {
+                                if (tryTime.TryGetValue(pcSs.PlayerId, out int x) && x > 2) break;
+                            }
+                            else tryTime.Add(pcSs.PlayerId, 0);
+                            tryTime[pcSs.PlayerId]++;
+                            Main.PlayerStates[pcSs.PlayerId].MainRole = CustomRoles.Impostor;
+                            pcSs.RpcSetCustomRole(CustomRoles.Impostor);
+                            Shapeshifters.Remove(pcSs);
+                            Impostors.Add(pcSs);
+                            Logger.Fatal("原生变形数量超出，将改为内鬼重新尝试分配", "XXXXXXXXXXXXXXXXXXX");
+                            goto Retry;
+                        }
+                    }
+                    if (Engineers.Count > 0)
+                    {
+                        List<PlayerControl> eng = new();
+                        Engineers.ForEach(eng.Add);
+                        foreach (var pcEng in eng)
+                        {
+                            if (tryTime.ContainsKey(pcEng.PlayerId))
+                            {
+                                if (tryTime.TryGetValue(pcEng.PlayerId, out int x) && x > 2) break;
+                            }
+                            else tryTime.Add(pcEng.PlayerId, 0);
+                            tryTime[pcEng.PlayerId]++;
+                            Main.PlayerStates[pcEng.PlayerId].MainRole = CustomRoles.Crewmate;
+                            pcEng.RpcSetCustomRole(CustomRoles.Crewmate);
+                            Engineers.Remove(pcEng);
+                            Crewmates.Add(pcEng);
+                            Logger.Fatal("原生工程师数量超出，将改为船员重新尝试分配", "XXXXXXXXXXXXXXXXXXX");
+                            goto Retry;
+                        }
+                    }
+                    if (Crewmates.Count > 0)
+                    {
+                        List<PlayerControl> crew = new();
+                        Crewmates.ForEach(crew.Add);
+                        foreach (var pcCrew in crew)
+                        {
+                            if (tryTime.ContainsKey(pcCrew.PlayerId))
+                            {
+                                if (tryTime.TryGetValue(pcCrew.PlayerId, out int x) && x > 2) break;
+                            }
+                            else tryTime.Add(pcCrew.PlayerId, 0);
+                            tryTime[pcCrew.PlayerId]++;
+                            Main.PlayerStates[pcCrew.PlayerId].MainRole = CustomRoles.Engineer;
+                            pcCrew.RpcSetCustomRole(CustomRoles.Engineer);
+                            Crewmates.Remove(pcCrew);
+                            Engineers.Add(pcCrew);
+                            Logger.Fatal("原生船员数量超出，将改为工程师重新尝试分配", "XXXXXXXXXXXXXXXXXXX");
+                            goto Retry;
+                        }
+                    }
+                }
+                Logger.Fatal("未开启随机分配，将跳过职位检查直接开始", "TestAssignMode");
 
                 //通过 RPC 同步
                 foreach (var pc in Main.AllPlayerControls)
@@ -425,6 +574,9 @@ namespace TownOfHost
                         case CustomRoles.Mayor:
                             Main.MayorUsedButtonCount[pc.PlayerId] = 0;
                             break;
+                        case CustomRoles.Paranoia:
+                            Main.ParaUsedButtonCount[pc.PlayerId] = 0;
+                            break;
                         case CustomRoles.SabotageMaster:
                             SabotageMaster.Add(pc.PlayerId);
                             break;
@@ -433,6 +585,9 @@ namespace TownOfHost
                             break;
                         case CustomRoles.Hacker:
                             Main.HackerUsedCount[pc.PlayerId] = 0;
+                            break;
+                        case CustomRoles.Psychic:
+                            Main.PsychicTarget.Clear();
                             break;
                     }
                     pc.ResetKillCooldown();
@@ -501,12 +656,13 @@ namespace TownOfHost
         }
         private static void AssignDesyncRole(CustomRoles role, List<PlayerControl> AllPlayers, Dictionary<byte, CustomRpcSender> senders, Dictionary<(byte, byte), RoleTypes> rolesMap, RoleTypes BaseRole, RoleTypes hostBaseRole = RoleTypes.Crewmate)
         {
-            if (!role.IsEnable()) return;
-
+            if (!role.IsEnable() || Main.assignedRoles.Contains(role)) return;
             if (CustomRolesHelper.IsNK(role) && Main.assignedNK >= Main.needOfNK) return;
             if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK) return;
             if (CustomRolesHelper.IsNK(role)) Main.assignedNK++;
             if (CustomRolesHelper.IsNNK(role)) Main.assignedNNK++;
+
+            Main.assignedRoles.Add(role);
 
             var hostId = PlayerControl.LocalPlayer.PlayerId;
             var rand = IRandom.Instance;
@@ -566,7 +722,7 @@ namespace TownOfHost
 
         private static List<PlayerControl> AssignCustomRolesFromList(CustomRoles role, List<PlayerControl> players, int RawCount = -1)
         {
-            if (players == null || players.Count <= 0) return null;
+            if (players == null || players.Count <= 0 || Main.assignedRoles.Contains(role)) return null;
             var rand = IRandom.Instance;
             var count = Math.Clamp(RawCount, 0, players.Count);
             if (RawCount == -1) count = Math.Clamp(role.GetCount(), 0, players.Count);
@@ -575,6 +731,7 @@ namespace TownOfHost
             if (CustomRolesHelper.IsNNK(role) && Main.assignedNNK >= Main.needOfNNK) return null;
             if (CustomRolesHelper.IsNK(role)) Main.assignedNK++;
             if (CustomRolesHelper.IsNNK(role)) Main.assignedNNK++;
+            Main.assignedRoles.Add(role);
             List<PlayerControl> AssignedPlayers = new();
             SetColorPatch.IsAntiGlitchDisabled = true;
             for (var i = 0; i < count; i++)
