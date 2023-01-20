@@ -36,7 +36,7 @@ namespace TownOfHost
         {
             Main.credentialsText = $"\r\n<color={Main.ModColor}>{Main.ModName}</color> v{Main.PluginVersion}";
 #if DEBUG
-            Main.credentialsText += $"\r\n<color={Main.ModColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
+            Main.credentialsText += $"\r\n<color={Main.ModColor}>Debug({ThisAssembly.Git.Commit})</color>";
 #endif
             var credentials = Object.Instantiate(__instance.text);
             credentials.text = Main.credentialsText;

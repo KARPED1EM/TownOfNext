@@ -1064,8 +1064,16 @@ namespace TownOfHost
 
             if (pc.Is(CustomRoles.Paranoia))
             {
-                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
-                pc?.NoCheckStartMeeting(pc?.Data);
+                if(Main.ParaUsedButtonCount.TryGetValue(pc.PlayerId, out var count) && count < Options.ParanoiaNumOfUseButton.GetInt())
+                {
+                    Main.ParaUsedButtonCount[pc.PlayerId] += 1;
+                    new LateTask(() =>
+                    {
+                        Utils.SendMessage(GetString("SkillUsedLeft") + (Options.ParanoiaNumOfUseButton.GetInt() - Main.ParaUsedButtonCount[pc.PlayerId]).ToString(), pc.PlayerId);
+                    }, 3.0f, "Skill Remain Message");
+                    pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
+                    pc?.NoCheckStartMeeting(pc?.Data);
+                }
             }
 
             if (pc.Is(CustomRoles.Mayor))
@@ -1108,6 +1116,23 @@ namespace TownOfHost
                 if ((__instance.myPlayer.Data.Role.Role != RoleTypes.Engineer && //エンジニアでなく
                 !__instance.myPlayer.CanUseImpostorVentButton()) || //インポスターベントも使えない
                 (__instance.myPlayer.Is(CustomRoles.Mayor) && Main.MayorUsedButtonCount.TryGetValue(__instance.myPlayer.PlayerId, out var count) && count >= Options.MayorNumOfUseButton.GetInt())
+                )
+                {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
+                    writer.WritePacked(127);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    new LateTask(() =>
+                    {
+                        int clientId = __instance.myPlayer.GetClientId();
+                        MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
+                        writer2.Write(id);
+                        AmongUsClient.Instance.FinishRpcImmediately(writer2);
+                    }, 0.5f, "Fix DesyncImpostor Stuck");
+                    return false;
+                }
+                if ((__instance.myPlayer.Data.Role.Role != RoleTypes.Engineer && //エンジニアでなく
+                !__instance.myPlayer.CanUseImpostorVentButton()) || //インポスターベントも使えない
+                (__instance.myPlayer.Is(CustomRoles.Paranoia) && Main.ParaUsedButtonCount.TryGetValue(__instance.myPlayer.PlayerId, out var count2) && count2 >= Options.ParanoiaNumOfUseButton.GetInt())
                 )
                 {
                     MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);

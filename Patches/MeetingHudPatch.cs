@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Epic.OnlineServices.AntiCheatCommon;
 using HarmonyLib;
 using Il2CppSystem.Web.Util;
 using LibCpp2IL;
@@ -288,15 +289,21 @@ namespace TownOfHost
     {
         public static void Prefix(MeetingHud __instance)
         {
-            Logger.Info("------------会議開始------------", "Phase");
+            Logger.Info("------------会议开始------------", "Phase");
             ChatUpdatePatch.DoBlockChat = true;
+            Logger.Fatal("X", "#####################");
             GameStates.AlreadyDied |= GameData.Instance.AllPlayers.ToArray().Any(x => x.IsDead);
+            Logger.Fatal("X", "#####################");
             Main.AllPlayerControls.Do(x => ReportDeadBodyPatch.WaitReport[x.PlayerId].Clear());
+            Logger.Fatal("X", "#####################");
             Utils.NotifyRoles(isMeeting: true, NoCache: true);
+            Logger.Fatal("X", "#####################");
             MeetingStates.MeetingCalled = true;
+            Logger.Fatal("X", "#####################");
         }
         public static void Postfix(MeetingHud __instance)
         {
+            Logger.Fatal("X", "#####################");
             SoundManager.Instance.ChangeAmbienceVolume(0f);
             if (!GameStates.IsModHost) return;
             foreach (var pva in __instance.playerStates)
@@ -325,10 +332,13 @@ namespace TownOfHost
             }
 
             System.Random rd = new();
-            int numOfPsychicBad = rd.Next(1, 4);
-            //numOfPsychicBad = Mathf.RoundToInt(numOfPsychicBad);
-            //if (numOfPsychicBad > 3) // failsafe
-            //    numOfPsychicBad = 3;
+            int numOfPsychicBad = 0;
+            for (int i = 0; i < Options.PsychicCanSeeNum.GetInt(); i++)
+            {
+                if (rd.Next(1, 100) < 18) numOfPsychicBad++;
+            }
+            if (numOfPsychicBad > Options.PsychicCanSeeNum.GetInt() || numOfPsychicBad < 1) numOfPsychicBad = 1;
+
             List<byte> goodids = new();
             List<byte> badids = new();
             Dictionary<byte, bool> isGood = new();
@@ -336,75 +346,82 @@ namespace TownOfHost
             {
                 if (PlayerControl.LocalPlayer.Is(CustomRoles.Psychic))
                 {
-                    List<PlayerControl> badPlayers = new();
-                    List<PlayerControl> goodPlayers = new();
-                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    if (Options.PsychicFresh.GetBool() || !Main.PsychicTarget.ContainsKey(PlayerControl.LocalPlayer.PlayerId))
                     {
-                        if (pc == null || pc.Data.IsDead || pc.Data.Disconnected || pc.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
-                        isGood.Add(pc.PlayerId, true);
-                        var role = pc.GetCustomRole();
-                        switch (role.GetRoleType())
+                        List<PlayerControl> badPlayers = new();
+                        List<PlayerControl> goodPlayers = new();
+                        foreach (var pc in PlayerControl.AllPlayerControls)
                         {
-                            case RoleType.Crewmate:
-                                if (!Options.CkshowEvil.GetBool()) break;
-                                if (role is CustomRoles.Sheriff)
-                                {
-                                    badPlayers.Add(pc);
-                                    isGood[pc.PlayerId] = false;
-                                }
-                                break;
-                            case RoleType.Impostor:
-                                badPlayers.Add(pc); isGood[pc.PlayerId] = false;
-                                break;
-                            case RoleType.Neutral:
-                                if (Options.NBshowEvil.GetBool())
-                                    if (role is CustomRoles.Opportunist or CustomRoles.SchrodingerCat)
+                            if (pc == null || pc.Data.IsDead || pc.Data.Disconnected || pc.PlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+                            isGood.Add(pc.PlayerId, true);
+                            var role = pc.GetCustomRole();
+                            switch (role.GetRoleType())
+                            {
+                                case RoleType.Crewmate:
+                                    if (!Options.CkshowEvil.GetBool()) break;
+                                    if (role is CustomRoles.Sheriff)
                                     {
                                         badPlayers.Add(pc);
                                         isGood[pc.PlayerId] = false;
                                     }
-                                if (Options.NEshowEvil.GetBool())
-                                {
-                                    if (role.IsNeutralKilling()) badPlayers.Add(pc); isGood[pc.PlayerId] = false;
-                                    if (role is CustomRoles.Jester or CustomRoles.Terrorist or CustomRoles.Executioner)
+                                    break;
+                                case RoleType.Impostor:
+                                    badPlayers.Add(pc); isGood[pc.PlayerId] = false;
+                                    break;
+                                case RoleType.Neutral:
+                                    if (Options.NBshowEvil.GetBool())
+                                        if (role is CustomRoles.Opportunist or CustomRoles.SchrodingerCat)
+                                        {
+                                            badPlayers.Add(pc);
+                                            isGood[pc.PlayerId] = false;
+                                        }
+                                    if (Options.NEshowEvil.GetBool())
                                     {
-                                        badPlayers.Add(pc);
-                                        isGood[pc.PlayerId] = false;
+                                        if (role.IsNeutralKilling()) badPlayers.Add(pc); isGood[pc.PlayerId] = false;
+                                        if (role is CustomRoles.Jester or CustomRoles.Terrorist or CustomRoles.Executioner)
+                                        {
+                                            badPlayers.Add(pc);
+                                            isGood[pc.PlayerId] = false;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
+                            }
+                            if (isGood[pc.PlayerId]) goodPlayers.Add(pc);
                         }
-                        if (isGood[pc.PlayerId]) goodPlayers.Add(pc);
-                    }
-                    List<byte> badpcids = new();
-                    foreach (var p in badPlayers)
-                    {
-                        badpcids.Add(p.PlayerId);
-                    }
-                    if (numOfPsychicBad > 3) numOfPsychicBad = 3;
-                    if (numOfPsychicBad < 0) numOfPsychicBad = 0;
-                    if (numOfPsychicBad > badPlayers.Count) numOfPsychicBad = badPlayers.Count;
-                    int goodPeople = 3 - numOfPsychicBad;
+                        List<byte> badpcids = new();
+                        foreach (var p in badPlayers)
+                        {
+                            badpcids.Add(p.PlayerId);
+                        }
+                        if (numOfPsychicBad > Options.PsychicCanSeeNum.GetInt() || numOfPsychicBad < 1) numOfPsychicBad = 1;
+                        int goodPeople = Options.PsychicCanSeeNum.GetInt() - numOfPsychicBad;
 
-                    if (numOfPsychicBad != 0)
-                        for (var i = 0; i < numOfPsychicBad; i++)
-                        {
-                            if (badPlayers.Count <= 0) break;
-                            var rando = new System.Random();
-                            var player = badPlayers[rando.Next(0, badPlayers.Count)];
-                            badPlayers.Remove(player);
-                            badids.Add(player.PlayerId);
-                        }
-                    if (goodPeople != 0)
-                        for (var i = 0; i < goodPeople; i++)
-                        {
-                            if (goodPlayers.Count <= 0) break;
-                            var rando = new System.Random();
-                            var player = goodPlayers[rando.Next(0, goodPlayers.Count)];
-                            goodPlayers.Remove(player);
-                            goodids.Add(player.PlayerId);
-                        }
-                    HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, "Your list of names are:");
+                        if (numOfPsychicBad != 0)
+                            for (var i = 0; i < numOfPsychicBad; i++)
+                            {
+                                if (badPlayers.Count <= 0) break;
+                                var rando = new System.Random();
+                                var player = badPlayers[rando.Next(0, badPlayers.Count)];
+                                badPlayers.Remove(player);
+                                badids.Add(player.PlayerId);
+                            }
+                        if (goodPeople != 0)
+                            for (var i = 0; i < goodPeople; i++)
+                            {
+                                if (goodPlayers.Count <= 0) break;
+                                var rando = new System.Random();
+                                var player = goodPlayers[rando.Next(0, goodPlayers.Count)];
+                                goodPlayers.Remove(player);
+                                goodids.Add(player.PlayerId);
+                            }
+
+                        byte pcid = PlayerControl.LocalPlayer.PlayerId;
+                        if (!Main.PsychicTarget.ContainsKey(pcid)) Main.PsychicTarget.Add(pcid, new List<byte>());
+                        Main.PsychicTarget[pcid] = new();
+                        Main.PsychicTarget[pcid].AddRange(goodids);
+                        Main.PsychicTarget[pcid].AddRange(badids);
+                    }
+
                 }
             }
 
@@ -502,22 +519,10 @@ namespace TownOfHost
                         LocalPlayerKnowsJackal = true;
                         break;
                     case CustomRoles.Psychic:
-                        foreach (var id in goodids)
-                        {
-                            if (target.PlayerId == id)
+                        foreach (var id in Main.PsychicTarget[seer.PlayerId])
                             {
-                                pva.NameText.text = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), pva.NameText.text);
-                                HudManager.Instance.Chat.AddChat(seer, target.GetRealName(isMeeting: true));
+                                if (target.PlayerId == id) pva.NameText.text = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), pva.NameText.text);
                             }
-                        }
-                        foreach (var id in badids)
-                        {
-                            if (target.PlayerId == id)
-                            {
-                                pva.NameText.text = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), pva.NameText.text);
-                                HudManager.Instance.Chat.AddChat(seer, target.GetRealName(isMeeting: true));
-                            }
-                        }
                         break;
                 }
 

@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using InnerNet;
 using UnityEngine;
+using static GameStartManager;
 
 namespace TownOfHost
 {
@@ -69,6 +70,17 @@ namespace TownOfHost
                 }
                 if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) return; // Not host or no instance or LocalGame
                 update = GameData.Instance.PlayerCount != __instance.LastPlayerCount;
+
+                //Main.updateTime++;
+                //if (Main.updateTime >= 50)
+                //{
+                //    Main.updateTime = 0;
+                //    if (GameData.Instance.PlayerCount >= 2 && !GameStates.IsCountDown)
+                //    {
+                //        GameStartManager.Instance.startState = GameStartManager.StartingStates.Countdown;
+                //        GameStartManager.Instance.countDownTimer = 10;
+                //    }
+                //}
             }
             public static void Postfix(GameStartManager __instance)
             {

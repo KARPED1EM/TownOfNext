@@ -50,7 +50,7 @@ namespace TownOfHost
             int NumLongTasks = 0;
             int NumShortTasks = 0;
 
-            if (!Utils.GetPlayerById(playerId).Is(CustomRoles.Needy))
+            if (!Utils.GetPlayerById(playerId).Is(CustomRoles.Needy)  && !Utils.GetPlayerById(playerId).Is(CustomRoles.GM))
             {
             CustomRoles? RoleNullable = Utils.GetPlayerById(playerId)?.GetCustomRole();
             if (RoleNullable == null) return;
