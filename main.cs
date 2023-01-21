@@ -247,6 +247,7 @@ namespace TownOfHost
                     {CustomRoles.Dictator, "#df9b00"},
                     {CustomRoles.CSchrodingerCat, "#ffffff"}, //シュレディンガーの猫の派生
                     {CustomRoles.Seer, "#61b26c"},
+                    {CustomRoles.Madcapkiller, "##FF3030"},
                     //第三陣営役職
                     {CustomRoles.Arsonist, "#ff6633"},
                     {CustomRoles.Jester, "#ec62a5"},
@@ -320,6 +321,7 @@ namespace TownOfHost
         FireWorks,
         Mafia,
         SerialKiller,
+        Madcapkiller,
         //ShapeMaster,
         Sniper,
         Vampire,

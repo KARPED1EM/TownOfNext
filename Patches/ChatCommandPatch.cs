@@ -412,6 +412,7 @@ namespace TownOfHost
                 { CustomRoles.Mare, "梦魇" },
                 { CustomRoles.Mafia, "黑手党" },
                 { CustomRoles.SerialKiller, "嗜血杀手" },
+                { CustomRoles.Madcapkiller, "狂妄杀手"},
                 //{ CustomRoles.ShapeMaster, "sha" },
                 { CustomRoles.TimeThief, "蚀时者"},
                 { CustomRoles.Sniper, "狙击手" },

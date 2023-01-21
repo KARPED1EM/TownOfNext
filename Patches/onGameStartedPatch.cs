@@ -110,6 +110,7 @@ namespace TownOfHost
                 FallFromLadder.Reset();
                 BountyHunter.Init();
                 SerialKiller.Init();
+                MadcapKiller.Init();
                 FireWorks.Init();
                 Sniper.Init();
                 TimeThief.Init();
@@ -138,7 +139,7 @@ namespace TownOfHost
                 Utils.SendMessage("由于未知错误发生，已终止游戏以防止黑屏\n若您是房主，如果可以的话请发送/dump并将桌面上的文件发送给咔皮呆，非常感谢您的贡献！\n");
                 RPC.ForceEndGame();
             }
-            
+
         }
     }
     [HarmonyPatch(typeof(RoleManager), nameof(RoleManager.SelectRoles))]
@@ -230,7 +231,7 @@ namespace TownOfHost
                 RPC.ForceEndGame();
             }
 
-            
+
             //以下是原本游戏的职位分配
         }
         public static void Postfix()
@@ -356,7 +357,7 @@ namespace TownOfHost
                 {
                     Main.funList.Add(i);
                 }
-                
+
                 Random rd = new();
                 int index = 0;
                 int temp;
@@ -588,6 +589,9 @@ namespace TownOfHost
                             break;
                         case CustomRoles.Psychic:
                             Main.PsychicTarget.Clear();
+                            break;
+                        case CustomRoles.Madcapkiller:
+                            MadcapKiller.Add(pc.PlayerId);
                             break;
                     }
                     pc.ResetKillCooldown();

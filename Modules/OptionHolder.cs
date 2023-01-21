@@ -359,7 +359,7 @@ namespace TownOfHost
             MaxNNK = IntegerOptionItem.Create(49993, "MaxNNK", new(0, 15, 1), 15, TabGroup.NeutralRoles, false)
                 .SetValueFormat(OptionFormat.Players)
                 .SetGameMode(CustomGameMode.Standard);
-            
+
 
             #region 役職・詳細設定
             CustomRoleCounts = new();
@@ -393,6 +393,7 @@ namespace TownOfHost
             Mare.SetupCustomOption();
             TimeThief.SetupCustomOption();
             EvilTracker.SetupCustomOption();
+            MadcapKiller.SetupCustomOption();
 
             DefaultShapeshiftCooldown = FloatOptionItem.Create(5011, "DefaultShapeshiftCooldown", new(5f, 999f, 5f), 15f, TabGroup.ImpostorRoles, false)
                 .SetHeader(true)
@@ -431,8 +432,8 @@ namespace TownOfHost
             // Crewmate
             SetupRoleOptions(20000, TabGroup.CrewmateRoles, CustomRoles.Bait);
             SetupRoleOptions(1020095, TabGroup.CrewmateRoles, CustomRoles.Needy);
-            SetupRoleOptions(20100, TabGroup.CrewmateRoles, CustomRoles.Lighter); 
-            
+            SetupRoleOptions(20100, TabGroup.CrewmateRoles, CustomRoles.Lighter);
+
             LighterTaskCompletedVision = FloatOptionItem.Create(20110, "LighterTaskCompletedVision", new(0f, 5f, 0.25f), 5f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Lighter])
                 .SetValueFormat(OptionFormat.Multiplier);
             LighterTaskCompletedDisableLightOut = BooleanOptionItem.Create(20111, "LighterTaskCompletedDisableLightOut", true, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Lighter]);

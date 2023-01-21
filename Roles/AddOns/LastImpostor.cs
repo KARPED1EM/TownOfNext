@@ -28,7 +28,8 @@ namespace TownOfHost
             && pc.GetCustomRole()
             is not CustomRoles.Vampire
                 and not CustomRoles.BountyHunter
-                and not CustomRoles.SerialKiller;
+                and not CustomRoles.SerialKiller
+                and not CustomRoles.Madcapkiller;
         public static void SetSubRole()
         {
             //ラストインポスターがすでにいれば処理不要

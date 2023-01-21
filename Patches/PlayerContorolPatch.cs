@@ -145,6 +145,9 @@ namespace TownOfHost
                     case CustomRoles.SerialKiller:
                         SerialKiller.OnCheckMurder(killer);
                         break;
+                    case CustomRoles.Madcapkiller:
+                        MadcapKiller.OnCheckMurder(killer);
+                        break;
                     case CustomRoles.Vampire:
                         if (!target.Is(CustomRoles.Bait))
                         { //キルキャンセル&自爆処理
@@ -265,7 +268,7 @@ namespace TownOfHost
                     Logger.Info(target?.Data?.PlayerName + "被骇客击杀，随机报告者：" + playerList[hackinPlayer]?.Data?.PlayerName, "MurderPlayer");
                     new LateTask(() => playerList[hackinPlayer].CmdReportDeadBody(target.Data), 0.15f, "Hacker Hackin Report");
                 }
-                
+
             }
 
             //When Bait is killed
@@ -319,7 +322,7 @@ namespace TownOfHost
             Main.ShapeshiftTarget[shapeshifter.PlayerId] = target.PlayerId;
 
             if (!shapeshifting) Camouflage.RpcSetSkin(__instance);
-            
+
             if (shapeshifter.Is(CustomRoles.Miner))
             {
                 if (Main.LastEnteredVent.ContainsKey(shapeshifter.PlayerId))
@@ -558,6 +561,7 @@ namespace TownOfHost
                     }
                 }
                 if (GameStates.IsInTask && CustomRoles.SerialKiller.IsEnable()) SerialKiller.FixedUpdate(player);
+                if (GameStates.IsInTask && CustomRoles.Madcapkiller.IsEnable()) MadcapKiller.FixedUpdate(player);
                 if (GameStates.IsInTask && Main.WarlockTimer.ContainsKey(player.PlayerId))//処理を1秒遅らせる
                 {
                     if (player.IsAlive())

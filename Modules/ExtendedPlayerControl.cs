@@ -430,6 +430,9 @@ namespace TownOfHost
                 case CustomRoles.Hacker:
                     Main.AllPlayerKillCooldown[player.PlayerId] = Options.HackKillDelay.GetFloat();
                     break;
+                case CustomRoles.Madcapkiller:
+                    MadcapKiller.ApplyKillCooldown(player.PlayerId);
+                    break;
             }
             if (player.PlayerId == LastImpostor.currentId)
                 LastImpostor.SetKillCooldown();

@@ -48,6 +48,9 @@ namespace TownOfHost
                 case CustomRoles.SerialKiller:
                     SerialKiller.OnCheckMurder(killer, false);
                     break;
+                case CustomRoles.Madcapkiller:
+                    MadcapKiller.OnCheckMurder(killer, false);
+                    break;
                 case CustomRoles.Sheriff:
                     target.RpcSetCustomRole(CustomRoles.CSchrodingerCat);
                     break;

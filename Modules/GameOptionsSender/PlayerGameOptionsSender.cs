@@ -168,7 +168,6 @@ namespace TownOfHost.Modules
                 case CustomRoles.JSchrodingerCat:
                     Jackal.ApplyGameOptions(opt);
                     break;
-
                 InfinityVent:
                     AURoleOptions.EngineerCooldown = 0;
                     AURoleOptions.EngineerInVentMaxTime = 0;
