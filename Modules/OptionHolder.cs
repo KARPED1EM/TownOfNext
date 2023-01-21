@@ -379,6 +379,7 @@ namespace TownOfHost
             VampireKillDelay = FloatOptionItem.Create(101310, "VampireKillDelay", new(1f, 1000f, 1f), 8f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Vampire])
                 .SetValueFormat(OptionFormat.Seconds);
             SetupRoleOptions(1400, TabGroup.ImpostorRoles, CustomRoles.Warlock);
+            SetupRoleOptions(901455, TabGroup.ImpostorRoles, CustomRoles.Assassin);
             SetupRoleOptions(901585, TabGroup.ImpostorRoles, CustomRoles.Hacker);
             HackKillDelay = FloatOptionItem.Create(901587, "HackKillDelay", new(5f, 999f, 5f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Hacker])
                 .SetValueFormat(OptionFormat.Seconds);

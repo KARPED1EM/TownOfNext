@@ -76,6 +76,16 @@ namespace TownOfHost
                             __instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
                         }
                         break;
+                    case CustomRoles.Assassin:
+                        if (Main.CheckShapeshift.ContainsKey(player.PlayerId) && !Main.CheckShapeshift[player.PlayerId] && !Main.isMarkAndKill[player.PlayerId])
+                        {
+                            __instance.KillButton.OverrideText($"{GetString("AssassinMarkButtonText")}");
+                        }
+                        else
+                        {
+                            __instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
+                        }
+                        break;
                     case CustomRoles.Miner:
                         __instance.AbilityButton.OverrideText($"{GetString("MinerTeleButtonText")}");
                         break;

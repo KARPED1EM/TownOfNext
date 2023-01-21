@@ -172,6 +172,24 @@ namespace TownOfHost
                         }
                         if (Main.isCurseAndKill[killer.PlayerId]) killer.RpcGuardAndKill(target);
                         return false;
+                    case CustomRoles.Assassin:
+                        if (!Main.CheckShapeshift[killer.PlayerId] && !Main.isMarkAndKill[killer.PlayerId])
+                        { //Assassinが変身時以外にキルしたら、呪われる処理
+                            Main.isMarked = true;
+                            killer.SetKillCooldown();
+                            Main.MarkedPlayers[killer.PlayerId] = target;
+                            Main.AssassinTimer.Add(killer.PlayerId, 0f);
+                            Main.isMarkAndKill[killer.PlayerId] = true;
+                            return false;
+                        }
+                        if (Main.CheckShapeshift[killer.PlayerId])
+                        {//呪われてる人がいないくて変身してるときに通常キルになる
+                            killer.RpcMurderPlayer(target);
+                            killer.RpcGuardAndKill(target);
+                            return false;
+                        }
+                        if (Main.isCurseAndKill[killer.PlayerId]) killer.RpcGuardAndKill(target);
+                        return false;
                     case CustomRoles.Witch:
                         if (!Witch.OnCheckMurder(killer, target))
                         {
@@ -360,6 +378,22 @@ namespace TownOfHost
                         Main.isCurseAndKill[shapeshifter.PlayerId] = false;
                     }
                     Main.CursedPlayers[shapeshifter.PlayerId] = null;
+                }
+            }
+            if (shapeshifter.Is(CustomRoles.Assassin))
+            {
+                if (Main.MarkedPlayers[shapeshifter.PlayerId] != null)//确认被标记的人
+                {
+                    if (shapeshifting && !Main.MarkedPlayers[shapeshifter.PlayerId].Data.IsDead)//解除变形时不执行操作
+                    {
+                        PlayerControl targetw = Main.MarkedPlayers[shapeshifter.PlayerId];
+                        targetw.SetRealKiller(shapeshifter);
+                        Logger.Info($"{targetw.GetNameWithRole()}was killed", "Assassin");
+                        shapeshifter.RpcMurderPlayerV2(targetw);//殺す
+                        shapeshifter.RpcGuardAndKill(shapeshifter);
+                        Main.isMarkAndKill[shapeshifter.PlayerId] = false;
+                    }
+                    Main.MarkedPlayers[shapeshifter.PlayerId] = null;
                 }
             }
             if (shapeshifter.Is(CustomRoles.EvilTracker)) EvilTracker.Shapeshift(shapeshifter, target, shapeshifting);
@@ -576,6 +610,24 @@ namespace TownOfHost
                         Main.WarlockTimer.Remove(player.PlayerId);
                     }
                 }
+                if (GameStates.IsInTask && Main.AssassinTimer.ContainsKey(player.PlayerId))//処理を1秒遅らせる
+                {
+                    if (player.IsAlive())
+                    {
+                        if (Main.AssassinTimer[player.PlayerId] >= 1f)
+                        {
+                            player.RpcResetAbilityCooldown();
+                            Main.isMarked = false;//変身クールを１秒に変更
+                            player.SyncSettings();
+                            Main.AssassinTimer.Remove(player.PlayerId);
+                        }
+                        else Main.AssassinTimer[player.PlayerId] = Main.AssassinTimer[player.PlayerId] + Time.fixedDeltaTime;//時間をカウント
+                    }
+                    else
+                    {
+                        Main.AssassinTimer.Remove(player.PlayerId);
+                    }
+                }
                 //ターゲットのリセット
                 BountyHunter.FixedUpdate(player);
                 EvilTracker.FixedUpdate(player);
@@ -690,7 +742,7 @@ namespace TownOfHost
                 if (GameStates.IsInGame && Main.RefixCooldownDelay <= 0)
                     foreach (var pc in Main.AllPlayerControls)
                     {
-                        if (pc.Is(CustomRoles.Vampire) || pc.Is(CustomRoles.Warlock))
+                        if (pc.Is(CustomRoles.Vampire) || pc.Is(CustomRoles.Warlock) || pc.Is(CustomRoles.Assassin))
                             Main.AllPlayerKillCooldown[pc.PlayerId] = Options.DefaultKillCooldown * 2;
                     }
 

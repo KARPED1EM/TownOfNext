@@ -112,8 +112,11 @@ namespace TownOfHost
         public const float MinSpeed = 0.0001f;
         public static Dictionary<byte, (byte, float)> BitPlayers = new();
         public static Dictionary<byte, float> WarlockTimer = new();
+        public static Dictionary<byte, float> AssassinTimer = new();
         public static Dictionary<byte, PlayerControl> CursedPlayers = new();
         public static Dictionary<byte, bool> isCurseAndKill = new();
+        public static Dictionary<byte, PlayerControl> MarkedPlayers = new();
+        public static Dictionary<byte, bool> isMarkAndKill = new();
         public static Dictionary<(byte, byte), bool> isDoused = new();
         public static Dictionary<byte, (PlayerControl, float)> ArsonistTimer = new();
 
@@ -137,6 +140,7 @@ namespace TownOfHost
         public static int AliveImpostorCount;
         public static int SKMadmateNowCount;
         public static bool isCursed;
+        public static bool isMarked;
         public static Dictionary<byte, bool> CheckShapeshift = new();
         public static Dictionary<byte, byte> ShapeshiftTarget = new();
         public static Dictionary<(byte, byte), string> targetArrows = new();
@@ -182,7 +186,9 @@ namespace TownOfHost
 
             BitPlayers = new Dictionary<byte, (byte, float)>();
             WarlockTimer = new Dictionary<byte, float>();
+            AssassinTimer = new Dictionary<byte, float>();
             CursedPlayers = new Dictionary<byte, PlayerControl>();
+            MarkedPlayers = new Dictionary<byte, PlayerControl>();
             isDoused = new Dictionary<(byte, byte), bool>();
             ArsonistTimer = new Dictionary<byte, (PlayerControl, float)>();
             MayorUsedButtonCount = new Dictionary<byte, int>();
@@ -325,6 +331,7 @@ namespace TownOfHost
         Vampire,
         Witch,
         Warlock,
+        Assassin,
         Hacker,
         Miner,
         Mare,

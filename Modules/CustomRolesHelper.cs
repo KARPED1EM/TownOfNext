@@ -40,6 +40,7 @@ namespace TownOfHost
                 CustomRoles.Witch or
                 //CustomRoles.ShapeMaster or
                 CustomRoles.Warlock or
+                CustomRoles.Assassin or
                 CustomRoles.Hacker or
                 CustomRoles.Miner or
                 CustomRoles.SerialKiller or

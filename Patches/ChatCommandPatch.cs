@@ -418,6 +418,7 @@ namespace TownOfHost
                 { CustomRoles.Puppeteer, "傀儡师" },
                 { CustomRoles.Vampire, "吸血鬼" },
                 { CustomRoles.Warlock, "术士" },
+                { CustomRoles.Assassin, "忍者" },
                 { CustomRoles.Hacker, "骇客" },
                 { CustomRoles.Miner, "矿工" },
                 { CustomRoles.Witch, "女巫" },
