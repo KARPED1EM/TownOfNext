@@ -441,6 +441,9 @@ KillFlashDuration,击杀闪烁持续时间,殺人閃光持續時間
 WitchModeSwitchAction,切换击杀模式,切換模式操作
 TriggerKill,击杀,殺人鍵
 TriggerVent,通风管,通風口
+InitialCd,初始冷却
+ReduceTime,每次击杀所缩短冷却
+MinimumCd,最低冷却时间
 
 ## かくれんぼ設定
 HideAndSeekOptions,躲猫猫设置,躲貓貓設定

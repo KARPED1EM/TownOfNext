@@ -38,7 +38,7 @@ namespace TownOfHost
                 killer.MarkDirtySettings();
         }
 
-        public static void ApplyKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] =  haskill ? InitialCd.GetFloat() : InitialCd.GetFloat() - ReducedTime;
+        public static void ApplyKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] =  !haskill ? InitialCd.GetFloat() : InitialCd.GetFloat() - ReducedTime;
         public static bool HasKilled(PlayerControl pc)
            => pc != null && pc.Is(CustomRoles.Madcapkiller) && pc.IsAlive() && Main.PlayerStates[pc.PlayerId].GetKillCount(true) > 0;
 
@@ -47,7 +47,10 @@ namespace TownOfHost
             if (HasKilled(player))
             {
                 haskill = HasKilled(player);
-                ReducedTime = ReduceTime.GetFloat() * (float)Main.PlayerStates[player.PlayerId].GetKillCount();
+                if (InitialCd.GetFloat() - ReducedTime > MinimumCd.GetFloat() && InitialCd.GetFloat() - ReducedTime - ReduceTime.GetFloat() > MinimumCd.GetFloat())
+                {
+                    ReducedTime = ReduceTime.GetFloat() * (float)Main.PlayerStates[player.PlayerId].GetKillCount();
+                }
                 return;
             }
         }
