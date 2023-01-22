@@ -328,6 +328,7 @@ namespace TownOfHost
                         Utils.SendMessage("很抱歉，房主无法使用该指令", PlayerControl.LocalPlayer.PlayerId);
                         break;
 
+
                     default:
                         Main.isChatCommand = false;
                         break;

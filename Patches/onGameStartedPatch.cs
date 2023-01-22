@@ -23,12 +23,16 @@ namespace TownOfHost
                 Main.AllPlayerSpeed = new Dictionary<byte, float>();
                 Main.BitPlayers = new Dictionary<byte, (byte, float)>();
                 Main.WarlockTimer = new Dictionary<byte, float>();
+                Main.AssassinTimer = new Dictionary<byte, float>();
                 Main.isDoused = new Dictionary<(byte, byte), bool>();
                 Main.ArsonistTimer = new Dictionary<byte, (PlayerControl, float)>();
                 Main.CursedPlayers = new Dictionary<byte, PlayerControl>();
+                Main.isMarkAndKill = new Dictionary<byte, bool>();
+                Main.MarkedPlayers = new Dictionary<byte, PlayerControl>();
                 Main.isCurseAndKill = new Dictionary<byte, bool>();
                 Main.SKMadmateNowCount = 0;
                 Main.isCursed = false;
+                Main.isMarked = false;
                 Main.PuppeteerList = new Dictionary<byte, byte>();
                 Main.HackerUsedCount = new Dictionary<byte, int>();
 
@@ -196,7 +200,7 @@ namespace TownOfHost
                     roleOpt.SetRoleRate(RoleTypes.Engineer, EngineerNum + AdditionalEngineerNum, AdditionalEngineerNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Engineer));
 
                     int ShapeshifterNum = roleOpt.GetNumPerGame(RoleTypes.Shapeshifter);
-                    int AdditionalShapeshifterNum = CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount() + CustomRoles.Miner.GetCount() + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();//- ShapeshifterNum;
+                    int AdditionalShapeshifterNum = CustomRoles.SerialKiller.GetCount() + CustomRoles.BountyHunter.GetCount() + CustomRoles.Warlock.GetCount() + CustomRoles.Assassin.GetCount() + CustomRoles.Miner.GetCount() + CustomRoles.FireWorks.GetCount() + CustomRoles.Sniper.GetCount() + CustomRoles.EvilTracker.GetCount();//- ShapeshifterNum;
                     if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1)
                         AdditionalShapeshifterNum += CustomRoles.Egoist.GetCount();
                     roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum + AdditionalShapeshifterNum, AdditionalShapeshifterNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
@@ -353,7 +357,7 @@ namespace TownOfHost
             }
             else
             {
-                for (int i = 0; i <= 39; i++)
+                for (int i = 0; i <= 40; i++)
                 {
                     Main.funList.Add(i);
                 }
@@ -372,7 +376,7 @@ namespace TownOfHost
                     }
                 }
 
-                //if(Main.funList.Remove(38)) Main.funList.Insert(0, 38);
+                //if(Main.funList.Remove(40)) Main.funList.Insert(0, 40);
                 Dictionary<byte, int> tryTime = new();
                 Retry:
                 foreach (int i in Main.funList)
@@ -420,6 +424,7 @@ namespace TownOfHost
                         case 37: AssignCustomRolesFromList(CustomRoles.SuperStar, Crewmates); break;
                         case 38: AssignCustomRolesFromList(CustomRoles.Hacker, Impostors); break;
                         case 39: AssignCustomRolesFromList(CustomRoles.Madcapkiller, Impostors); break;
+                        case 40: AssignCustomRolesFromList(CustomRoles.Assassin, Shapeshifters); break;
                     }
                 }
 
@@ -542,6 +547,10 @@ namespace TownOfHost
                         case CustomRoles.Warlock:
                             Main.CursedPlayers.Add(pc.PlayerId, null);
                             Main.isCurseAndKill.Add(pc.PlayerId, false);
+                            break;
+                        case CustomRoles.Assassin:
+                            Main.MarkedPlayers.Add(pc.PlayerId, null);
+                            Main.isMarkAndKill.Add(pc.PlayerId, false);
                             break;
                         case CustomRoles.FireWorks:
                             FireWorks.Add(pc.PlayerId);
