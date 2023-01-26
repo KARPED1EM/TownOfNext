@@ -386,7 +386,7 @@ namespace TownOfHost
                 CustomRoles.Jackal => Jackal.CanVent.GetBool(),
                 CustomRoles.Arsonist => pc.IsDouseDone(),
                 _ => pc.Is(RoleType.Impostor),
-            }; ;
+            };
         }
         public static bool IsDousedPlayer(this PlayerControl arsonist, PlayerControl target)
         {
