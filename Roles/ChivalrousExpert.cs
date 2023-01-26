@@ -41,9 +41,6 @@ namespace TownOfHost
             if (!Main.ResetCamPlayerList.Contains(playerId)) {
                 Main.ResetCamPlayerList.Add(playerId);
             }
-
-            // Logger.Info($"{Utils.GetPlayerById(playerId)?.GetNameWithRole()} : 残り{ShotLimit[playerId]}発", "Sheriff");
-            // Logger.Info(Utils.GetPlayerById(playerId)?.GetNameWithRole() + " is ChivalrousExpert");
         }
     }
 }

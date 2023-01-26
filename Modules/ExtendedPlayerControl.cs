@@ -368,7 +368,7 @@ namespace TownOfHost
                 CustomRoles.Sniper => Sniper.CanUseKillButton(pc),
                 CustomRoles.Sheriff => Sheriff.CanUseKillButton(pc.PlayerId),
                 CustomRoles.Arsonist => !pc.IsDouseDone(),
-                CustomRoles.ChivalrousExpert => !ChivalrousExpert.isKilled(pc.PlayerId),
+                CustomRoles.ChivalrousExpert => true,
                 CustomRoles.Egoist or CustomRoles.Jackal => true,
                 _ => pc.Is(RoleType.Impostor),
             };
@@ -381,11 +381,12 @@ namespace TownOfHost
             {
                 CustomRoles.Sheriff => false,
                 CustomRoles.ChivalrousExpert => false,
+                CustomRoles.EvilGuesser => true,
                 CustomRoles.Egoist => true,
                 CustomRoles.Jackal => Jackal.CanVent.GetBool(),
                 CustomRoles.Arsonist => pc.IsDouseDone(),
                 _ => pc.Is(RoleType.Impostor),
-            };
+            }; ;
         }
         public static bool IsDousedPlayer(this PlayerControl arsonist, PlayerControl target)
         {
