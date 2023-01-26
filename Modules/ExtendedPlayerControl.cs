@@ -368,7 +368,7 @@ namespace TownOfHost
                 CustomRoles.Sniper => Sniper.CanUseKillButton(pc),
                 CustomRoles.Sheriff => Sheriff.CanUseKillButton(pc.PlayerId),
                 CustomRoles.Arsonist => !pc.IsDouseDone(),
-                CustomRoles.ChivalrousExpert => true,
+                CustomRoles.ChivalrousExpert => !ChivalrousExpert.isKilled(pc.PlayerId),
                 CustomRoles.Egoist or CustomRoles.Jackal => true,
                 _ => pc.Is(RoleType.Impostor),
             };

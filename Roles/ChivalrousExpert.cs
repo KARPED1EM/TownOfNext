@@ -27,7 +27,7 @@ namespace TownOfHost
 
         public static bool CanUseKillButton(byte playerId)
             => !Main.PlayerStates[playerId].IsDead
-            && !GameStates.AlreadyDied;
+            && !isKilled(playerId);
 
         public static bool isKilled(byte playerId) {
             //return killed.Contains(playerId);
