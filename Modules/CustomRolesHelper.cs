@@ -19,7 +19,8 @@ namespace TownOfHost
                 CustomRoles.Jester or
                 CustomRoles.Terrorist or
                 CustomRoles.EgoSchrodingerCat or
-                CustomRoles.Executioner;
+                CustomRoles.Executioner or
+                CustomRoles.AmnesiaPerson;
         }
 
 
@@ -38,7 +39,6 @@ namespace TownOfHost
                 CustomRoles.BountyHunter or
                 CustomRoles.Vampire or
                 CustomRoles.Witch or
-                //CustomRoles.ShapeMaster or
                 CustomRoles.Warlock or
                 CustomRoles.Assassin or
                 CustomRoles.Hacker or
@@ -79,7 +79,8 @@ namespace TownOfHost
                 CustomRoles.Jackal or
                 CustomRoles.JSchrodingerCat or
                 CustomRoles.HASTroll or
-                CustomRoles.HASFox;
+                CustomRoles.HASFox or
+                CustomRoles.AmnesiaPerson;
         }
         public static bool IsCrewmate(this CustomRoles role) => !role.IsImpostorTeam() && !role.IsNeutral();
         public static bool IsVanilla(this CustomRoles role)

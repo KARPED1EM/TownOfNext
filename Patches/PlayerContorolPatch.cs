@@ -509,6 +509,9 @@ namespace TownOfHost
             if (!AmongUsClient.Instance.AmHost) return true;
             BountyHunter.OnReportDeadBody();
             SerialKiller.OnReportDeadBody();
+
+            AmnesiaPerson.OnReportDeadBody(__instance, target);
+
             Main.ArsonistTimer.Clear();
             if (target == null) //ボタン
             {
@@ -518,7 +521,7 @@ namespace TownOfHost
                 }
             }
 
-            if (__instance.Is(CustomRoles.Jester) && !Options.JesterCanUseButton.GetBool()) return false;
+            if (__instance.Is(CustomRoles.Jester) && !Options.JesterCanUseButton.GetBool() && target == null) return false;
 
             if (Options.SyncButtonMode.GetBool() && target == null)
             {
@@ -562,7 +565,6 @@ namespace TownOfHost
             //=============================================
             //以下、ボタンが押されることが確定したものとする。
             //=============================================
-
 
             Main.AllPlayerControls
                 .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))

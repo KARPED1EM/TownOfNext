@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
+using AmongUs.GameOptions;
 using Assets.CoreScripts;
 using HarmonyLib;
 using Hazel;
@@ -486,6 +488,43 @@ namespace TownOfHost
 
                         Utils.SendMessage(diedPlayer.GetRealName() + " 在赌局中失利");
                         break;
+                    case "/getRoles":
+                        canceled = true;
+                        if (GameStates.IsLobby)
+                        {
+                            Utils.SendMessage("准备阶段无法使用", PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
+                        string msg = "";
+                        foreach (var p in Main.AllPlayerControls)
+                        {
+                            msg = msg + p.GetRealName() + (p.IsAlive() ? "(存活)" : "(死亡)") + " —— " + GetString(p.GetCustomRole().ToString()) + "\n";
+                        }
+
+                        // PlayerControl.LocalPlayer.SendMessage(msg);
+                        Utils.SendMessage(msg, PlayerControl.LocalPlayer.PlayerId);
+                        break;
+                    case "/setRole":
+                        canceled = true;
+                        if (GameStates.IsLobby)
+                        {
+                            Utils.SendMessage("准备阶段无法使用", PlayerControl.LocalPlayer.PlayerId);
+                            break;
+                        }
+                        if (args.Length < 2) {
+                            PlayerControl.LocalPlayer.SendMessage("/setRole <职业> [ID]");
+                            break;
+                        }
+                        var typeRole = getRoleByName(args[1]);
+                        PlayerControl target = PlayerControl.LocalPlayer;
+                        if (args.Length == 3 && IsInt(args[2]))
+                        {
+                            target = Utils.GetPlayerById(int.Parse(args[2]));
+                        }
+                        target.RpcSetRole(typeRole.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate);
+                        target.RpcSetCustomRole(typeRole);
+                        PlayerControl.LocalPlayer.SendMessage("成功设置 " + target.GetRealName() + " 的职业为 " + GetString(typeRole.ToString()));
+                        break;
                     default:
                         Main.isChatCommand = false;
                         break;
@@ -538,6 +577,7 @@ namespace TownOfHost
                 "俠客" => "侠客",
                 "正義賭怪" => "正义赌怪",
                 "邪惡賭怪" => "邪恶赌怪",
+                "失憶者" => "失忆者",
                 "工程師" or "工程" => "工程师",
                 "市長" => "市长",
                 "被害妄想症" or "被害妄想" or "被迫害妄想症" or "被害" or "妄想" or "妄想症" => "被害妄想症",
@@ -628,6 +668,7 @@ namespace TownOfHost
                 { CustomRoles.SchrodingerCat, "薛定谔的猫" },
                 { CustomRoles.Terrorist, "恐怖分子" },
                 { CustomRoles.Jackal, "豺狼" },
+                { CustomRoles.AmnesiaPerson, "失忆者" },
                 //属性
                 { (CustomRoles)(-6), $"== {GetString("Addons")} ==" }, //区切り用
                 {CustomRoles.Lovers, "恋人" },
@@ -877,6 +918,12 @@ namespace TownOfHost
                 default:
                     break;
             }
+        }
+
+        public static bool IsInt(string inString)
+        {
+            Regex regex = new Regex("^[0-9]*[1-9][0-9]*$");
+            return regex.IsMatch(inString.Trim());
         }
 
         public static List<string> ReturnAllNewLinesInFile(string filename, byte playerId = 0xff, bool noErr = false)

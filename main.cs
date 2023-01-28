@@ -271,6 +271,7 @@ namespace TownOfHost
                     {CustomRoles.EgoSchrodingerCat, "#5600ff"},
                     {CustomRoles.Jackal, "#00b4eb"},
                     {CustomRoles.JSchrodingerCat, "#00b4eb"},
+                    {CustomRoles.AmnesiaPerson, "#00b4eb"},
                     //HideAndSeek
                     {CustomRoles.HASFox, "#e478ff"},
                     {CustomRoles.HASTroll, "#00ff00"},
@@ -393,6 +394,7 @@ namespace TownOfHost
         Executioner,
         Jackal,
         JSchrodingerCat,//ジャッカル陣営のシュレディンガーの猫
+        AmnesiaPerson,
         //HideAndSeek
         HASFox,
         HASTroll,

@@ -535,6 +535,7 @@ namespace TownOfHost
             Egoist.SetupCustomOption();
             Executioner.SetupCustomOption();
             Jackal.SetupCustomOption();
+            AmnesiaPerson.SetupCustomOption();
 
             // Add-Ons
             LastImpostor.SetupCustomOption();

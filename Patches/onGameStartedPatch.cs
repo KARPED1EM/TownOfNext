@@ -134,6 +134,7 @@ namespace TownOfHost
                 NiceGuesser.Init();
                 EvilGuesser.Init();
                 EvilTracker.Init();
+                AmnesiaPerson.Init();
                 LastImpostor.Init();
                 CustomWinnerHolder.Reset();
                 AntiBlackout.Reset();
@@ -342,7 +343,7 @@ namespace TownOfHost
             else
             {
                 List<int> funList = new();
-                for (int i = 0; i <= 45; i++)
+                for (int i = 0; i <= 46; i++)
                 {
                     funList.Add(i);
                 }
@@ -415,6 +416,7 @@ namespace TownOfHost
                         case 43: AssignCustomRolesFromList(CustomRoles.Escapee, Shapeshifters); break;
                         case 44: AssignCustomRolesFromList(CustomRoles.NiceGuesser, Crewmates); break;
                         case 45: AssignCustomRolesFromList(CustomRoles.EvilGuesser, Impostors); break;
+                        case 46: AssignCustomRolesFromList(CustomRoles.AmnesiaPerson, Crewmates); break;
                     }
                 }
 
