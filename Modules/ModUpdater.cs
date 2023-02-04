@@ -20,7 +20,8 @@ namespace TownOfHost
         private static readonly string URL = "http://api.2018k.cn";
         public static bool hasUpdate = false;
         public static bool forceUpdate = true;
-        public static bool isBroken = false;
+        // public static bool isBroken = false;
+        // No broken
         public static bool isChecked = false;
         public static Version latestVersion = null;
         public static string latestTitle = null;
@@ -133,12 +134,12 @@ namespace TownOfHost
                     return Task.FromResult(false);
                 }
                 isChecked = true;
-                isBroken = false;
+                // isBroken = false;
             }
             catch (Exception ex)
             {
                 isChecked = false;
-                isBroken = true;
+                // isBroken = true;
                 Logger.Error($"检查更新时发生错误\n{ex}", "CheckRelease", false);
                 return Task.FromResult(false);
             }
@@ -172,7 +173,7 @@ namespace TownOfHost
         {
             try
             {
-                foreach (var path in Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.bak"))
+                foreach (var path in Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty, "*.bak"))
                 {
                     Logger.Info($"{Path.GetFileName(path)}を削除", "DeleteOldDLL");
                     File.Delete(path);
@@ -189,7 +190,7 @@ namespace TownOfHost
             try
             {
                 using WebClient client = new();
-                client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadCallBack);
+                client.DownloadProgressChanged += DownloadCallBack;
                 client.DownloadFileAsync(new Uri(url), "BepInEx/plugins/TownOfHost.dll");
                 while (client.IsBusy) await Task.Delay(1);
                 ShowPopup(GetString("updateRestart"), true);

@@ -20,10 +20,10 @@ namespace TownOfHost
                 Logger.SendInGame(message);
                 return false;
             }
-            if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate))
+            if (/*ModUpdater.isBroken || */(ModUpdater.hasUpdate && ModUpdater.forceUpdate))
             {
                 var message = "";
-                if (ModUpdater.isBroken) message = GetString("ModBrokenMessage");
+                /* if (ModUpdater.isBroken) message = GetString("ModBrokenMessage"); */
                 if (ModUpdater.hasUpdate) message = GetString("CanNotJoinPublicRoomNoLatest");
                 Logger.Info(message, "MakePublicPatch");
                 Logger.SendInGame(message);
@@ -37,17 +37,19 @@ namespace TownOfHost
     {
         public static void Postfix(MMOnlineManager __instance)
         {
-            if (!((ModUpdater.hasUpdate && ModUpdater.forceUpdate) || ModUpdater.isBroken)) return;
+            if (!((ModUpdater.hasUpdate && ModUpdater.forceUpdate)/* || ModUpdater.isBroken*/)) return;
             var obj = GameObject.Find("FindGameButton");
             if (obj)
             {
                 obj?.SetActive(false);
                 var parentObj = obj.transform.parent.gameObject;
-                var textObj = Object.Instantiate<TMPro.TextMeshPro>(obj.transform.FindChild("Text_TMP").GetComponent<TMPro.TextMeshPro>());
+                var textObj = Object.Instantiate(obj.transform.FindChild("Text_TMP").GetComponent<TMPro.TextMeshPro>());
                 textObj.transform.position = new Vector3(1f, -0.3f, 0);
                 textObj.name = "CanNotJoinPublic";
-                var message = ModUpdater.isBroken ? $"<size=2>{Utils.ColorString(Color.red, GetString("ModBrokenMessage"))}</size>"
-                    : $"<size=2>{Utils.ColorString(Color.red, GetString("CanNotJoinPublicRoomNoLatest"))}</size>";
+                var
+                    message = /*ModUpdater.isBroken ? $"<size=2>{Utils.ColorString(Color.red, GetString("ModBrokenMessage"))}</size>"
+                    : $"<size=2>{Utils.ColorString(Color.red, GetString("CanNotJoinPublicRoomNoLatest"))}</size>";*/
+                        $"<size=2>{Utils.ColorString(Color.red, GetString("CanNotJoinPublicRoomNoLatest"))}</size>";
                 new LateTask(() => { textObj.text = message; }, 0.01f, "CanNotJoinPublic");
             }
         }
