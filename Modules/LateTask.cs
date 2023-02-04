@@ -29,9 +29,7 @@ namespace TownOfHost
         public static void Update(float deltaTime)
         {
             var TasksToRemove = new List<LateTask>();
-            for (int i = 0; i < Tasks.Count; i++)
-            {
-                var task = Tasks[i];
+            foreach (var task in Tasks)
                 try
                 {
                     if (task.Run(deltaTime))
@@ -45,7 +43,7 @@ namespace TownOfHost
                     Logger.Error($"{ex.GetType()}: {ex.Message}  in \"{task.name}\"\n{ex.StackTrace}", "LateTask.Error", false);
                     TasksToRemove.Add(task);
                 }
-            }
+
             TasksToRemove.ForEach(task => Tasks.Remove(task));
         }
     }

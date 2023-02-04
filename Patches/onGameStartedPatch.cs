@@ -14,7 +14,7 @@ namespace TownOfHost
     {
         public static void Postfix(AmongUsClient __instance)
         {
-                
+
             try
             {
                 //注:この時点では役職は設定されていません。
@@ -355,7 +355,7 @@ namespace TownOfHost
             else
             {
                 List<int> funList = new();
-                for (int i = 0; i <= 53; i++)
+                for (int i = 0; i <= 54; i++)
                 {
                     funList.Add(i);
                 }
@@ -407,7 +407,7 @@ namespace TownOfHost
                         case 22: AssignCustomRolesFromList(CustomRoles.Trapper, Crewmates); break;
                         case 23: AssignCustomRolesFromList(CustomRoles.Dictator, Crewmates); break;
                         case 24: AssignCustomRolesFromList(CustomRoles.SchrodingerCat, Crewmates); break;
-                        case 25: if (Options.IsEvilWatcher) AssignCustomRolesFromList(CustomRoles.Watcher, Impostors); else AssignCustomRolesFromList(CustomRoles.Watcher, Crewmates); break;
+                        case 25: AssignCustomRolesFromList(CustomRoles.Watcher, Options.IsEvilWatcher ? Impostors : Crewmates); break;
                         case 26: if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1) AssignCustomRolesFromList(CustomRoles.Egoist, Shapeshifters); break;
                         case 27: AssignCustomRolesFromList(CustomRoles.Mare, Impostors); break;
                         case 28: AssignCustomRolesFromList(CustomRoles.Doctor, Scientists); break;
@@ -436,6 +436,7 @@ namespace TownOfHost
                         case 51: AssignCustomRolesFromList(CustomRoles.AntiAdminer, Impostors); break;
                         case 52: AssignCustomRolesFromList(CustomRoles.Sans, Impostors); break;
                         case 53: AssignCustomRolesFromList(CustomRoles.Bomber, Shapeshifters); break;
+                        case 54: AssignCustomRolesFromList(CustomRoles.Amnesiac, Crewmates); break;
                     }
                 }
 

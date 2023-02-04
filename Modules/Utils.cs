@@ -11,6 +11,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using TownOfHost.Modules;
+using TownOfHost.NewRoles;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static TownOfHost.Translator;
@@ -304,6 +305,9 @@ namespace TownOfHost
             {
                 if (p.IsDead && Options.GhostIgnoreTasks.GetBool()) hasTasks = false;
                 var role = States.MainRole;
+                foreach (var role1 in NewRoles.RoleManager.GetRoles())
+                    if (role1.CustomRole == role)
+                        hasTasks = role1.HasTask;
                 switch (role)
                 {
                     case CustomRoles.GM:

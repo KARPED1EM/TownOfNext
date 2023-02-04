@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using TownOfHost.Listener;
 using UnityEngine;
 using static TownOfHost.Translator;
 
@@ -527,6 +528,7 @@ namespace TownOfHost
                 Logger.Warn($"{__instance.GetNameWithRole()}:通報禁止中のため可能になるまで待機します", "ReportDeadBody");
                 return false;
             }
+            foreach (var listener in ListenerManager.GetListeners()) listener.OnPlayerReportBody(__instance, target); // listener handler
             if (__instance.Is(CustomRoles.Minimalism)) return false;
             if (target == null) //ボタン
             {

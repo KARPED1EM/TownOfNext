@@ -193,7 +193,7 @@ namespace TownOfHost
                 {
                     Witch.OnCheckForEndVoting(exileId);
                 }
-                
+
                 FollowingSuicideOnExile(exileId);
                 RevengeOnExile(exileId);
 
@@ -223,9 +223,13 @@ namespace TownOfHost
                         if (Options.ConfirmEjectionsRoles.GetBool())
                         {
                             name = string.Format(GetString("PlayerIsRole"), realName, coloredRole);
-                        }
+                        }/*
                         else if (Options.ConfirmEjections.GetBool())
                         {
+                            name = $"{realName} 属于 " + (player.GetCustomRole().IsImpostorTeam() ?
+                                Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor),
+                                "内鬼阵营") : Utils.ColorString(Color.cyan, "中立阵营"));
+
                             if (CustomRolesHelper.IsImpostor(player.GetCustomRole()))
                             {
                                 name = $"{realName} 属于 " + Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), "内鬼阵营");
@@ -234,7 +238,7 @@ namespace TownOfHost
                             {
                                 name = string.Format(GetString("IsGood"), realName);
                             }
-                            if (Options.ConfirmEjectionsNK.GetBool() && CustomRolesHelper.IsNK(player.GetCustomRole()))
+                            if (Options.ConfirmEjectionsNK.GetBool() && player.GetCustomRole().IsNK())
                             {
                                 if (Options.ConfirmEjectionsNKAsImp.GetBool())
                                 {
@@ -256,7 +260,7 @@ namespace TownOfHost
                                     name = $"{realName} 属于 " + Utils.ColorString(Color.cyan, "中立阵营");
                                 }
                             }
-                        }
+                        }*/
                         else
                         {
                             name = string.Format(GetString("PlayerExiled"), realName);

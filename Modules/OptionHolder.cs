@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
 using Steamworks;
+using TownOfHost.NewRoles;
 using UnityEngine;
 using static UnityEngine.RemoteConfigSettingsHelper;
 
@@ -140,10 +141,10 @@ namespace TownOfHost
         public static OptionItem SendCodeToQQ;
         public static OptionItem SendCodeMinPlayer;
         public static OptionItem DisableVanillaRoles;
-        public static OptionItem ConfirmEjections;
-        public static OptionItem ConfirmEjectionsNK;
-        public static OptionItem ConfirmEjectionsNonNK;
-        public static OptionItem ConfirmEjectionsNKAsImp;
+        // public static OptionItem ConfirmEjections;
+        // public static OptionItem ConfirmEjectionsNK;
+        // public static OptionItem ConfirmEjectionsNonNK;
+        // public static OptionItem ConfirmEjectionsNKAsImp;
         public static OptionItem ConfirmEjectionsRoles;
         public static OptionItem ShowImpRemainOnEject;
         public static OptionItem ShowNKRemainOnEject;
@@ -167,7 +168,7 @@ namespace TownOfHost
         public static OptionItem SansReduceKillCooldown;
         public static OptionItem SansMinKillCooldown;
         public static OptionItem BomberRadius;
-        
+
         // HideAndSeek
         public static OptionItem AllowCloseDoors;
         public static OptionItem KillDelay;
@@ -561,6 +562,11 @@ namespace TownOfHost
 
             ChivalrousExpert.SetupCustomOption();
 
+            foreach (var role in NewRoles.RoleManager.GetRoles())
+            {
+                role.SetupCustomOption();
+            }
+
             // Neutral
             SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);
             ArsonistDouseTime = FloatOptionItem.Create(50510, "ArsonistDouseTime", new(1f, 10f, 1f), 3f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Arsonist])
@@ -606,11 +612,10 @@ namespace TownOfHost
             DisableVanillaRoles = BooleanOptionItem.Create(6090069, "DisableVanillaRoles", true, TabGroup.MainSettings, false)
                 .SetHeader(true);
 
-            ConfirmEjections = BooleanOptionItem.Create(6090105, "ConfirmEjections", false, TabGroup.MainSettings, false)
-                .SetHeader(true);
-            ConfirmEjectionsNK = BooleanOptionItem.Create(6090107, "ConfirmEjectionsNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
-            ConfirmEjectionsNonNK = BooleanOptionItem.Create(6090109, "ConfirmEjectionsNonNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
-            ConfirmEjectionsNKAsImp = BooleanOptionItem.Create(6090111, "ConfirmEjectionsNKAsImp", false, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
+            // ConfirmEjections = BooleanOptionItem.Create(6090105, "ConfirmEjections", false, TabGroup.MainSettings, false).SetHeader(true);
+            // ConfirmEjectionsNK = BooleanOptionItem.Create(6090107, "ConfirmEjectionsNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
+            // ConfirmEjectionsNonNK = BooleanOptionItem.Create(6090109, "ConfirmEjectionsNonNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
+            // ConfirmEjectionsNKAsImp = BooleanOptionItem.Create(6090111, "ConfirmEjectionsNKAsImp", false, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
             ConfirmEjectionsRoles = BooleanOptionItem.Create(6090113, "ConfirmEjectionsRoles", true, TabGroup.MainSettings, false);
             ShowImpRemainOnEject = BooleanOptionItem.Create(6090115, "ShowImpRemainOnEject", true, TabGroup.MainSettings, false);
             ShowNKRemainOnEject = BooleanOptionItem.Create(6090119, "ShowNKRemainOnEject", true, TabGroup.MainSettings, false).SetParent(ShowImpRemainOnEject);

@@ -7,6 +7,8 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
+using TownOfHost.NewRoles;
+using TownOfHost.NewRoles.Roles;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 
@@ -174,6 +176,10 @@ public class Main : BasePlugin
     {
         Instance = this;
 
+        ChatCommands.Init();
+
+        NewRoles.RoleManager.RegisterRoleWithListener(new Amnesiac());
+
         //Client Options
         HideName = Config.Bind("Client Options", "Hide Game Code Name", "TOHE");
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
@@ -238,8 +244,7 @@ public class Main : BasePlugin
         ExceptionMessage = "";
         try
         {
-
-            roleColors = new Dictionary<CustomRoles, string>()
+            roleColors = new Dictionary<CustomRoles, string>
             {
                 //バニラ役職
                 {CustomRoles.Crewmate, "#ffffff"},
@@ -301,8 +306,9 @@ public class Main : BasePlugin
 
                 {CustomRoles.NotAssigned, "#ffffff"},
             };
+            foreach (var role in NewRoles.RoleManager.GetRoles()) roleColors.Add(role.CustomRole, role.Color);
+
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
-            {
                 switch (role.GetRoleType())
                 {
                     case RoleType.Impostor:
@@ -314,7 +320,6 @@ public class Main : BasePlugin
                     default:
                         break;
                 }
-            }
         }
         catch (ArgumentException ex)
         {
@@ -324,6 +329,7 @@ public class Main : BasePlugin
             ExceptionMessage = ex.Message;
             ExceptionMessageIsShown = false;
         }
+
         TownOfHost.Logger.Info($"{Application.version}", "AmongUs Version");
 
         TownOfHost.Logger.Info($"{nameof(ThisAssembly.Git.Branch)}: {ThisAssembly.Git.Branch}", "GitVersion");
@@ -339,6 +345,7 @@ public class Main : BasePlugin
         Harmony.PatchAll();
     }
 }
+
 public enum CustomRoles
 {
     //Default
@@ -415,6 +422,7 @@ public enum CustomRoles
     OpportunistKiller,
     Opportunist,
     Mario,
+    Amnesiac,
     SchrodingerCat,//第三陣営のシュレディンガーの猫
     Terrorist,
     Executioner,
