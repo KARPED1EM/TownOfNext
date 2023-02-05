@@ -103,6 +103,7 @@ Mario,马里奥
 Lovers,恋人
 Jackal,豺狼
 God,神
+Amnesiac,失忆者
 
 # 躲猫猫
 HASFox,狐狸
@@ -203,6 +204,7 @@ MarioInfo,听说你的公主在管道里
 LoversInfo,最重要的是，记得照顾好你的另一半
 JackalInfo,在TOH，我一般称自己为只狼
 GodInfo,一切都在您的掌控
+AmnesiacInfo,我是谁？
 
 # 躲猫猫
 HASFoxInfo,活下去吧！活到最后你就成为了赢家！
@@ -288,6 +290,7 @@ MarioInfoLong,(独立阵营):\n马里奥跳管达到一定次数就会单独获�
 EgoistInfoLong,(独立阵营):\n原则上野心家属于内鬼阵营。野心家与内鬼阵营玩家互认但不可以击杀对方。当其他内鬼阵营玩家全部死亡后，若野心家存活且内鬼阵营达成胜利条件，则野心家单独获得胜利。
 JackalInfoLong,(独立阵营):\n豺狼需要击杀所有人。存活的玩家只剩豺狼和一名其他船员时，豺狼获得胜利。
 GodInfoLong,(独立阵营):\n神从一开始就知道所有人的身份，而神只要活到最后就会抢走胜利。
+AmnesiacInfoLong,(独立阵营):\n失忆者通过报告偷取尸体职业
 
 # 躲猫猫
 HASFoxInfoLong,(躲猫猫):\n狐狸活到最后便与获胜阵营一同获胜。
