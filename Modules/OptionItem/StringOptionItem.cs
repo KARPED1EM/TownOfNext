@@ -1,3 +1,5 @@
+using TownOfHost.NewRoles;
+
 namespace TownOfHost
 {
     public class StringOptionItem : OptionItem

@@ -145,6 +145,9 @@ namespace TownOfHost
         // Getter
         public virtual string GetName(bool disableColor = false)
         {
+            foreach (var role in NewRoles.RoleManager.GetRoles())
+                if (role.Name.ToLower().Equals(Name.ToLower()))
+                    return disableColor ? role.DisplayName : Utils.ColorString(NameColor, role.DisplayName);
             return disableColor ?
                 Translator.GetString(Name, ReplacementDictionary) :
                 Utils.ColorString(NameColor, Translator.GetString(Name, ReplacementDictionary));

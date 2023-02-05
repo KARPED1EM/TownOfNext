@@ -17,6 +17,14 @@ public class RoleManager
         return Roles;
     }
 
+    public static Role GetRoleByCustomRoles(CustomRoles customRole)
+    {
+        foreach (var role in Roles)
+            if (role.CustomRole == customRole)
+                return role;
+        return null;
+    }
+
     public static void RegisterRoleWithListener(object obj)
     {
         RegisterRole(obj as Role);

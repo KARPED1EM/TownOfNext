@@ -10,6 +10,10 @@ public class Role
     public string Color { get; set; }
     public bool HasTask { get; set; }
     public RoleTypes BaseRole { get; set; }
+    public string Name { get; }
+    public string DisplayName { get; set; }
+    public string Description { get; set; }
+    public string Info { get; set; }
 
     public Role(int id, CustomRoles role)
     {
@@ -19,5 +23,9 @@ public class Role
         Color = "#ffffff";
         HasTask = true;
         BaseRole = RoleTypes.Crewmate;
+        DisplayName = CustomRole.ToString();
+        Description = "";
+        Info = "";
+        Name = role.ToString();
     }
 }

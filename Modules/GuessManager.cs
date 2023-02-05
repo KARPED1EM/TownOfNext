@@ -224,7 +224,7 @@ namespace TownOfHost
                 return false;
             }
 
-            if (!ChatCommands.GetRoleByName(msg, out role))
+            if (!ChatCommands.IsRoleByName(msg, out role))
             {
                 error = GetString("GuessHelp");
                 return false;

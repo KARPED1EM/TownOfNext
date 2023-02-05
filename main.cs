@@ -7,7 +7,6 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
-using TownOfHost.NewRoles;
 using TownOfHost.NewRoles.Roles;
 using UnhollowerRuntimeLib;
 using UnityEngine;
@@ -178,6 +177,7 @@ namespace TownOfHost
         {
             Instance = this;
 
+            // Register role & listeners
             NewRoles.RoleManager.RegisterRoleWithListener(new Amnesiac());
 
             //Client Options

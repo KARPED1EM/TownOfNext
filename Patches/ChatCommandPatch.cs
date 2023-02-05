@@ -227,6 +227,13 @@ namespace TownOfHost
             return true;
         }
 
+        private static string[] RemoveFirst(string[] array)
+        {
+            string[] toReturn = new string[array.Length - 2];
+            for (var i = 1; i < array.Length; i++) toReturn[i] = array[i];
+            return toReturn;
+        }
+
         public static bool Prefix(ChatController __instance)
         {
             if (__instance.TextArea.text == "") return false;
@@ -312,7 +319,6 @@ namespace TownOfHost
                         if (Options.DIYGameSettings.GetBool())
                         {
                             Utils.SendMessage(GetString("Message.NowOverrideText"), PlayerControl.LocalPlayer.PlayerId);
-                            break;
                         }
                         else
                         {
@@ -473,7 +479,7 @@ namespace TownOfHost
                         string msgText = "玩家编号列表：";
                         foreach (var pc in PlayerControl.AllPlayerControls)
                         {
-                            msgText += "\n" + pc.PlayerId.ToString() + " → " + pc.GetRealName();
+                            msgText += "\n" + pc.PlayerId + " → " + pc.GetRealName();
                         }
                         Utils.SendMessage(msgText, PlayerControl.LocalPlayer.PlayerId);
                         break;
@@ -489,8 +495,8 @@ namespace TownOfHost
                             Utils.SendMessage("很抱歉，每个房间车队姬只会发一次", PlayerControl.LocalPlayer.PlayerId);
                         }
                         break;
-                        
-                    
+
+
                     default:
                         Main.isChatCommand = false;
                         break;
@@ -503,7 +509,7 @@ namespace TownOfHost
             Skip:
             if (canceled)
             {
-                
+
                 Logger.Info("Command Canceled", "ChatCommand");
                 __instance.TextArea.Clear();
                 __instance.TextArea.SetText(cancelVal);
@@ -512,6 +518,7 @@ namespace TownOfHost
             return !canceled;
         }
 
+        /*
         public static string ToSimplified(string text)
         {
             text = text.Replace("着", "者").Trim();
@@ -584,8 +591,9 @@ namespace TownOfHost
                 _ => text,
             };
         }
-
-        private static readonly Dictionary<CustomRoles, string> roleList = new()
+*/
+        /*
+        private static readonly Dictionary<CustomRoles, string> RoleList = new()
         {
                 //GM
                 { CustomRoles.GM, GetString("GM") },
@@ -666,10 +674,9 @@ namespace TownOfHost
                 { (CustomRoles)(-7), $"== {GetString("HideAndSeek")} ==" }, //区切り用
                 { CustomRoles.HASFox, GetString("HASFox") },
                 { CustomRoles.HASTroll, GetString("HASTroll") },
+        };*/
 
-            };
-
-        public static bool GetRoleByName(string name, out CustomRoles role)
+        public static bool IsRoleByName(string name, out CustomRoles role)
         {
             role = new();
             if (name == "" || name == String.Empty) return false;
@@ -682,17 +689,18 @@ namespace TownOfHost
                 if (mc[i].ToString() == "是") continue;
                 result += mc[i];//匹配结果是完整的数字，此处可以不做拼接的
             }
-            name = ToSimplified(result.Replace("是", string.Empty).Trim());
-            foreach (var rl in roleList)
+            name = name/*ToSimplified(result.Replace("是", string.Empty)*/.Trim();//);
+            foreach (CustomRoles rl in Enum.GetValues(typeof(CustomRoles)))
             {
+                if (name.ToLower().Contains(rl.ToString().ToLower()) || (NewRoles.RoleManager.GetRoleByCustomRoles(rl) != null && name.ToLower().Equals(NewRoles.RoleManager.GetRoleByCustomRoles(rl).DisplayName.ToLower())) || name.ToLower().Equals(GetString(rl.ToString()))) return true;
+                /*
                 var roleShort = rl.Key.ToString().ToLower();
-                var roleName = rl.Value;
-
+                var roleName = GetString(rl.ToString());
                 if (name.Contains(roleShort) || name.Contains(roleName))
                 {
                     role = rl.Key;
                     return true;
-                }
+                }*/
             }
             return false;
         }
@@ -705,46 +713,36 @@ namespace TownOfHost
                 Utils.SendMessage("指令格式：/r [职业]\n例如：/r 灵媒", player.PlayerId);
                 return;
             }
-            role = ToSimplified(role);
+            // role = ToSimplified(role);
 
             var msg = "";
             var rolemsg = $"{GetString("Command.h_args")}";
-            foreach (var r in roleList)
-            {
-                var roleName = r.Key.ToString();
-                var roleShort = r.Value;
 
-                if (String.Compare(role, roleName, true) == 0 || String.Compare(role, roleShort, true) == 0)
+            foreach (CustomRoles customRole in Enum.GetValues(typeof(CustomRoles)))
+            {
+                if (customRole.ToString().ToLower().Equals(role.ToLower()) || role.ToLower().Equals(GetString(customRole.ToString()).ToLower()))
                 {
-                    Utils.SendMessage(GetString(roleName) + GetString($"{roleName}InfoLong"), player.PlayerId);
+                    Utils.SendMessage(GetString(customRole.ToString()) + GetString($"{customRole.ToString()}InfoLong"), player.PlayerId);
                     return;
                 }
 
-                var roleText = $"{roleName.ToLower()}({roleShort.ToLower()}), ";
-                if ((int)r.Key < 0)
+                var r = NewRoles.RoleManager.GetRoleByCustomRoles(customRole);
+
+                if (r != null && role.ToLower().Equals(r.DisplayName.ToLower()))
                 {
-                    msg += rolemsg + "\n" + roleShort + "\n";
-                    rolemsg = "";
-                }
-                else if ((rolemsg.Length + roleText.Length) > 40)
-                {
-                    msg += rolemsg + "\n";
-                    rolemsg = roleText;
-                }
-                else
-                {
-                    rolemsg += roleText;
+                    Utils.SendMessage(r.DisplayName + r.Description, player.PlayerId);
+                    return;
                 }
             }
 
             Utils.SendMessage("请正确拼写您要查询的职业哦~\n查看所有职业请输入/n", player.PlayerId);
-            return;
         }
+
         public static void OnReceiveChat(PlayerControl player, string text)
         {
             if (!AmongUsClient.Instance.AmHost) return;
             string[] args = text.Split(' ');
-            string subArgs = "";
+            string subArgs;
             if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
             if (GuessManager.GuesserMsg(player, text)) return;
             if (MafiaMsgCheck(player, text)) return;
@@ -759,10 +757,7 @@ namespace TownOfHost
                 case "/n":
                 case "/now":
                     if (Options.DIYGameSettings.GetBool())
-                    {
                         Utils.SendMessage(GetString("Message.NowOverrideText"), player.PlayerId);
-                        break;
-                    }
                     else
                     {
                         subArgs = args.Length < 2 ? "" : args[1];
@@ -798,7 +793,6 @@ namespace TownOfHost
                     }
                     SendRolesInfo(subArgs, player);
                     break;
-
                 case "/h":
                 case "/help":
                     subArgs = args.Length < 2 ? "" : args[1];
