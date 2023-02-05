@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using TownOfHost.Modules;
+using TownOfHost.NewRoles;
 using static TownOfHost.Translator;
 
 namespace TownOfHost
@@ -14,7 +15,7 @@ namespace TownOfHost
     {
         public static void Postfix(AmongUsClient __instance)
         {
-                
+
             try
             {
                 //注:この時点では役職は設定されていません。
@@ -270,6 +271,63 @@ namespace TownOfHost
             //以下、バニラ側の役職割り当てが入る
         }
 
+        private static readonly Dictionary<CustomRoles, RoleTypes> Map = new()
+        {
+                        {CustomRoles.Sniper, RoleTypes.Shapeshifter},
+                        {CustomRoles.Jester, RoleTypes.Crewmate},
+						{CustomRoles.Madmate, RoleTypes.Engineer},
+						{CustomRoles.Bait, RoleTypes.Crewmate},
+						{CustomRoles.MadGuardian, RoleTypes.Crewmate},
+						{CustomRoles.MadSnitch, Options.MadSnitchCanVent.GetBool() ? RoleTypes.Engineer : RoleTypes.Crewmate},
+						{CustomRoles.Mayor, Options.MayorHasPortableButton.GetBool() ? RoleTypes.Engineer : RoleTypes.Crewmate},
+						{CustomRoles.Opportunist, RoleTypes.Crewmate},
+						{CustomRoles.Snitch, RoleTypes.Crewmate},
+						{CustomRoles.SabotageMaster, RoleTypes.Crewmate},
+						{CustomRoles.Mafia, RoleTypes.Impostor},
+						{CustomRoles.Terrorist, RoleTypes.Engineer},
+						{CustomRoles.Executioner, RoleTypes.Crewmate},
+						{CustomRoles.Vampire, RoleTypes.Impostor},
+						{CustomRoles.BountyHunter, RoleTypes.Shapeshifter},
+						{CustomRoles.Witch, RoleTypes.Impostor},
+						{CustomRoles.Warlock, RoleTypes.Shapeshifter},
+						{CustomRoles.SerialKiller, RoleTypes.Shapeshifter},
+						{CustomRoles.Lighter, RoleTypes.Crewmate},
+						{CustomRoles.FireWorks, RoleTypes.Shapeshifter},
+						{CustomRoles.SpeedBooster,RoleTypes.Crewmate},
+						{CustomRoles.Trapper, RoleTypes.Crewmate},
+						{CustomRoles.Dictator, RoleTypes.Crewmate},
+						{CustomRoles.SchrodingerCat, RoleTypes.Crewmate},
+						{CustomRoles.Watcher, Options.IsEvilWatcher ? RoleTypes.Impostor : RoleTypes.Crewmate},
+						{CustomRoles.Mare, RoleTypes.Impostor},
+						{CustomRoles.Doctor, RoleTypes.Scientist},
+						{CustomRoles.Puppeteer, RoleTypes.Impostor},
+						{CustomRoles.TimeThief, RoleTypes.Impostor},
+						{CustomRoles.EvilTracker, RoleTypes.Shapeshifter},
+						{CustomRoles.Seer, RoleTypes.Crewmate},
+						{CustomRoles.Paranoia, RoleTypes.Engineer},
+						{CustomRoles.Miner, RoleTypes.Shapeshifter},
+						{CustomRoles.Psychic, RoleTypes.Crewmate},
+						{CustomRoles.Plumber, RoleTypes.Engineer},
+						{CustomRoles.Needy, RoleTypes.Crewmate},
+						{CustomRoles.SuperStar, RoleTypes.Crewmate},
+						{CustomRoles.Hacker, RoleTypes.Impostor},
+						{CustomRoles.Assassin, RoleTypes.Shapeshifter},
+						{CustomRoles.Luckey, RoleTypes.Crewmate},
+						{CustomRoles.CyberStar, RoleTypes.Crewmate},
+						{CustomRoles.Escapee, RoleTypes.Shapeshifter},
+						{CustomRoles.NiceGuesser, RoleTypes.Crewmate},
+						{CustomRoles.EvilGuesser, RoleTypes.Impostor},
+						{CustomRoles.Detective, RoleTypes.Crewmate},
+						{CustomRoles.Minimalism, RoleTypes.Impostor},
+						{CustomRoles.God, RoleTypes.Crewmate},
+						{CustomRoles.Zombie, RoleTypes.Impostor},
+						{CustomRoles.Mario, RoleTypes.Engineer},
+						{CustomRoles.AntiAdminer, RoleTypes.Impostor},
+						{CustomRoles.Sans, RoleTypes.Impostor},
+						{CustomRoles.Bomber, RoleTypes.Shapeshifter},
+						{CustomRoles.BoobyTrap, RoleTypes.Impostor},
+        }; // 兼容旧版 创立map
+
         public static void Postfix()
         {
             if (!AmongUsClient.Instance.AmHost) return;
@@ -282,8 +340,6 @@ namespace TownOfHost
             RpcSetRoleReplacer.StoragedData = null;
 
             //Utils.ApplySuffix();
-
-            var rand = IRandom.Instance;
 
             List<PlayerControl> Crewmates = new();
             List<PlayerControl> Impostors = new();
@@ -356,14 +412,18 @@ namespace TownOfHost
             }
             else
             {
+                if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1 && !Map.ContainsKey(CustomRoles.Egoist))
+                    Map.Add(CustomRoles.Egoist, RoleTypes.Shapeshifter);
+                foreach (var role in NewRoles.RoleManager.GetRoles()) Map.Add(role.CustomRole, role.BaseRole);
+
                 List<int> funList = new();
-                for (int i = 0; i <= 54; i++)
-                {
-                    funList.Add(i);
-                }
+
+                var num = Map.Count;
+
+                for (int i = 0; i <= num; i++) funList.Add(i);
 
                 Random rd = new();
-                int index = 0;
+                int index;
                 int temp;
                 for (int i = 0; i < funList.Count; i++)
                 {
@@ -378,67 +438,32 @@ namespace TownOfHost
 
                 funList.Remove(0);
                 if (rd.Next(0, 100) <= Options.LoverSpawnChances.GetInt()) funList.Insert(0, 0);
-                Dictionary<byte, int> tryTime = new();
 
                 foreach (int i in funList)
                 {
-                    switch (i)
+                    if (i == 0) AssignLoversRolesFromList();
+
+                    var element = Map.ElementAt(i);
+                    switch (element.Value)
                     {
-                        case 0: AssignLoversRolesFromList(); break;
-                        case 1: AssignCustomRolesFromList(CustomRoles.Sniper, Shapeshifters); break;
-                        case 2: AssignCustomRolesFromList(CustomRoles.Jester, Crewmates); break;
-                        case 3: AssignCustomRolesFromList(CustomRoles.Madmate, Engineers); break;
-                        case 4: AssignCustomRolesFromList(CustomRoles.Bait, Crewmates); break;
-                        case 5: AssignCustomRolesFromList(CustomRoles.MadGuardian, Crewmates); break;
-                        case 6: AssignCustomRolesFromList(CustomRoles.MadSnitch, Options.MadSnitchCanVent.GetBool() ? Engineers : Crewmates); break;
-                        case 7: AssignCustomRolesFromList(CustomRoles.Mayor, Options.MayorHasPortableButton.GetBool() ? Engineers : Crewmates); break;
-                        case 8: AssignCustomRolesFromList(CustomRoles.Opportunist, Crewmates); break;
-                        case 9: AssignCustomRolesFromList(CustomRoles.Snitch, Crewmates); break;
-                        case 10: AssignCustomRolesFromList(CustomRoles.SabotageMaster, Crewmates); break;
-                        case 11: AssignCustomRolesFromList(CustomRoles.Mafia, Impostors); break;
-                        case 12: AssignCustomRolesFromList(CustomRoles.Terrorist, Engineers); break;
-                        case 13: AssignCustomRolesFromList(CustomRoles.Executioner, Crewmates); break;
-                        case 14: AssignCustomRolesFromList(CustomRoles.Vampire, Impostors); break;
-                        case 15: AssignCustomRolesFromList(CustomRoles.BountyHunter, Shapeshifters); break;
-                        case 16: AssignCustomRolesFromList(CustomRoles.Witch, Impostors); break;
-                        case 17: AssignCustomRolesFromList(CustomRoles.Warlock, Shapeshifters); break;
-                        case 18: AssignCustomRolesFromList(CustomRoles.SerialKiller, Shapeshifters); break;
-                        case 19: AssignCustomRolesFromList(CustomRoles.Lighter, Crewmates); break;
-                        case 20: AssignCustomRolesFromList(CustomRoles.FireWorks, Shapeshifters); break;
-                        case 21: AssignCustomRolesFromList(CustomRoles.SpeedBooster, Crewmates); break;
-                        case 22: AssignCustomRolesFromList(CustomRoles.Trapper, Crewmates); break;
-                        case 23: AssignCustomRolesFromList(CustomRoles.Dictator, Crewmates); break;
-                        case 24: AssignCustomRolesFromList(CustomRoles.SchrodingerCat, Crewmates); break;
-                        case 25: AssignCustomRolesFromList(CustomRoles.Watcher, Options.IsEvilWatcher ? Impostors : Crewmates); break;
-                        case 26: if (Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) > 1) AssignCustomRolesFromList(CustomRoles.Egoist, Shapeshifters); break;
-                        case 27: AssignCustomRolesFromList(CustomRoles.Mare, Impostors); break;
-                        case 28: AssignCustomRolesFromList(CustomRoles.Doctor, Scientists); break;
-                        case 29: AssignCustomRolesFromList(CustomRoles.Puppeteer, Impostors); break;
-                        case 30: AssignCustomRolesFromList(CustomRoles.TimeThief, Impostors); break;
-                        case 31: AssignCustomRolesFromList(CustomRoles.EvilTracker, Shapeshifters); break;
-                        case 32: AssignCustomRolesFromList(CustomRoles.Seer, Crewmates); break;
-                        case 33: AssignCustomRolesFromList(CustomRoles.Paranoia, Engineers); break;
-                        case 34: AssignCustomRolesFromList(CustomRoles.Miner, Shapeshifters); break;
-                        case 35: AssignCustomRolesFromList(CustomRoles.Psychic, Crewmates); break;
-                        case 36: AssignCustomRolesFromList(CustomRoles.Plumber, Engineers); break;
-                        case 37: AssignCustomRolesFromList(CustomRoles.Needy, Crewmates); break;
-                        case 38: AssignCustomRolesFromList(CustomRoles.SuperStar, Crewmates); break;
-                        case 39: AssignCustomRolesFromList(CustomRoles.Hacker, Impostors); break;
-                        case 40: AssignCustomRolesFromList(CustomRoles.Assassin, Shapeshifters); break;
-                        case 41: AssignCustomRolesFromList(CustomRoles.Luckey, Crewmates); break;
-                        case 42: AssignCustomRolesFromList(CustomRoles.CyberStar, Crewmates); break;
-                        case 43: AssignCustomRolesFromList(CustomRoles.Escapee, Shapeshifters); break;
-                        case 44: AssignCustomRolesFromList(CustomRoles.NiceGuesser, Crewmates); break;
-                        case 45: AssignCustomRolesFromList(CustomRoles.EvilGuesser, Impostors); break;
-                        case 46: AssignCustomRolesFromList(CustomRoles.Detective, Crewmates); break;
-                        case 47: AssignCustomRolesFromList(CustomRoles.Minimalism, Impostors); break;
-                        case 48: AssignCustomRolesFromList(CustomRoles.God, Crewmates); break;
-                        case 49: AssignCustomRolesFromList(CustomRoles.Zombie, Impostors); break;
-                        case 50: AssignCustomRolesFromList(CustomRoles.Mario, Engineers); break;
-                        case 51: AssignCustomRolesFromList(CustomRoles.AntiAdminer, Impostors); break;
-                        case 52: AssignCustomRolesFromList(CustomRoles.Sans, Impostors); break;
-                        case 53: AssignCustomRolesFromList(CustomRoles.Bomber, Shapeshifters); break;
-                        case 54: AssignCustomRolesFromList(CustomRoles.BoobyTrap, Impostors); break;
+                        case RoleTypes.Crewmate:
+                            AssignCustomRolesFromList(element.Key, Crewmates);
+                            break;
+                        case RoleTypes.Engineer:
+                            AssignCustomRolesFromList(element.Key, Engineers);
+                            break;
+                        case RoleTypes.Impostor:
+                            AssignCustomRolesFromList(element.Key, Impostors);
+                            break;
+                        case RoleTypes.Scientist:
+                            AssignCustomRolesFromList(element.Key, Scientists);
+                            break;
+                        case RoleTypes.Shapeshifter:
+                            AssignCustomRolesFromList(element.Key, Shapeshifters);
+                            break;
+                        case RoleTypes.GuardianAngel:
+                            AssignCustomRolesFromList(element.Key, GuardianAngels);
+                            break;
                     }
                 }
 

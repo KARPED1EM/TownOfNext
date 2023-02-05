@@ -7,6 +7,8 @@ using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.IL2CPP;
 using HarmonyLib;
+using TownOfHost.NewRoles;
+using TownOfHost.NewRoles.Roles;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 
@@ -176,6 +178,8 @@ namespace TownOfHost
         {
             Instance = this;
 
+            NewRoles.RoleManager.RegisterRoleWithListener(new Amnesiac());
+
             //Client Options
             HideName = Config.Bind("Client Options", "Hide Game Code Name", "TOHE");
             HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
@@ -303,6 +307,10 @@ namespace TownOfHost
 
                     {CustomRoles.NotAssigned, "#ffffff"},
                 };
+                foreach (var role in NewRoles.RoleManager.GetRoles())
+                {
+                    roleColors.Add(role.CustomRole, role.Color);
+                }
                 foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
                 {
                     switch (role.GetRoleType())
@@ -423,6 +431,7 @@ namespace TownOfHost
         Executioner,
         Jackal,
         JSchrodingerCat,//ジャッカル陣営のシュレディンガーの猫
+        Amnesiac,
         //HideAndSeek
         HASFox,
         HASTroll,

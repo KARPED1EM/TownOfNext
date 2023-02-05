@@ -1,3 +1,5 @@
+using AmongUs.GameOptions;
+
 namespace TownOfHost.NewRoles;
 
 public class Role
@@ -7,6 +9,7 @@ public class Role
     public TabGroup Group { get; set; }
     public string Color { get; set; }
     public bool HasTask { get; set; }
+    public RoleTypes BaseRole { get; set; }
 
     public Role(int id, CustomRoles role)
     {
@@ -15,10 +18,6 @@ public class Role
         Group = TabGroup.CrewmateRoles;
         Color = "#ffffff";
         HasTask = true;
-    }
-
-    public void SetupCustomOption()
-    {
-        Options.SetupRoleOptions(Id, Group, CustomRole);
+        BaseRole = RoleTypes.Crewmate;
     }
 }

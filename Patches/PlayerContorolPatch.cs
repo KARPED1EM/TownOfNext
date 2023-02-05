@@ -5,6 +5,7 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using MS.Internal.Xml.XPath;
+using TownOfHost.Listener;
 using UnityEngine;
 using static TownOfHost.Translator;
 
@@ -43,6 +44,7 @@ namespace TownOfHost
                 }
             }
         }
+
         public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] PlayerControl target)
         {
             if (!AmongUsClient.Instance.AmHost) return false;
@@ -61,23 +63,27 @@ namespace TownOfHost
             //不正キル防止処理
             if (target.Data == null || //PlayerDataがnullじゃないか確認
                 target.inVent || target.inMovingPlat //targetの状態をチェック
-            )
+               )
             {
                 Logger.Info("targetは現在キルできない状態です。", "CheckMurder");
                 return false;
             }
+
             if (target.Data.IsDead) //同じtargetへの同時キルをブロック
             {
                 Logger.Info("targetは既に死んでいたため、キルをキャンセルしました。", "CheckMurder");
                 return false;
             }
+
             if (MeetingHud.Instance != null) //会議中でないかの判定
             {
                 Logger.Info("会議が始まっていたため、キルをキャンセルしました。", "CheckMurder");
                 return false;
             }
 
-            float minTime = Mathf.Max(0.02f, AmongUsClient.Instance.Ping / 1000f * 6f); //※AmongUsClient.Instance.Pingの値はミリ秒(ms)なので÷1000
+            float minTime =
+                Mathf.Max(0.02f,
+                    AmongUsClient.Instance.Ping / 1000f * 6f); //※AmongUsClient.Instance.Pingの値はミリ秒(ms)なので÷1000
             //TimeSinceLastKillに値が保存されていない || 保存されている時間がminTime以上 => キルを許可
             //↓許可されない場合
             if (TimeSinceLastKill.TryGetValue(killer.PlayerId, out var time) && time < minTime)
@@ -85,12 +91,21 @@ namespace TownOfHost
                 Logger.Info("前回のキルからの時間が早すぎるため、キルをブロックしました。", "CheckMurder");
                 return false;
             }
+
             TimeSinceLastKill[killer.PlayerId] = 0f;
 
             killer.ResetKillCooldown();
 
+            bool cancel = false;
+
+            foreach (var listener in ListenerManager.GetListeners())
+                if (!listener.OnPlayerMurderPlayer(__instance, target))
+                    cancel = true;
+
+            if (cancel) return false;
+
             //キルボタンを使えない場合の判定
-            if ((Options.CurrentGameMode == CustomGameMode.HideAndSeek || Options.IsStandardHAS) && Options.HideAndSeekKillDelayTimer > 0)
+        if ((Options.CurrentGameMode == CustomGameMode.HideAndSeek || Options.IsStandardHAS) && Options.HideAndSeekKillDelayTimer > 0)
             {
                 Logger.Info("HideAndSeekの待機時間中だったため、キルをキャンセルしました。", "CheckMurder");
                 return false;
@@ -541,6 +556,8 @@ namespace TownOfHost
                 return false;
             }
 
+            foreach (IListener listener in ListenerManager.GetListeners()) listener.OnPlayerReportBody(__instance, target);
+
             //杀戮机器无法报告或拍灯
             if (__instance.Is(CustomRoles.Minimalism)) return false;
 
@@ -560,7 +577,7 @@ namespace TownOfHost
                     __instance.RpcMurderPlayer(__instance);
                     RPC.PlaySoundRPC(killerID, Sounds.KillSound);
 
-                    if (!Main.BoobyTrapBody.Contains(__instance.PlayerId)) Main.BoobyTrapBody.Add(__instance.PlayerId); 
+                    if (!Main.BoobyTrapBody.Contains(__instance.PlayerId)) Main.BoobyTrapBody.Add(__instance.PlayerId);
                     if (!Main.KillerOfBoobyTrapBody.ContainsKey(__instance.PlayerId)) Main.KillerOfBoobyTrapBody.Add(__instance.PlayerId, killerID);
                     return false;
                 }
@@ -653,7 +670,7 @@ namespace TownOfHost
 
             if (AmongUsClient.Instance.AmHost)
             {//実行クライアントがホストの場合のみ実行
-                if (GameStates.IsLobby && ((ModUpdater.hasUpdate && ModUpdater.forceUpdate) || ModUpdater.isBroken || !Main.AllowPublicRoom) && AmongUsClient.Instance.IsGamePublic)
+                if (GameStates.IsLobby && ((ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !Main.AllowPublicRoom) && AmongUsClient.Instance.IsGamePublic)
                     AmongUsClient.Instance.ChangeGamePublic(false);
 
                 if (GameStates.IsInTask && ReportDeadBodyPatch.CanReport[__instance.PlayerId] && ReportDeadBodyPatch.WaitReport[__instance.PlayerId].Count > 0)
