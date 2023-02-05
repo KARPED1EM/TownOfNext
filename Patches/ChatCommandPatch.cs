@@ -716,7 +716,7 @@ namespace TownOfHost
             // role = ToSimplified(role);
 
             var msg = "";
-            var rolemsg = $"{GetString("Command.h_args")}";
+            // var rolemsg = $"{GetString("Command.h_args")}";
 
             foreach (CustomRoles customRole in Enum.GetValues(typeof(CustomRoles)))
             {

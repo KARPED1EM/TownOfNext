@@ -23,9 +23,9 @@ public class Role
         Color = "#ffffff";
         HasTask = true;
         BaseRole = RoleTypes.Crewmate;
-        DisplayName = CustomRole.ToString();
-        Description = "";
-        Info = "";
         Name = role.ToString();
+        DisplayName = Translator.GetString(Name);
+        Description = Translator.GetString(Name + "LongInfo");
+        Info = Translator.GetString(Name + "Info");;
     }
 }
