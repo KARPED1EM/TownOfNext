@@ -1,44 +1,9 @@
-using System.Collections.Generic;
 using AmongUs.GameOptions;
 
 namespace TownOfHost
 {
     static class CustomRolesHelper
     {
-        private static readonly List<CustomRoles> Impostors = new()
-        {
-            CustomRoles.Impostor,
-            CustomRoles.Shapeshifter,
-            CustomRoles.BountyHunter,
-            CustomRoles.Vampire,
-            CustomRoles.Witch,
-            CustomRoles.Zombie,
-            CustomRoles.Warlock,
-            CustomRoles.Assassin,
-            CustomRoles.Hacker,
-            CustomRoles.Miner,
-            CustomRoles.Escapee,
-            CustomRoles.SerialKiller,
-            CustomRoles.Mare,
-            CustomRoles.Puppeteer,
-            CustomRoles.EvilWatcher,
-            CustomRoles.TimeThief,
-            CustomRoles.Mafia,
-            CustomRoles.Minimalism,
-            CustomRoles.FireWorks,
-            CustomRoles.Sniper,
-            CustomRoles.EvilTracker,
-            CustomRoles.EvilGuesser,
-            CustomRoles.AntiAdminer,
-            CustomRoles.Sans,
-            CustomRoles.Bomber
-        };
-
-    public static void Init()
-        {
-
-        }
-/*
         public static bool IsNK(this CustomRoles role) // 是否带刀中立
         {
             return
@@ -59,7 +24,7 @@ namespace TownOfHost
                 CustomRoles.EgoSchrodingerCat or
                 CustomRoles.Executioner;
         }
-*/
+
 
         public static bool IsNeutralKilling(this CustomRoles role) //是否邪恶中立（抢夺或单独胜利的中立）
         {
@@ -79,7 +44,33 @@ namespace TownOfHost
 
         public static bool IsImpostor(this CustomRoles role)
         {
-            return Impostors.Contains(role);
+            return
+                role is CustomRoles.Impostor or
+                CustomRoles.Shapeshifter or
+                CustomRoles.BountyHunter or
+                CustomRoles.Vampire or
+                CustomRoles.Witch or
+                CustomRoles.Zombie or
+                CustomRoles.Warlock or
+                CustomRoles.Assassin or
+                CustomRoles.Hacker or
+                CustomRoles.Miner or
+                CustomRoles.Escapee or
+                CustomRoles.SerialKiller or
+                CustomRoles.Mare or
+                CustomRoles.Puppeteer or
+                CustomRoles.EvilWatcher or
+                CustomRoles.TimeThief or
+                CustomRoles.Mafia or
+                CustomRoles.Minimalism or
+                CustomRoles.FireWorks or
+                CustomRoles.Sniper or
+                CustomRoles.EvilTracker or
+                CustomRoles.EvilGuesser or
+                CustomRoles.AntiAdminer or
+                CustomRoles.Sans or
+                CustomRoles.Bomber or
+                CustomRoles.BoobyTrap;
         }
         public static bool IsMadmate(this CustomRoles role)
         {

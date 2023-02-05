@@ -52,7 +52,7 @@ namespace TownOfHost
 
             // カスタム翻訳ファイルの読み込み
             if (!Directory.Exists(LANGUAGE_FOLDER_NAME)) Directory.CreateDirectory(LANGUAGE_FOLDER_NAME);
-
+            
             // 翻訳テンプレートの作成
             CreateTemplateFile();
             foreach (var lang in Enum.GetValues(typeof(SupportedLangs)))
@@ -68,32 +68,36 @@ namespace TownOfHost
             string str = GetString(s, langId);
             if (replacementDic != null)
                 foreach (var rd in replacementDic)
+                {
                     str = str.Replace(rd.Key, rd.Value);
-
+                }
             return str;
         }
 
         public static string GetString(string str, SupportedLangs langId)
         {
-            if (langId != SupportedLangs.SChinese && langId != SupportedLangs.TChinese) langId = SupportedLangs.SChinese;
+
+            if (langId != SupportedLangs.SChinese || langId != SupportedLangs.TChinese) langId = SupportedLangs.SChinese;
             var res = $"<INVALID:{str}>";
             try
             {
                 if (translateMaps.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "")) //匹配 str & 无效的 langId 或 res 为空
+                {
                     res = $"*{dic[0]}";
+                }
             }
-            catch (Exception e)
+            catch (Exception Ex)
             {
                 Logger.Fatal(str, "Translator");
-                Logger.Error(e.ToString(), "Translator");
+                Logger.Error(Ex.ToString(), "Translator");
             }
             return res;
         }
         public static string GetRoleString(string str)
         {
-            var currentLanguage = TranslationController.Instance.currentLanguage.languageID;
-            if (currentLanguage != SupportedLangs.SChinese && currentLanguage != SupportedLangs.TChinese) currentLanguage = SupportedLangs.SChinese;
-            var lang = currentLanguage;
+            var CurrentLanguage = TranslationController.Instance.currentLanguage.languageID;
+            CurrentLanguage = SupportedLangs.SChinese;
+            var lang = CurrentLanguage;
 
             return GetString(str, lang);
         }

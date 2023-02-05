@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
-using Steamworks;
-using TownOfHost.NewRoles;
 using UnityEngine;
-using static UnityEngine.RemoteConfigSettingsHelper;
 
 namespace TownOfHost
 {
@@ -133,6 +130,7 @@ namespace TownOfHost
         public static OptionItem ArsonistDouseTime;
         public static OptionItem ArsonistCooldown;
         public static OptionItem JesterCanUseButton;
+        public static OptionItem NotifyGodAlive;
         public static OptionItem MarioVentNumWin;
         public static OptionItem OKKillCooldown;
         public static OptionItem KillFlashDuration;
@@ -141,10 +139,10 @@ namespace TownOfHost
         public static OptionItem SendCodeToQQ;
         public static OptionItem SendCodeMinPlayer;
         public static OptionItem DisableVanillaRoles;
-        // public static OptionItem ConfirmEjections;
-        // public static OptionItem ConfirmEjectionsNK;
-        // public static OptionItem ConfirmEjectionsNonNK;
-        // public static OptionItem ConfirmEjectionsNKAsImp;
+        public static OptionItem ConfirmEjections;
+        public static OptionItem ConfirmEjectionsNK;
+        public static OptionItem ConfirmEjectionsNonNK;
+        public static OptionItem ConfirmEjectionsNKAsImp;
         public static OptionItem ConfirmEjectionsRoles;
         public static OptionItem ShowImpRemainOnEject;
         public static OptionItem ShowNKRemainOnEject;
@@ -168,7 +166,8 @@ namespace TownOfHost
         public static OptionItem SansReduceKillCooldown;
         public static OptionItem SansMinKillCooldown;
         public static OptionItem BomberRadius;
-
+        public static OptionItem FlashWhenTrapBoobyTrap;
+        
         // HideAndSeek
         public static OptionItem AllowCloseDoors;
         public static OptionItem KillDelay;
@@ -417,7 +416,7 @@ namespace TownOfHost
                 .SetValueFormat(OptionFormat.Times);
             EGCanGuessImp = BooleanOptionItem.Create(901069, "EGCanGuessImp", false, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.EvilGuesser]);
             EGTryHideMsg = BooleanOptionItem.Create(901071, "GuesserTryHideMsg", false, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.EvilGuesser])
-                .SetColor(Color.gray);
+                .SetColor(Color.green);
             BountyHunter.SetupCustomOption();
             SerialKiller.SetupCustomOption();
             // SetupRoleOptions(1200, CustomRoles.ShapeMaster);
@@ -465,6 +464,8 @@ namespace TownOfHost
             SetupRoleOptions(902135, TabGroup.ImpostorRoles, CustomRoles.Bomber);
             BomberRadius = FloatOptionItem.Create(902137, "BomberRadius", new(0.5f, 5f, 0.5f), 2f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bomber])
                 .SetValueFormat(OptionFormat.Multiplier);
+            SetupRoleOptions(902265, TabGroup.ImpostorRoles, CustomRoles.BoobyTrap);
+            //FlashWhenTrapBoobyTrap = BooleanOptionItem.Create(902267, "KillFlashWhenTrap", true, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.BoobyTrap]);
 
             DefaultShapeshiftCooldown = FloatOptionItem.Create(5011, "DefaultShapeshiftCooldown", new(5f, 999f, 5f), 15f, TabGroup.ImpostorRoles, false)
                 .SetHeader(true)
@@ -506,7 +507,7 @@ namespace TownOfHost
                 .SetValueFormat(OptionFormat.Times);
             GGCanGuessCrew = BooleanOptionItem.Create(102259, "GGCanGuessCrew", false, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.NiceGuesser]);
             GGTryHideMsg = BooleanOptionItem.Create(102261, "GuesserTryHideMsg", false, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.NiceGuesser])
-                .SetColor(Color.gray);
+                .SetColor(Color.green);
             SetupRoleOptions(20000, TabGroup.CrewmateRoles, CustomRoles.Bait);
             SetupRoleOptions(1020195, TabGroup.CrewmateRoles, CustomRoles.Luckey);
             LuckeyProbability = IntegerOptionItem.Create(1020197, "LuckeyProbability", new(0, 100, 5), 50, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Luckey])
@@ -562,11 +563,6 @@ namespace TownOfHost
 
             ChivalrousExpert.SetupCustomOption();
 
-            foreach (var role in NewRoles.RoleManager.GetRoles())
-            {
-                role.SetupCustomOption();
-            }
-
             // Neutral
             SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);
             ArsonistDouseTime = FloatOptionItem.Create(50510, "ArsonistDouseTime", new(1f, 10f, 1f), 3f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Arsonist])
@@ -591,6 +587,7 @@ namespace TownOfHost
             Executioner.SetupCustomOption();
             Jackal.SetupCustomOption();
             SetupRoleOptions(5050965, TabGroup.NeutralRoles, CustomRoles.God);
+            NotifyGodAlive = BooleanOptionItem.Create(5050967, "NotifyGodAlive", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.God]);
             SetupRoleOptions(5050110, TabGroup.NeutralRoles, CustomRoles.Mario);
             MarioVentNumWin = IntegerOptionItem.Create(5050112, "MarioVentNumWin", new(5, 900, 5), 55, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Mario])
                 .SetValueFormat(OptionFormat.Times);
@@ -612,10 +609,11 @@ namespace TownOfHost
             DisableVanillaRoles = BooleanOptionItem.Create(6090069, "DisableVanillaRoles", true, TabGroup.MainSettings, false)
                 .SetHeader(true);
 
-            // ConfirmEjections = BooleanOptionItem.Create(6090105, "ConfirmEjections", false, TabGroup.MainSettings, false).SetHeader(true);
-            // ConfirmEjectionsNK = BooleanOptionItem.Create(6090107, "ConfirmEjectionsNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
-            // ConfirmEjectionsNonNK = BooleanOptionItem.Create(6090109, "ConfirmEjectionsNonNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
-            // ConfirmEjectionsNKAsImp = BooleanOptionItem.Create(6090111, "ConfirmEjectionsNKAsImp", false, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
+            ConfirmEjections = BooleanOptionItem.Create(6090105, "ConfirmEjections", false, TabGroup.MainSettings, false)
+                .SetHeader(true);
+            ConfirmEjectionsNK = BooleanOptionItem.Create(6090107, "ConfirmEjectionsNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
+            ConfirmEjectionsNonNK = BooleanOptionItem.Create(6090109, "ConfirmEjectionsNonNK", true, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
+            ConfirmEjectionsNKAsImp = BooleanOptionItem.Create(6090111, "ConfirmEjectionsNKAsImp", false, TabGroup.MainSettings, false).SetParent(ConfirmEjections);
             ConfirmEjectionsRoles = BooleanOptionItem.Create(6090113, "ConfirmEjectionsRoles", true, TabGroup.MainSettings, false);
             ShowImpRemainOnEject = BooleanOptionItem.Create(6090115, "ShowImpRemainOnEject", true, TabGroup.MainSettings, false);
             ShowNKRemainOnEject = BooleanOptionItem.Create(6090119, "ShowNKRemainOnEject", true, TabGroup.MainSettings, false).SetParent(ShowImpRemainOnEject);

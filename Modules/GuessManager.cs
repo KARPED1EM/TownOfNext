@@ -103,6 +103,10 @@ namespace TownOfHost
                 (pc.Is(CustomRoles.EvilGuesser) && Options.EGTryHideMsg.GetBool())
                 )
             {
+                new LateTask(() =>
+                {
+                    TryHideMsg(true);
+                }, 0.01f, "Hide Guesser Messgae To Host");
                 TryHideMsg();
             }
             else
@@ -168,6 +172,7 @@ namespace TownOfHost
                         Main.PlayerStates[dp.PlayerId].SetDead();
                         foreach (var cpc in Main.AllPlayerControls)
                         {
+                            RPC.PlaySoundRPC(cpc.PlayerId, Sounds.KillSound);
                             cpc.RpcSetNameEx(cpc.GetRealName(isMeeting: true));
                         }
                         ChatUpdatePatch.DoBlockChat = false;
@@ -229,10 +234,9 @@ namespace TownOfHost
             return true;
         }
 
-        public static void TryHideMsg()
+        public static void TryHideMsg(bool toHost = false)
         {
-            
-
+            ChatUpdatePatch.DoBlockChat = true;
             Array values = Enum.GetValues(typeof(CustomRoles));
             var rd = Utils.RandomSeedByGuid();
             string msg;
@@ -248,16 +252,18 @@ namespace TownOfHost
                 {
                     msg += command[rd.Next(0, command.Length - 1)];
                     msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
+                    msg += rd.Next(0, 15).ToString();
+                    msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
                     CustomRoles role = (CustomRoles)values.GetValue(rd.Next(values.Length));
                     msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
                     msg += Utils.GetRoleName(role);
                 }
 
                 var pl = Main.AllAlivePlayerControls.OrderBy(x => x.PlayerId).ToArray();
-                var player = pl[rd.Next(0, pl.Length - 1)];
+                var player = pl[rd.Next(0, pl.Length)];
                 if (player == null) return;
 
-                int clientId = -1;
+                int clientId = toHost ? PlayerControl.LocalPlayer.PlayerId : -1;
                 var name = player.Data.PlayerName;
                 DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
                 var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
@@ -268,6 +274,7 @@ namespace TownOfHost
                 writer.EndMessage();
                 writer.SendMessage();
             }
+            ChatUpdatePatch.DoBlockChat = false;
         }
     }
 }

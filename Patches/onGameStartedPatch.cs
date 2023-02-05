@@ -14,7 +14,7 @@ namespace TownOfHost
     {
         public static void Postfix(AmongUsClient __instance)
         {
-
+                
             try
             {
                 //注:この時点では役職は設定されていません。
@@ -39,6 +39,8 @@ namespace TownOfHost
                 Main.DetectiveNotify = new Dictionary<byte, string>();
                 Main.HackerUsedCount = new Dictionary<byte, int>();
                 Main.CyberStarDead = new List<byte>();
+                Main.BoobyTrapBody = new List<byte>();
+                Main.KillerOfBoobyTrapBody = new Dictionary<byte, byte>();
 
                 Main.LastEnteredVent = new Dictionary<byte, Vent>();
                 Main.LastEnteredVentLocation = new Dictionary<byte, UnityEngine.Vector2>();
@@ -436,7 +438,7 @@ namespace TownOfHost
                         case 51: AssignCustomRolesFromList(CustomRoles.AntiAdminer, Impostors); break;
                         case 52: AssignCustomRolesFromList(CustomRoles.Sans, Impostors); break;
                         case 53: AssignCustomRolesFromList(CustomRoles.Bomber, Shapeshifters); break;
-                        case 54: AssignCustomRolesFromList(CustomRoles.Amnesiac, Crewmates); break;
+                        case 54: AssignCustomRolesFromList(CustomRoles.BoobyTrap, Impostors); break;
                     }
                 }
 
