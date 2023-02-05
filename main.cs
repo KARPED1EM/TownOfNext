@@ -176,7 +176,7 @@ public class Main : BasePlugin
     {
         Instance = this;
 
-        ChatCommands.Init();
+        // ChatCommands.Init();
 
         NewRoles.RoleManager.RegisterRoleWithListener(new Amnesiac());
 
