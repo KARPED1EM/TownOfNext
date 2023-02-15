@@ -445,9 +445,9 @@ SnitchCanFindNeutralKiller,告密者也可以和拥有击杀能力的中立阵�
 SpeedBoosterUpSpeed,增速者每次加速,Random Player's Speed Boost,Повысить скорость игрока на
 SpeedBoosterTimes,最多能增速几次,Tasks Until Boost Activated,На сколько секунд можно ускорить
 MayorAdditionalVote,附加票数,Additional Votes Count,Дополнительные голоса
-MayorHasPortableButton,跳通风管触发紧急会议,"Mayor Has Mobile Emergency Button,У Мэра есть портативная Кнопка
-MayorNumOfUseButton,紧急会议最大次数,Number Of Mobile Emergency Button,Количество портативных Кнопок
-MayorHideVote,隐藏市长附加的投票,,Скрыть дополнительные голоса
+MayorHasPortableButton,跳通风管触发紧急会议,"Mayor Has Mobile Emergency Button",У Мэра есть портативная Кнопка
+MayorNumOfUseButton,紧急会议最大次数,"Number Of Mobile Emergency Button",Количество портативных Кнопок
+MayorHideVote,隐藏市长附加的投票,"Hide additional voices",Скрыть дополнительные голоса
 ExecutionerCanTargetImpostor,内鬼阵营玩家可以成为目标,Can Target Impostors,Может иметь цель изгнать Предателя
 ExecutionerCanTargetNeutralKiller,中立阵营玩家可以成为目标,Can Target Neutrals,Может иметь цель изгнать Нейтрального Убийцу
 ExecutionerChangeRolesAfterTargetKilled,目标死亡后将变为,Role Changes When Target Dies,Роль после смерти его цели
