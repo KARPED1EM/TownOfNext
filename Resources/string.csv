@@ -384,7 +384,7 @@ RoleAssigningAlgorithm.HashRandom,哈希随机算法,HashRandom,HashRandom
 RoleAssigningAlgorithm.Xorshift,Xorshift随机算法,Xorshift,Xorshift
 RoleAssigningAlgorithm.MersenneTwister,Twister随机算法,MersenneTwister,MersenneTwister
 AirShipVariableElectrical,电气室门随机关闭（飞艇地图）,Variable Electrical(AirShip),Двери в Электрощитовой меняются случайно (Airship)
-EndWhenPlayerBug,当有玩家因Bug无法游戏时终止游戏,,Завершить игру когда игрок покидает игру из-за ошибки
+EndWhenPlayerBug,当有玩家因Bug无法游戏时终止游戏,"End the game when the player leaves the game due to an error",Завершить игру когда игрок покидает игру из-за ошибки
 KillFlashDuration,击杀闪烁持续时间,"''Kill Flash'' Duration","Длительность ''Вспышки Убийства''"
 ConfirmEjections,驱逐时确认阵营,Show roles players ejected,Показывать роли изгнаных
 ConfirmEjectionsNK,确认带刀中立阵营,Show Neutral Killer Roles,Показывать роли Нейтральных Убийц
