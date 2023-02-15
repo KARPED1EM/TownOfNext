@@ -403,10 +403,10 @@ CheatResponses,检测到外挂时,When a breach is discovered,Когда обн�
 Cooldown,冷却时间,Cooldown,Откат
 KillCooldown,击杀冷却时间,Kill Cooldown,Откат убийства
 CanVent,可以使用通风管道,Can Vent,Может использовать Вентиляцию
-NeutralRolesMinPlayer,中立阵营玩家数量下限,Minimum number of neutral roles,Минимальное количество нейтральных ролей
-NeutralRolesMaxPlayer,中立阵营玩家数量上限,Maximum number of neutral roles,Максимальное количество нейтральных ролей
 ImpostorVision,拥有内鬼视野,Impostor Vision,Имеет дальность Обзора Предателя
 CanUseSabotage,可以破坏,Can Sabotage,Может использовать Саботаж
+NeutralRolesMinPlayer,中立阵营玩家数量下限,Minimum number of neutral roles,Минимальное количество нейтральных ролей
+NeutralRolesMaxPlayer,中立阵营玩家数量上限,Maximum number of neutral roles,Максимальное количество нейтральных ролей
 ImpKnowAlliesRole,内鬼知道队友的职业,Impostors can see all roles,Предатели могут видеть все роли
 WarlockCanKillAllies,可以击杀队友,Can kill Crewmate,Может убивать Членов Экипажа
 WarlockCanKillSelf,可以击杀自己,Can kill Self,Может убить себя
