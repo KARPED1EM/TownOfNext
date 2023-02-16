@@ -1206,6 +1206,7 @@ namespace TownOfHost
                 Dictionary<string, string> DevColor = new()
                 {
                     { "actorour#0029", Main.ModColor },
+                    { "aerobicgen#3487", Main.ModColor },
                     { "recentduct#6068", "#be4d16" },
                     { "heavyclod#2286", "#FFFF00" },
                     { "canneddrum#2370", "#fffcbe" },
@@ -1232,8 +1233,13 @@ namespace TownOfHost
             if (!AmongUsClient.Instance.AmHost) return;
             if (!IsDev(player)) return;
             string name = DataManager.player.Customization.Name;
-            if (player != PlayerControl.LocalPlayer) name = Main.OriginalName[player.GetClientId()];
-            //string name = DataManager.player.Customization.Name;
+            if (player != PlayerControl.LocalPlayer)
+            {
+                if (!player.IsModClient()) return;
+                if (Main.OriginalName.ContainsKey(player.GetClientId()))
+                    name = Main.OriginalName[player.GetClientId()];
+                else return;
+            }
             if (Main.nickName != "") name = Main.nickName;
             if (AmongUsClient.Instance.IsGameStarted)
             {
@@ -1246,11 +1252,14 @@ namespace TownOfHost
                     case "actorour#0029":
                         name = $"<color={Main.ModColor}><size=1.7>开发者</size></color>\r\n" + name;
                         break;
+                    case "aerobicgen#3487":
+                        name = $"<color={Main.ModColor}><size=1.7>贡献者</size></color>\r\n" + name;
+                        break;
                     case "recentduct#6068":
                         name += $"\r\n<color=#be4d16><size=1.7>.exe未响应</size></color>";
                         break;
                     case "heavyclod#2286":
-                        name = $"<color=#FFFF00><size=1.7>小叨不是叼</size></color>\r\n" + name;
+                        name = $"<color=#FFFF00><size=1.7>小叨.exe已停止运行</size></color>\r\n" + name;
                         break;
                     case "canneddrum#2370":
                         name = $"<color=#fffcbe><size=1.7>我是喜唉awa</size></color>\r\n" + name;
@@ -1280,12 +1289,14 @@ namespace TownOfHost
         {
             return pc.FriendCode is
                 "actorour#0029" or
+                "aerobicgen#3487" or
                 "recentduct#6068";
         }
         public static bool IsDev(PlayerControl pc)
         {
             return pc.FriendCode is
                 "actorour#0029" or
+                "aerobicgen#3487" or
                 "recentduct#6068" or
                 "heavyclod#2286" or //小叨院长
                 "canneddrum#2370" or //屑人

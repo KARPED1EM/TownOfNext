@@ -47,7 +47,7 @@ namespace TownOfHost
 
         public static readonly string[] gameModes =
         {
-            "Standard", "HideAndSeek",
+            "Standard"
         };
 
         // MapActive
@@ -162,13 +162,6 @@ namespace TownOfHost
         public static OptionItem SansMinKillCooldown;
         public static OptionItem BomberRadius;
         public static OptionItem FlashWhenTrapBoobyTrap;
-        
-        // HideAndSeek
-        public static OptionItem AllowCloseDoors;
-        public static OptionItem KillDelay;
-        public static OptionItem IgnoreCosmetics;
-        public static OptionItem IgnoreVent;
-        public static float HideAndSeekKillDelayTimer = 0f;
 
         // タスク無効化
         public static OptionItem DisableTasks;
@@ -304,6 +297,8 @@ namespace TownOfHost
         public static OptionItem PlayerCanSerColor;
 
         //Add-Ons
+        public static OptionItem NoLimitAddonsNum;
+        public static OptionItem BewilderVision;
         public static OptionItem FlashmanSpeed;
         public static OptionItem LoverSpawnChances;
         public static OptionItem LoverSuicide;
@@ -552,6 +547,9 @@ namespace TownOfHost
             Jackal.SetupCustomOption();
 
             // Add-Ons
+            NoLimitAddonsNum = BooleanOptionItem.Create(6050250, "NoLimitAddonsNum", false, TabGroup.Addons, false)
+                .SetHeader(true)
+                .SetColor(Color.cyan);
             SetupLoversRoleOptionsToggle(50300);
             SetupAdtRoleOptions(6050320, CustomRoles.Watcher, canSetNum: true);
             SetupAdtRoleOptions(6050330, CustomRoles.Flashman, canSetNum: true);
@@ -561,6 +559,9 @@ namespace TownOfHost
             SetupAdtRoleOptions(6050350, CustomRoles.Seer, canSetNum: true);
             SetupAdtRoleOptions(6050360, CustomRoles.Brakar, canSetNum: true);
             SetupAdtRoleOptions(6050370, CustomRoles.Oblivious, canSetNum: true);
+            SetupAdtRoleOptions(6050380, CustomRoles.Bewilder, canSetNum: true);
+            BewilderVision = FloatOptionItem.Create(6050383, "BewilderVision", new(0f, 5f, 0.05f), 0.65f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bewilder])
+                .SetValueFormat(OptionFormat.Multiplier);
 
             //SetupAdtRoleOptions(6050360, CustomRoles.Madmate, canSetNum: true);
             LastImpostor.SetupCustomOption();
@@ -903,7 +904,7 @@ namespace TownOfHost
                 .SetHeader(true)
                 .SetGameMode(customGameMode) as StringOptionItem;
 
-            var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, canSetNum ? 15 : 1, 1), 1, tab, false).SetParent(spawnOption)
+            var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, canSetNum ? 3 : 1, 1), 1, tab, false).SetParent(spawnOption)
                 .SetHidden(!canSetNum)
                 .SetGameMode(customGameMode);
 
