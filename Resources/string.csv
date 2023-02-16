@@ -749,7 +749,7 @@ IsGood,{0} 是个好人,{0} nice guy,{0} хороший парень
 
 ## 游戏结束原因
 GameOverReason.HumansByTask,船员完成了任务,The Crewmates completed the tasks,Члены Экипажа выполнили задания
-GameOverReason.HumansByVote,内鬼被驱逐,The Impostors was ejected,Члены Экипажа были изгнаны
+GameOverReason.HumansByVote,内鬼被驱逐,The Impostors was ejected,Предатели были изгнаны
 GameOverReason.HumansDisconnect,船员断线,Crewmates disconnected,Члены Экипажа вышли из игры
 GameOverReason.ImpostorByKill,内鬼人数占优,The Impostor killed everyone,Предатели убили всех
 GameOverReason.ImpostorBySabotage,内鬼破坏了设施,Impostors sabotaged the facility,Предатели саботировали обьект
