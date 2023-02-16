@@ -466,7 +466,7 @@ FireWorksMaxCount,可放置烟花的最大数量,Fireworks Count,Количес�
 FireWorksRadius,烟花爆炸半径,Firework Explosion Radius,Радиус фейерверка
 SniperBulletCount,最大子弹数量,Ammo,Количество пуль
 SniperPrecisionShooting,精准射击模式,Precision Firing,Точный выстрел
-NoLimitAddonsNum,不限制每位玩家的附加职业数量（娱乐性）,The number of Add-ons for one player is not limited (entertainment),Количество Атрибутов для одного игрока не ограничено (развлекательный) 
+NoLimitAddonsNum,不限制每位玩家的附职业上限,The number of Add-ons for one player is not limited,Количество Атрибутов для одного игрока не ограничено 
 LoverSpawnChances,出现概率,Spawn Chance of Lovers,Шанс появления Любовников
 AdditionRolesSpawnRate,出现概率,Spawn Chance,Шанс появления
 BewilderVision,迷幻者视野,Bewilder Vision,Дальность обзора Сбитого с Толку
