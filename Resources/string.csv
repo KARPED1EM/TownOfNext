@@ -486,7 +486,7 @@ TrapperBlockMoveTime,陷阱师技能封锁凶手移动时长,Freeze time,Вре�
 TimeThiefDecreaseMeetingTime,每次击杀缩短的会议时间,Time Thief Time Stolen,Уменьшить длительность обсуждения на
 TimeThiefLowerLimitVotingTime,存活时会议时间最低下限,Minimum Voting Time,Уменьшить длительность голосования на
 TimeThiefReturnStolenTimeUponDeath,死亡后会议时间重置,Return Stolen Time After Death,Вернуть украденное время после его смерти
-EvilTrackerCanSeeKillFlash,内鬼进行击杀时可见击杀闪光,"Can See ''Kill Flash''","Может видеть ''Вспышку Убийства''"
+EvilTrackerCanSeeKillFlash,内鬼进行击杀时可见击杀闪光,"Can See ''Kill Flash'' ","Может видеть ''Вспышку Убийства'' "
 EvilTrackerResetTargetAfterMeeting,会议后重置追踪目标,Can Reset Target After Meeting,Может сбросить цель после Собрания
 EvilTrackerCanSeeLastRoomInMeeting,追踪者可以看见船员位置,Can See Target's Last Room In Meeting,Может видеть местоположение Целей во время Собрания
 WitchModeSwitchAction,切换击杀模式,Mode Switch Action,Действие для Смены Режима
