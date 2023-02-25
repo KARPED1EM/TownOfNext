@@ -426,6 +426,7 @@ namespace TOHE
         Transporter,
         TimeManager,
         Veteran,
+        Bodyguard,
         //Neutral
         Arsonist,
         Jester,
