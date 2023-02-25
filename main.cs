@@ -51,7 +51,7 @@ namespace TOHE
         public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
         //Sorry for many Japanese comments.
         public const string PluginGuid = "com.karped1em.townofhostedited";
-        public const string PluginVersion = "2.0.1";
+        public const string PluginVersion = "2.0.2";
         public const int PluginCreate = 2;
         public Harmony Harmony { get; } = new Harmony(PluginGuid);
         public static Version version = Version.Parse(PluginVersion);
@@ -91,6 +91,7 @@ namespace TOHE
         public static Dictionary<CustomRoles, String> roleColors;
         public static bool IsFixedCooldown => CustomRoles.Vampire.IsEnable();
         public static float RefixCooldownDelay = 0f;
+        public static GameData.PlayerInfo LastVotedPlayerInfo;
         public static string LastVotedPlayer;
         public static List<byte> ResetCamPlayerList;
         public static List<byte> winnerList;
