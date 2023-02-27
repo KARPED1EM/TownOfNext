@@ -620,6 +620,7 @@ namespace TOHE
                 "up" or "up主" => "UP主",
                 "利己主義者" or "利己主义" or "利己" => "利己主义者",
                 "贗品商" or "赝品" => "赝品商",
+                "掷雷兵" or "掷雷" or "闪光弹" => "掷雷兵",
                 _ => text,
             };
         }
@@ -681,6 +682,7 @@ namespace TOHE
                 { CustomRoles.Veteran, GetString("Veteran") },
                 { CustomRoles.Bodyguard, GetString("Bodyguard") },
                 { CustomRoles.Counterfeiter, GetString("Counterfeiter") },
+                { CustomRoles.Grenadier, GetString("Grenadier") },
                 //Neutral役職
                 { (CustomRoles)(-5), $"== {GetString("Neutral")} ==" }, //区切り用
                 { CustomRoles.Arsonist, GetString("Arsonist") },
