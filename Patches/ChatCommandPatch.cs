@@ -620,6 +620,7 @@ namespace TOHE
                 "up" or "up主" => "UP主",
                 "利己主義者" or "利己主义" or "利己" => "利己主义者",
                 "贗品商" or "赝品" => "赝品商",
+                "吹笛者" or "吹笛" => "吹笛者",
                 "掷雷兵" or "掷雷" or "闪光弹" => "掷雷兵",
                 _ => text,
             };
@@ -713,6 +714,7 @@ namespace TOHE
                 { CustomRoles.Avanger,GetString("Avanger") },
                 { CustomRoles.Youtuber,GetString("Youtuber") },
                 { CustomRoles.Egoist,GetString("Egoist") },
+                { CustomRoles.Piper,GetString("Piper") },
             };
 
         public static bool GetRoleByName(string name, out CustomRoles role)
