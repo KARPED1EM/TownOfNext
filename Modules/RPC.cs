@@ -22,6 +22,7 @@ namespace TOHE
         SetKillOrSpell,
         SetSheriffShotLimit,
         SetDousedPlayer,
+        SetDrawPlayer,
         AddNameColorData,
         RemoveNameColorData,
         ResetNameColorData,
@@ -241,6 +242,12 @@ namespace TOHE
                     byte DousedId = reader.ReadByte();
                     bool doused = reader.ReadBoolean();
                     Main.isDoused[(ArsonistId, DousedId)] = doused;
+                    break;
+                case CustomRPC.SetDrawPlayer:
+                    byte ArsonistId1 = reader.ReadByte();
+                    byte DousedId1 = reader.ReadByte();
+                    bool doused1 = reader.ReadBoolean();
+                    Main.isDraw[(ArsonistId1, DousedId1)] = doused1;
                     break;
                 case CustomRPC.AddNameColorData:
                     byte addSeerId = reader.ReadByte();

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using Sentry.Internal;
 using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Translator;
@@ -193,6 +194,24 @@ namespace TOHE
                             Main.ArsonistTimer.Add(killer.PlayerId, (target, 0f));
                             Utils.NotifyRoles(SpecifySeer: __instance);
                             RPC.SetCurrentDousingTarget(killer.PlayerId, target.PlayerId);
+                        }
+                        return false;
+                    case CustomRoles.Revolutionist:
+                        killer.SetKillCooldown(Options.RevolutionistDrawTime.GetFloat());
+                        if (!Main.isDraw[(killer.PlayerId, target.PlayerId)] && !Main.RevolutionistTimer.ContainsKey(killer.PlayerId))
+                        {
+                            Main.RevolutionistTimer.Add(killer.PlayerId, (target, 0f));
+                            Utils.NotifyRoles(SpecifySeer: __instance);
+                            RPC.SetCurrentDrawTarget(killer.PlayerId, target.PlayerId);
+                        }
+                        var rd = IRandom.Instance;
+                        if (rd.Next(1, 100) <= Options.RevolutionistKillProbability.GetInt())
+                        {
+                            new LateTask(() =>
+                            {
+                                killer.RpcMurderPlayer(target);
+                            }, 1.5f);
+                            return true;
                         }
                         return false;
                     case CustomRoles.Innocent:
@@ -944,20 +963,14 @@ namespace TOHE
                     {
                         var ar_target = Main.RevolutionistTimer[player.PlayerId].Item1;//拉拢的人
                         var ar_time = Main.RevolutionistTimer[player.PlayerId].Item2;//拉拢时间
-                        if (!ar_target.IsAlive())
-                        {
-                            Main.ArsonistTimer.Remove(player.PlayerId);
-                        }
-                        else if (ar_time >= Options.RevolutionistDrawTime.GetFloat())//在一起时间超过多久
+                         if (ar_time >= Options.RevolutionistDrawTime.GetFloat())//在一起时间超过多久
                         {
                             player.SetKillCooldown();
                             Main.RevolutionistTimer.Remove(player.PlayerId);//拉拢完成从字典中删除
                             Main.isDraw[(player.PlayerId, ar_target.PlayerId)] = true;//完成拉拢
-                            player.RpcSetDousedPlayer(ar_target, true);
+                            player.RpcSetDrawPlayer(ar_target, true);
                             Utils.NotifyRoles();//更变名字
                             RPC.ResetCurrentDrawTarget(player.PlayerId);
-                            var rd = IRandom.Instance;
-
                         }
                         else
                         {
@@ -1423,6 +1436,7 @@ namespace TOHE
     {
         public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
         {
+
             if (AmongUsClient.Instance.AmHost)
             {
                 if (AmongUsClient.Instance.IsGameStarted && __instance.myPlayer.IsDouseDone())
@@ -1448,8 +1462,10 @@ namespace TOHE
 
                 if (AmongUsClient.Instance.IsGameStarted && __instance.myPlayer.IsDrawDone())//完成拉拢任务的玩家跳管后
                 {
+                    foreach (var pc in PlayerControl.AllPlayerControls) pc.KillFlash();
                     CustomWinnerHolder.ShiftWinnerAndSetWinner(CustomWinner.Revolutionist); //革命者胜利
-                    CustomWinnerHolder.WinnerIds.Add(__instance.myPlayer.PlayerId);//胜利玩家
+                    Utils.GetDrawPlayerCount(__instance.myPlayer.PlayerId, out byte[] x);
+                    foreach(int PC in x) CustomWinnerHolder.WinnerIds.Add(x[PC]);//胜利玩家
                     return true;
                 }
 

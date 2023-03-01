@@ -419,6 +419,13 @@ namespace TOHE
             writer.Write(target.PlayerId);
             writer.Write(isDoused);
             AmongUsClient.Instance.FinishRpcImmediately(writer);
+        }public static void RpcSetDrawPlayer(this PlayerControl player, PlayerControl target, bool isDoused)
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetDrawPlayer, SendOption.Reliable, -1);//RPCによる同期
+            writer.Write(player.PlayerId);
+            writer.Write(target.PlayerId);
+            writer.Write(isDoused);
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
         public static void ResetKillCooldown(this PlayerControl player)
         {
@@ -503,7 +510,7 @@ namespace TOHE
         public static bool IsDrawDone(this PlayerControl player)//判断是否拉拢完成
         {
             if (!player.Is(CustomRoles.Revolutionist)) return false;
-            var count = Utils.GetDrawPlayerCount(player.PlayerId);
+            var count = Utils.GetDrawPlayerCount(player.PlayerId, out byte[] x);
             return count.Item1 == count.Item2;
         }
         public static void RpcExileV2(this PlayerControl player)
