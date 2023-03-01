@@ -55,7 +55,6 @@ namespace TOHE
 
                     Color IconColor = Color.white;
                     var roleColor = Utils.GetRoleColor(cRole);
-                    var RoleType = cRole.GetRoleType();
 
                     button.FileImage.color = roleColor;
                     button.RolloverHandler.OutColor = roleColor;
@@ -76,7 +75,7 @@ namespace TOHE
                 {
                     var PlayerCustomRole = PlayerControl.LocalPlayer.GetCustomRole();
                     CustomRoles FileCustomRole = (CustomRoles)__instance.Role.Role - 1000;
-                    ((Renderer)__instance.Overlay).enabled = PlayerCustomRole == FileCustomRole;
+                    __instance.Overlay.enabled = PlayerCustomRole == FileCustomRole;
                 }
             }
             catch { }

@@ -11,6 +11,11 @@ using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using TOHE.Modules;
+using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.AddOns.Impostor;
+using TOHE.Roles.Crewmate;
+using TOHE.Roles.Impostor;
+using TOHE.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
 using static TOHE.Translator;
@@ -605,7 +610,7 @@ namespace TOHE
                 SendMessage(GetString("CantUse.lastresult"), PlayerId);
                 return;
             }
-            var text = "玩家信息:";
+            var text = $"{GetString("PlayerInfo")}:";
             List<byte> cloneRoles = new(Main.PlayerStates.Keys);
             foreach (var id in Main.winnerList)
             {
@@ -618,7 +623,7 @@ namespace TOHE
                 if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
                 text += $"\n　 " + EndGamePatch.SummaryText[id].RemoveHtmlTags();
             }
-            if (text == "玩家信息:") text = "";
+            if (text == $"{GetString("PlayerInfo")}:") text = "";
 
             string sumText = "";
             if (SetEverythingUpPatch.LastWinsText != "") sumText += GetString("LastResult") + ": " + $"{SetEverythingUpPatch.LastWinsText}";
@@ -628,7 +633,7 @@ namespace TOHE
             if (EndGamePatch.KillLog != "") SendMessage(EndGamePatch.KillLog, PlayerId);
             if (sumText != "") SendMessage(sumText, PlayerId);
 
-            if (text == "" && EndGamePatch.KillLog == "" && sumText == "") SendMessage("没有存在的上局信息", PlayerId);
+            if (text == "" && EndGamePatch.KillLog == "" && sumText == "") SendMessage(GetString("NoInfoExists"), PlayerId);
 
             if (IsUP(PlayerControl.LocalPlayer) && Options.EnableUpMode.GetBool()) SendMessage($"提示：该房间启用了【创作者素材保护计划】，房主可以指定自己的职业。\n该功能仅允许创作者用于获取视频素材，如遇滥用情况，请退出游戏或举报。\n当前创作者认证：{GetUpName(PlayerControl.LocalPlayer)}", PlayerId);
 
@@ -759,9 +764,9 @@ namespace TOHE
                         if (pc.Data.IsDead || pc.Data.Disconnected || pc == seer || pc == null) continue;
                         isGood.Add(pc.PlayerId, true);
                         var role = pc.GetCustomRole();
-                        switch (role.GetRoleType())
+                        switch (role.GetCustomRoleTypes())
                         {
-                            case RoleType.Crewmate:
+                            case CustomRoleTypes.Crewmate:
                                 if (Options.CkshowEvil.GetBool())
                                     if (!role.IsCK())
                                     {
@@ -769,10 +774,10 @@ namespace TOHE
                                         isGood[pc.PlayerId] = false;
                                     }
                                 break;
-                            case RoleType.Impostor:
+                            case CustomRoleTypes.Impostor:
                                 badPlayers.Add(pc); isGood[pc.PlayerId] = false;
                                 break;
-                            case RoleType.Neutral:
+                            case CustomRoleTypes.Neutral:
                                 if (Options.NBshowEvil.GetBool())
                                     if (!role.IsNeutralKilling())
                                     {
@@ -951,7 +956,7 @@ namespace TOHE
                 //名前の後ろに付けるマーカー
                 SelfMark.Clear();
 
-                //インポスター/キル可能な第三陣営に対するSnitch警告
+                //インポスター/キル可能なニュートラルに対するSnitch警告
                 SelfMark.Append(Snitch.GetWarningArrow(seer));
 
                 //愚者初始化红名玩家
@@ -994,11 +999,10 @@ namespace TOHE
                     if (AntiAdminer.IsCameraWatch) SelfSuffix.Append("★").Append(GetString("AntiAdminerCA"));
                 }
 
-                //タスクを終えたSnitchがインポスター/キル可能な第三陣営の方角を確認できる
+                //タスクを終えたSnitchがインポスター/キル可能なニュートラルの方角を確認できる
                 SelfSuffix.Append(Snitch.GetSnitchArrow(seer));
 
-                if (seer.Is(CustomRoles.EvilTracker))
-                    SelfSuffix.Append(EvilTracker.GetTargetArrowForVanilla(isMeeting, seer));
+                SelfSuffix.Append(EvilTracker.GetTargetArrow(seer, seer));
 
                 //RealNameを取得 なければ現在の名前をRealNamesに書き込む
                 string SeerRealName = seer.GetRealName(isMeeting);
@@ -1111,7 +1115,7 @@ namespace TOHE
                         if (seer.Is(CustomRoles.EvilTracker))
                         {
                             TargetMark.Append(EvilTracker.GetTargetMark(seer, target));
-                            if (isMeeting && EvilTracker.IsTrackTarget(seer, target) && EvilTracker.CanSeeLastRoomInMeeting.GetBool())
+                            if (isMeeting && EvilTracker.IsTrackTarget(seer, target) && EvilTracker.CanSeeLastRoomInMeeting)
                                 TargetRoleText = $"<size={fontSize}>{EvilTracker.GetArrowAndLastRoom(seer, target)}</size>\r\n";
                         }
 
@@ -1139,15 +1143,7 @@ namespace TOHE
                         }
 
                         //ターゲットのプレイヤー名の色を書き換えます。
-                        if (IsActive(SystemTypes.Electrical) && target.Is(CustomRoles.Mare) && !isMeeting)
-                            TargetPlayerName = ColorString(GetRoleColor(CustomRoles.Impostor), TargetPlayerName); //targetの赤色で表示
-                        else
-                        {
-                            //NameColorManager準拠の処理
-                            var ncd = NameColorManager.Instance.GetData(seer.PlayerId, target.PlayerId);
-                            TargetPlayerName = ncd.OpenTag + TargetPlayerName + ncd.CloseTag;
-                        }
-                        TargetMark.Append(Executioner.TargetMark(seer, target));
+                        TargetPlayerName = TargetPlayerName.ApplyNameColorData(seer, target, isMeeting);
 
                         string TargetDeathReason = "";
                         if (seer.KnowDeathReason(target))
@@ -1343,18 +1339,28 @@ namespace TOHE
             tmp += input;
             ChangeTo = Math.Clamp(tmp, 0, max);
         }
-        public static void CountAliveImpostors()
+        public static void CountAlivePlayers(bool sendLog = false)
         {
-            int AliveImpostorCount = 0;
-            foreach (var pc in Main.AllPlayerControls)
+            int AliveImpostorCount = Main.AllAlivePlayerControls.Count(pc => pc.Is(CustomRoleTypes.Impostor));
+            if (Main.AliveImpostorCount != AliveImpostorCount)
             {
-                CustomRoles pc_role = pc.GetCustomRole();
-                if (pc_role.IsImpostor() && !Main.PlayerStates[pc.PlayerId].IsDead) AliveImpostorCount++;
+                Logger.Info("生存しているインポスター:" + AliveImpostorCount + "人", "CountAliveImpostors");
+                Main.AliveImpostorCount = AliveImpostorCount;
+                LastImpostor.SetSubRole();
             }
-            if (Main.AliveImpostorCount == AliveImpostorCount) return;
-            Logger.Info("生存しているインポスター:" + AliveImpostorCount + "人", "CountAliveImpostors");
-            Main.AliveImpostorCount = AliveImpostorCount;
-            LastImpostor.SetSubRole();
+
+            if (sendLog)
+            {
+                var sb = new StringBuilder(100);
+                foreach (var countTypes in Enum.GetValues(typeof(CountTypes)).Cast<CountTypes>())
+                {
+                    var playersCount = PlayersCount(countTypes);
+                    if (playersCount == 0) continue;
+                    sb.Append($"{countTypes}:{AlivePlayersCount(countTypes)}/{playersCount}, ");
+                }
+                sb.Append($"All:{AllAlivePlayersCount}/{AllPlayersCount}");
+                Logger.Info(sb.ToString(), "CountAlivePlayers");
+            }
         }
         public static string GetVoteName(byte num)
         {
@@ -1531,6 +1537,10 @@ namespace TOHE
             casted = obj.TryCast<T>();
             return casted != null;
         }
-        public static string GetRoomName(this SystemTypes roomId) => DestroyableSingleton<TranslationController>.Instance.GetString(roomId);
+        public static int AllPlayersCount => Main.PlayerStates.Values.Count(state => state.countTypes != CountTypes.OutOfGame);
+        public static int AllAlivePlayersCount => Main.AllAlivePlayerControls.Count(pc => !pc.Is(CountTypes.OutOfGame));
+        public static bool IsAllAlive => Main.PlayerStates.Values.All(state => state.countTypes == CountTypes.OutOfGame || !state.IsDead);
+        public static int PlayersCount(CountTypes countTypes) => Main.PlayerStates.Values.Count(state => state.countTypes == countTypes);
+        public static int AlivePlayersCount(CountTypes countTypes) => Main.AllAlivePlayerControls.Count(pc => pc.Is(countTypes));
     }
 }

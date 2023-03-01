@@ -4,6 +4,11 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using HarmonyLib;
+using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.AddOns.Impostor;
+using TOHE.Roles.Crewmate;
+using TOHE.Roles.Impostor;
+using TOHE.Roles.Neutral;
 using UnityEngine;
 
 namespace TOHE
@@ -299,7 +304,6 @@ namespace TOHE
         public static OptionItem AutoKickStopWordsAsBan;
         public static OptionItem AutoKickStopWordsTimes;
         public static OptionItem KickAndroidPlayer;
-        public static OptionItem KickNonTOHEPlayer;
         public static OptionItem ApplyDenyNameList;
         public static OptionItem KickPlayerFriendCodeNotExist;
         public static OptionItem ApplyBanList;
@@ -568,6 +572,7 @@ namespace TOHE
             SetupRoleOptions(50200, TabGroup.NeutralRoles, CustomRoles.Terrorist);
             CanTerroristSuicideWin = BooleanOptionItem.Create(50210, "CanTerroristSuicideWin", false, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Terrorist])
                 .SetGameMode(CustomGameMode.Standard);
+            /*
             SetupRoleOptions(50600, TabGroup.NeutralRoles, CustomRoles.Revolutionist);
             RevolutionistDrawTime = FloatOptionItem.Create(50610, "RevolutionistDrawTime", new(1f, 10f, 1f), 3f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Revolutionist])
                 .SetValueFormat(OptionFormat.Seconds);
@@ -577,6 +582,7 @@ namespace TOHE
                 .SetValueFormat(OptionFormat.Players);
             RevolutionistKillProbability = IntegerOptionItem.Create(50619, "RevolutionistKillProbability", new(0, 100, 5), 50, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Revolutionist])
                 .SetValueFormat(OptionFormat.Percent);
+            */
 
             //50220~50223を使用
             TerroristTasks = OverrideTasksData.Create(50220, TabGroup.NeutralRoles, CustomRoles.Terrorist);
@@ -678,8 +684,6 @@ namespace TOHE
                 .SetGameMode(CustomGameMode.All)
                 .SetHeader(true);
             KickPlayerFriendCodeNotExist = BooleanOptionItem.Create(1_000_101, "KickPlayerFriendCodeNotExist", false, TabGroup.SystemSettings, true)
-                .SetGameMode(CustomGameMode.All);
-            KickNonTOHEPlayer = BooleanOptionItem.Create(6090073, "KickNonTOHEPlayer", true, TabGroup.SystemSettings, false)
                 .SetGameMode(CustomGameMode.All);
             ApplyDenyNameList = BooleanOptionItem.Create(1_000_100, "ApplyDenyNameList", true, TabGroup.SystemSettings, true)
                 .SetGameMode(CustomGameMode.All);

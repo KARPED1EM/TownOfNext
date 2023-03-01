@@ -4,7 +4,7 @@ using Hazel;
 using UnityEngine;
 using static TOHE.Translator;
 
-namespace TOHE
+namespace TOHE.Roles.Impostor
 {
     public static class BountyHunter
     {
@@ -33,7 +33,7 @@ namespace TOHE
                 .SetValueFormat(OptionFormat.Seconds);
             OptionFailureKillCooldown = FloatOptionItem.Create(Id + 12, "BountyFailureKillCooldown", new(0f, 180f, 2.5f), 50f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.BountyHunter])
                 .SetValueFormat(OptionFormat.Seconds);
-            OptionShowTargetArrow = BooleanOptionItem.Create(Id + 13, "BountyShowTargetArrow", false, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.BountyHunter]);
+            OptionShowTargetArrow = BooleanOptionItem.Create(Id + 13, "BountyShowTargetArrow", true, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.BountyHunter]);
         }
         public static void Init()
         {
@@ -150,7 +150,7 @@ namespace TOHE
             Logger.Info($"{player.GetNameWithRole()}:ターゲットリセット", "BountyHunter");
             player.RpcResetAbilityCooldown(); ;//タイマー（変身クールダウン）のリセットと
 
-            var cTargets = new List<PlayerControl>(Main.AllAlivePlayerControls.Where(pc => !pc.Is(RoleType.Impostor)));
+            var cTargets = new List<PlayerControl>(Main.AllAlivePlayerControls.Where(pc => !pc.Is(CustomRoleTypes.Impostor)));
 
             if (cTargets.Count() >= 2 && Targets.TryGetValue(player.PlayerId, out var nowTarget))
                 cTargets.RemoveAll(x => x.PlayerId == nowTarget); //前回のターゲットは除外
@@ -187,7 +187,7 @@ namespace TOHE
         public static string GetTargetText(PlayerControl bounty, bool hud)
         {
             var targetId = GetTarget(bounty);
-            return targetId != 0xff ? $"{(hud ? GetString("BountyCurrentTarget") : "Target")}:{Main.AllPlayerNames[targetId]}" : "";
+            return targetId != 0xff ? $"{(hud ? GetString("BountyCurrentTarget") : GetString("Target"))}:{Main.AllPlayerNames[targetId].RemoveHtmlTags().Replace("\r\n", string.Empty)}" : "";
         }
         public static string GetTargetArrow(PlayerControl seer, PlayerControl target = null)
         {

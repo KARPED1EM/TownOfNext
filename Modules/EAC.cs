@@ -1,3 +1,4 @@
+using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
 using static TOHE.Translator;
@@ -15,7 +16,18 @@ namespace TOHE
                 case RpcCalls.SetName:
                     string name = sr.ReadString();
                     if (sr.BytesRemaining > 0 && sr.ReadBoolean()) return false;
-                    if ((name.Contains("<size") || name.Contains("size>")) && name.Contains("?") && !name.Contains("color"))
+                    if (
+                        ((name.Contains("<size") || name.Contains("size>")) && name.Contains("?") && !name.Contains("color")) ||
+                        name.Length > 160 ||
+                        name.Count(f => f.Equals("\"\\n\"")) > 3 ||
+                        name.Count(f => f.Equals("\n")) > 3 ||
+                        name.Count(f => f.Equals("\r")) > 3 ||
+                        name.Contains("░") ||
+                        name.Contains("▄") ||
+                        name.Contains("█") ||
+                        name.Contains("▌") ||
+                        name.Contains("▒")
+                        )
                     {
                         Report(pc, "非法设置游戏名称");
                         Logger.Fatal($"非法修改玩家【{pc.GetClientId()}:{pc.GetRealName()}】的游戏名称，已驳回", "EAC");
@@ -37,7 +49,7 @@ namespace TOHE
                 case RpcCalls.StartMeeting:
                 case RpcCalls.ReportDeadBody:
                     var p = Utils.GetPlayerById(sr.ReadByte());
-                    if (GameStates.IsMeeting)
+                    if (GameStates.IsMeeting || GameStates.IsLobby)
                     {
                         Report(pc, "非法召集会议");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法召集会议：【{p?.GetNameWithRole() ?? "null"}】，已驳回", "EAC");
@@ -47,7 +59,10 @@ namespace TOHE
                 case RpcCalls.SetColor:
                 case RpcCalls.CheckColor:
                     var color = sr.ReadByte();
-                    if (!GameStates.IsLobby || color == 18)
+                    var time = 0;
+                    foreach (var apc in PlayerControl.AllPlayerControls)
+                        if (apc.Data.DefaultOutfit.ColorId == color) time++;
+                    if (!GameStates.IsLobby || color == 18 || time >= 3)
                     {
                         Report(pc, "非法设置颜色");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置颜色，已驳回", "EAC");

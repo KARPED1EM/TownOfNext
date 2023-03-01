@@ -6,6 +6,9 @@ using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using TOHE.Modules;
+using TOHE.Roles.Crewmate;
+using TOHE.Roles.Impostor;
+using TOHE.Roles.Neutral;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -17,7 +20,7 @@ namespace TOHE
         {
             if (role < CustomRoles.NotAssigned)
             {
-                Main.PlayerStates[player.PlayerId].MainRole = role;
+                Main.PlayerStates[player.PlayerId].SetMainRole(role);
             }
             else if (role >= CustomRoles.NotAssigned)   //500:NoSubRole 501~:SubRole
             {
@@ -88,6 +91,20 @@ namespace TOHE
             }
             return Main.PlayerStates[player.PlayerId].SubRoles;
         }
+        public static CountTypes GetCountTypes(this PlayerControl player)
+        {
+            if (player == null)
+            {
+                var caller = new System.Diagnostics.StackFrame(1, false);
+                var callerMethod = caller.GetMethod();
+                string callerMethodName = callerMethod.Name;
+                string callerClassName = callerMethod.DeclaringType.FullName;
+                Logger.Warn(callerClassName + "." + callerMethodName + "がCountTypesを取得しようとしましたが、対象がnullでした。", "GetCountTypes");
+                return CountTypes.None;
+            }
+
+            return Main.PlayerStates.TryGetValue(player.PlayerId, out var State) ? State.countTypes : CountTypes.None;
+        }
         public static void RpcSetNameEx(this PlayerControl player, string name)
         {
             foreach (var seer in Main.AllPlayerControls)
@@ -151,11 +168,11 @@ namespace TOHE
                 var sender = CustomRpcSender.Create("GuardAndKill Sender", SendOption.None);
                 sender.StartMessage(killer.GetClientId());
                 sender.StartRpc(killer.NetId, (byte)RpcCalls.ProtectPlayer)
-                    .WriteNetObject((InnerNetObject)target)
+                    .WriteNetObject(target)
                     .Write(colorId)
                     .EndRpc();
                 sender.StartRpc(killer.NetId, (byte)RpcCalls.MurderPlayer)
-                    .WriteNetObject((InnerNetObject)target)
+                    .WriteNetObject(target)
                     .EndRpc();
                 sender.EndMessage();
                 sender.SendMessage();
@@ -375,7 +392,7 @@ namespace TOHE
                 CustomRoles.Bomber => false,
                 CustomRoles.Innocent => pc.IsAlive(),
                 CustomRoles.Counterfeiter => Counterfeiter.CanUseKillButton(pc.PlayerId),
-                _ => pc.Is(RoleType.Impostor),
+                _ => pc.Is(CustomRoleTypes.Impostor),
             };
         }
         public static bool CanUseImpostorVentButton(this PlayerControl pc)
@@ -392,7 +409,7 @@ namespace TOHE
                 CustomRoles.Arsonist => pc.IsDouseDone(),
                 CustomRoles.Revolutionist => pc.IsDrawDone(),
                 CustomRoles.Pelican => Pelican.CanVent.GetBool(),
-                _ => pc.Is(RoleType.Impostor),
+                _ => pc.Is(CustomRoleTypes.Impostor),
             };
         }
         public static bool IsDousedPlayer(this PlayerControl arsonist, PlayerControl target)
@@ -411,7 +428,7 @@ namespace TOHE
             Main.isDraw.TryGetValue((arsonist.PlayerId, target.PlayerId), out bool isDraw);
             return isDraw;
         }
-        
+
         public static void RpcSetDousedPlayer(this PlayerControl player, PlayerControl target, bool isDoused)
         {
             MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetDousedPlayer, SendOption.Reliable, -1);//RPCによる同期
@@ -448,7 +465,7 @@ namespace TOHE
                     Main.AllPlayerKillCooldown[player.PlayerId] = Options.ArsonistCooldown.GetFloat(); //アーソニストはアーソニストのキルクールに。
                     break;
                 case CustomRoles.Revolutionist:
-                    Main.AllPlayerKillCooldown[player.PlayerId] = Options.RevolutionistCooldown.GetFloat(); 
+                    Main.AllPlayerKillCooldown[player.PlayerId] = Options.RevolutionistCooldown.GetFloat();
                     break;
                 case CustomRoles.Jackal:
                     Jackal.SetKillCooldown(player.PlayerId);
@@ -620,8 +637,9 @@ namespace TOHE
         //汎用
         public static bool Is(this PlayerControl target, CustomRoles role) =>
             role > CustomRoles.NotAssigned ? target.GetCustomSubRoles().Contains(role) : target.GetCustomRole() == role;
-        public static bool Is(this PlayerControl target, RoleType type) { return target.GetCustomRole().GetRoleType() == type; }
+        public static bool Is(this PlayerControl target, CustomRoleTypes type) { return target.GetCustomRole().GetCustomRoleTypes() == type; }
         public static bool Is(this PlayerControl target, RoleTypes type) { return target.GetCustomRole().GetRoleTypes() == type; }
+        public static bool Is(this PlayerControl target, CountTypes type) { return target.GetCountTypes() == type; }
         public static bool IsAlive(this PlayerControl target)
         {
             //ロビーなら生きている
