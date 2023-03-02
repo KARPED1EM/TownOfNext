@@ -422,9 +422,7 @@ namespace TOHE
         }
         public static bool IsDrawPlayer(this PlayerControl arsonist, PlayerControl target)
         {
-            if (arsonist == null) return false;
-            if (target == null) return false;
-            if (Main.isDraw == null) return false;
+            if (arsonist == null && target == null && Main.isDraw == null) return false;
             Main.isDraw.TryGetValue((arsonist.PlayerId, target.PlayerId), out bool isDraw);
             return isDraw;
         }

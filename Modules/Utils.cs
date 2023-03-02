@@ -1410,6 +1410,8 @@ namespace TOHE
         {
             int draw = 0;
             int all = Options.RevolutionistDrawCount.GetInt();
+            int max = PlayerControl.AllPlayerControls.Count - (CustomRolesHelper.RoleExist(CustomRoles.GM) ? 2 : 1);
+            if (all > max ) all = max;
             byte[] joinplayer = new byte[Options.RevolutionistDrawCount.GetInt()];
             foreach (var pc in Main.AllPlayerControls)
             {
