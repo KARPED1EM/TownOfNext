@@ -1,543 +1,563 @@
+using Assets.CoreScripts;
+using HarmonyLib;
+using Hazel;
+using Il2CppSystem.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Assets.CoreScripts;
-using HarmonyLib;
-using Hazel;
 using UnityEngine;
 using static TOHE.Translator;
 
-namespace TOHE
+namespace TOHE;
+
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
+class ChatCommands
 {
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
-    class ChatCommands
+    public static List<string> ChatHistory = new();
+
+    public static bool MafiaMsgCheck(PlayerControl pc, string msg)
     {
-        public static List<string> ChatHistory = new();
-
-        public static bool MafiaMsgCheck(PlayerControl pc, string msg)
+        if (!AmongUsClient.Instance.AmHost) return false;
+        if (!GameStates.IsInGame || pc == null) return false;
+        if (!pc.Is(CustomRoles.Mafia)) return false;
+        msg = msg.Trim().ToLower();
+        if (msg.Length < 3 || msg[..3] != "/rv") return false;
+        if (Options.MafiaCanKillNum.GetInt() < 1)
         {
-            if (!AmongUsClient.Instance.AmHost) return false;
-            if (!GameStates.IsInGame || pc == null) return false;
-            if (!pc.Is(CustomRoles.Mafia)) return false;
-            msg = msg.Trim().ToLower();
-            if (msg.Length < 3 || msg[..3] != "/rv") return false;
-            if (Options.MafiaCanKillNum.GetInt() < 1)
+            Utils.SendMessage(GetString("MafiaKillDisable"), pc.PlayerId);
+            return true;
+        }
+
+        if (!pc.Data.IsDead)
+        {
+            Utils.SendMessage(GetString("MafiaAliveKill"), pc.PlayerId);
+            return true;
+        }
+
+        if (msg == "/rv")
+        {
+            string text = GetString("PlayerIdList");
+            foreach (var npc in PlayerControl.AllPlayerControls)
             {
-                Utils.SendMessage(GetString("MafiaKillDisable"), pc.PlayerId);
+                if (npc.Data.IsDead) continue;
+                text += "\n" + npc.PlayerId.ToString() + " → (" + npc.GetDisplayRoleName() + ") " + npc.GetRealName();
+            }
+            Utils.SendMessage(text, pc.PlayerId);
+            return true;
+        }
+
+        if (Main.MafiaRevenged.ContainsKey(pc.PlayerId))
+        {
+            if (Main.MafiaRevenged[pc.PlayerId] >= Options.MafiaCanKillNum.GetInt())
+            {
+                Utils.SendMessage(GetString("MafiaKillMax"), pc.PlayerId);
                 return true;
             }
+        }
+        else
+        {
+            Main.MafiaRevenged.Add(pc.PlayerId, 0);
+        }
 
-            if (!pc.Data.IsDead)
+        int targetId;
+        PlayerControl target;
+        try
+        {
+            targetId = int.Parse(msg.Replace("/rv", String.Empty));
+            target = Utils.GetPlayerById(targetId);
+        }
+        catch
+        {
+            Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
+            return true;
+        }
+
+        if (target == null || target.Data.IsDead)
+        {
+            Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
+            return true;
+        }
+
+        string Name = target.GetRealName();
+        Utils.SendMessage(Name + " " + GetString("MafiaKillSucceed"), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), " ★ 特供情报 ★ "));
+
+        new LateTask(() =>
+        {
+            target.SetRealKiller(pc);
+            target.RpcMurderPlayer(target);
+            Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
+            Main.PlayerStates[target.PlayerId].SetDead();
+            Main.MafiaRevenged[pc.PlayerId]++;
+            foreach (var cpc in Main.AllPlayerControls)
             {
-                Utils.SendMessage(GetString("MafiaAliveKill"), pc.PlayerId);
-                return true;
+                RPC.PlaySoundRPC(cpc.PlayerId, Sounds.KillSound);
+                cpc.RpcSetNameEx(cpc.GetRealName(isMeeting: true));
             }
+            ChatUpdatePatch.DoBlockChat = false;
+            Utils.NotifyRoles(isMeeting: true, NoCache: true);
+        }, 0.9f, "Mafia Kill");
+        return true;
+    }
 
-            if (msg == "/rv")
+    public static bool ContainsStart(string text)
+    {
+        text = text.Trim().ToLower();
+
+        int stNum = 0;
+        for (int i = 0; i < text.Length; i++)
+        {
+            if (text[i..].Equals("k")) stNum++;
+            if (text[i..].Equals("开")) stNum++;
+        }
+        if (stNum >= 3) return true;
+
+        if (text == "Start") return true;
+        if (text == "start") return true;
+        if (text == "开") return true;
+        if (text == "快开") return true;
+        if (text == "开始") return true;
+        if (text == "开啊") return true;
+        if (text == "开阿") return true;
+        if (text == "kai") return true;
+        if (text == "kaishi") return true;
+        if (text.Contains("started")) return false;
+        if (text.Contains("starter")) return false;
+        if (text.Contains("Starting")) return false;
+        if (text.Contains("starting")) return false;
+        if (text.Contains("beginner")) return false;
+        if (text.Contains("beginned")) return false;
+        if (text.Contains("了")) return false;
+        if (text.Contains("没")) return false;
+        if (text.Contains("吗")) return false;
+        if (text.Contains("哈")) return false;
+        if (text.Contains("还")) return false;
+        if (text.Contains("现")) return false;
+        if (text.Contains("不")) return false;
+        if (text.Contains("可")) return false;
+        if (text.Contains("刚")) return false;
+        if (text.Contains("的")) return false;
+        if (text.Contains("打")) return false;
+        if (text.Contains("门")) return false;
+        if (text.Contains("关")) return false;
+        if (text.Contains("怎")) return false;
+        if (text.Contains("要")) return false;
+        if (text.Contains("摆")) return false;
+        if (text.Contains("啦")) return false;
+        if (text.Contains("咯")) return false;
+        if (text.Contains("嘞")) return false;
+        if (text.Contains("勒")) return false;
+        if (text.Contains("心")) return false;
+        if (text.Contains("呢")) return false;
+        if (text.Contains("门")) return false;
+        if (text.Contains("总")) return false;
+        if (text.Contains("哥")) return false;
+        if (text.Contains("姐")) return false;
+        if (text.Contains("《")) return false;
+        if (text.Contains("?")) return false;
+        if (text.Contains("？")) return false;
+        if (text.Length >= 3) return false;
+        if (text.Contains("start")) return true;
+        if (text.Contains("s t a r t")) return true;
+        if (text.Contains("begin")) return true;
+        if (text.Contains("开")) return true;
+        if (text.Contains("kai")) return true;
+        return false;
+    }
+
+    public static bool ProhibitedCheck(PlayerControl player, string text)
+    {
+        if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
+        string name = player.GetRealName();
+        bool kick = false;
+        string msg = "";
+
+        if (Options.AutoKickStart.GetBool())
+        {
+            if (ContainsStart(text) && GameStates.IsLobby)
             {
-                string text = GetString("PlayerIdList");
-                foreach (var npc in PlayerControl.AllPlayerControls)
+                msg = string.Format(GetString("Message.KickWhoSayStart"), name);
+                msg = $"";
+                if (Options.AutoKickStart.GetBool())
                 {
-                    if (npc.Data.IsDead) continue;
-                    text += "\n" + npc.PlayerId.ToString() + " → (" + npc.GetDisplayRoleName() + ") " + npc.GetRealName();
+                    if (!Main.SayStartTimes.ContainsKey(player.GetClientId())) Main.SayStartTimes.Add(player.GetClientId(), 0);
+                    Main.SayStartTimes[player.GetClientId()]++;
+                    msg = string.Format(GetString("Message.WarnWhoSayStart"), name, Main.SayStartTimes[player.GetClientId()]);
+                    if (Main.SayStartTimes[player.GetClientId()] > Options.AutoKickStartTimes.GetInt())
+                    {
+                        msg = string.Format(GetString("Message.KickStartAfterWarn"), name, Main.SayStartTimes[player.GetClientId()]);
+                        kick = true;
+                    }
                 }
-                Utils.SendMessage(text, pc.PlayerId);
+                if (msg != "") Utils.SendMessage(msg);
+                if (kick) AmongUsClient.Instance.KickPlayer(player.GetClientId(), Options.AutoKickStartAsBan.GetBool());
                 return true;
             }
+        }
 
-            if (Main.MafiaRevenged.ContainsKey(pc.PlayerId))
+        var list = ReturnAllNewLinesInFile(Main.BANNEDWORDS_FILE_PATH, noErr: true);
+        bool banned = false;
+        var banedWord = "";
+        foreach (var word in list)
+        {
+            if (word != null && text.Contains(word))
             {
-                if (Main.MafiaRevenged[pc.PlayerId] >= Options.MafiaCanKillNum.GetInt())
-                {
-                    Utils.SendMessage(GetString("MafiaKillMax"), pc.PlayerId);
-                    return true;
-                }
+                banedWord = word;
+                banned = true;
+                break;
             }
+        }
+        if (!banned) return false;
+
+        if (Options.AutoWarnStopWords.GetBool()) msg = string.Format(GetString("Message.WarnWhoSayBanWord"), name);
+        if (Options.AutoKickStopWords.GetBool())
+        {
+            if (!Main.SayBanwordsTimes.ContainsKey(player.GetClientId())) Main.SayBanwordsTimes.Add(player.GetClientId(), 0);
+            Main.SayBanwordsTimes[player.GetClientId()]++;
+            msg = string.Format(GetString("Message.WarnWhoSayBanWordTimes"), name, Main.SayBanwordsTimes[player.GetClientId()]);
+            if (Main.SayBanwordsTimes[player.GetClientId()] > Options.AutoKickStopWordsTimes.GetInt())
+            {
+                msg = string.Format(GetString("Message.KickWhoSayBanWordAfterWarn"), name, Main.SayBanwordsTimes[player.GetClientId()]);
+                kick = true;
+            }
+        }
+
+        if (msg != "")
+        {
+            if (kick || !GameStates.IsInGame) Utils.SendMessage(msg);
             else
             {
-                Main.MafiaRevenged.Add(pc.PlayerId, 0);
-            }
-
-            int targetId;
-            PlayerControl target;
-            try
-            {
-                targetId = int.Parse(msg.Replace("/rv", String.Empty));
-                target = Utils.GetPlayerById(targetId);
-            }
-            catch
-            {
-                Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
-                return true;
-            }
-
-            if (target == null || target.Data.IsDead)
-            {
-                Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
-                return true;
-            }
-
-            string Name = target.GetRealName();
-            Utils.SendMessage(Name + " " + GetString("MafiaKillSucceed"), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), " ★ 特供情报 ★ "));
-
-            new LateTask(() =>
-            {
-                target.SetRealKiller(pc);
-                target.RpcMurderPlayer(target);
-                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
-                Main.PlayerStates[target.PlayerId].SetDead();
-                Main.MafiaRevenged[pc.PlayerId]++;
-                foreach (var cpc in Main.AllPlayerControls)
+                foreach (var pc in PlayerControl.AllPlayerControls)
                 {
-                    RPC.PlaySoundRPC(cpc.PlayerId, Sounds.KillSound);
-                    cpc.RpcSetNameEx(cpc.GetRealName(isMeeting: true));
+                    if (pc != null && pc.IsAlive() == player.IsAlive()) Utils.SendMessage(msg, pc.PlayerId);
                 }
-                ChatUpdatePatch.DoBlockChat = false;
-                Utils.NotifyRoles(isMeeting: true, NoCache: true);
-            }, 0.9f, "Mafia Kill");
-            return true;
+            }
         }
+        if (kick) AmongUsClient.Instance.KickPlayer(player.GetClientId(), Options.AutoKickStopWordsAsBan.GetBool());
+        return true;
+    }
 
-        public static bool ContainsStart(string text)
+    public static bool Prefix(ChatController __instance)
+    {
+        if (__instance.TextArea.text == "") return false;
+        __instance.TimeSinceLastMessage = 3f;
+        var text = __instance.TextArea.text;
+        if (ChatHistory.Count == 0 || ChatHistory[^1] != text) ChatHistory.Add(text);
+        ChatControllerUpdatePatch.CurrentHistorySelection = ChatHistory.Count;
+        string[] args = text.Split(' ');
+        string subArgs = "";
+        var canceled = false;
+        var cancelVal = "";
+        Main.isChatCommand = true;
+        Logger.Info(text, "SendChat");
+        if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
+        if (text.Length >= 4) if (text[..3] == "/up") args[0] = "/up";
+        if (GuessManager.GuesserMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
+        if (MafiaMsgCheck(PlayerControl.LocalPlayer, text)) goto Canceled;
+        switch (args[0])
         {
-            text = text.Trim().ToLower();
-
-            int stNum = 0;
-            for (int i = 0; i < text.Length; i++)
-            {
-                if (text[i..].Equals("k")) stNum++;
-                if (text[i..].Equals("开")) stNum++;
-            }
-            if (stNum >= 3) return true;
-
-            if (text == "Start") return true;
-            if (text == "start") return true;
-            if (text == "开") return true;
-            if (text == "快开") return true;
-            if (text == "开始") return true;
-            if (text == "开啊") return true;
-            if (text == "开阿") return true;
-            if (text == "kai") return true;
-            if (text == "kaishi") return true;
-            if (text.Contains("started")) return false;
-            if (text.Contains("starter")) return false;
-            if (text.Contains("Starting")) return false;
-            if (text.Contains("starting")) return false;
-            if (text.Contains("beginner")) return false;
-            if (text.Contains("beginned")) return false;
-            if (text.Contains("了")) return false;
-            if (text.Contains("没")) return false;
-            if (text.Contains("吗")) return false;
-            if (text.Contains("哈")) return false;
-            if (text.Contains("还")) return false;
-            if (text.Contains("现")) return false;
-            if (text.Contains("不")) return false;
-            if (text.Contains("可")) return false;
-            if (text.Contains("刚")) return false;
-            if (text.Contains("的")) return false;
-            if (text.Contains("打")) return false;
-            if (text.Contains("门")) return false;
-            if (text.Contains("关")) return false;
-            if (text.Contains("怎")) return false;
-            if (text.Contains("要")) return false;
-            if (text.Contains("摆")) return false;
-            if (text.Contains("啦")) return false;
-            if (text.Contains("咯")) return false;
-            if (text.Contains("嘞")) return false;
-            if (text.Contains("勒")) return false;
-            if (text.Contains("心")) return false;
-            if (text.Contains("呢")) return false;
-            if (text.Contains("门")) return false;
-            if (text.Contains("总")) return false;
-            if (text.Contains("哥")) return false;
-            if (text.Contains("姐")) return false;
-            if (text.Contains("《")) return false;
-            if (text.Contains("?")) return false;
-            if (text.Contains("？")) return false;
-            if (text.Length >= 3) return false;
-            if (text.Contains("start")) return true;
-            if (text.Contains("s t a r t")) return true;
-            if (text.Contains("begin")) return true;
-            if (text.Contains("开")) return true;
-            if (text.Contains("kai")) return true;
-            return false;
+            case "/dump":
+                canceled = true;
+                Utils.DumpLog();
+                break;
+            case "/v":
+            case "/version":
+                canceled = true;
+                string version_text = "";
+                foreach (var kvp in Main.playerVersion.OrderBy(pair => pair.Key))
+                {
+                    version_text += $"{kvp.Key}:{Utils.GetPlayerById(kvp.Key)?.Data?.PlayerName}:{kvp.Value.forkId}/{kvp.Value.version}({kvp.Value.tag})\n";
+                }
+                if (version_text != "") HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, version_text);
+                break;
+            default:
+                Main.isChatCommand = false;
+                break;
         }
-
-        public static bool ProhibitedCheck(PlayerControl player, string text)
+        if (AmongUsClient.Instance.AmHost)
         {
-            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
-            string name = player.GetRealName();
-            bool kick = false;
-            string msg = "";
-
-            if (Options.AutoKickStart.GetBool())
-            {
-                if (ContainsStart(text) && GameStates.IsLobby)
-                {
-                    msg = string.Format(GetString("Message.KickWhoSayStart"), name);
-                    msg = $"";
-                    if (Options.AutoKickStart.GetBool())
-                    {
-                        if (!Main.SayStartTimes.ContainsKey(player.GetClientId())) Main.SayStartTimes.Add(player.GetClientId(), 0);
-                        Main.SayStartTimes[player.GetClientId()]++;
-                        msg = string.Format(GetString("Message.WarnWhoSayStart"), name, Main.SayStartTimes[player.GetClientId()]);
-                        if (Main.SayStartTimes[player.GetClientId()] > Options.AutoKickStartTimes.GetInt())
-                        {
-                            msg = string.Format(GetString("Message.KickStartAfterWarn"), name, Main.SayStartTimes[player.GetClientId()]);
-                            kick = true;
-                        }
-                    }
-                    if (msg != "") Utils.SendMessage(msg);
-                    if (kick) AmongUsClient.Instance.KickPlayer(player.GetClientId(), Options.AutoKickStartAsBan.GetBool());
-                    return true;
-                }
-            }
-
-            var list = ReturnAllNewLinesInFile(Main.BANNEDWORDS_FILE_PATH, noErr: true);
-            bool banned = false;
-            var banedWord = "";
-            foreach (var word in list)
-            {
-                if (word != null && text.Contains(word))
-                {
-                    banedWord = word;
-                    banned = true;
-                    break;
-                }
-            }
-            if (!banned) return false;
-
-            if (Options.AutoWarnStopWords.GetBool()) msg = string.Format(GetString("Message.WarnWhoSayBanWord"), name);
-            if (Options.AutoKickStopWords.GetBool())
-            {
-                if (!Main.SayBanwordsTimes.ContainsKey(player.GetClientId())) Main.SayBanwordsTimes.Add(player.GetClientId(), 0);
-                Main.SayBanwordsTimes[player.GetClientId()]++;
-                msg = string.Format(GetString("Message.WarnWhoSayBanWordTimes"), name, Main.SayBanwordsTimes[player.GetClientId()]);
-                if (Main.SayBanwordsTimes[player.GetClientId()] > Options.AutoKickStopWordsTimes.GetInt())
-                {
-                    msg = string.Format(GetString("Message.KickWhoSayBanWordAfterWarn"), name, Main.SayBanwordsTimes[player.GetClientId()]);
-                    kick = true;
-                }
-            }
-
-            if (msg != "")
-            {
-                if (kick || !GameStates.IsInGame) Utils.SendMessage(msg);
-                else
-                {
-                    foreach (var pc in PlayerControl.AllPlayerControls)
-                    {
-                        if (pc != null && pc.IsAlive() == player.IsAlive()) Utils.SendMessage(msg, pc.PlayerId);
-                    }
-                }
-            }
-            if (kick) AmongUsClient.Instance.KickPlayer(player.GetClientId(), Options.AutoKickStopWordsAsBan.GetBool());
-            return true;
-        }
-
-        public static bool Prefix(ChatController __instance)
-        {
-            if (__instance.TextArea.text == "") return false;
-            __instance.TimeSinceLastMessage = 3f;
-            var text = __instance.TextArea.text;
-            if (ChatHistory.Count == 0 || ChatHistory[^1] != text) ChatHistory.Add(text);
-            ChatControllerUpdatePatch.CurrentHistorySelection = ChatHistory.Count;
-            string[] args = text.Split(' ');
-            string subArgs = "";
-            var canceled = false;
-            var cancelVal = "";
             Main.isChatCommand = true;
-            Logger.Info(text, "SendChat");
-            if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
-            if (text.Length >= 4) if (text[..3] == "/up") args[0] = "/up";
-            if (GuessManager.GuesserMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
-            if (MafiaMsgCheck(PlayerControl.LocalPlayer, text)) goto Canceled;
             switch (args[0])
             {
-                case "/dump":
+                case "/win":
+                case "/winner":
                     canceled = true;
-                    Utils.DumpLog();
+                    Utils.SendMessage("Winner: " + string.Join(",", Main.winnerList.Select(b => Main.AllPlayerNames[b])));
                     break;
-                case "/v":
-                case "/version":
+
+                case "/l":
+                case "/lastresult":
                     canceled = true;
-                    string version_text = "";
-                    foreach (var kvp in Main.playerVersion.OrderBy(pair => pair.Key))
+                    Utils.ShowLastResult();
+                    break;
+
+                case "/rn":
+                case "/rename":
+                    canceled = true;
+                    Main.nickName = args.Length > 1 ? Main.nickName = args[1] : "";
+                    break;
+
+                case "/hn":
+                case "/hidename":
+                    canceled = true;
+                    Main.HideName.Value = args.Length > 1 ? args.Skip(1).Join(delimiter: " ") : Main.HideName.DefaultValue.ToString();
+                    GameStartManagerPatch.GameStartManagerStartPatch.HideName.text =
+                        ColorUtility.TryParseHtmlString(Main.HideColor.Value, out _)
+                            ? $"<color={Main.HideColor.Value}>{Main.HideName.Value}</color>"
+                            : $"<color={Main.ModColor}>{Main.HideName.Value}</color>";
+                    break;
+
+                case "/level":
+                    canceled = true;
+                    subArgs = args.Length < 2 ? "" : args[1];
+                    Utils.SendMessage(string.Format(GetString("Message.SetLevel"), subArgs), PlayerControl.LocalPlayer.PlayerId);
+                    int.TryParse(subArgs, out int input);
+                    if (input is < 1 or > 100)
                     {
-                        version_text += $"{kvp.Key}:{Utils.GetPlayerById(kvp.Key)?.Data?.PlayerName}:{kvp.Value.forkId}/{kvp.Value.version}({kvp.Value.tag})\n";
+                        Utils.SendMessage(GetString("Message.AllowLevelRange"), PlayerControl.LocalPlayer.PlayerId);
+                        break;
                     }
-                    if (version_text != "") HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, version_text);
+                    var number = Convert.ToUInt32(input);
+                    PlayerControl.LocalPlayer.RpcSetLevel(number - 1);
                     break;
+
+                case "/n":
+                case "/now":
+                    canceled = true;
+                    subArgs = args.Length < 2 ? "" : args[1];
+                    switch (subArgs)
+                    {
+                        case "r":
+                        case "roles":
+                            Utils.ShowActiveRoles();
+                            break;
+                        default:
+                            Utils.ShowActiveSettings();
+                            break;
+                    }
+                    break;
+
+                case "/dis":
+                case "/disconnect":
+                    canceled = true;
+                    subArgs = args.Length < 2 ? "" : args[1];
+                    switch (subArgs)
+                    {
+                        case "crew":
+                            GameManager.Instance.enabled = false;
+                            GameManager.Instance.RpcEndGame(GameOverReason.HumansDisconnect, false);
+                            break;
+
+                        case "imp":
+                            GameManager.Instance.enabled = false;
+                            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+                            break;
+
+                        default:
+                            __instance.AddChat(PlayerControl.LocalPlayer, "crew | imp");
+                            cancelVal = "/dis";
+                            break;
+                    }
+                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Admin, 0);
+                    break;
+
+                case "/r":
+                    canceled = true;
+                    subArgs = text.Remove(0, 2);
+                    if (subArgs.Trim() is "赌怪" or "賭怪")
+                    {
+                        Utils.SendMessage(GetString("GuesserInfoLong"), PlayerControl.LocalPlayer.PlayerId);
+                        break;
+                    }
+                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer, Utils.CanUseDevCommand(PlayerControl.LocalPlayer));
+                    break;
+
+                case "/up":
+                    canceled = true;
+                    subArgs = text.Remove(0, 3);
+                    if (!Utils.IsUP(PlayerControl.LocalPlayer)) break;
+                    if (!Options.EnableUpMode.GetBool())
+                    {
+                        Utils.SendMessage($"请在设置启用【{GetString("EnableUpMode")}】");
+                        break;
+                    }
+                    if (!GameStates.IsLobby)
+                    {
+                        Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"));
+                        break;
+                    }
+                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer, isUp: true);
+                    break;
+
+                case "/h":
+                case "/help":
+                    canceled = true;
+                    Utils.ShowHelp(PlayerControl.LocalPlayer.PlayerId);
+                    break;
+
+                case "/m":
+                case "/myrole":
+                    canceled = true;
+                    var role = PlayerControl.LocalPlayer.GetCustomRole();
+                    if (GameStates.IsInGame)
+                        if (GameStates.IsInGame)
+                        {
+                            string mtext = GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true);
+                            foreach (var subRole in Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SubRoles)
+                                mtext += $"\n\n" + GetString($"{subRole}") + GetString($"{subRole}InfoLong");
+                            if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and CustomRoles.Ntr))
+                                mtext += $"\n\n" + GetString($"Lovers") + GetString($"LoversInfoLong");
+                            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, mtext);
+                        }
+                    break;
+
+                case "/t":
+                case "/template":
+                    canceled = true;
+                    if (args.Length > 1) TemplateManager.SendTemplate(args[1]);
+                    else HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{GetString("ForExample")}:\n{args[0]} test");
+                    break;
+
+                case "/mw":
+                case "/messagewait":
+                    canceled = true;
+                    if (args.Length > 1 && int.TryParse(args[1], out int sec))
+                    {
+                        Main.MessageWait.Value = sec;
+                        Utils.SendMessage(string.Format(GetString("Message.SetToSeconds"), sec), 0);
+                    }
+                    else Utils.SendMessage($"{GetString("Message.MessageWaitHelp")}\n{GetString("ForExample")}:\n{args[0]} 3", 0);
+                    break;
+
+                case "/say":
+                case "/s":
+                    canceled = true;
+                    if (args.Length > 1)
+                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#ff0000>{GetString("MessageFromTheHost")}</color>");
+                    break;
+
+                case "/exe":
+                    canceled = true;
+                    if (GameStates.IsLobby)
+                    {
+                        Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+                        break;
+                    }
+                    if (args.Length < 2 || !int.TryParse(args[1], out int id)) break;
+                    var player = Utils.GetPlayerById(id);
+                    if (player != null)
+                    {
+                        player.Data.IsDead = true;
+                        Main.PlayerStates[player.PlayerId].deathReason = PlayerState.DeathReason.etc;
+                        player.RpcExileV2();
+                        Main.PlayerStates[player.PlayerId].SetDead();
+                    }
+                    break;
+
+                case "/kill":
+                    canceled = true;
+                    if (GameStates.IsLobby)
+                    {
+                        Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+                        break;
+                    }
+                    if (args.Length < 2 || !int.TryParse(args[1], out int id2)) break;
+                    Utils.GetPlayerById(id2)?.RpcMurderPlayer(Utils.GetPlayerById(id2));
+                    break;
+
+                case "/colour":
+                case "/color":
+                    canceled = true;
+                    subArgs = args.Length < 2 ? "" : args[1];
+                    var color = Utils.MsgToColor(subArgs, true);
+                    if (color == byte.MaxValue)
+                    {
+                        Utils.SendMessage(GetString("IllegalColor"), PlayerControl.LocalPlayer.PlayerId);
+                        break;
+                    }
+                    PlayerControl.LocalPlayer.RpcSetColor(color);
+                    Utils.SendMessage(string.Format(GetString("Message.SetColor"), subArgs), PlayerControl.LocalPlayer.PlayerId);
+                    break;
+
+                case "/quit":
+                case "/qt":
+                    canceled = true;
+                    Utils.SendMessage(GetString("Message.CanNotUseByHost"), PlayerControl.LocalPlayer.PlayerId);
+                    break;
+
+                case "/xf":
+                    canceled = true;
+                    if (!GameStates.IsInGame)
+                    {
+                        Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+                        break;
+                    }
+                    foreach (var pc in Main.AllPlayerControls)
+                    {
+                        pc.RpcSetNameEx(pc.GetRealName(isMeeting: true));
+                    }
+                    ChatUpdatePatch.DoBlockChat = false;
+                    Utils.NotifyRoles(isMeeting: GameStates.IsMeeting, NoCache: true);
+                    Utils.SendMessage(GetString("Message.TryFixName"), PlayerControl.LocalPlayer.PlayerId);
+                    break;
+
+                case "/id":
+                    canceled = true;
+                    string msgText = GetString("PlayerIdList");
+                    foreach (var pc in PlayerControl.AllPlayerControls)
+                    {
+                        msgText += "\n" + pc.PlayerId.ToString() + " → " + pc.GetRealName();
+                    }
+                    Utils.SendMessage(msgText, PlayerControl.LocalPlayer.PlayerId);
+                    break;
+
+                case "/qq":
+                    canceled = true;
+                    if (Main.newLobby) Cloud.SendCodeToQQ(true);
+                    else Utils.SendMessage("很抱歉，每个房间车队姬只会发一次", PlayerControl.LocalPlayer.PlayerId);
+                    break;
+
+                case "/setrole":
+                    if (!DebugModeManager.AmDebugger) break;
+                    canceled = true;
+                    subArgs = text.Remove(0, 8);
+                    var setRole = ToSimplified(subArgs.Trim());
+                    foreach (var r in roleList)
+                    {
+                        var roleName = r.Key.ToString();
+                        var roleShort = r.Value;
+                        if (string.Compare(setRole, roleName, true) == 0 || string.Compare(setRole, roleShort, true) == 0)
+                        {
+                            PlayerControl.LocalPlayer.RpcSetRole(r.Key.GetRoleTypes());
+                            PlayerControl.LocalPlayer.RpcSetCustomRole(r.Key);
+                            Utils.NotifyRoles();
+                            Utils.MarkEveryoneDirtySettings();
+                        }
+                    }
+                    break;
+
                 default:
                     Main.isChatCommand = false;
                     break;
             }
-            if (AmongUsClient.Instance.AmHost)
-            {
-                Main.isChatCommand = true;
-                switch (args[0])
-                {
-                    case "/win":
-                    case "/winner":
-                        canceled = true;
-                        Utils.SendMessage("Winner: " + string.Join(",", Main.winnerList.Select(b => Main.AllPlayerNames[b])));
-                        break;
-
-                    case "/l":
-                    case "/lastresult":
-                        canceled = true;
-                        Utils.ShowLastResult();
-                        break;
-
-                    case "/rn":
-                    case "/rename":
-                        canceled = true;
-                        Main.nickName = args.Length > 1 ? Main.nickName = args[1] : "";
-                        break;
-
-                    case "/hn":
-                    case "/hidename":
-                        canceled = true;
-                        Main.HideName.Value = args.Length > 1 ? args.Skip(1).Join(delimiter: " ") : Main.HideName.DefaultValue.ToString();
-                        GameStartManagerPatch.GameStartManagerStartPatch.HideName.text =
-                            ColorUtility.TryParseHtmlString(Main.HideColor.Value, out _)
-                                ? $"<color={Main.HideColor.Value}>{Main.HideName.Value}</color>"
-                                : $"<color={Main.ModColor}>{Main.HideName.Value}</color>";
-                        break;
-
-                    case "/level":
-                        canceled = true;
-                        subArgs = args.Length < 2 ? "" : args[1];
-                        Utils.SendMessage(string.Format(GetString("Message.SetLevel"), subArgs), PlayerControl.LocalPlayer.PlayerId);
-                        int.TryParse(subArgs, out int input);
-                        if (input is < 1 or > 100)
-                        {
-                            Utils.SendMessage(GetString("Message.AllowLevelRange"), PlayerControl.LocalPlayer.PlayerId);
-                            break;
-                        }
-                        var number = Convert.ToUInt32(input);
-                        PlayerControl.LocalPlayer.RpcSetLevel(number - 1);
-                        break;
-
-                    case "/n":
-                    case "/now":
-                        canceled = true;
-                        subArgs = args.Length < 2 ? "" : args[1];
-                        switch (subArgs)
-                        {
-                            case "r":
-                            case "roles":
-                                Utils.ShowActiveRoles();
-                                break;
-                            default:
-                                Utils.ShowActiveSettings();
-                                break;
-                        }
-                        break;
-
-                    case "/dis":
-                    case "/disconnect":
-                        canceled = true;
-                        subArgs = args.Length < 2 ? "" : args[1];
-                        switch (subArgs)
-                        {
-                            case "crew":
-                                GameManager.Instance.enabled = false;
-                                GameManager.Instance.RpcEndGame(GameOverReason.HumansDisconnect, false);
-                                break;
-
-                            case "imp":
-                                GameManager.Instance.enabled = false;
-                                GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
-                                break;
-
-                            default:
-                                __instance.AddChat(PlayerControl.LocalPlayer, "crew | imp");
-                                cancelVal = "/dis";
-                                break;
-                        }
-                        ShipStatus.Instance.RpcRepairSystem(SystemTypes.Admin, 0);
-                        break;
-
-                    case "/r":
-                        canceled = true;
-                        subArgs = text.Remove(0, 2);
-                        if (subArgs.Trim() is "赌怪" or "賭怪")
-                        {
-                            Utils.SendMessage(GetString("GuesserInfoLong"), PlayerControl.LocalPlayer.PlayerId);
-                            break;
-                        }
-                        SendRolesInfo(subArgs, PlayerControl.LocalPlayer, Utils.CanUseDevCommand(PlayerControl.LocalPlayer));
-                        break;
-
-                    case "/up":
-                        canceled = true;
-                        subArgs = text.Remove(0, 3);
-                        if (!Utils.IsUP(PlayerControl.LocalPlayer)) break;
-                        if (!Options.EnableUpMode.GetBool())
-                        {
-                            Utils.SendMessage($"请在设置启用【{GetString("EnableUpMode")}】");
-                            break;
-                        }
-                        if (!GameStates.IsLobby)
-                        {
-                            Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"));
-                            break;
-                        }
-                        SendRolesInfo(subArgs, PlayerControl.LocalPlayer, isUp: true);
-                        break;
-
-                    case "/h":
-                    case "/help":
-                        canceled = true;
-                        Utils.ShowHelp(PlayerControl.LocalPlayer.PlayerId);
-                        break;
-
-                    case "/m":
-                    case "/myrole":
-                        canceled = true;
-                        var role = PlayerControl.LocalPlayer.GetCustomRole();
-                        if (GameStates.IsInGame)
-                            if (GameStates.IsInGame)
-                            {
-                                string mtext = GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true);
-                                foreach (var subRole in Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SubRoles)
-                                    mtext += $"\n\n" + GetString($"{subRole}") + GetString($"{subRole}InfoLong");
-                                if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and CustomRoles.Ntr))
-                                    mtext += $"\n\n" + GetString($"Lovers") + GetString($"LoversInfoLong");
-                                HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, mtext);
-                            }
-                        break;
-
-                    case "/t":
-                    case "/template":
-                        canceled = true;
-                        if (args.Length > 1) TemplateManager.SendTemplate(args[1]);
-                        else HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{GetString("ForExample")}:\n{args[0]} test");
-                        break;
-
-                    case "/mw":
-                    case "/messagewait":
-                        canceled = true;
-                        if (args.Length > 1 && int.TryParse(args[1], out int sec))
-                        {
-                            Main.MessageWait.Value = sec;
-                            Utils.SendMessage(string.Format(GetString("Message.SetToSeconds"), sec), 0);
-                        }
-                        else Utils.SendMessage($"{GetString("Message.MessageWaitHelp")}\n{GetString("ForExample")}:\n{args[0]} 3", 0);
-                        break;
-
-                    case "/say":
-                    case "/s":
-                        canceled = true;
-                        if (args.Length > 1)
-                            Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#ff0000>{GetString("MessageFromTheHost")}</color>");
-                        break;
-
-                    case "/exe":
-                        canceled = true;
-                        if (GameStates.IsLobby)
-                        {
-                            Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
-                            break;
-                        }
-                        if (args.Length < 2 || !int.TryParse(args[1], out int id)) break;
-                        var player = Utils.GetPlayerById(id);
-                        if (player != null)
-                        {
-                            player.Data.IsDead = true;
-                            Main.PlayerStates[player.PlayerId].deathReason = PlayerState.DeathReason.etc;
-                            player.RpcExileV2();
-                            Main.PlayerStates[player.PlayerId].SetDead();
-                        }
-                        break;
-
-                    case "/kill":
-                        canceled = true;
-                        if (GameStates.IsLobby)
-                        {
-                            Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
-                            break;
-                        }
-                        if (args.Length < 2 || !int.TryParse(args[1], out int id2)) break;
-                        Utils.GetPlayerById(id2)?.RpcMurderPlayer(Utils.GetPlayerById(id2));
-                        break;
-
-                    case "/colour":
-                    case "/color":
-                        canceled = true;
-                        subArgs = args.Length < 2 ? "" : args[1];
-                        var color = Utils.MsgToColor(subArgs, true);
-                        if (color == Byte.MaxValue)
-                        {
-                            Utils.SendMessage(GetString("IllegalColor"), PlayerControl.LocalPlayer.PlayerId);
-                            break;
-                        }
-                        PlayerControl.LocalPlayer.RpcSetColor(color);
-                        Utils.SendMessage(string.Format(GetString("Message.SetColor"), subArgs), PlayerControl.LocalPlayer.PlayerId);
-                        break;
-
-                    case "/quit":
-                    case "/qt":
-                        canceled = true;
-                        Utils.SendMessage(GetString("Message.CanNotUseByHost"), PlayerControl.LocalPlayer.PlayerId);
-                        break;
-
-                    case "/xf":
-                        canceled = true;
-                        if (!GameStates.IsInGame)
-                        {
-                            Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
-                            break;
-                        }
-                        foreach (var pc in Main.AllPlayerControls)
-                        {
-                            pc.RpcSetNameEx(pc.GetRealName(isMeeting: true));
-                        }
-                        ChatUpdatePatch.DoBlockChat = false;
-                        Utils.NotifyRoles(isMeeting: GameStates.IsMeeting, NoCache: true);
-                        Utils.SendMessage(GetString("Message.TryFixName"), PlayerControl.LocalPlayer.PlayerId);
-                        break;
-
-                    case "/id":
-                        canceled = true;
-                        string msgText = GetString("PlayerIdList");
-                        foreach (var pc in PlayerControl.AllPlayerControls)
-                        {
-                            msgText += "\n" + pc.PlayerId.ToString() + " → " + pc.GetRealName();
-                        }
-                        Utils.SendMessage(msgText, PlayerControl.LocalPlayer.PlayerId);
-                        break;
-
-                    case "/qq":
-                        canceled = true;
-                        if (Main.newLobby) Cloud.SendCodeToQQ(true);
-                        else Utils.SendMessage("很抱歉，每个房间车队姬只会发一次", PlayerControl.LocalPlayer.PlayerId);
-                        break;
-
-                    default:
-                        Main.isChatCommand = false;
-                        break;
-                }
-            }
-            goto Skip;
-        Canceled:
-            Main.isChatCommand = false;
-            canceled = true;
-        Skip:
-            if (canceled)
-            {
-
-                Logger.Info("Command Canceled", "ChatCommand");
-                __instance.TextArea.Clear();
-                __instance.TextArea.SetText(cancelVal);
-                __instance.quickChatMenu.ResetGlyphs();
-            }
-            return !canceled;
         }
+        goto Skip;
+    Canceled:
+        Main.isChatCommand = false;
+        canceled = true;
+    Skip:
+        if (canceled)
+        {
+
+            Logger.Info("Command Canceled", "ChatCommand");
+            __instance.TextArea.Clear();
+            __instance.TextArea.SetText(cancelVal);
+            __instance.quickChatMenu.ResetGlyphs();
+        }
+        return !canceled;
+    }
 
         public static string ToSimplified(string text)
         {
@@ -721,353 +741,352 @@ namespace TOHE
                 { CustomRoles.TicketsStealer,GetString("TicketsStealer") },
             };
 
-        public static bool GetRoleByName(string name, out CustomRoles role)
+    public static bool GetRoleByName(string name, out CustomRoles role)
+    {
+        role = new();
+        if (name == "" || name == string.Empty) return false;
+
+        if ((TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.SChinese) == SupportedLangs.SChinese)
         {
-            role = new();
-            if (name == "" || name == string.Empty) return false;
-
-            if ((TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.SChinese) == SupportedLangs.SChinese)
+            Regex r = new("[\u4e00-\u9fa5]+$");
+            bool ismatch = r.IsMatch(name);
+            MatchCollection mc = r.Matches(name);
+            string result = string.Empty;
+            for (int i = 0; i < mc.Count; i++)
             {
-                Regex r = new("[\u4e00-\u9fa5]+$");
-                bool ismatch = r.IsMatch(name);
-                MatchCollection mc = r.Matches(name);
-                string result = string.Empty;
-                for (int i = 0; i < mc.Count; i++)
-                {
-                    if (mc[i].ToString() == "是") continue;
-                    result += mc[i];//匹配结果是完整的数字，此处可以不做拼接的
-                }
-                name = ToSimplified(result.Replace("是", string.Empty).Trim());
+                if (mc[i].ToString() == "是") continue;
+                result += mc[i];//匹配结果是完整的数字，此处可以不做拼接的
             }
-            else
-            {
-                name = name.Trim().ToLower();
-            }
-
-            foreach (var rl in roleList)
-            {
-                var roleShort = rl.Key.ToString().ToLower().Trim();
-                var roleName = rl.Value.ToLower().Trim();
-
-                if (name.Contains(roleShort) || name.Contains(roleName))
-                {
-                    role = rl.Key;
-                    return true;
-                }
-            }
-            return false;
+            name = ToSimplified(result.Replace("是", string.Empty).Trim());
+        }
+        else
+        {
+            name = name.Trim().ToLower();
         }
 
-        public static void SendRolesInfo(string role, PlayerControl player, bool isDev = false, bool isUp = false)
+        foreach (var rl in roleList)
         {
-            role = role.Trim().ToLower();
-            if (role.StartsWith("/r")) role.Replace("/r", string.Empty);
-            if (role.StartsWith("/up")) role.Replace("/up", string.Empty);
-            if (role.EndsWith("\r\n")) role.Replace("\r\n", string.Empty);
-            if (role.EndsWith("\n")) role.Replace("\n", string.Empty);
+            var roleShort = rl.Key.ToString().ToLower().Trim();
+            var roleName = rl.Value.ToLower().Trim();
 
-            if (role == "" || role == string.Empty)
+            if (name.Contains(roleShort) || name.Contains(roleName))
             {
-                Utils.ShowActiveRoles(player.PlayerId);
-                return;
+                role = rl.Key;
+                return true;
             }
-            role = ToSimplified(role);
+        }
+        return false;
+    }
 
-            var msg = "";
-            var rolemsg = $"{GetString("Command.h_args")}";
-            foreach (var r in roleList)
+    public static void SendRolesInfo(string role, PlayerControl player, bool isDev = false, bool isUp = false)
+    {
+        role = role.Trim().ToLower();
+        if (role.StartsWith("/r")) role.Replace("/r", string.Empty);
+        if (role.StartsWith("/up")) role.Replace("/up", string.Empty);
+        if (role.EndsWith("\r\n")) role.Replace("\r\n", string.Empty);
+        if (role.EndsWith("\n")) role.Replace("\n", string.Empty);
+
+        if (role == "" || role == string.Empty)
+        {
+            Utils.ShowActiveRoles(player.PlayerId);
+            return;
+        }
+        role = ToSimplified(role);
+
+        var msg = "";
+        var rolemsg = $"{GetString("Command.h_args")}";
+        foreach (var r in roleList)
+        {
+            var roleName = r.Key.ToString();
+            var roleShort = r.Value;
+
+            if (string.Compare(role, roleName, true) == 0 || string.Compare(role, roleShort, true) == 0)
             {
-                var roleName = r.Key.ToString();
-                var roleShort = r.Value;
 
-                if (string.Compare(role, roleName, true) == 0 || string.Compare(role, roleShort, true) == 0)
+                if ((isDev || isUp) && GameStates.IsLobby)
                 {
-
-                    if ((isDev || isUp) && GameStates.IsLobby)
+                    string devMark = "▲";
+                    if (CustomRolesHelper.IsAdditionRole(r.Key)) devMark = "";
+                    if (r.Key is CustomRoles.GM || r.Key.IsDesyncRole()) devMark = "";
+                    if (r.Key.GetCount() < 1 || r.Key.GetMode() == 0) devMark = "";
+                    if (isUp)
                     {
-                        string devMark = "▲";
-                        if (CustomRolesHelper.IsAdditionRole(r.Key)) devMark = "";
-                        if (r.Key is CustomRoles.GM || r.Key.IsDesyncRole()) devMark = "";
-                        if (r.Key.GetCount() < 1 || r.Key.GetMode() == 0) devMark = "";
-                        if (isUp)
-                        {
-                            if (devMark == "▲") Utils.SendMessage("已提升您成为【" + GetString(roleName) + "】的概率", player.PlayerId);
-                            else Utils.SendMessage("无法提升您成为【" + GetString(roleName) + "】的概率\n可能是因为您没有启用该职业或该职业不支持被指定", player.PlayerId);
-                        }
-                        else
-                        {
-                            Utils.SendMessage(devMark + GetString(roleName) + GetString($"{roleName}InfoLong"), player.PlayerId);
-                        }
-                        if (devMark == "▲")
-                        {
-                            if (Main.DevRole.ContainsKey(player.PlayerId)) Main.DevRole.Remove(player.PlayerId);
-                            Main.DevRole.Add(player.PlayerId, r.Key);
-                        }
+                        if (devMark == "▲") Utils.SendMessage("已提升您成为【" + GetString(roleName) + "】的概率", player.PlayerId);
+                        else Utils.SendMessage("无法提升您成为【" + GetString(roleName) + "】的概率\n可能是因为您没有启用该职业或该职业不支持被指定", player.PlayerId);
                     }
                     else
                     {
-                        Utils.SendMessage(GetString(roleName) + GetString($"{roleName}InfoLong"), player.PlayerId);
+                        Utils.SendMessage(devMark + GetString(roleName) + GetString($"{roleName}InfoLong"), player.PlayerId);
                     }
-                    return;
-                }
-
-                var roleText = $"{roleName.ToLower()}({roleShort.ToLower()}), ";
-                if ((int)r.Key < 0)
-                {
-                    msg += rolemsg + "\n" + roleShort + "\n";
-                    rolemsg = "";
-                }
-                else if ((rolemsg.Length + roleText.Length) > 40)
-                {
-                    msg += rolemsg + "\n";
-                    rolemsg = roleText;
+                    if (devMark == "▲")
+                    {
+                        if (Main.DevRole.ContainsKey(player.PlayerId)) Main.DevRole.Remove(player.PlayerId);
+                        Main.DevRole.Add(player.PlayerId, r.Key);
+                    }
                 }
                 else
                 {
-                    rolemsg += roleText;
+                    Utils.SendMessage(GetString(roleName) + GetString($"{roleName}InfoLong"), player.PlayerId);
                 }
+                return;
             }
 
-            if (isUp) Utils.SendMessage("请正确拼写您要指定的职业哦~\n查看所有职业请直接输入/r", player.PlayerId);
-            else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), player.PlayerId);
-            return;
-        }
-        public static void OnReceiveChat(PlayerControl player, string text)
-        {
-            if (!AmongUsClient.Instance.AmHost) return;
-            if (text.StartsWith("\n")) text = text[1..];
-            string[] args = text.Split(' ');
-            string subArgs = "";
-            if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
-            if (GuessManager.GuesserMsg(player, text)) return;
-            if (MafiaMsgCheck(player, text)) return;
-            if (ProhibitedCheck(player, text)) return;
-            switch (args[0])
+            var roleText = $"{roleName.ToLower()}({roleShort.ToLower()}), ";
+            if ((int)r.Key < 0)
             {
-                case "/l":
-                case "/lastresult":
-                    Utils.ShowLastResult(player.PlayerId);
-                    break;
-
-                case "/n":
-                case "/now":
-                    subArgs = args.Length < 2 ? "" : args[1];
-                    switch (subArgs)
-                    {
-                        case "r":
-                        case "roles":
-                            Utils.ShowActiveRoles(player.PlayerId);
-                            break;
-                        default:
-                            Utils.ShowActiveSettings(player.PlayerId);
-                            break;
-                    }
-                    break;
-
-                case "/r":
-                    subArgs = text.Remove(0, 2);
-                    if (subArgs.Trim() is "赌怪" or "賭怪")
-                    {
-                        Utils.SendMessage(GetString("GuesserInfoLong"), player.PlayerId);
-                        break;
-                    }
-                    SendRolesInfo(subArgs, player, Utils.CanUseDevCommand(player));
-                    break;
-
-                case "/h":
-                case "/help":
-                    subArgs = args.Length < 2 ? "" : args[1];
-                    Utils.ShowHelpToClient(player.PlayerId);
-                    break;
-
-                case "/m":
-                case "/myrole":
-                    var role = player.GetCustomRole();
-                    if (GameStates.IsInGame)
-                    {
-                        string mtext = GetString(role.ToString()) + player.GetRoleInfo(true);
-                        foreach (var subRole in Main.PlayerStates[player.PlayerId].SubRoles)
-                            mtext += $"\n\n" + GetString($"{subRole}") + GetString($"{subRole}InfoLong");
-                        if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and CustomRoles.Ntr))
-                            mtext += $"\n\n" + GetString($"Lovers") + GetString($"LoversInfoLong");
-                        Utils.SendMessage(mtext, player.PlayerId);
-                    }
-                    break;
-
-                case "/t":
-                case "/template":
-                    if (args.Length > 1) TemplateManager.SendTemplate(args[1], player.PlayerId);
-                    else Utils.SendMessage($"{GetString("ForExample")}:\n{args[0]} test", player.PlayerId);
-                    break;
-
-                case "/colour":
-                case "/color":
-                    if (Options.PlayerCanSerColor.GetBool())
-                    {
-                        subArgs = args.Length < 2 ? "" : args[1];
-                        var color = Utils.MsgToColor(subArgs);
-                        if (color == Byte.MaxValue)
-                        {
-                            Utils.SendMessage(GetString("IllegalColor"), player.PlayerId);
-                            break;
-                        }
-                        player.RpcSetColor(color);
-                        Utils.SendMessage(string.Format(GetString("Message.SetColor"), subArgs), player.PlayerId);
-                    }
-                    else
-                    {
-                        Utils.SendMessage(GetString("DisableUseCommand"), player.PlayerId);
-                    }
-                    break;
-
-                case "/quit":
-                case "/qt":
-                    subArgs = args.Length < 2 ? "" : args[1];
-                    if (subArgs.Equals("sure"))
-                    {
-                        string name = player.GetRealName();
-                        Utils.SendMessage(string.Format(GetString("Message.PlayerQuitForever"), name));
-                        AmongUsClient.Instance.KickPlayer(player.GetClientId(), true);
-                    }
-                    else
-                    {
-                        Utils.SendMessage(GetString("SureUse.quit"), player.PlayerId);
-                    }
-                    break;
-
-                case "/xf":
-                    if (!GameStates.IsInGame)
-                    {
-                        Utils.SendMessage(GetString("Message.CanNotUseInLobby"), player.PlayerId);
-                        break;
-                    }
-                    foreach (var pc in Main.AllPlayerControls)
-                    {
-                        pc.RpcSetNameEx(pc.GetRealName(isMeeting: true));
-                    }
-                    ChatUpdatePatch.DoBlockChat = false;
-                    Utils.NotifyRoles(isMeeting: GameStates.IsMeeting, NoCache: true);
-                    Utils.SendMessage(GetString("Message.TryFixName"), player.PlayerId);
-                    break;
-
-                case "/say":
-                case "/s":
-                    if (!Utils.IsDev(player)) break;
-                    if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{"【 ★ 开发者消息 ★ 】"}</color>");
-                    break;
-
-                default:
-                    break;
+                msg += rolemsg + "\n" + roleShort + "\n";
+                rolemsg = "";
             }
-        }
-
-        public static List<string> ReturnAllNewLinesInFile(string filename, byte playerId = 0xff, bool noErr = false)
-        {
-            // Logger.Info($"Checking lines in directory {filename}.", "ReturnAllNewLinesInFile (ChatCommands)");
-            if (!File.Exists(filename))
+            else if ((rolemsg.Length + roleText.Length) > 40)
             {
-                HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"No {filename} file found.");
-                File.WriteAllText(filename, "Enter the desired stuff here.");
-                return new List<string>();
-            }
-            using StreamReader sr = new(filename, Encoding.GetEncoding("UTF-8"));
-            string text;
-            string[] tmp = { };
-            List<string> sendList = new();
-            HashSet<string> tags = new();
-            while ((text = sr.ReadLine()) != null)
-            {
-                if (text.Length > 1 && text != "")
-                {
-                    tags.Add(text.ToLower());
-                    sendList.Add(text.Join(delimiter: "").Replace("\\n", "\n").ToLower());
-                }
-            }
-            if (sendList.Count == 0 && !noErr)
-            {
-                if (playerId == 0xff)
-                    HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.TemplateNotFoundHost"), Main.BANNEDWORDS_FILE_PATH, tags.Join(delimiter: ", ")));
-                else Utils.SendMessage(string.Format(GetString("Message.TemplateNotFoundClient"), Main.BANNEDWORDS_FILE_PATH), playerId);
-                return new List<string>();
+                msg += rolemsg + "\n";
+                rolemsg = roleText;
             }
             else
             {
-                return sendList;
+                rolemsg += roleText;
             }
         }
+
+        if (isUp) Utils.SendMessage("请正确拼写您要指定的职业哦~\n查看所有职业请直接输入/r", player.PlayerId);
+        else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), player.PlayerId);
+        return;
     }
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
-    class ChatUpdatePatch
+    public static void OnReceiveChat(PlayerControl player, string text)
     {
-        public static bool DoBlockChat = false;
-        public static void Postfix(ChatController __instance)
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (text.StartsWith("\n")) text = text[1..];
+        string[] args = text.Split(' ');
+        string subArgs = "";
+        if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
+        if (GuessManager.GuesserMsg(player, text)) return;
+        if (MafiaMsgCheck(player, text)) return;
+        if (ProhibitedCheck(player, text)) return;
+        switch (args[0])
         {
-            if (!AmongUsClient.Instance.AmHost || Main.MessagesToSend.Count < 1 || (Main.MessagesToSend[0].Item2 == byte.MaxValue && Main.MessageWait.Value > __instance.TimeSinceLastMessage)) return;
-            if (DoBlockChat) return;
-            var player = Main.AllAlivePlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault();
-            if (player == null) return;
-            (string msg, byte sendTo, string title) = Main.MessagesToSend[0];
-            Main.MessagesToSend.RemoveAt(0);
-            int clientId = sendTo == byte.MaxValue ? -1 : Utils.GetPlayerById(sendTo).GetClientId();
-            var name = player.Data.PlayerName;
-            if (clientId == -1)
-            {
-                player.SetName(title);
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
-                player.SetName(name);
-            }
-            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-            writer.StartMessage(clientId);
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                .Write(title)
-                .EndRpc();
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-                .Write(msg)
-                .EndRpc();
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                .Write(player.Data.PlayerName)
-                .EndRpc();
-            writer.EndMessage();
-            writer.SendMessage();
-            __instance.TimeSinceLastMessage = 0f;
+            case "/l":
+            case "/lastresult":
+                Utils.ShowLastResult(player.PlayerId);
+                break;
+
+            case "/n":
+            case "/now":
+                subArgs = args.Length < 2 ? "" : args[1];
+                switch (subArgs)
+                {
+                    case "r":
+                    case "roles":
+                        Utils.ShowActiveRoles(player.PlayerId);
+                        break;
+                    default:
+                        Utils.ShowActiveSettings(player.PlayerId);
+                        break;
+                }
+                break;
+
+            case "/r":
+                subArgs = text.Remove(0, 2);
+                if (subArgs.Trim() is "赌怪" or "賭怪")
+                {
+                    Utils.SendMessage(GetString("GuesserInfoLong"), player.PlayerId);
+                    break;
+                }
+                SendRolesInfo(subArgs, player, Utils.CanUseDevCommand(player));
+                break;
+
+            case "/h":
+            case "/help":
+                subArgs = args.Length < 2 ? "" : args[1];
+                Utils.ShowHelpToClient(player.PlayerId);
+                break;
+
+            case "/m":
+            case "/myrole":
+                var role = player.GetCustomRole();
+                if (GameStates.IsInGame)
+                {
+                    string mtext = GetString(role.ToString()) + player.GetRoleInfo(true);
+                    foreach (var subRole in Main.PlayerStates[player.PlayerId].SubRoles)
+                        mtext += $"\n\n" + GetString($"{subRole}") + GetString($"{subRole}InfoLong");
+                    if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and CustomRoles.Ntr))
+                        mtext += $"\n\n" + GetString($"Lovers") + GetString($"LoversInfoLong");
+                    Utils.SendMessage(mtext, player.PlayerId);
+                }
+                break;
+
+            case "/t":
+            case "/template":
+                if (args.Length > 1) TemplateManager.SendTemplate(args[1], player.PlayerId);
+                else Utils.SendMessage($"{GetString("ForExample")}:\n{args[0]} test", player.PlayerId);
+                break;
+
+            case "/colour":
+            case "/color":
+                if (Options.PlayerCanSerColor.GetBool())
+                {
+                    subArgs = args.Length < 2 ? "" : args[1];
+                    var color = Utils.MsgToColor(subArgs);
+                    if (color == Byte.MaxValue)
+                    {
+                        Utils.SendMessage(GetString("IllegalColor"), player.PlayerId);
+                        break;
+                    }
+                    player.RpcSetColor(color);
+                    Utils.SendMessage(string.Format(GetString("Message.SetColor"), subArgs), player.PlayerId);
+                }
+                else
+                {
+                    Utils.SendMessage(GetString("DisableUseCommand"), player.PlayerId);
+                }
+                break;
+
+            case "/quit":
+            case "/qt":
+                subArgs = args.Length < 2 ? "" : args[1];
+                if (subArgs.Equals(player.PlayerId.ToString()))
+                {
+                    string name = player.GetRealName();
+                    Utils.SendMessage(string.Format(GetString("Message.PlayerQuitForever"), name));
+                    AmongUsClient.Instance.KickPlayer(player.GetClientId(), true);
+                }
+                else
+                {
+                    Utils.SendMessage(string.Format(GetString("SureUse.quit"),player.PlayerId.ToString()), player.PlayerId);
+                }
+                break;
+
+            case "/xf":
+                if (!GameStates.IsInGame)
+                {
+                    Utils.SendMessage(GetString("Message.CanNotUseInLobby"), player.PlayerId);
+                    break;
+                }
+                foreach (var pc in Main.AllPlayerControls)
+                {
+                    pc.RpcSetNameEx(pc.GetRealName(isMeeting: true));
+                }
+                ChatUpdatePatch.DoBlockChat = false;
+                Utils.NotifyRoles(isMeeting: GameStates.IsMeeting, NoCache: true);
+                Utils.SendMessage(GetString("Message.TryFixName"), player.PlayerId);
+                break;
+
+            case "/say":
+            case "/s":
+                if (!Utils.IsDev(player)) break;
+                if (args.Length > 1)
+                    Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{"【 ★ 开发者消息 ★ 】"}</color>");
+                break;
+
+            default:
+                break;
         }
     }
 
-    [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
-    class AddChatPatch
+    public static List<string> ReturnAllNewLinesInFile(string filename, byte playerId = 0xff, bool noErr = false)
     {
-        public static void Postfix(string chatText)
+        // Logger.Info($"Checking lines in directory {filename}.", "ReturnAllNewLinesInFile (ChatCommands)");
+        if (!File.Exists(filename))
         {
-            switch (chatText)
+            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"No {filename} file found.");
+            File.WriteAllText(filename, "Enter the desired stuff here.");
+            return new List<string>();
+        }
+        using StreamReader sr = new(filename, Encoding.GetEncoding("UTF-8"));
+        string text;
+        string[] tmp = { };
+        List<string> sendList = new();
+        HashSet<string> tags = new();
+        while ((text = sr.ReadLine()) != null)
+        {
+            if (text.Length > 1 && text != "")
             {
-                default:
-                    break;
+                tags.Add(text.ToLower());
+                sendList.Add(text.Join(delimiter: "").Replace("\\n", "\n").ToLower());
             }
-            if (!AmongUsClient.Instance.AmHost) return;
+        }
+        if (sendList.Count == 0 && !noErr)
+        {
+            if (playerId == 0xff)
+                HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.TemplateNotFoundHost"), Main.BANNEDWORDS_FILE_PATH, tags.Join(delimiter: ", ")));
+            else Utils.SendMessage(string.Format(GetString("Message.TemplateNotFoundClient"), Main.BANNEDWORDS_FILE_PATH), playerId);
+            return new List<string>();
+        }
+        else
+        {
+            return sendList;
         }
     }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
-    class RpcSendChatPatch
+}
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
+class ChatUpdatePatch
+{
+    public static bool DoBlockChat = false;
+    public static void Postfix(ChatController __instance)
     {
-        public static bool Prefix(PlayerControl __instance, string chatText, ref bool __result)
+        if (!AmongUsClient.Instance.AmHost || Main.MessagesToSend.Count < 1 || (Main.MessagesToSend[0].Item2 == byte.MaxValue && Main.MessageWait.Value > __instance.TimeSinceLastMessage)) return;
+        if (DoBlockChat) return;
+        var player = Main.AllAlivePlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault();
+        if (player == null) return;
+        (string msg, byte sendTo, string title) = Main.MessagesToSend[0];
+        Main.MessagesToSend.RemoveAt(0);
+        int clientId = sendTo == byte.MaxValue ? -1 : Utils.GetPlayerById(sendTo).GetClientId();
+        var name = player.Data.PlayerName;
+        if (clientId == -1)
         {
-            if (string.IsNullOrWhiteSpace(chatText))
-            {
-                __result = false;
-                return false;
-            }
-            int return_count = PlayerControl.LocalPlayer.name.Count(x => x == '\n');
-            chatText = new StringBuilder(chatText).Insert(0, "\n", return_count).ToString();
-            if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(__instance, chatText);
-            if (chatText.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
-                DestroyableSingleton<Telemetry>.Instance.SendWho();
-            MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None);
-            messageWriter.Write(chatText);
-            messageWriter.EndMessage();
-            __result = true;
+            player.SetName(title);
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
+            player.SetName(name);
+        }
+        var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+        writer.StartMessage(clientId);
+        writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+            .Write(title)
+            .EndRpc();
+        writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
+            .Write(msg)
+            .EndRpc();
+        writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+            .Write(player.Data.PlayerName)
+            .EndRpc();
+        writer.EndMessage();
+        writer.SendMessage();
+        __instance.TimeSinceLastMessage = 0f;
+    }
+}
+
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
+class AddChatPatch
+{
+    public static void Postfix(string chatText)
+    {
+        switch (chatText)
+        {
+            default:
+                break;
+        }
+        if (!AmongUsClient.Instance.AmHost) return;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSendChat))]
+class RpcSendChatPatch
+{
+    public static bool Prefix(PlayerControl __instance, string chatText, ref bool __result)
+    {
+        if (string.IsNullOrWhiteSpace(chatText))
+        {
+            __result = false;
             return false;
         }
+        int return_count = PlayerControl.LocalPlayer.name.Count(x => x == '\n');
+        chatText = new StringBuilder(chatText).Insert(0, "\n", return_count).ToString();
+        if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(__instance, chatText);
+        if (chatText.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
+            DestroyableSingleton<Telemetry>.Instance.SendWho();
+        MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None);
+        messageWriter.Write(chatText);
+        messageWriter.EndMessage();
+        __result = true;
+        return false;
     }
 }

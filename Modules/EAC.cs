@@ -1,13 +1,24 @@
-using System.Linq;
 using AmongUs.GameOptions;
 using Hazel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using static TOHE.Translator;
 
-namespace TOHE
+namespace TOHE;
+
+class EAC
 {
-    class EAC
+    public static List<string> Msgs = new();
+    public static void WarnHost()
     {
-        public static bool Receive(PlayerControl pc, byte callId, MessageReader reader)
+        ErrorText.Instance.SBDetected = true;
+        ErrorText.Instance.AddError(ErrorCode.SBDetected);
+    }
+    public static bool Receive(PlayerControl pc, byte callId, MessageReader reader)
+    {
+        if (pc == null || reader == null) return true;
+        try
         {
             MessageReader sr = MessageReader.Get(reader);
             var rpc = (RpcCalls)callId;
@@ -26,9 +37,11 @@ namespace TOHE
                         name.Contains("▄") ||
                         name.Contains("█") ||
                         name.Contains("▌") ||
-                        name.Contains("▒")
+                        name.Contains("▒") ||
+                        name.Contains("习近平")
                         )
                     {
+                        WarnHost();
                         Report(pc, "非法设置游戏名称");
                         Logger.Fatal($"非法修改玩家【{pc.GetClientId()}:{pc.GetRealName()}】的游戏名称，已驳回", "EAC");
                         return true;
@@ -38,6 +51,7 @@ namespace TOHE
                     var role = (RoleTypes)sr.ReadUInt16();
                     if (GameStates.IsLobby && (role is RoleTypes.CrewmateGhost or RoleTypes.ImpostorGhost))
                     {
+                        WarnHost();
                         Report(pc, "非法设置状态为幽灵");
                         Logger.Fatal($"非法设置玩家【{pc.GetClientId()}:{pc.GetRealName()}】的状态为幽灵，已驳回", "EAC");
                         return true;
@@ -45,12 +59,29 @@ namespace TOHE
                     break;
                 case RpcCalls.SendChat:
                     var text = sr.ReadString();
+                    if (Msgs.Contains(text)) return true;
+                    Msgs.Add(text);
+                    if (Msgs.Count > 3) Msgs.Remove(Msgs[0]);
+                    if (
+                        text.Contains("░") ||
+                        text.Contains("▄") ||
+                        text.Contains("█") ||
+                        text.Contains("▌") ||
+                        text.Contains("▒") ||
+                        text.Contains("习近平")
+                        )
+                    {
+                        Report(pc, "非法消息");
+                        Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】发送非法消息，已驳回", "EAC");
+                        return true;
+                    }
                     break;
                 case RpcCalls.StartMeeting:
                 case RpcCalls.ReportDeadBody:
                     var p = Utils.GetPlayerById(sr.ReadByte());
                     if (GameStates.IsMeeting || GameStates.IsLobby)
                     {
+                        WarnHost();
                         Report(pc, "非法召集会议");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法召集会议：【{p?.GetNameWithRole() ?? "null"}】，已驳回", "EAC");
                         return true;
@@ -62,10 +93,23 @@ namespace TOHE
                     var time = 0;
                     foreach (var apc in PlayerControl.AllPlayerControls)
                         if (apc.Data.DefaultOutfit.ColorId == color) time++;
-                    if (!GameStates.IsLobby || color == 18 || time >= 3)
+                    if (!GameStates.IsLobby || color == 18 || time >= 2)
                     {
+                        WarnHost();
                         Report(pc, "非法设置颜色");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置颜色，已驳回", "EAC");
+                        return true;
+                    }
+                    break;
+                case RpcCalls.MurderPlayer:
+                    bool legal = false;
+                    if (CustomRolesHelper.RoleExist(CustomRoles.Mafia)) legal = true;
+                    if (CustomRolesHelper.RoleExist(CustomRoles.Counterfeiter)) legal = true;
+                    if (!legal && (GameStates.IsMeeting || GameStates.IsLobby || !pc.IsAlive()))
+                    {
+                        WarnHost();
+                        Report(pc, "非法击杀");
+                        Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法击杀，已驳回", "EAC");
                         return true;
                     }
                     break;
@@ -80,6 +124,7 @@ namespace TOHE
                 case 7:
                     if (GameStates.IsInGame)
                     {
+                        WarnHost();
                         Report(pc, "非法设置颜色");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置颜色，已驳回", "EAC");
                         return true;
@@ -89,6 +134,7 @@ namespace TOHE
                     var p = Utils.GetPlayerById(sr.ReadByte());
                     if (GameStates.IsMeeting || GameStates.IsLobby)
                     {
+                        WarnHost();
                         Report(pc, "非法召集会议");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法召集会议：【{p?.GetNameWithRole() ?? "null"}】，已驳回", "EAC");
                         return true;
@@ -153,25 +199,30 @@ namespace TOHE
                     }
                     break;
             }
-            return false;
         }
-        public static void Report(PlayerControl pc, string reason)
+        catch (Exception e)
         {
-            if (pc == null) return;
-            string msg = $"{pc.GetClientId()}|{pc.FriendCode}|{pc.Data.PlayerName}|{reason}";
-            Cloud.SendData(msg);
-            Logger.Fatal($"EAC报告：{pc.GetRealName()}: {reason}", "EAC");
+            Logger.Exception(e, "EAC");
+            throw e;
         }
-        public static bool CheckAUM(byte callId, ref string text)
+        return false;
+    }
+    public static void Report(PlayerControl pc, string reason)
+    {
+        if (pc == null) return;
+        string msg = $"{pc.GetClientId()}|{pc.FriendCode}|{pc.Data.PlayerName}|{reason}";
+        Cloud.SendData(msg);
+        Logger.Fatal($"EAC报告：{pc.GetRealName()}: {reason}", "EAC Cloud");
+    }
+    public static bool CheckAUM(byte callId, ref string text)
+    {
+        switch (callId)
         {
-            switch (callId)
-            {
-                case 85:
-                    text = GetString("Cheat.AUM");
-                    break;
-            }
-            if (text == "") return false;
-            else return true;
+            case 85:
+                text = GetString("Cheat.AUM");
+                break;
         }
+        if (text == "") return false;
+        else return true;
     }
 }
