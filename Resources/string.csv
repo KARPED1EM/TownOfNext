@@ -27,8 +27,13 @@
 ## 生草作者署名（会显示在右上角，不需要请填“空”）
 TextBelowVersionText,空,"<color=#0FE60F>Dev:</color> KARPED1EM","<color=#0FE60F>Разраб:</color> KARPED1EM\n<color=#06DEEC>Перевод:</color> TommyXL & Tem"
 
+# 阵营
+TeamImpostor,内鬼阵营,Team Impostor,Команда Предателей
+TeamNeutral,中立阵营,Neutral,Нейтрал
+TeamJackal,豺狼阵营,Team Jackal,Команда Шакалов
+TeamPelican,鹈鹕阵营
+
 ## 职业
-Neutral,中立阵营,Neutral,Нейтрал
 
 # 原版职业
 Crewmate,船员,Crewmate,Член Экипажа
@@ -104,7 +109,8 @@ Jackal,豺狼,Jackal,Шакал
 God,神,God,Бог
 Innocent,冤罪师,Innocent,Невинный
 Pelican,鹈鹕,Pelican,Пеликан
-Revolutionist,革命家
+Revolutionist,革命家,Revolutionist,Революционер
+FFF,FFF团
 
 # 附加职业
 LastImpostor,绝境者,Last Impostor,Последний Предатель
@@ -128,11 +134,6 @@ TicketsStealer,窃票者,Stealer,Похититель
 
 # 管理员
 GM,管理员,GM,GM (Призрак)
-
-# 其它
-TeamImpostor,内鬼阵营,Team Impostor,Команда Предателей
-TeamEgoist,野心家阵营,Team Egoist,Команда Эгоистов
-TeamJackal,豺狼阵营,Team Jackal,Команда Шакалов
 
 ## 以下是职业简介（显示在开局以及任务栏的文本）
 NeutralInfo,中立阵营,Independent forces unaffiliated with any other teams,Команда которая не принадлежит ни к каким другим командам
@@ -206,6 +207,8 @@ JackalInfo,在这里，我一般称自己为只狼,Kill Everyone,Убей все
 GodInfo,一切都在您的掌控,Everything is under your control,Все под вашим контролем
 InnocentInfo,果然碰瓷百试百灵,Let aim of innocent was be ejected,Пусть цель невинного будет изгнана
 PelicanInfo,船船，饿饿，饭饭,Eat all players,Съешьте всех игроков
+RevolutionistInfo,人类的赞歌是勇气的赞歌,Make a Revolution!,Совершите Революцию!
+FFFInfo,该烧还是该审？
 RevolutionistInfo,革命后就有好生活
 
 # 附加职业
@@ -275,7 +278,7 @@ MayorInfoLong,(船员阵营):\n市长在投票时一票算多票。,"(Crewmates)
 ParanoiaInfoLong,(船员阵营):\n被害妄想症使用通风管后会幻想出一个尸体并报告，实际上并不会死人，但的确可以召开会议。,"(Crewmates):\nParanoid will fantasize about a corpse and call an emergency meeting when using the vent. But in fact, there is no corpse, but he can still hold an emergency meeting.","(Член Экипажа):\nПараноик будет фантазировать о трупе и созывать срочное собрание при использовании вентиляции. Но на самом деле, никакого трупа нет, но всё равно может провести срочное собрание."
 PsychicInfoLong,(船员阵营):\n愚者能够在会议期间看到潜在的邪恶。愚者将看到数名玩家的名字以红色突出显示，其中至少一名是邪恶的。,"(Crewmates):\nPsychic can see potentially evil players during an encounter. Psychic will see the names of several players that are highlighted in red, at least one of them will definitely turn out to be evil.","(Член Экипажа):\nЭкстрасенс может видеть потенциально злых игроков во время встречи. Экстрасенс увидит никнеймы нескольких игроков, которые выделены красным цветом, по крайней мере, один из них точно окажется злым."
 SabotageMasterInfoLong,(船员阵营):\n修理工可以随意使用通风管道，你甚至可以把通风管当成自己的家永远不出来。氧气泄露、核反应堆熔毁以及米拉总部的通讯破坏修理工只需要修复一边则另一边即可同时被修复。修理工只需要按一个开关便可以修复照明破坏。修理工打开波鲁斯与飞艇地图的门时修理工所在房间的所有门同时打开。,"(Crewmates):\nThe Repairman can use the vent at any time, and he can even treat the vent like his own house and never leave it. \nAlso he can Fix Reactors, O2, Communications by yourself. \nLights can be fixed with the flick of one switch. \nOpening a door will open all doors to that room.","(Член Экипажа):\nРемонтник может использовать вентиляцию в любое время, и он может даже относиться к нему как к собственному дому и никогда не выходить из нее. \nТакже он может в одиночку починить саботажи такие, как: Саботаж Реактора, Саботаж O2 и Саботаж Связи. \nТак же он может починить Саботаж Света коснувшись лишь одного рычага. \nОткрытие одной двери позволяет открыть все двери в этой комнате."
-SheriffInfoLong,(船员阵营):\n警长可以击杀内鬼（根据房间设置，警长也可以击杀中立阵营玩家）。警长若尝试击杀船员阵营的玩家，警长将会走火自杀。此外警长没有任务。,"(Crewmates):\nYou can kill anyone on Team Impostors.\nThe ability to kill Neutrals is a configurable setting.\nIf you try to kill a crew, you will kill yourself instead. You have no tasks.","(Член Экипажа):\nШериф может убивать Предателей. \nЕсть настройка, позволяющая убить даже Нейтралов. \nОднако если Шериф попытается убить Члена Экипажа, то это приведёт к его смерти. У него нет заданий."
+SheriffInfoLong,(船员阵营):\n此外警长没有船员任务。警长可以击杀内鬼（根据房间设置，警长也可以击杀中立阵营玩家）。警长若尝试击杀船员阵营的玩家，警长将会走火自杀。警长成为叛徒时可以击杀任何人。,"(Crewmates):\nYou can kill anyone on Team Impostors.\nThe ability to kill Neutrals is a configurable setting.\nIf you try to kill a crew, you will kill yourself instead. You have no tasks.","(Член Экипажа):\nШериф может убивать Предателей. \nЕсть настройка, позволяющая убить даже Нейтралов. \nОднако если Шериф попытается убить Члена Экипажа, то это приведёт к его смерти. У него нет заданий."
 SnitchInfoLong,(船员阵营):\n告密者完成所有任务后，将可以看到以红色昵称表示的所有内鬼。\n当告密者仅剩一个任务的时候，内鬼将会看到自己以及告密者的昵称旁边有「★」作为提示。\n（注:告密者同时作为恋人时，其技能将失效）,"(Crewmates):\nOnce you finish all your tasks, the Impostors' names will be displayed in red to you.\nWhen you have only one task left, a ★ mark will be displayed next to your name and you will be exposed to the Impostors.","(Член Экипажа):\nКак только Снитч выполнит все задания, то никнейм у всех Предателей будет отображаться \nкрасным цветом, и наоборот, если количество ваших заданий будет близка к завершению, \nто рядом с никнеймом Стукача появится звёздочка★, которая будет видна Предателям."
 SpeedBoosterInfoLong,(船员阵营):\n增速者每次完成任务都会增加自己的移动速度。请注意：由于技术限制，增速者在其他人眼中为正常速度，所以会以闪现的方式移动。,"(Crewmates):\nA player with this role will increase his movement speed every time he completes a task. Please note: Due to other players' technical limitations, his speed will be the same, so he will sometimes ping.","(Член Экипажа):\nИгрок c этой ролью будет увеличивать свою скорость передвижения каждый раз, когда он выполняет задание. Пожалуйста, обратите внимание: Из-за технических ограничений у других игроков его скорость будет прежней, поэтому он иногда будет пинговать."
 DoctorInfoLong,(船员阵营):\n医生可以查看生命监测装置并确认死亡玩家的死因。查看的时间长短与设备的充能数挂钩。,"(Crewmates):\nYou can see the cause of death for all players.\nIn addition, you can access vitals wherever you are while you still have battery.","(Член Экипажа):\nДоктор может узнать причину смерти игрока. \nКроме того, он имеет портативные пульсы как у учёного, которые он может использовать в любом месте, пока у него не закончится зарядка."
@@ -283,7 +286,7 @@ TrapperInfoLong,(船员阵营):\n陷阱师被击杀时，凶手一段时间内�
 DictatorInfoLong,(船员阵营):\n当独裁者在会议阶段投票给玩家后，会议会被强制结束并放逐其投票对象。该技能发动的代价是独裁者会自杀。说白了就是一换一。,"(Crewmates):\nWhen you vote someone, the meeting will end on the spot and the player you voted will be ejected.\nThe moment you vote someone out, you will also die.\nWhen you vote for someone in a meeting, they forcibly break that meeting and exile the player they vote for.\nAfter exercising the force, the Dictators die just after meeting.","(Член Экипажа):\nЕсли Диктатор проголосует за любого игрока во время собрания, он сможет принудительно завершить собрание и кикнуть игрока за которого он отдал голос \nТак же Диктатор умрёт после собрания когда он отдаст голос."
 DetectiveInfoLong,(船员阵营):\n侦探报告尸体后，会收到一条线索消息，该消息会告诉侦探被害者的职业是什么，根据房主设定，侦探可能知道凶手的职业是什么。请注意：侦探不会成为胆小鬼。,"(Crewmate):\nAfter the Detective reports the body, it will receive a hint message that will tell the Detective what the role of the body was. Depending on the settings, the Detective may even know what role the victim's killer has.","(Член Экипажа):\nПосле того, как Детектив зарепортит труп, он получит сообщение с подсказкой, которое сообщит Детективу, какая была роль у трупа. В зависимости от настроек Детектив может даже знать, какая роль у убийцы жертвы"
 UndercoverInfoLong,(船员阵营):\n内鬼会将卧底认作自己的队友，但卧底并不知道内鬼是谁。,"(Crewmates):\nThe Impostors knows who Undercover is and sees him as a teammate, but Undercover himself does not know who the Impostors are.","(Член Экипажа):\nПредатели знают кто является Агентом и видят его как своего товарища по команде, но сам Агент не знает, кто является Предателем."
-NiceGuesserInfoLong,(船员阵营):\n正义赌怪可以在会议时猜测某位玩家的职业，正确则击杀目标，错误则会自杀。\n猜测指令为：/bt [玩家编号] [职业名]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。,"(Crewmates):\nNice Guesser can guess the roles of certain players during an encounter. If he guesses the role correctly, he will kill that target, and if wrong, he will commit suicide. \nGuessing command: ''/bt [Player ID] [Role Name]'' \nExample: /bt 3 Bait \nYou can see the player ID before the player's nickname, or you can use the ''/id'' command to see the IDs of all players.","(Член Экипажа):\nДобрый Угадыватель может угадывать роли определённого игрока во время встречи. Если он угадает роль правильно, то он убьет эту цель, а если неправильно, то он совершит самоубийство. \nКоманда для угадываний: '/bt [Номер игрока] [Название Роли]'' \nПример: /bt 3 Байт \nВы можете увидеть номер игрока перед его никнеймом, или же для просмотра номеров всех игроков нужно использовать команду ''/id'' ."
+NiceGuesserInfoLong,(船员阵营):\n正义赌怪可以在会议时猜测某位玩家的职业，正确则击杀目标，错误则会自杀。\n猜测指令为：/bt [玩家编号] [职业名]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当正义赌怪成为叛徒时可以猜测船员,"(Crewmates):\nNice Guesser can guess the roles of certain players during an encounter. If he guesses the role correctly, he will kill that target, and if wrong, he will commit suicide. \nGuessing command: ''/bt [Player ID] [Role Name]'' \nExample: /bt 3 Bait \nYou can see the player ID before the player's nickname, or you can use the ''/id'' command to see the IDs of all players.","(Член Экипажа):\nДобрый Угадыватель может угадывать роли определённого игрока во время встречи. Если он угадает роль правильно, то он убьет эту цель, а если неправильно, то он совершит самоубийство. \nКоманда для угадываний: '/bt [Номер игрока] [Название Роли]'' \nПример: /bt 3 Байт \nВы можете увидеть номер игрока перед его никнеймом, или же для просмотра номеров всех игроков нужно использовать команду ''/id'' ."
 ChivalrousExpertInfoLong,(船员阵营):\n侠客可以正义击杀任何阵营的人，不过机会只有一次。,"(Crewmates):\nKnight can kill any player with any role, but he can only kill once per game.","(Член Экипажа):\nРыцарь может убить любого игрока с любой ролью, но убить он сможет только один раз за игру."
 TransporterInfoLong,(船员阵营):\n每当传送师完成任务，就会有随机两位玩家交换位置，但若剩余玩家不足将什么都不会发生。请注意：管道中的玩家不会被选中。,"(Crewmates):\nWhenever the Transporter completes a task two random players will swap places, but if there aren't enough live players, nothing will happen. \nPlease note that players who are in the air vent will not be selected.","(Член Экипажа):\nВсякий раз, когда Транспортер завершает задание, два случайных игрока меняются местами, но если живых игроков недостаточно, ничего не произойдет. \nПожалуйста, обратите внимание: игроки, которые находятся в вентиляции, выбраны не будут."
 TimeManagerInfoLong,(船员阵营):\n时间操控者做的任务越多，会议时间就会越长，当时间操控者死亡则会议时间恢复正常。当时间操控者成为叛徒时则技能变为减少会议时长而不是增加会议时长。,"(Crewmates):\nThe more tasks you do, the longer your meeting will last. When you die, the meeting time will be restored.","(Член Экипажа):\nМастер Времени может увеличить время встречи, увеличивается время по мере выполнения заданий. Но когда он умрет, время встречи будет сброшено по умолчанию."
@@ -293,7 +296,7 @@ CounterfeiterInfoLong,(船员阵营):\n赝品商可以通过击杀键将赝品�
 GrenadierInfoLong,(船员阵营):\n掷雷兵可以通过使用通风管道使用闪光弹，闪光弹会导致内鬼失去大部分视野（根据房主设置闪光弹可能影响到中立阵营玩家）。闪光弹生效以及失效时掷雷兵会看到自己身上有护盾破碎作为提示。当掷雷兵成为叛徒时闪光弹只对船员生效。,"(Crewmates):\nThe Grenadier can use the stun bomb by using the vent. A flashbang will cause the Impostors to lose most of their field of vision (field of view depends on the Host's settings, and stunbombs can also affect Neutrals). When the stun bomb goes off and on, the grenadier will see their shields shattered as a reminder","(Член Экипажа):\nГренадёр может использовать светошумовую бомбу, используя вентиляцию. Светошумовая бомба приведёт к тому, что Предатели потеряют большую часть поля зрения (поле зрение зависит от настроек Хоста, так же светошумовые бомбы могут повлиять на нейтралов). Когда светошумовая бомба сработает и не сработает, гренадер увидит, что их щиты разбиты в качестве напоминания"
 
 # 中立阵营
-ArsonistInfoLong,(中立阵营):\n纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎作为提示。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油,"(Neutrals):\nWhen you use the kill button, you douse your target in oil.\nAfter dousing all living players, you set everything ablaze and win by venting.","(Нейтрал):\nПоджигатель может обливать игроков, нажав на кнопку 'Убить' и находясь рядом с игроком в течение нескольких секунд. \nПосле того как он обольёт всех живых игроков Поджигатель сможет запрыгнуть в вентиляцию, чтобы поджечь всех игроков, что приводит к победе Поджигателя."
+ArsonistInfoLong,(中立阵营):\n纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎的动画作为提示（仅自己可见）。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油,"(Neutrals):\nWhen you use the kill button, you douse your target in oil.\nAfter dousing all living players, you set everything ablaze and win by venting.","(Нейтрал):\nПоджигатель может обливать игроков, нажав на кнопку 'Убить' и находясь рядом с игроком в течение нескольких секунд. \nПосле того как он обольёт всех живых игроков Поджигатель сможет запрыгнуть в вентиляцию, чтобы поджечь всех игроков, что приводит к победе Поджигателя."
 JesterInfoLong,(中立阵营):\n小丑被票出则小丑单独游戏胜利。游戏结束时若小丑仍存活则小丑输掉游戏。请注意：小丑、处刑人、冤罪师可以共享胜利。,"(Neutrals):\nYou solo victory by getting voted out during a meeting.\nIf the game ends without you getting voted out, or if you are killed, you lose. \nPlease note: the Jester, the Executioner and the Innocent can share the victory","(Нейтрал):\nДжестер сможет выиграть игру, если за него проголосуют во время голосования и он будет изгнан.\nВ противном случае Джестер проиграет. \nПожалуйста, обратите внимание: Джестер, Палач и Невинный могут разделить победу"
 TerroristInfoLong,(中立阵营):\n恐怖分子完成所有任务后死亡，则恐怖分子单独获得胜利。（怎么死都行，包括票死，反正死了就行）,"(Neutrals):\nYou solo victory by getting killed or voted out AFTER you finish your tasks.","(Нейтрал):\nТеррорист побеждает в одиночку, если его убивают или изгоняют. \nНо только если все его задания будут выполнены."
 ExecutionerInfoLong,(中立阵营):\n游戏开始时处刑人会被分配到一个处刑目标，并在其昵称旁用菱形「♦」表示。若处刑目标被击杀，则处刑的职业会根据设置变为船员，小丑或投机者。如果处刑目标在会议中被票出则处刑人胜利。请注意：小丑、处刑人、冤罪师可以共享胜利。,"(Neutrals):\nYou are assigned a target who has a diamond mark only you can see next to their name.\nYou solo victory by having that target voted out. If your target is killed, your own role changes into something else. \nPlease note: the Jester, the Executioner and the Innocent can share the victory","(Нейтрал):\nПалач назначается цель с темно-фиолетовым значком «Ромба» рядом с именем игрока.\nОн побеждает когда его цель будет изгнана на голосовании.\nЕсли его цель умирает до того как он был изгнан, Палач меняет свою роль и становится Членом Экипажа, Шутом или Выжившим в зависимости от настроек игры. \nПожалуйста, обратите внимание: Джестер, Палач и Невинный могут разделить победу"
@@ -303,6 +306,8 @@ JackalInfoLong,(中立阵营):\n豺狼需要击杀所有人。存活的玩家只
 GodInfoLong,(中立阵营):\n神从一开始就知道所有人的身份，而神只要活到最后就会抢走胜利。神不会成为恋人。,"(Neutrals):\nGod knows the roles of each player from the very beginning of the game, and if God survives until the end of the game, he will win.","(Нейтрал):\nБог знает роли каждого игрока с самого начала игры, и если Бог выживет до конца игры он одержит победу."
 InnocentInfoLong,(中立阵营):\n冤罪师可以用击杀键栽赃任意一位玩家，被栽赃的目标会立刻击杀冤罪师，若目标在会议上被驱逐则冤罪师获胜。请注意：小丑、处刑人、冤罪师可以共享胜利。,"(Neutrals):\nInnocent can use the ''Kill'' button to tag any player. The marked target will immediately kill the Innocent. If the marked target is ejected during the meetings, the Innocent will win. \nPlease note: the Jester, the Executioner and the Innocent can share the victory.","(Нейтрал):\nНевинный может использовать кнопку ''Убить'', чтобы пометить любого игрока. Помеченная цель немедленно убьет Невинного. Если помеченная цель будет изгнана во время встречи, то Невинный одержит победу. \nПожалуйста, обратите внимание: Джестер, Палач и Невинный могут разделить победу."
 PelicanInfoLong,(中立阵营):\n鹈鹕需要击杀所有人。存活的玩家只剩鹈鹕和一名其他船员时，鹈鹕获得胜利。鹈鹕可以使用击杀键活吞一位玩家（被活吞的玩家将被传送到地图外且无法与游戏互动），活吞成功后鹈鹕将看到自己身上出现盾牌破碎的动画作为提示。紧急会议或报告尸体会导致鹈鹕吞下的所有玩家立刻死亡。若鹈鹕死亡或掉线，则被吞下的所有玩家立刻回到鹈鹕死亡的位置。,"(Neutrals):\nThe pelican needs to swallow all the players. When only the Pelican and the Crewmate are left alive, the Pelican wins. \nPelican can use the ''Kill'' button to swallow the player alive (This player will be teleported to the very edge of the map and will not be able to interact with the game). After successfully swallowing, Pelican will see a broken shield animation on his body as a reminder. \nAn emergency encounter or report of a corpse will result in the immediate death of all players swallowed by the Pelican. If he is killed, all players who were swallowed by the Pelican will immediately return to the position where the Pelican himself will die","(Нейтрал):\nПеликану нужно проглотить всех игроков. Когда в живых остался только Пеликан и Член Экипажа, то Пеликан победит. \nПеликан может использовать кнопку ''Убить'', чтобы проглотить игрока живьем (Этот игрок, будет телепортирован на самый край карты и не сможет взаимодействовать с игрой). После успешного проглатывания, Пеликан увидит анимацию сломанного щита на своем теле в качестве напоминания. \nЭкстренная встреча или сообщение о трупе приведет к немедленной смерти всех игроков, проглоченных Пеликаном.Если он будет убит, все игроки которые были проглочены Пеликаном, немедленно вернуться на позицию, где умрёт сам Пеликан."
+RevolutionistInfoLong,(中立阵营):\n革命家可以通过对玩家点击击杀按钮并跟随其数秒来拉拢玩家，开始拉拢以及拉拢成功时会显示护盾破碎的动画作为提示（仅自己可见）。玩家有概率在被拉拢后立刻牺牲（概率根据房主设定）。当达到指定的拉拢人数（人数根据房主设定）后并在规定时间内跳进通风管道，则革命家以及所有被拉拢的玩家获胜；若没有在规定时间内跳进通风管道则革命家以及所有被拉拢的玩家死亡；若革命家被杀，则无事发生。请注意：被拉拢后牺牲的玩家依然可以跟随革命家胜利。,"(Neutrals):\nRevolutionary can win together with the players on whom he pressed the ''Kill'' button, if you follow the player for a few seconds, an animation of a broken shield will be displayed (only you see this shield). The player has a chance to sacrifice himself immediately after he has won (the probability depends on the Host settings). When the specified number of players is reached and the Revolutionary jumps into the vent during the specified time, the Revolutionary and all the players on whom he pressed the ''Kill'' button automatically win. If the Revolutionary does not jump into the vent within the specified time, the Revolutionary and all players who have been marked die. Please note: Players who died before winning can still win together with the Revolutionary.","(Нейтрал):\nРеволюционер может одержать победу вместе с игроками, на которых он нажал кнопку ''Убить'', если следовать за игроком в течение нескольких секунд, то отобразится анимация разбитого щита (Этот щит видите только вы). У игрока есть вероятность пожертвовать собой сразу после того, как он одержал победу (вероятность зависит от настроек Хоста). Когда наберется указанное количество игроков и Революционер прыгнет в вентиляционное отверстие в течение указанного времени, то Революционер и все игроки на которых он нажал кнопку ''Убить'' автоматически выигрывают. Если Революционер не прыгнет в вентиляционное отверстие в течении указанного времени, Революционер и все игроки которые были помечены умирают. Пожалуйста, обратите внимание: Игроки, которые умерли до победы, все еще могут выиграть вместе с Революционером."
+FFFInfoLong,(中立阵营):\nFFF团拥有无限且没有冷却的击杀能力，同时FFF团敏锐的观察力使他默认拥有内鬼的视野。FFF团只能击杀恋人与海王，击杀其他玩家则会立刻牺牲。游戏结束时，没有恋人与海王存活且FFF团曾经击杀过至少一次恋人或海王，则FFF团胜利。请注意：FFF团只会附加胜利不会抢夺原本阵营的胜利。
 RevolutionistInfoLong,(中立阵营):\n革命家可以通过对玩家点击击杀按钮并跟随其数秒来完成拉拢，在拉拢时有可能会击杀玩家，开始拉拢以及拉拢成功时会显示护盾破碎作为提示。拉拢完指定人数后会开始倒计时，在倒计时结束前跳通风管则游戏胜利，否则革命家和被拉拢的人将自杀。革命家正在倒计时开会或被击杀，则革命家死亡，但拉拢玩家不会就受到倒计时影响自杀。被拉拢玩家会和革命家一起胜利。
 
 # 管理员
@@ -311,7 +316,7 @@ GMInfoLong,(房主):\n看我干啥，我只是个开局就死的冤魂，静静�
 # 附加职业
 LastImpostorInfoLong,(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。该效果对赏金猎人、嗜血杀手以及吸血鬼等击杀方式特殊的职业不适用。,"(Add-ons):\nAn Add-on granted to the last Impostor remaining.\nKill cooldown is reduced according to this setting.\nNot granted to Bounty Hunters, Serial Killers, or Vampires.","(Атрибут):\nАтрибут, присваивается последнему Предателю. \nВремя отката убийства становится меньше, чем обычно. \nНе назначается Охотнику за головами, Серийному убийце или Вампиру."
 LoversInfoLong,(附加职业):\n恋人为两名玩家的组合。恋人存活到游戏结束则恋人抢夺胜利，恋人有中立阵营玩家且满足胜利条件时则该中立与恋人一起胜利。但恋人不会抢夺持有特殊胜利条件的中立阵营玩家的胜利。其中。大部分船员阵营的恋人玩家没有任务。恋人可以看到自己恋人昵称旁有心形标志。恋人其中一人死亡则另一人殉情（根据房主设置可能不会殉情）。恋人中的一方在会议中被放逐时，另一方将死亡并变为不可以被报告的尸体。,"(Add-ons),\nLovers is an assigned to 2 random players on top of their defined roles.\nIf you and your lover both survive til the end, you both will win.\nIf one of you dies, the other will also die. If crewmates get a task victory, you both will lose.","(Атрибут):\nДополнительно с какой-либо ролью Любовники назначаются 2 случайных игрокам. \nЕсли оба любовника останутся живы, то они выиграют. \nКогда умрёт хотя бы один любовник, то моментально умрёт и второй. Они проиграют когда Члены Экипажа выполнят все задания."
-MadmateInfoLong,(附加职业):\n只有船员会成为叛徒，叛徒需要帮助内鬼阵营获得胜利，当内鬼阵营失败时叛徒也会失败。市长、摆烂人、告密者、警长、网红、正义赌怪不会成为叛徒。当诱饵成为叛徒时技能变为随机找人报告尸体；当时间操控者成为叛徒时技能变为做任务减少会议时间；当保镖成为叛徒且凶手不是内鬼的时候，保镖不会发动技能；当掷雷兵成为叛徒时闪光弹只对船员生效。,"(Add-ons):\nOnly Crewmate can become Madmate. The Madmate must help the Impostor team win. When the impostors team fails, the Madmate will also fail. Also, when Time Manager becomes a Madmate, his skills will reduce the time of the meeting.","(Атрибут):\nТолько Члены Экипажа могут стать Безцами. Безумец должен помочь команде Предателей победить. Когда команда Предателей потерпит неудачу, Безумец также потерпит неудачу. Так же когда Мастер Времени становится Безумцем, его навыки будут сокращать время проведения встречи"
+MadmateInfoLong,(附加职业):\n只有船员会成为叛徒，叛徒需要帮助内鬼阵营获得胜利，当内鬼阵营失败时叛徒也会失败。摆烂人、告密者、网红不会成为叛徒。当诱饵成为叛徒时技能变为随机找人报告尸体；当时间操控者成为叛徒时技能变为做任务减少会议时间；当保镖成为叛徒且凶手不是内鬼的时候，保镖不会发动技能；当掷雷兵成为叛徒时闪光弹只对船员生效；当警长成为叛徒时可以击杀任何人；当正义赌怪成为叛徒时可以猜测船员。,"(Add-ons):\nOnly Crewmate can become Madmate. The Madmate must help the Impostor team win. When the impostors team fails, the Madmate will also fail. Also, when Time Manager becomes a Madmate, his skills will reduce the time of the meeting.","(Атрибут):\nТолько Члены Экипажа могут стать Безцами. Безумец должен помочь команде Предателей победить. Когда команда Предателей потерпит неудачу, Безумец также потерпит неудачу. Так же когда Мастер Времени становится Безумцем, его навыки будут сокращать время проведения встречи"
 NtrInfoLong,(附加职业):\n当场上存在海王时，所有玩家将看到自己与海王为恋人关系，实际并不会一起殉情也不会改变胜利条件。请注意：恋人不会成为海王，海王也不会成为恋人。,"(Add-ons):\nWhen Neptune is in play, all players will see that he and Neptune are Lovers, but they won't actually die together, and Neptune can't change the win condition. Please note: Lovers will not become Neptunes and Neptune will not become Lovers","(Атрибут):\nКогда в игре будет Нептун, все игроки увидят, что они с Нептуном являются Любовниками, но на самом деле они не умрут вместе, и Нептун не может изменить условие победы. Пожалуйста, обратите внимание: Любовники не станут Нептунами, и Нептун не станет Любовником"
 WatcherInfoLong,(附加职业):\n窥视者可以直接看到每个人投的票。,"(Add-ons):\nYou can see everyone's votes even if anonymous voting is on.","(Атрибут):\nНаблюдатель может видеть все цвета голосов несмотря на анонимное голосование."
 FlashmanInfoLong,(附加职业):\n闪电侠的初始移动速度比其他人快。（具体速度看房主设定）请注意：由于技术限制，闪电侠同理增速者，在其他人眼中为正常速度，所以会以闪现的方式移动。,"(Add-ons):\nAt the beginning of the game, the Flash's speed is higher than that of other players. (Speed depends on settings). Please note: Flash has a high speed, but other players will see normal speed, so Flash players will ping. It is not recommended to enable it.","(Атрибут):\nВ начале игры скорость Флэша выше, чем у других игроков. (Скорость зависит от настроек). Обратите внимание: Флэш имеет высокую скорость, но другие игроки увидят нормальную скорость, поэтому игроки с Флешом будут пинговаться. Не рекомендуется включать его."
@@ -417,9 +422,9 @@ DisableMiraHQDoorLog,禁用米拉总部门禁记录,Disable DoorLog,Отключ
 DisablePolusVital,禁用波鲁斯生命监测装置,Disable Vital,Отключить Пульсы
 DisableAirshipVital,禁用飞艇生命监测装置,Disable Vital,Отключить Пульсы
 IgnoreConditions,忽略条件,Ignore Conditions,Игнорируют условия
-IgnoreImpostors,忽略内鬼,Ignore Impostors,Игнорируют Предатели
-IgnoreNeutrals,忽略中立阵营,Ignore Neutrals,Игнорируют Нейтралы
-IgnoreCrewmates,忽略船员,Ignore Crewmates,Игнорируют Члены Экипажа
+IgnoreImpostors,忽略<color=#ff1919>内鬼</color>,Ignore Impostors,Игнорируют Предатели
+IgnoreNeutrals,忽略<color=#ffab1b>中立</color>,Ignore Neutrals,Игнорируют Нейтралы
+IgnoreCrewmates,忽略<color=#8cffff>船员</color>,Ignore Crewmates,Игнорируют Члены Экипажа
 IgnoreAfterAnyoneDied,忽略幽灵,Ignore After Anyone Has Died,Игнорируют умершие игроки
 LightsOutSpecialSettings,停电特殊设定,Fix Lights Special Settings,Специальные настройки при отключении Света
 DisableAirshipViewingDeckLightsPanel,禁用瞭望台配电箱(飞艇地图),Disable Viewing Deck Lights Panel(Airship),Отключить починку Света на Смотровой Палубе (Airship)
@@ -443,13 +448,12 @@ KickPlayerFriendCodeNotExist,踢出没有登录的玩家,Kick players whose Frie
 ApplyBanList,踢出被封禁的玩家,Apply BanList,Применить файл с забаненными игроками (BanList)
 EndWhenPlayerBug,当有玩家因Bug无法游戏时终止游戏,"End the game when any player has a critical error",Завершить игру когда у любого игрока возникла критическая ошибка
 KillFlashDuration,击杀闪烁持续时间,"''Kill Flash'' Duration","Длительность ''Вспышки Убийства''"
-ConfirmEjections,驱逐时确认阵营,Show roles players ejected,Показывать роли изгнаных
-ConfirmEjectionsNK,确认邪恶中立阵营,Show Neutral Killer Roles,Показывать роли Нейтральных Убийц
-ConfirmEjectionsNonNK,确认友善中立阵营,Show Neutral Roles,Показывать Нейтральные роли
-ConfirmEjectionsNeutralAsImp,确认时中立阵营视作内鬼阵营,Show Neutral Killer roles as Impostor,Показывать роли Нейтральных убийц как Предателей
-ConfirmEjectionsRoles,驱逐时确认具体职业,Show specific roles of ejected,Показывать конкректные роли изгнаных
-ShowImpRemainOnEject,驱逐时显示剩余内鬼,Show remaining Impostors after ejected,Отображать оставшихся Предателей при изгнании
-ShowNKRemainOnEject,同时显示剩余中立,Show remaining Neutral Killers after ejected,Отображать оставшихся Нейтральных Убийц при изгнании
+ConfirmEjectionsMode,驱逐确认模式
+ConfirmEjections.None,不确认
+ConfirmEjections.Team,确认阵营
+ConfirmEjections.Role,确认职业
+ShowImpRemainOnEject,驱逐确认时显示剩余<color=#ff1919>内鬼</color>数量,Show remaining Impostors after ejected,Отображать оставшихся Предателей при изгнании
+ShowNKRemainOnEject,同时显示剩余邪恶<color=#ffab1b>中立</color>数量,Show remaining Neutral Killers after ejected,Отображать оставшихся Нейтральных Убийц при изгнании
 Ban,封禁,Ban,Забанить
 Kick,踢出,Kick,Кикнуть
 NoticeMe,通知我,Notify me,Уведомить меня
@@ -460,15 +464,15 @@ CheatResponses,检测到外挂时,When a breach is discovered,Когда обн�
 Cooldown,冷却时间,Cooldown,Откат
 KillCooldown,击杀冷却时间,Kill Cooldown,Откат убийства
 CanVent,可以使用通风管道,Can Vent,Может использовать Вентиляцию
-ImpostorVision,拥有内鬼视野,Impostor Vision,Имеет дальность Обзора Предателя
+ImpostorVision,拥有<color=#ff1919>内鬼</color>视野,Impostor Vision,Имеет дальность Обзора Предателя
 CanUseSabotage,可以破坏,Can Sabotage,Может использовать Саботаж
-NeutralRolesMinPlayer,中立阵营玩家数量下限,Minimum number of neutral roles,Минимальное количество нейтральных ролей
-NeutralRolesMaxPlayer,中立阵营玩家数量上限,Maximum number of neutral roles,Максимальное количество нейтральных ролей
-ImpKnowAlliesRole,内鬼知道队友的职业,Impostor may know the roles of other impostors,Предатель может знать роли других Предателей
+NeutralRolesMinPlayer,<color=#ffab1b>中立阵营</color>玩家数量下限,Minimum number of neutral roles,Минимальное количество нейтральных ролей
+NeutralRolesMaxPlayer,<color=#ffab1b>中立阵营</color>玩家数量上限,Maximum number of neutral roles,Максимальное количество нейтральных ролей
+ImpKnowAlliesRole,<color=#ff1919>内鬼</color>知道队友的职业,Impostor may know the roles of other impostors,Предатель может знать роли других Предателей
 WarlockCanKillAllies,可以击杀队友,Can kill Crewmate,Может убивать Членов Экипажа
 WarlockCanKillSelf,可以击杀自己,Can kill Self,Может убить себя
-EGCanGuessImp,邪恶赌怪可以猜测内鬼,Can Guess role Impostors,Может угадывать роли Предателей
-GGCanGuessCrew,正义赌怪可以猜测船员,Can Guess role Crewmate,Может угадывать роли Членов Экипажа
+EGCanGuessImp,邪恶赌怪可以猜测<color=#ff1919>内鬼</color>,Can Guess role Impostors,Может угадывать роли Предателей
+GGCanGuessCrew,正义赌怪可以猜测<color=#8cffff>船员</color>,Can Guess role Crewmate,Может угадывать роли Членов Экипажа
 EGCanGuessAdt,邪恶赌怪可以猜测附加职业,Can Guess Add-ons,Может угадывать Атрибуты
 GGCanGuessAdt,正义赌怪可以猜测附加职业,Can Guess Add-ons,Может угадывать Атрибуты
 GuesserCanGuessTimes,每次会议猜测次数上限,Maximum number of guesses,Максимальное количество угадываний
@@ -489,13 +493,14 @@ SabotageMasterFixesOxygens,可以一人修理氧气破坏,Can Fix Both O2,Мож
 SabotageMasterFixesCommunications,可以一人修复通讯破坏（米拉总部地图）,Can Fix Both Comms In MIRA HQ,Может починить саботаж Связи на MiraHQ
 SabotageMasterFixesElectrical,按一个按钮就可以修复照明破坏,Can Fix Lights With One Switch,Может починить саботаж Света одним кликом
 SheriffCanKill%role%,可以执法%role%,Can Kill %role%,Может убить %role%
-SheriffCanKillNeutrals,可以执法中立阵营,Can Kill Neutrals,Может убить Нейтралов
+SheriffCanKillNeutrals,可以执法<color=#ffaa1b>中立阵营</color>,Can Kill Neutrals,Может убить Нейтралов
 SheriffCanKillAll,<color=#00fefe>全开</color>,<color=#00fefe>All ON</color>,<color=#00fefe>Все ВКЛ</color>
 SheriffCanKillSeparately,个别设定,Individual Settings,Выбрать кого
 In%team%,(%team%阵营),(Team %team%),(Команда %team%)
 SheriffMisfireKillsTarget,误杀好人会同时击杀目标,Misfire Kills Target,Шериф убивает цель вместе с собой
 SheriffShotLimit,最大执法次数,Ammo,Количество выстрелов
 SheriffCanKillAllAlive,全员存活时可以执法,Can Kill With All Alive,Может убить всех живых
+SheriffCanKillMadmate,可以执法<color=#ff1919>叛徒</color>
 DoctorTaskCompletedBatteryCharge,每次完成任务增加的设备充能数,Battery Duration,Длительность батарейки
 SnitchEnableTargetArrow,告密者完成任务后可以通过箭头确认所有被发现目标,Can See Arrow To Target,Может видеть стрелку цели
 SnitchCanGetArrowColor,告密者对不同阵营的目标使用不同颜色的箭头确认,Can See Target Team Colored Arrow,Может видеть цвета стрелок
@@ -507,8 +512,8 @@ MayorAdditionalVote,附加票数,Additional Votes Count,Дополнительн
 MayorHasPortableButton,跳通风管触发紧急会议,"Mayor Has Mobile Emergency Button",У Мэра есть портативная Кнопка
 MayorNumOfUseButton,紧急会议最大次数,"Number Of Mobile Emergency Button","Количество портативных Кнопок"
 MayorHideVote,隐藏市长附加的投票,"Hide additional vote",Скрыть дополнительные голоса
-ExecutionerCanTargetImpostor,内鬼阵营玩家可以成为目标,Can Target Impostors,Может иметь цель изгнать Предателя
-ExecutionerCanTargetNeutralKiller,带刀中立玩家可以成为目标,Can Target Neutrals,Может иметь цель изгнать Нейтрального Убийцу
+ExecutionerCanTargetImpostor,<color=#ff1919>内鬼</color>可以成为目标,Can Target Impostors,Может иметь цель изгнать Предателя
+ExecutionerCanTargetNeutralKiller,带刀<color=#ffab1b>中立</color>玩家可以成为目标,Can Target Neutrals,Может иметь цель изгнать Нейтрального Убийцу
 ExecutionerChangeRolesAfterTargetKilled,目标死亡后将变为,Role Changes When Target Dies,Роль после смерти его цели
 SerialKillerLimit,自杀倒计时,Time Until Suicide,Лимит времени до Самоубийства
 ArsonistDouseTime,涂油所需时间,Time Until Douse Complete,Длительность обливания
@@ -525,29 +530,29 @@ AdditionRolesSpawnRate,出现概率,Spawn Chance,Шанс появления
 BewilderVision,迷幻者视野,Bewilder Vision,Дальность обзора Сбитого с Толку
 FlashmanSpeed,闪电侠初始移动速度,Flash Speed,Скорость Флеша
 LoverSuicide,恋人共生死,Lovers can commit suicide,Любовники могут суициднуться
-LoverHasNoTask,船员成为恋人后没有任务,Lovers don't have tasks,Любовники не имеют задания
+LoverHasNoTask,<color=#8cffff>船员</color>成为恋人后没有任务,Lovers don't have tasks,Любовники не имеют задания
 NumberOfLovers,恋人对数,Number of Lovers (x2 members),Количество Любовников (x2 участника)
 TrapperBlockMoveTime,陷阱师技能封锁凶手移动时长,Freeze time,Время заморозки
 TimeThiefDecreaseMeetingTime,每次击杀缩短的会议时间,Time Thief Time Stolen,Уменьшить длительность обсуждения на
 TimeThiefLowerLimitVotingTime,存活时会议时间最低下限,Minimum Voting Time,Уменьшить длительность голосования на
 TimeThiefReturnStolenTimeUponDeath,死亡后会议时间重置,Return Stolen Time After Death,Вернуть украденное время после его смерти
-EvilTrackerCanSeeKillFlash,内鬼进行击杀时可见击杀闪光,"Can See ''Kill Flash'' ","Может видеть ''Вспышку Убийства'' "
+EvilTrackerCanSeeKillFlash,<color=#ff1919>内鬼</color>进行击杀时可见击杀闪光,"Can See ''Kill Flash'' ","Может видеть ''Вспышку Убийства'' "
 EvilTrackerResetTargetAfterMeeting,会议后重置追踪目标,Can Reset Target After Meeting,Может сбросить цель после Собрания
-EvilTrackerCanSeeLastRoomInMeeting,追踪者可以看见船员位置,Can See Target's Last Room In Meeting,Может видеть местоположение Целей во время Собрания
 RevolutionistDrawTime,拉拢所需时间
 RevolutionistCooldown,拉拢冷却时间
 RevolutionistDrawCount,拉拢数量（会根据游戏内玩家数量调整最大值）
 RevolutionistKillProbability,拉拢击杀概率
 RevolutionistWineTime,跳通风管道胜利倒计时
-EvilTrackerTargetMode,追踪模式
-EvilTrackerTargetMode.Never,禁用追踪
-EvilTrackerTargetMode.OnceInGame,仅限一次
-EvilTrackerTargetMode.EveryMeeting,每次会议
-EvilTrackerTargetMode.Always,永久显示
+EvilTrackerCanSeeLastRoomInMeeting,追踪者可以看见<color=#8cffff>船员</color>位置,Can See Target's Last Room In Meeting,Может видеть местоположение Целей во время Собрания
+EvilTrackerTargetMode,追踪模式,Can Set Target,Может установить цель
+EvilTrackerTargetMode.Never,禁用追踪,Never,Никогда
+EvilTrackerTargetMode.OnceInGame,仅限一次,Once in game,В каждой игре
+EvilTrackerTargetMode.EveryMeeting,每次会议,EveryMeeting,На каждой встрече
+EvilTrackerTargetMode.Always,永久显示,Always,Всегда
 WitchModeSwitchAction,切换击杀模式,Mode Switch Action,Действие для Смены Режима
-NBareRed,友善中立视为邪恶,Nice Neutrals are shown in red,Добрые Нейтралы показываются красным
-NEareRed,邪恶中立视为邪恶,Evil Neutrals are shown in red,Злые Нейтралы показываются красным
-CrewKillingRed,带刀船员视为邪恶,Crewmate Killer are shown in red,Члены Экипажа убийцы показываются красным
+NBareRed,友善<color=#ffab1b>中立</color>视为邪恶,Nice Neutrals are shown in red,Добрые Нейтралы показываются красным
+NEareRed,邪恶<color=#ffab1b>中立</color>视为邪恶,Evil Neutrals are shown in red,Злые Нейтралы показываются красным
+CrewKillingRed,带刀<color=#8cffff>船员</color>视为邪恶,Crewmate Killer are shown in red,Члены Экипажа убийцы показываются красным
 PsychicCanSeeNum,可以看到几个红名,Max number of red names,Максимальное количество красных имен
 PsychicFresh,每次会议刷新红名,Red nickname changes at every meeting,Красный никнейм меняется на каждой встрече
 DetectiveCanknowKiller,侦探可以知道凶手的职业,May know the killer's role,Может знать роль убийцы
@@ -557,8 +562,8 @@ EveryOneKnowSuperStar,所有人知道谁是明星,Everyone knows who is a Super 
 HackUsedMaxTime,骇客技能可使用次数,How many times can the ability be used,Сколько раз может использовать способность
 ZombieSpeedReduce,僵尸每次减少移动速度,"After a certain time, down the speed of Zombies by",Скорость Зомби каждый раз снижается на
 MafiaCanKillNum,最大可复仇人数,Maximum number of revenge,Максимальное количество мести
-ImpKnowCyberStarDead,内鬼可以知道网红死亡,Impostor may know the Celebrity is dead,Предатели могут знать что Знаменитость мертва
-NeutralKnowCyberStarDead,中立可以知道网红死亡,Neutrals may know the Celebrity is dead,Нейтралы могут знать что  Знаменитость мертва
+ImpKnowCyberStarDead,<color=#ff1919>内鬼阵营</color>玩家可以知道网红死亡,Impostor may know the Celebrity is dead,Предатели могут знать что Знаменитость мертва
+NeutralKnowCyberStarDead,<color=#ffab1b>中立阵营</color>玩家可以知道网红死亡,Neutrals may know the Celebrity is dead,Нейтралы могут знать что  Знаменитость мертва
 JesterCanUseButton,允许小丑召开紧急会议,Can call an emergency meeting,Может вызвать срочное собрание
 MarioVentNumWin,马里奥胜利需要跳管次数,Number of vent jumps to win,Сколько раз нужно прыгнуть в вентиляцию чтобы выиграть
 CanCheckCamera,可以监视到是否有人使用监控,Can track camera usage,Может отслеживать использует ли кто-либо камеры
@@ -577,23 +582,31 @@ ShapeMasterShapeshiftDuration,变形持续时间,Shapeshift duration,Продо�
 AssignOnlyTo%role%,只有%role%会成为加班狂,"Assign Only To %role%","Назначить только для %role%"
 WorkhorseNumLongTasks,额外的长任务数,"Additional Long Tasks","Дополнительные долгие задания"
 WorkhorseNumShortTasks,额外的短任务数,"Additional Short Tasks","Дополнительные короткие задания"
-InnocentCanWinByImp,冤罪师栽赃内鬼时可以获胜,If his target was the Impostor then he win with him,Если его цель был Предателем то он победит вместе с ним
+InnocentCanWinByImp,冤罪师栽赃<color=#ff1919>内鬼</color>时可以获胜,If his target was the Impostor then he win with him,Если его цель был Предателем то он победит вместе с ним
 CapitalismSkillCooldown,技能使用冷却,Skill cooldown,Откат навыка
-ImpCanBeAvanger,内鬼可以成为复仇者,Impostor can become an Avenger,Предатель может стать Мстителем
+ImpCanBeAvanger,<color=#ff1919>内鬼</color>可以成为复仇者,Impostor can become an Avenger,Предатель может стать Мстителем
 VeteranSkillCooldown,老兵戒备冷却时间,Skill cooldown,Откат навыка
 VeteranSkillDuration,老兵戒备状态持续时间,Skill duration,Продолжительность навыка
 BodyguardProtectRadius,保镖保护范围,Protect Radius,Радиус Защиты
-ImpCanBeEgoist,内鬼可以成为利己主义者,Impostor can become Egoist,Предатель может стать Эгоистом
-CrewCanBeEgoist,船员可以成为利己主义者,Crewmate can become Egoist,Член Экипажа может стать Эгоистом
+ImpCanBeEgoist,<color=#ff1919>内鬼</color>可以成为利己主义者,Impostor can become Egoist,Предатель может стать Эгоистом
+CrewCanBeEgoist,<color=#8cffff>船员</color>可以成为利己主义者,Crewmate can become Egoist,Член Экипажа может стать Эгоистом
 CounterfeiterSkillCooldown,赝品商贩卖赝品冷却,Skill cooldown,Откат навыка
 CounterfeiterSkillLimitTimes,赝品商贩卖赝品次数上限,Number of skills,Количество навыков
 GrenadierSkillCooldown,掷雷兵使用闪光弹冷却时间,Skill cooldown,Откат навыка
 GrenadierSkillDuration,掷雷兵闪光弹状态持续时间,Skill duration,Продолжительность навыка
 GrenadierCauseVision,受闪光弹影响后的视野,Vision after activating the stun grenade,Поле зрение после активации светошумовой гранаты
-GrenadierCanAffectNeutral,中立阵营玩家会受到闪光弹影响,Neutrals can be hit by a stun grenade,Нейтралы могут быть поражены светошумовой гранатой
+GrenadierCanAffectNeutral,<color=#ffab1b>中立阵营</color>玩家会受到闪光弹影响,Neutrals can be hit by a stun grenade,Нейтралы могут быть поражены светошумовой гранатой
 TicketsPerKill,每次击杀增加票数,Increase in votes for kill,Увеличение голосов за убийство
 GangsterRecruitCooldown,教父击杀/招募冷却时间,Recruit cooldown, Откат переманивания
 GangsterRecruitLimit,教父招募玩家数量上限,Recruit limit,Лимит переманивания
+RevolutionistDrawTime,革命家拉拢玩家所需时间,Retention duration,Длительность удерживания
+RevolutionistCooldown,革命家拉拢玩家冷却时间,Skill сooldown,Откат навыка
+RevolutionistDrawCount,革命家需要拉拢人数,Number of players he needs to tag,Количество игроков которых ему нужно пометить
+RevolutionistKillProbability,被拉拢玩家牺牲概率,Probability of successful retention,Вероятность успешного удерживания
+PelicanKillCooldown,鹈鹕吞人冷却时间
+SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为叛徒
+MayorCanBeMadmate,<color=#204d42>市长</color>可以成为叛徒
+NGuesserCanBeMadmate,<color=#eede26>正义赌怪</color>可以成为叛徒
 
 ## 死因
 DeathReason.Kill,被杀,Kill,Убит
@@ -703,8 +716,8 @@ Message.PlayerQuitForever,【{0}】选择自愿离开\n很抱歉给大家带来�
 Warning.OverrideExiledPlayer,设置内鬼人数为一个时，放逐动画会显示为平票,All ejects will be displayed as a tie since the total number of impostors is 1.,"Все изгнания будут отображаться как ничья, потому что общее количество Предателей равно 1."
 Warning.InvalidRpc,{0} 被踢出，因其 RPC 无效，请确保没有 TOHE 以外的模组。,Kicked {0} because an invalid RPC was received.\nPlease check that no mods other than TOHE installed.,{0} был кикнут так как получен недопустимый RPC. \nУбедитесь что в системе нет других модов кроме TOHE.
 Warning.NoModHost,非TOHE房,Mod TOHE not installed on the host,У Хоста Лобби не установлен TOHE
-Warning.MismatchedVersion,{0}\n安装了其它版本的 {1}
-Warning.AutoExitAtMismatchedVersion,您的 {0} 版本与房主不同\n您将在 {1} 秒内被踢出
+Warning.MismatchedVersion,{0}\n安装了其它版本的 {1},{0}\nhave a different version of {1},{0} Версия \nне соответствует версии Хоста лобби {1}
+Warning.AutoExitAtMismatchedVersion,您的 {0} 版本与房主不同\n您将在 {1} 秒内被踢出,The host has no or a different version of {0}\nYou will be kicked in {1},Версия {0} не соответствует Хосту лобби. \nВы будете исключены через {1} секунды
 
 ## 错误
 Error.MeetingException,错误: {0} 请手动中止会议,Error: {0}\r\nPlease use SHIFT+M+ENTER to end the meeting,Ошибка: {0}\r\nПожалуйста используйте SHIFT+M+ENTER чтобы принудительно завершить собрание
@@ -846,6 +859,7 @@ PelicanButtonText,吞下,Eat up,Съесть
 CounterfeiterButtonText,贩卖,Cheat,Обмануть
 GangsterButtonText,招募,Poach,Переманить
 RevolutionistDrawButtonText,拉拢,Win over,Покорить
+FFFButtonText,制裁
 DefaultShapeshiftText,变形,Shift,Превращение
 DisabledBySettings,已在设置被中禁用,Disabled by Settings,Отключено настройкой
 Disabled,禁用,Disabled,Отключено
@@ -855,7 +869,7 @@ KilledBy, ← , ← , ←
 CantUse.lastresult,不可以在游戏中使用/l命令,Unable to use /lastresult during a game,Нельзя использовать /lastresult во время игры
 IllegalColor,请输入正确的颜色,Please enter the correct color,Пожалуйста введите правильный цвет
 DisableUseCommand,房主设置不允许使用该指令,Host settings do not allow this command to be used.,Настройки Хоста запрещают использовать эту команду
-SureUse.quit,我们将踢出您并封禁您以防止您再次遇到这个糟糕的房间，此操作不可逆转，如果您真的希望如此请发送 /qt sure,"We will kick you and block you from entering this lobby again. This setting is irreversible. If you really want it, please send the command /qt sure","Мы кикнем  вас и заблокируем, чтобы вы больше не смогли зайти в это лобби. Эта настройка необратима. Если вы действительно этого хотите, пожалуйста, отправьте команду /qt sure"
+SureUse.quit,我们将踢出您并封禁您以防止您再次遇到这个糟糕的房间，此操作不可逆转，如果您真的希望如此请发送 /qt {0},"We will kick you and block you from entering this lobby again. This setting is irreversible. If you really want it, please send the command /qt {0}","Мы кикнем  вас и заблокируем, чтобы вы больше не смогли зайти в это лобби. Эта настройка необратима. Если вы действительно этого хотите, пожалуйста, отправьте команду /qt {0}"
 PlayerIdList,玩家编号列表：,List of player IDs: ,Список номеров игроков：
 turnOn,开,On,Вкл
 turnOff,关,Off,Выкл
@@ -864,10 +878,10 @@ RestTOHESetting,已恢复TOHE的默认设置,TOHE settings have been restored to
 HostKillSelfByCommand,房主选择自杀,Host lobby decided to commit suicide,Хост лобби решил покончить с собой
 SyncCustomSettingsRPC,已同步RPC,Synchronized RPC,Синхронизированный RPC
 TOHEVisitorCount,截至今日，TOHE已经被使用 <color={0}>{1}</color>次 啦~,To date TOHE has been used <color={0}>{1}</color> times~,На сегодняшний день TOHE использовался <color={0}>{1}</color> раз~
-Mode,模式
-Target,目标
-PlayerInfo,玩家信息
-NoInfoExists,没有存在的上局信息
+Mode,模式,Mode,Режим
+Target,目标,Target,Цель
+PlayerInfo,玩家信息,Player Info,Информация о игроке
+NoInfoExists,没有存在的上局信息,No Info Exists,Нет информации
 
 ## 作弊
 Cheat.AUM,开挂（使用AUM）,Cheating usage detected (Used by AUM),Обнаружено использование читов (используется AUM)
