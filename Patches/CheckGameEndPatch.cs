@@ -88,7 +88,7 @@ namespace TOHE
                                 PlayerControl[] lovers = Main.LoversPlayers.ToArray();
                                 CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Lovers);
                                 Main.AllPlayerControls
-                                    .Where(p => p.Is(CustomRoles.Lovers))
+.Where(p => p.Is(CustomRoles.Lovers))
                                     .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
                             }
                         }

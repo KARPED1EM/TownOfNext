@@ -173,6 +173,7 @@ namespace TOHE
         public static OptionItem RevolutionistCooldown;
         public static OptionItem RevolutionistDrawCount;
         public static OptionItem RevolutionistKillProbability;
+        public static OptionItem RevolutionistWineTime;
 
         // タスク無効化
         public static OptionItem DisableTasks;
@@ -581,6 +582,8 @@ namespace TOHE
                 .SetValueFormat(OptionFormat.Players);
             RevolutionistKillProbability = IntegerOptionItem.Create(50619, "RevolutionistKillProbability", new(0, 100, 5), 50, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Revolutionist])
                 .SetValueFormat(OptionFormat.Percent);
+            RevolutionistWineTime =IntegerOptionItem.Create(50621, "RevolutionistWineTime", new(5, 100, 1), 10, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Revolutionist])
+                .SetValueFormat(OptionFormat.Seconds);
 
             //50220~50223を使用
             TerroristTasks = OverrideTasksData.Create(50220, TabGroup.NeutralRoles, CustomRoles.Terrorist);

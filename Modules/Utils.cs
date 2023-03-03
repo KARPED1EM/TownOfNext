@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using Hazel;
@@ -443,7 +444,7 @@ namespace TOHE
                     ProgressText.Append(Counterfeiter.GetSeelLimit(playerId));
                     break;
                 case CustomRoles.Revolutionist:
-                    var draw = GetDrawPlayerCount(playerId, out byte[] x);
+                    var draw = GetDrawPlayerCount(playerId, out byte[] x, out PlayerControl[] y);
                     ProgressText.Append(ColorString(GetRoleColor(CustomRoles.Revolutionist).ShadeColor(0.25f), $"({draw.Item1}/{draw.Item2})"));
                     break;
                 case CustomRoles.Gangster:
@@ -1016,8 +1017,8 @@ namespace TOHE
                 string SelfName = $"{ColorString(seer.GetRoleColor(), SeerRealName)}{SelfDeathReason}{SelfMark}";
                 if (seer.Is(CustomRoles.Arsonist) && seer.IsDouseDone())
                     SelfName = $"</size>\r\n{ColorString(seer.GetRoleColor(), GetString("EnterVentToWin"))}";
-                if (seer.Is(CustomRoles.Revolutionist) && seer.IsDrawDone())
-                    SelfName = $"</size>\r\n{ColorString(seer.GetRoleColor(), GetString("EnterVentToWin"))}";
+                if (seer.Is(CustomRoles.Revolutionist) && seer.IsDrawDone()&& Main.RevolutionistCountdown.ContainsKey(seer.PlayerId))
+                    SelfName = $"</size>\r\n{ColorString(seer.GetRoleColor(), string.Format(GetString("EnterVentWinCountdown"), Main.RevolutionistCountdown[seer.PlayerId]))}";
                 if (Pelican.IsEaten(seer.PlayerId))
                     SelfName = $"</size>\r\n{ColorString(GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"))}";
                 SelfName = SelfRoleName + "\r\n" + SelfName;
@@ -1406,22 +1407,25 @@ namespace TOHE
             return (doused, all);
         }
 
-        public static (int, int) GetDrawPlayerCount(byte playerId,out byte[] list)
+        public static (int, int) GetDrawPlayerCount(byte playerId,out byte[] list, out PlayerControl[] list1)
         {
             int draw = 0;
             int all = Options.RevolutionistDrawCount.GetInt();
             int max = PlayerControl.AllPlayerControls.Count - (CustomRolesHelper.RoleExist(CustomRoles.GM) ? 2 : 1);
             if (all > max ) all = max;
             byte[] joinplayer = new byte[Options.RevolutionistDrawCount.GetInt()];
+            PlayerControl[] player = new PlayerControl[Options.RevolutionistDrawCount.GetInt()];
             foreach (var pc in Main.AllPlayerControls)
             {
                 if (Main.isDraw.TryGetValue((playerId, pc.PlayerId), out var isDraw) && isDraw)
                 {
                     joinplayer[draw] = playerId;
+                    player[draw] = pc;
                     draw++;
                 }
             }
             list = joinplayer;
+            list1 = player;
             return (draw, all);
         }
         

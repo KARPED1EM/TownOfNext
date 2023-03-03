@@ -154,6 +154,9 @@ namespace TOHE
         public static Dictionary<byte, long> VeteranInProtect = new();
         public static Dictionary<byte, long> GrenadierBlinding = new();
         public static Dictionary<byte, long> MadGrenadierBlinding = new();
+        public static Dictionary<byte, long> RevolutionistStart = new();
+        public static Dictionary<byte, int> RevolutionistCountdown = new();
+        public static Dictionary<byte, long> RevolutionistLastTime = new();
         public static int AliveImpostorCount;
         public static int SKMadmateNowCount;
         public static bool isCursed;
@@ -246,6 +249,9 @@ namespace TOHE
             VeteranInProtect = new Dictionary<byte, long>();
             GrenadierBlinding = new Dictionary<byte, long>();
             MadGrenadierBlinding = new Dictionary<byte, long>();
+            RevolutionistStart = new Dictionary<byte, long>();
+            RevolutionistCountdown = new Dictionary<byte, int>();
+            RevolutionistLastTime = new Dictionary<byte, long>();
             MarioVentCount = new Dictionary<byte, int>();
             MafiaRevenged = new Dictionary<byte, int>();
             GuesserGuessed = new Dictionary<byte, int>();

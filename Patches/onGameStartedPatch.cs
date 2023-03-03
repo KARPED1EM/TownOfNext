@@ -76,6 +76,9 @@ namespace TOHE
                 Main.VeteranInProtect = new Dictionary<byte, long>();
                 Main.GrenadierBlinding = new Dictionary<byte, long>();
                 Main.MadGrenadierBlinding = new Dictionary<byte, long>();
+                Main.RevolutionistStart = new Dictionary<byte, long>();
+                Main.RevolutionistLastTime = new Dictionary<byte, long>();
+                Main.RevolutionistCountdown = new Dictionary<byte, int>();
 
                 ReportDeadBodyPatch.CanReport = new();
 
