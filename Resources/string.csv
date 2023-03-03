@@ -542,11 +542,6 @@ RevolutionistCooldown,拉拢冷却时间
 RevolutionistDrawCount,拉拢数量（会根据游戏内玩家数量调整最大值）
 RevolutionistKillProbability,拉拢击杀概率
 RevolutionistWineTime,跳通风管道胜利倒计时
-EvilTrackerTargetMode,追踪模式
-EvilTrackerTargetMode.Never,禁用追踪
-EvilTrackerTargetMode.OnceInGame,仅限一次
-EvilTrackerTargetMode.EveryMeeting,每次会议
-EvilTrackerTargetMode.Always,永久显示
 EvilTrackerCanSeeLastRoomInMeeting,追踪者可以看见<color=#8cffff>船员</color>位置,Can See Target's Last Room In Meeting,Может видеть местоположение Целей во время Собрания
 EvilTrackerTargetMode,追踪模式,Can Set Target,Может установить цель
 EvilTrackerTargetMode.Never,禁用追踪,Never,Никогда
