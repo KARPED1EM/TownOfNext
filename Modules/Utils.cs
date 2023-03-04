@@ -382,12 +382,12 @@ public static class Utils
     {
         if (pc == null || !pc.GetCustomRole().IsCrewmate() || pc.Is(CustomRoles.Madmate)) return false;
         return !(
+            (pc.Is(CustomRoles.Sheriff) && !Options.SheriffCanBeMadmate.GetBool()) ||
+            (pc.Is(CustomRoles.Mayor) && !Options.MayorCanBeMadmate.GetBool()) ||
+            (pc.Is(CustomRoles.NiceGuesser) && !Options.NGuesserCanBeMadmate.GetBool()) ||
             pc.Is(CustomRoles.Needy) ||
             pc.Is(CustomRoles.Snitch) ||
-            pc.Is(CustomRoles.Sheriff) ||
-            pc.Is(CustomRoles.Mayor) ||
             pc.Is(CustomRoles.CyberStar) ||
-            pc.Is(CustomRoles.NiceGuesser) ||
             pc.Is(CustomRoles.Youtuber) ||
             pc.Is(CustomRoles.Egoist)
             );
@@ -762,7 +762,7 @@ public static class Utils
                 List<PlayerControl> goodPlayers = new();
                 foreach (var pc in PlayerControl.AllPlayerControls)
                 {
-                    if (pc.Data.IsDead || pc.Data.Disconnected || pc == seer || pc == null) continue;
+                    if (pc == null || !pc.IsAlive() || pc.Data.Disconnected || pc == seer) continue;
                     isGood.Add(pc.PlayerId, true);
                     var role = pc.GetCustomRole();
                     switch (role.GetCustomRoleTypes())

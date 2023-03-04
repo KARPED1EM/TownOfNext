@@ -16,6 +16,7 @@ public static class Sheriff
     private static OptionItem ShotLimitOpt;
     private static OptionItem CanKillAllAlive;
     public static OptionItem CanKillNeutrals;
+    public static OptionItem CanKillMadmate;
     public static Dictionary<CustomRoles, OptionItem> KillTargetOptions = new();
     public static Dictionary<byte, float> ShotLimit = new();
     public static Dictionary<byte, float> CurrentKillCooldown = new();
@@ -32,6 +33,7 @@ public static class Sheriff
         ShotLimitOpt = IntegerOptionItem.Create(Id + 12, "SheriffShotLimit", new(1, 15, 1), 6, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff])
             .SetValueFormat(OptionFormat.Times);
         CanKillAllAlive = BooleanOptionItem.Create(Id + 15, "SheriffCanKillAllAlive", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
+        CanKillMadmate = BooleanOptionItem.Create(Id + 17, "SheriffCanKillMadmate", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         CanKillNeutrals = StringOptionItem.Create(Id + 14, "SheriffCanKillNeutrals", KillOption, 0, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         SetUpNeutralOptions(Id + 30);
     }
@@ -96,7 +98,7 @@ public static class Sheriff
         ShotLimit[killer.PlayerId]--;
         Logger.Info($"{killer.GetNameWithRole()} : 残り{ShotLimit[killer.PlayerId]}発", "Sheriff");
         SendRPC(killer.PlayerId);
-        if (!target.CanBeKilledBySheriff() || killer.Is(CustomRoles.Madmate))
+        if (!killer.Is(CustomRoles.Madmate) && !target.CanBeKilledBySheriff())
         {
             Main.PlayerStates[killer.PlayerId].deathReason = PlayerState.DeathReason.Misfire;
             killer.RpcMurderPlayer(killer);
@@ -114,7 +116,7 @@ public static class Sheriff
         foreach (var role in subRole)
         {
             if (role == CustomRoles.Madmate)
-                IsMadmate = KillTargetOptions.TryGetValue(CustomRoles.Madmate, out var option) && option.GetBool();//マッドメイト切れる設定だったらtrue
+                IsMadmate = CanKillMadmate.GetBool();
         }
 
         return cRole.GetCustomRoleTypes() switch
