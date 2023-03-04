@@ -71,6 +71,7 @@ Scavenger,清道夫,Scavenger,Уборщик
 BoobyTrap,诡雷,Booby Trap,Мина Ловушка
 Capitalism,资本家,Capitalist,Капиталист
 Gangster,教父,Gangster,Гангстер
+Imposterr,伪装者?
 
 # 船员阵营
 Bait,诱饵,Bait,Байт
@@ -130,6 +131,8 @@ Avanger,复仇者,Avenger,Мститель
 Youtuber,UP主,YouTuber,Ютубер
 Egoist,利己主义者,Egoist,Эгоист
 Piper,吹笛者,Piper,Пайпер
+Cripple,瘸子
+SpeedyBlade,速刃者
 TicketsStealer,窃票者,Stealer,Похититель
 
 # 管理员
@@ -168,6 +171,7 @@ ScavengerInfo,杀人不留痕迹,"Kill without leaving a trace","Убивай, �
 EvilGuesserInfo,想来一把吗，伙计,Guess the nice roles of the players,Угадывай добрые роли игроков
 CapitalismInfo,这可都是劳动力呀,Add another task to a Crewmate,Добавьте еще одно задание Члену Экипажа
 GangsterInfo,是时候重整旗鼓了！,Get players on your side,Перемани игроков на свою сторону
+ImposterrInfo,击杀与破坏....吗？
 
 # 船员阵营
 BaitInfo,好消息，杀了我可以吃席,Bait your enemies,Убийца моментально зарепортит ваш труп
@@ -228,6 +232,8 @@ AvangerInfo,君子报仇，片刻不能缓！,Take someone to the next world bef
 YoutuberInfo,我的素材啊啊啊啊,Be the very first to be killed,Будьте убитым самым первым
 EgoistInfo,什么叫做一波三折？,Replace victory,Замените победу
 PiperInfo,嗯↗嗯↘嗯~~,Change the players speed,Измените скорость игроков
+CrippleInfo,啊我瘸了
+SpeedyBladeInfo,拔刀于幻影之中
 TicketsStealerInfo,要懂得珍惜，死者最后的价值,Steal player votes,Украдите голоса игроков
 
 # 管理员
@@ -262,7 +268,9 @@ BomberInfoLong,(内鬼阵营):\n自爆兵可以使用变形按钮来进行自爆
 ScavengerInfoLong,(内鬼阵营):\n清道夫击杀的尸体无法被报告，若受害者为诱饵，则诱饵的技能不会发动。,(Impostors):\nThe body killed by the Scavenger will be impossible to report.,"(Предатель):\nКогда Уборщик убёт игрока, то зарепортить этот труп будет невозможно."
 BoobyTrapInfoLong,(内鬼阵营):\n诡雷在进行击杀后会在受害者尸体上装上诡雷，报告该尸体的玩家会立刻被炸死，被炸死的玩家也会附带诡雷的效果，以此类推。但作为代价，诡雷在进行击杀后会立刻自杀。请注意：诡雷自身的尸体并不附带诡雷效果。,"(Impostors):\nBooby Trap will place a mine on the corpse of the victim after the kill. A player who tries to report a body with a mine will be immediately killed, and a player who gets caught by the mine will also be followed by the effect of the mine, and so on. But as a payment, Booby Trap will commit suicide immediately after one of the players gets on Mina. \nPlease note: Booby Trap's own corpse will not be accompanied by the Mine's effect.","(Предатель):\nМина Ловушка установит Мину на труп жертвы после убийства. Игрок который попытается зарепортить труп с миной будет немедленно убит, и игрок который попался на Мину также будет сопровождаться эффектом Мины, и так далее. Но в качестве платы Мина Ловушка суициднется сразу же после того как один из игроков попадётся на Мину. \nПожалуйста, обратите внимание: Труп самого Мины Ловушки не будет сопровождаться эффектом Мины."
 CapitalismInfoLong,(内鬼阵营):\n资本家可以通过击杀按键给某位玩家增加一个短任务。请注意：对没有任务或已完成任务的玩家使用技能则不会生效。,"(Impostors):\nThe Capitalist can add one short task to the player by clicking on the ''Kill'' button. Please note: the skill will not work if you use the skill on players who do not have tasks or who have already completed all the tasks.","(Предатель):\nКапиталист может добавить игроку одно короткое задание, нажав на кнопку ''Убить''. Пожалуйста, обратите внимание: навык не сработает если использовать навык на игроков, у которых нет заданий или которые уже выполнили все задания."
+SpeedyBladeInfoLong,(内鬼阵营)\n速刃者速刃者，顾名思义他的冷却比其他内鬼少。
 GangsterInfoLong,(内鬼阵营):\n教父可以通过击杀键尝试招募一位玩家成为叛徒。若招募成功，双方都会看到彼此身上出现护盾破碎的动画作为提示（仅互相可见）。剩余可以招募的次数会显示在教父名字旁的括号内（数量根据房主设置）。若教父尝试招募无法被招募的玩家例如中立阵营或一些特殊船员阵营玩家时，则会改为正常击杀目标。当教父没有剩余招募次数时击杀则为正常击杀。,"(Impostors):\nGangster can try to lure the player to the side of the impostors by pressing the ''Kill'' button. The remaining number of times that can be scored will be indicated in brackets next to the player's name (the number depends on the Host's settings). If the Ganster tries to lure players that cannot be lured, such as: Neutrals or some players of the special team, then a normal kill will occur. When the Gangster runs out of decoys, he will perform regular kills.","(Предатель):\nГанстер может попытаться переманить игрока, на сторону предателей, нажав на кнопку ''Убить''. Оставшееся количество раз, которое можно набрать, будет указано в скобках рядом с именем игрока (количество зависит от настроек Хоста). Если Ганстер попытается переманить игроков, которые не могут быть приманены, такие как: Нейтралы или некоторые игроки специальной команды, то произойдёт обычное убийство. Когда у Ганстера нет оставшегося количества переманивания, то он будет совершать обычнын убийства."
+ImposterrInfoLong.(内鬼?阵营):\n在？？后，获得？？？的能力
 
 # 双阵营
 GuesserInfoLong,(内鬼阵营或船员阵营):\n赌怪可以在会议时猜测某位玩家的职业，正确则击杀目标，错误则会自杀。\n猜测指令为：/bt [玩家编号] [职业名]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。,"(Impostors or Crewmate):\nGuesser can guess the roles of certain players during an encounter. If he guesses the role correctly, he will kill that target, and if wrong, he will commit suicide. \nGuessing command: ''/bt [Player ID] [Role Name]'' \nExample: /bt 3 Bait \nYou can see the player ID before the player's nickname, or you can use the ''/id'' command to see the IDs of all players.","(Предатель или Член Экипажа):\nУгадыватель может угадывать роли определённого игрока во время встречи. Если он угадает роль правильно, то он убьет эту цель, а если неправильно, то он совершит самоубийство. \nКоманда для угадываний: '/bt [Номер игрока] [Название Роли]'' \nПример: /bt 3 Байт \nВы можете увидеть номер игрока перед его никнеймом, или же для просмотра номеров всех игроков нужно использовать команду ''/id'' ."
@@ -329,6 +337,7 @@ AvangerInfoLong,(附加职业)\n可以设定内鬼是否可以成为复仇者。
 YoutuberInfoLong,(附加职业)\n只有船员会成为UP主，UP主不会成为叛徒。当UP主是第一个在游戏中被击杀的玩家时，UP主会单独获得胜利，若UP主没有满足胜利条件，则UP主跟随船员阵营胜利。请注意：被放逐、被赌怪猜测等非直接击杀方式不会触发UP主的技能。,"(Add-ons):\nOnly Crewmate can become Youtubers. When a Youtuber becomes the first player to be killed in a game, they automatically win. If Youtuber does not meet the victory conditions, Youtuber will follow the team to victory. Please note: Ejected, Guessing, etc. do not activate Youtuber's skills","(Атрибут):\nТолько Члены Экипажа могут стать Ютубером. Когда Ютубер становится первым игроком, убитым в игре, то он автоматически побеждает. Если Ютубер не соответствует условиям победы, Ютубер последует за командой к победе. Пожалуйста, обратите внимание: Изгнание, Угадывание и т.д., не активируют навыки Ютубера"
 EgoistInfoLong,(附加职业)\n叛徒与中立阵营不会成为利己主义者。利己主义者会抢夺自己阵营的胜利。,"(Add-ons):\nImpostors and Neutrals cannot become Egoist. Egoist will steal the victory from his own team","(Атрибут):\nПредатели и нейтралы не могут стать эгоистами. Эгоист украдет победу у своей же собственной команды"
 PiperInfoLong,(附加职业)\n吹笛者会将自己附近的人的移动速度变得跟自己一样。（速度根据房主设定）,"(Add-ons):\nPiper will make the movement speed of players near him exactly the same as his own. (The speed depends on the settings of the Host)","(Атрибут):\nПайпер сделает скорость передвижения игроков рядом с ним точно такой же, как у него самого.(Скорость зависит от настроек Хоста)"
+CrippleInfoLong,(附加职业)\n作为瘸子，你的移动速度会大幅度下降\n任何人都可以成为瘸子。
 TicketsStealerInfoLong,(附加职业)\n只有内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。,"(Add-ons):\nOnly a Impostors can become a Stealer. Each time the Stealer kills a player, it increases its own number of votes in the game (the increase in votes is set according to the number of votes, and the decimal is rounded down). In addition, additional Stealer voices are hidden","(Атрибут):\nТолько Предатель может стать Похитителем. Каждый раз, когда Похититель убивает игрока, он увеличивает свое собственное количество голосов в игре (увеличение голосов устанавливается в соответствии с количеством голосов, а десятичная дробь округляется в меньшую сторону). Кроме того, дополнительные голоса Похитителя скрыты."
 
 #模式选项
@@ -597,6 +606,10 @@ RevolutionistCooldown,革命家拉拢玩家冷却时间,Skill сooldown,Отка
 RevolutionistDrawCount,革命家需要拉拢人数,Number of players he needs to tag,Количество игроков которых ему нужно пометить
 RevolutionistKillProbability,被拉拢玩家牺牲概率,Probability of successful retention,Вероятность успешного удерживания
 PelicanKillCooldown,鹈鹕吞人冷却时间
+CrippleSpeedReduce,瘸子移动速度
+SpeedyBladeKillCooldown,速刃者击杀冷却时间
+ImposterrKillCooldown,???冷却
+ImposterrSkillDuration,不要动这个（你动了也没用awa）
 SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为叛徒
 MayorCanBeMadmate,<color=#204d42>市长</color>可以成为叛徒
 NGuesserCanBeMadmate,<color=#eede26>正义赌怪</color>可以成为叛徒

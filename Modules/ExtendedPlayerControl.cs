@@ -490,6 +490,12 @@ static class ExtendedPlayerControl
             case CustomRoles.Scavenger:
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.ScavengerKillCooldown.GetFloat();
                 break;
+            case CustomRoles.SpeedyBlade:
+                Main.AllPlayerKillCooldown[player.PlayerId] = Options.SpeedyBladeKillCooldown.GetFloat();
+                break;
+            case CustomRoles.Imposterr:
+                Main.AllPlayerKillCooldown[player.PlayerId] = Options.ImposterrKillCooldown.GetFloat();
+                break;
             case CustomRoles.Bomber:
                 Main.AllPlayerKillCooldown[player.PlayerId] = 300;
                 break;

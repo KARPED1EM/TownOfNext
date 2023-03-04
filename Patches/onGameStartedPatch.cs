@@ -74,6 +74,7 @@ class ChangeRoleSettings
             Main.ParaUsedButtonCount = new Dictionary<byte, int>();
             Main.MarioVentCount = new Dictionary<byte, int>();
             Main.VeteranInProtect = new Dictionary<byte, long>();
+            Main.ImposterrProtect = new Dictionary<byte, long>();
             Main.GrenadierBlinding = new Dictionary<byte, long>();
             Main.MadGrenadierBlinding = new Dictionary<byte, long>();
 

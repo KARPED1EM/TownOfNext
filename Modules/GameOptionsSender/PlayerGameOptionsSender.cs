@@ -193,8 +193,11 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 case CustomRoles.Watcher:
                     opt.SetBool(BoolOptionNames.AnonymousVotes, false);
                     break;
-                case CustomRoles.Flashman:
+                case CustomRoles.Cripple:
                     Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
+                    break;
+                case CustomRoles.Flashman:
+                    Main.AllPlayerSpeed[player.PlayerId] = Options.CrippleSpeedReduce.GetFloat();
                     break;
                 case CustomRoles.Lighter:
                     opt.SetVision(true);

@@ -36,7 +36,7 @@ public class Main : BasePlugin
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.1.1";
     public const int PluginCreate = 4;
-    public const bool Dev = true;
+    public const bool Dev = false;
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -135,6 +135,7 @@ public class Main : BasePlugin
     public static Dictionary<byte, int> ParaUsedButtonCount = new();
     public static Dictionary<byte, int> MarioVentCount = new();
     public static Dictionary<byte, long> VeteranInProtect = new();
+    public static Dictionary<byte, long> ImposterrProtect = new();
     public static Dictionary<byte, long> GrenadierBlinding = new();
     public static Dictionary<byte, long> MadGrenadierBlinding = new();
     public static int AliveImpostorCount;
@@ -227,6 +228,7 @@ public class Main : BasePlugin
         HackerUsedCount = new Dictionary<byte, int>();
         ParaUsedButtonCount = new Dictionary<byte, int>();
         VeteranInProtect = new Dictionary<byte, long>();
+        ImposterrProtect = new Dictionary<byte, long>();
         GrenadierBlinding = new Dictionary<byte, long>();
         MadGrenadierBlinding = new Dictionary<byte, long>();
         MarioVentCount = new Dictionary<byte, int>();
@@ -264,7 +266,7 @@ public class Main : BasePlugin
         {
             roleColors = new Dictionary<CustomRoles, string>()
             {
-                //バニラ役職
+                //バニラ役職,
                 {CustomRoles.Crewmate, "#ffffff"},
                 {CustomRoles.Engineer, "#8cffff"},
                 {CustomRoles.Scientist, "#8cffff"},
@@ -328,6 +330,7 @@ public class Main : BasePlugin
                 {CustomRoles.Youtuber, "#fb749b"},
                 {CustomRoles.Egoist, "#5600ff"},
                 {CustomRoles.Piper, "#a3d7a8"},
+                {CustomRoles.Cripple, "#333333"},
                 {CustomRoles.TicketsStealer, "#ff1919"},
             };
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
@@ -401,6 +404,8 @@ public enum CustomRoles
     Scavenger,
     Capitalism,
     Gangster,
+    SpeedyBlade,
+    Imposterr,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
@@ -464,6 +469,7 @@ public enum CustomRoles
     Youtuber,
     Egoist,
     Piper,
+    Cripple,
     TicketsStealer,
 }
 //WinData
