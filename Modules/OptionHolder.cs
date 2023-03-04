@@ -178,6 +178,7 @@ public static class Options
     public static OptionItem RevolutionistCooldown;
     public static OptionItem RevolutionistDrawCount;
     public static OptionItem RevolutionistKillProbability;
+    public static OptionItem CanHorrorbomsonSuicideWin;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -280,6 +281,7 @@ public static class Options
     public static OverrideTasksData SnitchTasks;
     public static OverrideTasksData TransporterTasks;
     public static OverrideTasksData MadSnitchTasks;
+    public static OverrideTasksData HorrorbomsonTasks;
 
     // その他
     public static OptionItem FixFirstKillCooldown;
@@ -593,6 +595,10 @@ public static class Options
         SetupRoleOptions(5050233, TabGroup.NeutralRoles, CustomRoles.Innocent);
         InnocentCanWinByImp = BooleanOptionItem.Create(5050266, "InnocentCanWinByImp", false, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Innocent]);
         SetupRoleOptions(5050850, TabGroup.NeutralRoles, CustomRoles.FFF);
+        SetupRoleOptions(9000000, TabGroup.NeutralRoles, CustomRoles.Horrorbomson);
+        CanHorrorbomsonSuicideWin = BooleanOptionItem.Create(9000002, "CanHorrorbomsonSuicideWin", false, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Horrorbomson])
+            .SetGameMode(CustomGameMode.Standard);
+        HorrorbomsonTasks = OverrideTasksData.Create(9000004, TabGroup.NeutralRoles, CustomRoles.Horrorbomson);
 
         // Add-Ons
         NoLimitAddonsNum = BooleanOptionItem.Create(6050250, "NoLimitAddonsNum", false, TabGroup.Addons, false)

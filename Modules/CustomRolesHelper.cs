@@ -62,6 +62,7 @@ static class CustomRolesHelper
             CustomRoles.Bodyguard => CustomRoles.Crewmate,
             CustomRoles.Grenadier => CustomRoles.Engineer,
             CustomRoles.Gangster => CustomRoles.Impostor,
+            CustomRoles.Horrorbomson => CustomRoles.Engineer,
             _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
         };
     }
@@ -134,7 +135,8 @@ static class CustomRolesHelper
             CustomRoles.Mario or
             CustomRoles.Innocent or
             CustomRoles.Pelican or
-            CustomRoles.Egoist;
+            CustomRoles.Egoist or
+            CustomRoles.Horrorbomson;
     }
     public static bool IsCK(this CustomRoles role) // 是否带刀船员
     {

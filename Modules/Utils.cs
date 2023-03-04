@@ -347,6 +347,10 @@ public static class Utils
                 if (ForRecompute)
                     hasTasks = false;
                 break;
+            case CustomRoles.Horrorbomson:
+                if (ForRecompute)
+                    hasTasks = false;
+                break;
             case CustomRoles.Executioner:
                 if (Executioner.ChangeRolesAfterTargetKilled.GetValue() == 0)
                     hasTasks = !ForRecompute;
@@ -863,6 +867,41 @@ public static class Utils
             }
             CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Terrorist);
             CustomWinnerHolder.WinnerIds.Add(Terrorist.PlayerId);
+        }
+    }
+    public static void CheckHorrorbomsonWin(GameData.PlayerInfo Horrorbomson)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        var taskState = GetPlayerById(Horrorbomson.PlayerId).GetPlayerTaskState();
+        if (taskState.IsTaskFinished && (!Main.PlayerStates[Horrorbomson.PlayerId].IsSuicide() || Options.CanHorrorbomsonSuicideWin.GetBool())) //タスクが完了で（自殺じゃない OR 自殺勝ちが許可）されていれば
+        {
+            foreach (var pc in Main.AllPlayerControls)
+            {
+                if (pc.Is(CustomRoles.Horrorbomson))
+                {
+                    if (Main.PlayerStates[pc.PlayerId].deathReason == PlayerState.DeathReason.Vote)
+                    {
+                        //追放された場合は生存扱い
+                        Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.etc;
+                        //生存扱いのためSetDeadは必要なし
+                    }
+                    else
+                    {
+                        //キルされた場合は自爆扱い
+                        Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Suicide;
+                    }
+                }
+                else if (!pc.Data.IsDead)
+                {
+                    //生存者は爆死
+                    pc.SetRealKiller(Horrorbomson.Object);
+                    pc.RpcMurderPlayer(pc);
+                    Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Bombed;
+                    Main.PlayerStates[pc.PlayerId].SetDead();
+                }
+            }
+            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Horrorbomson);
+            CustomWinnerHolder.WinnerIds.Add(Horrorbomson.PlayerId);
         }
     }
     public static void SendMessage(string text, byte sendTo = byte.MaxValue, string title = "")
@@ -1545,4 +1584,9 @@ public static class Utils
     public static bool IsAllAlive => Main.PlayerStates.Values.All(state => state.countTypes == CountTypes.OutOfGame || !state.IsDead);
     public static int PlayersCount(CountTypes countTypes) => Main.PlayerStates.Values.Count(state => state.countTypes == countTypes);
     public static int AlivePlayersCount(CountTypes countTypes) => Main.AllAlivePlayerControls.Count(pc => pc.Is(countTypes));
+
+    internal static void CheckTerroristWin(object data)
+    {
+        throw new NotImplementedException();
+    }
 }

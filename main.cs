@@ -36,7 +36,7 @@ public class Main : BasePlugin
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.1.1";
     public const int PluginCreate = 4;
-    public const bool Dev = true;
+    public const bool Dev = false;
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -295,6 +295,7 @@ public class Main : BasePlugin
                 {CustomRoles.Counterfeiter, "#e0e0e0"},
                 {CustomRoles.Grenadier, "#3c4a16"},
                 //第三陣営役職
+                {CustomRoles.Horrorbomson, "#00ff00"},
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
                 {CustomRoles.Terrorist, "#00ff00"},
@@ -443,6 +444,7 @@ public enum CustomRoles
     Pelican,
     Revolutionist,
     FFF,
+    Horrorbomson,
     //GM
     GM,
     // Sub-role after 500
@@ -488,6 +490,7 @@ public enum CustomWinner
     Pelican = CustomRoles.Pelican,
     Youtuber = CustomRoles.Youtuber,
     Egoist = CustomRoles.Egoist,
+    Horrorbomson = CustomRoles.Horrorbomson,
 }
 public enum AdditionalWinners
 {

@@ -613,6 +613,9 @@ class SelectRolesPatch
                     case CustomRoles.Paranoia:
                         Main.ParaUsedButtonCount[pc.PlayerId] = 0;
                         break;
+                    case CustomRoles.Horrorbomson:
+                        Main.ParaUsedButtonCount[pc.PlayerId] = 0;
+                        break;
                     case CustomRoles.SabotageMaster:
                         SabotageMaster.Add(pc.PlayerId);
                         break;

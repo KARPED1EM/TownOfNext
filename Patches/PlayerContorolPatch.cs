@@ -13,6 +13,8 @@ using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 using static TOHE.Translator;
+using static UnityEngine.GraphicsBuffer;
+
 namespace TOHE;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
@@ -1346,6 +1348,14 @@ class EnterVentPatch
                 }, 4.0f, "Skill Remain Message");
                 pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
                 pc?.NoCheckStartMeeting(pc?.Data);
+            }
+        }
+        //好玩的
+        if (pc.Is(CustomRoles.Horrorbomson))
+        {
+            if (Main.ParaUsedButtonCount.TryGetValue(pc.PlayerId, out var count))
+            {
+                Utils.CheckHorrorbomsonWin(pc.Data);
             }
         }
         if (pc.Is(CustomRoles.Mayor))
