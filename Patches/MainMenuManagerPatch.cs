@@ -49,7 +49,6 @@ public class MainMenuManagerPatch
         }));
         updatePassiveButton.OnMouseOut.AddListener((Action)(() => updateButtonSprite.color = updateText.color = updateColor));
         updateButtonSprite.color = updateText.color = updateColor;
-        updateButtonSprite.size *= 1.5f;
         updateButton.SetActive(false);
         /*
 #if RELEASE
