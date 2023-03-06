@@ -36,7 +36,6 @@ public class MainMenuManagerPatch
         if (updateButton == null) updateButton = UnityEngine.Object.Instantiate(template, template.transform.parent);
         updateButton.name = "UpdateButton";
         updateButton.transform.position = template.transform.position + new Vector3(0.25f, 0.75f);
-        updateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
 
         var updateText = updateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
         Color updateColor = new Color32(128, 255, 255, byte.MaxValue);
