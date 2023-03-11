@@ -413,7 +413,6 @@ public enum CustomRoles
     BallLightning,
     Imposterr,
     SpeedyBlade,
-    Error404,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
