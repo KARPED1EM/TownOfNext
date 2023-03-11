@@ -334,6 +334,7 @@ public class Main : BasePlugin
                 {CustomRoles.Youtuber, "#fb749b"},
                 {CustomRoles.Egoist, "#5600ff"},
                 {CustomRoles.Piper, "#a3d7a8"},
+                {CustomRoles.Cripple, "#333333"},
                 {CustomRoles.TicketsStealer, "#ff1919"},
                 {CustomRoles.DualPersonality, "#3a648f"},
             };
@@ -410,6 +411,9 @@ public enum CustomRoles
     Gangster,
     Cleaner,
     BallLightning,
+    Imposterr,
+    SpeedyBlade,
+    Error404,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
@@ -478,6 +482,7 @@ public enum CustomRoles
     Egoist,
     Piper,
     TicketsStealer,
+    Cripple,
     DualPersonality,
 }
 //WinData

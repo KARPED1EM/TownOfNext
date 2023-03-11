@@ -67,6 +67,8 @@ internal static class CustomRolesHelper
                 CustomRoles.Konan => CustomRoles.Crewmate,
                 CustomRoles.Divinator => CustomRoles.Crewmate,
                 CustomRoles.BallLightning => CustomRoles.Impostor,
+                CustomRoles.SpeedyBlade => CustomRoles.Impostor,
+                CustomRoles.Imposterr => CustomRoles.Impostor,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
     }
@@ -121,8 +123,8 @@ internal static class CustomRolesHelper
             CustomRoles.Youtuber or
             CustomRoles.Egoist or
             CustomRoles.Piper or
-            CustomRoles.TicketsStealer or
-            CustomRoles.DualPersonality;
+            CustomRoles.Cripple or
+            CustomRoles.TicketsStealer;
     }
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
@@ -184,8 +186,9 @@ internal static class CustomRolesHelper
             CustomRoles.BoobyTrap or
             CustomRoles.Capitalism or
             CustomRoles.Gangster or
-            CustomRoles.Cleaner or
-            CustomRoles.BallLightning;
+            CustomRoles.Imposterr or
+            CustomRoles.SpeedyBlade or
+            CustomRoles.Cleaner;
     }
     public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role == CustomRoles.Madmate;
     public static bool IsNeutral(this CustomRoles role) // 是否中立

@@ -200,6 +200,9 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 case CustomRoles.Flashman:
                     Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
                     break;
+                case CustomRoles.Cripple:
+                    Main.AllPlayerSpeed[player.PlayerId] = Options.CrippleSpeedReduce.GetFloat();
+                    break;
                 case CustomRoles.Lighter:
                     opt.SetVision(true);
                     break;
