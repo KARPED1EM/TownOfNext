@@ -287,6 +287,13 @@ internal class CheckMurderPatch
                         return false;
                     }
                 break;
+            //击杀伪装者?
+            case CustomRoles.Imposterr:
+                        killer.SetRealKiller(target);
+                        target.RpcMurderPlayer(killer);
+                        Logger.Info($"{target.GetRealName()} 伪装者?击杀：{killer.GetRealName()}", "Imposterr Kill");
+                        return false;
+                break;
         }
 
         //保镖保护
