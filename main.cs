@@ -345,6 +345,7 @@ public class Main : BasePlugin
                 {CustomRoles.TicketsStealer, "#ff1919"},
                 {CustomRoles.DualPersonality, "#3a648f"},
                 {CustomRoles.Mimic, "#ff1919"},
+                {CustomRoles.SpeedyBlade, "#ff1919"},
             };
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
             {
@@ -423,7 +424,6 @@ public enum CustomRoles
     Greedier,
     CursedWolf,
     Imposterr,
-    SpeedyBlade,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
@@ -494,9 +494,10 @@ public enum CustomRoles
     Egoist,
     Piper,
     TicketsStealer,
-    Cripple,
     DualPersonality,
     Mimic,
+    SpeedyBlade,
+    Cripple,
 }
 //WinData
 public enum CustomWinner

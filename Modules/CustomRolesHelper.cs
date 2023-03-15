@@ -71,7 +71,6 @@ internal static class CustomRolesHelper
                 CustomRoles.Greedier => CustomRoles.Impostor,
                 CustomRoles.Workaholic => CustomRoles.Engineer,
                 CustomRoles.CursedWolf => CustomRoles.Impostor,
-                CustomRoles.SpeedyBlade => CustomRoles.Impostor,
                 CustomRoles.Imposterr => CustomRoles.Impostor,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
@@ -129,7 +128,9 @@ internal static class CustomRolesHelper
             CustomRoles.Egoist or
             CustomRoles.Piper or
             CustomRoles.TicketsStealer or
-            CustomRoles.DualPersonality;
+            CustomRoles.DualPersonality or
+            CustomRoles.SpeedyBlade or
+            CustomRoles.Cripple;
     }
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
