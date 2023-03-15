@@ -394,6 +394,7 @@ internal static class ExtendedPlayerControl
     CustomRoles.FFF => pc.IsAlive(),
     CustomRoles.Medicaler => Medicaler.CanUseKillButton(pc.PlayerId),
     CustomRoles.Gamer => pc.IsAlive(),
+    CustomRoles.DarkHide => DarkHide.CanUseKillButton(pc),
     _ => pc.Is(CustomRoleTypes.Impostor),
 };
     }
@@ -402,25 +403,28 @@ internal static class ExtendedPlayerControl
         return pc.IsAlive() && !Pelican.IsEaten(pc.PlayerId) && pc.Data.Role.Role != RoleTypes.GuardianAngel
 && pc.GetCustomRole() switch
 {
-    CustomRoles.Minimalism => false,
-    CustomRoles.Sheriff => false,
-    CustomRoles.Innocent => false,
-    CustomRoles.SwordsMan => false,
+    CustomRoles.Minimalism or
+    CustomRoles.Sheriff or
+    CustomRoles.Innocent or
+    CustomRoles.SwordsMan or
+    CustomRoles.FFF or
+    CustomRoles.Medicaler or
+    CustomRoles.DarkHide
+    => false,
+
     CustomRoles.Jackal => Jackal.CanVent.GetBool(),
+    CustomRoles.Pelican => Pelican.CanVent.GetBool(),
+    CustomRoles.Gamer => Gamer.CanVent.GetBool(),
+
     CustomRoles.Arsonist => pc.IsDouseDone(),
     CustomRoles.Revolutionist => pc.IsDrawDone(),
-    CustomRoles.Pelican => Pelican.CanVent.GetBool(),
-    CustomRoles.FFF => false,
-    CustomRoles.Medicaler => false,
-    CustomRoles.Gamer => Gamer.CanVent.GetBool(),
+
     _ => pc.Is(CustomRoleTypes.Impostor),
 };
     }
     public static bool IsDousedPlayer(this PlayerControl arsonist, PlayerControl target)
     {
-        if (arsonist == null) return false;
-        if (target == null) return false;
-        if (Main.isDoused == null) return false;
+        if (arsonist == null || target == null || Main.isDoused == null) return false;
         Main.isDoused.TryGetValue((arsonist.PlayerId, target.PlayerId), out bool isDoused);
         return isDoused;
     }
@@ -524,6 +528,12 @@ internal static class ExtendedPlayerControl
                 break;
             case CustomRoles.BallLightning:
                 BallLightning.SetKillCooldown(player.PlayerId);
+                break;
+            case CustomRoles.DarkHide:
+                DarkHide.SetKillCooldown(player.PlayerId);
+                break;
+            case CustomRoles.Greedier:
+                Greedier.SetKillCooldown(player.PlayerId);
                 break;
         }
     }

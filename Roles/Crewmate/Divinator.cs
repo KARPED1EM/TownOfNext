@@ -77,7 +77,8 @@ public static class Divinator
             CustomRoles.Sheriff or
             CustomRoles.Arsonist or
             CustomRoles.Innocent or
-            CustomRoles.FFF
+            CustomRoles.FFF or
+            CustomRoles.Greedier
             => "Impulse",
 
             CustomRoles.Vampire or
@@ -116,7 +117,8 @@ public static class Divinator
             CustomRoles.Paranoia or
             CustomRoles.Psychic or
             CustomRoles.Executioner or
-            CustomRoles.BallLightning
+            CustomRoles.BallLightning or
+            CustomRoles.Workaholic
             => "Incomprehensible",
 
             CustomRoles.FireWorks or
@@ -132,7 +134,9 @@ public static class Divinator
             CustomRoles.Detective or
             CustomRoles.TimeManager or
             CustomRoles.Jester or
-            CustomRoles.Medicaler
+            CustomRoles.Medicaler or
+            CustomRoles.DarkHide or
+            CustomRoles.CursedWolf
             => "Disturbed",
 
             _ => "None",

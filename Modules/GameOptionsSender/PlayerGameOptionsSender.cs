@@ -164,10 +164,17 @@ public class PlayerGameOptionsSender : GameOptionsSender
             case CustomRoles.Gamer:
                 Gamer.ApplyGameOptions(opt);
                 break;
+            case CustomRoles.DarkHide:
+                DarkHide.ApplyGameOptions(opt);
+                break;
+            case CustomRoles.Workaholic:
+                AURoleOptions.EngineerCooldown = Options.WorkaholicVentCooldown.GetFloat();
+                AURoleOptions.EngineerInVentMaxTime = 0.0f;
+                break;
         }
 
         // 为迷惑者的凶手
-        if (PlayerControl.AllPlayerControls.ToArray().Where(x => x.Is(CustomRoles.Bewilder) && !x.IsAlive() && x.GetRealKiller().PlayerId == player.PlayerId).Count() > 0)
+        if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Bewilder) && !x.IsAlive() && x.GetRealKiller().PlayerId == player.PlayerId).Count() > 0)
         {
             opt.SetVision(false);
             opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());

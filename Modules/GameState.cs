@@ -107,6 +107,8 @@ public class PlayerState
         Eaten,
         Sacrifice,
         Quantization,
+        Overtired,
+        Ashamed,
         etc = -1
     }
     public byte GetRealKiller()
@@ -170,14 +172,14 @@ public class TaskState
         }
 
         //传送师完成任务
-        if (!player.Data.IsDead
+        if (player.IsAlive()
         && player.Is(CustomRoles.Transporter)
         && ((CompletedTasksCount + 1) <= Options.TransporterTeleportMax.GetInt()))
         {
             Logger.Info("传送师触发传送:" + player.cosmetics.nameText.text, "Transporter");
             var rd = IRandom.Instance;
             List<PlayerControl> AllAlivePlayer = new();
-            foreach (var pc in PlayerControl.AllPlayerControls) if (pc.IsAlive() && !Pelican.IsEaten(pc.PlayerId) && !pc.inVent) AllAlivePlayer.Add(pc);
+            foreach (var pc in Main.AllAlivePlayerControls.Where(x => !Pelican.IsEaten(x.PlayerId) && !x.inVent)) AllAlivePlayer.Add(pc);
             if (AllAlivePlayer.Count >= 2)
             {
                 var tar1 = AllAlivePlayer[rd.Next(0, AllAlivePlayer.Count)];
@@ -187,6 +189,29 @@ public class TaskState
                 Utils.TP(tar1.NetTransform, tar2.GetTruePosition());
                 Utils.TP(tar2.NetTransform, pos);
             }
+        }
+
+        //工作狂做完了
+        if (player.Is(CustomRoles.Workaholic) && (CompletedTasksCount + 1) >= AllTasksCount
+                && !(Options.WorkaholicCannotWinAtDeath.GetBool() && !player.IsAlive()))
+        {
+            foreach (var pc in Main.AllAlivePlayerControls)
+            {
+                if (pc != player)
+                {
+                    pc.SetRealKiller(player);
+                    pc.RpcMurderPlayer(pc);
+                    Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Ashamed;
+                    Main.PlayerStates[pc.PlayerId].SetDead();
+                }
+                else
+                {
+                    RPC.PlaySoundRPC(pc.PlayerId, Sounds.KillSound);
+                    Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Overtired;
+                }
+            }
+            CustomWinnerHolder.ShiftWinnerAndSetWinner(CustomWinner.Workaholic); //爆破で勝利した人も勝利させる
+            CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
         }
 
         //クリアしてたらカウントしない
@@ -234,6 +259,10 @@ public static class GameStates
     public static bool IsInTask => InGame && !MeetingHud.Instance;
     public static bool IsMeeting => InGame && MeetingHud.Instance;
     public static bool IsCountDown => GameStartManager.InstanceExists && GameStartManager.Instance.startState == GameStartManager.StartingStates.Countdown;
+    /**********TOP ZOOM.cs***********/
+    public static bool IsShip => ShipStatus.Instance != null;
+    public static bool IsCanMove => PlayerControl.LocalPlayer?.CanMove is true;
+    public static bool IsDead => PlayerControl.LocalPlayer?.Data?.IsDead is true;
 }
 public static class MeetingStates
 {

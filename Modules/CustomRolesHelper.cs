@@ -10,6 +10,7 @@ internal static class CustomRolesHelper
             ? role
             : role switch
             {
+                CustomRoles.NormalImpostor => CustomRoles.Impostor,
                 CustomRoles.Sniper => CustomRoles.Shapeshifter,
                 CustomRoles.Jester => CustomRoles.Crewmate,
                 CustomRoles.Bait => CustomRoles.Crewmate,
@@ -67,6 +68,9 @@ internal static class CustomRolesHelper
                 CustomRoles.Konan => CustomRoles.Crewmate,
                 CustomRoles.Divinator => CustomRoles.Crewmate,
                 CustomRoles.BallLightning => CustomRoles.Impostor,
+                CustomRoles.Greedier => CustomRoles.Impostor,
+                CustomRoles.Workaholic => CustomRoles.Engineer,
+                CustomRoles.CursedWolf => CustomRoles.Impostor,
                 CustomRoles.SpeedyBlade => CustomRoles.Impostor,
                 CustomRoles.Imposterr => CustomRoles.Impostor,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
@@ -100,6 +104,7 @@ internal static class CustomRolesHelper
             CustomRoles.FFF => RoleTypes.Impostor,
             CustomRoles.Medicaler => RoleTypes.Impostor,
             CustomRoles.Gamer => RoleTypes.Impostor,
+            CustomRoles.DarkHide => RoleTypes.Impostor,
             _ => RoleTypes.Scientist
         };
     }
@@ -123,9 +128,8 @@ internal static class CustomRolesHelper
             CustomRoles.Youtuber or
             CustomRoles.Egoist or
             CustomRoles.Piper or
-            CustomRoles.Cripple or
-            CustomRoles.DualPersonality or
-            CustomRoles.TicketsStealer;
+            CustomRoles.TicketsStealer or
+            CustomRoles.DualPersonality;
     }
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
@@ -133,7 +137,8 @@ internal static class CustomRolesHelper
             CustomRoles.Jackal or
             CustomRoles.Pelican or
             CustomRoles.FFF or
-            CustomRoles.Gamer;
+            CustomRoles.Gamer or
+            CustomRoles.DarkHide;
     }
     public static bool IsNNK(this CustomRoles role) => role.IsNeutral() && !role.IsNK(); // 是否无刀中立
     public static bool IsNeutralKilling(this CustomRoles role) //是否邪恶中立（抢夺或单独胜利的中立）
@@ -147,7 +152,9 @@ internal static class CustomRolesHelper
             CustomRoles.Innocent or
             CustomRoles.Pelican or
             CustomRoles.Egoist or
-            CustomRoles.Gamer;
+            CustomRoles.Gamer or
+            CustomRoles.DarkHide or
+            CustomRoles.Workaholic;
     }
     public static bool IsCK(this CustomRoles role) // 是否带刀船员
     {
@@ -187,9 +194,8 @@ internal static class CustomRolesHelper
             CustomRoles.BoobyTrap or
             CustomRoles.Capitalism or
             CustomRoles.Gangster or
-            CustomRoles.Imposterr or
-            CustomRoles.SpeedyBlade or
-            CustomRoles.Cleaner;
+            CustomRoles.Cleaner or
+            CustomRoles.BallLightning;
     }
     public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role == CustomRoles.Madmate;
     public static bool IsNeutral(this CustomRoles role) // 是否中立
@@ -208,7 +214,9 @@ internal static class CustomRolesHelper
             CustomRoles.Revolutionist or
             CustomRoles.FFF or
             CustomRoles.Konan or
-            CustomRoles.Gamer;
+            CustomRoles.Gamer or
+            CustomRoles.DarkHide or
+            CustomRoles.Workaholic;
     }
     public static bool IsCrewmate(this CustomRoles role) => !role.IsImpostorTeam() && !role.IsNeutral();
     public static bool IsVanilla(this CustomRoles role) // 是否原版职业
@@ -230,7 +238,7 @@ internal static class CustomRolesHelper
     }
     public static bool RoleExist(this CustomRoles role, bool countDead = false)
     {
-        foreach (var pc in PlayerControl.AllPlayerControls)
+        foreach (var pc in Main.AllPlayerControls)
         {
             if (pc.Is(role) && (pc.IsAlive() || countDead)) return true;
         }

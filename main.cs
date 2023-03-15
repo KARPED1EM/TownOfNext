@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TOHE.Roles.Neutral;
 using UnhollowerRuntimeLib;
 using UnityEngine;
 
@@ -34,8 +35,8 @@ public class Main : BasePlugin
     public static readonly string MainMenuText = "能做出来这个模组，就已经值啦";
     public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.1.2";
-    public const int PluginCreate = 8;
+    public const string PluginVersion = "2.1.4";
+    public const int PluginCreate = 9;
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -132,6 +133,7 @@ public class Main : BasePlugin
     public static Dictionary<byte, long> VeteranInProtect = new();
     public static Dictionary<byte, long> GrenadierBlinding = new();
     public static Dictionary<byte, long> MadGrenadierBlinding = new();
+    public static Dictionary<byte, int> CursedWolfSpellCount = new();
     public static int AliveImpostorCount;
     public static int SKMadmateNowCount;
     public static bool isCursed;
@@ -159,7 +161,7 @@ public class Main : BasePlugin
     public static Dictionary<byte, CustomRoles> DevRole = new();
 
     public static IEnumerable<PlayerControl> AllPlayerControls => PlayerControl.AllPlayerControls.ToArray().Where(p => p != null);
-    public static IEnumerable<PlayerControl> AllAlivePlayerControls => PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && p.IsAlive());
+    public static IEnumerable<PlayerControl> AllAlivePlayerControls => PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && p.IsAlive() && !p.Data.Disconnected && !Pelican.IsEaten(p.PlayerId));
 
     public static Main Instance;
 
@@ -185,20 +187,21 @@ public class Main : BasePlugin
         TOHE.Logger.Disable("SwitchSystem");
         if (!DebugModeManager.AmDebugger)
         {
+            TOHE.Logger.Disable("ModNews");
             TOHE.Logger.Disable("CustomRpcSender");
-            TOHE.Logger.Disable("ReceiveRPC");
+            //TOHE.Logger.Disable("ReceiveRPC");
             TOHE.Logger.Disable("SendRPC");
             TOHE.Logger.Disable("SetRole");
             TOHE.Logger.Disable("Info.Role");
             TOHE.Logger.Disable("TaskState.Init");
-            TOHE.Logger.Disable("Vote");
+            //TOHE.Logger.Disable("Vote");
             TOHE.Logger.Disable("RpcSetNamePrivate");
             //TOHE.Logger.Disable("SendChat");
             TOHE.Logger.Disable("SetName");
-            TOHE.Logger.Disable("AssignRoles");
+            //TOHE.Logger.Disable("AssignRoles");
             //TOHE.Logger.Disable("RepairSystem");
-            TOHE.Logger.Disable("MurderPlayer");
-            TOHE.Logger.Disable("CheckMurder");
+            //TOHE.Logger.Disable("MurderPlayer");
+            //TOHE.Logger.Disable("CheckMurder");
             TOHE.Logger.Disable("PlayerControl.RpcSetRole");
         }
         //TOHE.Logger.isDetail = true;
@@ -234,6 +237,7 @@ public class Main : BasePlugin
         CleanerBodies = new List<byte>();
         CapitalismAddTask = new Dictionary<byte, int>();
         CapitalismAssignTask = new Dictionary<byte, int>();
+        CursedWolfSpellCount = new Dictionary<byte, int>();
         winnerList = new();
         VisibleTasksCount = false;
         MessagesToSend = new List<(string, byte, string)>();
@@ -254,6 +258,7 @@ public class Main : BasePlugin
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
         CustomWinnerHolder.Reset();
+        //CustomSoundsManager.Load();
         Translator.Init();
         BanManager.Init();
         TemplateManager.Init();
@@ -313,12 +318,14 @@ public class Main : BasePlugin
                 {CustomRoles.FFF, "#414b66"},
                 {CustomRoles.Konan, "#4d4dff"},
                 {CustomRoles.Gamer, "#68bc71"},
+                {CustomRoles.DarkHide, "#483d8b"},
+                {CustomRoles.Workaholic, "#008b8b"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
                 {CustomRoles.NotAssigned, "#ffffff"},
                 {CustomRoles.LastImpostor, "#ff1919"},
-                {CustomRoles.Lovers, "#ff6be4"},
+                {CustomRoles.Lovers, "#ff9ace"},
                 {CustomRoles.Ntr, "#00a4ff"},
                 {CustomRoles.Madmate, "#ff1919"},
                 {CustomRoles.Watcher, "#800080"},
@@ -337,6 +344,7 @@ public class Main : BasePlugin
                 {CustomRoles.Cripple, "#333333"},
                 {CustomRoles.TicketsStealer, "#ff1919"},
                 {CustomRoles.DualPersonality, "#3a648f"},
+                {CustomRoles.Mimic, "#ff1919"},
             };
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
             {
@@ -382,6 +390,7 @@ public enum CustomRoles
     Impostor,
     Shapeshifter,
     //Impostor
+    NormalImpostor,
     BountyHunter,
     FireWorks,
     Mafia,
@@ -411,6 +420,8 @@ public enum CustomRoles
     Gangster,
     Cleaner,
     BallLightning,
+    Greedier,
+    CursedWolf,
     Imposterr,
     SpeedyBlade,
     //Crewmate(Vanilla)
@@ -459,6 +470,8 @@ public enum CustomRoles
     FFF,
     Konan,
     Gamer,
+    DarkHide,
+    Workaholic,
     //GM
     GM,
     // Sub-role after 500
@@ -483,6 +496,7 @@ public enum CustomRoles
     TicketsStealer,
     Cripple,
     DualPersonality,
+    Mimic,
 }
 //WinData
 public enum CustomWinner
@@ -507,6 +521,8 @@ public enum CustomWinner
     Youtuber = CustomRoles.Youtuber,
     Egoist = CustomRoles.Egoist,
     Gamer = CustomRoles.Gamer,
+    DarkHide = CustomRoles.DarkHide,
+    Workaholic = CustomRoles.Workaholic,
 }
 public enum AdditionalWinners
 {
