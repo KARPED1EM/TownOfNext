@@ -184,6 +184,7 @@ internal class CheckForEndVotingPatch
             {
                 byte target = byte.MaxValue;
                 foreach (var data in VotingData)
+                {
                     if (Main.BrakarVoteFor.Contains(data.Key))
                     {
                         if (target != byte.MaxValue)
@@ -193,6 +194,7 @@ internal class CheckForEndVotingPatch
                         }
                         target = data.Key;
                     }
+                }
                 if (target != byte.MaxValue)
                 {
                     Logger.Info("破平者覆盖驱逐玩家", "Brakar Vote");
@@ -201,6 +203,8 @@ internal class CheckForEndVotingPatch
                     braked = true;
                 }
             }
+
+            Collector.CollectAmount(VotingData, __instance);
 
             if (Options.VoteMode.GetBool() && Options.WhenTie.GetBool() && tie)
             {
@@ -393,22 +397,24 @@ internal static class ExtendedMeetingHud
         Logger.Info("===计算票数处理开始===", "Vote");
         Dictionary<byte, int> dic = new();
         Main.BrakarVoteFor = new();
+        Collector.CollectorVoteFor = new();
         //| 投票された人 | 投票された回数 |
         for (int i = 0; i < __instance.playerStates.Length; i++)
         {
-            PlayerVoteArea ps = __instance.playerStates[i];
+            PlayerVoteArea ps = __instance.playerStates[i];//该玩家面板里的所有会议中的玩家
             if (ps == null) continue;
-            if (ps.VotedFor is not 252 and not byte.MaxValue and not 254)
+            if (ps.VotedFor is not 252 and not byte.MaxValue and not 254)//该玩家面板里是否投了该玩家
             {
                 int VoteNum = 1;
-                var target = Utils.GetPlayerById(ps.VotedFor);
+                var target = Utils.GetPlayerById(ps.VotedFor);//玩家投的玩家
 
                 if (target != null)
                 {
-                    if (target.Is(CustomRoles.Zombie)) VoteNum = 0;
+                    if (target.Is(CustomRoles.Zombie) || target.Is(CustomRoles.Glitch)) VoteNum = 0;
                     if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.Brakar))
                         if (!Main.BrakarVoteFor.Contains(target.PlayerId))
                             Main.BrakarVoteFor.Add(target.PlayerId);
+                    Collector.CollectorVotes(target, ps);
                 }
                 if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.Mayor)
                     && ps.TargetPlayerId != target.PlayerId
@@ -419,7 +425,7 @@ internal static class ExtendedMeetingHud
                 //主动叛变模式下自票无效
                 if (ps.TargetPlayerId == ps.VotedFor && Options.MadmateSpawnMode.GetInt() == 2) VoteNum = 0;
                 //投票を1追加 キーが定義されていない場合は1で上書きして定義
-                dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;
+                dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;//统计该玩家被投的数量
             }
         }
         return dic;
@@ -515,6 +521,7 @@ internal class MeetingHudStartPatch
 
         Counterfeiter.OnMeetingStart();
         BallLightning.OnMeetingStart();
+        QuickShooter.OnMeetingStart();
         Divinator.didVote.Clear();
 
         NotifyRoleSkillOnMeetingStart();
@@ -780,7 +787,7 @@ internal class MeetingHudStartPatch
             if (BallLightning.IsGhost(target))
                 sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.BallLightning), "■"));
 
-            //法医护盾提示
+            //医生护盾提示
             if (seer.PlayerId == target.PlayerId)
                 sb.Append(Medicaler.GetSheildMark(seer));
 

@@ -109,6 +109,10 @@ internal class CheckMurderPatch
         if (BallLightning.CheckMurder(target))
             return false;
 
+        //阻止对活死人的操作
+        if (target.Is(CustomRoles.Glitch))
+            return false;
+
         //キル時の特殊判定
         if (killer.PlayerId != target.PlayerId)
         {
@@ -199,6 +203,9 @@ internal class CheckMurderPatch
                 case CustomRoles.Greedier:
                     Greedier.OnCheckMurder(killer);
                     break;
+                case CustomRoles.QuickShooter:
+                    QuickShooter.QuickShooterKill(killer);
+                    break;
 
                 //==========第三陣営役職==========//
                 case CustomRoles.Arsonist:
@@ -248,6 +255,11 @@ internal class CheckMurderPatch
                 case CustomRoles.DarkHide:
                     DarkHide.OnCheckMurder(killer, target);
                     break;
+                case CustomRoles.Provocateur:
+                    target.RpcMurderPlayer(killer);
+                    Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.PissedOff;
+                    Main.Provoked.TryAdd(killer.PlayerId, target.PlayerId);
+                    break;
 
                 //==========クルー役職==========//
                 case CustomRoles.Sheriff:
@@ -267,7 +279,7 @@ internal class CheckMurderPatch
         //赝品检查
         if (Counterfeiter.OnClientMurder(killer)) return false;
 
-        //法医护盾检查
+        //医生护盾检查
         if (Medicaler.OnCheckMurder(killer, target))
             return false;
 
@@ -570,7 +582,7 @@ internal class ShapeshiftPatch
                     var position = Main.EscapeeLocation[shapeshifter.PlayerId];
                     Main.EscapeeLocation.Remove(shapeshifter.PlayerId);
                     Logger.Msg($"{shapeshifter.GetNameWithRole()}:{position}", "EscapeeTeleport");
-                    Utils.TP(shapeshifter.NetTransform, new Vector2(position.x, position.y));
+                    Utils.TP(shapeshifter.NetTransform, position);
                 }
                 else
                 {
@@ -670,7 +682,6 @@ internal class ShapeshiftPatch
                             targetw.SetRealKiller(shapeshifter);
                             shapeshifter.RpcMurderPlayer(targetw);//殺す
                         }
-                        else Logger.Info($"{targetw.GetNameWithRole()} 本该被刺客击杀但状态不对劲了", "Assassin");
                         if (GameStates.IsMeeting && shapeshifter.shapeshifting) shapeshifter.RpcRevertShapeshift(false);
                     }, 1.5f, "Assassin Kill");
                     Main.isMarkAndKill[shapeshifter.PlayerId] = false;
@@ -679,8 +690,23 @@ internal class ShapeshiftPatch
             }
         }
 
+        //夺魂者传送
+        if (shapeshifter.Is(CustomRoles.ImperiusCurse))
+        {
+            new LateTask(() =>
+            {
+                if (!(!GameStates.IsInTask || GameStates.IsMeeting || !shapeshifter.IsAlive() || !target.IsAlive() || shapeshifter.inVent || target.inVent))
+                {
+                    var originPs = target.GetTruePosition();
+                    Utils.TP(target.NetTransform, shapeshifter.GetTruePosition());
+                    Utils.TP(shapeshifter.NetTransform, originPs);
+                }
+            }, 1.5f, "ImperiusCurse TP");
+        }
+
         if (shapeshifter.Is(CustomRoles.EvilTracker)) EvilTracker.OnShapeshift(shapeshifter, target, shapeshifting);
         if (shapeshifter.Is(CustomRoles.FireWorks)) FireWorks.ShapeShiftState(shapeshifter, shapeshifting);
+        if (shapeshifter.Is(CustomRoles.QuickShooter)) QuickShooter.OnShapeshift(shapeshifter, shapeshifting);
 
         //変身解除のタイミングがずれて名前が直せなかった時のために強制書き換え
         if (!shapeshifting)
@@ -804,6 +830,7 @@ internal class ReportDeadBodyPatch
         Sniper.OnReportDeadBody();
         Vampire.OnStartMeeting();
         Pelican.OnReport();
+
         foreach (var x in Main.RevolutionistStart)
         {
             var tar = Utils.GetPlayerById(x.Key);
@@ -1524,7 +1551,7 @@ internal class EnterVentPatch
             new LateTask(() =>
             {
                 if (GameStates.IsInTask && !GameStates.IsMeeting) pc.RpcGuardAndKill(pc);
-            }, 1.5f, "Veteran Skill Notify");
+            }, 0.4f, "Veteran Skill Notify");
         }
         if (pc.Is(CustomRoles.Grenadier))
         {
@@ -1542,7 +1569,7 @@ internal class EnterVentPatch
             {
                 if (GameStates.IsInTask && !GameStates.IsMeeting) pc.RpcGuardAndKill(pc);
                 Utils.MarkEveryoneDirtySettings();
-            }, 1.5f, "Grenadier Skill Notify");
+            }, 0.4f, "Grenadier Skill Notify");
         }
     }
 }

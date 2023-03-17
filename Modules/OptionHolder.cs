@@ -142,6 +142,7 @@ public static class Options
     public static OptionItem DoctorTaskCompletedBatteryCharge;
     public static OptionItem SpeedBoosterUpSpeed;
     public static OptionItem SpeedBoosterTimes;
+    public static OptionItem GlitchCanVote;
     public static OptionItem TrapperBlockMoveTime;
     public static OptionItem DetectiveCanknowKiller;
     public static OptionItem TransporterTeleportMax;
@@ -188,6 +189,8 @@ public static class Options
     public static OptionItem RevolutionistDrawCount;
     public static OptionItem RevolutionistKillProbability;
     public static OptionItem RevolutionistVentCountDown;
+    public static OptionItem ShapeImperiusCurseShapeshiftDuration;
+    public static OptionItem ImperiusCurseShapeshiftCooldown;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -475,7 +478,7 @@ public static class Options
         BountyHunter.SetupCustomOption();
         SerialKiller.SetupCustomOption();
         SetupRoleOptions(1200, TabGroup.ImpostorRoles, CustomRoles.ShapeMaster);
-        ShapeMasterShapeshiftDuration = FloatOptionItem.Create(1210, "ShapeMasterShapeshiftDuration", new(1, 1000, 1), 10, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.ShapeMaster])
+        ShapeMasterShapeshiftDuration = FloatOptionItem.Create(1210, "ShapeshiftDuration", new(1, 1000, 1), 10, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.ShapeMaster])
             .SetValueFormat(OptionFormat.Seconds);
         Vampire.SetupCustomOption();
         SetupRoleOptions(1400, TabGroup.ImpostorRoles, CustomRoles.Warlock);
@@ -524,6 +527,12 @@ public static class Options
         SetupRoleOptions(3200, TabGroup.ImpostorRoles, CustomRoles.CursedWolf); //TOH_Y
         GuardSpellTimes = IntegerOptionItem.Create(3210, "GuardSpellTimes", new(1, 15, 1), 3, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.CursedWolf])
             .SetValueFormat(OptionFormat.Times);
+        SetupRoleOptions(902422, TabGroup.ImpostorRoles, CustomRoles.ImperiusCurse);
+        ShapeImperiusCurseShapeshiftDuration = FloatOptionItem.Create(902433, "ShapeshiftDuration", new(2.5f, 990f, 2.5f), 300, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.ImperiusCurse])
+            .SetValueFormat(OptionFormat.Seconds);
+        ImperiusCurseShapeshiftCooldown = FloatOptionItem.Create(902435, "ShapeshiftCooldown", new(1f, 990f, 1f), 15f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.ImperiusCurse])
+            .SetValueFormat(OptionFormat.Seconds);
+        QuickShooter.SetupCustomOption();
 
         // Crewmate
         SetupRoleOptions(102255, TabGroup.CrewmateRoles, CustomRoles.NiceGuesser);
@@ -625,6 +634,7 @@ public static class Options
         WorkaholicVentCooldown = FloatOptionItem.Create(60112, "VentCooldown", new(0f, 180f, 2.5f), 0f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workaholic])
             .SetValueFormat(OptionFormat.Seconds);
         WorkaholicTasks = OverrideTasksData.Create(60114, TabGroup.NeutralRoles, CustomRoles.Workaholic);
+        Collector.SetupCustomOption();
 
         // Add-Ons
         NoLimitAddonsNum = BooleanOptionItem.Create(6050250, "NoLimitAddonsNum", false, TabGroup.Addons, false)
@@ -691,6 +701,8 @@ public static class Options
         SpeedBoosterTimes = IntegerOptionItem.Create(20611, "SpeedBoosterTimes", new(1, 99, 1), 5, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.SpeedBooster])
             .SetValueFormat(OptionFormat.Times);
         Counterfeiter.SetupCustomOption();
+        SetupRoleOptions(8023487, TabGroup.OtherRoles, CustomRoles.Glitch);
+        GlitchCanVote = BooleanOptionItem.Create(8023489, "GlitchCanVote", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Glitch]);
 
         // 中立
         _ = BooleanOptionItem.Create(909094, "OtherRoles.NeutralRoles", false, TabGroup.OtherRoles, false)
@@ -713,6 +725,7 @@ public static class Options
             .SetValueFormat(OptionFormat.Percent);
         RevolutionistVentCountDown = FloatOptionItem.Create(5050621, "RevolutionistVentCountDown", new(1, 100, 1), 10, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Revolutionist])
             .SetValueFormat(OptionFormat.Seconds);
+        SetupRoleOptions(5051412, TabGroup.OtherRoles, CustomRoles.Provocateur);
 
         // 副职
         _ = BooleanOptionItem.Create(909096, "OtherRoles.Addons", false, TabGroup.OtherRoles, false)

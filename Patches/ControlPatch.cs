@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Hazel;
 using System.Linq;
 using UnityEngine;
 
@@ -25,12 +26,18 @@ internal class ControllerManagerUpdatePatch
                     OptionShower.currentPage = i;
             }
         }
+        //捕捉全屏快捷键
+        if (GetKeysDown(KeyCode.LeftAlt, KeyCode.Return))
+        {
+            new LateTask(SetResolutionManager.Postfix, 0.01f, "Fix Button Position");
+        }
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
         {
             resolutionIndex++;
             if (resolutionIndex >= resolutions.Length) resolutionIndex = 0;
             ResolutionManager.SetResolution(resolutions[resolutionIndex].Item1, resolutions[resolutionIndex].Item2, false);
+            SetResolutionManager.Postfix();
         }
         //重新加载自定义翻译
         if (GetKeysDown(KeyCode.F5, KeyCode.T))
@@ -109,8 +116,13 @@ internal class ControllerManagerUpdatePatch
         //将 TOHE 选项设置为默认值
         if (GetKeysDown(KeyCode.Delete, KeyCode.LeftControl))
         {
-            OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValue(x.DefaultValue));
+            OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValueNoRpc(x.DefaultValue));
             Logger.SendInGame(Translator.GetString("RestTOHESetting"));
+            if (!(!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)))
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RestTOHESetting, SendOption.Reliable, -1);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+            }
         }
         //实名投票
         if (GetKeysDown(KeyCode.Return, KeyCode.V, KeyCode.LeftShift) && GameStates.IsMeeting && !GameStates.IsOnlineGame)

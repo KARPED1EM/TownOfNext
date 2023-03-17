@@ -13,7 +13,7 @@ public static class Zoom
     public static void Postfix()
     {
         //if (PlayerControl.LocalPlayer.Is(RoleType.Impostor) && Options.OperateVisibilityImpostor.GetBool()) return;
-        if (GameStates.IsShip && !GameStates.IsMeeting && GameStates.IsCanMove)
+        if ((GameStates.IsShip || GameStates.IsLobby) && !GameStates.IsMeeting && GameStates.IsCanMove)
         {
             if (Input.mouseScrollDelta.y > 0)
             {
@@ -25,7 +25,7 @@ public static class Zoom
             }
             if (Input.mouseScrollDelta.y < 0)
             {
-                if (GameStates.IsDead || GameStates.IsFreePlay || DebugModeManager.AmDebugger ||
+                if (GameStates.IsDead || GameStates.IsFreePlay || DebugModeManager.AmDebugger || GameStates.IsLobby || 
                     Utils.CanUseDevCommand(PlayerControl.LocalPlayer))
                 {
                     if (Camera.main.orthographicSize < 18.0f)

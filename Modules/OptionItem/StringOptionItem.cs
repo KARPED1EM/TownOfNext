@@ -51,4 +51,8 @@ public class StringOptionItem : OptionItem
     {
         base.SetValue(Rule.RepeatIndex(value));
     }
+    public override void SetValueNoRpc(int value)
+    {
+        base.SetValueNoRpc(Rule.RepeatIndex(value));
+    }
 }

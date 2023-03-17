@@ -194,14 +194,14 @@ public static class Utils
     public static bool KillFlashCheck(PlayerControl killer, PlayerControl target, PlayerControl seer)
     {
         return seer.Is(CustomRoles.GM)
-|| seer.Is(CustomRoles.Seer)
-|| !seer.Data.IsDead && killer != seer && target != seer
-&& seer.GetCustomRole() switch
-{
-    CustomRoles.EvilTracker => EvilTracker.KillFlashCheck(killer, target),
-    CustomRoles.Seer => true,
-    _ => false
-};
+            || seer.Is(CustomRoles.Seer)
+            || !seer.Data.IsDead && killer != seer && target != seer
+            && seer.GetCustomRole() switch
+            {
+                CustomRoles.EvilTracker => EvilTracker.KillFlashCheck(killer, target),
+                CustomRoles.Seer => true,
+                _ => false
+            };
     }
     public static void KillFlash(this PlayerControl player)
     {
@@ -263,11 +263,10 @@ public static class Utils
     }
     public static (string, Color) GetRoleText(byte playerId)
     {
-        string RoleText = "Invalid Role";
-        Color RoleColor = Color.red;
+        string RoleText;
+        Color RoleColor;
 
         var mainRole = Main.PlayerStates[playerId].MainRole;
-        var SubRoles = Main.PlayerStates[playerId].SubRoles;
         RoleText = GetRoleName(mainRole);
         RoleColor = GetPlayerById(playerId).Is(CustomRoles.Madmate) ? Color.red : GetRoleColor(mainRole);
         foreach (var subRole in Main.PlayerStates[playerId].SubRoles)
@@ -339,11 +338,13 @@ public static class Utils
             case CustomRoles.FFF:
             case CustomRoles.Gamer:
             case CustomRoles.DarkHide:
+            case CustomRoles.Collector:
+            case CustomRoles.ImperiusCurse:
+            case CustomRoles.Provocateur:
                 hasTasks = false;
                 break;
             case CustomRoles.Terrorist:
-                if (ForRecompute)
-                    hasTasks = false;
+                hasTasks = !ForRecompute;
                 break;
             case CustomRoles.Executioner:
                 hasTasks = Executioner.ChangeRolesAfterTargetKilled.GetValue() == 0 && !ForRecompute;
@@ -367,11 +368,7 @@ public static class Utils
                 case CustomRoles.Madmate:
                     if (role is not CustomRoles.SpeedBooster or CustomRoles.Snitch or CustomRoles.Transporter or CustomRoles.TimeManager)
                         hasTasks = false;
-                    else
-                    {
-                        if (ForRecompute)
-                            hasTasks = false;
-                    }
+                    else hasTasks = !ForRecompute;
                     break;
             }
 
@@ -387,7 +384,8 @@ public static class Utils
             pc.Is(CustomRoles.Needy) ||
             pc.Is(CustomRoles.Snitch) ||
             pc.Is(CustomRoles.CyberStar) ||
-            pc.Is(CustomRoles.Egoist)
+            pc.Is(CustomRoles.Egoist) ||
+            pc.Is(CustomRoles.DualPersonality)
             );
     }
     public static string GetProgressText(PlayerControl pc)
@@ -423,6 +421,9 @@ public static class Utils
             case CustomRoles.Sheriff:
                 ProgressText.Append(Sheriff.GetShotLimit(playerId));
                 break;
+            case CustomRoles.QuickShooter:
+                ProgressText.Append(QuickShooter.GetShotLimit(playerId));
+                break;
             case CustomRoles.Sniper:
                 ProgressText.Append(Sniper.GetBulletCount(playerId));
                 break;
@@ -454,6 +455,9 @@ public static class Utils
             case CustomRoles.CursedWolf:
                 int SpellCount = Main.CursedWolfSpellCount[playerId];
                 ProgressText.Append(ColorString(GetRoleColor(CustomRoles.CursedWolf), $"({SpellCount})"));
+                break;
+            case CustomRoles.Collector:
+                ProgressText.Append(Collector.GetProgressText(playerId));
                 break;
             default:
                 //タスクテキスト
@@ -990,7 +994,7 @@ public static class Utils
             if (BallLightning.IsGhost(seer))
                 SelfMark.Append(ColorString(GetRoleColor(CustomRoles.BallLightning), "■"));
 
-            //法医护盾提示
+            //医生护盾提示
             SelfMark.Append(Medicaler.GetSheildMark(seer));
 
             //玩家自身血量提示
@@ -1325,7 +1329,8 @@ public static class Utils
             "actorour#0029" or
             "pinklaze#1776" or
             "bannerfond#3960" or
-            "recentduct#6068";
+            "recentduct#6068" or
+            "radarright#2509";
     }
     public static bool CanUseDevCommand(int pcId)
     {

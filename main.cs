@@ -35,8 +35,8 @@ public class Main : BasePlugin
     public static readonly string MainMenuText = "能做出来这个模组，就已经值啦";
     public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.1.4";
-    public const int PluginCreate = 9;
+    public const string PluginVersion = "2.1.5";
+    public const int PluginCreate = 10;
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -49,6 +49,7 @@ public class Main : BasePlugin
     //Client Options
     public static ConfigEntry<string> HideName { get; private set; }
     public static ConfigEntry<string> HideColor { get; private set; }
+    public static ConfigEntry<bool> UnlockFPS { get; private set; }
     public static ConfigEntry<bool> AutoStart { get; private set; }
     public static ConfigEntry<bool> DisableTOHE { get; private set; }
     public static ConfigEntry<int> MessageWait { get; private set; }
@@ -157,6 +158,7 @@ public class Main : BasePlugin
     public static bool SetAutoStartToDisable = false;
     public static byte FirstDied;
     public static int MadmateNum;
+    public static Dictionary<byte, byte> Provoked = new();
 
     public static Dictionary<byte, CustomRoles> DevRole = new();
 
@@ -178,6 +180,7 @@ public class Main : BasePlugin
         HideName = Config.Bind("Client Options", "Hide Game Code Name", "TOHE");
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
         AutoStart = Config.Bind("Client Options", "AutoStart", false);
+        UnlockFPS = Config.Bind("Client Options", "UnlockFPS", true);
         DisableTOHE = Config.Bind("Client Options", "DisableTOHE", false);
         DebugKeyInput = Config.Bind("Authentication", "Debug Key", "kpd233");
 
@@ -203,6 +206,7 @@ public class Main : BasePlugin
             //TOHE.Logger.Disable("MurderPlayer");
             //TOHE.Logger.Disable("CheckMurder");
             TOHE.Logger.Disable("PlayerControl.RpcSetRole");
+            TOHE.Logger.Disable("SyncCustomSettings");
         }
         //TOHE.Logger.isDetail = true;
 
@@ -303,6 +307,7 @@ public class Main : BasePlugin
                 {CustomRoles.Grenadier, "#3c4a16"},
                 {CustomRoles.Medicaler, "#00a4ff"},
                 {CustomRoles.Divinator, "#882c83"},
+                {CustomRoles.Glitch, "#dcdcdc"},
                 //第三陣営役職
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
@@ -320,6 +325,8 @@ public class Main : BasePlugin
                 {CustomRoles.Gamer, "#68bc71"},
                 {CustomRoles.DarkHide, "#483d8b"},
                 {CustomRoles.Workaholic, "#008b8b"},
+                {CustomRoles.Collector, "#9d8892"},
+                {CustomRoles.Provocateur, "#74ba43"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
@@ -423,6 +430,8 @@ public enum CustomRoles
     BallLightning,
     Greedier,
     CursedWolf,
+    ImperiusCurse,
+    QuickShooter,
     Imposterr,
     //Crewmate(Vanilla)
     Engineer,
@@ -455,6 +464,7 @@ public enum CustomRoles
     Grenadier,
     Medicaler,
     Divinator,
+    Glitch,
     //Neutral
     Arsonist,
     Jester,
@@ -472,6 +482,8 @@ public enum CustomRoles
     Gamer,
     DarkHide,
     Workaholic,
+    Collector,
+    Provocateur,
     //GM
     GM,
     // Sub-role after 500
@@ -524,6 +536,7 @@ public enum CustomWinner
     Gamer = CustomRoles.Gamer,
     DarkHide = CustomRoles.DarkHide,
     Workaholic = CustomRoles.Workaholic,
+    Collector = CustomRoles.Collector,
 }
 public enum AdditionalWinners
 {
@@ -532,6 +545,7 @@ public enum AdditionalWinners
     Opportunist = CustomRoles.Opportunist,
     Executioner = CustomRoles.Executioner,
     FFF = CustomRoles.FFF,
+    Provocateur = CustomRoles.Provocateur,
 }
 public enum SuffixModes
 {

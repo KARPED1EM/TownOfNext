@@ -88,7 +88,8 @@ public static class Divinator
             CustomRoles.SwordsMan or
             CustomRoles.Bodyguard or
             CustomRoles.Opportunist or
-            CustomRoles.Pelican
+            CustomRoles.Pelican or
+            CustomRoles.ImperiusCurse
             => "Weirdo",
 
             CustomRoles.EvilGuesser or
@@ -108,7 +109,8 @@ public static class Divinator
             CustomRoles.Doctor or
             CustomRoles.Transporter or
             CustomRoles.Veteran or
-            CustomRoles.Divinator
+            CustomRoles.Divinator or
+            CustomRoles.QuickShooter
             => "Strong",
 
             CustomRoles.Witch or
@@ -118,14 +120,16 @@ public static class Divinator
             CustomRoles.Psychic or
             CustomRoles.Executioner or
             CustomRoles.BallLightning or
-            CustomRoles.Workaholic
+            CustomRoles.Workaholic or
+            CustomRoles.Provocateur
             => "Incomprehensible",
 
             CustomRoles.FireWorks or
             CustomRoles.EvilTracker or
             CustomRoles.Gangster or
             CustomRoles.Dictator or
-            CustomRoles.CyberStar
+            CustomRoles.CyberStar or
+            CustomRoles.Collector
             => "Enthusiasm",
 
             CustomRoles.BoobyTrap or
@@ -138,6 +142,9 @@ public static class Divinator
             CustomRoles.DarkHide or
             CustomRoles.CursedWolf
             => "Disturbed",
+
+            CustomRoles.Glitch
+            => "Glitch",
 
             _ => "None",
         };

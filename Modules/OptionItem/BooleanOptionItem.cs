@@ -30,4 +30,8 @@ public class BooleanOptionItem : OptionItem
     {
         base.SetValue(value % 2 == 0 ? 0 : 1);
     }
+    public override void SetValueNoRpc(int value)
+    {
+        base.SetValueNoRpc(value % 2 == 0 ? 0 : 1);
+    }
 }

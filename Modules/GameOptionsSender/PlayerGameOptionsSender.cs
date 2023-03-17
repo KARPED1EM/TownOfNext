@@ -118,6 +118,7 @@ public class PlayerGameOptionsSender : GameOptionsSender
             case CustomRoles.Pelican:
             case CustomRoles.Revolutionist:
             case CustomRoles.Medicaler:
+            case CustomRoles.Provocateur:
                 opt.SetVision(false);
                 break;
             case CustomRoles.Zombie:
@@ -152,11 +153,11 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 break;
             case CustomRoles.Veteran:
                 AURoleOptions.EngineerCooldown = Options.VeteranSkillCooldown.GetFloat();
-                AURoleOptions.EngineerInVentMaxTime = 1;
+                AURoleOptions.EngineerInVentMaxTime = 0.01f;
                 break;
             case CustomRoles.Grenadier:
                 AURoleOptions.EngineerCooldown = Options.GrenadierSkillCooldown.GetFloat();
-                AURoleOptions.EngineerInVentMaxTime = 1;
+                AURoleOptions.EngineerInVentMaxTime = 0.01f;
                 break;
             case CustomRoles.FFF:
                 opt.SetVision(true);
@@ -170,6 +171,14 @@ public class PlayerGameOptionsSender : GameOptionsSender
             case CustomRoles.Workaholic:
                 AURoleOptions.EngineerCooldown = Options.WorkaholicVentCooldown.GetFloat();
                 AURoleOptions.EngineerInVentMaxTime = 0.0f;
+                break;
+            case CustomRoles.ImperiusCurse:
+                AURoleOptions.ShapeshifterCooldown = Options.ImperiusCurseShapeshiftCooldown.GetFloat();
+                AURoleOptions.ShapeshifterLeaveSkin = false;
+                AURoleOptions.ShapeshifterDuration = Options.ShapeImperiusCurseShapeshiftDuration.GetFloat();
+                break;
+            case CustomRoles.QuickShooter:
+                AURoleOptions.ShapeshifterCooldown = QuickShooter.ShapeshiftCooldown.GetFloat();
                 break;
         }
 

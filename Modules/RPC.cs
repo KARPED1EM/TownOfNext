@@ -42,6 +42,7 @@ internal enum CustomRPC
     SetEvilTrackerTarget,
     SetRealKiller,
 
+    //TOHE
     SetGamerHealth,
     SetPelicanEtenNum,
     SwordsManKill,
@@ -54,6 +55,9 @@ internal enum CustomRPC
     SetDarkHiderKillCount,
     SetGreedierOE,
     SetCursedWolfSpellCount,
+    SetCollectorVotes,
+    SetQuickShooterShotLimit,
+    RestTOHESetting,
 }
 public enum Sounds
 {
@@ -223,18 +227,13 @@ internal class RPCHandlerPatch
                 RPC.RpcVersionCheck();
                 break;
             case CustomRPC.SyncCustomSettings:
-                List<OptionItem> list = OptionItem.Options;
+                List<OptionItem> list = new();
                 var startAmount = reader.ReadInt32();
                 var lastAmount = reader.ReadInt32();
-                for (var i = 0; i < list.Count; i++)
-                {
-                    if (i < startAmount || i > lastAmount)
-                        list.Remove(list[i]);
-                }
-                foreach (var co in list)
-                {
-                    co.SetValue(reader.ReadInt32());
-                }
+                for (var i = startAmount; i < OptionItem.AllOptions.Count && i <= lastAmount; i++)
+                    list.Add(OptionItem.AllOptions[i]);
+                Logger.Info($"{startAmount}-{lastAmount}:{list.Count}/{OptionItem.AllOptions.Count}", "SyncCustomSettings");
+                foreach (var co in list) co.SetValue(reader.ReadInt32());
                 break;
             case CustomRPC.SetDeathReason:
                 RPC.GetDeathReason(reader);
@@ -358,6 +357,15 @@ internal class RPCHandlerPatch
                 else
                     Main.CursedWolfSpellCount.Add(CursedWolfId, Options.GuardSpellTimes.GetInt());
                 break;
+            case CustomRPC.SetCollectorVotes:
+                Collector.ReceiveRPC(reader);
+                break;
+            case CustomRPC.SetQuickShooterShotLimit:
+                QuickShooter.ReceiveRPC(reader);
+                break;
+            case CustomRPC.RestTOHESetting:
+                OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValueNoRpc(x.DefaultValue));
+                break;
         }
     }
 }
@@ -367,39 +375,32 @@ internal static class RPC
     //来源：https://github.com/music-discussion/TownOfHost-TheOtherRoles/blob/main/Modules/RPC.cs
     public static void SyncCustomSettingsRPC()
     {
-        if (!AmongUsClient.Instance.AmHost || (Main.AllPlayerControls.Where(x => x.IsModClient()).Count() <= 1) || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)) return;
+        if (!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)) return;
         var amount = OptionItem.AllOptions.Count;
-        int divideBy = amount / 5;
-        for (var i = 0; i <= 5; i++)
+        int divideBy = amount / 10;
+        for (var i = 0; i <= 10; i++)
         {
             SyncOptionsBetween(i * divideBy, (i + 1) * divideBy);
         }
     }
     public static void SyncCustomSettingsRPCforOneOption(OptionItem option)
     {
-        var placement = OptionItem.Options.IndexOf(option);
+        List<OptionItem> allOptions = new(OptionItem.AllOptions);
+        var placement = allOptions.IndexOf(option);
         if (placement != -1)
-            SyncOptionsBetween(placement - 1, placement + 1);
+            SyncOptionsBetween(placement, placement);
     }
     static void SyncOptionsBetween(int startAmount, int lastAmount)
     {
-        if (!AmongUsClient.Instance.AmHost || (Main.AllPlayerControls.Where(x => x.IsModClient()).Count() <= 1) || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)) return;
+        if (!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)) return;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 80, SendOption.Reliable, -1);
+        List<OptionItem> list = new();
         writer.Write(startAmount);
         writer.Write(lastAmount);
-        List<OptionItem> list = new();
-        List<OptionItem> allOptions = OptionItem.Options;
-        for (var i = 0; i <= allOptions.Count; i++)
-        {
-            if (i < startAmount || i > lastAmount) break;
-            if (i > allOptions.Count) break;
-            list.Add(allOptions[i]);
-        }
-
-        foreach (var co in list)
-        {
-            writer.Write(co.GetValue());
-        }
+        for (var i = startAmount; i < OptionItem.AllOptions.Count && i <= lastAmount; i++)
+            list.Add(OptionItem.AllOptions[i]);
+        Logger.Info($"{startAmount}-{lastAmount}:{list.Count}/{OptionItem.AllOptions.Count}", "SyncCustomSettings");
+        foreach (var co in list) writer.Write(co.GetValue());
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void PlaySoundRPC(byte PlayerID, Sounds sound)
@@ -529,6 +530,9 @@ internal static class RPC
             case CustomRoles.Sheriff:
                 Sheriff.Add(targetId);
                 break;
+            case CustomRoles.QuickShooter:
+                QuickShooter.Add(targetId);
+                break;
             case CustomRoles.SwordsMan:
                 SwordsMan.Add(targetId);
                 break;
@@ -576,6 +580,9 @@ internal static class RPC
                 break;
             case CustomRoles.Greedier:
                 Greedier.Add(targetId);
+                break;
+            case CustomRoles.Collector:
+                Collector.Add(targetId);
                 break;
         }
         HudManager.Instance.SetHudActive(true);

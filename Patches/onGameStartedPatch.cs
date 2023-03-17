@@ -81,6 +81,7 @@ internal class ChangeRoleSettings
             Main.GrenadierBlinding = new Dictionary<byte, long>();
             Main.MadGrenadierBlinding = new Dictionary<byte, long>();
             Main.CursedWolfSpellCount = new Dictionary<byte, int>();
+            Main.Provoked = new Dictionary<byte, byte>();
             Main.FirstDied = 255;
             Main.MadmateNum = 0;
 
@@ -180,6 +181,8 @@ internal class ChangeRoleSettings
             BallLightning.Init();
             DarkHide.Init();
             Greedier.Init();
+            Collector.Init();
+            QuickShooter.Init();
             CustomWinnerHolder.Reset();
             AntiBlackout.Reset();
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
@@ -620,6 +623,9 @@ internal class SelectRolesPatch
                     case CustomRoles.Sheriff:
                         Sheriff.Add(pc.PlayerId);
                         break;
+                    case CustomRoles.QuickShooter:
+                        QuickShooter.Add(pc.PlayerId);
+                        break;
                     case CustomRoles.Mayor:
                         Main.MayorUsedButtonCount[pc.PlayerId] = 0;
                         break;
@@ -673,6 +679,9 @@ internal class SelectRolesPatch
                         break;
                     case CustomRoles.Greedier:
                         Greedier.Add(pc.PlayerId);
+                        break;
+                    case CustomRoles.Collector:
+                        Collector.Add(pc.PlayerId);
                         break;
                     case CustomRoles.CursedWolf:
                         Main.CursedWolfSpellCount[pc.PlayerId] = Options.GuardSpellTimes.GetInt();
@@ -866,6 +875,7 @@ internal class SelectRolesPatch
             if (role is CustomRoles.Egoist && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeEgoist.GetBool()) continue;
             if (role is CustomRoles.TicketsStealer or CustomRoles.Mimic && !pc.GetCustomRole().IsImpostor()) continue;
             if (role is CustomRoles.TicketsStealer && (pc.Is(CustomRoles.Bomber) || pc.Is(CustomRoles.BoobyTrap))) continue;
+            if (role is CustomRoles.Mimic && pc.Is(CustomRoles.Mafia)) continue;
             if (role is CustomRoles.DualPersonality && ((!pc.GetCustomRole().IsImpostor() && !pc.GetCustomRole().IsCrewmate()) || pc.Is(CustomRoles.Madmate))) continue;
             if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeDualPersonality.GetBool()) continue;
             if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeDualPersonality.GetBool()) continue;

@@ -1,5 +1,4 @@
 using AmongUs.GameOptions;
-
 namespace TOHE;
 
 internal static class CustomRolesHelper
@@ -71,6 +70,10 @@ internal static class CustomRolesHelper
                 CustomRoles.Greedier => CustomRoles.Impostor,
                 CustomRoles.Workaholic => CustomRoles.Engineer,
                 CustomRoles.CursedWolf => CustomRoles.Impostor,
+                CustomRoles.Collector => CustomRoles.Crewmate,
+                CustomRoles.Glitch => CustomRoles.Crewmate,
+                CustomRoles.ImperiusCurse => CustomRoles.Shapeshifter,
+                CustomRoles.QuickShooter => CustomRoles.Shapeshifter,
                 CustomRoles.Imposterr => CustomRoles.Impostor,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
@@ -104,6 +107,7 @@ internal static class CustomRolesHelper
             CustomRoles.Medicaler => RoleTypes.Impostor,
             CustomRoles.Gamer => RoleTypes.Impostor,
             CustomRoles.DarkHide => RoleTypes.Impostor,
+            CustomRoles.Provocateur => RoleTypes.Impostor,
             _ => RoleTypes.Scientist
         };
     }
@@ -140,7 +144,8 @@ internal static class CustomRolesHelper
             CustomRoles.Pelican or
             CustomRoles.FFF or
             CustomRoles.Gamer or
-            CustomRoles.DarkHide;
+            CustomRoles.DarkHide or
+            CustomRoles.Provocateur;
     }
     public static bool IsNNK(this CustomRoles role) => role.IsNeutral() && !role.IsNK(); // 是否无刀中立
     public static bool IsNeutralKilling(this CustomRoles role) //是否邪恶中立（抢夺或单独胜利的中立）
@@ -156,7 +161,8 @@ internal static class CustomRolesHelper
             CustomRoles.Egoist or
             CustomRoles.Gamer or
             CustomRoles.DarkHide or
-            CustomRoles.Workaholic;
+            CustomRoles.Workaholic or
+            CustomRoles.Collector;
     }
     public static bool IsCK(this CustomRoles role) // 是否带刀船员
     {
@@ -200,7 +206,9 @@ internal static class CustomRolesHelper
             CustomRoles.BallLightning or
             CustomRoles.Greedier or
             CustomRoles.CursedWolf or
-            CustomRoles.NormalImpostor;
+            CustomRoles.NormalImpostor or
+            CustomRoles.ImperiusCurse or
+            CustomRoles.QuickShooter;
     }
     public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role == CustomRoles.Madmate;
     public static bool IsNeutral(this CustomRoles role) // 是否中立
@@ -221,7 +229,9 @@ internal static class CustomRolesHelper
             CustomRoles.Konan or
             CustomRoles.Gamer or
             CustomRoles.DarkHide or
-            CustomRoles.Workaholic;
+            CustomRoles.Workaholic or
+            CustomRoles.Collector or
+            CustomRoles.Provocateur;
     }
     public static bool IsCrewmate(this CustomRoles role) => !role.IsImpostorTeam() && !role.IsNeutral();
     public static bool IsVanilla(this CustomRoles role) // 是否原版职业
