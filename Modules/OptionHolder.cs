@@ -643,15 +643,14 @@ public static class Options
         SetupAdtRoleOptions(6050331, CustomRoles.Cripple, canSetNum: true);
         CrippleSpeedReduce = FloatOptionItem.Create(6050335, "CrippleSpeedReduce", new(0.1f, 1.0f, 0.1f), 2.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Cripple])
            .SetValueFormat(OptionFormat.Multiplier);
-        SetupRoleOptions(963558, CustomRoles.Cripple, canSetNum: true);
-        SpeedyBladeKillCooldown = FloatOptionItem.Create(9124456, "SpeedyBladeKillCooldown", new(10f, 20f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.SpeedyBlade])
+        SetupAdtRoleOptions(963558, CustomRoles.Cripple, canSetNum: true);
+        SpeedyBladeKillCooldown = FloatOptionItem.Create(9124456, "SpeedyBladeKillCooldown", new(10f, 20f, 1f), 10f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.SpeedyBlade])
             .SetValueFormat(OptionFormat.Seconds);
         SetupAdtRoleOptions(6050450, CustomRoles.Avanger, canSetNum: true);
         ImpCanBeAvanger = BooleanOptionItem.Create(6050455, "ImpCanBeAvanger", false, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger]);
         SetupAdtRoleOptions(6052333, CustomRoles.DualPersonality, canSetNum: true);
         ImpCanBeDualPersonality = BooleanOptionItem.Create(6052338, "ImpCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
         CrewCanBeDualPersonality = BooleanOptionItem.Create(6052340, "CrewCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
-
         SetupAdtRoleOptions(6050390, CustomRoles.Madmate, canSetNum: true, canSetChance: false);
         MadmateSpawnMode = StringOptionItem.Create(6060444, "MadmateSpawnMode", madmateSpawnMode, 0, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Madmate]);
         SheriffCanBeMadmate = BooleanOptionItem.Create(6050395, "SheriffCanBeMadmate", false, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Madmate]);
