@@ -490,9 +490,6 @@ public static class Options
         SetupRoleOptions(905520, TabGroup.ImpostorRoles, CustomRoles.Scavenger);
         ScavengerKillCooldown = FloatOptionItem.Create(905522, "KillCooldown", new(5f, 990f, 2.5f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Scavenger])
             .SetValueFormat(OptionFormat.Seconds);
-        SetupRoleOptions(963558, TabGroup.ImpostorRoles, CustomRoles.SpeedyBlade);
-        SpeedyBladeKillCooldown = FloatOptionItem.Create(9124456, "SpeedyBladeKillCooldown", new(10f, 20f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.SpeedyBlade])
-            .SetValueFormat(OptionFormat.Seconds);
         SetupRoleOptions(905547, TabGroup.ImpostorRoles, CustomRoles.Imposterr);
         ImposterrKillCooldown = FloatOptionItem.Create(9055458, "ImposterrKillCooldown", new(25f, 60f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Imposterr])
             .SetValueFormat(OptionFormat.Seconds);
@@ -642,10 +639,13 @@ public static class Options
         SetupAdtRoleOptions(6050380, CustomRoles.Bewilder, canSetNum: true);
         BewilderVision = FloatOptionItem.Create(6050383, "BewilderVision", new(0f, 5f, 0.05f), 0.65f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bewilder])
             .SetValueFormat(OptionFormat.Multiplier);
+        SetupAdtRoleOptions(6050440, CustomRoles.Fool, canSetNum: true);
         SetupAdtRoleOptions(6050331, CustomRoles.Cripple, canSetNum: true);
         CrippleSpeedReduce = FloatOptionItem.Create(6050335, "CrippleSpeedReduce", new(0.1f, 1.0f, 0.1f), 2.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Cripple])
            .SetValueFormat(OptionFormat.Multiplier);
-        SetupAdtRoleOptions(6050440, CustomRoles.Fool, canSetNum: true);
+        SetupRoleOptions(963558, CustomRoles.Cripple, canSetNum: true);
+        SpeedyBladeKillCooldown = FloatOptionItem.Create(9124456, "SpeedyBladeKillCooldown", new(10f, 20f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.SpeedyBlade])
+            .SetValueFormat(OptionFormat.Seconds);
         SetupAdtRoleOptions(6050450, CustomRoles.Avanger, canSetNum: true);
         ImpCanBeAvanger = BooleanOptionItem.Create(6050455, "ImpCanBeAvanger", false, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger]);
         SetupAdtRoleOptions(6052333, CustomRoles.DualPersonality, canSetNum: true);

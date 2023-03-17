@@ -129,6 +129,7 @@ internal static class CustomRolesHelper
             CustomRoles.Piper or
             CustomRoles.TicketsStealer or
             CustomRoles.DualPersonality or
+            CustomRoles.Mimic or
             CustomRoles.SpeedyBlade or
             CustomRoles.Cripple;
     }
@@ -196,7 +197,10 @@ internal static class CustomRolesHelper
             CustomRoles.Capitalism or
             CustomRoles.Gangster or
             CustomRoles.Cleaner or
-            CustomRoles.BallLightning;
+            CustomRoles.BallLightning or
+            CustomRoles.Greedier or
+            CustomRoles.CursedWolf or
+            CustomRoles.NormalImpostor;
     }
     public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role == CustomRoles.Madmate;
     public static bool IsNeutral(this CustomRoles role) // 是否中立
