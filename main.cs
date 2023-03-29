@@ -317,6 +317,7 @@ public class Main : BasePlugin
                 {CustomRoles.Workaholic, "#008b8b"},
                 {CustomRoles.Collector, "#9d8892"},
                 {CustomRoles.Provocateur, "#74ba43"},
+                {CustomRoles.Error404, "#333333"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
@@ -341,6 +342,7 @@ public class Main : BasePlugin
                 {CustomRoles.TicketsStealer, "#ff1919"},
                 {CustomRoles.DualPersonality, "#3a648f"},
                 {CustomRoles.Mimic, "#ff1919"},
+                {CustomRoles.Bitch, "#333333"},
             };
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
             {
@@ -422,6 +424,7 @@ public enum CustomRoles
     Concealer,
     Eraser,
     OverKiller,
+    Error404,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
@@ -497,6 +500,7 @@ public enum CustomRoles
     TicketsStealer,
     DualPersonality,
     Mimic,
+    Bitch,
 }
 //WinData
 public enum CustomWinner

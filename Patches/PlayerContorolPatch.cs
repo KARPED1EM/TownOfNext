@@ -342,6 +342,13 @@ class CheckMurderPatch
                 if (!Gamer.CheckMurder(killer, target))
                     return false;
                 break;
+            //击杀错误404
+            case CustomRoles.Error404:
+                        killer.SetRealKiller(target);
+                        target.RpcMurderPlayer(killer);
+                        Logger.Info($"{target.GetRealName()} 击杀者被错误404化：{killer.GetRealName()}", "Error404 Kill");
+                        return false;
+                break;
         }
 
         //保镖保护

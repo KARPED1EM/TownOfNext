@@ -543,6 +543,9 @@ static class ExtendedPlayerControl
             case CustomRoles.Hacker:
                 Hacker.SetKillCooldown(player.PlayerId);
                 break;
+            case CustomRoles.Error404:
+                Main.AllPlayerKillCooldown[player.PlayerId] = Options.Error404KillCooldown.GetFloat();
+                break;
         }
         if (player.PlayerId == LastImpostor.currentId)
             LastImpostor.SetKillCooldown();

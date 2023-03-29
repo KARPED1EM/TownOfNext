@@ -184,6 +184,7 @@ public static class Options
     public static OptionItem RevolutionistVentCountDown;
     public static OptionItem ShapeImperiusCurseShapeshiftDuration;
     public static OptionItem ImperiusCurseShapeshiftCooldown;
+    public static OptionItem Error404KillCooldown;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -518,6 +519,8 @@ public static class Options
         ImperiusCurseShapeshiftCooldown = FloatOptionItem.Create(902435, "ShapeshiftCooldown", new(1f, 999f, 1f), 15f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.ImperiusCurse])
             .SetValueFormat(OptionFormat.Seconds);
         QuickShooter.SetupCustomOption();
+        SetupRoleOptions(905486, TabGroup.ImpostorRoles, CustomRoles.Error404);
+        Error404KillCooldown = FloatOptionItem.Create(905724, "Error404KillCooldown", new(20f, 100f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Error404]);
 
         // Crewmate
         SetupRoleOptions(102255, TabGroup.CrewmateRoles, CustomRoles.NiceGuesser);
@@ -631,6 +634,7 @@ public static class Options
         SetupAdtRoleOptions(6052333, CustomRoles.DualPersonality, canSetNum: true);
         ImpCanBeDualPersonality = BooleanOptionItem.Create(6052338, "ImpCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
         CrewCanBeDualPersonality = BooleanOptionItem.Create(6052340, "CrewCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
+        SetupAdtRoleOptions(6052146, CustomRoles.Bitch, canSetNum: true);
 
         SetupAdtRoleOptions(6050390, CustomRoles.Madmate, canSetNum: true, canSetChance: false);
         MadmateSpawnMode = StringOptionItem.Create(6060444, "MadmateSpawnMode", madmateSpawnMode, 0, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Madmate]);

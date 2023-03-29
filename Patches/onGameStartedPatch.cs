@@ -884,6 +884,7 @@ internal class SelectRolesPatch
             if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeDualPersonality.GetBool()) continue;
             if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeDualPersonality.GetBool()) continue;
             allPlayers.Add(pc);
+            if (role is CustomRoles.Bitch && (pc.Is(CustomRoles.Jester))) continue;
         }
         var rd = IRandom.Instance;
         var count = Math.Clamp(RawCount, 0, allPlayers.Count);
