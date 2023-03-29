@@ -85,12 +85,13 @@ public static class Gamer
     }
     public static bool CheckGamerMurder(PlayerControl killer, PlayerControl target)
     {
-        if (killer == null || target == null || !killer.Is(CustomRoles.Gamer) || target.Is(CustomRoles.Gamer)) return false;
+        if (killer == null || target == null || !killer.Is(CustomRoles.Gamer) || target.Is(CustomRoles.Gamer) || !PlayerHealth.ContainsKey(target.PlayerId)) return false;
         killer.SetKillCooldown();
 
         if (PlayerHealth[target.PlayerId] - Damage.GetInt() < 1)
         {
             PlayerHealth.Remove(target.PlayerId);
+            killer.RpcMurderPlayerV3(target);
             Utils.NotifyRoles(killer);
             return false;
         }

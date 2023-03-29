@@ -83,9 +83,8 @@ CursedWolf,呪狼,Cursed Wolf,Проклятый Волк
 ImperiusCurse,夺魂者,Soul Catcher,Ловец Душ
 QuickShooter,快枪手,Quick Shooter,Стрелок
 Concealer,隐蔽者,Concealer,Консилер
-Eraser,抹除者
-OverKiller,肢解者
-Error404,错误404
+Eraser,抹除者,Eraser,Стирачка
+OverKiller,肢解者,Butcher,Мясник
 
 # 船员阵营
 Bait,诱饵,Bait,Байт
@@ -159,6 +158,25 @@ DualPersonality,双重人格,Schizophrenic,Шизофреник
 Mimic,宝箱怪,Mimic,Мимик
 Bitch,贱人
 
+## 附加职业作为前缀时
+Prefix.Ntr,海王,Neptune,Нептун
+Prefix.Watcher,窥视,Watcher,Наблюдатель
+Prefix.Flashman,闪电,Flash,Флэш
+Prefix.Lighter,执灯,Lighter,Фонарик
+Prefix.Seer,灵媒,Seer,Провидец
+Prefix.Brakar,破平,Tiebreaker,Решающий
+Prefix.Oblivious,胆小,Oblivious,Забывчивый
+Prefix.Bewilder,迷幻,Bewilder,Сбитый с Толку
+Prefix.Workhorse,加班狂,Workhorse,Работник
+Prefix.Fool,蠢蛋,Fool,Глупец
+Prefix.Avanger,复仇,Avenger,Мститель
+Prefix.Youtuber,UP主,YouTuber,Ютубер
+Prefix.Egoist,利己主义,Egoist,Эгоист
+Prefix.Piper,吹笛,Piper,Пайпер
+Prefix.TicketsStealer,窃票,Stealer,Похититель
+Prefix.DualPersonality,双重人格,Schizophrenic,Шизофреник
+Prefix.Mimic,宝箱怪,Mimic,Мимик
+
 ## 以下是职业简介（显示在开局以及任务栏的文本）
 NeutralInfo,中立阵营,Independent forces unaffiliated with any other teams,Команда которая не принадлежит ни к каким другим командам
 
@@ -201,7 +219,6 @@ QuickShooterInfo,I have a big PLAN！,I have a big PLAN!,У меня есть б
 ConcealerInfo,当所有人戴上面具，一切都自由了,Change the appearance of all players,Измени облик всех игроков
 EraserInfo,恕我直言，你不配拥有能力
 OverKillerInfo,且欣赏我美丽的作品
-Error404Info,Error 404
 
 # 船员阵营
 BaitInfo,好消息，杀了我可以吃席,Bait your enemies,Убийца моментально зарепортит ваш труп
@@ -274,7 +291,6 @@ PiperInfo,嗯↗嗯↘嗯~~,Change the players speed,Измените скоро
 TicketsStealerInfo,要懂得珍惜，死者最后的价值,Steal player votes,Украдите голоса игроков
 DualPersonalityInfo,我真的很...奇怪吗？,You now have Schizophrenia,У вас теперь Шизофриния
 MimicInfo,噔↗噔↗当→当↘当→当↗,imitate others,Имитируй других
-BitchInfo,你TM烦不烦啊
 
 # 其它
 GMInfo,开局死的冤魂隔岸观火,You are the Game Master,Вы Мастер Игры
@@ -320,7 +336,6 @@ QuickShooterInfoLong,(内鬼阵营):\n当击杀冷却结束时，快枪手可以
 ConcealerInfoLong,(内鬼阵营):\n隐蔽者变形后会让所有人变成小黑人，这个状态下所有人都看起来得一模一样。技能持续时间根据房主设定。请注意：通讯破坏小黑人与隐蔽者的技能可以叠加。请注意：隐蔽者发动技能期间召开会议则技能失效。,"(Impostors):\nAfter the shapeshift Concealer, everyone will turn into little black men, and everyone in this state will look exactly the same. The duration of the skill is set by the Host. Please note: When everyone becomes a little black man and camouflage works at the same time, they can be stacked on top of each other.","(Предатель):\nПосле того, как Консилер Морфанётся, все превратятся в маленьких черных человечков, и все в этом состоянии будут выглядеть совершенно одинаково. Продолжительность действия навыка устанавливается Хостом. Пожалуйста, обратите внимание: Когда все становятся маленькими черными человечками и одновременно работает камуфляж, они могут быть наложены друг на друга."
 EraserInfoLong,(内鬼阵营):\n抹除者可以在会议上投票给任意船员阵营目标以抹除目标的职业技能，抹除将在会议结束后生效。请注意：被抹除技能的玩家将被永远视为白板，包括游戏结算页面。
 OverKillerInfoLong,(内鬼阵营):\n肢解者击杀的目标会被视为多具尸体，以至于报告尸体时无法识别其它受害者。请注意：被击杀的目标可能会不断重复地显示自己被击杀的动画，此动画无法跳过且期间无法参与会议，必须等待动画结束才能正常参与游戏。
-Error404InfoLong,(404阵营):\n由于数据错误，所以此职业得[404]会被[404]，所以只能向你传达[404]得消息。\n当试图有人对你[404],他就会被[404],所以你不会被[404],但是你会被[404]
 
 # 双阵营
 GuesserInfoLong,(内鬼阵营或船员阵营):\n赌怪可以在会议时猜测某位玩家的职业，正确则击杀目标，错误则会自杀。\n猜测指令为：/bt [玩家编号] [职业名]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。,"(Impostors or Crewmate):\nGuesser can guess the roles of certain players during an encounter. If he guesses the role correctly, he will kill that target, and if wrong, he will commit suicide. \nGuessing command: ''/bt [Player ID] [Role Name]'' \nExample: /bt 3 Bait \nYou can see the player ID before the player's nickname, or you can use the ''/id'' command to see the IDs of all players.","(Предатель или Член Экипажа):\nУгадыватель может угадывать роли определённого игрока во время встречи. Если он угадает роль правильно, то он убьет эту цель, а если неправильно, то он совершит самоубийство. \nКоманда для угадываний: '/bt [Номер игрока] [Название Роли]'' \nПример: /bt 3 Байт \nВы можете увидеть номер игрока перед его никнеймом, или же для просмотра номеров всех игроков нужно использовать команду ''/id'' ."
@@ -333,10 +348,10 @@ SuperStarInfoLong,(船员阵营):\n明星的名字旁会有星星的标识，所
 CyberStarInfoLong,(船员阵营):\n网红死亡时所有船员会看到杀戮闪烁（和灵媒看到的杀戮闪烁一样）并在下次会议时收到新闻报告，而内鬼则全程什么都不知道。,"(Crewmates):\nWhen a Celebrity dies, all players (or depending on settings, only the Crewmates) will see a ''Kill Flash'' and receive a news message at the next meeting that the Celebrity has died, while Impostors and Neutrals will not learn anything about this event (Also depends from settings).","(Член Экипажа):\nКогда Знаменитость умрёт, все игроки (или в зависимости от настроек только Члены Экипажа) увидят ''Вспышку Убийства'' и получат новостное сообщение на следующей встрече что Знаменитость умерла, в то время как Предатели и Нейтралы ничего не узнают об этом событии (Так же зависит от настроек)."
 MayorInfoLong,(船员阵营):\n市长再投票时一票算作多票。此外根据房主设置，市长还可能拥有跳通风管道触发紧急会议的技能。,"(Crewmates):\nYou have multiple votes, which will all go towards the one person you vote or skip.","(Член Экипажа):\nМэр можете иметь несколько голосов на собрании, и проголосовать за любого игрока этими доп. голосами или \nпросто отдать все голоса в скип."
 ParanoiaInfoLong,(船员阵营):\n被害妄想症使用通风管后会幻想出一个尸体并报告，实际上并不会死人，但的确可以召开会议。,"(Crewmates):\nParanoid will fantasize about a corpse and call an emergency meeting when using the vent. But in fact, there is no corpse, but he can still hold an emergency meeting.","(Член Экипажа):\nПараноик будет фантазировать о трупе и созывать срочное собрание при использовании вентиляции. Но на самом деле, никакого трупа нет, но всё равно может провести срочное собрание."
-PsychicInfoLong,(船员阵营):\n愚者能够在会议期间看到数名玩家的名字以红色突出显示，其中至少一名是邪恶的。请注意：当存活人数过少时愚者的技能会失效。,"(Crewmates):\nPsychic can see potentially evil players during an encounter. Psychic will see the names of several players that are highlighted in red, at least one of them will definitely turn out to be evil.","(Член Экипажа):\nЭкстрасенс может видеть потенциально злых игроков во время встречи. Экстрасенс увидит никнеймы нескольких игроков, которые выделены красным цветом, по крайней мере, один из них точно окажется злым."
+PsychicInfoLong,(船员阵营):\n愚者能够在会议期间看到数名玩家的名字以红色突出显示，其中至少一名是邪恶的。,"(Crewmates):\nPsychic can see potentially evil players during an encounter. Psychic will see the names of several players that are highlighted in red, at least one of them will definitely turn out to be evil.","(Член Экипажа):\nЭкстрасенс может видеть потенциально злых игроков во время встречи. Экстрасенс увидит никнеймы нескольких игроков, которые выделены красным цветом, по крайней мере, один из них точно окажется злым."
 SabotageMasterInfoLong,(船员阵营):\n修理工可以随意使用通风管道，你甚至可以把通风管当成自己的家永远不出来。氧气泄露、核反应堆熔毁以及米拉总部的通讯破坏修理工只需要修复一边则另一边即可同时被修复。修理工只需要按一个开关便可以修复照明破坏。修理工打开波鲁斯与飞艇地图的门时修理工所在房间的所有门同时打开。,"(Crewmates):\nThe Repairman can use the vent at any time, and he can even treat the vent like his own house and never leave it. \nAlso he can Fix Reactors, O2, Communications by yourself. \nLights can be fixed with the flick of one switch. \nOpening a door will open all doors to that room.","(Член Экипажа):\nРемонтник может использовать вентиляцию в любое время, и он может даже относиться к нему как к собственному дому и никогда не выходить из нее. \nТакже он может в одиночку починить саботажи такие, как: Саботаж Реактора, Саботаж O2 и Саботаж Связи. \nТак же он может починить Саботаж Света коснувшись лишь одного рычага. \nОткрытие одной двери позволяет открыть все двери в этой комнате."
 SheriffInfoLong,(船员阵营):\n警长没有船员任务。警长可以击杀内鬼（根据房间设置，警长也可以击杀中立阵营玩家）。警长若尝试击杀船员阵营的玩家，警长将会走火自杀。警长成为叛徒时可以击杀任何人。,"(Crewmates):\nYou can kill anyone on Team Impostors.\nThe ability to kill Neutrals is a configurable setting.\nIf you try to kill a crew, you will kill yourself instead. You have no tasks.","(Член Экипажа):\nШериф может убивать Предателей. \nЕсть настройка, позволяющая убить даже Нейтралов. \nОднако если Шериф попытается убить Члена Экипажа, то это приведёт к его смерти. У него нет заданий."
-SnitchInfoLong,(船员阵营):\n告密者完成所有任务后，将可以看到以红色昵称表示的所有内鬼。当告密者仅剩一个任务的时候，内鬼将会看到自己以及告密者的昵称旁边有「★」作为提示。,"(Crewmates):\nOnce you finish all your tasks, the Impostors' names will be displayed in red to you.\nWhen you have only one task left, a ★ mark will be displayed next to your name and you will be exposed to the Impostors.","(Член Экипажа):\nКак только Снитч выполнит все задания, то никнейм у всех Предателей будет отображаться \nкрасным цветом, и наоборот, если количество ваших заданий будет близка к завершению, \nто рядом с никнеймом Стукача появится звёздочка★, которая будет видна Предателям."
+SnitchInfoLong,(船员阵营):\n告密者完成所有任务后，将可以看到以红色昵称表示的所有内鬼。当告密者仅剩一个任务的时候，内鬼将会看到自己以及告密者的昵称旁边有「★」作为提示。告密者成为叛徒时，「★」标记变为红色。,"(Crewmates):\nOnce you finish all your tasks, the Impostors' names will be displayed in red to you.\nWhen you have only one task left, a ★ mark will be displayed next to your name and you will be exposed to the Impostors.","(Член Экипажа):\nКак только Снитч выполнит все задания, то никнейм у всех Предателей будет отображаться \nкрасным цветом, и наоборот, если количество ваших заданий будет близка к завершению, \nто рядом с никнеймом Стукача появится звёздочка★, которая будет видна Предателям."
 SpeedBoosterInfoLong,(船员阵营):\n增速者每次完成任务都会增加自己的移动速度。请注意：由于技术限制，增速者在其他人眼中为正常速度，所以会以闪现的方式移动。,"(Crewmates):\nA player with this role will increase his movement speed every time he completes a task. Please note: Due to other players' technical limitations, his speed will be the same, so he will sometimes ping.","(Член Экипажа):\nИгрок c этой ролью будет увеличивать свою скорость передвижения каждый раз, когда он выполняет задание. Пожалуйста, обратите внимание: Из-за технических ограничений у других игроков его скорость будет прежней, поэтому он иногда будет пинговать."
 DoctorInfoLong,(船员阵营):\n法医可以查看生命监测装置并确认死亡玩家的死因。查看的时间长短与设备的充能数挂钩。,"(Crewmates):\nYou can see the cause of death for all players.\nIn addition, you can access vitals wherever you are while you still have battery.","(Член Экипажа):\nДоктор может узнать причину смерти игрока. \nКроме того, он имеет портативные пульсы как у учёного, которые он может использовать в любом месте, пока у него не закончится зарядка."
 TrapperInfoLong,(船员阵营):\n陷阱师被击杀时，凶手一段时间内将不能移动。,"(Crewmates):\nWhen you are killed, you immobilize your killer for a configurable amount of time.","(Член Экипажа):\nПосле того как Траппера убьют, то его убийца будет обездвижен на несколько секунд. (время зависит от настроек)"
@@ -377,7 +392,7 @@ ProvocateurInfoLong,(中立阵营):\n自爆卡车可以用击杀键与任意目�
 # 附加职业
 LastImpostorInfoLong,(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。该效果对赏金猎人、嗜血杀手以及吸血鬼等击杀方式特殊的职业不适用。,"(Add-ons):\nAn Add-on granted to the last Impostor remaining.\nKill cooldown is reduced according to this setting.\nNot granted to Bounty Hunters, Serial Killers, or Vampires.","(Атрибут):\nАтрибут, присваивается последнему Предателю. \nВремя отката убийства становится меньше, чем обычно. \nНе назначается Охотнику за головами, Серийному убийце или Вампиру."
 LoversInfoLong,(附加职业):\n恋人为两名玩家的组合。场上仅剩恋人时恋人获胜。恋人其中一人胜利时另一人也一起胜利。恋人可以看到对方名字旁有「♡」标志。恋人其中一人死亡则另一人殉情（根据房主设置可能不会殉情）。恋人其中一人在会议中被放逐时，另一人将死亡并变为不可以被报告的尸体。,"(Add-ons),\nLovers is an assigned to 2 random players on top of their defined roles.\nIf you and your lover both survive til the end, you both will win.\nIf one of you dies, the other will also die. If crewmates get a task victory, you both will lose.","(Атрибут):\nДополнительно с какой-либо ролью Любовники назначаются 2 случайных игрокам. \nЕсли оба любовника останутся живы, то они выиграют. \nКогда умрёт хотя бы один любовник, то моментально умрёт и второй. Они проиграют когда Члены Экипажа выполнят все задания."
-MadmateInfoLong,(附加职业):\n只有船员会成为叛徒，叛徒需要帮助内鬼阵营获得胜利，当内鬼阵营失败时叛徒也会失败。摆烂人、告密者、网红不会成为叛徒。当诱饵成为叛徒时技能变为随机找人报告尸体；当时间操控者成为叛徒时技能变为做任务减少会议时间；当保镖成为叛徒且凶手不是内鬼的时候，保镖不会发动技能；当掷雷兵成为叛徒时闪光弹只对船员生效；当警长成为叛徒时可以击杀任何人；当正义赌怪成为叛徒时可以猜测船员。,"(Add-ons):\nOnly Crewmate can become Madmate. The Madmate must help the Impostor team win. When the impostors team fails, the Madmate will also fail. Also, when Time Manager becomes a Madmate, his skills will reduce the time of the meeting.","(Атрибут):\nТолько Члены Экипажа могут стать Безцами. Безумец должен помочь команде Предателей победить. Когда команда Предателей потерпит неудачу, Безумец также потерпит неудачу. Так же когда Мастер Времени становится Безумцем, его навыки будут сокращать время проведения встречи"
+MadmateInfoLong,(附加职业):\n只有船员会成为叛徒，叛徒需要帮助内鬼阵营获得胜利，当内鬼阵营失败时叛徒也会失败。叛徒可以知道所有内鬼，但内鬼不知道谁是叛徒。摆烂人、告密者、网红不会成为叛徒。当诱饵成为叛徒时技能变为随机找人报告尸体；当时间操控者成为叛徒时技能变为做任务减少会议时间；当保镖成为叛徒且凶手不是内鬼的时候，保镖不会发动技能；当掷雷兵成为叛徒时闪光弹只对船员生效；当警长成为叛徒时可以击杀任何人；当正义赌怪成为叛徒时可以猜测船员；当告密者成为叛徒时可以做任务与内鬼互认。,"(Add-ons):\nOnly Crewmate can become Madmate. The Madmate must help the Impostor team win. When the impostors team fails, the Madmate will also fail. Also, when Time Manager becomes a Madmate, his skills will reduce the time of the meeting.","(Атрибут):\nТолько Члены Экипажа могут стать Безцами. Безумец должен помочь команде Предателей победить. Когда команда Предателей потерпит неудачу, Безумец также потерпит неудачу. Так же когда Мастер Времени становится Безумцем, его навыки будут сокращать время проведения встречи"
 NtrInfoLong,(附加职业):\n当场上存在海王时，所有玩家将看到自己与海王为恋人关系，实际并不会一起殉情也不会改变胜利条件。请注意：恋人不会成为海王，海王也不会成为恋人。,"(Add-ons):\nWhen Neptune is in play, all players will see that he and Neptune are Lovers, but they won't actually die together, and Neptune can't change the win condition. Please note: Lovers will not become Neptunes and Neptune will not become Lovers","(Атрибут):\nКогда в игре будет Нептун, все игроки увидят, что они с Нептуном являются Любовниками, но на самом деле они не умрут вместе, и Нептун не может изменить условие победы. Пожалуйста, обратите внимание: Любовники не станут Нептунами, и Нептун не станет Любовником"
 WatcherInfoLong,(附加职业):\n窥视者可以直接看到每个人投的票。,"(Add-ons):\nYou can see everyone's votes even if anonymous voting is on.","(Атрибут):\nНаблюдатель может видеть все цвета голосов несмотря на анонимное голосование."
 FlashmanInfoLong,(附加职业):\n闪电侠的初始移动速度比其他人快。（具体速度看房主设定）请注意：由于技术限制，闪电侠同理增速者，在其他人眼中为正常速度，所以会以闪现的方式移动。,"(Add-ons):\nAt the beginning of the game, the Flash's speed is higher than that of other players. (Speed depends on settings). Please note: Flash has a high speed, but other players will see normal speed, so Flash players will ping. It is not recommended to enable it.","(Атрибут):\nВ начале игры скорость Флэша выше, чем у других игроков. (Скорость зависит от настроек). Обратите внимание: Флэш имеет высокую скорость, но другие игроки увидят нормальную скорость, поэтому игроки с Флешом будут пинговаться. Не рекомендуется включать его."
@@ -402,10 +417,11 @@ GMInfoLong,(房主):\n看我干啥，我只是个开局就死的冤魂，静静�
 
 
 ## 模式选项
-DisableMeeting,禁用会议与报告尸体
-DisableCloseDoor,禁用关门
-DisableSabotage,禁用破坏
+DisableMeeting,禁用会议与报告尸体,Turn off Meetings,Отключить Собрания
+DisableCloseDoor,禁用关门,Disable Doors sabotage,Отключить саботаж дверей
+DisableSabotage,禁用破坏,Disable Sabotage,Отключить Саботаж
 NoGameEnd,测试模式,NoGameEnd,Игра Не Закончится
+AllowConsole,允许控制台
 DebugMode,调试模式,Debug Mode,Режим отладки
 SyncButtonMode,所有船员共享会议次数,SyncButtonMode,Общая кнопка встреч
 RandomMapsMode,随机地图模式,RandomMapsMode,Случайная карта
@@ -524,7 +540,7 @@ KickPlayerFriendCodeNotExist,踢出没有登录的玩家,Kick players whose Frie
 ApplyBanList,踢出被封禁的玩家,Apply BanList,Применить файл с забаненными игроками (BanList)
 EndWhenPlayerBug,当有玩家因Bug无法游戏时终止游戏,"End the game when any player has a critical error",Завершить игру когда у любого игрока возникла критическая ошибка
 KillFlashDuration,击杀闪烁持续时间,"''Kill Flash'' Duration","Длительность ''Вспышки Убийства''"
-ConfirmEjectionsMode,驱逐确认模式,,Режим: Показать роли изгнаных
+ConfirmEjectionsMode,驱逐确认模式,Confirm Ejections Mode,Режим: Показать роли изгнаных
 ConfirmEjections.None,不确认,None,Ничего
 ConfirmEjections.Team,确认阵营,Team,Команду
 ConfirmEjections.Role,确认职业,Role,Роль
@@ -535,19 +551,19 @@ Kick,踢出,Kick,Кикнуть
 NoticeMe,通知我,Notify me,Уведомить меня
 NoticeEveryone,通知所有人（除了它）,Notify everyone,Уведомить всех
 CheatResponses,检测到外挂时,When a breach is discovered,Когда обнаружен взлом
-NeutralRoleWinTogether,同种职业<color=#ffab1b>中立</color>玩家共同胜利
-NeutralWinTogether,全体<color=#ffab1b>中立</color>阵营玩家共同胜利
-MenuTitle.Disable,★ 禁用相关设定
-MenuTitle.Sabotage,★ 破坏相关设定
-MenuTitle.Meeting,★ 会议相关设定
-MenuTitle.Ghost,★ 幽灵相关设定
-MenuTitle.Other,★ 其它设定
-MenuTitle.Ejections,★ 驱逐相关设定
+NeutralRoleWinTogether,同种职业<color=#ffab1b>中立</color>玩家共同胜利,<color=#ffab1b>Neutrals</color> win togeter,<color=#ffab1b>Нейтральные</color> побеждают
+NeutralWinTogether,全体<color=#ffab1b>中立</color>阵营玩家共同胜利,All <color=#ffab1b>Neutrals</color> win togeter,Все <color=#ffab1b>Нейтральные</color> побеждают
+MenuTitle.Disable,★ 禁用相关设定,★Disable★,★Отключить★
+MenuTitle.Sabotage,★ 破坏相关设定,★Sabotage★,★Саботаж★
+MenuTitle.Meeting,★ 会议相关设定,★Meeting★,★Собрание★
+MenuTitle.Ghost,★ 幽灵相关设定,★Ghost★,★Призраки★
+MenuTitle.Other,★ 其它设定,★Different★,★Другое★
+MenuTitle.Ejections,★ 驱逐相关设定,★Ejection★,★Выбрасивание★
 
 ## 详细设定
 Cooldown,冷却时间,Cooldown,Откат
 KillCooldown,击杀冷却时间,Kill Cooldown,Откат убийства
-VentCooldown,使用通风管道冷却时间
+VentCooldown,使用通风管道冷却时间,Vent Cooldown,Откат Вентиляции
 CanVent,可以使用通风管道,Can Vent,Может использовать Вентиляцию
 ImpostorVision,拥有<color=#ff1919>内鬼</color>视野,<color=#ff1919>Impostor</color> Vision,Имеет дальность Обзора <color=#ff1919>Предателя</color>
 CanUseSabotage,可以破坏,Can Sabotage,Может использовать Саботаж
@@ -610,7 +626,7 @@ SniperBulletCount,最大子弹数量,Ammo,Количество пуль
 SniperPrecisionShooting,精准射击模式,Precision Firing,Точный выстрел
 SniperAimAssist,狙击范围内有玩家时提醒狙击手,Aim Assist,Помощь в прицеливании
 SniperAimAssistOneshot,闪烁提示而不是一直显示,One shot Assist,Помощь только с одним выстрелом
-NameDisplayAddons,显示职业同时显示附加职业
+NameDisplayAddons,显示职业同时显示附加职业,Dispay Add-ons,Показывать Атрибуты
 NoLimitAddonsNum,不限制每位玩家的附加职业上限,The number of Add-ons for one player is not limited,Количество Атрибутов для одного игрока не ограничено 
 LoverSpawnChances,出现概率,Spawn Chance of Lovers,Шанс появления Любовников
 AdditionRolesSpawnRate,出现概率,Spawn Chance,Шанс появления
@@ -618,6 +634,7 @@ BewilderVision,迷幻视野大小,Bewilder Vision,Дальность обзор�
 FlashmanSpeed,初始移动速度,Flash Speed,Скорость Флеша
 LoverSuicide,恋人共生死,Lovers can commit suicide,Любовники могут суициднуться
 NumberOfLovers,恋人对数,Number of Lovers (x2 members),Количество Любовников (x2 участника)
+LoverKnowRoles,恋人知道对方的职业
 TrapperBlockMoveTime,封锁凶手移动时长,Freeze time,Время заморозки
 TimeThiefDecreaseMeetingTime,每次击杀缩短的会议时间,Time Thief Time Stolen,Уменьшить длительность обсуждения на
 TimeThiefLowerLimitVotingTime,存活时会议时间下限,Minimum Voting Time,Уменьшить длительность голосования на
@@ -690,6 +707,8 @@ PelicanKillCooldown,吞人冷却时间,Cooldown Absorption,Откат погло
 SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为叛徒,<color=#f8cd46>Sheriff</color> can become Madmate,<color=#f8cd46>Шериф</color> может стать <color=#ff1919>Безумцем</color>
 MayorCanBeMadmate,<color=#204d42>市长</color>可以成为叛徒,<color=#204d42>Mayor</color> can become Madmate,<color=#204d42>Мэр</color> может стать <color=#ff1919>Безумцем</color>
 NGuesserCanBeMadmate,<color=#eede26>正义赌怪</color>可以成为叛徒,<color=#eede26>Nice Guesser</color> can become Madmate,<color=#eede26>Добрый Угадыватель</color> может стать <color=#ff1919>Безумцем</color>
+SnitchCanBeMadmate,<color=#b8fb4f>告密者</color>可以成为叛徒
+MadSnitchTasks,背叛的告密者的任务数
 MedicalerCooldown,发放护盾冷却时间,Shield Cooldown,Откат Щита
 MedicalerSkillLimit,发放护盾次数上限,Skill Limit,Лимит Способности
 MedicalerTargetCanSeeProtect,玩家可以知道自己是否持有护盾,Target can see Protection,Цель может видеть Защиту
@@ -724,7 +743,6 @@ EraseLimit,抹除次数上限
 AssassinMarkCooldown,标记冷却时间
 AssassinAssassinateCooldown,刺杀冷却时间
 AssassinCanKillAfterAssassinate,可以在刺杀后进行常规击杀
-Error404KillCooldown,错误404击杀冷却
 
 
 ## 死因
@@ -749,7 +767,7 @@ DeathReason.Quantization,量子化,Quantization,Квантование
 DeathReason.Overtired,猝死,Overtired,Переработал
 DeathReason.Ashamed,卷死,Ashamed,Пристыженный
 DeathReason.PissedOff,气死,Destroyed,Уничтожен
-DeathReason.Dismembered,肢解
+DeathReason.Dismembered,肢解,Dismembered,Расчленен
 DeathReason.etc,其它,Other,Другое
 Alive,存活,Alive,Выжил
 Win,胜利, Wins, Победили
@@ -801,16 +819,16 @@ GuessAdtRole,很抱歉，该房设置不允许猜测附加职业,"Unfortunately,
 GuessKill,很遗憾，【{0}】\n在赌局中失利了,Player: [{0}] \nwas guessed,Игрок: [{0}] \nбыл угадан
 GuessNull,请选择一个在场的存活角色进行赌注,"Please select an ID of a alive player to guess their role","Пожалуйста, выберите индификатор присутствующего выжившего игрока, чтобы угадать его роль"
 GuessHelp,指令格式：/bt [玩家编号] [职业名]\n示例：/bt 3 告密者\n您可以在玩家的名字前看到该玩家的编号\n或者使用/id查看玩家编号列表,"Instructions: /bt [Player ID] [Role Name] \nExample: /bt 3 Bait \nYou can see the player ID before the player name \n or use the /id command to list the player IDs","Инструкция: /bt [Идентификатор игрока] [Название Роли] \nПример: /bt 3 Байт \nВы можете увидеть идентификатор игрока перед именем игрока \nили использовав команду /id для просмотра списка идентификаторов игроков"
-GGGuessMax,您已经达到每次会议的猜测上限，不能再猜测啦！,"You've reached the maximum guessing limit for each encounter, you can't guess anymore!","Вы достигли максимального предела угадывания для каждой встречи, вы больше не можете угадывать!"
-EGGuessMax,您已经达到每次会议的猜测上限，不能再猜测啦！,"You've reached the maximum guessing limit for each encounter, you can't guess anymore!","Вы достигли максимального предела угадывания для каждой встречи, вы больше не можете угадывать!"
+GGGuessMax,您已达到每次会议猜测次数上限\n不能再猜测啦！,"You've reached the maximum guessing limit for each encounter, you can't guess anymore!","Вы достигли максимального предела угадывания для каждой встречи, вы больше не можете угадывать!"
+EGGuessMax,您已达到每次会议猜测次数上限\n不能再猜测啦！,"You've reached the maximum guessing limit for each encounter, you can't guess anymore!","Вы достигли максимального предела угадывания для каждой встречи, вы больше не можете угадывать!"
 LaughToWhoGuessSelf,有一说一，你是懂赌怪的,"Try to guess, who tried to self-guessed! It's you! Ahah!","Попробуйте угадать, кто попытался себя угадать! Это ты! Ахах!"
 MimicDeadMsg,来自宝箱怪的线索：,Mimic's hint:,Подсказка от Мимика:
 DivinatorCheck,您透过水晶球发现：,"You're looking through a crystal ball","Ты смотришь сквозь хрустальный шар"
 DivinatorCheckLimit,提示：剩余【{0}】次占卜机会,"Reminder: You have 【{0}】 guesses left","Напоминание: У тебя осталось 【{0}】 угадываний"
 DivinatorCheckSelfMsg,哇靠，您查到了一位举世人才！目标太过耀眼，已经看不到任何东西啦！,"Wow, you found yourself... All you see is a reflection.","Вау, ты нашёл сам себя... Всё что ты видишь это отражение."
 DivinatorCheckReachLimit,水晶球也是会累哒，接下来就算没有水晶球，也要好好努力呀！（占卜次数达到上限）,"You are tired of using a crystal ball for too much. You should retire for now. (The number of divination reaches the limit)","Вы устали от слишком частого использования хрустального шара. Вы должны уйти в отставку. (Количество гаданий достиг предела)"
-EraserEraseNotice,您发动了抹除技能\n【{0}】的技能将在会议结束后失效。
-EraserEraseNeutralNotice,很抱歉，您发动技能的目标属于中立阵营，无法被抹除。
+EraserEraseNotice,您发动了抹除技能\n【{0}】的技能将在会议结束后失效。,You erased 【{0}】.\nHis role will be deactivated after a meeting.,Ты стёр 【{0}】.\nЕго роль будет неактивна после собрания.
+EraserEraseNeutralNotice,很抱歉，您发动技能的目标属于中立阵营，无法被抹除。,Oops， your target is Neutral and can't be erased!,Упс， твоя цель Нейтральна и не может быть стёрта!
 
 ## 信息
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды
@@ -823,9 +841,9 @@ Message.HideGameSettings,游戏设置被房主隐藏,Game settings have been hid
 Message.NowOverrideText,请房主在游戏根目录的 .\Language\SChinese.dat 文件中修改这段文本\n如果您不需要此功能或希望显示普通的/n消息\n请在设置里关掉“显示自定义的/n消息”,Please enter the root folder of the game.\Language\English.dat. Change this text in the dat file \nIf you don't need this feature or want to display regular /n messages. \nPlease disable "Enable only custom /n messages" in the settings.,"Пожалуйста, зайдите корневую папку игры.\Language\Russian.dat. Измените этот текст в файле dat \nЕсли вам не нужна эта функция или вы хотите отображать обычные /n сообщений. \nпожалуйста, отключите “Включить только пользовательские /n сообщения” в настройках."
 Message.NoDescription,无描述,No description,Описание отсутствует
 Message.KickedByDenyName,【{0}】被踢出，因其昵称包含违禁词【{1}】,【{0}】 was kicked because its name matched 【{1}】","【{0}】 был кикнут, так как его имя соответствует 【{1}】"
-Message.BanedByBanList,【{0}】已被封禁，老相识了,【{0}】 has been banned because it has been banned in the past.,"【{0}】 был заблокирован, потому что он был заблокирован в прошлый раз"
+Message.BanedByBanList,【{0}】因在封禁名单内被踢出,【{0}】 has been banned because it has been banned in the past.,"【{0}】 был заблокирован, потому что он был заблокирован в прошлый раз"
 Message.DumpfileSaved,日志文件已成功保存到桌面上了，文件名为：{0},"The log file was successfully saved to the desktop, filename: {0}","Файл журнала был успешно сохранен на рабочий стол, имя файла: {0}"
-Message.KickedByNoFriendCode,【{0}】被踢出因本房间不允许未登录玩家加入,"【{0}】 was kicked because the friend code does not exist.","【{0}】 был кикнут, так как у него нет кода друга"
+Message.KickedByNoFriendCode,【{0}】因该房禁止未登录玩家被请离,"【{0}】 was kicked because the friend code does not exist.","【{0}】 был кикнут, так как у него нет кода друга"
 Message.AddedPlayerToBanList,【{0}】被添加至黑名单,Added 【{0}】 to the ban list,【{0}】 был добавлен в список забаненых игроков
 Message.KickWhoSayStart,【{0}】被系统请离\n请不要催开始，可能会被判定为违规信息,"[{0}] has been kicked by the system. \nThe lobby host doesn't want to see messages where the player asks to start","[{0}] кикнут системой. \nХост лобби не желает видеть сообщения, где игрок просит начать"
 Message.WarnWhoSayStart,【{0}】被警告：{1}次\n请不要催开始，可能会被判定为违规信息,"[{0}] has been warned:{1} times \nThe lobby host doesn't want to see messages where the player asks to start","[{0}] был предупреждён:{1} раз \nХост лобби не желает видеть сообщения, где игрок просит начать"
@@ -833,6 +851,9 @@ Message.KickStartAfterWarn,【{0}】达到 {1} 次警告被请离房间\n请不�
 Message.WarnWhoSayBanWord,【{0}】，请友善讨论哦~,【{0}】was kicked for a Banword,【{0}】был исключен за запретное слово
 Message.WarnWhoSayBanWordTimes,【{0}】被警告：{1}次\n请友善讨论哦~,"[{0}] has been warned:{1} times \nif you continue you will be kicked","[{0}] был предупреждён:{1} раз \nесли продожите, вы будете кикнуты"
 Message.KickWhoSayBanWordAfterWarn,【{0}】达到 {1} 次警告被请离房间\n请友善讨论哦~,[{0}] received {1} warnings.\nHe was expelled for forbidden words,"[{0}] набрал {1} предупреждений.\nОн был исключен за запретные слова"
+Message.KickedByEAC,【{0}】被EAC踢出，理由：{1}
+Message.BanedByEAC,【{0}】被EAC封禁，理由：{1}
+Message.NoticeByEAC,检测到【{0}】：{1}
 Message.SetLevel,您的等级设置为：{0},Your game level is set to: {0},Ваш игровой уровень установлен на: {0}
 Message.SetColor,您的颜色设置为：{0},Your color is set to: {0},Ваш игровой цвет установлен на: {0}
 Message.AllowLevelRange,等级可设置范围：0 - 100,"The game level can be set in the range: 0-100","Игровой уровень может быть установлен в диапазоне: 0-100"
@@ -843,6 +864,8 @@ Message.TryFixName,已尝试修复名字遮挡,An attempt was made to fix hidden
 Message.CanNotFindRoleThePlayerEnter,请正确拼写您要查询的职业哦~\n查看所有职业请直接输入/r,"Please write the correct role you want to request ~ \nTo view all roles type /r command","Пожалуйста, правильно напишите роль, которую вы хотите запросить ~\nЧтобы просмотреть все роли, напишите команду /r"
 Message.PlayerQuitForever,【{0}】选择自愿离开\n很抱歉给大家带来了糟糕的游戏体验\n我们真的很努力地在进步了,"【{0}】decided to leave voluntarily \nSorry for the bad gaming experience \nI really worked hard to make progress","【{0}】решил уйти добровольно \nПрошу прощения за плохой игровой опыт \nЯ действительно усердно работал, чтобы добиться прогресса"
 Message.MadmateSelfVoteModeNotify,请注意：当前叛徒生成模式为【{0}】\n投票给自己代表您希望成为叛徒。若您符合成为叛徒的条件且还有剩余名额，将立刻成为叛徒。,"Please note: The current Madness generation mode is [{0}]\n Voting for yourself means you want to be Madmate. If you meet the conditions to become Madmate and there are still spaces left, you will immediately become Madmate","Пожалуйста, обратите внимание: Текущий режим появления Безумцев - [{0}]\n Голосование за себя означает, что вы хотите быть Безумцем. Если вы соответствуете условиям, чтобы стать Безумцем и еще остались места, вы немедленно станете Безумцем"
+Message.HostLeftGameInGame,警告：房主已退出游戏，接下来游戏将无法正常运行，请各位退出游戏，或等待新房主重开游戏。
+Message.HostLeftGameInLobby,警告：房主已退出游戏，接下来游戏将无法正常运行，若新房主已安装TOHE，需要至少重开一次房间才能正常游戏。
 
 ## 警告
 Warning.OverrideExiledPlayer,设置内鬼人数为一个时，放逐动画会显示为平票,All ejects will be displayed as a tie since the total number of impostors is 1.,"Все изгнания будут отображаться как ничья, потому что общее количество Предателей равно 1."
@@ -875,6 +898,7 @@ ERR-001-000-3,在主目录出现重复密钥,Main dictionary has duplicated keys
 ## 其它
 DefaultSystemMessageTitle,【 ★ 系统消息 ★ 】,【 ★ System message ★ 】,【 ★ Системное сообщение ★ 】
 MessageFromTheHost,【 ★ 房主消息 ★ 】,【 ★ Host message ★ 】,【 ★ Сообщение от Хоста ★ 】
+MessageFromEAC,【 ★ EAC ★ 】
 DetectiveNoticeTitle,【 ★ 侦探线索 ★ 】,【 ★ Message for the Detective ★ 】,【 ★ Сообщение для Детектива ★ 】
 GuessKillTitle,【 ★ 赌场事件 ★ 】,【 ★ Message about Guessing ★ 】,【 ★ Сообщение о Угадывании ★ 】
 CyberStarNewsTitle,【 ★ 紧急新闻 ★ 】,【 ★ Urgent news ★ 】,【 ★ Срочные Новости ★ 】
@@ -882,7 +906,7 @@ GodAliveTitle,【 ★ 神的共鸣 ★ 】,【 ★ Message about God ★ 】,【
 MessageFromDevTitle,【 ★ 咔皮呆留言 ★ 】,【 ★ Self-Guessing ★ 】,【 ★ Само-Угадывание ★ 】
 DivinatorCheckMsgTitle,【 ★ 水晶球 ★ 】,【 ★ Crystall Ball ★ 】,【 ★ Хрустальный Шар ★ 】
 MimicMsgTitle,【 ★ 宝箱怪 ★ 】,【 ★ Mimic ★ 】,【 ★ Мимик ★ 】
-EraserEraseMsgTitle,【 ★ 抹除者 ★ 】
+EraserEraseMsgTitle,【 ★ 抹除者 ★ 】,【 ★ Eraser ★ 】,【 ★ Стирачка ★ 】
 TabGroup.SystemSettings,系统设置,System Settings,Системные настройки
 TabGroup.GameSettings,游戏设置,Game Settings,Игровые настройки
 TabGroup.CrewmateRoles,船员阵营职业,Crewmate Roles,Роли Членов Экипажа
@@ -1003,12 +1027,12 @@ GamerButtonText,攻击,Attack,Атаковать
 ImperiusCurseButtonText,夺舍,Teleport,Переместится
 BallLightningButtonText,汽化,Evaporation,Испарение
 ProvocateurButtonText,问候,Greet,Приветствовать
-OverKillerButtonText,肢解
+OverKillerButtonText,肢解,Dismember,Расчленить
 AssassinShapeshiftText,刺杀,Kill,Убить
 BomberShapeshiftText,自爆,Explode,Взорваться
 QuickShooterShapeshiftText,储存,Keep,Хранить
 ConcealerShapeshiftText,隐蔽,Disguise,Маскироваться
-HackerShapeshiftText,骇入
+HackerShapeshiftText,骇入,Hack,Взломать
 DefaultShapeshiftText,变形,Shift,Превращение
 DefaultRevertShapeshiftText,解除,Rever,Отменить
 DisabledBySettings,已在设置被中禁用,Disabled by Settings,Отключено настройкой
@@ -1035,9 +1059,13 @@ PlayerInfo,玩家信息,Player Info,Информация о игроке
 NoInfoExists,没有存在的上局信息,No Info Exists,Нет информации
 MessengerMurderOccurred,发生命案警告,Occurred Kill,Произошло убийство
 Deadbody,尸体,Dead body,Труп
+PlayerLeftByAU-Anticheat,【{0}】被树懒超级厉害的反作弊踢出去啦~ QwQ
+KickAndriodPlayer,【{0}】因该房禁止安卓被请离房间
 
 ## 作弊
-Cheat.AUM,开挂（使用AUM）,Cheating usage detected (Using AUM),Обнаружено использование читов (используется AUM)
+EAC.CheatDetected.EAC,开挂（使用AUM）,Cheating usage detected (Using AUM),Обнаружено использование читов (используется AUM)
+EAC.CheatDetected.HighLevel,警告：EAC正在抵御炸房外挂
+EAC.CheatDetected.LowLevel,警告：EAC检测到可能存在作弊玩家
 
 ## 驱逐确认
 PlayerIsRole,{0} 是 {1},{0} was the role {1},{0} был ролью {1}
@@ -1072,9 +1100,7 @@ DivinatorCheck.Incomprehensible,【{0}】令人十分难以理解,Looks like 【
 DivinatorCheck.Enthusiasm,【{0}】热情似火地与人谈吐着,Looks like 【{0}】 speaks with everyone very enthusiastic.,"Похоже, 【{0}】 разговаривает со всеми довольно позитивно."
 DivinatorCheck.Disturbed,【{0}】有些令人感到异样且不详,Looks like 【{0}】 is disturbed by something.,"Похоже, 【{0}】 что-то беспокоит."
 DivinatorCheck.None,【{0}】或许会就这么平凡一辈子,"Looks like 【{0}】 has just an ordinary life.","Похоже, 【{0}】 имеет спокойную жизнь."
-
 DivinatorCheck.Glitch,TV2gPZ4wUJWYr{0}05gA6T5PKzBG17,TV2gPZ4wUJWYr{0}05gA6T5PKzBG17,TV2gPZ4wUJWYr{0}05gA6T5PKzBG17
-
 DivinatorCheck.TaskDone,【{0}】的职业是【{1}】,【{0}】Role -【{1}】,【{0}】Роль -【{1}】
 
 ## 模组信息
@@ -1082,20 +1108,17 @@ DevAndSpnTitle,TOHE大家族,"""TOHE"" family","Семья ""TOHE"""
 Developer,开发者,Developer,Разрабочик
 Sponsor,金主爹爹,Sponsor,Спонсор
 Translator,翻译支持,Translator,Переводчик
-
 MainDev,主要开发者,Creator,Создатель
 Art,美术,Artist,Артист
 RoleDev,角色制作,Role Developer,Разрабочик Ролей
 TechSup,技术指导,Tech. Support,Тех. Поддержка
 FeatureDev,功能开发,Feature Developer,Разрабочик Функций
-
 TranEN,英语,English Translator,Английский Переводчик
 TranRU,俄语,Russian Translator,Русский Переводчик
-
 OnlyShowPart,仅显示部分,Show only part,Показать только часть
 
 ## 断连提示
-DCNotify.Hacking,您被AmongUs官方反作弊系统踢出\r\n（使用模组可能被误当作作弊）,You have been kicked out of the official anti-hacking system Among Us\r\n (module use may be mistaken for cheats),Вас выгнала из официальная система борьбы с хакерством Among Us\r\n (использование модуля может быть ошибочно принято за читы)
+DCNotify.Hacking,您被树懒的反作弊系统踢了\r\n（树懒还在持续发疯）,You have been kicked out of the official anti-hacking system Among Us\r\n (module use may be mistaken for cheats),Вас выгнала из официальная система борьбы с хакерством Among Us\r\n (использование модуля может быть ошибочно принято за читы)
 DCNotify.Banned,您被该房间封禁,You are not allowed to enter this room,Вам запрещено входить в эту комнату
 DCNotify.Kicked,您被该房间踢出,You are kicked out of the room,Вас кикнули из комнаты
 DCNotify.DCFromServer,您与服务器的连接已中断\r\n这可能是因为您的网络不稳定\r\n也可能是因为服务器不稳定或拒绝了您的访问,Your connection to the server has been lost\r\n This may be due to instability in your network\r\n This may also be due to server instability,Ваше соединение с сервером было разорвано\r\n Это может быть связано с нестабильностью вашей сети\r\n Это также может быть связано с нестабильностью сервера

@@ -80,19 +80,6 @@ internal static class CustomRolesHelper
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
     }
-    public static RoleTypes GetRoleTypes(this CustomRoles role)
-    => GetVNRole(role) switch
-    {
-        CustomRoles.Impostor => RoleTypes.Impostor,
-        CustomRoles.Scientist => RoleTypes.Scientist,
-        CustomRoles.Engineer => RoleTypes.Engineer,
-        CustomRoles.GuardianAngel => RoleTypes.GuardianAngel,
-        CustomRoles.Shapeshifter => RoleTypes.Shapeshifter,
-        CustomRoles.Crewmate => RoleTypes.Crewmate,
-        _ => role.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate,
-    };
-
-    public static bool IsDesyncRole(this CustomRoles role) => role.GetDYRole() != RoleTypes.Scientist;
     public static RoleTypes GetDYRole(this CustomRoles role) // 对应原版职业（反职业）
     {
         return role switch
@@ -110,7 +97,7 @@ internal static class CustomRolesHelper
             CustomRoles.Gamer => RoleTypes.Impostor,
             CustomRoles.DarkHide => RoleTypes.Impostor,
             CustomRoles.Provocateur => RoleTypes.Impostor,
-            _ => RoleTypes.Scientist
+            _ => RoleTypes.GuardianAngel
         };
     }
     public static bool IsAdditionRole(this CustomRoles role)
@@ -148,7 +135,6 @@ internal static class CustomRolesHelper
             CustomRoles.DarkHide or
             CustomRoles.Provocateur;
     }
-    public static bool IsNNK(this CustomRoles role) => role.IsNeutral() && !role.IsNK(); // 是否无刀中立
     public static bool IsNeutralKilling(this CustomRoles role) //是否邪恶中立（抢夺或单独胜利的中立）
     {
         return role is
@@ -214,7 +200,6 @@ internal static class CustomRolesHelper
             CustomRoles.OverKiller or
             CustomRoles.Error404;
     }
-    public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role == CustomRoles.Madmate;
     public static bool IsNeutral(this CustomRoles role) // 是否中立
     {
         return role is
@@ -237,7 +222,47 @@ internal static class CustomRolesHelper
             CustomRoles.Collector or
             CustomRoles.Provocateur;
     }
+    public static bool CheckAddonConfilct(CustomRoles role, PlayerControl pc)
+    {
+        if (!role.IsAdditionRole()) return false;
+
+        if (pc.Is(CustomRoles.GM) || (pc.HasSubRole() && !Options.NoLimitAddonsNum.GetBool()) || pc.Is(CustomRoles.Needy)) return false;
+        if (role is CustomRoles.Lighter && (!pc.GetCustomRole().IsCrewmate() || pc.Is(CustomRoles.Bewilder))) return false;
+        if (role is CustomRoles.Bewilder && (pc.GetCustomRole().IsImpostor() || pc.Is(CustomRoles.Lighter))) return false;
+        if (role is CustomRoles.Ntr && (pc.Is(CustomRoles.Lovers) || pc.Is(CustomRoles.FFF))) return false;
+        if (role is CustomRoles.Madmate && !Utils.CanBeMadmate(pc)) return false;
+        if (role is CustomRoles.Oblivious && (pc.Is(CustomRoles.Detective) || pc.Is(CustomRoles.Cleaner))) return false;
+        if (role is CustomRoles.Fool && (pc.GetCustomRole().IsImpostor() || pc.Is(CustomRoles.SabotageMaster))) return false;
+        if (role is CustomRoles.Avanger && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeAvanger.GetBool()) return false;
+        if (role is CustomRoles.Brakar && pc.Is(CustomRoles.Dictator)) return false;
+        if (role is CustomRoles.Youtuber && (!pc.GetCustomRole().IsCrewmate() || pc.Is(CustomRoles.Madmate))) return false;
+        if (role is CustomRoles.Egoist && (pc.GetCustomRole().IsNeutral() || pc.Is(CustomRoles.Madmate))) return false;
+        if (role is CustomRoles.Egoist && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeEgoist.GetBool()) return false;
+        if (role is CustomRoles.Egoist && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeEgoist.GetBool()) return false;
+        if (role is CustomRoles.TicketsStealer or CustomRoles.Mimic && !pc.GetCustomRole().IsImpostor()) return false;
+        if (role is CustomRoles.TicketsStealer && (pc.Is(CustomRoles.Bomber) || pc.Is(CustomRoles.BoobyTrap))) return false;
+        if (role is CustomRoles.Mimic && pc.Is(CustomRoles.Mafia)) return false;
+        if (role is CustomRoles.DualPersonality && ((!pc.GetCustomRole().IsImpostor() && !pc.GetCustomRole().IsCrewmate()) || pc.Is(CustomRoles.Madmate))) return false;
+        if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeDualPersonality.GetBool()) return false;
+        if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeDualPersonality.GetBool()) return false;
+
+        return true;
+    }
+    public static RoleTypes GetRoleTypes(this CustomRoles role)
+        => GetVNRole(role) switch
+        {
+            CustomRoles.Impostor => RoleTypes.Impostor,
+            CustomRoles.Scientist => RoleTypes.Scientist,
+            CustomRoles.Engineer => RoleTypes.Engineer,
+            CustomRoles.GuardianAngel => RoleTypes.GuardianAngel,
+            CustomRoles.Shapeshifter => RoleTypes.Shapeshifter,
+            CustomRoles.Crewmate => RoleTypes.Crewmate,
+            _ => role.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate,
+        };
+    public static bool IsDesyncRole(this CustomRoles role) => role.GetDYRole() != RoleTypes.GuardianAngel;
     public static bool IsCrewmate(this CustomRoles role) => !role.IsImpostorTeam() && !role.IsNeutral();
+    public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role == CustomRoles.Madmate;
+    public static bool IsNNK(this CustomRoles role) => role.IsNeutral() && !role.IsNK(); // 是否无刀中立
     public static bool IsVanilla(this CustomRoles role) // 是否原版职业
     {
         return role is

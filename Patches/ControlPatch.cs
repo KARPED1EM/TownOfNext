@@ -86,7 +86,7 @@ internal class ControllerManagerUpdatePatch
         if (GetKeysDown(KeyCode.Return, KeyCode.M, KeyCode.LeftShift) && GameStates.IsInGame)
         {
             if (GameStates.IsMeeting) MeetingHud.Instance.RpcClose();
-            else PlayerControl.LocalPlayer.NoCheckStartMeeting(null);
+            else PlayerControl.LocalPlayer.NoCheckStartMeeting(null, true);
         }
         //立即开始
         if (Input.GetKeyDown(KeyCode.LeftShift) && GameStates.IsCountDown)
@@ -123,6 +123,7 @@ internal class ControllerManagerUpdatePatch
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RestTOHESetting, SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
+            OptionShower.GetText();
         }
         //实名投票
         if (GetKeysDown(KeyCode.Return, KeyCode.V, KeyCode.LeftShift) && GameStates.IsMeeting && !GameStates.IsOnlineGame)

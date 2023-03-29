@@ -50,13 +50,21 @@ static class ExtendedPlayerControl
     {
         RPC.ExileAsync(player);
     }
-    public static InnerNet.ClientData GetClient(this PlayerControl player)
+    public static ClientData GetClient(this PlayerControl player)
     {
-        var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
-        return client;
+        try
+        {
+            var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Character.PlayerId == player.PlayerId).FirstOrDefault();
+            return client;
+        }
+        catch
+        {
+            return null;
+        }
     }
     public static int GetClientId(this PlayerControl player)
     {
+        if (player == null) return -1;
         var client = player.GetClient();
         return client == null ? -1 : client.Id;
     }
@@ -376,7 +384,7 @@ static class ExtendedPlayerControl
     }
     public static bool CanUseKillButton(this PlayerControl pc)
     {
-        if (!pc.IsAlive() || pc.Data.Role.Role == RoleTypes.GuardianAngel) return false;
+        if (!pc.IsAlive() || pc.Data.Role.Role == RoleTypes.GuardianAngel || Pelican.IsEaten(pc.PlayerId)) return false;
 
         return pc.GetCustomRole() switch
         {
@@ -496,7 +504,7 @@ static class ExtendedPlayerControl
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.ScavengerKillCooldown.GetFloat();
                 break;
             case CustomRoles.Bomber:
-                Main.AllPlayerKillCooldown[player.PlayerId] = 0;
+                Main.AllPlayerKillCooldown[player.PlayerId] = 300f;
                 break;
             case CustomRoles.Capitalism:
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.CapitalismSkillCooldown.GetFloat();
@@ -508,7 +516,7 @@ static class ExtendedPlayerControl
                 Counterfeiter.SetKillCooldown(player.PlayerId);
                 break;
             case CustomRoles.FFF:
-                Main.AllPlayerKillCooldown[player.PlayerId] = 0.01f;
+                Main.AllPlayerKillCooldown[player.PlayerId] = 0f;
                 break;
             case CustomRoles.Cleaner:
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.CleanerKillCooldown.GetFloat();
@@ -532,7 +540,7 @@ static class ExtendedPlayerControl
                 QuickShooter.SetKillCooldown(player.PlayerId);
                 break;
             case CustomRoles.Provocateur:
-                Main.AllPlayerKillCooldown[player.PlayerId] = 0.01f;
+                Main.AllPlayerKillCooldown[player.PlayerId] = 0f;
                 break;
             case CustomRoles.Assassin:
                 Assassin.SetKillCooldown(player.PlayerId);
@@ -583,7 +591,15 @@ static class ExtendedPlayerControl
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.Exiled, SendOption.None, -1);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
-    public static void RpcMurderPlayerV2(this PlayerControl killer, PlayerControl target)
+    public static void RpcMurderPlayerV3(this PlayerControl killer, PlayerControl target)
+    {
+        //用于TOHE的击杀前判断
+
+
+
+        killer.RpcMurderPlayer(target);
+    }
+    public static void RpcMurderPlayerV3V2(this PlayerControl killer, PlayerControl target)
     {
         if (target == null) target = killer;
         if (AmongUsClient.Instance.AmClient)
@@ -596,9 +612,10 @@ static class ExtendedPlayerControl
         Utils.NotifyRoles();
     }
     public static bool RpcCheckAndMurder(this PlayerControl killer, PlayerControl target, bool check = false) => CheckMurderPatch.RpcCheckAndMurder(killer, target, check);
-    public static void NoCheckStartMeeting(this PlayerControl reporter, GameData.PlayerInfo target)
+    public static void NoCheckStartMeeting(this PlayerControl reporter, GameData.PlayerInfo target, bool force = false)
     { /*サボタージュ中でも関係なしに会議を起こせるメソッド
         targetがnullの場合はボタンとなる*/
+        if (Options.DisableMeeting.GetBool() && !force) return;
         MeetingRoomManager.Instance.AssignSelf(reporter, target);
         DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(reporter);
         reporter.RpcStartMeeting(target);
@@ -693,7 +710,8 @@ static class ExtendedPlayerControl
         //ロビーなら生きている
         //targetがnullならば切断者なので生きていない
         //targetがnullでなく取得できない場合は登録前なので生きているとする
-        return GameStates.IsLobby || (target != null && (!Main.PlayerStates.TryGetValue(target.PlayerId, out var ps) || !ps.IsDead || target.Is(CustomRoles.Glitch)));
+        if (target == null || target.Is(CustomRoles.GM) || target.Is(CustomRoles.Glitch)) return false;
+        return GameStates.IsLobby || (target != null && (!Main.PlayerStates.TryGetValue(target.PlayerId, out var ps) || !ps.IsDead));
     }
 
 }

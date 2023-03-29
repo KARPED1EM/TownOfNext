@@ -15,17 +15,20 @@ internal class EAC
     public static void WarnHost(int denum = 1)
     {
         DeNum += denum;
-        ErrorText.Instance.CheatDetected = DeNum > 3;
-        ErrorText.Instance.SBDetected = DeNum > 10;
-        if (ErrorText.Instance.CheatDetected)
-            ErrorText.Instance.AddError(ErrorText.Instance.SBDetected ? ErrorCode.SBDetected : ErrorCode.CheatDetected);
-        else
-            ErrorText.Instance.Clear();
+        if (ErrorText.Instance != null)
+        {
+            ErrorText.Instance.CheatDetected = DeNum > 3;
+            ErrorText.Instance.SBDetected = DeNum > 10;
+            if (ErrorText.Instance.CheatDetected)
+                ErrorText.Instance.AddError(ErrorText.Instance.SBDetected ? ErrorCode.SBDetected : ErrorCode.CheatDetected);
+            else
+                ErrorText.Instance.Clear();
+        }
     }
-    public static bool Receive(PlayerControl pc, byte callId, MessageReader reader)
+    public static bool ReceiveRpc(PlayerControl pc, byte callId, MessageReader reader)
     {
         if (!AmongUsClient.Instance.AmHost) return false;
-        if (pc == null || reader == null) return true;
+        if (pc == null || reader == null) return false;
         if (pc.GetClient()?.PlatformData?.Platform is Platforms.Android or Platforms.IPhone or Platforms.Switch or Platforms.Playstation or Platforms.Xbox or Platforms.StandaloneMac) return false;
         try
         {
@@ -109,7 +112,7 @@ internal class EAC
                 case RpcCalls.SetColor:
                 case RpcCalls.CheckColor:
                     var color = sr.ReadByte();
-                    if ( pc.Data.DefaultOutfit.ColorId != -1 &&
+                    if (pc.Data.DefaultOutfit.ColorId != -1 &&
                         (Main.AllPlayerControls.Where(x => x.Data.DefaultOutfit.ColorId == color).Count() >= 5
                         || !GameStates.IsLobby || color < 0 || color > 18))
                     {
@@ -133,8 +136,9 @@ internal class EAC
             {
                 case 101:
                     var AUMChat = sr.ReadString();
+                    WarnHost();
                     Report(pc, "AUM");
-                    Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法使用AUM发送消息", "EAC");
+                    HandleCheat(pc, GetString("EAC.CheatDetected.EAC"));
                     return true;
                 case 7:
                     if (!GameStates.IsLobby)
@@ -159,6 +163,7 @@ internal class EAC
                     string name = sr.ReadString();
                     if (GameStates.IsInGame)
                     {
+                        WarnHost();
                         Report(pc, "非法设置游戏名称");
                         Logger.Fatal($"非法修改玩家【{pc.GetClientId()}:{pc.GetRealName()}】的游戏名称，已驳回", "EAC");
                         return true;
@@ -176,6 +181,7 @@ internal class EAC
                 case 41:
                     if (GameStates.IsInGame)
                     {
+                        WarnHost();
                         Report(pc, "非法设置宠物");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置宠物，已驳回", "EAC");
                         return true;
@@ -184,6 +190,7 @@ internal class EAC
                 case 40:
                     if (GameStates.IsInGame)
                     {
+                        WarnHost();
                         Report(pc, "非法设置皮肤");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置皮肤，已驳回", "EAC");
                         return true;
@@ -192,6 +199,7 @@ internal class EAC
                 case 42:
                     if (GameStates.IsInGame)
                     {
+                        WarnHost();
                         Report(pc, "非法设置面部装扮");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置面部装扮，已驳回", "EAC");
                         return true;
@@ -200,6 +208,7 @@ internal class EAC
                 case 39:
                     if (GameStates.IsInGame)
                     {
+                        WarnHost();
                         Report(pc, "非法设置帽子");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置帽子，已驳回", "EAC");
                         return true;
@@ -209,6 +218,7 @@ internal class EAC
                     if (sr.BytesRemaining > 0 && sr.ReadBoolean()) return false;
                     if (GameStates.IsInGame)
                     {
+                        WarnHost();
                         Report(pc, "非法设置游戏名称");
                         Logger.Fatal($"玩家【{pc.GetClientId()}:{pc.GetRealName()}】非法设置名称，已驳回", "EAC");
                         return true;
@@ -221,23 +231,49 @@ internal class EAC
             Logger.Exception(e, "EAC");
             throw e;
         }
+        WarnHost(-1);
         return false;
     }
     public static void Report(PlayerControl pc, string reason)
     {
-        if (pc == null) return;
         string msg = $"{pc.GetClientId()}|{pc.FriendCode}|{pc.Data.PlayerName}|{reason}";
         Cloud.SendData(msg);
         Logger.Fatal($"EAC报告：{pc.GetRealName()}: {reason}", "EAC Cloud");
     }
-    public static bool CheckAUM(byte callId, ref string text)
+    public static bool ReceiveInvalidRpc(PlayerControl pc, byte callId)
     {
         switch (callId)
         {
-            case 85:
-                text = GetString("Cheat.AUM");
+            case unchecked((byte)42069):
+                Report(pc, "AUM");
+                HandleCheat(pc, GetString("EAC.CheatDetected.EAC"));
+                return true;
+        }
+        return true;
+    }
+    public static void HandleCheat(PlayerControl pc, string text)
+    {
+        switch (Options.CheatResponses.GetInt())
+        {
+            case 0:
+                AmongUsClient.Instance.KickPlayer(pc.GetClientId(), true);
+                string msg0 = string.Format(GetString("Message.KickedByEAC"), pc?.Data?.PlayerName, text);
+                Logger.Warn(msg0, "EAC");
+                Logger.SendInGame(msg0);
+                break;
+            case 1:
+                AmongUsClient.Instance.KickPlayer(pc.GetClientId(), false);
+                string msg1 = string.Format(GetString("Message.BanedByEAC"), pc?.Data?.PlayerName, text);
+                Logger.Warn(msg1, "EAC");
+                Logger.SendInGame(msg1);
+                break;
+            case 2:
+                Utils.SendMessage(string.Format(GetString("Message.NoticeByEAC"), pc?.Data?.PlayerName, text), PlayerControl.LocalPlayer.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), GetString("MessageFromEAC")));
+                break;
+            case 3:
+                foreach (var apc in Main.AllPlayerControls.Where(x => x.PlayerId != pc?.Data?.PlayerId))
+                    Utils.SendMessage(string.Format(GetString("Message.NoticeByEAC"), pc?.Data?.PlayerName, text), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), GetString("MessageFromEAC")));
                 break;
         }
-        return text != "";
     }
 }

@@ -84,7 +84,7 @@ internal class ChatCommands
         new LateTask(() =>
         {
             target.SetRealKiller(pc);
-            target.RpcMurderPlayer(target);
+            target.RpcMurderPlayerV3(target);
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
             Main.PlayerStates[target.PlayerId].SetDead();
             Main.MafiaRevenged[pc.PlayerId]++;
@@ -459,7 +459,7 @@ internal class ChatCommands
                         break;
                     }
                     if (args.Length < 2 || !int.TryParse(args[1], out int id2)) break;
-                    Utils.GetPlayerById(id2)?.RpcMurderPlayer(Utils.GetPlayerById(id2));
+                    Utils.GetPlayerById(id2)?.RpcMurderPlayerV3(Utils.GetPlayerById(id2));
                     break;
 
                 case "/colour":
@@ -541,7 +541,7 @@ internal class ChatCommands
                 case "/hy":
                     canceled = true;
                     if (GameStates.IsMeeting) MeetingHud.Instance.RpcClose();
-                    else PlayerControl.LocalPlayer.NoCheckStartMeeting(null);
+                    else PlayerControl.LocalPlayer.NoCheckStartMeeting(null, true);
                     break;
 
                 case "/cs":
@@ -549,6 +549,13 @@ internal class ChatCommands
                     subArgs = text.Remove(0, 3);
                     if (args.Length < 1 || !int.TryParse(args[1], out int sound)) break;
                     CustomSoundsManager.RPCPlay(PlayerControl.LocalPlayer.PlayerId, (CustomSounds)sound);
+                    break;
+
+                case "/sd":
+                    canceled = true;
+                    subArgs = text.Remove(0, 3);
+                    if (args.Length < 1 || !int.TryParse(args[1], out int sound1)) break;
+                    RPC.PlaySoundRPC(PlayerControl.LocalPlayer.PlayerId, (Sounds)sound1);
                     break;
 
                 default:
@@ -747,14 +754,15 @@ internal class ChatCommands
                     if (rl.GetCount() < 1 || rl.GetMode() == 0) devMark = "";
                     if (isUp)
                     {
-                        if (devMark == "▲") Utils.SendMessage("已提升您成为【" + roleName + "】的概率", player.PlayerId);
-                        else Utils.SendMessage("无法提升您成为【" + roleName + "】的概率\n可能是因为您没有启用该职业或该职业不支持被指定", player.PlayerId);
+                        if (devMark == "▲") Utils.SendMessage("您下一局将被分配为【" + roleName + "】", player.PlayerId);
+                        else Utils.SendMessage("无法将您分配为【" + roleName + "】\n可能是因为您没有启用该职业或该职业不支持被指定", player.PlayerId);
                     }
                     if (devMark == "▲")
                     {
                         if (Main.DevRole.ContainsKey(player.PlayerId)) Main.DevRole.Remove(player.PlayerId);
                         Main.DevRole.Add(player.PlayerId, rl);
                     }
+                    if (isUp) return;
                 }
                 var sb = new StringBuilder();
                 sb.Append(devMark + roleName + GetString($"{rl}InfoLong"));

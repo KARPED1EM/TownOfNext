@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TOHE.Modules;
 using TOHE.Roles.Neutral;
 using UnhollowerRuntimeLib;
 using UnityEngine;
@@ -35,8 +36,8 @@ public class Main : BasePlugin
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
     public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.2.1";
-    public const int PluginCreate = 14;
+    public const string PluginVersion = "2.2.3";
+    public const int PluginCreate = 15;
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -161,7 +162,6 @@ public class Main : BasePlugin
 
     //一些很新的东东
 
-    public static Dictionary<int, byte> LastRPC = new();
     public static string OverrideWelcomeMsg = "";
     public static int HostClientId;
 
@@ -183,6 +183,7 @@ public class Main : BasePlugin
         TOHE.Logger.Disable("SwitchSystem");
         if (!DebugModeManager.AmDebugger)
         {
+            TOHE.Logger.Disable("2018K");
             TOHE.Logger.Disable("ModNews");
             TOHE.Logger.Disable("CustomRpcSender");
             //TOHE.Logger.Disable("ReceiveRPC");
@@ -252,7 +253,7 @@ public class Main : BasePlugin
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
         CustomWinnerHolder.Reset();
-        //CustomSoundsManager.Load();
+        CustomSoundsManager.Load();
         Translator.Init();
         BanManager.Init();
         TemplateManager.Init();

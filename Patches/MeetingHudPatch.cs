@@ -310,7 +310,11 @@ class CheckForEndVotingPatch
         //小丑胜利
         if (crole == CustomRoles.Jester)
         {
-            name = string.Format(GetString("ExiledJester"), realName, coloredRole);
+            //EAC封禁名单玩家成为小丑达成胜利条件后，先嘲笑一波
+            if (exiledPlayer.PlayerId == PlayerControl.LocalPlayer.PlayerId && BanManager.CheckEACList(exiledPlayer.FriendCode))
+                name = string.Format("哈哈哈哈哈哈哈哈哈哈哈哈哈哈\n{0} 居然是 {1} 啊哈哈哈哈笑死我了\n没想到吧，哈哈哈这不是小丑吗哈哈哈哈哈", realName, coloredRole);
+            else
+                name = string.Format(GetString("ExiledJester"), realName, coloredRole);
             DecidedWinner = true;
         }
         //处刑人胜利
@@ -417,26 +421,35 @@ static class ExtendedMeetingHud
             if (ps == null) continue;
             if (ps.VotedFor is not 252 and not byte.MaxValue and not 254)//该玩家面板里是否投了该玩家
             {
+                // 默认票数1票
                 int VoteNum = 1;
-                var target = Utils.GetPlayerById(ps.VotedFor);//玩家投的玩家
 
+                // 投票给有效玩家时才进行的判断
+                var target = Utils.GetPlayerById(ps.VotedFor);
                 if (target != null)
                 {
+                    // 僵尸、活死人无法被票
                     if (target.Is(CustomRoles.Zombie) || target.Is(CustomRoles.Glitch)) VoteNum = 0;
                     if (target.Is(CustomRoles.Bitch)) VoteNum = 16;
+                    // 记录破平者投票
                     if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.Brakar))
                         if (!Main.BrakarVoteFor.Contains(target.PlayerId))
                             Main.BrakarVoteFor.Add(target.PlayerId);
+                    // 集票者记录数据
                     Collector.CollectorVotes(target, ps);
                 }
+
+                //市长附加票数
                 if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.Mayor)
-                    && ps.TargetPlayerId != target.PlayerId
+                    && ps.TargetPlayerId != ps.VotedFor
                     ) VoteNum += Options.MayorAdditionalVote.GetInt();
+                //窃票者附加票数
                 if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.TicketsStealer))
                     VoteNum += (int)(Main.AllPlayerControls.Where(x => (x.GetRealKiller() == null ? -1 : x.GetRealKiller().PlayerId) == ps.TargetPlayerId).Count() * Options.TicketsPerKill.GetFloat());
 
-                //主动叛变模式下自票无效
+                // 主动叛变模式下自票无效
                 if (ps.TargetPlayerId == ps.VotedFor && Options.MadmateSpawnMode.GetInt() == 2) VoteNum = 0;
+
                 //投票を1追加 キーが定義されていない場合は1で上書きして定義
                 dic[ps.VotedFor] = !dic.TryGetValue(ps.VotedFor, out int num) ? VoteNum : num + VoteNum;//统计该玩家被投的数量
             }
@@ -523,8 +536,6 @@ class MeetingHudStartPatch
         Main.AllPlayerControls.Do(x => ReportDeadBodyPatch.WaitReport[x.PlayerId].Clear());
         MeetingStates.MeetingCalled = true;
 
-        Psychic.OnMeetingStart();
-
         if (!AmongUsClient.Instance.AmHost) return;
 
         Main.LastVotedPlayerInfo = null;
@@ -539,6 +550,7 @@ class MeetingHudStartPatch
         QuickShooter.OnMeetingStart();
         Eraser.OnMeetingStart();
         Hacker.OnMeetingStart();
+        Psychic.OnMeetingStart();
 
         NotifyRoleSkillOnMeetingStart();
     }
@@ -550,7 +562,7 @@ class MeetingHudStartPatch
         {
             var pc = Utils.GetPlayerById(pva.TargetPlayerId);
             if (pc == null) continue;
-            var RoleTextData = Utils.GetRoleText(pc.PlayerId);
+            var RoleTextData = Utils.GetRoleText(pc.PlayerId, !pc.AmOwner && !PlayerControl.LocalPlayer.Data.IsDead);
             if (pc.GetCustomRole().IsImpostor() && PlayerControl.LocalPlayer.GetCustomRole().IsImpostor() && !PlayerControl.LocalPlayer.Data.IsDead) RoleTextData = Utils.GetRoleText(pc.PlayerId, true);
             var roleTextMeeting = UnityEngine.Object.Instantiate(pva.NameText);
             roleTextMeeting.transform.SetParent(pva.NameText.transform);
@@ -567,7 +579,8 @@ class MeetingHudStartPatch
                 (AmongUsClient.Instance.AmHost && PlayerControl.LocalPlayer.Is(CustomRoles.GM)) ||
                 (pc.GetCustomRole().IsImpostor() && PlayerControl.LocalPlayer.GetCustomRole().IsImpostor() && !PlayerControl.LocalPlayer.Data.IsDead && Options.ImpKnowAlliesRole.GetBool()) ||
                 (pc.GetCustomRole().IsImpostor() && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && !PlayerControl.LocalPlayer.Data.IsDead) ||
-                (PlayerControl.LocalPlayer.Is(CustomRoles.God) && !PlayerControl.LocalPlayer.Data.IsDead);
+                (pc.Is(CustomRoles.Lovers) && PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && Options.LoverKnowRoles.GetBool()) ||
+                PlayerControl.LocalPlayer.Is(CustomRoles.God);
             if (EvilTracker.IsTrackTarget(PlayerControl.LocalPlayer, pc) && EvilTracker.CanSeeLastRoomInMeeting)
             {
                 roleTextMeeting.text = EvilTracker.GetArrowAndLastRoom(PlayerControl.LocalPlayer, pc);
@@ -622,6 +635,8 @@ class MeetingHudStartPatch
             switch (seer.GetCustomRole().GetCustomRoleTypes())
             {
                 case CustomRoleTypes.Impostor:
+                    if (target.Is(CustomRoles.Snitch) && target.Is(CustomRoles.Madmate) && target.GetPlayerTaskState().IsTaskFinished)
+                        sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), "★")); //変更対象にSnitchマークをつける
                     sb.Append(Snitch.GetWarningMark(seer, target));
                     break;
             }
@@ -725,12 +740,15 @@ class MeetingHudUpdatePatch
             __instance.playerStates.DoIf(x => x.HighlightedFX.enabled, x =>
             {
                 var player = Utils.GetPlayerById(x.TargetPlayerId);
-                player.RpcExileV2();
-                Main.PlayerStates[player.PlayerId].deathReason = PlayerState.DeathReason.Execution;
-                Main.PlayerStates[player.PlayerId].SetDead();
-                Utils.SendMessage(string.Format(GetString("Message.Executed"), player.Data.PlayerName));
-                Logger.Info($"{player.GetNameWithRole()}を処刑しました", "Execution");
-                __instance.CheckForEndVoting();
+                if (player != null && !player.Data.IsDead)
+                {
+                    player.RpcExileV2();
+                    Main.PlayerStates[player.PlayerId].deathReason = PlayerState.DeathReason.Execution;
+                    Main.PlayerStates[player.PlayerId].SetDead();
+                    Utils.SendMessage(string.Format(GetString("Message.Executed"), player.Data.PlayerName));
+                    Logger.Info($"{player.GetNameWithRole()}を処刑しました", "Execution");
+                    __instance.CheckForEndVoting();
+                }
             });
         }
     }

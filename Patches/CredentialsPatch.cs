@@ -19,6 +19,7 @@ internal class PingTrackerUpdatePatch
         sb.Append(Main.credentialsText);
 
         if (Options.NoGameEnd.GetBool()) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("NoGameEnd")));
+        if (Options.AllowConsole.GetBool()) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("AllowConsole")));
         if (!GameStates.IsModHost) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("Warning.NoModHost")));
         if (DebugModeManager.IsDebugMode) sb.Append("\r\n").Append(Utils.ColorString(Color.green, GetString("DebugMode")));
 
@@ -59,9 +60,7 @@ internal class VersionShowerStartPatch
 
         ErrorText.Create(__instance.text);
         if (Main.hasArgumentException && ErrorText.Instance != null)
-        {
             ErrorText.Instance.AddError(ErrorCode.Main_DictionaryError);
-        }
 
         if (SpecialEventText == null)
         {

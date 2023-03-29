@@ -266,20 +266,17 @@ public static class Utils
         var mainRole = Main.PlayerStates[playerId].MainRole;
         var SubRoles = Main.PlayerStates[playerId].SubRoles;
         RoleText = GetRoleName(mainRole);
-        RoleColor = GetPlayerById(playerId).Is(CustomRoles.Madmate) ? new(255, 25, 25, byte.MaxValue) : GetRoleColor(mainRole);
+        RoleColor = SubRoles.Contains(CustomRoles.Madmate) ? GetRoleColor(CustomRoles.Madmate) : GetRoleColor(mainRole);
 
         if (Main.PlayerStates[playerId].SubRoles.Contains(CustomRoles.LastImpostor))
             RoleText = GetRoleString("Last-") + RoleText;
 
-        if (!pure)
-        {
-            if (Options.NameDisplayAddons.GetBool())
-                foreach (var subRole in Main.PlayerStates[playerId].SubRoles.Where(x => x is not CustomRoles.LastImpostor and not CustomRoles.Madmate and not CustomRoles.Lovers))
-                    RoleText = ColorString(GetRoleColor(subRole), GetString(subRole.ToString())) + RoleText;
+        if (Options.NameDisplayAddons.GetBool() && !pure)
+            foreach (var subRole in Main.PlayerStates[playerId].SubRoles.Where(x => x is not CustomRoles.LastImpostor and not CustomRoles.Madmate and not CustomRoles.Lovers))
+                RoleText = ColorString(GetRoleColor(subRole), GetString("Prefix." + subRole.ToString())) + RoleText;
 
-            if (Main.PlayerStates[playerId].SubRoles.Contains(CustomRoles.Madmate))
-                RoleText = GetRoleString("Mad-") + RoleText;
-        }
+        if (Main.PlayerStates[playerId].SubRoles.Contains(CustomRoles.Madmate))
+            RoleText = GetRoleString("Mad-") + RoleText;
 
         return (RoleText, RoleColor);
     }
@@ -317,7 +314,7 @@ public static class Utils
 
         var hasTasks = true;
         var States = Main.PlayerStates[p.PlayerId];
-        if (p.Disconnected) hasTasks = false;
+        if (p.Disconnected) return false;
         if (p.Role.IsImpostor)
             hasTasks = false; //タスクはCustomRoleを元に判定する
 
@@ -380,8 +377,8 @@ public static class Utils
             (pc.Is(CustomRoles.Sheriff) && !Options.SheriffCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Mayor) && !Options.MayorCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.NiceGuesser) && !Options.NGuesserCanBeMadmate.GetBool()) ||
+            (pc.Is(CustomRoles.Snitch) && !Options.SnitchCanBeMadmate.GetBool()) ||
             pc.Is(CustomRoles.Needy) ||
-            pc.Is(CustomRoles.Snitch) ||
             pc.Is(CustomRoles.CyberStar) ||
             pc.Is(CustomRoles.Egoist) ||
             pc.Is(CustomRoles.DualPersonality)
@@ -783,7 +780,7 @@ public static class Utils
                 {
                     //生存者は爆死
                     pc.SetRealKiller(Terrorist.Object);
-                    pc.RpcMurderPlayer(pc);
+                    pc.RpcMurderPlayerV3(pc);
                     Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Bombed;
                     Main.PlayerStates[pc.PlayerId].SetDead();
                 }
@@ -883,7 +880,7 @@ public static class Utils
 
             if (seer.IsModClient()) continue;
             string fontSize = "1.5";
-            if (isForMeeting && (seer.GetClient().PlatformData.Platform.ToString() == "Playstation" || seer.GetClient().PlatformData.Platform.ToString() == "Switch")) fontSize = "70%";
+            if (isForMeeting && (seer.GetClient().PlatformData.Platform == Platforms.Playstation || seer.GetClient().PlatformData.Platform == Platforms.Switch)) fontSize = "70%";
             logger.Info("NotifyRoles-Loop1-" + seer.GetNameWithRole() + ":START");
 
             //タスクなど進行状況を含むテキスト
@@ -1045,19 +1042,16 @@ public static class Utils
                         TargetMark.Append($"<color={Utils.GetRoleColorCode(CustomRoles.Impostor)}>◆</color>");
 
                     //他人の役職とタスクは幽霊が他人の役職を見れるようになっていてかつ、seerが死んでいる場合のみ表示されます。それ以外の場合は空になります。
-                    string TargetRoleText = seer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool() ? $"<size={fontSize}>{target.GetDisplayRoleName()}{GetProgressText(target)}</size>\r\n" : "";
+                    string TargetRoleText = 
+                        (seer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool()) ||
+                        (!seer.Data.IsDead && seer.Is(CustomRoles.Madmate) && target.GetCustomRole().IsImpostor()) ||
+                        (seer.Is(CustomRoles.Lovers) && target.Is(CustomRoles.Lovers)) ||
+                        (seer.Is(CustomRoles.God) && !seer.Data.IsDead) ||
+                        (target.Is(CustomRoles.GM))
+                        ? $"<size={fontSize}>{target.GetDisplayRoleName()}{GetProgressText(target)}</size>\r\n" : "";
 
-                    if (TargetRoleText == "" && seer.GetCustomRole().IsImpostor() && target.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool())
+                    if (seer.GetCustomRole().IsImpostor() && target.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool())
                         TargetRoleText = $"<size={fontSize}>{target.GetDisplayRoleName(!seer.Data.IsDead)}</size>\r\n";
-
-                    if (TargetRoleText == "" && !seer.Data.IsDead && seer.Is(CustomRoles.Madmate) && target.GetCustomRole().IsImpostor())
-                        TargetRoleText = $"<size={fontSize}>{target.GetDisplayRoleName()}</size>\r\n";
-
-                    if (seer.Is(CustomRoles.God) && !seer.Data.IsDead)
-                        TargetRoleText = $"<size={fontSize}>{target.GetDisplayRoleName()}</size>\r\n";
-
-                    if (target.Is(CustomRoles.GM))
-                        TargetRoleText = $"<size={fontSize}>{target.GetDisplayRoleName()}</size>\r\n";
 
                     if (seer.Is(CustomRoles.EvilTracker))
                     {
@@ -1087,6 +1081,9 @@ public static class Utils
 
                     //ターゲットのプレイヤー名の色を書き換えます。
                     TargetPlayerName = TargetPlayerName.ApplyNameColorData(seer, target, isForMeeting);
+
+                    if (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Snitch) && target.Is(CustomRoles.Madmate) && target.GetPlayerTaskState().IsTaskFinished)
+                        TargetMark.Append(ColorString(GetRoleColor(CustomRoles.Impostor), "★"));
 
                     TargetMark.Append(Executioner.TargetMark(seer, target));
 
@@ -1179,6 +1176,9 @@ public static class Utils
                 case "actorour#0029":
                     name = $"<color={Main.ModColor}><size=1.7>开发者</size></color>\r\n" + name;
                     break;
+                case "keepchirpy#6354":
+                    name = $"<color=#E42217><size=1.7>{GetString("Developer")}</size></color>\r\n" + name;
+                    break;
                 case "pinklaze#1776":
                     name = $"<color=#30548e><size=1.7>开发者</size></color>\r\n" + name;
                     break;
@@ -1226,6 +1226,7 @@ public static class Utils
         return pc.FriendCode is
             "actorour#0029" or
             "pinklaze#1776" or //NCM
+            "keepchirpy#6354" or //Tommy
             "bannerfond#3960" or
             "recentduct#6068" or
             "heavyclod#2286" or //小叨院长
@@ -1241,7 +1242,8 @@ public static class Utils
     {
         return pc.FriendCode is
             "actorour#0029" or
-            "pinklaze#1776" or
+            "pinklaze#1776" or //NCM
+            "keepchirpy#6354" or //Tommy
             "bannerfond#3960" or
             "recentduct#6068" or
             "radarright#2509";
@@ -1337,7 +1339,7 @@ public static class Utils
         string filename = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/TOHE-v{Main.PluginVersion}-{t}.log";
         FileInfo file = new(@$"{System.Environment.CurrentDirectory}/BepInEx/LogOutput.log");
         file.CopyTo(@filename);
-        System.Diagnostics.Process.Start(@$"{System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}");
+        System.Diagnostics.Process.Start(@$"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}");
         if (PlayerControl.LocalPlayer != null)
             HudManager.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
     }

@@ -64,11 +64,16 @@ enum CustomRPC
     SetConcealerTimer,
     SetMedicalerProtectList,
     SetHackerHackLimit,
+    SyncPsychicRedList,
 }
 public enum Sounds
 {
     KillSound,
-    TaskComplete
+    TaskComplete,
+    TaskUpdateSound,
+    ImpTransform,
+
+    Test,
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
 internal class RPCHandlerPatch
@@ -77,19 +82,18 @@ internal class RPCHandlerPatch
     {
         var rpcType = (RpcCalls)callId;
         MessageReader subReader = MessageReader.Get(reader);
-        if (EAC.Receive(__instance, callId, reader)) return true;
-        EAC.WarnHost(-1);
+        if (EAC.ReceiveRpc(__instance, callId, reader)) return false;
         Logger.Info($"{__instance?.Data?.PlayerId}({__instance?.Data?.PlayerName}):{callId}({RPC.GetRpcName(callId)})", "ReceiveRPC");
         switch (rpcType)
         {
             case RpcCalls.SetName: //SetNameRPC
                 string name = subReader.ReadString();
                 if (subReader.BytesRemaining > 0 && subReader.ReadBoolean()) return false;
-                Logger.Info("名称修改:" + __instance.GetNameWithRole() + " => " + name, "SetName");
+                Logger.Info("RPC名称修改:" + __instance.GetNameWithRole() + " => " + name, "SetName");
                 break;
             case RpcCalls.SetRole: //SetNameRPC
                 var role = (RoleTypes)subReader.ReadUInt16();
-                Logger.Info("设置角色:" + __instance.GetRealName() + " => " + role, "SetRole");
+                Logger.Info("RPC设置职业:" + __instance.GetRealName() + " => " + role, "SetRole");
                 break;
             case RpcCalls.SendChat:
                 var text = subReader.ReadString();
@@ -108,49 +112,9 @@ internal class RPCHandlerPatch
             Logger.Warn($"{__instance?.Data?.PlayerName}:{callId}({RPC.GetRpcName(callId)}) 已取消，因为它是由主机以外的其他人发送的。", "CustomRPC");
             if (AmongUsClient.Instance.AmHost)
             {
-                if (Main.LastRPC.ContainsKey(__instance.PlayerId))
-                {
-                    if (Main.LastRPC[__instance.PlayerId] == byte.MaxValue) return false; //已处理
-                    string text = "";
-                    if (Main.LastRPC[__instance.PlayerId] == callId && EAC.CheckAUM(callId, ref text))
-                    {
-                        EAC.Report(__instance, "AUM");
-                        switch (Options.CheatResponses.GetInt())
-                        {
-                            case 0:
-                                AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), true);
-                                Logger.Warn($"检测到 {__instance?.Data?.PlayerName} 正在使用作弊程序，因此将其踢出：{text}", "Kick");
-                                Logger.SendInGame(string.Format($"封禁 {__instance?.Data?.PlayerName}，理由：{text}", __instance?.Data?.PlayerName));
-                                break;
-                            case 1:
-                                AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
-                                Logger.Warn($"检测到 {__instance?.Data?.PlayerName} 正在使用作弊程序，因此将其踢出：{text}", "Kick");
-                                Logger.SendInGame(string.Format($"踢出 {__instance?.Data?.PlayerName}，理由：{text}", __instance?.Data?.PlayerName));
-                                break;
-                            case 2:
-                                Utils.SendMessage($"检测到 {__instance?.Data?.PlayerName}：{text}", PlayerControl.LocalPlayer.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), "【 ★ 作弊检测 ★ 】"));
-                                break;
-                            case 3:
-                                foreach (var pc in Main.AllPlayerControls)
-                                {
-                                    if (pc != null && pc.PlayerId != __instance?.Data?.PlayerId)
-                                    {
-                                        Utils.SendMessage($"检测到 {__instance?.Data?.PlayerName}：{text}", pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), "【 ★ 作弊检测 ★ 】"));
-                                    }
-                                }
-                                break;
-                        }
-                        Main.LastRPC[__instance.PlayerId] = byte.MaxValue;
-                        return false;
-                    }
-                }
-                else
-                {
-                    Main.LastRPC.Add(__instance.PlayerId, callId);
-                    return false;
-                }
+                if (!EAC.ReceiveInvalidRpc(__instance, callId)) return false;
                 AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
-                Logger.Warn($"多次收到来自 {__instance?.Data?.PlayerName} 的不受信用的RPC，因此将其踢出。", "Kick");
+                Logger.Warn($"收到来自 {__instance?.Data?.PlayerName} 的不受信用的RPC，因此将其踢出。", "Kick");
                 Logger.SendInGame(string.Format(GetString("Warning.InvalidRpc"), __instance?.Data?.PlayerName));
             }
             return false;
@@ -159,7 +123,6 @@ internal class RPCHandlerPatch
     }
     public static void Postfix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
     {
-
         var rpcType = (CustomRPC)callId;
         switch (rpcType)
         {
@@ -240,6 +203,7 @@ internal class RPCHandlerPatch
                     list.Add(OptionItem.AllOptions[i]);
                 Logger.Info($"{startAmount}-{lastAmount}:{list.Count}/{OptionItem.AllOptions.Count}", "SyncCustomSettings");
                 foreach (var co in list) co.SetValue(reader.ReadInt32());
+                OptionShower.GetText();
                 break;
             case CustomRPC.SetDeathReason:
                 RPC.GetDeathReason(reader);
@@ -371,6 +335,7 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.RestTOHESetting:
                 OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValueNoRpc(x.DefaultValue));
+                OptionShower.GetText();
                 break;
             case CustomRPC.SetEraseLimit:
                 Eraser.ReceiveRPC(reader);
@@ -390,6 +355,9 @@ internal class RPCHandlerPatch
             case CustomRPC.SetHackerHackLimit:
                 Hacker.ReceiveRPC(reader);
                 break;
+            case CustomRPC.SyncPsychicRedList:
+                Psychic.ReceiveRPC(reader);
+                break;
         }
     }
 }
@@ -403,9 +371,7 @@ internal static class RPC
         var amount = OptionItem.AllOptions.Count;
         int divideBy = amount / 10;
         for (var i = 0; i <= 10; i++)
-        {
             SyncOptionsBetween(i * divideBy, (i + 1) * divideBy);
-        }
     }
     public static void SyncCustomSettingsRPCforOneOption(OptionItem option)
     {
@@ -498,10 +464,16 @@ internal static class RPC
             switch (sound)
             {
                 case Sounds.KillSound:
-                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 0.8f);
+                    SoundManager.Instance.PlaySound(PlayerControl.LocalPlayer.KillSfx, false, 1f);
                     break;
                 case Sounds.TaskComplete:
-                    SoundManager.Instance.PlaySound(DestroyableSingleton<HudManager>.Instance.TaskCompleteSound, false, 0.8f);
+                    SoundManager.Instance.PlaySound(DestroyableSingleton<HudManager>.Instance.TaskCompleteSound, false, 1f);
+                    break;
+                case Sounds.TaskUpdateSound:
+                    SoundManager.Instance.PlaySound(DestroyableSingleton<HudManager>.Instance.TaskUpdateSound, false, 1f);
+                    break;
+                case Sounds.ImpTransform:
+                    SoundManager.Instance.PlaySound(DestroyableSingleton<HnSImpostorScreamSfx>.Instance.HnSOtherImpostorTransformSfx, false, 0.8f);
                     break;
             }
         }
@@ -625,6 +597,9 @@ internal static class RPC
                 break;
             case CustomRoles.Hacker:
                 Hacker.Add(targetId);
+                break;
+            case CustomRoles.Psychic:
+                Psychic.Add(targetId);
                 break;
         }
         HudManager.Instance.SetHudActive(true);

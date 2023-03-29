@@ -43,7 +43,7 @@ class HudManagerPatch
         if (GameStates.IsLobby)
         {
             var POM = GameObject.Find("PlayerOptionsMenu(Clone)");
-            __instance.GameSettings.text = POM != null ? "" : OptionShower.GetText();
+            __instance.GameSettings.text = POM != null ? "" : OptionShower.GetTextNoFresh();
             __instance.GameSettings.fontSizeMin =
             __instance.GameSettings.fontSizeMax = 1f;
         }
@@ -158,7 +158,7 @@ class HudManagerPatch
                 //バウンティハンターのターゲットテキスト
                 if (LowerInfoText == null)
                 {
-                    LowerInfoText = UnityEngine.Object.Instantiate(__instance.KillButton.buttonLabelText);
+                    LowerInfoText = Object.Instantiate(__instance.KillButton.buttonLabelText);
                     LowerInfoText.transform.parent = __instance.transform;
                     LowerInfoText.transform.localPosition = new Vector3(0, -2f, 0);
                     LowerInfoText.alignment = TMPro.TextAlignmentOptions.Center;
@@ -337,7 +337,6 @@ class SetHudActivePatch
                     break;
             }
         }
-
         __instance.KillButton.ToggleVisible(player.CanUseKillButton());
         __instance.ImpostorVentButton.ToggleVisible(player.CanUseImpostorVentButton());
     }

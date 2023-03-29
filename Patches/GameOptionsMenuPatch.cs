@@ -92,7 +92,7 @@ public static class GameOptionsMenuPatch
                 {
                     var stringOption = Object.Instantiate(template, tohMenu.transform);
                     scOptions.Add(stringOption);
-                    stringOption.OnValueChanged = new System.Action<OptionBehaviour>((o) => { });
+                    stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
                     stringOption.TitleText.text = option.Name;
                     stringOption.Value = stringOption.oldValue = option.CurrentValue;
                     stringOption.ValueText.text = option.GetString();
@@ -264,6 +264,7 @@ public class StringOptionIncreasePatch
         option.SetValue(option.CurrentValue + 1);
         return false;
     }
+    public static void Postfix(StringOption __instance) => OptionShower.GetText();
 }
 
 [HarmonyPatch(typeof(StringOption), nameof(StringOption.Decrease))]
@@ -277,6 +278,7 @@ public class StringOptionDecreasePatch
         option.SetValue(option.CurrentValue - 1);
         return false;
     }
+    public static void Postfix(StringOption __instance) => OptionShower.GetText();
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
