@@ -476,6 +476,9 @@ internal class SelectRolesPatch
                     case CustomRoles.Psychic:
                         Psychic.Add(pc.PlayerId);
                         break;
+                    case CustomRoles.Scarecrow:
+                        Main.ScarecrowCanWithStandANumberOfKills[pc.PlayerId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
+                        break;
                 }
                 foreach (var subRole in pc.GetCustomSubRoles())
                 {

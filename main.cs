@@ -132,6 +132,7 @@ public class Main : BasePlugin
     public static Dictionary<byte, long> GrenadierBlinding = new();
     public static Dictionary<byte, long> MadGrenadierBlinding = new();
     public static Dictionary<byte, int> CursedWolfSpellCount = new();
+    public static Dictionary<byte, int> ScarecrowCanWithStandANumberOfKills = new();
     public static int AliveImpostorCount;
     public static bool isCursed;
     public static Dictionary<byte, bool> CheckShapeshift = new();
@@ -240,6 +241,7 @@ public class Main : BasePlugin
         currentDrawTarget = byte.MaxValue;
         FirstDied = byte.MaxValue;
         MadmateNum = 0;
+        ScarecrowCanWithStandANumberOfKills = new Dictionary<byte, int>();
 
         Preset1 = Config.Bind("Preset Name Options", "Preset1", "Preset_1");
         Preset2 = Config.Bind("Preset Name Options", "Preset2", "Preset_2");
@@ -344,6 +346,8 @@ public class Main : BasePlugin
                 {CustomRoles.DualPersonality, "#3a648f"},
                 {CustomRoles.Mimic, "#ff1919"},
                 {CustomRoles.Bitch, "#333333"},
+                {CustomRoles.Rambler, "#99CCFF"},
+                {CustomRoles.Scarecrow, "#663333"},
             };
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
             {
@@ -502,6 +506,8 @@ public enum CustomRoles
     DualPersonality,
     Mimic,
     Bitch,
+    Rambler,
+    Scarecrow,
 }
 //WinData
 public enum CustomWinner

@@ -123,7 +123,9 @@ internal static class CustomRolesHelper
             CustomRoles.TicketsStealer or
             CustomRoles.DualPersonality or
             CustomRoles.Mimic or
-            CustomRoles.Bitch;
+            CustomRoles.Bitch or
+            CustomRoles.Rambler or
+            CustomRoles.Scarecrow;
     }
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
@@ -245,7 +247,9 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.DualPersonality && ((!pc.GetCustomRole().IsImpostor() && !pc.GetCustomRole().IsCrewmate()) || pc.Is(CustomRoles.Madmate))) return false;
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeDualPersonality.GetBool()) return false;
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeDualPersonality.GetBool()) return false;
-
+        if (role is CustomRoles.Scarecrow && (!pc.GetCustomRole().IsCrewmate() || pc.Is(CustomRoles.Luckey))) return false;
+        if (role is CustomRoles.Bitch && pc.Is(CustomRoles.Jester)) return false;
+        if (role is CustomRoles.Rambler && (pc.Is(CustomRoles.Flashman) || pc.Is(CustomRoles.SpeedBooster))) return false;
         return true;
     }
     public static RoleTypes GetRoleTypes(this CustomRoles role)

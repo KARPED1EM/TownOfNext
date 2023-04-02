@@ -195,6 +195,12 @@ public class PlayerGameOptionsSender : GameOptionsSender
             opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
             opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
         }
+        // 为漫步者的凶手
+        if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Rambler) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId).Count() > 0)
+        {
+            opt.SetVision(false);
+            opt.SetFloat(FloatOptionNames.PlayerSpeedMod, Options.RamblerSpeed.GetFloat());
+        }
 
         // 投掷傻瓜蛋啦！！！！！
         if (
@@ -232,6 +238,10 @@ public class PlayerGameOptionsSender : GameOptionsSender
                     break;
                 case CustomRoles.Piper:
                     Main.AllPlayerSpeed[player.PlayerId] = Options.PiperAccelerationSpeed.GetFloat();
+                    break;
+                case CustomRoles.Rambler:
+                    Main.AllPlayerSpeed[player.PlayerId] = Options.RamblerSpeed.GetFloat();
+                    opt.SetFloat(FloatOptionNames.PlayerSpeedMod, Options.RamblerSpeed.GetFloat());
                     break;
             }
         }

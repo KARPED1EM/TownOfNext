@@ -601,6 +601,9 @@ internal static class RPC
             case CustomRoles.Psychic:
                 Psychic.Add(targetId);
                 break;
+            case CustomRoles.Scarecrow:
+                Main.ScarecrowCanWithStandANumberOfKills[targetId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
+                break;
         }
         HudManager.Instance.SetHudActive(true);
         if (PlayerControl.LocalPlayer.PlayerId == targetId) RemoveDisableDevicesPatch.UpdateDisableDevices();

@@ -430,7 +430,8 @@ static class ExtendedMeetingHud
                 {
                     // 僵尸、活死人无法被票
                     if (target.Is(CustomRoles.Zombie) || target.Is(CustomRoles.Glitch)) VoteNum = 0;
-                    if (target.Is(CustomRoles.Bitch)) VoteNum = 16;
+                    // 投给贱人的票变为999
+                    if (target.Is(CustomRoles.Bitch)) VoteNum = 999;
                     // 记录破平者投票
                     if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.Brakar))
                         if (!Main.BrakarVoteFor.Contains(target.PlayerId))
