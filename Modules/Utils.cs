@@ -1,7 +1,6 @@
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using Hazel;
-using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -317,7 +316,7 @@ public static class Utils
         if (p.Disconnected) return false;
         if (p.Role.IsImpostor)
             hasTasks = false; //タスクはCustomRoleを元に判定する
-
+        if (Options.CurrentGameMode == CustomGameMode.SoloKombat) return false;
         if (p.IsDead && Options.GhostIgnoreTasks.GetBool()) hasTasks = false;
         var role = States.MainRole;
         switch (role)
@@ -461,6 +460,9 @@ public static class Utils
             case CustomRoles.Hacker:
                 ProgressText.Append(Hacker.GetHackLimit(playerId));
                 break;
+            case CustomRoles.KB_Normal:
+                ProgressText.Append(SoloKombatManager.GetDisplayScore(playerId));
+                break;
             default:
                 //タスクテキスト
                 var taskState = Main.PlayerStates?[playerId].GetTaskState();
@@ -505,7 +507,6 @@ public static class Utils
     }
     public static void ShowActiveSettings(byte PlayerId = byte.MaxValue)
     {
-        var mapId = Main.NormalOptions.MapId;
         if (Options.HideGameSettings.GetBool() && PlayerId != byte.MaxValue)
         {
             SendMessage(GetString("Message.HideGameSettings"), PlayerId);
@@ -516,25 +517,21 @@ public static class Utils
             SendMessage(GetString("Message.NowOverrideText"), PlayerId);
             return;
         }
-        var sb = new StringBuilder();
 
-        sb.Append(GetString("Settings")).Append(":");
-        foreach (var role in Options.CustomRoleCounts)
+        var sb = new StringBuilder();
+        sb.Append(" ★ " + GetString("TabGroup.SystemSettings"));
+        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Tab is TabGroup.SystemSettings && !x.IsHiddenOn(Options.CurrentGameMode)))
         {
-            if (!role.Key.IsEnable()) continue;
-            string mode = role.Key.GetMode() == 1 ? "启用" : "优先";
-            sb.Append($"\n【{GetRoleName(role.Key)}:{mode}×{role.Key.GetCount()}】\n");
-            ShowChildrenSettings(Options.CustomRoleSpawnChances[role.Key], ref sb);
+            sb.Append($"\n{opt.GetName(true)}: {opt.GetString()}");
+            //ShowChildrenSettings(opt, ref sb);
             var text = sb.ToString();
             sb.Clear().Append(text.RemoveHtmlTags());
         }
-        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Id >= 80000 && !x.IsHiddenOn(Options.CurrentGameMode)))
+        sb.Append("\n\n ★ " + GetString("TabGroup.GameSettings"));
+        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Tab is TabGroup.GameSettings && !x.IsHiddenOn(Options.CurrentGameMode)))
         {
-            if (opt.Name is "KillFlashDuration" or "RoleAssigningAlgorithm")
-                sb.Append($"\n【{opt.GetName(true)}: {opt.GetString()}】\n");
-            else
-                sb.Append($"\n【{opt.GetName(true)}】\n");
-            ShowChildrenSettings(opt, ref sb);
+            sb.Append($"\n{opt.GetName(true)}: {opt.GetString()}");
+            //ShowChildrenSettings(opt, ref sb);
             var text = sb.ToString();
             sb.Clear().Append(text.RemoveHtmlTags());
         }
@@ -553,7 +550,7 @@ public static class Utils
         foreach (var role in Options.CustomRoleCounts)
         {
             if (!role.Key.IsEnable()) continue;
-            string mode = role.Key.GetMode() == 1 ? "启用" : "优先";
+            string mode = role.Key.GetMode() == 1 ? GetString("RoleRateNoColor") : GetString("RoleOnNoColor");
             sb.Append($"\n【{GetRoleName(role.Key)}:{mode}×{role.Key.GetCount()}】\n");
             ShowChildrenSettings(Options.CustomRoleSpawnChances[role.Key], ref sb);
             var text = sb.ToString();
@@ -592,7 +589,7 @@ public static class Utils
             else if (role.IsAdditionRole() && headCount == 3) sb.Append("\n\n● " + GetString("TabGroup.Addons"));
             else headCount--;
 
-            string mode = role.GetMode() == 1 ? "启用" : "优先";
+            string mode = role.GetMode() == 1 ? GetString("RoleRateNoColor") : GetString("RoleOnNoColor");
             if (role.IsEnable()) sb.AppendFormat("\n{0}:{1}x{2}", GetRoleName(role), $"{mode}", role.GetCount());
         }
         SendMessage(sb.ToString(), PlayerId);
@@ -623,40 +620,61 @@ public static class Utils
             if (opt.Value.GetBool()) ShowChildrenSettings(opt.Value, ref sb, deep + 1);
         }
     }
-    public static void ShowLastResult(byte PlayerId = byte.MaxValue)
+    public static void ShowLastRoles(byte PlayerId = byte.MaxValue)
     {
         if (AmongUsClient.Instance.IsGameStarted)
         {
-            SendMessage(GetString("CantUse.lastresult"), PlayerId);
+            SendMessage(GetString("CantUse.lastroles"), PlayerId);
             return;
         }
-        var text = $"{GetString("PlayerInfo")}:";
+        var sb = new StringBuilder();
+
+        sb.Append(GetString("PlayerInfo")).Append(":");
         List<byte> cloneRoles = new(Main.PlayerStates.Keys);
         foreach (var id in Main.winnerList)
         {
             if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-            text += $"\n★ " + EndGamePatch.SummaryText[id].RemoveHtmlTags();
+            sb.Append($"\n★ ").Append(EndGamePatch.SummaryText[id].RemoveHtmlTags());
             cloneRoles.Remove(id);
         }
-        foreach (var id in cloneRoles)
+        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
-            if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-            text += $"\n　 " + EndGamePatch.SummaryText[id].RemoveHtmlTags();
+            List<(int, byte)> list = new();
+            foreach (var id in cloneRoles) list.Add((SoloKombatManager.GetRankOfScore(id), id));
+            list.Sort();
+            foreach (var id in list)
+                sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id.Item2]);
         }
-        if (text == $"{GetString("PlayerInfo")}:") text = "";
-
-        string sumText = "";
-        if (SetEverythingUpPatch.LastWinsText != "") sumText += GetString("LastResult") + ": " + $"{SetEverythingUpPatch.LastWinsText}";
-        if (SetEverythingUpPatch.LastWinsReason != "") sumText += "\n" + GetString("LastEndReason") + ": " + $"{SetEverythingUpPatch.LastWinsReason}";
-
-        if (text != "") SendMessage(text, PlayerId);
+        else
+        {
+            foreach (var id in cloneRoles)
+            {
+                if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
+                sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id].RemoveHtmlTags());
+            }
+        }
+        SendMessage(sb.ToString(), PlayerId);
+    }
+    public static void ShowKillLog(byte PlayerId = byte.MaxValue)
+    {
+        if (GameStates.IsInGame)
+        {
+            SendMessage(GetString("CantUse.killlog"), PlayerId);
+            return;
+        }
         if (EndGamePatch.KillLog != "") SendMessage(EndGamePatch.KillLog, PlayerId);
-        if (sumText != "") SendMessage(sumText, PlayerId);
-
-        if (text == "" && EndGamePatch.KillLog == "" && sumText == "") SendMessage(GetString("NoInfoExists"), PlayerId);
-
-        if (IsUP(PlayerControl.LocalPlayer) && Options.EnableUpMode.GetBool()) SendMessage($"提示：该房间启用了【创作者素材保护计划】，房主可以指定自己的职业。\n该功能仅允许创作者用于获取视频素材，如遇滥用情况，请退出游戏或举报。\n当前创作者认证：{GetUpName(PlayerControl.LocalPlayer)}", PlayerId);
-
+    }
+    public static void ShowLastResult(byte PlayerId = byte.MaxValue)
+    {
+        if (GameStates.IsInGame)
+        {
+            SendMessage(GetString("CantUse.lastresult"), PlayerId);
+            return;
+        }
+        var sb = new StringBuilder();
+        if (SetEverythingUpPatch.LastWinsText != "") sb.Append($"{GetString("LastResult")}: {SetEverythingUpPatch.LastWinsText}");
+        if (SetEverythingUpPatch.LastWinsReason != "") sb.Append($"\n{GetString("LastEndReason")}: {SetEverythingUpPatch.LastWinsReason}");
+        if (sb.Length > 0 && Options.CurrentGameMode != CustomGameMode.SoloKombat) SendMessage(sb.ToString(), PlayerId);
     }
     public static string GetSubRolesText(byte id, bool disableColor = false, bool intro = false, bool summary = false)
     {
@@ -795,49 +813,44 @@ public static class Utils
         if (title == "") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
         Main.MessagesToSend.Add((text.RemoveHtmlTags(), sendTo, title));
     }
-    public static void ApplySuffix()
+    public static void ApplySuffix(PlayerControl player)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (IsDev(PlayerControl.LocalPlayer)) return;
-        string name = DataManager.player.Customization.Name;
-        if (Main.nickName != "") name = Main.nickName;
+        if (!AmongUsClient.Instance.AmHost || player == null) return;
+        if (!(player.AmOwner || (player.IsModClient() && player.FriendCode.GetDevUser().HasTag()))) return;
+        string name = Main.AllPlayerNames.TryGetValue(player.PlayerId, out var n) ? n : "";
+        if (Main.nickName != "" && player.AmOwner) name = Main.nickName;
+        if (name == "") return;
         if (AmongUsClient.Instance.IsGameStarted)
         {
-            if (Options.ColorNameMode.GetBool() && Main.nickName == "") name = Palette.GetColorName(PlayerControl.LocalPlayer.Data.DefaultOutfit.ColorId);
+            if (Options.ColorNameMode.GetBool() && Main.nickName == "") name = Palette.GetColorName(player.Data.DefaultOutfit.ColorId);
         }
         else
         {
             if (!GameStates.IsLobby) return;
-            if (AmongUsClient.Instance.IsGamePublic)
-                name = $"<color=#ffd6ec>TOHE</color><color=#baf7ca>★</color>" + name;
-            switch (Options.GetSuffixMode())
+            if (player.AmOwner)
             {
-                case SuffixModes.None:
-                    break;
-                case SuffixModes.TOHE:
-                    name += $"\r\n<color={Main.ModColor}>TOHE v{Main.PluginVersion}</color>";
-                    break;
-                case SuffixModes.Streaming:
-                    name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.Streaming")}</color>";
-                    break;
-                case SuffixModes.Recording:
-                    name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.Recording")}</color>";
-                    break;
-                case SuffixModes.RoomHost:
-                    name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.RoomHost")}</color>";
-                    break;
-                case SuffixModes.OriginalName:
-                    name += $"\r\n<color={Main.ModColor}>{DataManager.player.Customization.Name}</color>";
-                    break;
-                case SuffixModes.DoNotKillMe:
-                    name += $"\r\n<color={Main.ModColor}>{GetString("SuffixModeText.DoNotKillMe")}</color>";
-                    break;
-                case SuffixModes.NoAndroidPlz:
-                    name += $"\r\n<color={Main.ModColor}>{GetString("SuffixModeText.NoAndroidPlz")}</color>";
-                    break;
+                if (AmongUsClient.Instance.IsGamePublic)
+                    name = $"<color=#ffd6ec>TOHE</color><color=#baf7ca>★</color>" + name;
+                if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+                    name = $"<color=#f55252><size=1.9>{GetString("ModeSoloKombat")}</size></color>\r\n" + name;
             }
+            if (!name.Contains("\r") && player.FriendCode.GetDevUser().HasTag())
+                name = player.FriendCode.GetDevUser().GetTag() + name;
+            else
+                name = Options.GetSuffixMode() switch
+                {
+                    SuffixModes.TOHE => name += $"\r\n<color={Main.ModColor}>TOHE v{Main.PluginVersion}</color>",
+                    SuffixModes.Streaming => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.Streaming")}</color>",
+                    SuffixModes.Recording => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.Recording")}</color>",
+                    SuffixModes.RoomHost => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.RoomHost")}</color>",
+                    SuffixModes.OriginalName => name += $"\r\n<color={Main.ModColor}>{DataManager.player.Customization.Name}</color>",
+                    SuffixModes.DoNotKillMe => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixModeText.DoNotKillMe")}</color>",
+                    SuffixModes.NoAndroidPlz => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixModeText.NoAndroidPlz")}</color>",
+                    _ => name
+                };
         }
-        if (name != PlayerControl.LocalPlayer.name && PlayerControl.LocalPlayer.CurrentOutfitType == PlayerOutfitType.Default) PlayerControl.LocalPlayer.RpcSetName(name);
+        if (name != player.name && player.CurrentOutfitType == PlayerOutfitType.Default)
+            player.RpcSetName(name);
     }
     public static PlayerControl GetPlayerById(int PlayerId)
     {
@@ -847,6 +860,7 @@ public static class Utils
         GameData.Instance.AllPlayers.ToArray().Where(info => info.PlayerId == PlayerId).FirstOrDefault();
     private static StringBuilder SelfSuffix = new();
     private static StringBuilder SelfMark = new(20);
+    private static StringBuilder TargetSuffix = new();
     private static StringBuilder TargetMark = new(20);
     public static void NotifyRoles(bool isForMeeting = false, PlayerControl SpecifySeer = null, bool NoCache = false, bool ForceLoop = false)
     {
@@ -945,6 +959,11 @@ public static class Utils
 
             SelfSuffix.Append(EvilTracker.GetTargetArrow(seer, seer));
 
+            //KB自身名字后缀
+
+            if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+                SelfSuffix.Append(SoloKombatManager.GetDisplayHealth(seer));
+
             //RealNameを取得 なければ現在の名前をRealNamesに書き込む
             string SeerRealName = seer.GetRealName(isForMeeting);
 
@@ -961,7 +980,12 @@ public static class Utils
                 SelfName = $"</size>\r\n{ColorString(seer.GetRoleColor(), string.Format(GetString("EnterVentWinCountDown"), Main.RevolutionistCountdown.TryGetValue(seer.PlayerId, out var x) ? x : 10))}";
             if (Pelican.IsEaten(seer.PlayerId))
                 SelfName = $"</size>\r\n{ColorString(GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"))}";
-            SelfName = SelfRoleName + "\r\n" + SelfName;
+            if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+            {
+                SoloKombatManager.GetNameNotify(seer, ref SelfName);
+                SelfName = $"<size={fontSize}>{SelfTaskText}</size>\r\n{SelfName}";
+            }
+            else SelfName = SelfRoleName + "\r\n" + SelfName;
             SelfName += SelfSuffix.ToString() == "" ? "" : "\r\n " + SelfSuffix.ToString();
             if (!isForMeeting) SelfName += "\r\n";
 
@@ -1042,7 +1066,7 @@ public static class Utils
                         TargetMark.Append($"<color={Utils.GetRoleColorCode(CustomRoles.Impostor)}>◆</color>");
 
                     //他人の役職とタスクは幽霊が他人の役職を見れるようになっていてかつ、seerが死んでいる場合のみ表示されます。それ以外の場合は空になります。
-                    string TargetRoleText = 
+                    string TargetRoleText =
                         (seer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool()) ||
                         (!seer.Data.IsDead && seer.Is(CustomRoles.Madmate) && target.GetCustomRole().IsImpostor()) ||
                         (seer.Is(CustomRoles.Lovers) && target.Is(CustomRoles.Lovers)) ||
@@ -1052,6 +1076,9 @@ public static class Utils
 
                     if (seer.GetCustomRole().IsImpostor() && target.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool())
                         TargetRoleText = $"<size={fontSize}>{target.GetDisplayRoleName(!seer.Data.IsDead)}</size>\r\n";
+
+                    if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+                        TargetRoleText = $"<size={fontSize}>{GetProgressText(target)}</size>\r\n";
 
                     if (seer.Is(CustomRoles.EvilTracker))
                     {
@@ -1091,6 +1118,11 @@ public static class Utils
 
                     TargetMark.Append(Medicaler.TargetMark(seer, target));
 
+                    //KB目标玩家名字后缀
+                    TargetSuffix.Clear();
+
+                    if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+                        TargetSuffix.Append(SoloKombatManager.GetDisplayHealth(target));
 
                     string TargetDeathReason = "";
                     if (seer.KnowDeathReason(target))
@@ -1101,6 +1133,7 @@ public static class Utils
 
                     //全てのテキストを合成します。
                     string TargetName = $"{TargetRoleText}{TargetPlayerName}{TargetDeathReason}{TargetMark}";
+                    TargetName += (TargetSuffix.ToString() == "" ? "" : ("\r\n" + TargetSuffix.ToString()));
 
                     //適用
                     target.RpcSetNamePrivate(TargetName, true, seer, force: NoCache);
@@ -1128,165 +1161,6 @@ public static class Utils
         if (Options.AirShipVariableElectrical.GetBool())
             AirShipElectricalDoors.Initialize();
     }
-    public static void DevNameCheck(ClientData client)
-    {
-        new LateTask(() =>
-        {
-            if (client.Character == null) return;
-            Dictionary<string, string> DevColor = new()
-            {
-                { "actorour#0029", Main.ModColor },
-            };
-            foreach (var dc in DevColor)
-            {
-                if (client.FriendCode.Equals(dc.Key))
-                {
-                    string t1 = $"<color={dc.Value}>";
-                    string t2 = client.PlayerName;
-                    string t3 = "</color>";
-                    string name = t1 + t2 + t3;
-                    client.Character.RpcSetName(name);
-                }
-            }
-        }, 3f, "Dev Name Check");
-    }
-    public static void ApplyDevSuffix(PlayerControl player)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (!IsDev(player)) return;
-        string name = DataManager.player.Customization.Name;
-        if (player.PlayerId != PlayerControl.LocalPlayer.PlayerId)
-        {
-            if (!player.IsModClient()) return;
-            if (Main.OriginalName.ContainsKey(player.GetClientId()))
-                name = Main.OriginalName[player.GetClientId()];
-            else return;
-        }
-        if (AmongUsClient.Instance.IsGameStarted)
-        {
-            if (Options.ColorNameMode.GetBool() && Main.nickName == "") name = Palette.GetColorName(player.Data.DefaultOutfit.ColorId);
-        }
-        else
-        {
-            if (!GameStates.IsLobby) return;
-            if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId && AmongUsClient.Instance.IsGamePublic)
-                name = $"<color=#ffd6ec>TOHE</color><color=#baf7ca>★</color>" + name;
-            switch (player.FriendCode)
-            {
-                case "actorour#0029":
-                    name = $"<color={Main.ModColor}><size=1.7>开发者</size></color>\r\n" + name;
-                    break;
-                case "keepchirpy#6354":
-                    name = $"<color=#E42217><size=1.7>{GetString("Developer")}</size></color>\r\n" + name;
-                    break;
-                case "pinklaze#1776":
-                    name = $"<color=#30548e><size=1.7>开发者</size></color>\r\n" + name;
-                    break;
-                case "bannerfond#3960":
-                    name = $"<color={Main.ModColor}><size=1.7>贡献者</size></color>\r\n" + name;
-                    break;
-                case "recentduct#6068":
-                    name = $"<color=#FF00FF><size=1.7>高冷男模法师</size></color>\r\n" + name;
-                    break;
-                case "heavyclod#2286":
-                    name = $"<color=#FFFF00><size=1.7>小叨.exe已停止运行</size></color>\r\n" + name;
-                    break;
-                case "canneddrum#2370":
-                    name = $"<color=#fffcbe><size=1.7>我是喜唉awa</size></color>\r\n" + name;
-                    break;
-                case "dovefitted#5329":
-                    name = $"<color=#1379bf><size=1.7>不要首刀我</size></color>\r\n" + name;
-                    break;
-                case "teamelder#5856":
-                    name = $"<color=#1379bf><size=1.7>正义之师（无信誉）</size></color>\r\n" + name;
-                    break;
-                case "luckylogo#7352":
-                    name = $"<color=#f30000><size=1.7>林@林</size></color>\r\n" + name;
-                    break;
-                case "axefitful#8788":
-                    name = $"<color=#8e8171><size=1.7>寄才是真理</size></color>\r\n" + name;
-                    break;
-                case "storeroan#0331":
-                    name = $"<color=#FF0066><size=1.7>Night_瓜</size></color>\r\n" + name;
-                    break;
-                case "twainrobin#8089":
-                    name = $"<color=#0000FF><size=1.7>啊哈修maker</size></color>\r\n" + name;
-                    break;
-            }
-        }
-        if (name.CompareTo(player.name) == 0) return;
-        if (name != player.name && player.CurrentOutfitType == PlayerOutfitType.Default)
-        {
-            Logger.Info("设置玩家名字后缀", "ApplyDevSuffix");
-            player.RpcSetName(name);
-        }
-    }
-    public static bool IsDev(PlayerControl pc)
-    {
-        return pc.FriendCode is
-            "actorour#0029" or
-            "pinklaze#1776" or //NCM
-            "keepchirpy#6354" or //Tommy
-            "bannerfond#3960" or
-            "recentduct#6068" or
-            "heavyclod#2286" or //小叨院长
-            "canneddrum#2370" or //屑人
-            "dovefitted#5329" or //ltemten
-            "teamelder#5856" or //Slok
-            "luckylogo#7352" or //林林林
-            "axefitful#8788" or //罗寄
-            "storeroan#0331" or //西瓜
-            "twainrobin#8089"; //辣鸡
-    }
-    public static bool CanUseDevCommand(PlayerControl pc)
-    {
-        return pc.FriendCode is
-            "actorour#0029" or
-            "pinklaze#1776" or //NCM
-            "keepchirpy#6354" or //Tommy
-            "bannerfond#3960" or
-            "recentduct#6068" or
-            "radarright#2509";
-    }
-    public static bool CanUseDevCommand(int pcId)
-    {
-        var pc = GetPlayerById(pcId);
-        return pc != null && IsDev(pc);
-    }
-    public static bool IsUP(PlayerControl pc)
-    {
-        return pc.FriendCode is
-            "actorour#0029" or
-            "truantwarm＃9165" or //萧暮
-            "drilldinky#1386" or //河豚
-            "heavyclod#2286" or //小叨院长
-            "storeroan#0331" or //西瓜
-            "farardour#6818"; //提米
-    }
-    public static string GetUpName(PlayerControl pc)
-    {
-        return pc.FriendCode switch
-        {
-            "actorour#0029" => "KARPED1EM",
-            "truantwarm＃9165" => "萧暮不姓萧",
-            "drilldinky#1386" => "爱玩AU的河豚",
-            "heavyclod#2286" => "小叨院长",
-            "storeroan#0331" => "Night_瓜",
-            "farardour#6818" => "-提米SaMa-",
-            _ => "未认证用户",
-        };
-    }
-    public static bool IsUP(int pcId)
-    {
-        var pc = GetPlayerById(pcId);
-        return pc != null && IsUP(pc);
-    }
-    public static bool IsDev(int pcId)
-    {
-        var pc = GetPlayerById(pcId);
-        return pc != null && IsDev(pc);
-    }
-
     public static void ChangeInt(ref int ChangeTo, int input, int max)
     {
         var tmp = ChangeTo * 10;
@@ -1383,6 +1257,8 @@ public static class Utils
         if (id == PlayerControl.LocalPlayer.PlayerId) name = DataManager.player.Customization.Name;
         else name = GetPlayerById(id)?.Data.PlayerName ?? name;
         string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=22%>{GetProgressText(id)}</pos><pos=30%>{GetVitalText(id, true)}</pos><pos={RolePos}%> {GetDisplayRoleName(id, true)}{GetSubRolesText(id, summary: true)}</pos>";
+        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+            summary = $"{GetProgressText(id)}\t<pos=22%>{ColorString(Main.PlayerColors[id], name)}</pos>";
         return check && GetDisplayRoleName(id, true).RemoveHtmlTags().Contains("INVALID:NotAssigned")
             ? "INVALID"
             : disableColor ? summary.RemoveHtmlTags() : summary;

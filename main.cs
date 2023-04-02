@@ -36,8 +36,8 @@ public class Main : BasePlugin
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
     public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.2.3";
-    public const int PluginCreate = 15;
+    public const string PluginVersion = "2.2.4";
+    public const int PluginCreate = 17;
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -69,7 +69,7 @@ public class Main : BasePlugin
     public static ConfigEntry<float> LastShapeshifterCooldown { get; private set; }
     public static OptionBackupData RealOptionsData;
     public static Dictionary<byte, PlayerState> PlayerStates = new();
-    public static Dictionary<byte, string> AllPlayerNames;
+    public static Dictionary<byte, string> AllPlayerNames = new();
     public static Dictionary<(byte, byte), string> LastNotifyNames;
     public static Dictionary<byte, Color32> PlayerColors = new();
     public static Dictionary<byte, PlayerState.DeathReason> AfterMeetingDeathPlayers = new();
@@ -96,7 +96,6 @@ public class Main : BasePlugin
     public static bool DoBlockNameChange = false;
     public static int updateTime;
     public static bool newLobby = false;
-    public static Dictionary<int, string> OriginalName = new();
     public static Dictionary<int, int> SayStartTimes = new();
     public static Dictionary<int, int> SayBanwordsTimes = new();
 
@@ -149,6 +148,7 @@ public class Main : BasePlugin
     public static float DefaultCrewmateVision;
     public static float DefaultImpostorVision;
     public static bool IsInitialRelease = DateTime.Now.Month == 1 && DateTime.Now.Day is 17;
+    public static bool IsAprilFools = DateTime.Now.Month == 4 && DateTime.Now.Day is 1;
     public static bool SetAutoStartToDisable = false;
     public static byte FirstDied;
     public static int MadmateNum;
@@ -182,10 +182,10 @@ public class Main : BasePlugin
         TOHE.Logger.Enable();
         TOHE.Logger.Disable("NotifyRoles");
         TOHE.Logger.Disable("SwitchSystem");
+        TOHE.Logger.Disable("ModNews");
         if (!DebugModeManager.AmDebugger)
         {
             TOHE.Logger.Disable("2018K");
-            TOHE.Logger.Disable("ModNews");
             TOHE.Logger.Disable("CustomRpcSender");
             //TOHE.Logger.Disable("ReceiveRPC");
             TOHE.Logger.Disable("SendRPC");
@@ -259,6 +259,7 @@ public class Main : BasePlugin
         Translator.Init();
         BanManager.Init();
         TemplateManager.Init();
+        DevManager.Init();
 
         IRandom.SetInstance(new NetRandomWrapper());
 
@@ -348,6 +349,8 @@ public class Main : BasePlugin
                 {CustomRoles.Bitch, "#333333"},
                 {CustomRoles.Rambler, "#99CCFF"},
                 {CustomRoles.Scarecrow, "#663333"},
+                //SoloKombat
+                {CustomRoles.KB_Normal, "#f55252"}
             };
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
             {
@@ -481,8 +484,13 @@ public enum CustomRoles
     Workaholic,
     Collector,
     Provocateur,
+
+    //SoloKombat
+    KB_Normal,
+
     //GM
     GM,
+
     // Sub-role after 500
     NotAssigned = 500,
     LastImpostor,

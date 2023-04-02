@@ -84,6 +84,9 @@ internal static class CustomRolesHelper
     {
         return role switch
         {
+            //SoloKombat
+            CustomRoles.KB_Normal => RoleTypes.Impostor,
+            //Standard
             CustomRoles.Sheriff => RoleTypes.Impostor,
             CustomRoles.Arsonist => RoleTypes.Impostor,
             CustomRoles.Jackal => RoleTypes.Impostor,
@@ -205,6 +208,9 @@ internal static class CustomRolesHelper
     public static bool IsNeutral(this CustomRoles role) //  «∑Ò÷–¡¢
     {
         return role is
+            //SoloKombat
+            CustomRoles.KB_Normal or
+            //Standard
             CustomRoles.Jester or
             CustomRoles.Opportunist or
             CustomRoles.Mario or

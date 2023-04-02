@@ -20,7 +20,7 @@ class EndGamePatch
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         GameStates.InGame = false;
 
-        Logger.Info("-----------ゲーム終了-----------", "Phase");
+        Logger.Info("-----------游戏结束-----------", "Phase");
         if (!GameStates.IsModHost) return;
         SummaryText = new();
         foreach (var id in Main.PlayerStates.Keys)
@@ -35,10 +35,10 @@ class EndGamePatch
             var targetId = kvp.Key;
             sb.Append($"\n{date:T} {Main.AllPlayerNames[targetId]}({Utils.GetDisplayRoleName(targetId, true)}{Utils.GetSubRolesText(targetId)}) [{Utils.GetVitalText(kvp.Key)}]");
             if (killerId != byte.MaxValue && killerId != targetId)
-                sb.Append($"\n\t\t⇐ {Main.AllPlayerNames[killerId]}({Utils.GetDisplayRoleName(killerId, true)}{Utils.GetSubRolesText(killerId)})");
+                sb.Append($"\n\t⇐ {Main.AllPlayerNames[killerId]}({Utils.GetDisplayRoleName(killerId, true)}{Utils.GetSubRolesText(killerId)})");
         }
         KillLog = sb.ToString();
-        if (KillLog == GetString("KillLog") + ":") KillLog = "";
+        if (!KillLog.Contains("\n")) KillLog = "";
 
         Main.NormalOptions.KillCooldown = Options.DefaultKillCooldown;
         //winnerListリセット
@@ -101,6 +101,18 @@ class SetEverythingUpPatch
         string AdditionalWinnerText = "";
         string CustomWinnerColor = Utils.GetRoleColorCode(CustomRoles.Crewmate);
 
+        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+        {
+            var winnerId = CustomWinnerHolder.WinnerIds.FirstOrDefault();
+            __instance.WinText.text = Main.AllPlayerNames[winnerId] + GetString("Win");
+            __instance.WinText.fontSize -= 5f;
+            __instance.WinText.color = Main.PlayerColors[winnerId];
+            __instance.BackgroundBar.material.color = new Color32(245, 82, 82, 255);
+            WinnerText.text = $"<color=#f55252>{GetString("ModeSoloKombat")}</color>";
+            WinnerText.color = Color.red;
+            goto EndOfText;
+        }
+
         var winnerRole = (CustomRoles)CustomWinnerHolder.WinnerTeam;
         if (winnerRole >= 0)
         {
@@ -157,6 +169,9 @@ class SetEverythingUpPatch
         {
             WinnerText.text = $"<color={CustomWinnerColor}>{CustomWinnerText}{AdditionalWinnerText}{GetString("Win")}</color>";
         }
+
+    EndOfText:
+
         LastWinsText = WinnerText.text.RemoveHtmlTags();
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -178,10 +193,21 @@ class SetEverythingUpPatch
             sb.Append($"\n<color={CustomWinnerColor}>★</color> ").Append(EndGamePatch.SummaryText[id]);
             cloneRoles.Remove(id);
         }
-        foreach (var id in cloneRoles)
+        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
-            if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-            sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id]);
+            List<(int, byte)> list = new();
+            foreach (var id in cloneRoles) list.Add((SoloKombatManager.GetRankOfScore(id), id));
+            list.Sort();
+            foreach (var id in list)
+                sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id.Item2]);
+        }
+        else
+        {
+            foreach (var id in cloneRoles)
+            {
+                if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
+                sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id]);
+            }
         }
         var RoleSummary = RoleSummaryObject.GetComponent<TMPro.TextMeshPro>();
         RoleSummary.alignment = TMPro.TextAlignmentOptions.TopLeft;

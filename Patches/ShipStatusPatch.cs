@@ -1,5 +1,4 @@
 using HarmonyLib;
-using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +41,7 @@ class RepairSystemPatch
         if (Options.DisableSabotage.GetBool()) return false;
 
         // 蠢蛋无法修复破坏
-        if (player.Is(CustomRoles.Fool)) return false;
+        if (player.Is(CustomRoles.Fool) && systemType is SystemTypes.Sabotage or SystemTypes.Comms or SystemTypes.Electrical or SystemTypes.Reactor) return false;
 
         Logger.Msg("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole() + ", amount: " + amount, "RepairSystem");
         if (RepairSender.enabled && AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
@@ -54,7 +53,7 @@ class RepairSystemPatch
             if (task.TaskType == TaskTypes.FixComms) IsComms = true;
 
         if (!AmongUsClient.Instance.AmHost) return true; //以下、ホストのみ実行
-
+        if ((Options.CurrentGameMode == CustomGameMode.SoloKombat) && systemType == SystemTypes.Sabotage) return false;
         //SabotageMaster
         if (player.Is(CustomRoles.SabotageMaster))
             SabotageMaster.RepairSystem(__instance, systemType, amount);
@@ -103,7 +102,7 @@ class CloseDoorsPatch
 {
     public static bool Prefix(ShipStatus __instance)
     {
-        return !Options.DisableSabotage.GetBool();
+        return !(Options.DisableSabotage.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat);
     }
 }
 [HarmonyPatch(typeof(SwitchSystem), nameof(SwitchSystem.RepairDamage))]
@@ -125,7 +124,7 @@ class StartPatch
 
         Utils.CountAlivePlayers(true);
 
-        if (Options.AllowConsole.GetBool() || Utils.CanUseDevCommand(PlayerControl.LocalPlayer))
+        if (Options.AllowConsole.GetBool() || PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsDev)
         {
             if (!BepInEx.ConsoleManager.ConsoleActive && BepInEx.ConsoleManager.ConsoleEnabled)
                 BepInEx.ConsoleManager.CreateConsole();
@@ -164,7 +163,7 @@ class CheckTaskCompletionPatch
 {
     public static bool Prefix(ref bool __result)
     {
-        if (Options.DisableTaskWin.GetBool() || Options.NoGameEnd.GetBool() || TaskState.InitialTotalTasks == 0)
+        if (Options.DisableTaskWin.GetBool() || Options.NoGameEnd.GetBool() || TaskState.InitialTotalTasks == 0 || Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             __result = false;
             return false;

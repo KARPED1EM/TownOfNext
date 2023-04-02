@@ -44,6 +44,10 @@ enum CustomRPC
     RestTOHESetting,
     PlayCustomSound,
     PlayCustomSoundAll,
+    SetKillTimer,
+    SyncAllPlayerNames,
+
+    //Roles
     SetDrawPlayer,
     SetCurrentDrawTarget,
     SetGamerHealth,
@@ -65,6 +69,10 @@ enum CustomRPC
     SetMedicalerProtectList,
     SetHackerHackLimit,
     SyncPsychicRedList,
+
+    //SoloKombat
+    SyncKBPlayer,
+    SyncKBBackCountdown,
 }
 public enum Sounds
 {
@@ -97,7 +105,7 @@ internal class RPCHandlerPatch
                 break;
             case RpcCalls.SendChat:
                 var text = subReader.ReadString();
-                Logger.Info($"{__instance.GetNameWithRole()}:{text}", "SendChat");
+                Logger.Info($"{__instance.GetNameWithRole().RemoveHtmlTags()}:{text}", "ReceiveChat");
                 ChatCommands.OnReceiveChat(__instance, text);
                 break;
             case RpcCalls.StartMeeting:
@@ -358,6 +366,21 @@ internal class RPCHandlerPatch
             case CustomRPC.SyncPsychicRedList:
                 Psychic.ReceiveRPC(reader);
                 break;
+            case CustomRPC.SetKillTimer:
+                PlayerControl.LocalPlayer.SetKillTimer(reader.ReadSingle());
+                break;
+            case CustomRPC.SyncKBPlayer:
+                SoloKombatManager.ReceiveRPCSyncKBPlayer(reader);
+                break;
+            case CustomRPC.SyncAllPlayerNames:
+                Main.AllPlayerNames = new();
+                int num = reader.ReadInt32();
+                for (int i = 0; i < num; i++)
+                    Main.AllPlayerNames.TryAdd(reader.ReadByte(), reader.ReadString());
+                break;
+            case CustomRPC.SyncKBBackCountdown:
+                SoloKombatManager.ReceiveRPCSyncBackCountdown(reader);
+                break;
         }
     }
 }
@@ -396,10 +419,22 @@ internal static class RPC
     public static void PlaySoundRPC(byte PlayerID, Sounds sound)
     {
         if (AmongUsClient.Instance.AmHost)
-            PlaySound(PlayerID, sound);
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.PlaySound, SendOption.Reliable, -1);
+            RPC.PlaySound(PlayerID, sound);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.PlaySound, Hazel.SendOption.Reliable, -1);
         writer.Write(PlayerID);
         writer.Write((byte)sound);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static void SyncAllPlayerNames()
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncAllPlayerNames, SendOption.Reliable, -1);
+        writer.Write(Main.AllPlayerNames.Count);
+        foreach (var name in Main.AllPlayerNames)
+        {
+            writer.Write(name.Key);
+            writer.Write(name.Value);
+        }
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void ExileAsync(PlayerControl player)

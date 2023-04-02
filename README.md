@@ -31,6 +31,12 @@
 > - Reference: Exile Confirm
 > - Reference: Split RPC Pack
 > 
+### :star: [SNR](https://github.com/ykundesu/SuperNewRoles) :
+> 
+> - Reference: Credentials menu
+> - Reference: Switch Horse Mode
+> - Reference: Search Mod Game
+>
 ### :star: [TOP](https://github.com/tugaru1975/TownOfPlus) :
 > 
 > - Reference: Zoom
@@ -39,6 +45,3 @@
 > 
 > - Reference: Modify settings menu
 > 
-### :star: [SNR](https://github.com/ykundesu/SuperNewRoles) :
-> 
-> - Reference: Credentials menu

@@ -99,8 +99,10 @@ internal class ChangeRoleSettings
             Main.currentDousingTarget = byte.MaxValue;
             Main.currentDrawTarget = byte.MaxValue;
             Main.PlayerColors = new();
+
             //名前の記録
-            Main.AllPlayerNames = new();
+            //Main.AllPlayerNames = new();
+            RPC.SyncAllPlayerNames();
 
             Camouflage.Init();
             var invalidColor = Main.AllPlayerControls.Where(p => p.Data.DefaultOutfit.ColorId < 0 || Palette.PlayerColors.Length <= p.Data.DefaultOutfit.ColorId);
@@ -126,7 +128,7 @@ internal class ChangeRoleSettings
                 var colorId = pc.Data.DefaultOutfit.ColorId;
                 if (AmongUsClient.Instance.AmHost && Options.ColorNameMode.GetBool()) pc.RpcSetName(Palette.GetColorName(colorId));
                 Main.PlayerStates[pc.PlayerId] = new(pc.PlayerId);
-                Main.AllPlayerNames[pc.PlayerId] = pc?.Data?.PlayerName;
+                //Main.AllPlayerNames[pc.PlayerId] = pc?.Data?.PlayerName;
 
                 Main.PlayerColors[pc.PlayerId] = Palette.PlayerColors[colorId];
                 Main.AllPlayerSpeed[pc.PlayerId] = Main.RealOptionsData.GetFloat(FloatOptionNames.PlayerSpeedMod); //移動速度をデフォルトの移動速度に変更
@@ -184,6 +186,7 @@ internal class ChangeRoleSettings
             Sans.Init();
             Hacker.Init();
             Psychic.Init();
+            SoloKombatManager.Init();
             CustomWinnerHolder.Reset();
             AntiBlackout.Reset();
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
@@ -319,6 +322,18 @@ internal class SelectRolesPatch
                         break;
                 }
                 Main.PlayerStates[pc.PlayerId].SetMainRole(role);
+            }
+
+            // 个人竞技模式用
+            if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+            {
+
+                foreach (var pair in Main.PlayerStates)
+                    ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
+
+                GameEndChecker.SetPredicateToSoloKombat();
+
+                goto EndOfSelectRolePatch;
             }
 
             var rd = IRandom.Instance;
@@ -493,9 +508,14 @@ internal class SelectRolesPatch
                             break;
                     }
                 }
-                HudManager.Instance.SetHudActive(true);
-                pc.ResetKillCooldown();
             }
+
+        EndOfSelectRolePatch:
+
+            HudManager.Instance.SetHudActive(true);
+
+            foreach (var pc in Main.AllPlayerControls)
+                pc.ResetKillCooldown();
 
             //役職の人数を戻す
             var roleOpt = Main.NormalOptions.roleOptions;
@@ -509,7 +529,8 @@ internal class SelectRolesPatch
             ShapeshifterNum -= addShapeshifterNum;
             roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum, roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
 
-            GameEndChecker.SetPredicateToNormal();
+            if (Options.CurrentGameMode == CustomGameMode.Standard)
+                GameEndChecker.SetPredicateToNormal();
 
             GameOptionsSender.AllSenders.Clear();
             foreach (var pc in Main.AllPlayerControls)

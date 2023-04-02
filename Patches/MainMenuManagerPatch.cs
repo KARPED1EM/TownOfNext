@@ -43,10 +43,10 @@ public class MainMenuManagerPatch
         qqPassiveButton.OnMouseOut.AddListener((Action)(() => qqButtonSprite.color = discordText.color = qqColor));
         __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => discordText.SetText("QQ群"))));
         qqButtonSprite.color = discordText.color = qqColor;
-        qqButton.gameObject.SetActive(Main.ShowQQButton);
+        qqButton.gameObject.SetActive(Main.ShowQQButton && !Main.IsAprilFools);
 
         //Updateボタンを生成
-        if (updateButton == null) updateButton = UnityEngine.Object.Instantiate(template, template.transform.parent);
+        if (updateButton == null) updateButton = Object.Instantiate(template, template.transform.parent);
         updateButton.name = "UpdateButton";
         updateButton.transform.position = template.transform.position + new Vector3(0.25f, 0.75f);
         updateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
@@ -66,8 +66,29 @@ public class MainMenuManagerPatch
         updateButtonSprite.size *= 1.5f;
         updateButton.SetActive(false);
 
+        if (Main.IsAprilFools) return;
+
         var bottomTemplate = GameObject.Find("InventoryButton");
         if (bottomTemplate == null) return;
+
+        var HorseButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
+        var passiveHorseButton = HorseButton.GetComponent<PassiveButton>();
+        var spriteHorseButton = HorseButton.GetComponent<SpriteRenderer>();
+        if (HorseModePatch.isHorseMode) spriteHorseButton.transform.localScale *= -1;
+
+        spriteHorseButton.sprite = Utils.LoadSprite($"TOHE.Resources.HorseButton.png", 75f);
+        passiveHorseButton.OnClick = new ButtonClickedEvent();
+        passiveHorseButton.OnClick.AddListener((Action)(() =>
+        {
+            spriteHorseButton.transform.localScale *= -1;
+            HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode;
+            var particles = Object.FindObjectOfType<PlayerParticles>();
+            if (particles != null)
+            {
+                particles.pool.ReclaimAll();
+                particles.Start();
+            }
+        }));
 
         var CreditsButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
         var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
@@ -84,9 +105,19 @@ public class MainMenuManagerPatch
     }
 }
 
+// 来源：https://github.com/ykundesu/SuperNewRoles/blob/master/SuperNewRoles/Patches/HorseModePatch.cs
+[HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
+public static class HorseModePatch
+{
+    public static bool isHorseMode = false;
+    public static bool Prefix(ref bool __result)
+    {
+        __result = isHorseMode;
+        return false;
+    }
+}
 
-
-// 来源：https://github.com/Yumenopai/TownOfHost_Y
+// 参考：https://github.com/Yumenopai/TownOfHost_Y
 public class ModNews
 {
     public int Number;

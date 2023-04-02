@@ -183,8 +183,7 @@ public class GameOptionsMenuUpdatePatch
                     !option.IsHiddenOn(Options.CurrentGameMode);
 
                 var opt = option.OptionBehaviour.transform.Find("Background").GetComponent<SpriteRenderer>();
-                if (option.IsText) opt.enabled = false;
-                else opt.size = new(5.0f, 0.45f);
+                opt.size = new(5.0f, 0.45f);
                 while (parent != null && enabled)
                 {
                     enabled = parent.GetBool();
@@ -211,8 +210,13 @@ public class GameOptionsMenuUpdatePatch
                         }
                     }
                 }
+                if (option.IsText)
+                {
+                    opt.color = new(0, 0, 0);
+                    opt.transform.localPosition = new(100f, 100f, 100f);
+                }
 
-                if (!option.IsText) option.OptionBehaviour.gameObject.SetActive(enabled);
+                option.OptionBehaviour.gameObject.SetActive(enabled);
                 if (enabled)
                 {
                     offset -= option.IsHeader ? 0.7f : 0.5f;
@@ -316,7 +320,7 @@ public static class SetRecommendationsPatch
     public static bool Prefix(NormalGameOptionsV07 __instance, int numPlayers, bool isOnline)
     {
         numPlayers = Mathf.Clamp(numPlayers, 4, 15);
-        __instance.PlayerSpeedMod = __instance.MapId == 4 ? 1.25f : 1f; //AirShipなら1.25、それ以外は1
+        __instance.PlayerSpeedMod = __instance.MapId == 4 ? 1.5f : 1.25f;
         __instance.CrewLightMod = 1.0f;
         __instance.ImpostorLightMod = 1.75f;
         __instance.KillCooldown = 27.5f;
@@ -341,6 +345,18 @@ public static class SetRecommendationsPatch
         __instance.roleOptions.SetRoleRecommended(RoleTypes.Scientist);
         __instance.roleOptions.SetRoleRecommended(RoleTypes.GuardianAngel);
         __instance.roleOptions.SetRoleRecommended(RoleTypes.Engineer);
+
+        if (Options.CurrentGameMode == CustomGameMode.SoloKombat) //SoloKombat
+        {
+            __instance.PlayerSpeedMod = 1.75f;
+            __instance.CrewLightMod = 1f;
+            __instance.ImpostorLightMod = 1f;
+            __instance.NumImpostors = 3;
+            __instance.NumCommonTasks = 0;
+            __instance.NumLongTasks = 0;
+            __instance.NumShortTasks = 0;
+            __instance.KillCooldown = 0f;
+        }
         return false;
     }
 }

@@ -34,6 +34,10 @@ TeamJackal,豺狼阵营,Team Jackal,Команда Шакалов
 TeamPelican,鹈鹕阵营,Team Pelican,Команда Пеликанов
 TeamGamer,玩家阵营,Team Demons,Команда Демонов
 
+## 个人竞技模式
+KB_Normal,挑战者,Challenger
+KB_NormalInfo,击败所有人！,Kill all of them!
+
 ## 职业
 
 # 其它
@@ -82,7 +86,7 @@ Greedier,贪婪者,Greedy,Жадина
 CursedWolf,呪狼,Cursed Wolf,Проклятый Волк
 ImperiusCurse,夺魂者,Soul Catcher,Ловец Душ
 QuickShooter,快枪手,Quick Shooter,Стрелок
-Concealer,隐蔽者,Concealer,Консилер
+Concealer,隐蔽者（损坏）,Concealer (Broken),Консилер
 Eraser,抹除者,Eraser,Стирачка
 OverKiller,肢解者,Butcher,Мясник
 
@@ -430,7 +434,7 @@ GMInfoLong,(房主):\n看我干啥，我只是个开局就死的冤魂，静静�
 DisableMeeting,禁用会议与报告尸体,Turn off Meetings,Отключить Собрания
 DisableCloseDoor,禁用关门,Disable Doors sabotage,Отключить саботаж дверей
 DisableSabotage,禁用破坏,Disable Sabotage,Отключить Саботаж
-NoGameEnd,测试模式,NoGameEnd,Игра Не Закончится
+NoGameEnd,测试模式（游戏不结束）,NoGameEnd,Игра Не Закончится
 AllowConsole,允许控制台
 DebugMode,调试模式,Debug Mode,Режим отладки
 SyncButtonMode,所有船员共享会议次数,SyncButtonMode,Общая кнопка встреч
@@ -466,6 +470,7 @@ SuffixMode.NoAndroidPlz,安卓别进,No phones,Без телефонов
 SuffixModeText.DoNotKillMe,别首刀我啊啊啊,Do not kill me,Не убивайте меня
 SuffixModeText.NoAndroidPlz,安卓别进求求了,No phones please,Без телефонов пожалуйста
 ColorNameMode,显示颜色名称,Color Name Mode,Режим: Никнейм соответствует цвету
+DisableEmojiName,禁止玩家使用表情符号作为名字
 FixFirstKillCooldown,修正首刀冷却时间,Normalize First Kill Cooldown,Нормализовать откат убийства в начале Игры
 GhostCanSeeOtherRoles,幽灵可见他人职业,Ghosts Can See Other Roles,Призраки могут видеть все Роли
 GhostCanSeeOtherVotes,幽灵可见投票情况,Ghosts Can See Other Votes,Призраки могут видеть цвета Голосов
@@ -480,7 +485,9 @@ ModeOptions,模组设置,Mode Options,Настройка Режима
 AutoStart,人满自动开始,Auto start at full lobby,Авто. запуск игры при полном лобби
 DisableTOHE,切换为原版,Disable TOHE,Отключить TOHE
 UnlockFPS,解锁帧数限制,Unlock FPS,Убрать ограничение FPS
-AutoDisplayLastResult,自动显示最终结果,Auto Display Last Result,Отображать результат последней игры в чате
+AutoDisplayKillLog,结束后自动显示击杀记录
+AutoDisplayLastRoles,结束后自动显示上局职业
+AutoDisplayLastResult,结束后自动显示最终结果,Auto Display Last Result,Отображать результат последней игры в чате
 EnableUpMode,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）
 AutoKickStart,踢出催开始的人,Kick the player who writes start,Кикнуть игрока который пишет start (Только англ)
 AutoKickStartTimes,踢出前警告次数,Number of warnings before kick,Количество предупреждений до кика
@@ -749,13 +756,22 @@ MeetingReserved,会议保留子弹数量,"Number of bullets reserved for the mee
 AccurateCheckMode,未完成任务时可占卜准确职业,"Exact lesson for divination when all tasks are not completed","Точное занятие для гадания, когда все задания не выполнены"
 ConcealerSkillCooldown,隐蔽冷却时间,Skill cooldown,Откат навыка
 ConcealerSkillDuration,隐蔽持续时间,Skill duration,Длительность навыка
+EraseLimit,抹除次数上限,Limit of Erasing,Лимит Стираний
+AssassinMarkCooldown,标记冷却时间,Mark Cooldown,Откат метки
+AssassinAssassinateCooldown,刺杀冷却时间,Assassinate Cooldown,Откат Ассасированния
+AssassinCanKillAfterAssassinate,可以在刺杀后进行常规击杀,Can kill after Assassinating,Может убивать после Ассасирования
+KB_GameTime,游戏持续时间,Game duration
+KB_HPMax,初始血量上限,Default HP
+KB_ATK,初始攻击力,Default Attack
+KB_RecoverAfterSecond,脱离战斗几秒后开始回复血量,Recover Cooldown
+KB_RecoverPerSecond,每秒回复血量,Recover Per Second
+KB_ResurrectionWaitingTime,死亡后复活等待时间,Resurrection waiting time
 EraseLimit,抹除次数上限
 AssassinMarkCooldown,标记冷却时间
 AssassinAssassinateCooldown,刺杀冷却时间
 AssassinCanKillAfterAssassinate,可以在刺杀后进行常规击杀
 ScarecrowCanWithStandANumberOfKills,稻草人在承受多少次击杀后坏掉（）
 RamblerSpeed,漫步者速度
-
 
 ## 死因
 DeathReason.Kill,被杀,Kill,Убит
@@ -841,6 +857,9 @@ DivinatorCheckSelfMsg,哇靠，您查到了一位举世人才！目标太过耀�
 DivinatorCheckReachLimit,水晶球也是会累哒，接下来就算没有水晶球，也要好好努力呀！（占卜次数达到上限）,"You are tired of using a crystal ball for too much. You should retire for now. (The number of divination reaches the limit)","Вы устали от слишком частого использования хрустального шара. Вы должны уйти в отставку. (Количество гаданий достиг предела)"
 EraserEraseNotice,您发动了抹除技能\n【{0}】的技能将在会议结束后失效。,You erased 【{0}】.\nHis role will be deactivated after a meeting.,Ты стёр 【{0}】.\nЕго роль будет неактивна после собрания.
 EraserEraseNeutralNotice,很抱歉，您发动技能的目标属于中立阵营，无法被抹除。,Oops， your target is Neutral and can't be erased!,Упс， твоя цель Нейтральна и не может быть стёрта!
+KB_Buff_HPMax,奖励：血量上限 +{0},Gain: HP Max +{0}
+KB_Buff_HPReco,奖励：每秒血量回复 +{0},Gain: Recover HP Per Second +{0}
+KB_Buff_ATK,奖励：攻击力 +{0},Gain: Attack +{0}
 
 ## 信息
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды
@@ -869,6 +888,7 @@ Message.NoticeByEAC,检测到【{0}】：{1}
 Message.SetLevel,您的等级设置为：{0},Your game level is set to: {0},Ваш игровой уровень установлен на: {0}
 Message.SetColor,您的颜色设置为：{0},Your color is set to: {0},Ваш игровой цвет установлен на: {0}
 Message.AllowLevelRange,等级可设置范围：0 - 100,"The game level can be set in the range: 0-100","Игровой уровень может быть установлен в диапазоне: 0-100"
+Message.AllowNameLength,昵称可设置长度：1-10
 Message.OnlyCanUseInLobby,很抱歉，只有在大厅才能使用该指令,"Sorry, this command can only be used in the lobby","Извините, эта команда может быть использована только в лобби"
 Message.CanNotUseInLobby,很抱歉，在大厅无法使用该指令,"Sorry, this command cannot be used in the lobby","Извините, эта команда не может быть использована в лобби"
 Message.CanNotUseByHost,很抱歉，房主无法使用该指令,"Sorry, Host can't use this command","Извините, но Хост не может воспользоваться этой командой"
@@ -951,6 +971,7 @@ ModBrokenMessage,模组文件损坏，请重启游戏或重装本模组,The MOD 
 DisabledByProgram,公开房间的操作已被程序禁用,Public rooms have been disabled by the program,Создание публичного лобби отключена программой
 EnterVentToWin,跳管道来获得胜利！,Enter Vent to Win!!,Запрыгните в вентиляцию чтобы победить!!
 EatenByPelican,您被鹈鹕吞了，请等待鹈鹕死亡或会议...,"You have been swallowed by a Pelican, Wait for his death or an emergency meeting...","Вы были проглочены Пеликаном, Дождитесь его смерти или экстренной встречи..."
+KBBackCountDown,您已阵亡，等待{0}秒后复活...,Wait for {0} seconds to revive
 FireworksPutPhase,还要安放{0}枚烟花,{0} Fireworks Left,Осталось {0} Фейерверков
 FireworksWaitPhase,耐心等待....,Wait for it...,Подожди время...
 FireworksReadyFirePhase,烟花来咯，大型烟花秀开始！,Fire!,Огонь!
@@ -967,19 +988,22 @@ WitchModeSpell,诅咒,Spell,Заклинать
 WitchModeDouble,单击诅咒&双击击杀,Double Enable,Двойной
 BountyCurrentTarget,当前目标,Current Target,Текущая Цель
 AntiAdminerAD,管理室地图警告,Warning about Admin,Оповещение о Админке
-AntiAdminerVI,生命检测仪警告,Warning about Pulse,Оповещение о Пульсах
+AntiAdminerVI,生命检测仪警告,Warning about Pulse,Оповещение о Пульсах 
 AntiAdminerDL,日志警告,Warning about Journals,Оповещение о Журналах
 AntiAdminerCA,摄像头警告,Warning about Cameras,Оповещение о Камерах
 Roles,职业,Roles,Роли
 Settings,设定,Settings,Настройки
 Addons,附加效果,Add-Ons,Атрибуты
-LastResult,游戏结果,Match Results,Результат матча
-LastEndReason,结束原因,End Reason,Причина окончания
+LastResult, ★ 游戏结果,Match Results,Результат матча
+LastEndReason, ★ 结束原因,End Reason,Причина окончания
 KillLog,击杀日志,Kill Log,История убийств
 Maximum,最大人数,Max,Максимум
 RoleRate,<color=#ffc0cb>启用</color>,<color=#ffc0cb>Active</color>,<color=#ffc0cb>Активен</color>
 RoleOn,<color=#ffbd18>优先</color>,<color=#ffbd18>ON</color>,<color=#ffbd18>ВКЛ</color>
 RoleOff,<color=#54545c>禁用</color>,<color=#54545c>OFF</color>,<color=#54545c>ВЫКЛ</color>
+RoleRateNoColor,启用,Active,Активен
+RoleOnNoColor,优先,ON,ВКЛ
+RoleOffNoColor,禁用,OFF,ВЫКЛ
 Rate0,0%,0%,0%
 Rate5,5%,5%,5%
 Rate10,10%,10%,10%
@@ -999,6 +1023,8 @@ Preset_3,预设3,Preset 3,Сохранение 3
 Preset_4,预设4,Preset 4,Сохранение 4
 Preset_5,预设5,Preset 5,Сохранение 5
 Standard,标准,Standard,Стандартный
+SoloKombat,个人竞技,Solo Kombat
+ModeSoloKombat,个人竞技模式,Mode Solo Kombat
 GameMode,游戏模式,Game Mode,Игровой Режим
 PressTabToNextPage,按下tab键查看更多...,Press Tab or Number for Next Page...,Нажмите Tab или Цифру чтобы перейти на следующую страницу...
 RoleSummaryText,复盘信息:,Game End Player-Roles List:,Игроки и роли в конце игры:
@@ -1052,7 +1078,9 @@ Disabled,禁用,Disabled,Отключено
 FailToTrack,无法追踪,Failed To Track,Не Удалось Отследить
 Mad-,背叛的,Mad ,Безумный 
 KilledBy, ← , ← , ← 
-CantUse.lastresult,不可以在游戏中使用/l命令,Unable to use /lastresult during a game,Нельзя использовать /lastresult во время игры
+CantUse.lastroles,不可以在游戏中查看上局职业,Unable to use /lastresult during a game,Нельзя использовать /lastresult во время игры
+CantUse.killlog,不可以在游戏中查看击杀记录
+CantUse.lastresult,不可以在游戏中查看游戏结果
 IllegalColor,请输入正确的颜色,Please enter the correct color,Пожалуйста введите правильный цвет
 DisableUseCommand,房主设置不允许使用该指令,Host settings do not allow this command to be used.,Настройки Хоста запрещают использовать эту команду
 SureUse.quit,我们将踢出您并封禁您以防止您再次遇到这个糟糕的房间，此操作不可逆转，如果您真的希望如此请发送 /qt {0},"We will kick you and block you from entering this lobby again. This setting is irreversible. If you really want it, please send the command /qt {0}","Мы кикнем  вас и заблокируем, чтобы вы больше не смогли зайти в это лобби. Эта настройка необратима. Если вы действительно этого хотите, пожалуйста, отправьте команду /qt {0}"
@@ -1067,12 +1095,14 @@ SyncCustomSettingsRPC,已同步RPC,Synchronized RPC,Синхронизирова
 TOHEVisitorCount,截至今日，TOHE已经被使用 <color={0}>{1}</color>次 啦~,To date TOHE has been used <color={0}>{1}</color> times~,На сегодняшний день TOHE использовался <color={0}>{1}</color> раз~
 Mode,模式,Mode,Режим
 Target,目标,Target,Цель
-PlayerInfo,玩家信息,Player Info,Информация о игроке
+PlayerInfo,上局所有玩家信息,Player Info,Информация о игроке
 NoInfoExists,没有存在的上局信息,No Info Exists,Нет информации
 MessengerMurderOccurred,发生命案警告,Occurred Kill,Произошло убийство
 Deadbody,尸体,Dead body,Труп
 PlayerLeftByAU-Anticheat,【{0}】被树懒超级厉害的反作弊踢出去啦~ QwQ
 KickAndriodPlayer,【{0}】因该房禁止安卓被请离房间
+KBDisplayScore,第{0}名：{1}分,Ranking: {0} Score: {1}
+KBTimeRemain,剩余时间：{0} 秒,Time Remain: {0} Second
 
 ## 作弊
 EAC.CheatDetected.EAC,开挂（使用AUM）,Cheating usage detected (Using AUM),Обнаружено использование читов (используется AUM)
@@ -1083,7 +1113,7 @@ EAC.CheatDetected.LowLevel,警告：EAC检测到可能存在作弊玩家
 PlayerIsRole,{0} 是 {1},{0} was the role {1},{0} был ролью {1}
 PlayerExiled,{0} 被驱逐了...,{0} was ejected...,{0} был изгнан...
 ExiledJester,票出 {0} 让你有种不详的预感\n{1} 在狂笑着...,Ejected by {0} gives you a bad feeling \nbut {1} laughs wildly...,Изгнание {0} вызывает у вас дурное предчувствие \nно {1} дико смеется...
-ExiledExeTargetCanTerroristSuicideWin,票出 {0} 让你有种不详的预感\n他是 {1}，而他的背后传来<color=#611c3a>处刑人</color>阴沉的笑声...,"Ejected by {0} gives you a bad feeling \nit is {1}, and behind it the <color=#611c3a>Executioner's</color> gloomy laughter sounds...","Изгнание {0} вызывает у вас дурное предчувствие \nЭто {1}, а позади него звучит мрачный смех <color=#611c3a>Палача</color>..."
+ExiledExeTarget,票出 {0} 让你有种不详的预感\n他是 {1}，而他的背后传来<color=#611c3a>处刑人</color>阴沉的笑声...,"Ejected by {0} gives you a bad feeling \nit is {1}, and behind it the <color=#611c3a>Executioner's</color> gloomy laughter sounds...","Изгнание {0} вызывает у вас дурное предчувствие \nЭто {1}, а позади него звучит мрачный смех <color=#611c3a>Палача</color>..."
 ExiledInnocentTargetAddBelow,\n回头一看，<color=#8f815e>冤罪师</color> 正数着手里的钱呢,"\nLooking back <color=#8f815e>Innocent</color> counts the money in his hands","\nОглянувшись назад <color=#8f815e>Невинный</color> пересчитывает деньги в своих руках"
 ExiledInnocentTargetInOneLine,票出 {0} 让你有种不详的预感\n他是 {1}，而回头一看，<color=#8f815e>冤罪师</color> 正数着手里的钱呢,"Ejected by {0} gives you a bad feeling \nit is {1}, and looking back <color=#8f815e>Innocent</color> counts the money in his hands","Изгнание {0} вызывает у вас дурное предчувствие \nЭто {1}, и оглянувшись назад <color=#8f815e>Невинный</color> пересчитывает деньги в своих руках"
 NoImpRemain,已经没有内鬼啦,There are no more impostors left,Предателей больше не осталось
@@ -1138,3 +1168,6 @@ DCNotify.GameNotFound,未找到指定房间，可能是房间已解散\r\n或检
 DCNotify.GameStarted,该房间正在游戏中，请等待游戏结束后加入,"Room in the game, please wait until the end of the game","Комната в игре, пожалуйста, дождитесь окончания игры"
 DCNotify.GameFull,该房间已满人，请稍后重试,"The room is full, please try again later","Комната переполнена, пожалуйста, попробуйте еще раз позже"
 DCNotify.IncorrectVersion,您的AmongUs版本与该房间不同,Your version of Among Us is different from this room,Ваша версия Among Us отличается от этой комнаты
+
+## 模式描述
+ModeDescribe.SoloKombat,本房间模式为【个人竞技模式】\n没有职业分配，所有人拥有血量，可以使用击杀键对其他人造成伤害。游戏结束时击杀数量最多的玩家获胜。,"Current mode is [Solo Kombat]\nNo roles assignments. Everyone has HP and can use the kill button to cause damage to other players. The player with the highest number of kills wins at the end of the game."
