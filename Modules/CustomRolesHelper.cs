@@ -76,6 +76,7 @@ internal static class CustomRolesHelper
                 CustomRoles.Concealer => CustomRoles.Shapeshifter,
                 CustomRoles.Eraser => CustomRoles.Impostor,
                 CustomRoles.OverKiller => CustomRoles.Impostor,
+                CustomRoles.Berserkers => CustomRoles.Impostor,
                 CustomRoles.Error404 => CustomRoles.Impostor,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
@@ -203,6 +204,7 @@ internal static class CustomRolesHelper
             CustomRoles.Concealer or
             CustomRoles.Eraser or
             CustomRoles.OverKiller or
+            CustomRoles.Berserkers or
             CustomRoles.Error404;
     }
     public static bool IsNeutral(this CustomRoles role) //  «∑Ò÷–¡¢

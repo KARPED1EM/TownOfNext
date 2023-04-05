@@ -432,6 +432,7 @@ public enum CustomRoles
     Concealer,
     Eraser,
     OverKiller,
+    Berserkers,
     Error404,
     //Crewmate(Vanilla)
     Engineer,

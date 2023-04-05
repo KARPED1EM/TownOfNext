@@ -766,10 +766,6 @@ KB_ATK,初始攻击力,Default Attack
 KB_RecoverAfterSecond,脱离战斗几秒后开始回复血量,Recover Cooldown
 KB_RecoverPerSecond,每秒回复血量,Recover Per Second
 KB_ResurrectionWaitingTime,死亡后复活等待时间,Resurrection waiting time
-EraseLimit,抹除次数上限
-AssassinMarkCooldown,标记冷却时间
-AssassinAssassinateCooldown,刺杀冷却时间
-AssassinCanKillAfterAssassinate,可以在刺杀后进行常规击杀
 ScarecrowCanWithStandANumberOfKills,稻草人在承受多少次击杀后坏掉（）
 RamblerSpeed,漫步者速度
 

@@ -375,12 +375,13 @@ class CheckMurderPatch
                 break;
             //击杀稻草人
             case CustomRoles.Scarecrow:
-                if (Main.ScarecrowCanWithStandANumberOfKills[target.PlayerId] <= 0) break;
-                killer.RpcGuardAndKill(target);
-                target.RpcGuardAndKill(target);
-                Main.ScarecrowCanWithStandANumberOfKills[target.PlayerId] -= 1;
-                killer.RpcGuardAndKill(target);
-                return false;
+                if (Main.ScarecrowCanWithStandANumberOfKills[target.PlayerId] >= 1)
+                {
+                    killer.RpcGuardAndKill(target);
+                    Main.ScarecrowCanWithStandANumberOfKills[target.PlayerId] -= 1;
+                    return false;
+                }
+                break;
             //击杀错误404
             case CustomRoles.Error404:
                         killer.SetRealKiller(target);

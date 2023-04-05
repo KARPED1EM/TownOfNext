@@ -658,9 +658,9 @@ public static class Options
         CrewCanBeDualPersonality = BooleanOptionItem.Create(6052340, "CrewCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
         SetupAdtRoleOptions(6052146, CustomRoles.Bitch, canSetNum: true);
         SetupAdtRoleOptions(6052954, CustomRoles.Rambler, canSetNum: true);
-        RamblerSpeed = FloatOptionItem.Create(60504874, "RamblerSpeed", new(0.1f, 1f, 0.1f), 2.5f, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rambler]);
+        RamblerSpeed = FloatOptionItem.Create(60504874, "RamblerSpeed", new(0.1f, 1f, 0.1f), 2.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rambler]);
         SetupAdtRoleOptions(6048284, CustomRoles.Scarecrow, canSetNum: true);
-        ScarecrowCanWithStandANumberOfKills = FloatOptionItem.Create(1458431, "ScarecrowCanWithStandANumberOfKills", new(1f, 100f, 1f), 10f, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Scarecrow]);
+        ScarecrowCanWithStandANumberOfKills = FloatOptionItem.Create(234415, "ScarecrowCanWithStandANumberOfKills", new(1f, 100f, 1f), 10f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Scarecrow]);
 
         SetupAdtRoleOptions(6050390, CustomRoles.Madmate, canSetNum: true, canSetChance: false);
         MadmateSpawnMode = StringOptionItem.Create(6060444, "MadmateSpawnMode", madmateSpawnMode, 0, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Madmate]);
