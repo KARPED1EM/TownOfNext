@@ -204,7 +204,8 @@ internal static class CustomRolesHelper
             CustomRoles.QuickShooter or
             CustomRoles.Concealer or
             CustomRoles.Eraser or
-            CustomRoles.OverKiller;
+            CustomRoles.OverKiller or
+            CustomRoles.Berserkers;
     }
     public static bool IsNeutral(this CustomRoles role) //  «∑Ò÷–¡¢
     {
