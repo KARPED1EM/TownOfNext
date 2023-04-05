@@ -76,6 +76,7 @@ internal class ChangeRoleSettings
             Main.MadGrenadierBlinding = new Dictionary<byte, long>();
             Main.CursedWolfSpellCount = new Dictionary<byte, int>();
             Main.Provoked = new Dictionary<byte, byte>();
+            Main.ShieldPlayer = Options.ShieldPersonDiedFirst.GetBool() ? Main.FirstDied : byte.MaxValue;
             Main.FirstDied = byte.MaxValue;
             Main.MadmateNum = 0;
 
@@ -186,6 +187,7 @@ internal class ChangeRoleSettings
             Sans.Init();
             Hacker.Init();
             Psychic.Init();
+            Hangman.Init();
             SoloKombatManager.Init();
             CustomWinnerHolder.Reset();
             AntiBlackout.Reset();
@@ -327,12 +329,8 @@ internal class SelectRolesPatch
             // 个人竞技模式用
             if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
             {
-
                 foreach (var pair in Main.PlayerStates)
                     ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
-
-                GameEndChecker.SetPredicateToSoloKombat();
-
                 goto EndOfSelectRolePatch;
             }
 
@@ -341,7 +339,7 @@ internal class SelectRolesPatch
             foreach (var kv in RoleResult)
             {
                 if (kv.Value.IsDesyncRole()) continue;
-                AssignCustomRolesFromList(kv.Value, kv.Key);
+                AssignCustomRole(kv.Value, kv.Key);
             }
 
             if (CustomRoles.Lovers.IsEnable() && (CustomRoles.FFF.IsEnable() ? -1 : rd.Next(1, 100)) <= Options.LoverSpawnChances.GetInt()) AssignLoversRolesFromList();
@@ -491,6 +489,9 @@ internal class SelectRolesPatch
                     case CustomRoles.Psychic:
                         Psychic.Add(pc.PlayerId);
                         break;
+                    case CustomRoles.Hangman:
+                        Hangman.Add(pc.PlayerId);
+                        break;
                     case CustomRoles.Scarecrow:
                         Main.ScarecrowCanWithStandANumberOfKills[pc.PlayerId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
                         break;
@@ -529,8 +530,15 @@ internal class SelectRolesPatch
             ShapeshifterNum -= addShapeshifterNum;
             roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum, roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
 
-            if (Options.CurrentGameMode == CustomGameMode.Standard)
-                GameEndChecker.SetPredicateToNormal();
+            switch (Options.CurrentGameMode)
+            {
+                case CustomGameMode.Standard:
+                    GameEndChecker.SetPredicateToNormal();
+                    break;
+                case CustomGameMode.SoloKombat:
+                    GameEndChecker.SetPredicateToSoloKombat();
+                    break;
+            }
 
             GameOptionsSender.AllSenders.Clear();
             foreach (var pc in Main.AllPlayerControls)
@@ -541,8 +549,7 @@ internal class SelectRolesPatch
             }
 
             // ResetCamが必要なプレイヤーのリストにクラス化が済んでいない役職のプレイヤーを追加
-            Main.ResetCamPlayerList.AddRange(Main.AllPlayerControls.Where(p => p.GetCustomRole() is CustomRoles.Arsonist).Select(p => p.PlayerId));
-            Main.ResetCamPlayerList.AddRange(Main.AllPlayerControls.Where(p => p.GetCustomRole() is CustomRoles.Revolutionist).Select(p => p.PlayerId));
+            Main.ResetCamPlayerList.AddRange(Main.AllPlayerControls.Where(p => p.GetCustomRole() is CustomRoles.Arsonist or CustomRoles.Revolutionist or CustomRoles.KB_Normal).Select(p => p.PlayerId));
             Utils.CountAlivePlayers(true);
             Utils.SyncAllSettings();
             SetColorPatch.IsAntiGlitchDisabled = false;
@@ -594,7 +601,7 @@ internal class SelectRolesPatch
         }
     }
 
-    private static void AssignCustomRolesFromList(CustomRoles role, PlayerControl player)
+    private static void AssignCustomRole(CustomRoles role, PlayerControl player)
     {
         if (player == null) return;
         SetColorPatch.IsAntiGlitchDisabled = true;

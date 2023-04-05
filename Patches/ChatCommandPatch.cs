@@ -84,8 +84,8 @@ internal class ChatCommands
         new LateTask(() =>
         {
             target.SetRealKiller(pc);
-            target.RpcMurderPlayerV3(target);
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
+            target.RpcMurderPlayerV3(target);
             Main.PlayerStates[target.PlayerId].SetDead();
             Main.MafiaRevenged[pc.PlayerId]++;
             foreach (var pc in Main.AllPlayerControls)
@@ -279,6 +279,8 @@ internal class ChatCommands
                 case "/l":
                 case "/lastresult":
                     canceled = true;
+                    Utils.ShowKillLog();
+                    Utils.ShowLastRoles();
                     Utils.ShowLastResult();
                     break;
 
@@ -363,7 +365,7 @@ internal class ChatCommands
                         Utils.SendMessage(GetString("GuesserInfoLong"), PlayerControl.LocalPlayer.PlayerId);
                         break;
                     }
-                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer, PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsDev);
+                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsDev);
                     break;
 
                 case "/up":
@@ -380,7 +382,7 @@ internal class ChatCommands
                         Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"));
                         break;
                     }
-                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer, isUp: true);
+                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer.PlayerId, isUp: true);
                     break;
 
                 case "/h":
@@ -687,6 +689,7 @@ internal class ChatCommands
             "隱蔽者" or "隐蔽" or "小黑人" => GetString("Concealer"),
             "抹除者" or "抹除" => GetString("Eraser"),
             "肢解者" or "肢解" => GetString("OverKiller"),
+            "儈子手" or "侩子" or "筷子" or "筷子手" => GetString("Hangman"),
             "贱人" or "贱逼" or "贱" or "贱死了" or "賤人" or "賤" or "賤死了" => GetString("Bitch"),
             _ => text,
         };
@@ -727,11 +730,11 @@ internal class ChatCommands
         }
         return false;
     }
-    public static void SendRolesInfo(string role, PlayerControl player, bool isDev = false, bool isUp = false)
+    public static void SendRolesInfo(string role, byte playerId, bool isDev = false, bool isUp = false)
     {
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
-            Utils.SendMessage(GetString("ModeDescribe.SoloKombat"), player.PlayerId);
+            Utils.SendMessage(GetString("ModeDescribe.SoloKombat"), playerId);
             return;
         }
 
@@ -743,7 +746,7 @@ internal class ChatCommands
 
         if (role == "" || role == string.Empty)
         {
-            Utils.ShowActiveRoles(player.PlayerId);
+            Utils.ShowActiveRoles(playerId);
             return;
         }
         role = FixRoleNameInput(role);
@@ -758,18 +761,18 @@ internal class ChatCommands
                 if ((isDev || isUp) && GameStates.IsLobby)
                 {
                     devMark = "▲";
-                    if (CustomRolesHelper.IsAdditionRole(rl)) devMark = "";
-                    if (rl is CustomRoles.GM || rl.IsDesyncRole()) devMark = "";
+                    if (CustomRolesHelper.IsAdditionRole(rl) || rl is CustomRoles.GM) devMark = "";
                     if (rl.GetCount() < 1 || rl.GetMode() == 0) devMark = "";
                     if (isUp)
                     {
-                        if (devMark == "▲") Utils.SendMessage("您下一局将被分配为【" + roleName + "】", player.PlayerId);
-                        else Utils.SendMessage("无法将您分配为【" + roleName + "】\n可能是因为您没有启用该职业或该职业不支持被指定", player.PlayerId);
+                        if (devMark == "▲") Utils.SendMessage("您下一局将被分配为【" + roleName + "】", playerId);
+                        else Utils.SendMessage("无法将您分配为【" + roleName + "】\n可能是因为您没有启用该职业或该职业不支持被指定", playerId);
                     }
                     if (devMark == "▲")
                     {
-                        if (Main.DevRole.ContainsKey(player.PlayerId)) Main.DevRole.Remove(player.PlayerId);
-                        Main.DevRole.Add(player.PlayerId, rl);
+                        byte pid = playerId == 255 ? (byte)0 : playerId;
+                        Main.DevRole.Remove(pid);
+                        Main.DevRole.Add(pid, rl);
                     }
                     if (isUp) return;
                 }
@@ -781,12 +784,12 @@ internal class ChatCommands
                     var txt = sb.ToString();
                     sb.Clear().Append(txt.RemoveHtmlTags());
                 }
-                Utils.SendMessage(sb.ToString(), player.PlayerId);
+                Utils.SendMessage(sb.ToString(), playerId);
                 return;
             }
         }
-        if (isUp) Utils.SendMessage("请正确拼写您要指定的职业哦~\n查看所有职业请直接输入/r", player.PlayerId);
-        else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), player.PlayerId);
+        if (isUp) Utils.SendMessage("请正确拼写您要指定的职业哦~\n查看所有职业请直接输入/r", playerId);
+        else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
         return;
     }
     public static void OnReceiveChat(PlayerControl player, string text)
@@ -803,6 +806,8 @@ internal class ChatCommands
         {
             case "/l":
             case "/lastresult":
+                Utils.ShowKillLog(player.PlayerId);
+                Utils.ShowLastRoles(player.PlayerId);
                 Utils.ShowLastResult(player.PlayerId);
                 break;
 
@@ -828,7 +833,7 @@ internal class ChatCommands
                     Utils.SendMessage(GetString("GuesserInfoLong"), player.PlayerId);
                     break;
                 }
-                SendRolesInfo(subArgs, player, player.FriendCode.GetDevUser().IsDev);
+                SendRolesInfo(subArgs, player.PlayerId, player.FriendCode.GetDevUser().IsDev);
                 break;
 
             case "/h":

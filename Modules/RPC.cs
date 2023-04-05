@@ -12,7 +12,6 @@ using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using static TOHE.Translator;
-
 namespace TOHE;
 
 enum CustomRPC
@@ -73,6 +72,7 @@ enum CustomRPC
     //SoloKombat
     SyncKBPlayer,
     SyncKBBackCountdown,
+    SyncKBNameNotify,
 }
 public enum Sounds
 {
@@ -167,28 +167,23 @@ internal class RPCHandlerPatch
                     string tag = reader.ReadString();
                     string forkId = reader.ReadString();
                     Main.playerVersion[__instance.PlayerId] = new PlayerVersion(version, tag, forkId);
-                    if (tag != $"{ThisAssembly.Git.Commit}({ThisAssembly.Git.Branch})")
+                    // Kick Unmached Player Start
+                    if (AmongUsClient.Instance.AmHost &&
+                        tag != $"{ThisAssembly.Git.Commit}({ThisAssembly.Git.Branch})" &&
+                        forkId != Main.ForkId)
                     {
-                        if (AmongUsClient.Instance.AmHost)
+                        new LateTask(() =>
                         {
-                            if (forkId != Main.ForkId)
+                            if (__instance?.Data?.Disconnected is not null and not true)
                             {
-                                new LateTask(() =>
-                                {
-                                    if (__instance?.Data?.Disconnected is not null and not true)
-                                    {
-                                        Logger.Warn($"{__instance?.Data?.PlayerName} 安装了与房主版本不同的模组，故将其踢出", "Version Kick");
-                                        Logger.SendInGame($"【{__instance?.Data?.PlayerName}】因安装了与房主版本不同的模组被踢出");
-                                        AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
-                                    }
-                                }, 5f, "Kick");
+                                var msg = string.Format(GetString("KickBecauseDiffrentVersionOrMod"), __instance?.Data?.PlayerName);
+                                Logger.Warn(msg, "Version Kick");
+                                Logger.SendInGame(msg);
+                                AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
                             }
-                        }
-                        else if (GameStates.IsLobby && __instance.PlayerId == 0)
-                            GameStartManagerPatch.GameStartManagerUpdatePatch.exitTimer = 0;
+                        }, 5f, "Kick");
                     }
-                    else if (!AmongUsClient.Instance.AmHost && __instance.PlayerId == 0)
-                        GameStartManagerPatch.GameStartManagerUpdatePatch.exitTimer = -1;
+                    // Kick Unmached Player End
                 }
                 catch
                 {
@@ -380,6 +375,9 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.SyncKBBackCountdown:
                 SoloKombatManager.ReceiveRPCSyncBackCountdown(reader);
+                break;
+            case CustomRPC.SyncKBNameNotify:
+                SoloKombatManager.ReceiveRPCSyncNameNotify(reader);
                 break;
         }
     }
@@ -635,6 +633,9 @@ internal static class RPC
                 break;
             case CustomRoles.Psychic:
                 Psychic.Add(targetId);
+                break;
+            case CustomRoles.Hangman:
+                Hangman.Add(targetId);
                 break;
             case CustomRoles.Scarecrow:
                 Main.ScarecrowCanWithStandANumberOfKills[targetId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();

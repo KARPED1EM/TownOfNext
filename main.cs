@@ -36,7 +36,7 @@ public class Main : BasePlugin
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
     public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.2.4";
+    public const string PluginVersion = "2.2.5";
     public const int PluginCreate = 17;
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
@@ -151,6 +151,7 @@ public class Main : BasePlugin
     public static bool IsAprilFools = DateTime.Now.Month == 4 && DateTime.Now.Day is 1;
     public static bool SetAutoStartToDisable = false;
     public static byte FirstDied;
+    public static byte ShieldPlayer;
     public static int MadmateNum;
     public static Dictionary<byte, byte> Provoked = new();
 
@@ -165,6 +166,9 @@ public class Main : BasePlugin
 
     public static string OverrideWelcomeMsg = "";
     public static int HostClientId;
+
+    public static List<string> TName_Snacks = new() { "冰激凌", "奶茶", "巧克力", "蛋糕", "甜甜圈", "可乐", "柠檬水", "冰糖葫芦", "果冻", "糖果", "牛奶", "抹茶", "烧仙草", "菠萝包", "布丁", "椰子冻", "曲奇", "红豆土司", "三彩团子", "艾草团子", "泡芙", "可丽饼", "桃酥", "麻薯", "鸡蛋仔", "马卡龙", "雪梅娘", "炒酸奶", "蛋挞", "松饼", "西米露", "奶冻", "奶酥", "可颂", "奶糖" };
+    public static string Get_TName_Snacks => TName_Snacks[IRandom.Instance.Next(0, TName_Snacks.Count)];
 
     public override void Load()
     {
@@ -185,7 +189,7 @@ public class Main : BasePlugin
         TOHE.Logger.Disable("ModNews");
         if (!DebugModeManager.AmDebugger)
         {
-            TOHE.Logger.Disable("2018K");
+            TOHE.Logger.Disable("2018k");
             TOHE.Logger.Disable("CustomRpcSender");
             //TOHE.Logger.Disable("ReceiveRPC");
             TOHE.Logger.Disable("SendRPC");
@@ -239,6 +243,7 @@ public class Main : BasePlugin
         MessagesToSend = new List<(string, byte, string)>();
         currentDousingTarget = byte.MaxValue;
         currentDrawTarget = byte.MaxValue;
+        ShieldPlayer = byte.MaxValue;
         FirstDied = byte.MaxValue;
         MadmateNum = 0;
         ScarecrowCanWithStandANumberOfKills = new Dictionary<byte, int>();
@@ -366,7 +371,7 @@ public class Main : BasePlugin
         }
         catch (ArgumentException ex)
         {
-            TOHE.Logger.Error("エラー:Dictionaryの値の重複を検出しました", "LoadDictionary");
+            TOHE.Logger.Error("错误：字典出现重复项", "LoadDictionary");
             TOHE.Logger.Exception(ex, "LoadDictionary");
             hasArgumentException = true;
             ExceptionMessage = ex.Message;
@@ -432,6 +437,7 @@ public enum CustomRoles
     Concealer,
     Eraser,
     OverKiller,
+    Hangman,
     Berserkers,
     Error404,
     //Crewmate(Vanilla)

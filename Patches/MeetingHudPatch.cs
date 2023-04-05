@@ -8,6 +8,7 @@ using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 using static TOHE.Translator;
+using static UnityEngine.GraphicsBuffer;
 
 namespace TOHE;
 
@@ -35,7 +36,10 @@ class CheckForEndVotingPatch
                     if (Options.MadmateSpawnMode.GetInt() == 2 && Main.MadmateNum < CustomRoles.Madmate.GetCount() && Utils.CanBeMadmate(pc))
                     {
                         Main.MadmateNum++;
-                        Main.PlayerStates[pc.PlayerId].SetSubRole(CustomRoles.Madmate);
+                        pc.RpcSetCustomRole(CustomRoles.Madmate);
+                        ExtendedPlayerControl.RpcSetCustomRole(pc.PlayerId, CustomRoles.Madmate);
+                        foreach (var impostor in Main.AllAlivePlayerControls.Where(pc => pc.GetCustomRole().IsImpostor()))
+                            NameColorManager.Add(pc.PlayerId, impostor.PlayerId);
                         Utils.NotifyRoles(true, pc, true);
                         Logger.Info("役職設定:" + pc?.Data?.PlayerName + " = " + pc.GetCustomRole().ToString() + " + " + CustomRoles.Madmate.ToString(), "Assign " + CustomRoles.Madmate.ToString());
                     }
@@ -510,7 +514,7 @@ class MeetingHudStartPatch
                 }, 5.0f, "Notice Detective Skill");
             }
             //提示神存活
-            if (pc.Is(CustomRoles.God) && pc.IsAlive())
+            if (pc.Is(CustomRoles.God) && pc.IsAlive() && Options.NotifyGodAlive.GetBool())
             {
                 new LateTask(() =>
                 {
@@ -748,8 +752,8 @@ class MeetingHudUpdatePatch
                 var player = Utils.GetPlayerById(x.TargetPlayerId);
                 if (player != null && !player.Data.IsDead)
                 {
-                    player.RpcExileV2();
                     Main.PlayerStates[player.PlayerId].deathReason = PlayerState.DeathReason.Execution;
+                    player.RpcExileV2();
                     Main.PlayerStates[player.PlayerId].SetDead();
                     Utils.SendMessage(string.Format(GetString("Message.Executed"), player.Data.PlayerName));
                     Logger.Info($"{player.GetNameWithRole()}を処刑しました", "Execution");

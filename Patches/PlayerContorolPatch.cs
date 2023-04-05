@@ -84,7 +84,7 @@ class CheckMurderPatch
             return false;
         }
 
-        var divice = Options.CurrentGameMode == CustomGameMode.SoloKombat ? 3000f : 1000f;
+        var divice = Options.CurrentGameMode == CustomGameMode.SoloKombat ? 3000f : 2000f;
         float minTime = Mathf.Max(0.02f, AmongUsClient.Instance.Ping / divice * 6f); //※AmongUsClient.Instance.Pingの値はミリ秒(ms)なので÷1000
         //TimeSinceLastKillに値が保存されていない || 保存されている時間がminTime以上 => キルを許可
         //↓許可されない場合
@@ -201,6 +201,9 @@ class CheckMurderPatch
                 case CustomRoles.Sans:
                     Sans.OnCheckMurder(killer);
                     break;
+                case CustomRoles.Hangman:
+                    if (!Hangman.OnCheckMurder(killer, target)) return false;
+                    break;
 
                 //==========中立阵营==========//
                 case CustomRoles.Arsonist:
@@ -250,10 +253,10 @@ class CheckMurderPatch
                     DarkHide.OnCheckMurder(killer, target);
                     break;
                 case CustomRoles.Provocateur:
+                    Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.PissedOff;
                     killer.RpcMurderPlayerV3(target);
                     killer.RpcMurderPlayerV3(killer);
                     killer.SetRealKiller(target);
-                    Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.PissedOff;
                     Main.Provoked.TryAdd(killer.PlayerId, target.PlayerId);
                     return false;
 
@@ -416,13 +419,25 @@ class CheckMurderPatch
             }
         }
 
+        //首刀保护
+        if (Main.ShieldPlayer != byte.MaxValue && Main.ShieldPlayer == target.PlayerId)
+        {
+            Main.ShieldPlayer = byte.MaxValue;
+            killer.SetKillCooldown();
+            killer.RpcGuardAndKill(target);
+            target.RpcGuardAndKill();
+            return false;
+        }
+
         //首刀叛变
         if (Options.MadmateSpawnMode.GetInt() == 1 && Main.MadmateNum < CustomRoles.Madmate.GetCount() && Utils.CanBeMadmate(target))
         {
             Main.MadmateNum++;
-            Main.PlayerStates[target.PlayerId].SetSubRole(CustomRoles.Madmate);
+            target.RpcSetCustomRole(CustomRoles.Madmate);
+            ExtendedPlayerControl.RpcSetCustomRole(target.PlayerId, CustomRoles.Madmate);
+            foreach (var impostor in Main.AllAlivePlayerControls.Where(pc => pc.GetCustomRole().IsImpostor()))
+                NameColorManager.Add(target.PlayerId, impostor.PlayerId);
             Utils.NotifyRoles(target);
-            Utils.NotifyRoles(killer);
             killer.RpcGuardAndKill(killer);
             killer.RpcGuardAndKill(target);
             target.RpcGuardAndKill(killer);
@@ -1153,8 +1168,8 @@ class FixedUpdatePatch
                         if (IRandom.Instance.Next(1, 100) <= Options.RevolutionistKillProbability.GetInt())
                         {
                             ar_target.SetRealKiller(player);
-                            player.RpcMurderPlayerV3(ar_target);
                             Main.PlayerStates[ar_target.PlayerId].deathReason = PlayerState.DeathReason.Sacrifice;
+                            player.RpcMurderPlayerV3(ar_target);
                             Main.PlayerStates[ar_target.PlayerId].SetDead();
                             Logger.Info($"Revolutionist: {player.GetNameWithRole()} killed {ar_target.GetNameWithRole()}", "Revolutionist");
                         }
@@ -1197,13 +1212,13 @@ class FixedUpdatePatch
                             foreach (var pc in y.Where(x => x != null && x.IsAlive()))
                             {
                                 pc.Data.IsDead = true;
-                                pc.RpcMurderPlayerV3(pc);
                                 Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Sacrifice;
+                                pc.RpcMurderPlayerV3(pc);
                                 Main.PlayerStates[pc.PlayerId].SetDead();
                             }
                             player.Data.IsDead = true;
-                            player.RpcMurderPlayerV3(player);
                             Main.PlayerStates[player.PlayerId].deathReason = PlayerState.DeathReason.Sacrifice;
+                            player.RpcMurderPlayerV3(player);
                             Main.PlayerStates[player.PlayerId].SetDead();
                         }
                     }
@@ -1643,8 +1658,8 @@ class CoEnterVentPatch
                 {
                     //生存者は焼殺
                     pc.SetRealKiller(__instance.myPlayer);
-                    pc.RpcMurderPlayerV3(pc);
                     Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Torched;
+                    pc.RpcMurderPlayerV3(pc);
                     Main.PlayerStates[pc.PlayerId].SetDead();
                 }
                 else
@@ -1739,9 +1754,7 @@ class PlayerControlCompleteTaskPatch
         if (isTaskFinish && pc.Is(CustomRoles.Snitch) && pc.Is(CustomRoles.Madmate))
         {
             foreach (var impostor in Main.AllAlivePlayerControls.Where(pc => pc.GetCustomRole().IsImpostor()))
-            {
                 NameColorManager.Add(pc.PlayerId, impostor.PlayerId);
-            }
             Utils.NotifyRoles(SpecifySeer: pc);
         }
         if ((isTaskFinish &&
