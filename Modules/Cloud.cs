@@ -2,20 +2,44 @@
 using HarmonyLib;
 using System;
 using System.Globalization;
+using System.IO;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 
 namespace TOHE;
 
 internal class Cloud
 {
-    private const string IP = "150.158.149.217";
-    public static int Remote_int = 0;
-    private static int LOBBY_PORT => Remote_int;
-    private static int EAC_PORT => Remote_int + 5;
+    private static string IP;
+    private static int LOBBY_PORT = 0;
+    private static int EAC_PORT = 0;
     private static Socket ClientSocket;
     private static Socket EacClientSocket;
     private static long LastRepotTimeStamp = 0;
+    public static void Init()
+    {
+        try
+        {
+            var content = GetResourcesTxt("TOHE.Resources.Config.Port.txt");
+            Logger.Test(content);
+            string[] ar = content.Split('|');
+            IP = ar[0];
+            LOBBY_PORT = int.Parse(ar[1]);
+            EAC_PORT = int.Parse(ar[2]);
+        }
+        catch (Exception e)
+        {
+            Logger.Exception(e, "Cloud Init");
+        }
+    }
+    private static string GetResourcesTxt(string path)
+    {
+        var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
+        stream.Position = 0;
+        using StreamReader reader = new(stream, Encoding.UTF8);
+        return reader.ReadToEnd();
+    }
     public static bool SendCodeToQQ(bool command = false)
     {
         try
@@ -24,7 +48,7 @@ internal class Cloud
             if (!Main.newLobby || (GameData.Instance.PlayerCount < Options.SendCodeMinPlayer.GetInt() && !command) || !GameStates.IsLobby) return false;
             if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) return false;
 
-            if (LOBBY_PORT == 0) throw new("Get remote port faild");
+            if (IP == null || LOBBY_PORT == 0) throw new("Has no ip or port");
 
             Main.newLobby = false;
             string msg = $"{GameStartManager.Instance.GameRoomNameCode.text}|{Main.PluginVersion}|{GameData.Instance.PlayerCount + 1}";
@@ -63,6 +87,7 @@ internal class Cloud
             }
             try
             {
+                if (IP == null || EAC_PORT == 0) throw new("Has no ip or port");
                 LastRepotTimeStamp = Utils.GetTimeStamp(DateTime.Now);
                 EacClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 EacClientSocket.Connect(IP, EAC_PORT);

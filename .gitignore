@@ -4,6 +4,8 @@ bin/
 obj/
 Img Sources/
 
+Resources/Config/Port.txt
+
 FodyWeavers.xsd
 TOHE.sln
 

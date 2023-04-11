@@ -277,6 +277,7 @@ public class Main : BasePlugin
         BanManager.Init();
         TemplateManager.Init();
         DevManager.Init();
+        Cloud.Init();
 
         IRandom.SetInstance(new NetRandomWrapper());
 
