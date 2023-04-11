@@ -1,6 +1,5 @@
 ﻿using AmongUs.Data;
 using HarmonyLib;
-using InnerNet;
 using System;
 using System.Globalization;
 using System.Net.Sockets;
@@ -12,8 +11,8 @@ internal class Cloud
 {
     private const string IP = "150.158.149.217";
     public static int Remote_int = 0;
-    private static readonly int LOBBY_PORT = Remote_int;
-    private static readonly int EAC_PORT = Remote_int + 5;
+    private static int LOBBY_PORT => Remote_int;
+    private static int EAC_PORT => Remote_int + 5;
     private static Socket ClientSocket;
     private static Socket EacClientSocket;
     private static long LastRepotTimeStamp = 0;
