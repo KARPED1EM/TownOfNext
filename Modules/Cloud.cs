@@ -22,7 +22,6 @@ internal class Cloud
         try
         {
             var content = GetResourcesTxt("TOHE.Resources.Config.Port.txt");
-            Logger.Test(content);
             string[] ar = content.Split('|');
             IP = ar[0];
             LOBBY_PORT = int.Parse(ar[1]);
