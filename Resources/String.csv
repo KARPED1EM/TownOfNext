@@ -564,11 +564,11 @@ DisableReportWhenCC,小黑人时禁止报告尸体,Disable body report in camouf
 EnableDebugMode,开启调试模式,Enable Debug Mode,Включить режим отладки
 ChangeNameToRoleInfo,首次会议替换玩家名字为介绍,Show Role Descriptions to Unmodded Client,Показать описания Ролей игрокам играющие без Мода
 RoleAssigningAlgorithm,职业分配算法,Role Assigning Algorithm,Алгоритм назначения Ролей
-RoleAssigningAlgorithm.Default,默认随机算法,Default,По Умолчанию
-RoleAssigningAlgorithm.NetRandom,.NET系统随机算法,.NET System.Random,Случайный
-RoleAssigningAlgorithm.HashRandom,哈希随机算法,HashRandom,HashRandom
-RoleAssigningAlgorithm.Xorshift,Xorshift随机算法,Xorshift,Xorshift
-RoleAssigningAlgorithm.MersenneTwister,Twister随机算法,MersenneTwister,MersenneTwister
+RoleAssigningAlgorithm.Default,默认,Default,По Умолчанию
+RoleAssigningAlgorithm.NetRandom,.NET系统,.NET System.Random,Случайный
+RoleAssigningAlgorithm.HashRandom,哈希,HashRandom,HashRandom
+RoleAssigningAlgorithm.Xorshift,Xorshift,Xorshift,Xorshift
+RoleAssigningAlgorithm.MersenneTwister,Twister,MersenneTwister,MersenneTwister
 AirShipVariableElectrical,电气室门随机关闭（飞艇地图）,Variable Electrical(AirShip),Двери в Электрощитовой меняются случайно (Airship)
 ApplyDenyNameList,踢出使用违规昵称的玩家,Apply DenyName List,Применить файл запрещённых имён (DenyName)
 KickPlayerFriendCodeNotExist,踢出没有登录的玩家,Kick players whose Friend Code does not exist,Кикнуть игроков у которых нет Кода Друга

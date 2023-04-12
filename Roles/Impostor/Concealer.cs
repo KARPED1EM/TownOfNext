@@ -39,7 +39,6 @@ public static class Concealer
     public static void ReceiveRPC(MessageReader reader)
     {
         HiddenTimeStamp = reader.ReadUInt32();
-        Camouflage.CheckCamouflage();
     }
     public static bool IsHidding => HiddenTimeStamp + SkillDuration.GetFloat() > Utils.GetTimeStamp(DateTime.Now);
     public static void OnShapeshift(PlayerControl pc, bool shapeshifting)
@@ -62,6 +61,5 @@ public static class Concealer
     {
         HiddenTimeStamp = 0;
         SendRPC();
-        Camouflage.CheckCamouflage();
     }
 }
