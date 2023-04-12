@@ -114,12 +114,19 @@ public static class Translator
     }
     public static SupportedLangs GetUserTrueLang()
     {
-        var name = CultureInfo.CurrentUICulture.Name;
-        if (name.StartsWith("en")) return SupportedLangs.English;
-        if (name.StartsWith("zh_CHT")) return SupportedLangs.TChinese;
-        if (name.StartsWith("zh")) return SupportedLangs.SChinese;
-        if (name.StartsWith("ru")) return SupportedLangs.Russian;
-        return TranslationController.Instance.currentLanguage.languageID;
+        try
+        {
+            var name = CultureInfo.CurrentUICulture.Name;
+            if (name.StartsWith("en")) return SupportedLangs.English;
+            if (name.StartsWith("zh_CHT")) return SupportedLangs.TChinese;
+            if (name.StartsWith("zh")) return SupportedLangs.SChinese;
+            if (name.StartsWith("ru")) return SupportedLangs.Russian;
+            return TranslationController.Instance.currentLanguage.languageID;
+        }
+        catch
+        {
+            return SupportedLangs.English;
+        }
     }
     public static void LoadCustomTranslation(string filename, SupportedLangs lang)
     {
