@@ -407,12 +407,7 @@ public static class Utils
         if (taskState.hasTasks)
         {
             if (Concealer.IsHidding) Comms = true;
-            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                if (task.TaskType == TaskTypes.FixComms)
-                {
-                    Comms = true;
-                    break;
-                }
+            if (PlayerControl.LocalPlayer.myTasks.ToArray().Any(x => x.TaskType == TaskTypes.FixComms)) Comms = true;
         }
         return GetProgressText(pc.PlayerId, Comms);
     }

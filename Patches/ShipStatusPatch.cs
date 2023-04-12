@@ -37,23 +37,20 @@ class RepairSystemPatch
         [HarmonyArgument(1)] PlayerControl player,
         [HarmonyArgument(2)] byte amount)
     {
+        Logger.Msg("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole().RemoveHtmlTags() + ", amount: " + amount, "RepairSystem");
+        if (RepairSender.enabled && AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
+            Logger.SendInGame("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole().RemoveHtmlTags() + ", amount: " + amount);
+
+        if (!AmongUsClient.Instance.AmHost) return true; //以下、ホストのみ実行
+
+        IsComms = PlayerControl.LocalPlayer.myTasks.ToArray().Any(x => x.TaskType == TaskTypes.FixComms);
+
+        if ((Options.CurrentGameMode == CustomGameMode.SoloKombat) && systemType == SystemTypes.Sabotage) return false;
 
         if (Options.DisableSabotage.GetBool() && systemType == SystemTypes.Sabotage) return false;
 
-        Logger.Msg("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole().RemoveHtmlTags() + ", amount: " + amount, "RepairSystem");
-        if (RepairSender.enabled && AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
-        {
-            Logger.SendInGame("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole().RemoveHtmlTags() + ", amount: " + amount);
-        }
-        IsComms = false;
-        foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-            if (task.TaskType == TaskTypes.FixComms) IsComms = true;
-
-        // 蠢蛋无法修复破坏
-        if (player.Is(CustomRoles.Fool) && (systemType is SystemTypes.Sabotage or SystemTypes.Comms or SystemTypes.Electrical or SystemTypes.Reactor || IsComms)) return false;
-
-        if (!AmongUsClient.Instance.AmHost) return true; //以下、ホストのみ実行
-        if ((Options.CurrentGameMode == CustomGameMode.SoloKombat) && systemType == SystemTypes.Sabotage) return false;
+        //蠢蛋无法修复破坏
+        if (player.Is(CustomRoles.Fool) && (systemType is SystemTypes.Sabotage or SystemTypes.Comms or SystemTypes.Electrical or SystemTypes.Reactor)) return false;
 
         //SabotageMaster
         if (player.Is(CustomRoles.SabotageMaster))
@@ -72,9 +69,8 @@ class RepairSystemPatch
         }
 
         if ((!player.Is(CustomRoleTypes.Impostor) && !(player.Is(CustomRoles.Jackal) && Jackal.CanUseSabotage.GetBool())) || player.Is(CustomRoles.Minimalism))
-        {
             if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) return false; //シェリフにサボタージュをさせない ただしフリープレイは例外
-        }
+
         return true;
     }
     public static void Postfix(ShipStatus __instance)
