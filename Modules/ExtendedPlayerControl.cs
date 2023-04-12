@@ -656,6 +656,7 @@ static class ExtendedPlayerControl
     { /*サボタージュ中でも関係なしに会議を起こせるメソッド
         targetがnullの場合はボタンとなる*/
         if (Options.DisableMeeting.GetBool() && !force) return;
+        Psychic.OnReportDeadBody();
         MeetingRoomManager.Instance.AssignSelf(reporter, target);
         DestroyableSingleton<HudManager>.Instance.OpenMeetingRoom(reporter);
         reporter.RpcStartMeeting(target);

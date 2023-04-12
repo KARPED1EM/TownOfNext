@@ -918,6 +918,7 @@ class ReportDeadBodyPatch
             Main.MadGrenadierBlinding.Clear();
             Divinator.didVote.Clear();
 
+            Psychic.OnReportDeadBody();
             BountyHunter.OnReportDeadBody();
             SerialKiller.OnReportDeadBody();
             Sniper.OnReportDeadBody();
@@ -926,7 +927,6 @@ class ReportDeadBodyPatch
             Concealer.OnReportDeadBody();
             Mortician.OnReportDeadBody(__instance, target);
             Mediumshiper.OnReportDeadBody(__instance, target);
-            Psychic.OnReportDeadBody();
             Counterfeiter.OnReportDeadBody();
             BallLightning.OnReportDeadBody();
             QuickShooter.OnReportDeadBody();
