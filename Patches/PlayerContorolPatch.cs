@@ -992,6 +992,7 @@ class FixedUpdatePatch
         TargetArrow.OnFixedUpdate(player);
         LocateArrow.OnFixedUpdate(player);
         Sniper.OnFixedUpdate(player);
+        Zoom.OnFixedUpdate();
 
         if (AmongUsClient.Instance.AmHost)
         {//実行クライアントがホストの場合のみ実行
