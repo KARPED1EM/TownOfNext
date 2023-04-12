@@ -51,7 +51,7 @@ public static class CredentialsPatch
             TransData += $"\nTem - <size=75%>{GetString("TranRU")}</size>";
 
             SponsersData += $"罗寄";
-            SponsersData += $"\n屑人";
+            SponsersData += $"\n喜";
             SponsersData += $"\n小叨院长";
             SponsersData += $"\n波奇酱";
             SponsersData += $"\n法师";
