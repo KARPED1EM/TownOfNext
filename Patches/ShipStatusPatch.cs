@@ -40,9 +40,6 @@ class RepairSystemPatch
 
         if (Options.DisableSabotage.GetBool() && systemType == SystemTypes.Sabotage) return false;
 
-        // 蠢蛋无法修复破坏
-        if (player.Is(CustomRoles.Fool) && systemType is SystemTypes.Sabotage or SystemTypes.Comms or SystemTypes.Electrical or SystemTypes.Reactor) return false;
-
         Logger.Msg("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole().RemoveHtmlTags() + ", amount: " + amount, "RepairSystem");
         if (RepairSender.enabled && AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
         {
@@ -52,8 +49,12 @@ class RepairSystemPatch
         foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
             if (task.TaskType == TaskTypes.FixComms) IsComms = true;
 
+        // 蠢蛋无法修复破坏
+        if (player.Is(CustomRoles.Fool) && (systemType is SystemTypes.Sabotage or SystemTypes.Comms or SystemTypes.Electrical or SystemTypes.Reactor) || IsComms) return false;
+
         if (!AmongUsClient.Instance.AmHost) return true; //以下、ホストのみ実行
         if ((Options.CurrentGameMode == CustomGameMode.SoloKombat) && systemType == SystemTypes.Sabotage) return false;
+
         //SabotageMaster
         if (player.Is(CustomRoles.SabotageMaster))
             SabotageMaster.RepairSystem(__instance, systemType, amount);
