@@ -363,7 +363,7 @@ HangmanInfoLong,(内鬼阵营):\n刽子手在变形期间的击杀方式为绞�
 # 船员阵营 / Crewmates descriptions
 BaitInfoLong,(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。,"(Crewmates):\nWhen you are killed, you force your killer to immediately self-report.","(Член Экипажа):\nКогда Приманку убивают, он заставляет убившего игрока \nмоментально зарепортить ваш труп."
 LuckeyInfoLong,(船员阵营):\n幸运儿被击杀时，有概率抵挡这次死亡，具体概率根据房主设定。抵挡生效时凶手会看到幸运儿的身上出现护盾破碎的效果，但幸运儿自己什么都不会知道。,"(Crewmates):\nThe Lucky will have a certain chance that the Killer will not be able to kill the Lucky, the probability is set depending on the Host's settings. The killer will see the effect of breaking the angel's shield on the body of the Lucky, but the Lucky himself will not know anything","(Член Экипажа):\nУ Удачника будет возникать определенная вероятность того, что Убийца не сможет убить Удачника, вероятность устанавливается в зависимости от настроек Хоста. Убийца увидит эффект разрушения щита ангела на теле Удачника, но сам Удачник при этом ничего не узнает."
-NeedyInfoLong,(船员阵营):\n摆烂人只有一个任务。另外，懒得要死的摆烂人并不会参与那些繁琐的事情，比如当黑客的替罪羊、给术士或者傀儡师办事之类的。摆烂人也不会拥有附加职业。,"(Crewmates):\nHe has only one task. In addition, the Lazy Gay, who is too lazy to die, will not participate in tiresome things like being the one to report body for the Hacker, working for the Warlock or the Puppeteer, etc. \nThe Lazy Gay will never become Lover or Neptune.","(Член Экипажа):\nУ него есть только одно задание. Кроме того Ленивому Парню которому слишком лень умирать, не будет участвовать в утомительных вещах, таких как: быть тем кто зарепортит труп для Хакера, не станет работать на Колдуна или на Кукловода и т.д. \nЛенивый Парень никогда не станет Любовником или Нептуном."
+NeedyInfoLong,(船员阵营):\n摆烂人只有一个任务。另外，懒得要死的摆烂人并不会参与那些繁琐的事情，比如当黑客的替罪羊、给术士或者傀儡师办事之类的。摆烂人也不会拥有附加职业。,"(Crewmates):\nHe has only one task. In addition, the Lazy Guy, who is too lazy to die, will not participate in tiresome things like being the one to report body for the Hacker, working for the Warlock or the Puppeteer, etc. \nThe Lazy Guy will never become Lover or Neptune.","(Член Экипажа):\nУ него есть только одно задание. Кроме того Ленивому Парню которому слишком лень умирать, не будет участвовать в утомительных вещах, таких как: быть тем кто зарепортит труп для Хакера, не станет работать на Колдуна или на Кукловода и т.д. \nЛенивый Парень никогда не станет Любовником или Нептуном."
 SuperStarInfoLong,(船员阵营):\n明星的名字旁会有星星的标识，所以大家都知道谁是大明星。只有凶手与大明星独处的时候才可以击杀大明星（仅限常规击杀）。此外，大明星不会参与赌博这种事情哦。（无法被赌怪猜测）,"(Crewmates):\nThere will be a star logo(★) next to Super Star's nickname to let everyone know who Super Star is. In addition, the Super Star cannot be guessed by all the Guessing Roles. (The Guessers themselves will not die if they try to guess the Super Star)","(Член Экипажа):\nРядом с никнеймом Супер Звезды будет логотип звезды(★), чтобы все знали, кто является Супер Звездой. Кроме того Супер Звезду не смогут угадать все Угадывающие роли. (Сами Угадыватели не будут умирать если попытается угадать Супер Звезду)"
 CyberStarInfoLong,(船员阵营):\n网红死亡时所有船员会看到杀戮闪烁（和灵媒看到的杀戮闪烁一样）并在下次会议时收到新闻报告，而内鬼则全程什么都不知道。,"(Crewmates):\nWhen a Celebrity dies, all players (or depending on settings, only the Crewmates) will see a ''Kill Flash'' and receive a news message at the next meeting that the Celebrity has died, while Impostors and Neutrals will not learn anything about this event (Also depends from settings).","(Член Экипажа):\nКогда Знаменитость умрёт, все игроки (или в зависимости от настроек только Члены Экипажа) увидят ''Вспышку Убийства'' и получат новостное сообщение на следующей встрече что Знаменитость умерла, в то время как Предатели и Нейтралы ничего не узнают об этом событии (Так же зависит от настроек)."
 MayorInfoLong,(船员阵营):\n市长再投票时一票算作多票。此外根据房主设置，市长还可能拥有跳通风管道触发紧急会议的技能。,"(Crewmates):\nYou have multiple votes, which will all go towards the one person you vote or skip.","(Член Экипажа):\nМэр можете иметь несколько голосов на собрании, и проголосовать за любого игрока этими доп. голосами или \nпросто отдать все голоса в скип."
@@ -442,13 +442,13 @@ SunnyboyInfoLong,(中立阵营):\n阳光开朗大男孩可以通过生命面板�
 BardInfoLong,(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。,"(Impostor):\nWhen a bard is alive, the exile confirmation will display a sentence composed by the bard. Whenever the bard completes a creation, the bard's kill cooldown is permanently halved."
 
 ## 模式选项 / Settings
-DisableMeeting,禁用会议与报告尸体,Turn off Meetings,Отключить Собрания
+DisableMeeting,禁用会议与报告尸体,Disable Meetings,Отключить Собрания
 DisableCloseDoor,禁用关门,Disable Doors sabotage,Отключить саботаж дверей
 DisableSabotage,禁用破坏,Disable Sabotage,Отключить Саботаж
 NoGameEnd,测试模式（游戏不结束）,NoGameEnd,Игра Не Закончится
 AllowConsole,允许控制台（可能被用于作弊）,Console,Консоль
 DebugMode,调试模式,Debug Mode,Режим отладки
-SyncButtonMode,所有船员共享会议次数,SyncButtonMode,Общая кнопка встреч
+SyncButtonMode,所有船员共享会议次数,Sync Button Mode,Общая кнопка встреч
 RandomMapsMode,随机地图模式,RandomMapsMode,Случайная карта
 SyncedButtonCount,紧急会议可用次数,Max Number of Buttons Allowed,Максимальное количество нажатий на Кнопку
 AddedTheSkeld,添加骷髅舰地图,Include TheSkeld,Добавить The Skeld
@@ -506,15 +506,15 @@ AutoDisplayKillLog,结束后自动显示击杀记录,Display Killlog,Показ�
 AutoDisplayLastRoles,结束后自动显示上局职业,Display Last Roles,Показывать роли в прошлой игре
 AutoDisplayLastResult,结束后自动显示最终结果,Auto Display Last Result,Отображать результат последней игры в чате
 EnableUpMode,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）
-KickLowLevelPlayer,踢出没有达到指定等级的玩家,Kick players lower than,Выгнать игроков с уровнем ниже
-AutoKickStart,踢出催开始的人,Kick the player who writes start,Кикнуть игрока который пишет start (Только англ)
+KickLowLevelPlayer,踢出没有达到指定等级的玩家,Kick players whos level is lower than,Выгнать игроков с уровнем ниже
+AutoKickStart,踢出催开始的人,Kick the player who says start,Кикнуть игрока который пишет start (Только англ)
 AutoKickStartTimes,踢出前警告次数,Number of warnings before kick,Количество предупреждений до кика
 AutoKickStartAsBan,踢出时封禁该玩家,Block a player after they kick,Заблокировать игрока после его кика
 AutoKickStopWords,踢出使用违禁词的人,Kick players who write forbidden words,Кикать игроков которые пишут запрещенные слова
 AutoKickStopWordsTimes,踢出前警告次数,Number of warnings for forbidden words,Количество предупреждений за запрещенные слова
 AutoKickStopWordsAsBan,踢出时封禁该玩家,Block a player after they kick,Заблокировать игрока после его кика
 AutoWarnStopWords,警告使用违禁词的人,Warning to those who write forbidden words,Предупреждение тем кто пишет запрещенные слова
-KickAndroidPlayer,踢出使用安卓的玩家,Kick players who entered the lobby using the phone,Кикнуть игроков которые зашли в лобби через телефон
+KickAndroidPlayer,踢出使用安卓的玩家,Kick andriod players,Кикнуть игроков которые зашли в лобби через телефон
 SendCodeToQQ,允许车队姬自动群发您的房号,(Only for China)允许车队姬自动群发您的房号,(Только для Китая)允许车队姬自动群发您的房号
 SendCodeMinPlayer,房间人数达到多少时群发,(Only for China)房间人数达到多少时群发,(Только для Китая)房间人数达到多少时群发
 DisableVanillaRoles,禁用原版职业,Disable Vanilla Roles,Отключить ванильные Роли
@@ -571,7 +571,7 @@ RoleAssigningAlgorithm.Xorshift,Xorshift,Xorshift,Xorshift
 RoleAssigningAlgorithm.MersenneTwister,Twister,MersenneTwister,MersenneTwister
 AirShipVariableElectrical,电气室门随机关闭（飞艇地图）,Variable Electrical(AirShip),Двери в Электрощитовой меняются случайно (Airship)
 ApplyDenyNameList,踢出使用违规昵称的玩家,Apply DenyName List,Применить файл запрещённых имён (DenyName)
-KickPlayerFriendCodeNotExist,踢出没有登录的玩家,Kick players whose Friend Code does not exist,Кикнуть игроков у которых нет Кода Друга
+KickPlayerFriendCodeNotExist,踢出没有登录的玩家,Kick players who are not logged in,Кикнуть игроков у которых нет Кода Друга
 ApplyBanList,踢出被封禁的玩家,Apply BanList,Применить файл с забаненными игроками (BanList)
 EndWhenPlayerBug,当有玩家因Bug无法游戏时终止游戏,"End the game when any player has a critical error",Завершить игру когда у любого игрока возникла критическая ошибка
 KillFlashDuration,击杀闪烁持续时间,"''Kill Flash'' Duration","Длительность ''Вспышки Убийства''"
@@ -601,25 +601,25 @@ Cooldown,冷却时间,Cooldown,Откат
 KillCooldown,击杀冷却时间,Kill Cooldown,Откат убийства
 VentCooldown,使用通风管道冷却时间,Vent Cooldown,Откат Вентиляции
 CanVent,可以使用通风管道,Can Vent,Может использовать Вентиляцию
-ImpostorVision,拥有<color=#ff1919>内鬼</color>视野,<color=#ff1919>Impostor</color> Vision,Имеет дальность Обзора <color=#ff1919>Предателя</color>
+ImpostorVision,拥有<color=#ff1919>内鬼</color>视野,Has <color=#ff1919>Impostor</color> Vision,Имеет дальность Обзора <color=#ff1919>Предателя</color>
 CanUseSabotage,可以破坏,Can Sabotage,Может использовать Саботаж
 NeutralRolesMinPlayer,<color=#ffab1b>中立阵营</color>玩家数量下限,Minimum number of <color=#ffab1b>neutral</color> roles,Минимальное количество <color=#ffab1b>нейтральных</color> ролей
 NeutralRolesMaxPlayer,<color=#ffab1b>中立阵营</color>玩家数量上限,Maximum number of <color=#ffab1b>neutral</color> roles,Максимальное количество <color=#ffab1b>нейтральных</color> ролей
-ImpKnowAlliesRole,<color=#ff1919>内鬼</color>知道队友的职业,<color=#ff1919>Impostor</color> may know the roles of other <color=#ff1919>impostors</color>,<color=#ff1919>Предатель</color> может знать роли других <color=#ff1919>Предателей</color>
-ImpKnowWhosMadmate,<color=#ff1919>内鬼</color>知道谁是<color=#ff1919>叛徒</color>
-MadmateKnowWhosImp,<color=#ff1919>叛徒</color>知道谁是<color=#ff1919>内鬼</color>
-MadmateKnowWhosMadmate,<color=#ff1919>叛徒</color>可以互认
-ImpCanKillMadmate,<color=#ff1919>内鬼</color>可以击杀<color=#ff1919>叛徒</color>
-MadmateCanKillImp,<color=#ff1919>叛徒</color>可以击杀<color=#ff1919>内鬼</color>
+ImpKnowAlliesRole,<color=#ff1919>内鬼</color>知道队友的职业,<color=#ff1919>Impostor</color> know the roles of allies,<color=#ff1919>Предатель</color> может знать роли других <color=#ff1919>Предателей</color>
+ImpKnowWhosMadmate,<color=#ff1919>内鬼</color>知道谁是<color=#ff1919>叛徒</color>,<color=#ff1919>Impostor</color> know <color=#ff1919>Madmate</color>
+MadmateKnowWhosImp,<color=#ff1919>叛徒</color>知道谁是<color=#ff1919>内鬼</color>,<color=#ff1919>Madmate</color> know <color=#ff1919>Impostor</color>
+MadmateKnowWhosMadmate,<color=#ff1919>叛徒</color>可以互认,<color=#ff1919>Madmate</color> know each others
+ImpCanKillMadmate,<color=#ff1919>内鬼</color>可以击杀<color=#ff1919>叛徒</color>,<color=#ff1919>Impostor</color> can kill <color=#ff1919>Madmate</color>
+MadmateCanKillImp,<color=#ff1919>叛徒</color>可以击杀<color=#ff1919>内鬼</color>,<color=#ff1919>Madmate</color> can kill <color=#ff1919>Impostor</color>
 WarlockCanKillAllies,可以击杀<color=#ff1919>内鬼</color>,Can kill Crewmate,Может убивать Членов Экипажа
 WarlockCanKillSelf,可以击杀自己,Can kill Self,Может убить себя
-EGCanGuessImp,可以猜测<color=#ff1919>内鬼</color>,Can Guess role <color=#ff1919>Impostors</color>,Может угадывать роли <color=#ff1919>Предателей</color>
-GGCanGuessCrew,可以猜测<color=#8cffff>船员</color>,Can Guess role <color=#8cffff>Crewmate</color>,Может угадывать роли <color=#8cffff>Членов Экипажа</color>
-EGCanGuessAdt,可以猜测附加职业,Can Guess Add-ons,Может угадывать Атрибуты
-EGCanGuessTaskDoneSnitch,可以猜测完成任务的<color=#b8fb4f>告密者</color>
-GGCanGuessAdt,可以猜测附加职业,Can Guess Add-ons,Может угадывать Атрибуты
+EGCanGuessImp,可以猜测<color=#ff1919>内鬼</color>,Can Guess <color=#ff1919>Impostor</color>,Может угадывать роли <color=#ff1919>Предателей</color>
+GGCanGuessCrew,可以猜测<color=#8cffff>船员</color>,Can Guess <color=#8cffff>Crewmate</color>,Может угадывать роли <color=#8cffff>Членов Экипажа</color>
+EGCanGuessAdt,可以猜测附加职业,Can Guess Add-Ons,Может угадывать Атрибуты
+EGCanGuessTaskDoneSnitch,可以猜测完成任务的<color=#b8fb4f>告密者</color>,Can guess <color=#b8fb4f>Snitch</color> who done the tasks
+GGCanGuessAdt,可以猜测附加职业,Can Guess Add-Ons,Может угадывать Атрибуты
 GuesserCanGuessTimes,每次会议猜测次数上限,Maximum number of guesses,Максимальное количество угадываний
-GuesserTryHideMsg,尝试混淆赌怪指令（试验性）,Can confuse players in guessing (Experiment),Может запутать игроков в угадывании (Эксперимент)
+GuesserTryHideMsg,尝试混淆赌怪指令（试验性）,Try hide guesser's command,Может запутать игроков в угадывании (Эксперимент)
 BountyTargetChangeTime,赏金目标切换时间,Time Until Target Swaps,Время смены цели
 BountySuccessKillCooldown,击杀赏金目标的奖励冷却时间,Kill Cooldown After Killing Bounty,Перезарядка после убийства цели
 BountyFailureKillCooldown,击杀赏金目标以外玩家的惩罚冷却时间,Kill Cooldown After Killing Others,Перезарядка после обычного Убийства
@@ -647,15 +647,15 @@ SheriffMisfireKillsTarget,误杀好人的同时击杀目标,Misfire Kills Target
 SheriffShotLimit,执法次数上限,Ammo,Количество выстрелов
 SheriffCanKillAllAlive,全员存活时可以执法,Can Kill With All Alive,Может убить всех живых
 SheriffCanKillMadmate,可以执法<color=#ff1919>叛徒</color>,Can Kill <color=#ff1919>Madmate</color>,Может убить <color=#ff1919>Безумцев</color>
-SheriffSetMadCanKill,单独设定<color=#ff1919>背叛的警长</color>可执法的目标（默认全开）
-SheriffMadCanKillImp,背叛后可以执法<color=#ff1919>内鬼阵营</color>
-SheriffMadCanKillNeutral,背叛后可以执法<color=#ffaa1b>中立阵营</color>
-SheriffMadCanKillCrew,背叛后可以执法<color=#8cffff>船员阵营</color>
+SheriffSetMadCanKill,单独设定<color=#ff1919>背叛的警长</color>可执法的目标（默认全开）,Specially set the team that can be killed by the <color=#ff1919>Mad-Sheriff</color>
+SheriffMadCanKillImp,背叛后可以执法<color=#ff1919>内鬼阵营</color>,Can kill <color=#ff1919>Impostor</color>
+SheriffMadCanKillNeutral,背叛后可以执法<color=#ffaa1b>中立阵营</color>,Can kill <color=#ffaa1b>Neutral</color>
+SheriffMadCanKillCrew,背叛后可以执法<color=#8cffff>船员阵营</color>,Can kill <color=#8cffff>Crewmate</color>
 DoctorTaskCompletedBatteryCharge,完成任务增加的设备充能数,Battery Duration,Длительность батарейки
 SnitchEnableTargetArrow,完成任务后显示箭头指向所有目标,Can See Arrow To Target,Может видеть стрелку цели
 SnitchCanGetArrowColor,对不同阵营的目标显示不同颜色的箭头,Can See Target Team Colored Arrow,Может видеть цвета стрелок
 SnitchCanFindNeutralKiller,可以确认带刀<color=#ffaa1b>中立</color>,Can Find Neutral Killers,Может видеть нейтральных убийц
-SnitchCanFindMadmate,可以确认<color=#ff1919>叛徒</color>
+SnitchCanFindMadmate,可以确认<color=#ff1919>叛徒</color>,Can Find <color=#ff1919>Madmates</color>
 SnitchRemainingTaskFound,在剩余多少任务时被发现,Remaining tasks to be found,Оставшиеся задания при которых он будет виден
 SpeedBoosterUpSpeed,增速者每次加速,Random Player's Speed Boost,Повысить скорость игрока на
 SpeedBoosterTimes,增速次数上限,Tasks Until Boost Activated,На сколько секунд можно ускорить
@@ -675,13 +675,13 @@ SniperBulletCount,最大子弹数量,Ammo,Количество пуль
 SniperPrecisionShooting,精准射击模式,Precision Firing,Точный выстрел
 SniperAimAssist,狙击范围内有玩家时提醒狙击手,Aim Assist,Помощь в прицеливании
 SniperAimAssistOneshot,闪烁提示而不是一直显示,One shot Assist,Помощь только с одним выстрелом
-NameDisplayAddons,显示职业同时显示附加职业,Dispay Add-ons,Показывать Атрибуты
-NoLimitAddonsNum,不限制每位玩家的附加职业上限,The number of Add-ons for one player is not limited,Количество Атрибутов для одного игрока не ограничено 
+NameDisplayAddons,显示职业同时显示附加职业,Dispay Add-Ons next to name,Показывать Атрибуты
+NoLimitAddonsNum,不限制每位玩家的附加职业上限,Unlimited Add-Ons cap,Количество Атрибутов для одного игрока не ограничено 
 LoverSpawnChances,出现概率,Spawn Chance of Lovers,Шанс появления Любовников
 AdditionRolesSpawnRate,出现概率,Spawn Chance,Шанс появления
 BewilderVision,迷幻视野大小,Bewilder Vision,Дальность обзора Сбитого с Толку
 FlashmanSpeed,初始移动速度,Flash Speed,Скорость Флеша
-LoverSuicide,恋人共生死,Lovers can commit suicide,Любовники могут суициднуться
+LoverSuicide,恋人共生死,Lovers suicide,Любовники могут суициднуться
 NumberOfLovers,恋人对数,Number of Lovers (x2 members),Количество Любовников (x2 участника)
 LoverKnowRoles,恋人知道对方的职业,Lovers know roles of eachother,Любовники знают роли друг-друга
 TrapperBlockMoveTime,封锁凶手移动时长,Freeze time,Время заморозки
@@ -697,20 +697,20 @@ EvilTrackerTargetMode.OnceInGame,仅限一次,Once in game,В каждой иг�
 EvilTrackerTargetMode.EveryMeeting,每次会议,EveryMeeting,На каждой встрече
 EvilTrackerTargetMode.Always,永久显示,Always,Всегда
 WitchModeSwitchAction,切换击杀模式,Mode Switch Action,Действие для Смены Режима
-NBareRed,友善<color=#ffab1b>中立</color>视为邪恶,<color=#ffab1b>Nice Neutrals</color> are shown in red,<color=#ffab1b>Добрые Нейтралы</color> показываются красным
-NEareRed,邪恶<color=#ffab1b>中立</color>视为邪恶,<color=#ffab1b>Evil Neutrals</color> are shown in red,<color=#ffab1b>Злые Нейтралы</color> показываются красным
-CrewKillingRed,带刀<color=#8cffff>船员</color>视为邪恶,<color=#8cffff>Crewmate Killer</color> are shown in red,<color=#8cffff>Члены Экипажа</color> убийцы показываются красным
+NBareRed,友善<color=#ffab1b>中立</color>视为邪恶,Nice <color=#ffab1b>Neutrals</color> are evil,<color=#ffab1b>Добрые Нейтралы</color> показываются красным
+NEareRed,邪恶<color=#ffab1b>中立</color>视为邪恶,Evil <color=#ffab1b>Neutrals</color> are evil,<color=#ffab1b>Злые Нейтралы</color> показываются красным
+CrewKillingRed,带刀<color=#8cffff>船员</color>视为邪恶,Killing <color=#8cffff>Crewmate</color> are evil,<color=#8cffff>Члены Экипажа</color> убийцы показываются красным
 PsychicCanSeeNum,可以看到几个红名,Max number of red names,Максимальное количество красных имен
-PsychicFresh,每次会议刷新红名,Red nickname changes at every meeting,Красный никнейм меняется на каждой встрече
-DetectiveCanknowKiller,可以知道凶手的职业,May know the killer's role,Может знать роль убийцы
+PsychicFresh,每次会议刷新红名,Refresh red names every meeting,Красный никнейм меняется на каждой встрече
+DetectiveCanknowKiller,可以知道凶手的职业,Can find the killer's role,Может знать роль убийцы
 ParanoiaVentCooldown,召开会议冷却时间,Vent Cooldown,Откат вентиляции
 ParanoiaNumOfUseButton,召开会议次数上限,Number of portable buttons,Количество портативных кнопок
 EveryOneKnowSuperStar,所有人知道谁是明星,Everyone knows who is a Super Star,Все знают кто является Супер Звездой
 HackLimit,骇入次数上限,How many times can the ability be used,Сколько раз может использовать способность
 ZombieSpeedReduce,每次减少移动速度,"After a certain time, down the speed of Zombies by",Скорость Зомби каждый раз снижается на
 MafiaCanKillNum,复仇人数上限,Maximum number of revenge,Максимальное количество мести
-ImpKnowCyberStarDead,<color=#ff1919>内鬼阵营</color>玩家可以知道网红死亡,<color=#ff1919>Impostor</color> may know the Celebrity is dead,<color=#ff1919>Предатели</color> могут знать что Знаменитость мертва
-NeutralKnowCyberStarDead,<color=#ffab1b>中立阵营</color>玩家可以知道网红死亡,<color=#ffab1b>Neutrals</color> may know the Celebrity is dead,<color=#ffab1b>Нейтралы</color> могут знать что  Знаменитость мертва
+ImpKnowCyberStarDead,<color=#ff1919>内鬼阵营</color>玩家可以知道网红死亡,<color=#ff1919>Impostor</color> know the Celebrity is dead,<color=#ff1919>Предатели</color> могут знать что Знаменитость мертва
+NeutralKnowCyberStarDead,<color=#ffab1b>中立阵营</color>玩家可以知道网红死亡,<color=#ffab1b>Neutrals</color> know the Celebrity is dead,<color=#ffab1b>Нейтралы</color> могут знать что  Знаменитость мертва
 JesterCanUseButton,可以召开紧急会议,Can call an emergency meeting,Может вызвать срочное собрание
 MarioVentNumWin,胜利所需跳管次数,Number of vent jumps to win,Сколько раз нужно прыгнуть в вентиляцию чтобы выиграть
 CanCheckCamera,可以监视到是否有人使用监控,Can track camera usage,Может отслеживать использует ли кто-либо камеры
@@ -742,26 +742,26 @@ CounterfeiterSkillCooldown,贩卖赝品冷却,Skill cooldown,Откат навы
 CounterfeiterSkillLimitTimes,贩卖赝品次数上限,Number of skills,Количество навыков
 GrenadierSkillCooldown,使用闪光弹冷却时间,Skill cooldown,Откат навыка
 GrenadierSkillDuration,闪光弹状态持续时间,Skill duration,Продолжительность навыка
-GrenadierCauseVision,受闪光弹影响后的视野,Vision after activating the stun grenade,Поле зрение после активации светошумовой гранаты
-GrenadierCanAffectNeutral,<color=#ffab1b>中立阵营</color>玩家会受到闪光弹影响,<color=#ffab1b>Neutrals</color> can be hit by a stun grenade,<color=#ffab1b>Нейтралы</color> могут быть поражены светошумовой гранатой
+GrenadierCauseVision,受闪光弹影响后的视野,Vision during skill,Поле зрение после активации светошумовой гранаты
+GrenadierCanAffectNeutral,<color=#ffab1b>中立阵营</color>玩家会受到闪光弹影响,Can affect <color=#ffab1b>Neutrals</color>,<color=#ffab1b>Нейтралы</color> могут быть поражены светошумовой гранатой
 TicketsPerKill,每次击杀增加票数,Increase in votes for kill,Увеличение голосов за убийство
 GangsterRecruitCooldown,击杀/招募冷却时间,Recruit cooldown, Откат переманивания
 GangsterRecruitLimit,招募玩家数量上限,Recruit limit,Лимит переманивания
 GanSheriffCanBeMadmate,可以招募<color=#f8cd46>警长</color>,<color=#f8cd46>Sheriff</color> can be converted,<color=#f8cd46>Шериф</color> может быть превращен
 GanMayorCanBeMadmate,可以招募<color=#204d42>市长</color>,<color=#204d42>Mayor</color> can be converted,<color=#204d42>Мэр</color> может быть превращен
 GanNGuesserCanBeMadmate,可以招募<color=#eede26>正义赌怪</color>,<color=#eede26>Nice Guesser</color> can be converted,<color=#eede26>Добрый Угадыватель</color> может быть превращен
-GanJudgeCanBeMadmate,可以招募<color=#f8d85a>法官</color>
+GanJudgeCanBeMadmate,可以招募<color=#f8d85a>法官</color>,<color=#f8d85a>Judge</color> can be converted
 RevolutionistDrawTime,拉拢玩家所需时间,Retention duration,Длительность удерживания
 RevolutionistCooldown,拉拢玩家冷却时间,Skill сooldown,Откат навыка
 RevolutionistDrawCount,需要拉拢人数,Number of players he needs to tag,Количество игроков которых ему нужно пометить
 RevolutionistKillProbability,被拉拢玩家牺牲概率,Probability of successful retention,Вероятность успешного удерживания
 RevolutionistVentCountDown,达到胜利条件后跳管道时间限制,To enter vent he is given:,Чтобы прыгнуть в вентиляцию ему даётся:
-PelicanKillCooldown,吞人冷却时间,Cooldown Absorption,Откат поглощения
-SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8cd46>Sheriff</color> can become Madmate,<color=#f8cd46>Шериф</color> может стать <color=#ff1919>Безумцем</color>
-MayorCanBeMadmate,<color=#204d42>市长</color>可以成为<color=#ff1919>叛徒</color>,<color=#204d42>Mayor</color> can become Madmate,<color=#204d42>Мэр</color> может стать <color=#ff1919>Безумцем</color>
+PelicanKillCooldown,吞人冷却时间,Eat Cooldown,Откат поглощения
+SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8cd46>Sheriff</color> can become <color=#ff1919>Madmate</color>,<color=#f8cd46>Шериф</color> может стать <color=#ff1919>Безумцем</color>
+MayorCanBeMadmate,<color=#204d42>市长</color>可以成为<color=#ff1919>叛徒</color>,<color=#204d42>Mayor</color> can become <color=#ff1919>Madmate</color>,<color=#204d42>Мэр</color> может стать <color=#ff1919>Безумцем</color>
 NGuesserCanBeMadmate,<color=#eede26>正义赌怪</color>可以成为<color=#ff1919>叛徒</color>,<color=#eede26>Nice Guesser</color> can become Madmate,<color=#eede26>Добрый Угадыватель</color> может стать <color=#ff1919>Безумцем</color>
-SnitchCanBeMadmate,<color=#b8fb4f>告密者</color>可以成为<color=#ff1919>叛徒</color>
-JudgeCanBeMadmate,<color=#f8d85a>法官</color>可以成为<color=#ff1919>叛徒</color>
+SnitchCanBeMadmate,<color=#b8fb4f>告密者</color>可以成为<color=#ff1919>叛徒</color>,<color=#b8fb4f>Snitch</color> can become <color=#ff1919>Madmate</color>
+JudgeCanBeMadmate,<color=#f8d85a>法官</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8d85a>Judge</color> can become <color=#ff1919>Madmate</color>
 MadSnitchTasks,背叛的告密者的任务数,<color=#b8fb4f>Snitch</color> Tasks,Задания <color=#b8fb4f>Стукача</color> 
 MedicalerCooldown,发放护盾冷却时间,Shield Cooldown,Откат Щита
 MedicalerSkillLimit,发放护盾次数上限,Skill Limit,Лимит Способности
@@ -772,9 +772,9 @@ MadmateSpawnMode.Assign,开局分配,Assign,Назначать
 MadmateSpawnMode.FirstKill,首刀叛变,First Kill,Первое Убийство
 MadmateSpawnMode.SelfVote,自票叛变,Self Vote,Само Голос
 GamerKillCooldown,攻击冷却时间,Attack Cooldown,Откат Атаки
-GamerHealthMax,其他人血量,Player blood volume,Объем крови игроков
-GamerDamage,造成的伤害值,The amount of damage caused,Величина причиненного ущерба
-GamerSelfHealthMax,自身血量,Demon blood volume,Объем крови Демона
+GamerHealthMax,其他人血量,Player max health,Объем крови игроков
+GamerDamage,造成的伤害值,Damage ,Величина причиненного ущерба
+GamerSelfHealthMax,自身血量,Demon max health,Объем крови Демона
 GamerSelfDamage,受到的伤害值,Demon damage received,Полученная величина ущерба Демону
 BallLightningConvertTime,汽化为量子幽灵的延迟,Duration of the transformation in Quantum Ghost,Длительность превращения в Квантового Призрака
 BallLightningKillCooldown,汽化冷却时间,Lightning Cooldown,Откат молнии
@@ -782,13 +782,13 @@ BallLightningKillerConvertGhost,被击杀时凶手汽化为量子幽灵,Killer c
 CanCountNeutralKiller,当<color=#8cffff>船员</color>通过击杀<color=#ffab1b>中立</color>玩家胜利时可以抢夺胜利,"When <color=#8cffff>Crewmates</color> win by killing a neutral player, they can snatch victory","Когда <color=#8cffff>Члены Экипажа</color> побеждают убив нейтрального игрока, они могут вырвать победу"
 OddKillCooldown,单数击杀冷却时间,Odd kill cooldown,Откат Нечётного убийства
 EvenKillCooldown,双数击杀冷却时间,Even kill cooldown,Откат Чётного убийства
-WorkaholicCannotWinAtDeath,死亡后无法胜利,Doesn't win at death,Не может победить когда он мёртв
+WorkaholicCannotWinAtDeath,死亡后无法胜利,Can't win at death,Не может победить когда он мёртв
 GuardSpellTimes,反杀次数上限,Number of Cursed Shields,Количество проклятых щитов
 CollectorCollectAmount,需要集票数量,Required number of votes,Необходимое количество голосов
 GlitchCanVote,可以投票,Can vote,Может голосовать
 QuickShooterShapeshiftCooldown,储存子弹冷却时间,Shapeshift cooldown,Откат морфа
 MeetingReserved,会议保留子弹数量,"Number of bullets reserved for the meeting","Количество пуль, зарезервированных для встречи"
-AccurateCheckMode,未完成任务时可占卜准确职业,"Exact lesson for divination when all tasks are not completed","Точное занятие для гадания, когда все задания не выполнены"
+AccurateCheckMode,未完成任务时可占卜准确职业,"Can know specific role when tasks are not done","Точное занятие для гадания, когда все задания не выполнены"
 ConcealerSkillCooldown,隐蔽冷却时间,Skill cooldown,Откат навыка
 ConcealerSkillDuration,隐蔽持续时间,Skill duration,Длительность навыка
 EraseLimit,抹除次数上限,Limit of Erasing,Лимит Стираний
@@ -805,9 +805,9 @@ KB_KillBonusMultiplier,击杀奖励倍率,Kill bonus multiplier,Множител
 JudgeTryHideMsg,尝试混淆法官指令（试验性）,Try hide judge's command
 TrialLimitPerMeeting,每次会议审判次数上限,Skill times limit per meeting
 JudgeCanTrialMadmate,可以审判<color=#ff1919>叛徒</color>,Can trial <color=#ff1919>Madmate</color>
-JudgeCanTrialnCrewKilling,可以审判带刀<color=#8cffff>船员</color>,Can trial Killing <color=#8cffff>Crewmate</color>
-JudgeCanTrialNeutralB,可以审判无刀<color=#ffab1b>中立</color>,Can trial Non-Killing<color=#ffab1b>Neutrals</color>
-JudgeCanTrialNeutralK,可以审判带刀<color=#ffab1b>中立</color>,Can trial Killing<color=#ffab1b>Neutrals</color>
+JudgeCanTrialnCrewKilling,可以审判带刀<color=#8cffff>船员</color>,Can trial Killing <color=#8cffff> Crewmate</color>
+JudgeCanTrialNeutralB,可以审判无刀<color=#ffab1b>中立</color>,Can trial Non-Killing<color=#ffab1b> Neutrals</color>
+JudgeCanTrialNeutralK,可以审判带刀<color=#ffab1b>中立</color>,Can trial Killing<color=#ffab1b> Neutrals</color>
 VeteranSkillMaxOfUseage,技能使用次数上限,Number of skills
 
 ## 死因 / Death Reasons
@@ -817,13 +817,13 @@ DeathReason.Suicide,自杀,Suicide,Суицид
 DeathReason.Spell,咒杀,Spell,Заколдован
 DeathReason.Bite,吸血,Bitten,Укушен
 DeathReason.Gambled,赌博,Guessed,Угадан
-DeathReason.FollowingSuicide,殉情,Lover's Suicide,♡Суицид♡
+DeathReason.FollowingSuicide,殉情,♡Suicide♡,♡Суицид♡
 DeathReason.Bombed,炸死,Explosion,Взорван
 DeathReason.Misfire,走火,Misfire,Убился
 DeathReason.Torched,烧死,Torched,Сожжён
 DeathReason.Sniped,狙杀,Sniped,Застрелен
 DeathReason.Execution,处决,Execution,Казнен
-DeathReason.Disconnected,断连,Disconnected,Вышел
+DeathReason.Disconnected,断连,DC,Вышел
 DeathReason.Fall,摔死,Fall,Упал
 DeathReason.Revenge,复仇,Revenge,Месть
 DeathReason.Eaten,活吞,Eaten,Сьеден
@@ -834,7 +834,7 @@ DeathReason.Ashamed,卷死,Ashamed,Пристыженный
 DeathReason.PissedOff,气死,Destroyed,Уничтожен
 DeathReason.Dismembered,肢解,Dismembered,Расчленен
 DeathReason.LossOfHead,绞杀,Strangled,Задушен
-DeathReason.Trialed,审判
+DeathReason.Trialed,审判,Judged
 DeathReason.etc,其它,Other,Другое
 Alive,存活,Alive,Выжил
 Win,胜利, Wins, Победили
@@ -936,7 +936,7 @@ WarlockNoTarget,因没有目标操纵失败,Manipulation failed due to no target
 WarlockControlKill,已操纵目标完成击杀,Target dead
 OnCyberStarDead,紧急通知：网红死亡,Warning: Celebrity death
 TeleportedByTransporter,您被传送至：{0},Teleporting to: {0}
-LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了
+LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了,You lost roles cuz <color=#ff1919>Eraser</color>
 
 ## 信息 / Message
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды
@@ -1108,7 +1108,7 @@ ModeSoloKombat,个人竞技模式,Mode Solo PVP,Режим ПВП
 GameMode,游戏模式,Game Mode,Игровой Режим
 PressTabToNextPage,按下tab键查看更多...,Press Tab or Number for Next Page...,Нажмите Tab или Цифру чтобы перейти на следующую страницу...
 RoleSummaryText,复盘信息:,Game End Player-Roles List:,Игроки и роли в конце игры:
-doOverride,特别设置%role%的任务数,Override %role%'s Tasks(At Least 1),Изменить задания у %role%
+doOverride,特别设置%role%的任务数,Override %role%'s Tasks,Изменить задания у %role%
 assignCommonTasks,%role%的普通任务数,Give %role% Common Tasks,%role% имеет общие задания
 roleLongTasksNum,%role%的长任务数,%role% Long Tasks,%role% долгие задания
 roleShortTasksNum,%role%的短任务数,%role% Short Tasks",%role% короткие задания
