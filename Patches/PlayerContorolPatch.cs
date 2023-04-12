@@ -326,6 +326,14 @@ class CheckMurderPatch
         if (!AmongUsClient.Instance.AmHost) return false;
         if (target == null) target = killer;
 
+        //禁止内鬼刀叛徒
+        if (killer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Madmate) && !Options.ImpCanKillMadmate.GetBool())
+            return false;
+
+        //禁止叛徒刀内鬼
+        if (killer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor) && !Options.MadmateCanKillImp.GetBool())
+            return false;
+
         //医生护盾检查
         if (Medicaler.OnCheckMurder(killer, target))
             return false;

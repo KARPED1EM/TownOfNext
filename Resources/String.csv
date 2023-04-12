@@ -609,6 +609,8 @@ ImpKnowAlliesRole,<color=#ff1919>内鬼</color>知道队友的职业,<color=#ff1
 ImpKnowWhosMadmate,<color=#ff1919>内鬼</color>知道谁是<color=#ff1919>叛徒</color>
 MadmateKnowWhosImp,<color=#ff1919>叛徒</color>知道谁是<color=#ff1919>内鬼</color>
 MadmateKnowWhosMadmate,<color=#ff1919>叛徒</color>可以互认
+ImpCanKillMadmate,<color=#ff1919>内鬼</color>可以击杀<color=#ff1919>叛徒</color>
+MadmateCanKillImp,<color=#ff1919>叛徒</color>可以击杀<color=#ff1919>内鬼</color>
 WarlockCanKillAllies,可以击杀<color=#ff1919>内鬼</color>,Can kill Crewmate,Может убивать Членов Экипажа
 WarlockCanKillSelf,可以击杀自己,Can kill Self,Может убить себя
 EGCanGuessImp,可以猜测<color=#ff1919>内鬼</color>,Can Guess role <color=#ff1919>Impostors</color>,Может угадывать роли <color=#ff1919>Предателей</color>
