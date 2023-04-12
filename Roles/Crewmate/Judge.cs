@@ -42,7 +42,7 @@ public static class Judge
         playerIdList.Add(playerId);
     }
     public static bool IsEnable => playerIdList.Count > 0;
-    public static void OnMeetingStart()
+    public static void OnReportDeadBody()
     {
         TrialLimit.Clear();
         foreach (var pc in playerIdList) TrialLimit.Add(pc, TrialLimitPerMeeting.GetInt());

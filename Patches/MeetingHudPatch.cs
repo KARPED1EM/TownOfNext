@@ -577,6 +577,9 @@ class MeetingHudStartPatch
                     Utils.SendMessage(MimicMsg, ipc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mimic), GetString("MimicMsgTitle")));
             }, 5.0f, "Notice Mimic Dead Msg");
         }
+        Main.CyberStarDead.Clear();
+        Main.DetectiveNotify.Clear();
+        Mediumshiper.ContactPlayer.Clear();
     }
     public static void Prefix(MeetingHud __instance)
     {
@@ -586,25 +589,8 @@ class MeetingHudStartPatch
         Main.AllPlayerControls.Do(x => ReportDeadBodyPatch.WaitReport[x.PlayerId].Clear());
         MeetingStates.MeetingCalled = true;
 
-        if (!AmongUsClient.Instance.AmHost) return;
-
-        Main.LastVotedPlayerInfo = null;
-        Main.GuesserGuessed.Clear();
-        Main.VeteranInProtect.Clear();
-        Main.GrenadierBlinding.Clear();
-        Main.MadGrenadierBlinding.Clear();
-        Divinator.didVote.Clear();
-
-        Counterfeiter.OnMeetingStart();
-        BallLightning.OnMeetingStart();
-        QuickShooter.OnMeetingStart();
-        Eraser.OnMeetingStart();
-        Hacker.OnMeetingStart();
-        Psychic.OnMeetingStart();
-        Judge.OnMeetingStart();
-        Mortician.OnMeetingStart();
-
-        NotifyRoleSkillOnMeetingStart();
+        if (AmongUsClient.Instance.AmHost)
+            NotifyRoleSkillOnMeetingStart();
     }
     public static void Postfix(MeetingHud __instance)
     {
@@ -836,12 +822,8 @@ class MeetingHudOnDestroyPatch
             AntiBlackout.SetIsDead();
             Main.AllPlayerControls.Do(pc => RandomSpawn.CustomNetworkTransformPatch.NumOfTP[pc.PlayerId] = 0);
 
-            Main.CyberStarDead.Clear();
-            Main.DetectiveNotify.Clear();
             Main.LastVotedPlayerInfo = null;
             EAC.MeetingTimes = 0;
-            Mediumshiper.ContactPlayer.Clear();
-            Eraser.OnMeetingDestroy();
         }
     }
 }

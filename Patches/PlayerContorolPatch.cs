@@ -754,7 +754,7 @@ class ShapeshiftPatch
                 QuickShooter.OnShapeshift(shapeshifter, shapeshifting);
                 break;
             case CustomRoles.Concealer:
-                Concealer.OnShapeshift(shapeshifter, shapeshifting);
+                Concealer.OnShapeshift(shapeshifting);
                 break;
             case CustomRoles.Hacker:
                 Hacker.OnShapeshift(shapeshifter, shapeshifting, target);
@@ -911,6 +911,12 @@ class ReportDeadBodyPatch
 
             Main.ArsonistTimer.Clear();
             Main.PuppeteerList.Clear();
+            Main.LastVotedPlayerInfo = null;
+            Main.GuesserGuessed.Clear();
+            Main.VeteranInProtect.Clear();
+            Main.GrenadierBlinding.Clear();
+            Main.MadGrenadierBlinding.Clear();
+            Divinator.didVote.Clear();
 
             BountyHunter.OnReportDeadBody();
             SerialKiller.OnReportDeadBody();
@@ -918,8 +924,15 @@ class ReportDeadBodyPatch
             Vampire.OnStartMeeting();
             Pelican.OnReportDeadBody();
             Concealer.OnReportDeadBody();
-            Mortician.OnReportOnReportDeadBody(__instance, target);
-            Mediumshiper.OnReportOnReportDeadBody(__instance, target);
+            Mortician.OnReportDeadBody(__instance, target);
+            Mediumshiper.OnReportDeadBody(__instance, target);
+            Psychic.OnReportDeadBody();
+            Counterfeiter.OnReportDeadBody();
+            BallLightning.OnReportDeadBody();
+            QuickShooter.OnReportDeadBody();
+            Eraser.OnReportDeadBody();
+            Hacker.OnReportDeadBody();
+            Judge.OnReportDeadBody();
 
             foreach (var x in Main.RevolutionistStart)
             {
@@ -1081,7 +1094,6 @@ class FixedUpdatePatch
                 Pelican.OnFixedUpdate();
                 Vampire.OnFixedUpdate(player);
                 BallLightning.OnFixedUpdate();
-                Concealer.OnFixedUpdate();
             }
 
             if (GameStates.IsInTask && CustomRoles.SerialKiller.IsEnable()) SerialKiller.FixedUpdate(player);

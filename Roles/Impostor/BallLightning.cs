@@ -134,7 +134,7 @@ public static class BallLightning
             Utils.NotifyRoles();
         }
     }
-    public static void OnMeetingStart()
+    public static void OnReportDeadBody()
     {
         foreach (var ghost in GhostPlayer)
         {

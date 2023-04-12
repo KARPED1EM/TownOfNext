@@ -60,7 +60,7 @@ public static class Psychic
         if (seer.Is(CustomRoles.Madmate)) return target.GetCustomRole().IsNeutral() || target.GetCustomRole().IsCK();
         else return RedPlayer.Contains(seer.PlayerId);
     }
-    public static void OnMeetingStart()
+    public static void OnReportDeadBody()
     {
         if (Fresh.GetBool() || RedPlayer == null || RedPlayer.Count < 1)
             GetRedName();

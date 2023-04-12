@@ -99,7 +99,7 @@ public static class Counterfeiter
         Logger.Info($"赝品商 {pc.GetRealName()} 的客户 {target.GetRealName()} 因使用赝品走火自杀", "Counterfeiter");
         return true;
     }
-    public static void OnMeetingStart()
+    public static void OnReportDeadBody()
     {
         notActiveList.Clear();
         foreach (var cl in clientList)

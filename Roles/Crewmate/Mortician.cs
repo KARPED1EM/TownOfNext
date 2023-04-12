@@ -75,16 +75,14 @@ public static class Mortician
             SendRPC(pc, true, target.transform.position);
         }
     }
-    public static void OnMeetingStart()
+    public static void OnReportDeadBody(PlayerControl pc, GameData.PlayerInfo target)
     {
-        foreach (var pc in playerIdList)
+        foreach (var apc in playerIdList)
         {
-            LocateArrow.RemoveAllTarget(pc);
-            SendRPC(pc, false);
+            LocateArrow.RemoveAllTarget(apc);
+            SendRPC(apc, false);
         }
-    }
-    public static void OnReportOnReportDeadBody(PlayerControl pc, GameData.PlayerInfo target)
-    {
+
         if (!pc.Is(CustomRoles.Mortician) || target == null) return;
         lastPlayerName.TryGetValue(target.PlayerId, out var name);
         if (name == "") msgToSend.Add((pc.PlayerId, string.Format(Translator.GetString("MorticianGetNoInfo"), target.PlayerName)));

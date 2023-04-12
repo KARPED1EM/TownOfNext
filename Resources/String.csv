@@ -936,6 +936,7 @@ WarlockNoTarget,因没有目标操纵失败,Manipulation failed due to no target
 WarlockControlKill,已操纵目标完成击杀,Target dead
 OnCyberStarDead,紧急通知：网红死亡,Warning: Celebrity death
 TeleportedByTransporter,您被传送至：{0},Teleporting to: {0}
+LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了
 
 ## 信息 / Message
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды

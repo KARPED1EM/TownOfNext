@@ -406,6 +406,7 @@ public static class Utils
         var Comms = false;
         if (taskState.hasTasks)
         {
+            if (Concealer.IsHidding) Comms = true;
             foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
                 if (task.TaskType == TaskTypes.FixComms)
                 {
@@ -1010,6 +1011,8 @@ public static class Utils
             }
             else SelfName = SelfRoleName + "\r\n" + SelfName;
             SelfName += SelfSuffix.ToString() == "" ? "" : "\r\n " + SelfSuffix.ToString();
+            if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && !isForMeeting)
+                SelfName = SelfRoleName;
             if (!isForMeeting) SelfName += "\r\n";
 
             //適用
@@ -1185,6 +1188,7 @@ public static class Utils
     }
     public static void AfterMeetingTasks()
     {
+        Eraser.AfterMeetingTasks();
         BountyHunter.AfterMeetingTasks();
         EvilTracker.AfterMeetingTasks();
         SerialKiller.AfterMeetingTasks();
