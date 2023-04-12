@@ -547,26 +547,6 @@ class MeetingHudStartPatch
                 }
                 Mortician.msgToSend.RemoveAll(x => x.Item1 == pc.PlayerId);
             }
-            //通灵师目标的技能提示
-            if (Mediumshiper.ContactPlayer.ContainsKey(pc.PlayerId))
-            {
-                new LateTask(() =>
-                {
-                    var msPlayer = Utils.GetPlayerById(Mediumshiper.ContactPlayer[pc.PlayerId]);
-                    if (msPlayer != null)
-                        Utils.SendMessage(string.Format(GetString("MediumshipNotifyTarget"), msPlayer.GetRealName()), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
-                }, 5.0f, "Notice Mediumshiper Target Skill");
-            }
-            //通灵师自己的技能提示
-            if (Mediumshiper.ContactPlayer.ContainsValue(pc.PlayerId))
-            {
-                new LateTask(() =>
-                {
-                    var msPlayer = Utils.GetPlayerById(Mediumshiper.ContactPlayer.Where(x => x.Value == pc.PlayerId).FirstOrDefault().Key);
-                    if (msPlayer != null)
-                        Utils.SendMessage(string.Format(GetString("MediumshipNotifySelf"), msPlayer.GetRealName()), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
-                }, 5.0f, "Notice Mediumshiper Skill");
-            }
         }
         if (MimicMsg != "")
         {
@@ -576,6 +556,17 @@ class MeetingHudStartPatch
                 foreach (var ipc in Main.AllPlayerControls.Where(x => x.GetCustomRole().IsImpostorTeam()))
                     Utils.SendMessage(MimicMsg, ipc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mimic), GetString("MimicMsgTitle")));
             }, 5.0f, "Notice Mimic Dead Msg");
+        }
+        foreach(var ms in Mediumshiper.ContactPlayer)
+        {
+            var pc = Utils.GetPlayerById(ms.Key);
+            var tar = Utils.GetPlayerById(ms.Value);
+            if (pc == null || tar == null) continue;
+            new LateTask(() =>
+            {
+                Utils.SendMessage(string.Format(GetString("MediumshipNotifyTarget"), pc.GetRealName()), tar.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
+                Utils.SendMessage(string.Format(GetString("MediumshipNotifySelf"), tar.GetRealName()), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
+            }, 5.0f, "Notice Mediumshiper Skill");
         }
         Main.CyberStarDead.Clear();
         Main.DetectiveNotify.Clear();
