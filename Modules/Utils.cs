@@ -1,6 +1,7 @@
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using Hazel;
+using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -33,10 +34,10 @@ public static class Utils
         {
             Logger.Fatal($"{text} 错误，触发防黑屏措施", "Anti-black");
             ChatUpdatePatch.DoBlockChat = true;
-            Main.OverrideWelcomeMsg = "由于未知错误发生，已终止游戏以防止黑屏。很抱歉，所有的H系列模组都存在这个问题，自动结束游戏是必要的保护措施，否则游戏将无法运行。";
+            Main.OverrideWelcomeMsg = GetString("AntiBlackOutNotifyInLobby");
             new LateTask(() =>
             {
-                Logger.SendInGame("由于未知错误发生，将终止游戏以防止黑屏", true);
+                Logger.SendInGame(GetString("AntiBlackOutLoggerSendInGame"), true);
             }, 3f, "Anti-Black Msg SendInGame");
             new LateTask(() =>
             {
@@ -47,21 +48,21 @@ public static class Utils
         }
         else
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AntiBlack, SendOption.Reliable);
+            MessageWriter writer = AmongUsClient.Instance.StartRpc(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.AntiBlackout, SendOption.Reliable);
             writer.Write(text);
             writer.EndMessage();
             if (Options.EndWhenPlayerBug.GetBool())
             {
                 new LateTask(() =>
                 {
-                    Logger.SendInGame("您触发了黑屏Bug，正在请求房主终止游戏...", true);
+                    Logger.SendInGame(GetString("AntiBlackOutRequestHostToForceEnd"), true);
                 }, 3f, "Anti-Black Msg SendInGame");
             }
             else
             {
                 new LateTask(() =>
                 {
-                    Logger.SendInGame("您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接", true);
+                    Logger.SendInGame(GetString("AntiBlackOutHostRejectForceEnd"), true);
                 }, 3f, "Anti-Black Msg SendInGame");
                 new LateTask(() =>
                 {
@@ -86,6 +87,18 @@ public static class Utils
         NetHelpers.WriteVector2(location, writer);
         writer.Write(nt.lastSequenceId);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static ClientData GetClientById(int id)
+    {
+        try
+        {
+            var client = AmongUsClient.Instance.allClients.ToArray().Where(cd => cd.Id == id).FirstOrDefault();
+            return client;
+        }
+        catch
+        {
+            return null;
+        }
     }
     public static bool IsActive(SystemTypes type)
     {
@@ -186,6 +199,7 @@ public static class Utils
                 if (!Options.ImpKnowCyberStarDead.GetBool() && seer.GetCustomRole().IsImpostor()) continue;
                 if (!Options.NeutralKnowCyberStarDead.GetBool() && seer.GetCustomRole().IsNeutral()) continue;
                 seer.KillFlash();
+                seer.Notify(ColorString(GetRoleColor(CustomRoles.CyberStar), GetString("OnCyberStarDead")));
             }
         }
         if (target.Is(CustomRoles.CyberStar) && !Main.CyberStarDead.Contains(target.PlayerId)) Main.CyberStarDead.Add(target.PlayerId);
@@ -344,6 +358,7 @@ public static class Utils
                 break;
             case CustomRoles.Workaholic:
             case CustomRoles.Terrorist:
+            case CustomRoles.Sunnyboy:
                 if (ForRecompute)
                     hasTasks = false;
                 break;
@@ -377,6 +392,7 @@ public static class Utils
             (pc.Is(CustomRoles.Mayor) && !Options.MayorCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.NiceGuesser) && !Options.NGuesserCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Snitch) && !Options.SnitchCanBeMadmate.GetBool()) ||
+            (pc.Is(CustomRoles.Judge) && !Options.JudgeCanBeMadmate.GetBool()) ||
             pc.Is(CustomRoles.Needy) ||
             pc.Is(CustomRoles.CyberStar) ||
             pc.Is(CustomRoles.Egoist) ||
@@ -822,14 +838,14 @@ public static class Utils
         if (name == "") return;
         if (AmongUsClient.Instance.IsGameStarted)
         {
-            if (Options.ColorNameMode.GetBool() && Main.nickName == "") name = Palette.GetColorName(player.Data.DefaultOutfit.ColorId);
+            if (Options.FormatNameMode.GetInt() == 1 && Main.nickName == "") name = Palette.GetColorName(player.Data.DefaultOutfit.ColorId);
         }
         else
         {
             if (!GameStates.IsLobby) return;
             if (player.AmOwner)
             {
-                if (AmongUsClient.Instance.IsGamePublic)
+                if (GameStates.IsOnlineGame)
                     name = $"<color=#ffd6ec>TOHE</color><color=#baf7ca>★</color>" + name;
                 if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
                     name = $"<color=#f55252><size=1.9>{GetString("ModeSoloKombat")}</size></color>\r\n" + name;
@@ -936,7 +952,10 @@ public static class Utils
                 SelfSuffix.Append(BountyHunter.GetTargetText(seer, false));
                 SelfSuffix.Append(BountyHunter.GetTargetArrow(seer));
             }
-
+            if (seer.Is(CustomRoles.Mortician))
+            {
+                SelfSuffix.Append(Mortician.GetTargetArrow(seer));
+            }
             if (seer.Is(CustomRoles.FireWorks))
             {
                 string stateText = FireWorks.GetStateText(seer);
@@ -983,6 +1002,10 @@ public static class Utils
             if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
             {
                 SoloKombatManager.GetNameNotify(seer, ref SelfName);
+                SelfName = $"<size={fontSize}>{SelfTaskText}</size>\r\n{SelfName}";
+            }
+            if (NameNotifyManager.GetNameNotify(seer, ref SelfName))
+            {
                 SelfName = $"<size={fontSize}>{SelfTaskText}</size>\r\n{SelfName}";
             }
             else SelfName = SelfRoleName + "\r\n" + SelfName;
@@ -1068,14 +1091,12 @@ public static class Utils
                     //他人の役職とタスクは幽霊が他人の役職を見れるようになっていてかつ、seerが死んでいる場合のみ表示されます。それ以外の場合は空になります。
                     string TargetRoleText =
                         (seer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool()) ||
-                        (!seer.Data.IsDead && seer.Is(CustomRoles.Madmate) && target.GetCustomRole().IsImpostor()) ||
                         (seer.Is(CustomRoles.Lovers) && target.Is(CustomRoles.Lovers) && Options.LoverKnowRoles.GetBool()) ||
-                        (seer.Is(CustomRoles.God) && !seer.Data.IsDead) ||
+                        (seer.GetCustomRole().IsImpostor() && target.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool()) ||
+                        (seer.Is(CustomRoles.Madmate) && target.GetCustomRole().IsImpostor()) ||
+                        (seer.Is(CustomRoles.God)) ||
                         (target.Is(CustomRoles.GM))
-                        ? $"<size={fontSize}>{target.GetDisplayRoleName()}{GetProgressText(target)}</size>\r\n" : "";
-
-                    if (seer.GetCustomRole().IsImpostor() && target.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool())
-                        TargetRoleText = $"<size={fontSize}>{target.GetDisplayRoleName(!seer.Data.IsDead)}</size>\r\n";
+                        ? $"<size={fontSize}>{target.GetDisplayRoleName(seer.PlayerId != target.PlayerId && !seer.Data.IsDead)}</size>\r\n" : "";
 
                     if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
                         TargetRoleText = $"<size={fontSize}>{GetProgressText(target)}</size>\r\n";
@@ -1090,7 +1111,7 @@ public static class Utils
                     //RealNameを取得 なければ現在の名前をRealNamesに書き込む
                     string TargetPlayerName = target.GetRealName(isForMeeting);
 
-                    if (seer.Is(CustomRoles.Psychic) && seer.IsAlive() && target.IsRedForPsy() && isForMeeting)
+                    if (seer.Is(CustomRoles.Psychic) && seer.IsAlive() && target.IsRedForPsy(seer) && isForMeeting)
                     {
                         TargetPlayerName = ColorString(GetRoleColor(CustomRoles.Impostor), TargetPlayerName);
                     }
@@ -1103,6 +1124,13 @@ public static class Utils
                         if (seer.IsAlive() && target.IsAlive() && isForMeeting)
                         {
                             TargetPlayerName = ColorString(GetRoleColor(seer.Is(CustomRoles.NiceGuesser) ? CustomRoles.NiceGuesser : CustomRoles.EvilGuesser), target.PlayerId.ToString()) + " " + TargetPlayerName;
+                        }
+                    }
+                    if (seer.Is(CustomRoles.Judge))
+                    {
+                        if (seer.IsAlive() && target.IsAlive() && isForMeeting)
+                        {
+                            TargetPlayerName = ColorString(GetRoleColor(CustomRoles.Judge), target.PlayerId.ToString()) + " " + TargetPlayerName;
                         }
                     }
 
@@ -1172,7 +1200,7 @@ public static class Utils
         int AliveImpostorCount = Main.AllAlivePlayerControls.Count(pc => pc.Is(CustomRoleTypes.Impostor));
         if (Main.AliveImpostorCount != AliveImpostorCount)
         {
-            Logger.Info("生存しているインポスター:" + AliveImpostorCount + "人", "CountAliveImpostors");
+            Logger.Info("存活内鬼人数:" + AliveImpostorCount + "人", "CountAliveImpostors");
             Main.AliveImpostorCount = AliveImpostorCount;
             LastImpostor.SetSubRole();
         }
@@ -1194,7 +1222,7 @@ public static class Utils
     {
         string name = "invalid";
         var player = GetPlayerById(num);
-        if (num < 15 && player != null) name = player?.GetNameWithRole();
+        if (num < 15 && player != null) name = player?.GetNameWithRole().RemoveHtmlTags();
         if (num == 253) name = "Skip";
         if (num == 254) name = "None";
         if (num == 255) name = "Dead";
@@ -1237,7 +1265,8 @@ public static class Utils
     {
         int draw = 0;
         int all = Options.RevolutionistDrawCount.GetInt();
-        int max = Main.AllAlivePlayerControls.Count() - 1;
+        int max = Main.AllAlivePlayerControls.Count();
+        if (!Main.PlayerStates[playerId].IsDead) max--;
         winnerList = new();
         if (all > max) all = max;
         foreach (var pc in Main.AllPlayerControls)
@@ -1256,7 +1285,7 @@ public static class Utils
         var name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
         if (id == PlayerControl.LocalPlayer.PlayerId) name = DataManager.player.Customization.Name;
         else name = GetPlayerById(id)?.Data.PlayerName ?? name;
-        string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=22%>{GetProgressText(id)}</pos><pos=30%>{GetVitalText(id, true)}</pos><pos={RolePos}%> {GetDisplayRoleName(id, true)}{GetSubRolesText(id, summary: true)}</pos>";
+        string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=24%>{GetProgressText(id)}</pos><pos=32%>{GetVitalText(id, true)}</pos><pos={RolePos}%> {GetDisplayRoleName(id, true)}{GetSubRolesText(id, summary: true)}</pos>";
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             if (TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese)

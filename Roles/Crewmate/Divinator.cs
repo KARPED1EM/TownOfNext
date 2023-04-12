@@ -71,7 +71,8 @@ public static class Divinator
                 CustomRoles.Mayor or
                 CustomRoles.Snitch or
                 CustomRoles.Counterfeiter or
-                CustomRoles.God
+                CustomRoles.God or
+                CustomRoles.Judge
                 => "HideMsg",
 
                 CustomRoles.Miner or
@@ -127,7 +128,9 @@ public static class Divinator
                 CustomRoles.Transporter or
                 CustomRoles.Veteran or
                 CustomRoles.Divinator or
-                CustomRoles.QuickShooter
+                CustomRoles.QuickShooter or
+                CustomRoles.Mediumshiper or
+                CustomRoles.Judge
                 => "Strong",
 
                 CustomRoles.Witch or
@@ -146,7 +149,9 @@ public static class Divinator
                 CustomRoles.Gangster or
                 CustomRoles.Dictator or
                 CustomRoles.CyberStar or
-                CustomRoles.Collector
+                CustomRoles.Collector or
+                CustomRoles.Sunnyboy or
+                CustomRoles.Bard
                 => "Enthusiasm",
 
                 CustomRoles.BoobyTrap or
@@ -158,7 +163,9 @@ public static class Divinator
                 CustomRoles.Medicaler or
                 CustomRoles.DarkHide or
                 CustomRoles.CursedWolf or
-                CustomRoles.OverKiller
+                CustomRoles.OverKiller or
+                CustomRoles.Hangman or
+                CustomRoles.Mortician
                 => "Disturbed",
 
                 CustomRoles.Glitch or

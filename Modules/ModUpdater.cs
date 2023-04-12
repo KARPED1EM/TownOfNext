@@ -23,6 +23,7 @@ public class ModUpdater
     public static string latestTitle = null;
     public static string downloadUrl = null;
     public static string MD5 = null;
+    public static string notice = null;
     public static GenericPopup InfoPopup;
     public static int visit = 0;
 
@@ -99,10 +100,14 @@ public class ModUpdater
 
             url = UrlSetId(UrlSetInfo(URL)) + "&data=remark|notice|md5|visit";
             string[] data = Get(url).Split("|");
-            int create = int.Parse(data[0]);
+            string[] notices = data[1].Split("&&");
+            if (CultureInfo.CurrentCulture.Name.StartsWith("zh")) notice = notices[0];
+            else notice = notices[1];
+            int create = int.Parse(data[0][..2]);
+            Cloud.Remote_int = int.Parse(data[0].Substring(2, 5));
             MD5 = data[2];
             visit = int.TryParse(data[3], out int x) ? x : 0;
-            visit += 26771;
+            visit += 26810; //1x版本的访问量
             if (create > Main.PluginCreate)
             {
                 hasUpdate = true;
@@ -119,7 +124,7 @@ public class ModUpdater
             if (!Main.AlreadyShowMsgBox || create == 0)
             {
                 Main.AlreadyShowMsgBox = true;
-                ShowPopup(data[1], true, create == 0);
+                ShowPopup(notice, true, create == 0);
             }
 
             Logger.Info("hasupdate: " + info[0], "2018k");
@@ -127,7 +132,7 @@ public class ModUpdater
             Logger.Info("downloadUrl: " + info[3], "2018k");
             Logger.Info("latestVersionl: " + info[4], "2018k");
             Logger.Info("remark: " + data[0], "2018k");
-            Logger.Info("notice: " + data[1], "2018k");
+            Logger.Info("notice: " + notice, "2018k");
             Logger.Info("MD5: " + data[2], "2018k");
             Logger.Info("Visit: " + data[3], "2018k");
 
@@ -142,7 +147,7 @@ public class ModUpdater
         }
         catch (Exception ex)
         {
-            if (CultureInfo.CurrentCulture.Name == "zh-CN")
+            if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
             {
                 isChecked = false;
                 isBroken = true;

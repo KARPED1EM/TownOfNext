@@ -193,6 +193,8 @@ internal static class SoloKombatManager
     }
     public static void OnPlayerBack(PlayerControl pc)
     {
+        pc.MyPhysics.RpcExitVent(2);
+
         BackCountdown.Remove(pc.PlayerId);
         PlayerHP[pc.PlayerId] = pc.HPMAX();
         SendRPCSyncKBPlayer(pc.PlayerId);
@@ -227,6 +229,8 @@ internal static class SoloKombatManager
     }
     public static void OnPlyaerDead(PlayerControl target)
     {
+        target.MyPhysics.RpcExitVent(2);
+
         originalSpeed.Remove(target.PlayerId);
         originalSpeed.Add(target.PlayerId, Main.AllPlayerSpeed[target.PlayerId]);
 
@@ -294,16 +298,10 @@ internal static class SoloKombatManager
                     // 锁定死亡玩家在小黑屋
                     if (!pc.SoloAlive())
                     {
-                        if (!pc.inVent)
-                        {
-                            var pos = Pelican.GetBlackRoomPS();
-                            var dis = Vector2.Distance(pos, pc.GetTruePosition());
-                            if (dis > 1f) Utils.TP(pc.NetTransform, pos);
-                        }
-                        else
-                        {
-                            pc.MyPhysics.RpcBootFromVent(Main.LastEnteredVent[pc.PlayerId].Id);
-                        }
+                        if (pc.inVent) pc.MyPhysics.RpcExitVent(2);
+                        var pos = Pelican.GetBlackRoomPS();
+                        var dis = Vector2.Distance(pos, pc.GetTruePosition());
+                        if (dis > 1f) Utils.TP(pc.NetTransform, pos);
                     }
                 }
 

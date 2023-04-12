@@ -26,8 +26,6 @@ public class Main : BasePlugin
     public static readonly string ModColor = "#ffc0cb";
     public static readonly bool AllowPublicRoom = true;
     public static readonly string ForkId = "TOHE";
-    public static readonly bool ShowQQButton = true;
-    public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
     public const string OriginalForkId = "OriginalTOH";
     public static HashAuth DebugKeyAuth { get; private set; }
     public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
@@ -36,8 +34,14 @@ public class Main : BasePlugin
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
     public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.2.5";
-    public const int PluginCreate = 17;
+    public const string PluginVersion = "2.2.7";
+    public const int PluginCreate = 18;
+
+    public static readonly bool ShowQQButton = true;
+    public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
+    public static readonly bool ShowDiscordButton = true;
+    public static readonly string DiscordInviteUrl = "https://discord.gg/5PNwUaN5";
+
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
     public static BepInEx.Logging.ManualLogSource Logger;
@@ -52,7 +56,10 @@ public class Main : BasePlugin
     public static ConfigEntry<string> HideColor { get; private set; }
     public static ConfigEntry<bool> UnlockFPS { get; private set; }
     public static ConfigEntry<bool> AutoStart { get; private set; }
-    public static ConfigEntry<bool> DisableTOHE { get; private set; }
+    public static ConfigEntry<bool> ForceOwnLanguage { get; private set; }
+    public static ConfigEntry<bool> ForceOwnLanguageRoleName { get; private set; }
+    public static ConfigEntry<bool> SwitchVanilla { get; private set; }
+    public static ConfigEntry<bool> VersionCheat { get; private set; }
     public static ConfigEntry<int> MessageWait { get; private set; }
 
     public static Dictionary<byte, PlayerVersion> playerVersion = new();
@@ -128,6 +135,7 @@ public class Main : BasePlugin
     public static Dictionary<byte, int> ParaUsedButtonCount = new();
     public static Dictionary<byte, int> MarioVentCount = new();
     public static Dictionary<byte, long> VeteranInProtect = new();
+    public static Dictionary<byte, int> VeteranNumOfUsed = new();
     public static Dictionary<byte, long> GrenadierBlinding = new();
     public static Dictionary<byte, long> MadGrenadierBlinding = new();
     public static Dictionary<byte, int> CursedWolfSpellCount = new();
@@ -153,6 +161,7 @@ public class Main : BasePlugin
     public static byte FirstDied;
     public static byte ShieldPlayer;
     public static int MadmateNum;
+    public static int BardCreations;
     public static Dictionary<byte, byte> Provoked = new();
 
     public static Dictionary<byte, CustomRoles> DevRole = new();
@@ -179,8 +188,11 @@ public class Main : BasePlugin
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
         AutoStart = Config.Bind("Client Options", "AutoStart", false);
         UnlockFPS = Config.Bind("Client Options", "UnlockFPS", true);
-        DisableTOHE = Config.Bind("Client Options", "DisableTOHE", false);
-        DebugKeyInput = Config.Bind("Authentication", "Debug Key", "kpd233");
+        SwitchVanilla = Config.Bind("Client Options", "SwitchVanilla", false);
+        VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
+        ForceOwnLanguage = Config.Bind("Client Options", "ForceOwnLanguage", false);
+        ForceOwnLanguageRoleName = Config.Bind("Client Options", "ForceOwnLanguageRoleName", false);
+        DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
 
         Logger = BepInEx.Logging.Logger.CreateLogSource("TOHE");
         TOHE.Logger.Enable();
@@ -229,6 +241,7 @@ public class Main : BasePlugin
         MayorUsedButtonCount = new Dictionary<byte, int>();
         ParaUsedButtonCount = new Dictionary<byte, int>();
         VeteranInProtect = new Dictionary<byte, long>();
+        VeteranNumOfUsed = new Dictionary<byte, int>();
         GrenadierBlinding = new Dictionary<byte, long>();
         MadGrenadierBlinding = new Dictionary<byte, long>();
         MarioVentCount = new Dictionary<byte, int>();
@@ -246,6 +259,7 @@ public class Main : BasePlugin
         ShieldPlayer = byte.MaxValue;
         FirstDied = byte.MaxValue;
         MadmateNum = 0;
+        BardCreations = 0;
         ScarecrowCanWithStandANumberOfKills = new Dictionary<byte, int>();
 
         Preset1 = Config.Bind("Preset Name Options", "Preset1", "Preset_1");
@@ -307,6 +321,9 @@ public class Main : BasePlugin
                 {CustomRoles.Medicaler, "#00a4ff"},
                 {CustomRoles.Divinator, "#882c83"},
                 {CustomRoles.Glitch, "#dcdcdc"},
+                {CustomRoles.Judge, "#f8d85a"},
+                {CustomRoles.Mortician, "#333c49"},
+                {CustomRoles.Mediumshiper, "#a200ff"},
                 //第三陣営役職
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
@@ -326,6 +343,7 @@ public class Main : BasePlugin
                 {CustomRoles.Workaholic, "#008b8b"},
                 {CustomRoles.Collector, "#9d8892"},
                 {CustomRoles.Provocateur, "#74ba43"},
+                {CustomRoles.Sunnyboy, "#ff9902"},
                 {CustomRoles.Error404, "#333333"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
@@ -438,6 +456,7 @@ public enum CustomRoles
     Eraser,
     OverKiller,
     Hangman,
+    Bard,
     Berserkers,
     Error404,
     //Crewmate(Vanilla)
@@ -472,6 +491,9 @@ public enum CustomRoles
     Medicaler,
     Divinator,
     Glitch,
+    Judge,
+    Mortician,
+    Mediumshiper,
     //Neutral
     Arsonist,
     Jester,
@@ -491,6 +513,7 @@ public enum CustomRoles
     Workaholic,
     Collector,
     Provocateur,
+    Sunnyboy,
 
     //SoloKombat
     KB_Normal,
@@ -559,6 +582,7 @@ public enum AdditionalWinners
     Executioner = CustomRoles.Executioner,
     FFF = CustomRoles.FFF,
     Provocateur = CustomRoles.Provocateur,
+    Sunnyboy = CustomRoles.Sunnyboy,
 }
 public enum SuffixModes
 {

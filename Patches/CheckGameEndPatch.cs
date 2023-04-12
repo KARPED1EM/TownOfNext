@@ -128,14 +128,11 @@ class GameEndChecker
                         CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
                         CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Opportunist);
                     }
-                    //FFF
-                    if (pc.Is(CustomRoles.FFF) && CustomWinnerHolder.WinnerTeam != CustomWinner.Lovers && !CustomWinnerHolder.AdditionalWinnerTeams.Contains(AdditionalWinners.Lovers) && !CustomRolesHelper.RoleExist(CustomRoles.Lovers) && !CustomRolesHelper.RoleExist(CustomRoles.Ntr))
+                    //Sunnyboy
+                    if (pc.Is(CustomRoles.Sunnyboy) && !pc.IsAlive())
                     {
-                        if (Main.AllPlayerControls.Where(x => (x.Is(CustomRoles.Lovers) || x.Is(CustomRoles.Ntr)) && (x.GetRealKiller() == null ? -1 : x.GetRealKiller().PlayerId) == pc.PlayerId).Count() > 0)
-                        {
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                            CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.FFF);
-                        }
+                        CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
+                        CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Sunnyboy);
                     }
                     //自爆卡车来咯
                     if (pc.Is(CustomRoles.Provocateur) && Main.Provoked.TryGetValue(pc.PlayerId, out var tar))
@@ -146,13 +143,30 @@ class GameEndChecker
                             CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Provocateur);
                         }
                     }
-                    //Lovers follow winner
-                    if (pc.Is(CustomRoles.Lovers) && CustomWinnerHolder.WinnerTeam is not CustomWinner.Lovers and not CustomWinner.Crewmate and not CustomWinner.Impostor)
+                }
+
+                //Lovers follow winner
+                if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Lovers and not CustomWinner.Crewmate and not CustomWinner.Impostor)
+                {
+                    foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Lovers)))
                     {
                         if (CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x).Is(CustomRoles.Lovers)).Count() > 0)
                         {
                             CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
                             CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Lovers);
+                        }
+                    }
+                }
+
+                //FFF
+                if (CustomWinnerHolder.WinnerTeam != CustomWinner.Lovers && !CustomWinnerHolder.AdditionalWinnerTeams.Contains(AdditionalWinners.Lovers) && !CustomRolesHelper.RoleExist(CustomRoles.Lovers) && !CustomRolesHelper.RoleExist(CustomRoles.Ntr))
+                {
+                    foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.FFF)))
+                    {
+                        if (Main.AllPlayerControls.Where(x => (x.Is(CustomRoles.Lovers) || x.Is(CustomRoles.Ntr)) && (x.GetRealKiller() == null ? -1 : x.GetRealKiller().PlayerId) == pc.PlayerId).Count() > 0)
+                        {
+                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
+                            CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.FFF);
                         }
                     }
                 }
@@ -284,6 +298,8 @@ class GameEndChecker
         public bool CheckGameEndByLivingPlayers(out GameOverReason reason)
         {
             reason = GameOverReason.ImpostorByKill;
+
+            if (CustomRolesHelper.RoleExist(CustomRoles.Sunnyboy) && Main.AllAlivePlayerControls.Count() > 1) return false;
 
             int Imp = Utils.AlivePlayersCount(CountTypes.Impostor);
             int Jackal = Utils.AlivePlayersCount(CountTypes.Jackal);

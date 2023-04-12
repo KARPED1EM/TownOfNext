@@ -16,7 +16,7 @@ public static class LastImpostor
     public static void SetKillCooldown()
     {
         if (currentId == byte.MaxValue) return;
-        if (KillCooldown.GetFloat() >= Main.AllPlayerKillCooldown[currentId]) return;
+        if (!Main.AllPlayerKillCooldown.TryGetValue(currentId, out var x) || KillCooldown.GetFloat() >= x) return;
         Main.AllPlayerKillCooldown[currentId] = KillCooldown.GetFloat();
     }
     public static bool CanBeLastImpostor(PlayerControl pc)
@@ -24,7 +24,7 @@ public static class LastImpostor
     public static void SetSubRole()
     {
         //ラストインポスターがすでにいれば処理不要
-        if (currentId != byte.MaxValue) return;
+        if (currentId != byte.MaxValue || !AmongUsClient.Instance.AmHost) return;
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat
         || !CustomRoles.LastImpostor.IsEnable() || Main.AliveImpostorCount != 1)
             return;

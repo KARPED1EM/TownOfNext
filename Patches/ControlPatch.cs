@@ -125,11 +125,6 @@ internal class ControllerManagerUpdatePatch
             }
             OptionShower.GetText();
         }
-        //实名投票
-        if (GetKeysDown(KeyCode.Return, KeyCode.V, KeyCode.LeftShift) && GameStates.IsMeeting && !GameStates.IsOnlineGame)
-        {
-            MeetingHud.Instance.RpcClearVote(AmongUsClient.Instance.ClientId);
-        }
         //放逐自己
         if (GetKeysDown(KeyCode.Return, KeyCode.E, KeyCode.LeftShift) && GameStates.IsInGame)
         {
@@ -145,6 +140,16 @@ internal class ControllerManagerUpdatePatch
             Logger.isAlsoInGame = !Logger.isAlsoInGame;
             Logger.SendInGame($"游戏中输出日志：{Logger.isAlsoInGame}");
         }
+
+        //--下面是调试模式的命令--//
+        if (!DebugModeManager.IsDebugMode) return;
+
+        //实名投票
+        if (GetKeysDown(KeyCode.Return, KeyCode.V, KeyCode.LeftShift) && GameStates.IsMeeting && !GameStates.IsOnlineGame)
+        {
+            MeetingHud.Instance.RpcClearVote(AmongUsClient.Instance.ClientId);
+        }
+
         //打开飞艇所有的门
         if (GetKeysDown(KeyCode.Return, KeyCode.D, KeyCode.LeftShift) && GameStates.IsInGame)
         {
@@ -153,20 +158,19 @@ internal class ControllerManagerUpdatePatch
             ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
             ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
         }
+
         //将击杀冷却设定为0秒
         if (GetKeysDown(KeyCode.Return, KeyCode.K, KeyCode.LeftShift) && GameStates.IsInGame)
         {
             PlayerControl.LocalPlayer.Data.Object.SetKillTimer(0f);
         }
+
         //完成你的所有任务
         if (GetKeysDown(KeyCode.Return, KeyCode.T, KeyCode.LeftShift) && GameStates.IsInGame)
         {
             foreach (var task in PlayerControl.LocalPlayer.myTasks)
                 PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
         }
-
-        //--下面是调试模式的命令--//
-        if (!DebugModeManager.IsDebugMode) return;
 
         //同步设置
         if (Input.GetKeyDown(KeyCode.Y))
@@ -191,18 +195,22 @@ internal class ControllerManagerUpdatePatch
         //获取现在的坐标
         if (Input.GetKeyDown(KeyCode.I))
             Logger.Info(PlayerControl.LocalPlayer.GetTruePosition().ToString(), "GetLocalPlayerPos");
+
         //マスゲーム用コード
-        /*if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            foreach(var pc in PlayerControl.AllPlayerControls) {
-                if(!pc.AmOwner) pc.MyPhysics.RpcEnterVent(2);
+            foreach (var pc in PlayerControl.AllPlayerControls)
+            {
+                if (!pc.AmOwner) pc.MyPhysics.RpcEnterVent(2);
             }
         }
         if (Input.GetKeyDown(KeyCode.V))
         {
             Vector2 pos = PlayerControl.LocalPlayer.NetTransform.transform.position;
-            foreach(var pc in PlayerControl.AllPlayerControls) {
-                if(!pc.AmOwner) {
+            foreach (var pc in PlayerControl.AllPlayerControls)
+            {
+                if (!pc.AmOwner)
+                {
                     pc.NetTransform.RpcSnapTo(pos);
                     pos.x += 0.5f;
                 }
@@ -210,14 +218,15 @@ internal class ControllerManagerUpdatePatch
         }
         if (Input.GetKeyDown(KeyCode.B))
         {
-            foreach(var pc in PlayerControl.AllPlayerControls) {
-                if(!pc.AmOwner) pc.MyPhysics.RpcExitVent(2);
+            foreach (var pc in PlayerControl.AllPlayerControls)
+            {
+                if (!pc.AmOwner) pc.MyPhysics.RpcExitVent(2);
             }
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
             VentilationSystem.Update(VentilationSystem.Operation.StartCleaning, 0);
-        }*/
+        }
         //マスゲーム用コード終わり
     }
 

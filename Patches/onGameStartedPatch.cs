@@ -12,6 +12,7 @@ using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using static TOHE.Modules.CustomRoleSelector;
 using static TOHE.Translator;
+
 namespace TOHE;
 
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.CoStartGame))]
@@ -33,31 +34,31 @@ internal class ChangeRoleSettings
 
             Main.PlayerStates = new();
 
-            Main.AllPlayerKillCooldown = new Dictionary<byte, float>();
-            Main.AllPlayerSpeed = new Dictionary<byte, float>();
-            Main.WarlockTimer = new Dictionary<byte, float>();
-            Main.AssassinTimer = new Dictionary<byte, float>();
-            Main.isDoused = new Dictionary<(byte, byte), bool>();
-            Main.isDraw = new Dictionary<(byte, byte), bool>();
-            Main.ArsonistTimer = new Dictionary<byte, (PlayerControl, float)>();
-            Main.RevolutionistTimer = new Dictionary<byte, (PlayerControl, float)>();
-            Main.RevolutionistStart = new Dictionary<byte, long>();
-            Main.RevolutionistLastTime = new Dictionary<byte, long>();
-            Main.RevolutionistCountdown = new Dictionary<byte, int>();
-            Main.CursedPlayers = new Dictionary<byte, PlayerControl>();
-            Main.MafiaRevenged = new Dictionary<byte, int>();
-            Main.isCurseAndKill = new Dictionary<byte, bool>();
+            Main.AllPlayerKillCooldown = new();
+            Main.AllPlayerSpeed = new();
+            Main.WarlockTimer = new();
+            Main.AssassinTimer = new();
+            Main.isDoused = new();
+            Main.isDraw = new();
+            Main.ArsonistTimer = new();
+            Main.RevolutionistTimer = new();
+            Main.RevolutionistStart = new();
+            Main.RevolutionistLastTime = new();
+            Main.RevolutionistCountdown = new();
+            Main.CursedPlayers = new();
+            Main.MafiaRevenged = new();
+            Main.isCurseAndKill = new();
             Main.isCursed = false;
-            Main.PuppeteerList = new Dictionary<byte, byte>();
-            Main.DetectiveNotify = new Dictionary<byte, string>();
-            Main.CyberStarDead = new List<byte>();
-            Main.BoobyTrapBody = new List<byte>();
-            Main.KillerOfBoobyTrapBody = new Dictionary<byte, byte>();
-            Main.CleanerBodies = new List<byte>();
+            Main.PuppeteerList = new();
+            Main.DetectiveNotify = new();
+            Main.CyberStarDead = new();
+            Main.BoobyTrapBody = new();
+            Main.KillerOfBoobyTrapBody = new();
+            Main.CleanerBodies = new();
 
-            Main.LastEnteredVent = new Dictionary<byte, Vent>();
-            Main.LastEnteredVentLocation = new Dictionary<byte, UnityEngine.Vector2>();
-            Main.EscapeeLocation = new Dictionary<byte, UnityEngine.Vector2>();
+            Main.LastEnteredVent = new();
+            Main.LastEnteredVentLocation = new();
+            Main.EscapeeLocation = new();
 
             Main.AfterMeetingDeathPlayers = new();
             Main.ResetCamPlayerList = new();
@@ -67,18 +68,20 @@ internal class ChangeRoleSettings
             Main.CapitalismAssignTask = new();
             Main.CheckShapeshift = new();
             Main.ShapeshiftTarget = new();
-            Main.SpeedBoostTarget = new Dictionary<byte, byte>();
-            Main.MayorUsedButtonCount = new Dictionary<byte, int>();
-            Main.ParaUsedButtonCount = new Dictionary<byte, int>();
-            Main.MarioVentCount = new Dictionary<byte, int>();
-            Main.VeteranInProtect = new Dictionary<byte, long>();
-            Main.GrenadierBlinding = new Dictionary<byte, long>();
-            Main.MadGrenadierBlinding = new Dictionary<byte, long>();
-            Main.CursedWolfSpellCount = new Dictionary<byte, int>();
-            Main.Provoked = new Dictionary<byte, byte>();
+            Main.SpeedBoostTarget = new();
+            Main.MayorUsedButtonCount = new();
+            Main.ParaUsedButtonCount = new();
+            Main.MarioVentCount = new();
+            Main.VeteranInProtect = new();
+            Main.VeteranNumOfUsed = new();
+            Main.GrenadierBlinding = new();
+            Main.MadGrenadierBlinding = new();
+            Main.CursedWolfSpellCount = new();
+            Main.Provoked = new();
             Main.ShieldPlayer = Options.ShieldPersonDiedFirst.GetBool() ? Main.FirstDied : byte.MaxValue;
             Main.FirstDied = byte.MaxValue;
             Main.MadmateNum = 0;
+            Main.BardCreations = 0;
 
             ReportDeadBodyPatch.CanReport = new();
 
@@ -127,7 +130,7 @@ internal class ChangeRoleSettings
             foreach (var pc in Main.AllPlayerControls)
             {
                 var colorId = pc.Data.DefaultOutfit.ColorId;
-                if (AmongUsClient.Instance.AmHost && Options.ColorNameMode.GetBool()) pc.RpcSetName(Palette.GetColorName(colorId));
+                if (AmongUsClient.Instance.AmHost && Options.FormatNameMode.GetInt() == 1) pc.RpcSetName(Palette.GetColorName(colorId));
                 Main.PlayerStates[pc.PlayerId] = new(pc.PlayerId);
                 //Main.AllPlayerNames[pc.PlayerId] = pc?.Data?.PlayerName;
 
@@ -168,6 +171,7 @@ internal class ChangeRoleSettings
             TimeManager.Init();
             LastImpostor.Init();
             TargetArrow.Init();
+            LocateArrow.Init();
             DoubleTrigger.Init();
             Workhorse.Init();
             Pelican.Init();
@@ -188,9 +192,13 @@ internal class ChangeRoleSettings
             Hacker.Init();
             Psychic.Init();
             Hangman.Init();
+            Judge.Init();
+            Mortician.Init();
+            Mediumshiper.Init();
             SoloKombatManager.Init();
             CustomWinnerHolder.Reset();
             AntiBlackout.Reset();
+            NameNotifyManager.Reset();
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
 
             MeetingStates.MeetingCalled = false;
@@ -492,6 +500,18 @@ internal class SelectRolesPatch
                     case CustomRoles.Hangman:
                         Hangman.Add(pc.PlayerId);
                         break;
+                    case CustomRoles.Judge:
+                        Judge.Add(pc.PlayerId);
+                        break;
+                    case CustomRoles.Mortician:
+                        Mortician.Add(pc.PlayerId);
+                        break;
+                    case CustomRoles.Mediumshiper:
+                        Mediumshiper.Add(pc.PlayerId);
+                        break;
+                    case CustomRoles.Veteran:
+                        Main.VeteranNumOfUsed.Add(pc.PlayerId, Options.VeteranSkillMaxOfUseage.GetInt());
+                        break;
                     case CustomRoles.Scarecrow:
                         Main.ScarecrowCanWithStandANumberOfKills[pc.PlayerId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
                         break;
@@ -501,10 +521,6 @@ internal class SelectRolesPatch
                     switch (subRole)
                     {
                         // ここに属性のAddを追加
-                        case CustomRoles.Madmate:
-                            foreach (var impostor in Main.AllAlivePlayerControls.Where(pc => pc.GetCustomRole().IsImpostor()))
-                                NameColorManager.Add(pc.PlayerId, impostor.PlayerId);
-                            break;
                         default:
                             break;
                     }

@@ -1,6 +1,5 @@
 ﻿using Hazel;
 using System;
-using System.Data;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TOHE.Roles.Neutral;
@@ -105,24 +104,12 @@ public static class GuessManager
         }
         else if (operate == 2)
         {
+
             if (
             (pc.Is(CustomRoles.NiceGuesser) && Options.GGTryHideMsg.GetBool()) ||
             (pc.Is(CustomRoles.EvilGuesser) && Options.EGTryHideMsg.GetBool())
-            )
-            {
-                new LateTask(() =>
-                {
-                    TryHideMsg(true);
-                }, 0.01f, "Hide Guesser Messgae To Host");
-                TryHideMsg();
-            }
-            else
-            {
-                if (pc == PlayerControl.LocalPlayer) //房主的消息会被撤销，所以这里强制发送一条一样的消息补上
-                {
-                    Utils.SendMessage(originMsg, 255, pc.GetRealName());
-                }
-            }
+            ) TryHideMsg();
+            else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
 
             if (!MsgToPlayerAndRole(msg, out byte targetId, out CustomRoles role, out string error))
             {
@@ -154,6 +141,11 @@ public static class GuessManager
                     Utils.SendMessage(GetString("GuessGM"), pc.PlayerId);
                     return true;
                 }
+                if (target.Is(CustomRoles.Snitch) && target.AllTasksCompleted())
+                {
+                    Utils.SendMessage(GetString("EGGuessSnitchTaskDone"), pc.PlayerId);
+                    return true;
+                }
                 if (role.IsAdditionRole())
                 {
                     if (
@@ -165,7 +157,7 @@ public static class GuessManager
                         return true;
                     }
                 }
-                if (pc == target)
+                if (pc.PlayerId == target.PlayerId)
                 {
                     Utils.SendMessage(GetString("LaughToWhoGuessSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromDevTitle")));
                     guesserSuicide = true;
@@ -178,12 +170,12 @@ public static class GuessManager
                 target = dp;
 
                 string Name = dp.GetRealName();
-                Utils.SendMessage(string.Format(GetString("GuessKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.NiceGuesser), GetString("GuessKillTitle")));
 
                 Main.GuesserGuessed[pc.PlayerId]++;
 
                 new LateTask(() =>
                 {
+                    Main.PlayerStates[dp.PlayerId].deathReason = PlayerState.DeathReason.Gambled;
                     dp.SetRealKiller(pc);
                     RpcGuesserMurderPlayer(dp);
 
@@ -198,6 +190,9 @@ public static class GuessManager
                         Executioner.ChangeRoleByTarget(target);
 
                     Utils.NotifyRoles(isForMeeting: true, NoCache: true);
+
+                    new LateTask(() => { Utils.SendMessage(string.Format(GetString("GuessKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.NiceGuesser), GetString("GuessKillTitle"))); }, 0.6f, "Guess Msg");
+
                 }, 0.2f, "Guesser Kill");
             }
         }
@@ -212,7 +207,6 @@ public static class GuessManager
         var amOwner = pc.AmOwner;
         pc.Data.IsDead = true;
         pc.RpcExileV2();
-        Main.PlayerStates[pc.PlayerId].deathReason = PlayerState.DeathReason.Gambled;
         Main.PlayerStates[pc.PlayerId].SetDead();
         var meetingHud = MeetingHud.Instance;
         var hudManager = DestroyableSingleton<HudManager>.Instance;
@@ -290,7 +284,6 @@ public static class GuessManager
         if (msg.StartsWith("/")) msg = msg.Replace("/", string.Empty);
 
         Regex r = new("\\d+");
-        bool ismatch = r.IsMatch(msg);
         MatchCollection mc = r.Matches(msg);
         string result = string.Empty;
         for (int i = 0; i < mc.Count; i++)
@@ -314,11 +307,8 @@ public static class GuessManager
         }
 
         //判断选择的玩家是否合理
-        bool targetIsNull = false;
-        PlayerControl target = new();
-        try { target = Utils.GetPlayerById(id); }
-        catch { targetIsNull = true; }
-        if (targetIsNull || target == null || target.Data.IsDead)
+        PlayerControl target = Utils.GetPlayerById(id);
+        if (target == null || target.Data.IsDead)
         {
             error = GetString("GuessNull");
             role = new();
@@ -335,17 +325,17 @@ public static class GuessManager
         return true;
     }
 
-    public static void TryHideMsg(bool toHost = false)
+    public static void TryHideMsg()
     {
         ChatUpdatePatch.DoBlockChat = true;
         Array values = Enum.GetValues(typeof(CustomRoles));
         var rd = IRandom.Instance;
         string msg;
-        string[] command = new string[] { "bet", "bt", "guess", "gs", "shoot", "st", "赌", "猜" };
+        string[] command = new string[] { "bet", "bt", "guess", "gs", "shoot", "st", "赌", "猜", "审判", "tl", "判", "审" };
         for (int i = 0; i < 20; i++)
         {
             msg = "/";
-            if (rd.Next(1, 100) < 50)
+            if (rd.Next(1, 100) < 30)
             {
                 msg += "id";
             }
@@ -359,16 +349,10 @@ public static class GuessManager
                 msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
                 msg += Utils.GetRoleName(role);
             }
-
-            var pl = Main.AllAlivePlayerControls.OrderBy(x => x.PlayerId).ToArray();
-            var player = pl[rd.Next(0, pl.Length)];
-            if (player == null) return;
-
-            int clientId = toHost ? PlayerControl.LocalPlayer.PlayerId : -1;
-            var name = player.Data.PlayerName;
+            var player = Main.AllAlivePlayerControls.ToArray()[rd.Next(0, Main.AllAlivePlayerControls.Count())];
             DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
             var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-            writer.StartMessage(clientId);
+            writer.StartMessage(-1);
             writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
                 .Write(msg)
                 .EndRpc();

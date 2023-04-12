@@ -28,8 +28,10 @@ public static class NameColorManager
     {
         return seer == target
             || target.Is(CustomRoles.GM)
-            || target.Is(CustomRoles.God)
+            || seer.Is(CustomRoles.God)
             || (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoleTypes.Impostor))
+            || (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor))
+            || (target.Is(CustomRoles.SuperStar) && Options.EveryOneKnowSuperStar.GetBool())
             || Mare.KnowTargetRoleColor(target, isMeeting);
     }
     public static bool TryGetData(PlayerControl seer, PlayerControl target, out string colorCode)

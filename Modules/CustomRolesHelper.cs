@@ -1,4 +1,6 @@
 using AmongUs.GameOptions;
+using System.Linq;
+
 namespace TOHE;
 
 internal static class CustomRolesHelper
@@ -77,6 +79,11 @@ internal static class CustomRolesHelper
                 CustomRoles.Eraser => CustomRoles.Impostor,
                 CustomRoles.OverKiller => CustomRoles.Impostor,
                 CustomRoles.Hangman => CustomRoles.Shapeshifter,
+                CustomRoles.Sunnyboy => CustomRoles.Scientist,
+                CustomRoles.Judge => CustomRoles.Crewmate,
+                CustomRoles.Mortician => CustomRoles.Crewmate,
+                CustomRoles.Mediumshiper => CustomRoles.Crewmate,
+                CustomRoles.Bard => CustomRoles.Impostor,
                 CustomRoles.Berserkers => CustomRoles.Impostor,
                 CustomRoles.Error404 => CustomRoles.Impostor,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
@@ -205,6 +212,8 @@ internal static class CustomRolesHelper
             CustomRoles.Concealer or
             CustomRoles.Eraser or
             CustomRoles.OverKiller or
+            CustomRoles.Hangman or
+            CustomRoles.Bard;
             CustomRoles.Berserkers;
     }
     public static bool IsNeutral(this CustomRoles role) // ÊÇ·ñÖÐÁ¢
@@ -230,7 +239,8 @@ internal static class CustomRolesHelper
             CustomRoles.DarkHide or
             CustomRoles.Workaholic or
             CustomRoles.Collector or
-            CustomRoles.Provocateur;
+            CustomRoles.Provocateur or
+            CustomRoles.Sunnyboy;
     }
     public static bool CheckAddonConfilct(CustomRoles role, PlayerControl pc)
     {
@@ -241,7 +251,7 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.Bewilder && (pc.GetCustomRole().IsImpostor() || pc.Is(CustomRoles.Lighter))) return false;
         if (role is CustomRoles.Ntr && (pc.Is(CustomRoles.Lovers) || pc.Is(CustomRoles.FFF))) return false;
         if (role is CustomRoles.Madmate && !Utils.CanBeMadmate(pc)) return false;
-        if (role is CustomRoles.Oblivious && (pc.Is(CustomRoles.Detective) || pc.Is(CustomRoles.Cleaner))) return false;
+        if (role is CustomRoles.Oblivious && (pc.Is(CustomRoles.Detective) || pc.Is(CustomRoles.Cleaner) || pc.Is(CustomRoles.Mortician) || pc.Is(CustomRoles.Mediumshiper))) return false;
         if (role is CustomRoles.Fool && (pc.GetCustomRole().IsImpostor() || pc.Is(CustomRoles.SabotageMaster))) return false;
         if (role is CustomRoles.Avanger && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeAvanger.GetBool()) return false;
         if (role is CustomRoles.Brakar && pc.Is(CustomRoles.Dictator)) return false;
@@ -292,14 +302,7 @@ internal static class CustomRolesHelper
         if (role.IsNeutral()) type = CustomRoleTypes.Neutral;
         return type;
     }
-    public static bool RoleExist(this CustomRoles role, bool countDead = false)
-    {
-        foreach (var pc in Main.AllPlayerControls)
-        {
-            if (pc.Is(role) && (pc.IsAlive() || countDead)) return true;
-        }
-        return false;
-    }
+    public static bool RoleExist(this CustomRoles role, bool countDead = false) => Main.AllPlayerControls.Any(x => x.Is(role) && (x.IsAlive() || countDead));
     public static int GetCount(this CustomRoles role)
     {
         if (role.IsVanilla())

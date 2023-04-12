@@ -44,7 +44,7 @@ public static class CredentialsPatch
             DevsData += $"\nNCSIMON - <size=75%>{GetString("RoleDev")}</size>";
             DevsData += $"\n天寸梦初 - <size=75%>{GetString("RoleDev")}&{GetString("TechSup")}</size>";
             DevsData += $"\nCommandf1 - <size=75%>{GetString("RoleDev")}&{GetString("FeatureDev")}</size>";
-            DevsData += $"\n屑人 - <size=75%>{GetString("RoleDev")}</size>";
+            DevsData += $"\n喜 - <size=75%>{GetString("RoleDev")}</size>";
             DevsData += $"\nSHAAARKY - <size=75%>{GetString("RoleDev")}</size>";
 
             TransData += $"Tommy-XL - <size=75%>{GetString("TranEN")}&{GetString("TranRU")}</size>";
@@ -57,11 +57,11 @@ public static class CredentialsPatch
             SponsersData += $"\n法师";
             SponsersData += $"\n沐煊";
             SponsersData += $"\n林林林";
+            SponsersData += $"\n撒币";
             SponsersData += $"\nltemten";
             SponsersData += $"\nSlok";
             SponsersData += $"\n辣鸡";
             SponsersData += $"\n湛蓝色";
-            SponsersData += $"\n斯卡蒂Skadi";
             SponsersData += $"\n<size=60%>({GetString("OnlyShowPart")})</size>";
         }
 

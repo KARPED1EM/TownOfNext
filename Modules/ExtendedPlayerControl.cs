@@ -584,6 +584,10 @@ static class ExtendedPlayerControl
             case CustomRoles.KB_Normal:
                 Main.AllPlayerKillCooldown[player.PlayerId] = 1f;
                 break;
+            case CustomRoles.Bard:
+                for (int i = 0; i < Main.BardCreations; i++)
+                    Main.AllPlayerKillCooldown[player.PlayerId] /= 2;
+                break;
             case CustomRoles.Error404:
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.Error404KillCooldown.GetFloat();
                 break;
@@ -629,6 +633,12 @@ static class ExtendedPlayerControl
         //用于TOHE的击杀前判断
 
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat) return;
+
+        if (killer.PlayerId == target.PlayerId && killer.shapeshifting)
+        {
+            new LateTask(() => { killer.RpcMurderPlayer(target); }, 1.5f, "Shapeshifting Suicide Delay");
+            return;
+        }
 
         killer.RpcMurderPlayer(target);
     }

@@ -6,6 +6,7 @@ using HarmonyLib;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,6 +23,7 @@ public class MainMenuManagerPatch
 {
     public static GameObject template;
     public static GameObject qqButton;
+    public static GameObject discordButton;
     public static GameObject updateButton;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
@@ -29,21 +31,43 @@ public class MainMenuManagerPatch
     {
         if (template == null) template = GameObject.Find("/MainUI/ExitGameButton");
         if (template == null) return;
-        //Discordボタンを生成
-        if (qqButton == null) qqButton = UnityEngine.Object.Instantiate(template, template.transform.parent);
-        qqButton.name = "qqButton";
-        qqButton.transform.position = Vector3.Reflect(template.transform.position, Vector3.left);
 
-        var discordText = qqButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-        Color qqColor = new Color32(255, 192, 203, byte.MaxValue);
-        PassiveButton qqPassiveButton = qqButton.GetComponent<PassiveButton>();
-        SpriteRenderer qqButtonSprite = qqButton.GetComponent<SpriteRenderer>();
-        qqPassiveButton.OnClick = new();
-        qqPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(Main.QQInviteUrl)));
-        qqPassiveButton.OnMouseOut.AddListener((Action)(() => qqButtonSprite.color = discordText.color = qqColor));
-        __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => discordText.SetText("QQ群"))));
-        qqButtonSprite.color = discordText.color = qqColor;
-        qqButton.gameObject.SetActive(Main.ShowQQButton && !Main.IsAprilFools);
+        if (CultureInfo.CurrentCulture.Name == "zh-CN")
+        {
+            //生成QQ群按钮
+            if (qqButton == null) qqButton = UnityEngine.Object.Instantiate(template, template.transform.parent);
+            qqButton.name = "qqButton";
+            qqButton.transform.position = Vector3.Reflect(template.transform.position, Vector3.left);
+
+            var qqText = qqButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+            Color qqColor = new Color32(0, 164, 255, byte.MaxValue);
+            PassiveButton qqPassiveButton = qqButton.GetComponent<PassiveButton>();
+            SpriteRenderer qqButtonSprite = qqButton.GetComponent<SpriteRenderer>();
+            qqPassiveButton.OnClick = new();
+            qqPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(Main.QQInviteUrl)));
+            qqPassiveButton.OnMouseOut.AddListener((Action)(() => qqButtonSprite.color = qqText.color = qqColor));
+            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => qqText.SetText("QQ群"))));
+            qqButtonSprite.color = qqText.color = qqColor;
+            qqButton.gameObject.SetActive(Main.ShowQQButton && !Main.IsAprilFools);
+        }
+        else
+        {
+            //Discordボタンを生成
+            if (discordButton == null) discordButton = Object.Instantiate(template, template.transform.parent);
+            discordButton.name = "DiscordButton";
+            discordButton.transform.position = Vector3.Reflect(template.transform.position, Vector3.left);
+
+            var discordText = discordButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+            Color discordColor = new Color32(86, 98, 246, byte.MaxValue);
+            PassiveButton discordPassiveButton = discordButton.GetComponent<PassiveButton>();
+            SpriteRenderer discordButtonSprite = discordButton.GetComponent<SpriteRenderer>();
+            discordPassiveButton.OnClick = new();
+            discordPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(Main.DiscordInviteUrl)));
+            discordPassiveButton.OnMouseOut.AddListener((Action)(() => discordButtonSprite.color = discordText.color = discordColor));
+            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => discordText.SetText("Discord"))));
+            discordButtonSprite.color = discordText.color = discordColor;
+            discordButton.gameObject.SetActive(Main.ShowDiscordButton && !Main.IsAprilFools);
+        }
 
         //Updateボタンを生成
         if (updateButton == null) updateButton = Object.Instantiate(template, template.transform.parent);
@@ -52,7 +76,7 @@ public class MainMenuManagerPatch
         updateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
 
         var updateText = updateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-        Color updateColor = new Color32(128, 255, 255, byte.MaxValue);
+        Color updateColor = new Color32(247, 56, 23, byte.MaxValue);
         PassiveButton updatePassiveButton = updateButton.GetComponent<PassiveButton>();
         SpriteRenderer updateButtonSprite = updateButton.GetComponent<SpriteRenderer>();
         updatePassiveButton.OnClick = new();
@@ -66,6 +90,17 @@ public class MainMenuManagerPatch
         updateButtonSprite.size *= 1.5f;
         updateButton.SetActive(false);
 
+#if RELEASE
+            //フリープレイの無効化
+            var freeplayButton = GameObject.Find("/MainUI/FreePlayButton");
+            if (freeplayButton != null)
+            {
+                freeplayButton.GetComponent<PassiveButton>().OnClick = new();
+                freeplayButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Application.OpenURL("https://github.com/KARPED1EM/TownOfHostEdited")));
+                __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText("GitHub"))));
+            }
+#endif
+
         if (Main.IsAprilFools) return;
 
         var bottomTemplate = GameObject.Find("InventoryButton");
@@ -76,7 +111,7 @@ public class MainMenuManagerPatch
         var spriteHorseButton = HorseButton.GetComponent<SpriteRenderer>();
         if (HorseModePatch.isHorseMode) spriteHorseButton.transform.localScale *= -1;
 
-        spriteHorseButton.sprite = Utils.LoadSprite($"TOHE.Resources.HorseButton.png", 75f);
+        spriteHorseButton.sprite = Utils.LoadSprite($"TOHE.Resources.Images.HorseButton.png", 75f);
         passiveHorseButton.OnClick = new ButtonClickedEvent();
         passiveHorseButton.OnClick.AddListener((Action)(() =>
         {
@@ -94,7 +129,7 @@ public class MainMenuManagerPatch
         var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
         var spriteCreditsButton = CreditsButton.GetComponent<SpriteRenderer>();
 
-        spriteCreditsButton.sprite = Utils.LoadSprite($"TOHE.Resources.CreditsButton.png", 75f);
+        spriteCreditsButton.sprite = Utils.LoadSprite($"TOHE.Resources.Images.CreditsButton.png", 75f);
         passiveCreditsButton.OnClick = new ButtonClickedEvent();
         passiveCreditsButton.OnClick.AddListener((Action)(() =>
         {
@@ -121,6 +156,7 @@ public static class HorseModePatch
 public class ModNews
 {
     public int Number;
+    public uint Lang;
     public int BeforeNumber;
     public string Title;
     public string SubTitle;
@@ -133,11 +169,11 @@ public class ModNews
         var result = new Announcement
         {
             Number = Number,
+            Language = Lang,
             Title = Title,
             SubTitle = SubTitle,
             ShortTitle = ShortTitle,
             Text = Text,
-            Language = (uint)DataManager.Settings.Language.CurrentLanguage,
             Date = Date,
             Id = "ModNews"
         };
@@ -162,7 +198,11 @@ public class ModNewsHistory
             AnnouncementPopUp.UpdateState = AnnouncementPopUp.AnnounceState.Fetching;
             AllModNews.Clear();
 
-            var fileNames = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith("TOHE.Resources.ModNews."));
+            var lang = DataManager.Settings.Language.CurrentLanguage.ToString();
+            if (!Assembly.GetExecutingAssembly().GetManifestResourceNames().Any(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}.")))
+                lang = SupportedLangs.English.ToString();
+
+            var fileNames = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}."));
             foreach (var file in fileNames)
                 AllModNews.Add(GetContentFromRes(file));
 
@@ -179,10 +219,13 @@ public class ModNewsHistory
         stream.Position = 0;
         using StreamReader reader = new(stream, Encoding.UTF8);
         string text = "";
+        uint langId = (uint)DataManager.Settings.Language.CurrentLanguage;
+        //uint langId = (uint)SupportedLangs.SChinese;
         while (!reader.EndOfStream)
         {
             string line = reader.ReadLine();
             if (line.StartsWith("#Number:")) mn.Number = int.Parse(line.Replace("#Number:", string.Empty));
+            else if (line.StartsWith("#LangId:")) langId = uint.Parse(line.Replace("#LangId:", string.Empty));
             else if (line.StartsWith("#Title:")) mn.Title = line.Replace("#Title:", string.Empty);
             else if (line.StartsWith("#SubTitle:")) mn.SubTitle = line.Replace("#SubTitle:", string.Empty);
             else if (line.StartsWith("#ShortTitle:")) mn.ShortTitle = line.Replace("#ShortTitle:", string.Empty);
@@ -190,12 +233,12 @@ public class ModNewsHistory
             else if (line.StartsWith("#---")) continue;
             else
             {
-
                 if (line.StartsWith("## ")) line = line.Replace("## ", "<b>") + "</b>";
                 else if (line.StartsWith("- ")) line = line.Replace("- ", "・");
                 text += $"\n{line}";
             }
         }
+        mn.Lang = langId;
         mn.Text = text;
         Logger.Info($"Number:{mn.Number}", "ModNews");
         Logger.Info($"Title:{mn.Title}", "ModNews");

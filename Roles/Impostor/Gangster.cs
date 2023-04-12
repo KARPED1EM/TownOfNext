@@ -1,6 +1,5 @@
 ﻿using Hazel;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -10,13 +9,14 @@ public static class Gangster
 {
     private static readonly int Id = 5054525;
     private static List<byte> playerIdList = new();
-    
+
     private static OptionItem RecruitLimitOpt;
     public static OptionItem KillCooldown;
 
     public static OptionItem SheriffCanBeMadmate;
     public static OptionItem MayorCanBeMadmate;
     public static OptionItem NGuesserCanBeMadmate;
+    public static OptionItem JudgeCanBeMadmate;
 
     public static Dictionary<byte, int> RecruitLimit = new();
     public static void SetupCustomOption()
@@ -30,6 +30,7 @@ public static class Gangster
         SheriffCanBeMadmate = BooleanOptionItem.Create(Id + 14, "GanSheriffCanBeMadmate", false, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Gangster]);
         MayorCanBeMadmate = BooleanOptionItem.Create(Id + 15, "GanMayorCanBeMadmate", false, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Gangster]);
         NGuesserCanBeMadmate = BooleanOptionItem.Create(Id + 16, "GanNGuesserCanBeMadmate", false, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Gangster]);
+        JudgeCanBeMadmate = BooleanOptionItem.Create(Id + 17, "GanJudgeCanBeMadmate", false, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Gangster]);
 
     }
     public static void Init()
@@ -76,15 +77,14 @@ public static class Gangster
             RecruitLimit[killer.PlayerId]--;
             SendRPC(killer.PlayerId);
             target.RpcSetCustomRole(CustomRoles.Madmate);
-            foreach (var impostor in Main.AllAlivePlayerControls.Where(pc => pc.GetCustomRole().IsImpostor()))
-                NameColorManager.Add(target.PlayerId, impostor.PlayerId);
-            Utils.NotifyRoles(target);
-            Utils.NotifyRoles(killer);
+            NameColorManager.Add(killer.PlayerId, target.PlayerId, "#ff1919");
+            killer.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Gangster), GetString("GangsterSuccessfullyRecruited")));
+            target.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Gangster), GetString("BeRecruitedByGangster")));
             killer.RpcGuardAndKill(target);
             target.RpcGuardAndKill(killer);
             target.RpcGuardAndKill(target);
             SetKillCooldown(killer.PlayerId);
-            Logger.Info("役職設定:" + target?.Data?.PlayerName + " = " + target.GetCustomRole().ToString() + " + " + CustomRoles.Madmate.ToString(), "Assign " + CustomRoles.Madmate.ToString());
+            Logger.Info("设置职业:" + target?.Data?.PlayerName + " = " + target.GetCustomRole().ToString() + " + " + CustomRoles.Madmate.ToString(), "Assign " + CustomRoles.Madmate.ToString());
             if (RecruitLimit[killer.PlayerId] < 0)
                 HudManager.Instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
             Logger.Info($"{killer.GetNameWithRole()} : 剩余{RecruitLimit[killer.PlayerId]}次招募机会", "Gangster");
@@ -92,6 +92,7 @@ public static class Gangster
         }
         if (RecruitLimit[killer.PlayerId] < 0)
             HudManager.Instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
+        killer.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Gangster), GetString("GangsterRecruitmentFailure")));
         Logger.Info($"{killer.GetNameWithRole()} : 剩余{RecruitLimit[killer.PlayerId]}次招募机会", "Gangster");
         return false;
     }
@@ -104,6 +105,7 @@ public static class Gangster
             (pc.Is(CustomRoles.Sheriff) && !SheriffCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Mayor) && !MayorCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.NiceGuesser) && !NGuesserCanBeMadmate.GetBool()) ||
+            (pc.Is(CustomRoles.Judge) && !JudgeCanBeMadmate.GetBool()) ||
             pc.Is(CustomRoles.Snitch) ||
             pc.Is(CustomRoles.Needy) ||
             pc.Is(CustomRoles.CyberStar) ||

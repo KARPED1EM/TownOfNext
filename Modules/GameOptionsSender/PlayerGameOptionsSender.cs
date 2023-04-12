@@ -189,6 +189,10 @@ public class PlayerGameOptionsSender : GameOptionsSender
             case CustomRoles.Hangman:
                 Hangman.ApplyGameOptions();
                 break;
+            case CustomRoles.Sunnyboy:
+                AURoleOptions.ScientistCooldown = 0f;
+                AURoleOptions.ScientistBatteryCharge = 60f;
+                break;
         }
 
         // 为迷惑者的凶手
@@ -232,7 +236,8 @@ public class PlayerGameOptionsSender : GameOptionsSender
                     Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
                     break;
                 case CustomRoles.Lighter:
-                    opt.SetVision(true);
+                    opt.SetFloat(FloatOptionNames.CrewLightMod, 12f);
+                    opt.SetFloat(FloatOptionNames.ImpostorLightMod, 12f);
                     break;
                 case CustomRoles.Bewilder:
                     opt.SetVision(false);
