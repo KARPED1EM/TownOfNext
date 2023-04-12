@@ -603,8 +603,8 @@ VentCooldown,使用通风管道冷却时间,Vent Cooldown,Откат Венти�
 CanVent,可以使用通风管道,Can Vent,Может использовать Вентиляцию
 ImpostorVision,拥有<color=#ff1919>内鬼</color>视野,Has <color=#ff1919>Impostor</color> Vision,Имеет дальность Обзора <color=#ff1919>Предателя</color>
 CanUseSabotage,可以破坏,Can Sabotage,Может использовать Саботаж
-NeutralRolesMinPlayer,<color=#ffab1b>中立阵营</color>玩家数量下限,Minimum number of <color=#ffab1b>neutral</color> roles,Минимальное количество <color=#ffab1b>нейтральных</color> ролей
-NeutralRolesMaxPlayer,<color=#ffab1b>中立阵营</color>玩家数量上限,Maximum number of <color=#ffab1b>neutral</color> roles,Максимальное количество <color=#ffab1b>нейтральных</color> ролей
+NeutralRolesMinPlayer,<color=#ffab1b>中立阵营</color>玩家数量下限,Min of <color=#ffab1b>neutral</color> roles,Минимальное количество <color=#ffab1b>нейтральных</color> ролей
+NeutralRolesMaxPlayer,<color=#ffab1b>中立阵营</color>玩家数量上限,Max of <color=#ffab1b>neutral</color> roles,Максимальное количество <color=#ffab1b>нейтральных</color> ролей
 ImpKnowAlliesRole,<color=#ff1919>内鬼</color>知道队友的职业,<color=#ff1919>Impostor</color> know the roles of allies,<color=#ff1919>Предатель</color> может знать роли других <color=#ff1919>Предателей</color>
 ImpKnowWhosMadmate,<color=#ff1919>内鬼</color>知道谁是<color=#ff1919>叛徒</color>,<color=#ff1919>Impostor</color> know <color=#ff1919>Madmate</color>
 MadmateKnowWhosImp,<color=#ff1919>叛徒</color>知道谁是<color=#ff1919>内鬼</color>,<color=#ff1919>Madmate</color> know <color=#ff1919>Impostor</color>
@@ -618,7 +618,7 @@ GGCanGuessCrew,可以猜测<color=#8cffff>船员</color>,Can Guess <color=#8cfff
 EGCanGuessAdt,可以猜测附加职业,Can Guess Add-Ons,Может угадывать Атрибуты
 EGCanGuessTaskDoneSnitch,可以猜测完成任务的<color=#b8fb4f>告密者</color>,Can guess <color=#b8fb4f>Snitch</color> who done the tasks
 GGCanGuessAdt,可以猜测附加职业,Can Guess Add-Ons,Может угадывать Атрибуты
-GuesserCanGuessTimes,每次会议猜测次数上限,Maximum number of guesses,Максимальное количество угадываний
+GuesserCanGuessTimes,每次会议猜测次数上限,Max of guesses,Максимальное количество угадываний
 GuesserTryHideMsg,尝试混淆赌怪指令（试验性）,Try hide guesser's command,Может запутать игроков в угадывании (Эксперимент)
 BountyTargetChangeTime,赏金目标切换时间,Time Until Target Swaps,Время смены цели
 BountySuccessKillCooldown,击杀赏金目标的奖励冷却时间,Kill Cooldown After Killing Bounty,Перезарядка после убийства цели
@@ -661,7 +661,7 @@ SpeedBoosterUpSpeed,增速者每次加速,Random Player's Speed Boost,Повыс
 SpeedBoosterTimes,增速次数上限,Tasks Until Boost Activated,На сколько секунд можно ускорить
 MayorAdditionalVote,附加票数,Additional Votes Count,Дополнительные голоса
 MayorHasPortableButton,跳通风管触发紧急会议,"Mayor Has Mobile Emergency Button",У Мэра есть портативная Кнопка
-MayorNumOfUseButton,紧急会议次数上限,"Number Of Mobile Emergency Button","Количество портативных Кнопок"
+MayorNumOfUseButton,紧急会议次数上限,"Max Of Mobile Emergency Button","Количество портативных Кнопок"
 MayorHideVote,隐藏市长附加的投票,"Hide additional vote",Скрыть дополнительные голоса
 ExecutionerCanTargetImpostor,<color=#ff1919>内鬼</color>可以成为目标,Can Target <color=#ff1919>Impostors</color>,Может иметь цель изгнать <color=#ff1919>Предателя</color>
 ExecutionerCanTargetNeutralKiller,带刀<color=#ffab1b>中立</color>玩家可以成为目标,Can Target <color=#ffab1b>Neutral Killer</color>,Может иметь цель изгнать <color=#ffab1b>Нейтрального Убийцу</color>
@@ -700,15 +700,15 @@ WitchModeSwitchAction,切换击杀模式,Mode Switch Action,Действие д�
 NBareRed,友善<color=#ffab1b>中立</color>视为邪恶,Nice <color=#ffab1b>Neutrals</color> are evil,<color=#ffab1b>Добрые Нейтралы</color> показываются красным
 NEareRed,邪恶<color=#ffab1b>中立</color>视为邪恶,Evil <color=#ffab1b>Neutrals</color> are evil,<color=#ffab1b>Злые Нейтралы</color> показываются красным
 CrewKillingRed,带刀<color=#8cffff>船员</color>视为邪恶,Killing <color=#8cffff>Crewmate</color> are evil,<color=#8cffff>Члены Экипажа</color> убийцы показываются красным
-PsychicCanSeeNum,可以看到几个红名,Max number of red names,Максимальное количество красных имен
+PsychicCanSeeNum,可以看到几个红名,Max of red names,Максимальное количество красных имен
 PsychicFresh,每次会议刷新红名,Refresh red names every meeting,Красный никнейм меняется на каждой встрече
 DetectiveCanknowKiller,可以知道凶手的职业,Can find the killer's role,Может знать роль убийцы
 ParanoiaVentCooldown,召开会议冷却时间,Vent Cooldown,Откат вентиляции
-ParanoiaNumOfUseButton,召开会议次数上限,Number of portable buttons,Количество портативных кнопок
+ParanoiaNumOfUseButton,召开会议次数上限,Max of portable buttons,Количество портативных кнопок
 EveryOneKnowSuperStar,所有人知道谁是明星,Everyone knows who is a Super Star,Все знают кто является Супер Звездой
 HackLimit,骇入次数上限,How many times can the ability be used,Сколько раз может использовать способность
 ZombieSpeedReduce,每次减少移动速度,"After a certain time, down the speed of Zombies by",Скорость Зомби каждый раз снижается на
-MafiaCanKillNum,复仇人数上限,Maximum number of revenge,Максимальное количество мести
+MafiaCanKillNum,复仇人数上限,Max of revenge,Максимальное количество мести
 ImpKnowCyberStarDead,<color=#ff1919>内鬼阵营</color>玩家可以知道网红死亡,<color=#ff1919>Impostor</color> know the Celebrity is dead,<color=#ff1919>Предатели</color> могут знать что Знаменитость мертва
 NeutralKnowCyberStarDead,<color=#ffab1b>中立阵营</color>玩家可以知道网红死亡,<color=#ffab1b>Neutrals</color> know the Celebrity is dead,<color=#ffab1b>Нейтралы</color> могут знать что  Знаменитость мертва
 JesterCanUseButton,可以召开紧急会议,Can call an emergency meeting,Может вызвать срочное собрание
@@ -739,7 +739,7 @@ BodyguardProtectRadius,保护范围,Protect Radius,Радиус Защиты
 ImpCanBeEgoist,<color=#ff1919>内鬼</color>可以成为利己主义者,<color=#ff1919>Impostor</color> can become Egoist,<color=#ff1919>Предатель</color> может стать Эгоистом
 CrewCanBeEgoist,<color=#8cffff>船员</color>可以成为利己主义者,<color=#8cffff>Crewmate</color> can become Egoist,<color=#8cffff>Член Экипажа</color> может стать Эгоистом
 CounterfeiterSkillCooldown,贩卖赝品冷却,Skill cooldown,Откат навыка
-CounterfeiterSkillLimitTimes,贩卖赝品次数上限,Number of skills,Количество навыков
+CounterfeiterSkillLimitTimes,贩卖赝品次数上限,Max of skills,Количество навыков
 GrenadierSkillCooldown,使用闪光弹冷却时间,Skill cooldown,Откат навыка
 GrenadierSkillDuration,闪光弹状态持续时间,Skill duration,Продолжительность навыка
 GrenadierCauseVision,受闪光弹影响后的视野,Vision during skill,Поле зрение после активации светошумовой гранаты
@@ -759,7 +759,7 @@ RevolutionistVentCountDown,达到胜利条件后跳管道时间限制,To enter v
 PelicanKillCooldown,吞人冷却时间,Eat Cooldown,Откат поглощения
 SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8cd46>Sheriff</color> can become <color=#ff1919>Madmate</color>,<color=#f8cd46>Шериф</color> может стать <color=#ff1919>Безумцем</color>
 MayorCanBeMadmate,<color=#204d42>市长</color>可以成为<color=#ff1919>叛徒</color>,<color=#204d42>Mayor</color> can become <color=#ff1919>Madmate</color>,<color=#204d42>Мэр</color> может стать <color=#ff1919>Безумцем</color>
-NGuesserCanBeMadmate,<color=#eede26>正义赌怪</color>可以成为<color=#ff1919>叛徒</color>,<color=#eede26>Nice Guesser</color> can become Madmate,<color=#eede26>Добрый Угадыватель</color> может стать <color=#ff1919>Безумцем</color>
+NGuesserCanBeMadmate,<color=#eede26>正义赌怪</color>可以成为<color=#ff1919>叛徒</color>,<color=#eede26>Nice Guesser</color> can become <color=#ff1919>Madmate</color>,<color=#eede26>Добрый Угадыватель</color> может стать <color=#ff1919>Безумцем</color>
 SnitchCanBeMadmate,<color=#b8fb4f>告密者</color>可以成为<color=#ff1919>叛徒</color>,<color=#b8fb4f>Snitch</color> can become <color=#ff1919>Madmate</color>
 JudgeCanBeMadmate,<color=#f8d85a>法官</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8d85a>Judge</color> can become <color=#ff1919>Madmate</color>
 MadSnitchTasks,背叛的告密者的任务数,<color=#b8fb4f>Snitch</color> Tasks,Задания <color=#b8fb4f>Стукача</color> 
@@ -783,11 +783,11 @@ CanCountNeutralKiller,当<color=#8cffff>船员</color>通过击杀<color=#ffab1b
 OddKillCooldown,单数击杀冷却时间,Odd kill cooldown,Откат Нечётного убийства
 EvenKillCooldown,双数击杀冷却时间,Even kill cooldown,Откат Чётного убийства
 WorkaholicCannotWinAtDeath,死亡后无法胜利,Can't win at death,Не может победить когда он мёртв
-GuardSpellTimes,反杀次数上限,Number of Cursed Shields,Количество проклятых щитов
+GuardSpellTimes,反杀次数上限,Max of Cursed Shields,Количество проклятых щитов
 CollectorCollectAmount,需要集票数量,Required number of votes,Необходимое количество голосов
 GlitchCanVote,可以投票,Can vote,Может голосовать
 QuickShooterShapeshiftCooldown,储存子弹冷却时间,Shapeshift cooldown,Откат морфа
-MeetingReserved,会议保留子弹数量,"Number of bullets reserved for the meeting","Количество пуль, зарезервированных для встречи"
+MeetingReserved,会议保留子弹数量,"Max of bullets reserved for the meeting","Количество пуль, зарезервированных для встречи"
 AccurateCheckMode,未完成任务时可占卜准确职业,"Can know specific role when tasks are not done","Точное занятие для гадания, когда все задания не выполнены"
 ConcealerSkillCooldown,隐蔽冷却时间,Skill cooldown,Откат навыка
 ConcealerSkillDuration,隐蔽持续时间,Skill duration,Длительность навыка
@@ -808,7 +808,7 @@ JudgeCanTrialMadmate,可以审判<color=#ff1919>叛徒</color>,Can trial <color=
 JudgeCanTrialnCrewKilling,可以审判带刀<color=#8cffff>船员</color>,Can trial Killing <color=#8cffff> Crewmate</color>
 JudgeCanTrialNeutralB,可以审判无刀<color=#ffab1b>中立</color>,Can trial Non-Killing<color=#ffab1b> Neutrals</color>
 JudgeCanTrialNeutralK,可以审判带刀<color=#ffab1b>中立</color>,Can trial Killing<color=#ffab1b> Neutrals</color>
-VeteranSkillMaxOfUseage,技能使用次数上限,Number of skills
+VeteranSkillMaxOfUseage,技能使用次数上限,Max of skills
 
 ## 死因 / Death Reasons
 DeathReason.Kill,被杀,Kill,Убит
