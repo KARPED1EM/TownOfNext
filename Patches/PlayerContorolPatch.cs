@@ -1047,29 +1047,26 @@ class FixedUpdatePatch
             }
 
             //吹笛者的加速
-            if (GameStates.IsInTask && CustomRoles.Piper.IsEnable())
+            if (GameStates.IsInTask && player.Is(CustomRoles.Piper))
             {
                 BufferTime--;
                 if (BufferTime <= 0)
                 {
-                    BufferTime = 50;
-                    foreach (var pc in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Piper)))
+                    BufferTime = 30;
+                    foreach (var apc in Main.AllAlivePlayerControls.Where(x => x.PlayerId != player.PlayerId))
                     {
-                        foreach (var apc in Main.AllAlivePlayerControls.Where(x => x.PlayerId != pc.PlayerId))
-                        {
-                            var pos = pc.transform.position;
-                            var dis = Vector2.Distance(pos, apc.transform.position);
-                            bool acc = true;
+                        var pos = player.transform.position;
+                        var dis = Vector2.Distance(pos, apc.transform.position);
+                        bool acc = true;
 
-                            if (!apc.IsAlive() || Pelican.IsEaten(apc.PlayerId)) acc = false;
-                            if (dis > Options.PiperAccelerationRadius.GetFloat()) acc = false;
-                            if (acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()) break;
-                            if (acc) Main.AllPlayerSpeed[apc.PlayerId] = Options.PiperAccelerationSpeed.GetFloat();
-                            if (acc || (!acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()))
-                            {
-                                ExtendedPlayerControl.MarkDirtySettings(apc);
-                                Logger.Info($"{apc.GetRealName()} 因靠近吹笛者 {pc.GetRealName()} 速度被改变", "Piper Speed Boost");
-                            }
+                        if (!apc.IsAlive() || Pelican.IsEaten(apc.PlayerId)) acc = false;
+                        if (dis > Options.PiperAccelerationRadius.GetFloat()) acc = false;
+                        if (acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()) break;
+                        if (acc) Main.AllPlayerSpeed[apc.PlayerId] = Options.PiperAccelerationSpeed.GetFloat();
+                        if (acc || (!acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()))
+                        {
+                            ExtendedPlayerControl.MarkDirtySettings(apc);
+                            Logger.Info($"{apc.GetRealName()} 因靠近吹笛者 {player.GetRealName()} 速度被改变", "Piper Speed Boost");
                         }
                     }
                 }
