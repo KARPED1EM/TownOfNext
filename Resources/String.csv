@@ -606,6 +606,9 @@ CanUseSabotage,可以破坏,Can Sabotage,Может использовать С�
 NeutralRolesMinPlayer,<color=#ffab1b>中立阵营</color>玩家数量下限,Minimum number of <color=#ffab1b>neutral</color> roles,Минимальное количество <color=#ffab1b>нейтральных</color> ролей
 NeutralRolesMaxPlayer,<color=#ffab1b>中立阵营</color>玩家数量上限,Maximum number of <color=#ffab1b>neutral</color> roles,Максимальное количество <color=#ffab1b>нейтральных</color> ролей
 ImpKnowAlliesRole,<color=#ff1919>内鬼</color>知道队友的职业,<color=#ff1919>Impostor</color> may know the roles of other <color=#ff1919>impostors</color>,<color=#ff1919>Предатель</color> может знать роли других <color=#ff1919>Предателей</color>
+ImpKnowWhosMadmate,<color=#ff1919>内鬼</color>知道谁是<color=#ff1919>叛徒</color>
+MadmateKnowWhosImp,<color=#ff1919>叛徒</color>知道谁是<color=#ff1919>内鬼</color>
+MadmateKnowWhosMadmate,<color=#ff1919>叛徒</color>可以互认
 WarlockCanKillAllies,可以击杀<color=#ff1919>内鬼</color>,Can kill Crewmate,Может убивать Членов Экипажа
 WarlockCanKillSelf,可以击杀自己,Can kill Self,Может убить себя
 EGCanGuessImp,可以猜测<color=#ff1919>内鬼</color>,Can Guess role <color=#ff1919>Impostors</color>,Может угадывать роли <color=#ff1919>Предателей</color>
