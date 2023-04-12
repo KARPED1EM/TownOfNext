@@ -1199,6 +1199,7 @@ AntiBlackOutNotifyInLobby,由于未知错误发生，已终止游戏以防止黑
 AntiBlackOutLoggerSendInGame,由于未知错误发生，将终止游戏以防止黑屏
 AntiBlackOutRequestHostToForceEnd,您触发了黑屏Bug，正在请求房主终止游戏...
 AntiBlackOutHostRejectForceEnd,您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接
+Website,模组官网,Website
 
 
 ## 作弊 / EAC
