@@ -1006,41 +1006,42 @@ class FixedUpdatePatch
                 __instance.ReportDeadBody(info);
             }
 
-            //检查老兵技能是否失效
-            if (GameStates.IsInTask && CustomRoles.Veteran.IsEnable())
+            //踢出低等级的人
+            if (GameStates.IsLobby && player.Data.PlayerLevel != 0 && player.Data.PlayerLevel < Options.KickLowLevelPlayer.GetInt())
             {
-                var vpList = Main.VeteranInProtect.Where(x => x.Value + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now));
-                foreach (var vp in vpList)
+                AmongUsClient.Instance.KickPlayer(player.GetClientId(), false);
+                string msg = string.Format(GetString("KickBecauseLowLevel"), player.GetRealName().RemoveHtmlTags());
+                Logger.SendInGame(msg);
+                Logger.Info(msg, "LowLevel Kick");
+            }
+
+            //检查老兵技能是否失效
+            if (GameStates.IsInTask && player.Is(CustomRoles.Veteran))
+            {
+                if (Main.VeteranInProtect.TryGetValue(player.PlayerId, out var vtime) && vtime + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
                 {
-                    Main.VeteranInProtect.Remove(vp.Key);
-                    var pc = Utils.GetPlayerById(vp.Key);
-                    if (pc != null && GameStates.IsInTask) pc.RpcGuardAndKill(pc);
-                    pc.Notify(string.Format(GetString("VeteranOffGuard"), Main.VeteranNumOfUsed[pc.PlayerId]));
-                    break;
+                    Main.VeteranInProtect.Remove(player.PlayerId);
+                    player.RpcGuardAndKill();
+                    player.Notify(string.Format(GetString("VeteranOffGuard"), Main.VeteranNumOfUsed[player.PlayerId]));
                 }
             }
 
             //检查掷雷兵技能是否生效
-            if (GameStates.IsInTask && CustomRoles.Grenadier.IsEnable())
+            if (GameStates.IsInTask && player.Is(CustomRoles.Grenadier))
             {
-                var gbList = Main.GrenadierBlinding.Where(x => x.Value + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now));
-                foreach (var gb in gbList)
+                if (Main.GrenadierBlinding.TryGetValue(player.PlayerId, out var gtime) && gtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
                 {
-                    Main.GrenadierBlinding.Remove(gb.Key);
-                    var pc = Utils.GetPlayerById(gb.Key);
-                    if (pc != null && GameStates.IsInTask) pc.RpcGuardAndKill(pc);
-                    pc.Notify(GetString("GrenadierSkillStop"));
+                    Main.GrenadierBlinding.Remove(player.PlayerId);
+                    player.RpcGuardAndKill();
+                    player.Notify(GetString("GrenadierSkillStop"));
                     Utils.MarkEveryoneDirtySettings();
-                    break;
                 }
-                var mgbList = Main.MadGrenadierBlinding.Where(x => x.Value + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now));
-                foreach (var mgb in mgbList)
+                if (Main.MadGrenadierBlinding.TryGetValue(player.PlayerId, out var mgtime) && mgtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
                 {
-                    Main.MadGrenadierBlinding.Remove(mgb.Key);
-                    var pc = Utils.GetPlayerById(mgb.Key);
-                    if (pc != null && GameStates.IsInTask) pc.RpcGuardAndKill(pc);
+                    Main.MadGrenadierBlinding.Remove(player.PlayerId);
+                    player.RpcGuardAndKill();
+                    player.Notify(GetString("GrenadierSkillStop"));
                     Utils.MarkEveryoneDirtySettings();
-                    break;
                 }
             }
 
@@ -1074,17 +1075,14 @@ class FixedUpdatePatch
             }
 
             //检查马里奥是否完成
-            if (GameStates.IsInTask && CustomRoles.Mario.IsEnable())
+            if (GameStates.IsInTask && player.Is(CustomRoles.Mario))
             {
-                foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Mario)))
+                if (Main.MarioVentCount[player.PlayerId] > Options.MarioVentNumWin.GetInt())
                 {
-                    if (Main.MarioVentCount[pc.PlayerId] > Options.MarioVentNumWin.GetInt())
-                    {
 
-                        Main.MarioVentCount[pc.PlayerId] = Options.MarioVentNumWin.GetInt();
-                        CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
-                        CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                    }
+                    Main.MarioVentCount[player.PlayerId] = Options.MarioVentNumWin.GetInt();
+                    CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
+                    CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
                 }
             }
 
@@ -1643,7 +1641,7 @@ class EnterVentPatch
             Main.MarioVentCount.TryAdd(pc.PlayerId, 0);
             Main.MarioVentCount[pc.PlayerId]++;
             Utils.NotifyRoles(pc);
-            if (Main.MarioVentCount[pc.PlayerId] >= Options.MarioVentNumWin.GetInt() && AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.AmHost && Main.MarioVentCount[pc.PlayerId] >= Options.MarioVentNumWin.GetInt())
             {
                 CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
                 CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);

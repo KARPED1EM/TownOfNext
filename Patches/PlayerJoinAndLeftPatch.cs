@@ -187,21 +187,6 @@ class CreatePlayerPatch
     {
         if (!AmongUsClient.Instance.AmHost) return;
 
-        if (client.Id != AmongUsClient.Instance.ClientId)
-        {
-            new LateTask(() =>
-            {
-                if (client.Character == null) return;
-                if (client.Character.Data.PlayerLevel != 0 && client.Character.Data.PlayerLevel < Options.KickLowLevelPlayer.GetInt())
-                {
-                    AmongUsClient.Instance.KickPlayer(client.Id, false);
-                    string msg = string.Format(GetString("KickBecauseLowLevel"), client?.PlayerName);
-                    Logger.SendInGame(msg);
-                    Logger.Info(msg, "LowLevel Kick");
-                }
-            }, 1f, "LowLevel Kick Check");
-        }
-
         Logger.Msg($"创建玩家数据：ID{client.Character.PlayerId}: {client.PlayerName}", "CreatePlayer");
 
         //规范昵称
