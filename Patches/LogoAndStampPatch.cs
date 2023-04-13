@@ -48,7 +48,7 @@ public static class CredentialsPatch
             DevsData += $"\nSHAAARKY - <size=75%>{GetString("RoleDev")}</size>";
 
             TransData += $"Tommy-XL - <size=75%>{GetString("TranEN")}&{GetString("TranRU")}</size>";
-            TransData += $"\nTem - <size=75%>{GetString("TranRU")}</size>";
+            TransData += $"\nTem - <size=75%>{GetString("TranEN")}&{GetString("TranRU")}</size>";
 
             SponsersData += $"罗寄";
             SponsersData += $"\n喜";
