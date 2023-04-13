@@ -35,7 +35,7 @@ public class Main : BasePlugin
     public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.2.8";
-    public const int PluginCreate = 19;
+    public const int PluginCreate = 20;
 
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
