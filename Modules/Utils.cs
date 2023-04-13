@@ -550,6 +550,44 @@ public static class Utils
 
         SendMessage(sb.ToString(), PlayerId);
     }
+    public static void ShowAllActiveSettings(byte PlayerId = byte.MaxValue)
+    {
+        var mapId = Main.NormalOptions.MapId;
+        if (Options.HideGameSettings.GetBool() && PlayerId != byte.MaxValue)
+        {
+            SendMessage(GetString("Message.HideGameSettings"), PlayerId);
+            return;
+        }
+        if (Options.DIYGameSettings.GetBool())
+        {
+            SendMessage(GetString("Message.NowOverrideText"), PlayerId);
+            return;
+        }
+        var sb = new StringBuilder();
+
+        sb.Append(GetString("Settings")).Append(":");
+        foreach (var role in Options.CustomRoleCounts)
+        {
+            if (!role.Key.IsEnable()) continue;
+            string mode = role.Key.GetMode() == 1 ? GetString("RoleRateNoColor") : GetString("RoleOnNoColor");
+            sb.Append($"\n【{GetRoleName(role.Key)}:{mode}×{role.Key.GetCount()}】\n");
+            ShowChildrenSettings(Options.CustomRoleSpawnChances[role.Key], ref sb);
+            var text = sb.ToString();
+            sb.Clear().Append(text.RemoveHtmlTags());
+        }
+        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Id >= 80000 && !x.IsHiddenOn(Options.CurrentGameMode)))
+        {
+            if (opt.Name is "KillFlashDuration" or "RoleAssigningAlgorithm")
+                sb.Append($"\n【{opt.GetName(true)}: {opt.GetString()}】\n");
+            else
+                sb.Append($"\n【{opt.GetName(true)}】\n");
+            ShowChildrenSettings(opt, ref sb);
+            var text = sb.ToString();
+            sb.Clear().Append(text.RemoveHtmlTags());
+        }
+
+        SendMessage(sb.ToString(), PlayerId);
+    }
     public static void CopyCurrentSettings()
     {
         var sb = new StringBuilder();
