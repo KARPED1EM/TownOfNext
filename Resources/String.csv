@@ -7,7 +7,7 @@
 
 ## TOHE
 #13 SChinese: KARPED1EM
-#00 English: Tommy-XL (@Tommy-XL)
+#00 English: Tommy-XL (@Tommy-XL) & Tem (@mogekonik1)
 #05 Russian: Tommy-XL (@Tommy-XL) & Tem (@mogekonik1)
 
 ### If you want to translate the mod into other languages -
@@ -35,8 +35,8 @@ TeamPelican,鹈鹕阵营,Team Pelican,Команда Пеликанов
 TeamGamer,玩家阵营,Team Demons,Команда Демонов
 
 ## 个人竞技模式 / PVP
-KB_Normal,挑战者,Challenger
-KB_NormalInfo,击败所有人！,Kill all of them!
+KB_Normal,挑战者,Challenger,Боец
+KB_NormalInfo,击败所有人！,Kill all of them!,Уничтож их!
 
 ## 职业 / Roles
 
@@ -44,8 +44,8 @@ KB_NormalInfo,击败所有人！,Kill all of them!
 GM,管理员,GM,GM (Призрак)
 
 # 隐藏 / Hidden
-Sunnyboy,阳光开朗大男孩,Sunnyboy
-Bard,吟游诗人,Bard
+Sunnyboy,阳光开朗大男孩,Sunnyboy,Солнечный мальчик
+Bard,吟游诗人,Bard,Бард
 
 # 原版职业 / Vanilla
 Crewmate,船员,Crewmate,Член Экипажа
@@ -123,9 +123,9 @@ Grenadier,掷雷兵,Grenadier,Гренадёр
 Medicaler,医生,Medic,Медик
 Divinator,占卜师,Fortune Teller,Гадалка
 Glitch,活死人,The Glitch,Глитч
-Judge,法官,Judge
-Mortician,入殓师,Mortician
-Mediumshiper,通灵师,Mediumshiper
+Judge,法官,Judge,Судья
+Mortician,入殓师,Mortician,Гробовщик
+Mediumshiper,通灵师,Medium,Медиум
 
 # 中立阵营 / Neutrals
 Jester,小丑,Jester,Джестер
@@ -158,7 +158,7 @@ Lighter,执灯人,Lighter,Фонарик
 Seer,灵媒,Seer,Провидец
 Brakar,破平者,Tiebreaker,Решающий
 Oblivious,胆小鬼,Oblivious,Забывчивый
-Bewilder,迷幻者,Bewilder,Сбитый с Толку
+Bewilder,迷幻者,Bewilder,Растерянный
 Workhorse,加班狂,Workhorse,Работник
 Fool,蠢蛋,Fool,Глупец
 Avanger,复仇者,Avenger,Мститель
@@ -171,24 +171,23 @@ Mimic,宝箱怪,Mimic,Мимик
 
 ## 附加职业作为前缀时 / Prefixes for Add-ons
 
-Prefix.Ntr,海王,Neptune,Нептун
-Prefix.Watcher,窥视,Watcher,Наблюдатель
-Prefix.Flashman,闪电,Flash,Флэш
-Prefix.Lighter,执灯,Lighter,Фонарик
-Prefix.Seer,灵媒,Seer,Провидец
-Prefix.Brakar,破平,Tiebreaker,Решающий
-Prefix.Oblivious,胆小,Oblivious,Забывчивый
-Prefix.Bewilder,迷幻,Bewilder,Сбитый с Толку
-Prefix.Workhorse,加班狂,Workhorse,Работник
-Prefix.Fool,蠢蛋,Fool,Глупец
-Prefix.Avanger,复仇,Avenger,Мститель
-Prefix.Youtuber,UP主,YouTuber,Ютубер
-Prefix.Egoist,利己主义,Egoist,Эгоист
-Prefix.Piper,吹笛,Piper,Пайпер
-Prefix.TicketsStealer,窃票,Stealer,Похититель
-Prefix.DualPersonality,双重人格,Schizophrenic,Шизофреник
-Prefix.Mimic,宝箱怪,Mimic,Мимик
-
+Prefix.Ntr,海王,Neptunian ,Нептунский 
+Prefix.Watcher,窥视,Watcherish ,Наблюдательный 
+Prefix.Flashman,闪电,Flashy ,Флэшевый 
+Prefix.Lighter,执灯,Lighterish ,Фонариковый 
+Prefix.Seer,灵媒,Seering ,Провидящий 
+Prefix.Brakar,破平,Tiebreakering ,Решающий 
+Prefix.Oblivious,胆小,Oblivious ,Забывчивый 
+Prefix.Bewilder,迷幻,Bewildering ,Растерянный 
+Prefix.Workhorse,加班狂,Workhorse ,Работчий 
+Prefix.Fool,蠢蛋,Foolish ,Глуповатый 
+Prefix.Avanger,复仇,Avengering ,Мстительный 
+Prefix.Youtuber,UP主,YouTuber ,Ютубер 
+Prefix.Egoist,利己主义,Egoistic ,Эгоистичный 
+Prefix.Piper,吹笛,Piperish ,Пайперский 
+Prefix.TicketsStealer,窃票,Stealing ,Похищающий 
+Prefix.DualPersonality,双重人格,Schizophrenic ,Шизофренический 
+Prefix.Mimic,宝箱怪,Mimicing ,Мимикующий 
 ## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at "Impostor/Crewmate" screen
 
 # 中立阵营 / Neutral descriptions
@@ -264,9 +263,10 @@ GrenadierInfo,投掷傻瓜蛋！！,Blind the Impostors,Ослепите Пре�
 MedicalerInfo,好像有必要治一治你？,Protect the Crew,Защитите Члена Экипажа
 DivinatorInfo,水晶球球，求求了,Check people by voting them,Проверяй игроков голосуя за них
 GlitchInfo,wDJwFPMNMm,wDJwFPMNMm,wDJwFPMNMm
-JudgeInfo,接着奏乐，接着审~,Do justice!
-MorticianInfo,现在，你可以安心地离开了,Leave in peace
-MediumshiperInfo,若君心存不甘，不妨和我谈谈,Just talk with me bro
+JudgeInfo,接着奏乐，接着审~,Silence in the courtroom!,Тишина в зале суда!
+MorticianInfo,现在，你可以安心地离开了,Now you can leave with peace,Покойся с миром
+MediumshiperInfo,若君心存不甘，不妨和我谈谈,"If you don't mind, wanna talk to me?",Не хочешь со мной поговорить?
+\\lmao liked the old version for Medium [just talk to me bro] - Tem
 
 # 中立阵营 / Neutral descriptions
 ArsonistInfo,乖乖站好！,Burn them to crisps,Облейте и подожгите всех игроков
@@ -315,8 +315,9 @@ GMInfo,开局死的冤魂隔岸观火,You are the Game Master,Вы Мастер 
 NotAssignedInfo,未被分配职业,No assigned role,Нет назначенной роли
 
 # 隐藏 / Hidden descriptions
-SunnyboyInfo,这个角色的建立究竟有什么意义,What is the meaning of this role
-BardInfo,请让我赋诗一首,Please let me compose a poem
+SunnyboyInfo,这个角色的建立究竟有什么意义,"Shine, Shine my sunshine!","Свети, свети моё солнышко!"
+BardInfo,请让我赋诗一首,,"Poem's grace, murder's trace, a rhythmic dance in dark embrace."Поэма для вас, умрите сейчас!"
+\\If too big, change into "Poem for you, meet your end anew!
 
 ## 以下是职业描述（使用/m或/r指令后得到的文本）
 
@@ -389,9 +390,9 @@ GrenadierInfoLong,(船员阵营):\n掷雷兵可以通过使用通风管道使用
 MedicalerInfoLong,(船员阵营):\n医生可以通过使用击杀按键给目标发放一个护盾，若护盾发放成功则医生会看到目标身上出现护盾破碎动画作为提示，同时目标的名字旁会显示一个蓝色的「●」（仅医生可见）。医生可以发放护盾的数量会显示在医生的名字旁的括号内。每位玩家最多只能持有一个来自医生的护盾。根据房主设定目标可能可以看到自己是否持有护盾（显示在名字旁的蓝色「●」）。,"(Crewmates):\nMedic can create a shield, by using the kill button. If the shield is destroyed, Medic will see the shield breaking animation on the target as a reminder, and a blue circle will be displayed next to the target's name colored circle (visible only for Medic). The amount of shields a Medic is shown in brackets next to the Medic's name. Each player can hold at most one shield from Medic. Depending on the host setting the target may be able to see if they have a shield (shown in a blue circle next to their name).","(Член Экипажа):\nМедик может наложить на цель щит, нажав кнопку ''Убить''. Если щит снят, Медик увидит анимацию разрушения щита на цели в качестве напоминания, и синий кружек появится рядом с именем цели (виден только для Медика). Количество щитов, которые может дать Медик, написано в скобках рядом с именем Медика. Каждый игрок может иметь не более одного щита от Медика. В зависимости от настроек хоста цель может видеть, есть ли у нее щит (показан синим кружком рядом с ее именем)."
 DivinatorInfoLong,(船员阵营):\n占卜师可以通过在会议上投票给一位玩家以获得该玩家的相关信息，信息与该玩家的主职业关联。若占卜师完成所有任务，占卜时可以直接知道该玩家的具体职业。占卜师每次会议只能占卜一次，占卜次数根据房主设定。,"(Crewmates):\nA Fortune Teller can vote for a player at the meeting to obtain relevant information about the player, and the information is associated with the player's main occupation. Fortune Teller can only do one fortune-telling per meeting, and the number of fortune-tellings is set by the host.","(Член Экипажа):\nГадалка может проголосовать за игрока на собрании, чтобы получить актуальную информацию об игроке, и эта информация связана с основным занятием игрока. Гадалка может сделать только одно гадание за встречу, а количество гаданий устанавливает хост."
 GlitchInfoLong,(船员阵营):\n模组的程序不会将活死人视为存活状态，不过我不知道这样会导致什么。,"(Crewmates):\nThe Glitch doesn't treat the living dead as living, but I don't know where that will lead","(Член Экипажа):\nГлитч не рассматривает живых мертвецов как живых, но я не знаю, к чему это приведет."
-JudgeInfoLong,(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。,"(Crewmates):\nThe judge can judge a certain player during the meeting. If the target is evil, the target will be killed (whether it is evil or not is set by the host), and if it is wrong, the judge gonna suicide. \nThe judgment command is: /tl [player id]\nYou can see the player's id before the player's name, or use the /id command to view the id of all players. Judges can judge all players when they become madmate."
-MorticianInfoLong,(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。,"(Crewmates):\nThe Mortician can see arrows pointing to all dead bodies, and the Mortician reports that the body can know the last player the victim had contact with during the meeting. Note: Mortician won't be Oblivious."
-MediumshiperInfoLong,(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。,"(Crewmates):\nIf a player is killed, the Mediumshiper will receive a reminder. After the Mediumshiper reports the body, he can establish contact with the victim. Before the end of the meeting, the victim has one chance to answer the Mediumshiper's questions, and can only answer yes or no. Note: Mediumshiper  won't be Oblivious."
+JudgeInfoLong,(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。,"(Crewmates):\nJudge can judge a certain player during a meeting. If target is an evildoer, he will be killed, and if not, Judge will commit suicide.\n The trial command is: /tl [Player number]\n You can see player's number before the player's name, or use /id command to view the numbers of all players. When Judge is MadMate, he can trial anyone who wants.","(Член Экипажа): Судья может судить определенного игрока во время встречи. Если цель - плохая роль, он будет убит, а если нет, судья покончит с собой.\n Пробная команда: /tl [Номер игрока] \n Вы можете увидеть номер игрока перед именем игрока или использовать команду /id для просмотра номеров всех игроков. Когда судья - Безумец, он может судить любого, кто захочет."
+MorticianInfoLong,(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。,"(Crewmates):\nMortician can see arrows pointing to all the corpses. At the meeting, he receives information about who was the last player with whom the victim had contact during his lifetime.\n★Please pay attention★ Mortician will not be Oblivious.","(Член Экипажа):\n Гробовщик может видеть стрелки, указывающие на все трупы. На собрании получает информацию, кто был последний игрок, с которым жертва контактировала при жизни.\n ★Пожалуйста, обратите внимание★ Гробовщик не будет забывчивым."
+MediumshiperInfoLong,(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。,"(Crewmember):\nMedium can establish contact with the victim after reporting the body. Before the end of this meeting, the victim has one chance to answer the Medium's question, and she can only answer "yes" or "no".\n★Please pay attention★ Mediums will not be Oblivious.","(Член экипажа):\n Медиум может установить контакт с жертвой после того, как сообщит о теле. До окончания этой встречи у жертвы есть один шанс ответить на вопрос Медиума, и она может ответить только "да" или "нет".\n ★Пожалуйста, обратите внимание★ Медиумы не будут забывчивыми."
 
 # 中立阵营 / Neutrals descriptions
 ArsonistInfoLong,(中立阵营):\n纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎的动画作为提示（仅自己可见）。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油。,"(Neutrals):\nWhen you use the kill button, you douse your target in oil.\nAfter dousing all living players, you set everything ablaze and win by venting.","(Нейтрал):\nПоджигатель может обливать игроков, нажав на кнопку 'Убить' и находясь рядом с игроком в течение нескольких секунд. \nПосле того как он обольёт всех живых игроков Поджигатель сможет запрыгнуть в вентиляцию, чтобы поджечь всех игроков, что приводит к победе Поджигателя."
@@ -438,8 +439,8 @@ MimicInfoLong,(附加职业)\n只有除黑手党以外的内鬼会成为宝箱�
 GMInfoLong,(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。,"(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры."
 
 # 隐藏 / Hidden long descriptions
-SunnyboyInfoLong,(中立阵营):\n阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。,"(Neutrals):\nThe Sunnyboy can check the life status of others through the life panel. When the Sunnyboy is alive, the game will not end due to a numerical advantage (for example, the number of imporstors is greater than the crew or there are no survivors). If the Sunnyboy dies at the end of the game, the Sunnyboy will win with the winning team."
-BardInfoLong,(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。,"(Impostor):\nWhen a bard is alive, the exile confirmation will display a sentence composed by the bard. Whenever the bard completes a creation, the bard's kill cooldown is permanently halved."
+SunnyboyInfoLong,(中立阵营):\n阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。,"(Neutrals):\nThe Sunnyboy can check the life status of others through the life panel. When the Sunnyboy is alive, the game will not end due to a numerical advantage (for example, the number of imporstors is greater than the crew or there are no survivors). If the Sunnyboy dies at the end of the game, the Sunnyboy will win with the winning team.","(Нейтрал):\n Солнечний мальчик может просматривать жизненный статус других людей через планшет. Когда присутствует Солнечний Мальчик, игра не заканчивается из-за преимущества в количестве людей (например, количество Предателей больше, чем Членов Экипажа, или Предателей в живых нет). Если Солнечний мальчик умрет в конце игры, Солнечний мальчик выиграет с выжившей коммандой."
+BardInfoLong,(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。,"(Impostor):\nWhen a bard is alive, the exile confirmation will display a sentence composed by the bard. Whenever the bard completes a creation, the bard's kill cooldown is permanently halved.","(Предатель):\nКогда Бард жив, в подтверждении изгнания будет отображаться предложение, составленное бардом. Всякий раз, когда бард завершает создание предложений, время восстановления после убийства барда постоянно уменьшается вдвое."
 
 ## 模式选项 / Settings
 DisableMeeting,禁用会议与报告尸体,Disable Meetings,Отключить Собрания
@@ -480,10 +481,10 @@ SuffixMode.DoNotKillMe,佛祖保佑,Do not kill me,Не убивайте мен�
 SuffixMode.NoAndroidPlz,安卓别进,No phones,Без телефонов
 SuffixModeText.DoNotKillMe,别首刀我啊啊啊,Do not kill me,Не убивайте меня
 SuffixModeText.NoAndroidPlz,安卓别进求求了,No phones please,Без телефонов пожалуйста
-FormatNameMode,玩家名字同步模式,Player Name Mode
-FormatNameModes.None,无,Disable
-FormatNameModes.Color,颜色,Color
-FormatNameModes.Snacks,随机,Random
+FormatNameMode,玩家名字同步模式,Player Name Mode,Режим имён
+FormatNameModes.None,无,Disable,Нету
+FormatNameModes.Color,颜色,Color,Цвета
+FormatNameModes.Snacks,随机,Random,Рандом
 DisableEmojiName,禁止玩家使用表情符号作为名字, Disable Emoji in names, Отключить Эмодзи в именах
 FixFirstKillCooldown,修正首刀冷却时间,Normalize First Kill Cooldown,Нормализовать откат убийства в начале Игры
 GhostCanSeeOtherRoles,幽灵可见他人职业,Ghosts Can See Other Roles,Призраки могут видеть все Роли
@@ -497,15 +498,15 @@ PlayerCanSetColor,允许玩家使用/color指令,"Players can use the /color com
 RoleOptions,职业设置,Role Options,Настройка Ролей
 ModeOptions,模组设置,Mode Options,Настройка Режима
 AutoStart,人满自动开始,Auto start at full lobby,Авто. запуск игры при полном лобби
-SwitchVanilla,切换为原版,Switch Vanilla,
+SwitchVanilla,切换为原版,Switch Vanilla,Поменять на Ваниллу
 UnlockFPS,解锁帧数限制,Unlock FPS,Убрать ограничение FPS
-ForceOwnLanguage,强制模组使用您的语言,Force mod use your language if can
-ForceOwnLanguageRoleName,强制用您的语言显示职业名,Force role name in your language if can
-VersionCheat,绕过版本同步检查
+ForceOwnLanguage,强制模组使用您的语言,Force mod use your language if can,Использовать ваш язык если возможно
+ForceOwnLanguageRoleName,强制用您的语言显示职业名,Force role name in your language if can,Использовать имя роли на вашем языке если возможно
+VersionCheat,绕过版本同步检查,Bypass version synchronization check,Обходить проверку синхронизаций версий
 AutoDisplayKillLog,结束后自动显示击杀记录,Display Killlog,Показывать убийства
 AutoDisplayLastRoles,结束后自动显示上局职业,Display Last Roles,Показывать роли в прошлой игре
 AutoDisplayLastResult,结束后自动显示最终结果,Auto Display Last Result,Отображать результат последней игры в чате
-EnableUpMode,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）
+EnableUpMode,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,Turn on ''Shield for Host'' (Experemental),Включить ''Защита Хоста'' (Экспериментально)
 KickLowLevelPlayer,踢出没有达到指定等级的玩家,Kick players whoes level is lower than,Выгнать игроков с уровнем ниже
 AutoKickStart,踢出催开始的人,Kick the player who says start,Кикнуть игрока который пишет start (Только англ)
 AutoKickStartTimes,踢出前警告次数,Number of warnings before kick,Количество предупреждений до кика
@@ -514,7 +515,7 @@ AutoKickStopWords,踢出使用违禁词的人,Kick players who write forbidden w
 AutoKickStopWordsTimes,踢出前警告次数,Number of warnings for forbidden words,Количество предупреждений за запрещенные слова
 AutoKickStopWordsAsBan,踢出时封禁该玩家,Block a player after they kick,Заблокировать игрока после его кика
 AutoWarnStopWords,警告使用违禁词的人,Warning to those who write forbidden words,Предупреждение тем кто пишет запрещенные слова
-KickAndroidPlayer,踢出使用安卓的玩家,Kick andriod players,Кикнуть игроков которые зашли в лобби через телефон
+KickAndroidPlayer,踢出使用安卓的玩家,Kick phone players,Кикнуть игроков которые зашли в лобби через телефон
 SendCodeToQQ,允许车队姬自动群发您的房号,(Only for China)允许车队姬自动群发您的房号,(Только для Китая)允许车队姬自动群发您的房号
 SendCodeMinPlayer,房间人数达到多少时群发,(Only for China)房间人数达到多少时群发,(Только для Китая)房间人数达到多少时群发
 DisableVanillaRoles,禁用原版职业,Disable Vanilla Roles,Отключить ванильные Роли
@@ -606,19 +607,19 @@ CanUseSabotage,可以破坏,Can Sabotage,Может использовать С�
 NeutralRolesMinPlayer,<color=#ffab1b>中立阵营</color>玩家数量下限,Min of <color=#ffab1b>neutral</color> roles,Минимальное количество <color=#ffab1b>нейтральных</color> ролей
 NeutralRolesMaxPlayer,<color=#ffab1b>中立阵营</color>玩家数量上限,Max of <color=#ffab1b>neutral</color> roles,Максимальное количество <color=#ffab1b>нейтральных</color> ролей
 ImpKnowAlliesRole,<color=#ff1919>内鬼</color>知道队友的职业,<color=#ff1919>Impostor</color> know the roles of allies,<color=#ff1919>Предатель</color> может знать роли других <color=#ff1919>Предателей</color>
-ImpKnowWhosMadmate,<color=#ff1919>内鬼</color>知道谁是<color=#ff1919>叛徒</color>,<color=#ff1919>Impostor</color> know <color=#ff1919>Madmate</color>
-MadmateKnowWhosImp,<color=#ff1919>叛徒</color>知道谁是<color=#ff1919>内鬼</color>,<color=#ff1919>Madmate</color> know <color=#ff1919>Impostor</color>
-MadmateKnowWhosMadmate,<color=#ff1919>叛徒</color>可以互认,<color=#ff1919>Madmate</color> know each others
-ImpCanKillMadmate,<color=#ff1919>内鬼</color>可以击杀<color=#ff1919>叛徒</color>,<color=#ff1919>Impostor</color> can kill <color=#ff1919>Madmate</color>
-MadmateCanKillImp,<color=#ff1919>叛徒</color>可以击杀<color=#ff1919>内鬼</color>,<color=#ff1919>Madmate</color> can kill <color=#ff1919>Impostor</color>
+ImpKnowWhosMadmate,<color=#ff1919>内鬼</color>知道谁是<color=#ff1919>叛徒</color>,<color=#ff1919>Impostor</color> know <color=#ff1919>Madmate</color>,<color=#ff1919>Предатели</color> знают <color=#ff1919>Безумцев</color>
+MadmateKnowWhosImp,<color=#ff1919>叛徒</color>知道谁是<color=#ff1919>内鬼</color>,<color=#ff1919>Madmate</color> know <color=#ff1919>Impostor</color>,<color=#ff1919>Безумцы</color> знают <color=#ff1919>Предателей</color>
+MadmateKnowWhosMadmate,<color=#ff1919>叛徒</color>可以互认,<color=#ff1919>Madmate</color> know each others,<color=#ff1919>Безумцы</color> знают друг друга
+ImpCanKillMadmate,<color=#ff1919>内鬼</color>可以击杀<color=#ff1919>叛徒</color>,<color=#ff1919>Impostor</color> can kill <color=#ff1919>Madmate</color>,<color=#ff1919>Предатейл</color> может убить <color=#ff1919>Безумца</color>
+MadmateCanKillImp,<color=#ff1919>叛徒</color>可以击杀<color=#ff1919>内鬼</color>,<color=#ff1919>Madmate</color> can kill <color=#ff1919>Impostor</color>,<color=#ff1919>Безумец</color> может убить <color=#ff1919>Предателя</color>
 WarlockCanKillAllies,可以击杀<color=#ff1919>内鬼</color>,Can kill Crewmate,Может убивать Членов Экипажа
 WarlockCanKillSelf,可以击杀自己,Can kill Self,Может убить себя
 EGCanGuessImp,可以猜测<color=#ff1919>内鬼</color>,Can Guess <color=#ff1919>Impostor</color>,Может угадывать роли <color=#ff1919>Предателей</color>
 GGCanGuessCrew,可以猜测<color=#8cffff>船员</color>,Can Guess <color=#8cffff>Crewmate</color>,Может угадывать роли <color=#8cffff>Членов Экипажа</color>
 EGCanGuessAdt,可以猜测附加职业,Can Guess Add-Ons,Может угадывать Атрибуты
-EGCanGuessTaskDoneSnitch,可以猜测完成任务的<color=#b8fb4f>告密者</color>,Can guess <color=#b8fb4f>Snitch</color> who done the tasks
+EGCanGuessTaskDoneSnitch,可以猜测完成任务的<color=#b8fb4f>告密者</color>,Can guess <color=#b8fb4f>Snitch</color> who done the tasks,Может угадывать <color=#b8fb4f>Снитча</color> который выполнил свои задания
 GGCanGuessAdt,可以猜测附加职业,Can Guess Add-Ons,Может угадывать Атрибуты
-GuesserCanGuessTimes,每次会议猜测次数上限,Max of guesses,Максимальное количество угадываний
+GuesserCanGuessTimes,每次会议猜测次数上限,Maximum number of guesses,Максимальное количество угадываний
 GuesserTryHideMsg,尝试混淆赌怪指令（试验性）,Try hide guesser's command,Может запутать игроков в угадывании (Эксперимент)
 BountyTargetChangeTime,赏金目标切换时间,Time Until Target Swaps,Время смены цели
 BountySuccessKillCooldown,击杀赏金目标的奖励冷却时间,Kill Cooldown After Killing Bounty,Перезарядка после убийства цели
@@ -647,15 +648,15 @@ SheriffMisfireKillsTarget,误杀好人的同时击杀目标,Misfire Kills Target
 SheriffShotLimit,执法次数上限,Ammo,Количество выстрелов
 SheriffCanKillAllAlive,全员存活时可以执法,Can Kill With All Alive,Может убить всех живых
 SheriffCanKillMadmate,可以执法<color=#ff1919>叛徒</color>,Can Kill <color=#ff1919>Madmate</color>,Может убить <color=#ff1919>Безумцев</color>
-SheriffSetMadCanKill,单独设定<color=#ff1919>背叛的警长</color>可执法的目标（默认全开）,Specially set the team that can be killed by the <color=#ff1919>Mad-Sheriff</color>
-SheriffMadCanKillImp,背叛后可以执法<color=#ff1919>内鬼阵营</color>,Can kill <color=#ff1919>Impostor</color>
-SheriffMadCanKillNeutral,背叛后可以执法<color=#ffaa1b>中立阵营</color>,Can kill <color=#ffaa1b>Neutral</color>
-SheriffMadCanKillCrew,背叛后可以执法<color=#8cffff>船员阵营</color>,Can kill <color=#8cffff>Crewmate</color>
+SheriffSetMadCanKill,单独设定<color=#ff1919>背叛的警长</color>可执法的目标（默认全开）,Specially set the team that can be killed by the <color=#ff1919>Mad-Sheriff</color>,Настроить кого <color=#ff1919>Безумный Шериф</color> может убивать
+SheriffMadCanKillImp,背叛后可以执法<color=#ff1919>内鬼阵营</color>,Can kill <color=#ff1919>Impostor</color>,Может убивать <color=#ff1919>Предателей</color>
+SheriffMadCanKillNeutral,背叛后可以执法<color=#ffaa1b>中立阵营</color>,Can kill <color=#ffaa1b>Neutrals</color>,Может убивать <color=#ffaa1b>Нейтралов</color>
+SheriffMadCanKillCrew,背叛后可以执法<color=#8cffff>船员阵营</color>,Can kill <color=#8cffff>Crewmate</color>,Может убивать <color=#8cffff>Членов Экипажа</color>
 DoctorTaskCompletedBatteryCharge,完成任务增加的设备充能数,Battery Duration,Длительность батарейки
 SnitchEnableTargetArrow,完成任务后显示箭头指向所有目标,Can See Arrow To Target,Может видеть стрелку цели
 SnitchCanGetArrowColor,对不同阵营的目标显示不同颜色的箭头,Can See Target Team Colored Arrow,Может видеть цвета стрелок
 SnitchCanFindNeutralKiller,可以确认带刀<color=#ffaa1b>中立</color>,Can Find Neutral Killers,Может видеть нейтральных убийц
-SnitchCanFindMadmate,可以确认<color=#ff1919>叛徒</color>,Can Find <color=#ff1919>Madmates</color>
+SnitchCanFindMadmate,可以确认<color=#ff1919>叛徒</color>,Can Find <color=#ff1919>Madmates</color>,Может видеть <color=#ff1919>Безумцев</color>
 SnitchRemainingTaskFound,在剩余多少任务时被发现,Remaining tasks to be found,Оставшиеся задания при которых он будет виден
 SpeedBoosterUpSpeed,增速者每次加速,Boost speed,Повысить скорость игрока на
 SpeedBoosterTimes,增速次数上限,Max of boosting,На сколько секунд можно ускорить
@@ -750,7 +751,7 @@ GangsterRecruitLimit,招募玩家数量上限,Recruit limit,Лимит пере�
 GanSheriffCanBeMadmate,可以招募<color=#f8cd46>警长</color>,<color=#f8cd46>Sheriff</color> can be converted,<color=#f8cd46>Шериф</color> может быть превращен
 GanMayorCanBeMadmate,可以招募<color=#204d42>市长</color>,<color=#204d42>Mayor</color> can be converted,<color=#204d42>Мэр</color> может быть превращен
 GanNGuesserCanBeMadmate,可以招募<color=#eede26>正义赌怪</color>,<color=#eede26>Nice Guesser</color> can be converted,<color=#eede26>Добрый Угадыватель</color> может быть превращен
-GanJudgeCanBeMadmate,可以招募<color=#f8d85a>法官</color>,<color=#f8d85a>Judge</color> can be converted
+GanJudgeCanBeMadmate,可以招募<color=#f8d85a>法官</color>,<color=#f8d85a>Judge</color> can be converted,<color=#f8d85a>Судья</color> может быть превращен
 RevolutionistDrawTime,拉拢玩家所需时间,Retention duration,Длительность удерживания
 RevolutionistCooldown,拉拢玩家冷却时间,Skill сooldown,Откат навыка
 RevolutionistDrawCount,需要拉拢人数,Number of players he needs to tag,Количество игроков которых ему нужно пометить
@@ -760,8 +761,8 @@ PelicanKillCooldown,吞人冷却时间,Eat Cooldown,Откат поглощен�
 SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8cd46>Sheriff</color> can become <color=#ff1919>Madmate</color>,<color=#f8cd46>Шериф</color> может стать <color=#ff1919>Безумцем</color>
 MayorCanBeMadmate,<color=#204d42>市长</color>可以成为<color=#ff1919>叛徒</color>,<color=#204d42>Mayor</color> can become <color=#ff1919>Madmate</color>,<color=#204d42>Мэр</color> может стать <color=#ff1919>Безумцем</color>
 NGuesserCanBeMadmate,<color=#eede26>正义赌怪</color>可以成为<color=#ff1919>叛徒</color>,<color=#eede26>Nice Guesser</color> can become <color=#ff1919>Madmate</color>,<color=#eede26>Добрый Угадыватель</color> может стать <color=#ff1919>Безумцем</color>
-SnitchCanBeMadmate,<color=#b8fb4f>告密者</color>可以成为<color=#ff1919>叛徒</color>,<color=#b8fb4f>Snitch</color> can become <color=#ff1919>Madmate</color>
-JudgeCanBeMadmate,<color=#f8d85a>法官</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8d85a>Judge</color> can become <color=#ff1919>Madmate</color>
+SnitchCanBeMadmate,<color=#b8fb4f>告密者</color>可以成为<color=#ff1919>叛徒</color>,<color=#b8fb4f>Snitch</color> can become <color=#ff1919>MadMate</color>,<color=#b8fb4f>Снитч</color>может стать <color=#ff1919>Безумцем</color>
+JudgeCanBeMadmate,<color=#f8d85a>法官</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8d85a>Judge</color> can become<color=#ff1919>MadMate</color>,<color=#f8d85a>Судья</color>может стать <color=#ff1919>Безумцем</color>¶
 MadSnitchTasks,背叛的告密者的任务数,<color=#b8fb4f>Snitch</color> Tasks,Задания <color=#b8fb4f>Стукача</color> 
 MedicalerCooldown,发放护盾冷却时间,Shield Cooldown,Откат Щита
 MedicalerSkillLimit,发放护盾次数上限,Skill Limit,Лимит Способности
@@ -802,13 +803,13 @@ KB_RecoverAfterSecond,脱离战斗几秒后开始回复血量,Recover Cooldown,�
 KB_RecoverPerSecond,每秒回复血量,Recover Per Second,Восстановления каждую секунду
 KB_ResurrectionWaitingTime,死亡后复活等待时间,Resurrection waiting time,Время возрождения
 KB_KillBonusMultiplier,击杀奖励倍率,Kill bonus multiplier,Множитель бонуса за убийство
-JudgeTryHideMsg,尝试混淆法官指令（试验性）,Try hide judge's command
-TrialLimitPerMeeting,每次会议审判次数上限,Skill times limit per meeting
-JudgeCanTrialMadmate,可以审判<color=#ff1919>叛徒</color>,Can trial <color=#ff1919>Madmate</color>
-JudgeCanTrialnCrewKilling,可以审判带刀<color=#8cffff>船员</color>,Can trial Killing <color=#8cffff> Crewmate</color>
-JudgeCanTrialNeutralB,可以审判无刀<color=#ffab1b>中立</color>,Can trial Non-Killing<color=#ffab1b> Neutrals</color>
-JudgeCanTrialNeutralK,可以审判带刀<color=#ffab1b>中立</color>,Can trial Killing<color=#ffab1b> Neutrals</color>
-VeteranSkillMaxOfUseage,技能使用次数上限,Max of skills
+JudgeTryHideMsg,尝试混淆法官指令（试验性）,Try hide the judge's command,Спрятать приказ судьи
+TrialLimitPerMeeting,每次会议审判次数上限,Skill times limit per meeting,Количество судов за собрание
+JudgeCanTrialMadmate,可以审判<color=#ff1919>叛徒</color>,Can trial <color=#ff1919>MadMate</color>,Может судить<color=#ff1919>Безумца</color>
+JudgeCanTrialnCrewKilling,可以审判带刀<color=#8cffff>船员</color>,Can trial <color=#8cffff>Crew Killing</color>,Может судить <color=#8cffff>Убийц Экипажа</color>
+JudgeCanTrialNeutralB,可以审判无刀<color=#ffab1b>中立</color>,Can trial <color=#ffab1b>Neutral Benign</color>,Может судить <color=#ffab1b>Добрых Нейтралов</color>
+JudgeCanTrialNeutralK,可以审判带刀<color=#ffab1b>中立</color>,Can trial <color=#ffab1b>Neutral Killing</color>,Может судить <color=#ffab1b>Злых Нейтралов</color>
+VeteranSkillMaxOfUseage,技能使用次数上限,Number of skills,Количество способности
 
 ## 死因 / Death Reasons
 DeathReason.Kill,被杀,Kill,Убит
@@ -834,7 +835,7 @@ DeathReason.Ashamed,卷死,Ashamed,Пристыженный
 DeathReason.PissedOff,气死,Destroyed,Уничтожен
 DeathReason.Dismembered,肢解,Dismembered,Расчленен
 DeathReason.LossOfHead,绞杀,Strangled,Задушен
-DeathReason.Trialed,审判,Judged
+DeathReason.Trialed,审判,Judged,Засужен
 DeathReason.etc,其它,Other,Другое
 Alive,存活,Alive,Выжил
 Win,胜利, Wins, Победили
@@ -890,15 +891,15 @@ GGGuessMax,您已达到每次会议猜测次数上限\n不能再猜测啦！,"Yo
 EGGuessMax,您已达到每次会议猜测次数上限\n不能再猜测啦！,"You've reached the maximum guessing limit for each encounter, you can't guess anymore!","Вы достигли максимального предела угадывания для каждой встречи, вы больше не можете угадывать!"
 EGGuessSnitchTaskDone,很抱歉，该房设置不允许猜测完成任务的告密者,"Sorry, the lobby settings do not allow guessing the snitch who completed the tasks."
 LaughToWhoGuessSelf,有一说一，你是懂赌怪的,"Try to guess, who tried to self-guessed! It's you! Ahah!","Попробуйте угадать, кто попытался себя угадать! Это ты! Ахах!"
-JudgeDead,很抱歉，死亡后不能进行审判,"Sorry, no trial after death."
-JudgeTrialMax,您已达到每次会议审判次数上限\n不能再审判啦！,"You have reached the upper limit of trials per meeting\nNo more trials!"
-LaughToWhoTrialSelf,哈哈哈，请问您在传承赌怪的行为艺术吗？,"What is that? trying to trial yourself?"
-TrialKill,很遗憾，【{0}】\n被法治社会抛弃了~,"[{0}] was judged."
-TrialHelp,指令格式：/tl [玩家编号]\n您可以在玩家的名字前看到该玩家的编号\n或者使用/id查看玩家编号列表,"Command: /tl [player id]\nYou can see the player's id before the player's name\nOr use /id to view the list of player id."
-TrialNull,请选择一个在场的存活角色进行审判,"Please choose a surviving player present for trial."
+JudgeDead,很抱歉，死亡后不能进行审判,"Sorry, no trial after death.",Нету судьи - нету суда!
+JudgeTrialMax,您已达到每次会议审判次数上限\n不能再审判啦！,"\nNo more trials!","\nДостаточно судов!
+LaughToWhoTrialSelf,哈哈哈，请问您在传承赌怪的行为艺术吗？,"God, I didn't think the Judges would be so blind that they wouldn't even see that they had sentenced themselves.","Боже, я не думал что Судьи будут такие слепыми чтобы даже не увидеть того что сами себе вынесли приговор."
+TrialKill,很遗憾，【{0}】\n被法治社会抛弃了~,"[{0}] was judged.",【{0}】 был засужен.
+TrialHelp,指令格式：/tl [玩家编号]\n您可以在玩家的名字前看到该玩家的编号\n或者使用/id查看玩家编号列表,"Command: /tl [player id]\nYou can see the player's id before the player's name\nOr use /id to view the list of player id.",Инструкция: /tl [Номер игрока]\n Вы можете увидеть номер игрока перед именем игрока \n или использовать /id для просмотра списка номеров игроков
+TrialNull,请选择一个在场的存活角色进行审判,Please choose a surviving player present for trial,Пожайлуста выберите человека который жив для суда
 MimicDeadMsg,来自宝箱怪的线索：,Mimic's hint:,Подсказка от Мимика:
-DivinatorCheck,您透过水晶球发现：,"You're looking through a crystal ball","Ты смотришь сквозь хрустальный шар"
-DivinatorCheckLimit,提示：剩余【{0}】次占卜机会,"Reminder: You have 【{0}】 guesses left","Напоминание: У тебя осталось 【{0}】 угадываний"
+DivinatorCheck,您透过水晶球发现：,You're looking through a crystal ball,Ты смотришь сквозь хрустальный шар
+DivinatorCheckLimit,提示：剩余【{0}】次占卜机会,Reminder: You have 【{0}】 guesses left,Напоминание: У тебя осталось 【{0}】 угадываний
 DivinatorCheckSelfMsg,哇靠，您查到了一位举世人才！目标太过耀眼，已经看不到任何东西啦！,"Wow, you found yourself... All you see is a reflection.","Вау, ты нашёл сам себя... Всё что ты видишь это отражение."
 DivinatorCheckReachLimit,水晶球也是会累哒，接下来就算没有水晶球，也要好好努力呀！（占卜次数达到上限）,"You are tired of using a crystal ball for too much. You should retire for now. (The number of divination reaches the limit)","Вы устали от слишком частого использования хрустального шара. Вы должны уйти в отставку. (Количество гаданий достиг предела)"
 EraserEraseNotice,您发动了抹除技能\n【{0}】的技能将在会议结束后失效。,You erased 【{0}】.\nHis role will be deactivated after a meeting.,Ты стёр 【{0}】.\nЕго роль будет неактивна после собрания.
@@ -906,37 +907,37 @@ EraserEraseNeutralNotice,很抱歉，您发动技能的目标属于中立阵营�
 KB_Buff_HPMax,奖励：血量上限 +{0},Gain: HP Max +{0},Дано: Макс Здоровья +{0}
 KB_Buff_HPReco,奖励：每秒血量回复 +{0},Gain: Recover HP Per Second +{0},Дано: Восстановление хп кажду секунду +{0}
 KB_Buff_ATK,奖励：攻击力 +{0},Gain: Attack +{0}, Дано: Урон +{0}
-MorticianGetNoInfo,根据您的检查，受害者【{0}】在生前似乎没有接触任何人。,"According to your inspection, the victim [{0}] seems to have had no contact with anyone when he was killed."
-MorticianGetInfo,根据您的检查，受害者【{0}】在生前接触的最后一个人是【{1}】。,"According to your inspection, the last person that the victim [{0}] had contact with was [{1}]."
-MediumshipHelp,确认指令：/ms 是\n否认指令：/ms 否,"Answer Command: /ms [Yes/No]"
-MediumshipYes,您似乎在渺茫的精神世界中听到有个虚弱的声音，在肯定着您的提问。,"You seem to hear a weak voice in the vague spiritual world, affirming your question."
-MediumshipNo,您似乎在渺茫的精神世界中听到有阵愤愤的嘶吼，在否定着您的提问。,"You seem to hear an angry howl in the vague spiritual world, denying your question."
-MediumshipDone,您成功地向通灵师作出的回应,"Your successful response to the psychic."
-MediumshipNotifyTarget,通灵师【{0}】与您建立了联系，本次会议结束前，您拥有一次回应其问题的机会。\n确认指令：/ms 是\n否认指令：/ms 否,"The Mediumshiper [{0}] has established contact with you, and you have one chance to respond to his questions before the end of this meeting. \nAnswer Yes Command: /ms Yes\nAnswer No Command: /ms No"
-MediumshipNotifySelf,您与【{0}】建立了联系，请向其提问并等待其作出回应。,"You have established contact with 【{0}】, please ask him a question and wait for his response."
-ByBard,<color=#ff1919>吟游诗人</color>献,"by <color=#ff1919>Bard</color>"
-ByBardGetFailed,没有灵感，也是一种灵感,"ops, I seem to be out of inspiration."
-GangsterSuccessfullyRecruited,您成功招募了一位玩家,You successfully recruited a player
-GangsterRecruitmentFailure,目标无法被招募,Target cannot be recruited
-BeRecruitedByGangster,您已被教父招募,You have been recruited by the gangster
-VeteranOnGuard,已进入警戒状态,Skill in use
-VeteranOffGuard,警戒状态已失效，剩余{0}次使用次数,The skill is over, and {0} uses remain
-VeteranMaxUsage,已达到技能使用次数上限,The skill use limit has been reached
-GrenadierSkillInUse,闪光弹生效中,Skill in use
-GrenadierSkillStop,闪光弹已失效,The skill is over
-MediumshiperKnowPlayerDead,刚刚似乎有亡魂发出了一阵嘶吼,Someone dead somewhere
-TicketsStealerGetTicket,您的票数共增加{0},You have got {0} votes
-BecomeMadmateCuzMadmateMode,您因死亡成为叛徒,You become madmate cuz dead
-ExecutionerRoleChanged,您因目标死亡转变为{0},You become {0} cuz target dead
-SpeedBoosterTaskDone,您的速度提升至{0}x,Your speed is {0} now
-CleanerCleanBody,目标的尸体已被清理,The body has been cleaned
-QuickShooterStoraging,子弹储存成功,Bullets stored successfully
-VampireTargetDead,您的目标已死亡,Target dead
-WarlockNoTarget,因没有目标操纵失败,Manipulation failed due to no target
-WarlockControlKill,已操纵目标完成击杀,Target dead
-OnCyberStarDead,紧急通知：网红死亡,Warning: Celebrity death
-TeleportedByTransporter,您被传送至：{0},Teleporting to: {0}
-LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了,You lost roles cuz <color=#ff1919>Eraser</color>
+MorticianGetNoInfo,根据您的检查，受害者【{0}】在生前似乎没有接触任何人。,"According to your inspection, the victim[{0}] did not seem to have contact with anyone during his lifetime.","Согласно вашей проверке, жертва[{0}], по-видимому, ни с кем при жизни не контактировала."
+MorticianGetInfo,根据您的检查，受害者【{0}】在生前接触的最后一个人是【{1}】。,"According to your inspection, the last person the victim [{0}] came into contact with during his lifetime was [{1}].","Согласно вашей проверке, последним человеком, с которым жертва [{0}] контактировала при жизни, был [{1}]."
+MediumshipHelp,确认指令：/ms 是\n否认指令：/ms 否,"[/ms Yes] to agree, [/ms No] to deny","[/ms Yes] чтобы согласиться, [/ms No] чтобы отказаться"
+MediumshipYes,您似乎在渺茫的精神世界中听到有个虚弱的声音，在肯定着您的提问。,You thought you heard quiet voice from another world affirming your question.,Вам кажется что вы услышали тихий голос из другого мира подтвердающий ваш вопрос.
+MediumshipNo,您似乎在渺茫的精神世界中听到有阵愤愤的嘶吼，在否定着您的提问。,You thought you heard quiet voice from another world denying your question.,Вам кажется что вы услышали тихий голос из другого мира отрицающий ваш вопрос.
+MediumshipDone,您成功地向通灵师作出的回应,You successfully responded to the Medium.,Вы успешно ответили Медиуму.
+MediumshipNotifyTarget,通灵师【{0}】与您建立了联系，本次会议结束前，您拥有一次回应其问题的机会。\n确认指令：/ms 是\n否认指令：/ms 否,"Medium [{0}] has established contact with you. Before the end of this meeting, you have a chance to respond to his question.\nConfirm: [/ms yes]\nDeny: [/ms no]","Медиум [{0}] установил с вами контакт. До окончания этой встречи у вас есть шанс ответить на его вопрос.\nПодтвердить: [/ms yes]\nОтклонить: [/s no]"
+MediumshipNotifySelf,您与【{0}】建立了联系，请向其提问并等待其作出回应。,"You have established contact with [{0}], please ask him questions and wait for his response.","Вы связались с [{0}], пожайлуста спросите его и ждите ответа."
+ByBard,<color=#ff1919>吟游诗人</color>献,"by <color=#ff1919>Bard</color>","с любовью, <color=#ff1919>Бард</color>"
+ByBardGetFailed,没有灵感，也是一种灵感,"ops, I seem to be out of inspiration.","упс, у меня уже нету настроения"
+GangsterSuccessfullyRecruited,您成功招募了一位玩家,You successfully recruited a player,Вы успешно переманили игрока
+GangsterRecruitmentFailure,目标无法被招募,Target cannot be recruited,Цель не может быть переманена
+BeRecruitedByGangster,您已被教父招募,You have been recruited by the gangster,Ты был переманен Ганстером
+VeteranOnGuard,已进入警戒状态,Skill in use,Способность действует
+VeteranOffGuard,警戒状态已失效，剩余{0}次使用次数,"The skill is over, and {0} uses remain","Способность окончена, осталось {0}"
+VeteranMaxUsage,已达到技能使用次数上限,The skill use limit has been reached,Вы использовали все свои способности
+GrenadierSkillInUse,闪光弹生效中,Skill in use,Способность использована
+GrenadierSkillStop,闪光弹已失效,The skill is over,Способность окончена
+MediumshiperKnowPlayerDead,刚刚似乎有亡魂发出了一阵嘶吼,Someone dead somewhere,Кто-то где-то умер
+TicketsStealerGetTicket,您的票数共增加{0},You have got {0} votes,Вы получили {0} голосов
+BecomeMadmateCuzMadmateMode,您因死亡成为叛徒,You become madmate because you died,Вы стали Безумцем из-за своей смерти
+ExecutionerRoleChanged,您因目标死亡转变为{0},You become {0} because target dead,Вы стали {0}
+SpeedBoosterTaskDone,您的速度提升至{0}x,Your speed is {0} now,Ваша скорость теперь {0}
+CleanerCleanBody,目标的尸体已被清理,The body has been cleaned,Труп очищен
+QuickShooterStoraging,子弹储存成功,Bullets stored successfully,Пули сохранены успешно
+VampireTargetDead,您的目标已死亡,Target dead,Цель мертва
+WarlockNoTarget,因没有目标操纵失败,Manipulation failed due to no target,Манипуляция провалилась из-за отсуствия цели
+WarlockControlKill,已操纵目标完成击杀,Target dead,Цель мертва
+OnCyberStarDead,紧急通知：网红死亡,Warning: Celebrity death,Знаменитость мертва
+TeleportedByTransporter,您被传送至：{0},Teleporting to: {0},Телепортирован к: {0}
+LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了,You lost your role because of <color=#ff1919>Eraser</color>,Вы потеряли свою роль из-за <color=#ff1919>Стирачки</color>
 
 ## 信息 / Message
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды
@@ -950,7 +951,7 @@ Message.NowOverrideText,请房主在游戏根目录的 .\Language\SChinese.dat �
 Message.NoDescription,无描述,No description,Описание отсутствует
 Message.KickedByDenyName,【{0}】被踢出，因其昵称包含违禁词【{1}】,【{0}】 was kicked because its name matched 【{1}】","【{0}】 был кикнут, так как его имя соответствует 【{1}】"
 Message.BanedByBanList,【{0}】因在封禁名单内被踢出,【{0}】 has been banned because it has been banned in the past.,"【{0}】 был заблокирован, потому что он был заблокирован в прошлый раз"
-Message.BanedByEACList,【{0}】因在EAC封禁名单内被踢出
+Message.BanedByEACList,【{0}】因在EAC封禁名单内被踢出,【{0}】 has been banned because he is in EAC list of Banned people.,"【{0}】был заблокирован, потому что он был в списке ЕАС"
 Message.DumpfileSaved,日志文件已成功保存到桌面上了，文件名为：{0},"The log file was successfully saved to the desktop, filename: {0}","Файл журнала был успешно сохранен на рабочий стол, имя файла: {0}"
 Message.KickedByNoFriendCode,【{0}】因该房禁止未登录玩家被请离,"【{0}】 was kicked because the friend code does not exist.","【{0}】 был кикнут, так как у него нет кода друга"
 Message.AddedPlayerToBanList,【{0}】被添加至黑名单,Added 【{0}】 to the ban list,【{0}】 был добавлен в список забаненых игроков
@@ -962,7 +963,7 @@ Message.WarnWhoSayBanWordTimes,【{0}】被警告：{1}次\n请友善讨论哦~,
 Message.KickWhoSayBanWordAfterWarn,【{0}】达到 {1} 次警告被请离房间\n请友善讨论哦~,[{0}] received {1} warnings.\nHe was expelled for forbidden words,"[{0}] набрал {1} предупреждений.\nОн был исключен за запретные слова"
 Message.KickedByEAC,【{0}】被EAC踢出，理由：{1},"【{0}】Kicked by EAC, reason:{1}","【{0}】Кикнут EAC-ом, причина:{1}
 Message.BanedByEAC,【{0}】被EAC封禁，理由：{1},"【{0}】Kicked by EAC, reason:{1}","【{0}】Забанен EAC-ом, причина:{1}"
-Message.NoticeByEAC,检测到【{0}】：{1},【{0}】Detected:{1},【{0}】Обнаружено{1
+Message.NoticeByEAC,检测到【{0}】：{1},【{0}】Detected:{1},【{0}】Обнаружено:{1}
 Message.SetLevel,您的等级设置为：{0},Your game level is set to: {0},Ваш игровой уровень установлен на: {0}
 Message.SetColor,您的颜色设置为：{0},Your color is set to: {0},Ваш игровой цвет установлен на: {0}
 Message.AllowLevelRange,等级可设置范围：0 - 100,"The game level can be set in the range: 0-100","Игровой уровень может быть установлен в диапазоне: 0-100"
@@ -1016,9 +1017,9 @@ MessageFromDevTitle,【 ★ 咔皮呆留言 ★ 】,【 ★ Self-Guessing ★ �
 DivinatorCheckMsgTitle,【 ★ 水晶球 ★ 】,【 ★ Crystall Ball ★ 】,【 ★ Хрустальный Шар ★ 】
 MimicMsgTitle,【 ★ 宝箱怪 ★ 】,【 ★ Mimic ★ 】,【 ★ Мимик ★ 】
 EraserEraseMsgTitle,【 ★ 抹除者 ★ 】,【 ★ Eraser ★ 】,【 ★ Стирачка ★ 】
-TrialKillTitle,【 ★ 法院事件 ★ 】,【 ★ Judge ★ 】
-MorticianCheckTitle,【 ★ 尸体检查 ★ 】,【 ★ Mortician ★ 】
-MediumshipTitle,【 ★ 冥界之声 ★ 】,【 ★ Mediumship ★ 】
+TrialKillTitle,【 ★ 法院事件 ★ 】,【★ Court ★】,【★ Суд ★】
+MorticianCheckTitle,【 ★ 尸体检查 ★ 】,【★ Corpse Examination ★】,【★ Вскрытие ★】
+MediumshipTitle,【 ★ 冥界之声 ★ 】,【★ Voice of the Underworld ★】,【★ Голос с другого мира ★】
 TabGroup.SystemSettings,系统设置,System Settings,Системные настройки
 TabGroup.GameSettings,游戏设置,Game Settings,Игровые настройки
 TabGroup.CrewmateRoles,船员阵营职业,Crewmate Roles,Роли Членов Экипажа
@@ -1026,10 +1027,10 @@ TabGroup.NeutralRoles,中立阵营职业,Neutral Roles,Нейтральные Р
 TabGroup.ImpostorRoles,内鬼阵营职业,Impostor Roles,Роли Предателей
 TabGroup.Addons,附加职业,Add-Ons,Атрибуты
 TabGroup.OtherRoles,试验性职业（不建议开）,Experimental Roles (Not recommended),Эксперементальные Роли (Не рекомендуется)
-OtherRoles.CrewmateRoles,★ 船员阵营职业,Crewmate Roles,Роли Членов Экипажа
-OtherRoles.NeutralRoles,★ 中立阵营职业,Neutral Roles,Нейтральные Роли
-OtherRoles.ImpostorRoles,★ 内鬼阵营职业,Impostor Roles,Роли Предателей
-OtherRoles.Addons,★ 附加职业,Add-Ons,Атрибуты
+OtherRoles.CrewmateRoles,★ 船员阵营职业,★ Crewmate Roles,★ Роли Членов Экипажа
+OtherRoles.NeutralRoles,★ 中立阵营职业,★ Neutral Roles,★ Нейтральные Роли
+OtherRoles.ImpostorRoles,★ 内鬼阵营职业,★ Impostor Roles,★ Роли Предателей
+OtherRoles.Addons,★ 附加职业,★ Add-Ons,★ Атрибуты
 ActiveRolesList,有效职业一览,Active Roles List,Список Активных Ролей
 ForExample,使用例子,Example Use,Например
 ForceEnd,强制结束游戏,Aborted,Игра Окончена
@@ -1074,8 +1075,8 @@ AntiAdminerCA,摄像头警告,Warning about Cameras,Оповещение о Ка
 Roles,职业,Roles,Роли
 Settings,设定,Settings,Настройки
 Addons,附加效果,Add-Ons,Атрибуты
-LastResult, ★ 游戏结果,Match Results,Результат матча
-LastEndReason, ★ 结束原因,End Reason,Причина окончания
+LastResult, ★ 游戏结果,★ Match Results,★ Результат матча
+LastEndReason, ★ 结束原因,★ End Reason,★ Причина окончания
 KillLog,击杀日志,Kill Log,История убийств
 Maximum,最大人数,Max,Максимум
 RoleRate,<color=#ffc0cb>启用</color>,<color=#ffc0cb>Active</color>,<color=#ffc0cb>Активен</color>
@@ -1183,23 +1184,23 @@ MessengerMurderOccurred,发生命案警告,Occurred Kill,Произошло уб
 Deadbody,尸体,Dead body,Труп
 PlayerLeftByAU-Anticheat,【{0}】被树懒超级厉害的反作弊踢出去啦~ QwQ,【{0}】Kicked out by Innersloth's super powerful anti-cheating~ QwQ
 KickAndriodPlayer,【{0}】因该房禁止安卓被请离房间,【{0}】 was kicked because of No Phone setting,【{0}】 был кикнут из-за настройки Никаких Телефонов
-KickBecauseLowLevel,【{0}】因未达到房主规定的等级限制被请离房间,[{0}] was kicked due to level restriction
-KickBecauseDiffrentVersionOrMod,【{0}】因安装了不同版本的模组被请离房间,[{0}] was kicked due to different versions of mods installed
+KickBecauseLowLevel,【{0}】因未达到房主规定的等级限制被请离房间,【{0}】 was kicked because of Low Level setting,【{0}】 был кикнут из-за настройки Низкого уровня 
+KickBecauseDiffrentVersionOrMod,【{0}】因安装了不同版本的模组被请离房间,【{0}】 was kicked because of different version of mod,【{0}】 был кикнут из-за другой версии мода
 KBDisplayScore,第{0}名：{1}分,Ranking: {0} Score: {1},Место: {1} Счёт: {1}
 KBTimeRemain,剩余时间：{0} 秒,Time Remain: {0} second,Осталось времени: {0} секунд
 GameOver,游戏结束,Game Over,Конец игры
-TOHEOptions,TOHE 选项,TOHE Options
-Back,返回,Back
-Yes,是,Yes
-No,否,No
-RpcAntiBlackOutIgnored,【{0}】发生未知错误，根据房主设置将忽略该玩家
-RpcAntiBlackOutEndGame,【{0}】发生未知错误，将终止游戏以防止黑屏
-RpcAntiBlackOutNotifyInLobby,由于玩家【{0}】发生未知错误，已终止游戏防止卡房。若您不希望在其他玩家发生错误时终止游戏，请在设置关闭【{1}】
-AntiBlackOutNotifyInLobby,由于未知错误发生，已终止游戏以防止黑屏。很抱歉，所有的H系列模组都存在这个问题，自动结束游戏是必要的保护措施，否则游戏将无法运行。
-AntiBlackOutLoggerSendInGame,由于未知错误发生，将终止游戏以防止黑屏
-AntiBlackOutRequestHostToForceEnd,您触发了黑屏Bug，正在请求房主终止游戏...
-AntiBlackOutHostRejectForceEnd,您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接
-Website,模组官网,Website
+TOHEOptions,TOHE 选项,TOHE Options,Настройки TOHE 
+Back,返回,Back,Назад
+Yes,是,Yes,Да
+No,否,No,Нет
+RpcAntiBlackOutIgnored,【{0}】发生未知错误，根据房主设置将忽略该玩家,"Because of 【{0}】, an unknown error occurred, RPC will be ignored.","Неизвестная ошибка из-за 【{0}】, RPC будет проигнорирован."
+RpcAntiBlackOutEndGame,【{0}】发生未知错误，将终止游戏以防止黑屏,"Because of 【{0}】, an unknown error occurred, game will end to prevent black screen.","Неизвестная ошибка из-за 【{0}】, игра была прекращена чтобы предовратить использование черного экрана"
+RpcAntiBlackOutNotifyInLobby,由于玩家【{0}】发生未知错误，已终止游戏防止卡房。若您不希望在其他玩家发生错误时终止游戏，请在设置关闭【{1}】,"Because of 【{0}】, an unknown error occured, to prevent black screen, turn off 【{1}】 in settings.","Неизвестная ошибка из-за 【{0}】, чтобы предовратить черный экран, отключите 【{1}】 в настройках."
+AntiBlackOutNotifyInLobby,由于未知错误发生，已终止游戏以防止黑屏。很抱歉，所有的H系列模组都存在这个问题，自动结束游戏是必要的保护措施，否则游戏将无法运行。,"An unknown error occured, to prevent black screen. Sadly, this error exists in all Town of Host versions. Automatic ending game is required, or game will not start.","Из-за неизвестной ошибки игра была прекращена, чтобы предотвратить появление черного экрана. К сожалению, эта проблема существует во всех версиях Town of Host. Автоматическое завершение игры является необходимой защитной мерой, в противном случае игра не запустится."  
+AntiBlackOutLoggerSendInGame,由于未知错误发生，将终止游戏以防止黑屏,"Because of an unknown error the game will finished, to prevent black screen.","Из-за неизвестной ошибки игра будет завершена, чтобы предотвратить появление черного экрана."
+AntiBlackOutRequestHostToForceEnd,您触发了黑屏Bug，正在请求房主终止游戏...,"You were the reason of black screen, you are asking the host to stop the game...","Вы были причиной черного экрана, сейчас вы просите хоста остановить игру..."
+AntiBlackOutHostRejectForceEnd,您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接,"You were the reason of black screen, and the host is not gonna end the game, we will disconect you soon.","Вы были причиной черного экрана, хост отказывается завершать игру, и скоро мы вас отключим."
+Website,模组官网,Website,Сайт
 
 
 ## 作弊 / EAC
@@ -1249,7 +1250,7 @@ Developer,开发者,Developer,Разрабочик
 Sponsor,金主爹爹,Sponsor,Спонсор
 Translator,翻译支持,Translator,Переводчик
 MainDev,主要开发者,Creator,Создатель
-Art,美术,Artist,Артист
+Art,美术,Artist,Художник
 RoleDev,角色制作,Role Developer,Разрабочик Ролей
 TechSup,技术指导,Tech. Support,Тех. Поддержка
 FeatureDev,功能开发,Feature Developer,Разрабочик Функций
