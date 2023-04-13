@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using Il2CppSystem.Net;
 using InnerNet;
 using System;
 using System.Collections.Generic;
@@ -1013,10 +1014,15 @@ class FixedUpdatePatch
             //踢出低等级的人
             if (GameStates.IsLobby && player.Data.PlayerLevel != 0 && player.Data.PlayerLevel < Options.KickLowLevelPlayer.GetInt())
             {
-                AmongUsClient.Instance.KickPlayer(player.GetClientId(), false);
-                string msg = string.Format(GetString("KickBecauseLowLevel"), player.GetRealName().RemoveHtmlTags());
-                Logger.SendInGame(msg);
-                Logger.Info(msg, "LowLevel Kick");
+                BufferTime--;
+                if (BufferTime <= 0)
+                {
+                    BufferTime = 20;
+                    AmongUsClient.Instance.KickPlayer(player.GetClientId(), false);
+                    string msg = string.Format(GetString("KickBecauseLowLevel"), player.GetRealName().RemoveHtmlTags());
+                    Logger.SendInGame(msg);
+                    Logger.Info(msg, "LowLevel Kick");
+                }
             }
 
             //检查老兵技能是否失效
