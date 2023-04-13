@@ -570,7 +570,7 @@ public static class Utils
         {
             if (!role.Key.IsEnable()) continue;
             string mode = role.Key.GetMode() == 1 ? GetString("RoleRateNoColor") : GetString("RoleOnNoColor");
-            sb.Append($"\n【{GetRoleName(role.Key)}:{mode}×{role.Key.GetCount()}】\n");
+            sb.Append($"\n【{GetRoleName(role.Key)}:{mode} ×{role.Key.GetCount()}】\n");
             ShowChildrenSettings(Options.CustomRoleSpawnChances[role.Key], ref sb);
             var text = sb.ToString();
             sb.Clear().Append(text.RemoveHtmlTags());
@@ -601,7 +601,7 @@ public static class Utils
         {
             if (!role.Key.IsEnable()) continue;
             string mode = role.Key.GetMode() == 1 ? GetString("RoleRateNoColor") : GetString("RoleOnNoColor");
-            sb.Append($"\n【{GetRoleName(role.Key)}:{mode}×{role.Key.GetCount()}】\n");
+            sb.Append($"\n【{GetRoleName(role.Key)}:{mode} ×{role.Key.GetCount()}】\n");
             ShowChildrenSettings(Options.CustomRoleSpawnChances[role.Key], ref sb);
             var text = sb.ToString();
             sb.Clear().Append(text.RemoveHtmlTags());
@@ -640,7 +640,7 @@ public static class Utils
             else headCount--;
 
             string mode = role.GetMode() == 1 ? GetString("RoleRateNoColor") : GetString("RoleOnNoColor");
-            if (role.IsEnable()) sb.AppendFormat("\n{0}:{1}x{2}", GetRoleName(role), $"{mode}", role.GetCount());
+            if (role.IsEnable()) sb.AppendFormat("\n{0}:{1} x{2}", GetRoleName(role), $"{mode}", role.GetCount());
         }
         SendMessage(sb.ToString(), PlayerId);
     }
