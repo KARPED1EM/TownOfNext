@@ -37,3 +37,4 @@ Sry for my suck English :)
 - Option: Madmate know Imp
 - Option: Madmate can kill Imp
 - Notify the player when the player's role is erased by the Eraser
+- Command: /n all shows /n for TOH version
