@@ -506,7 +506,7 @@ VersionCheat,绕过版本同步检查,Bypass version synchronization check,Об�
 AutoDisplayKillLog,结束后自动显示击杀记录,Display Killlog,Показывать убийства
 AutoDisplayLastRoles,结束后自动显示上局职业,Display Last Roles,Показывать роли в прошлой игре
 AutoDisplayLastResult,结束后自动显示最终结果,Auto Display Last Result,Отображать результат последней игры в чате
-EnableUpMode,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,Turn on ''Shield for Host'' (Experemental),Включить ''Защита Хоста'' (Экспериментально)
+EnableUpMode,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）,启用创作者保护计划（试验性）
 KickLowLevelPlayer,踢出没有达到指定等级的玩家,Kick players whoes level is lower than,Выгнать игроков с уровнем ниже
 AutoKickStart,踢出催开始的人,Kick the player who says start,Кикнуть игрока который пишет start (Только англ)
 AutoKickStartTimes,踢出前警告次数,Number of warnings before kick,Количество предупреждений до кика
