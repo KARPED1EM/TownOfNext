@@ -55,11 +55,18 @@ public static class TemplateManager
                 }
                 else
                 {
-                    Logger.Warn("创建新的 Template 文件", "TemplateManager");
-                    if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
-                        File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt("TOHE.Resources.Config.template-chinese.txt"));
-                    else
-                        File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt("TOHE.Resources.Config.template.txt"));
+                    string fileName;
+                    string[] name = CultureInfo.CurrentCulture.Name.Split("-");
+                    if (name.Count() >= 2)
+                        fileName = name[1] switch
+                        {
+                            "zh" => "SChinese",
+                            "ru" => "Russian",
+                            _ => "English"
+                        };
+                    else fileName = "English";
+                    Logger.Warn($"创建新的 Template 文件：{fileName}", "TemplateManager");
+                    File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt($"TOHE.Resources.Config.template.{fileName}.txt"));
                 }
             }
             catch (Exception ex)
