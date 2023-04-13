@@ -657,8 +657,8 @@ SnitchCanGetArrowColor,对不同阵营的目标显示不同颜色的箭头,Can S
 SnitchCanFindNeutralKiller,可以确认带刀<color=#ffaa1b>中立</color>,Can Find Neutral Killers,Может видеть нейтральных убийц
 SnitchCanFindMadmate,可以确认<color=#ff1919>叛徒</color>,Can Find <color=#ff1919>Madmates</color>
 SnitchRemainingTaskFound,在剩余多少任务时被发现,Remaining tasks to be found,Оставшиеся задания при которых он будет виден
-SpeedBoosterUpSpeed,增速者每次加速,Random Player's Speed Boost,Повысить скорость игрока на
-SpeedBoosterTimes,增速次数上限,Tasks Until Boost Activated,На сколько секунд можно ускорить
+SpeedBoosterUpSpeed,增速者每次加速,Boost speed,Повысить скорость игрока на
+SpeedBoosterTimes,增速次数上限,Max of boosting,На сколько секунд можно ускорить
 MayorAdditionalVote,附加票数,Additional Votes Count,Дополнительные голоса
 MayorHasPortableButton,跳通风管触发紧急会议,"Mayor Has Mobile Emergency Button",У Мэра есть портативная Кнопка
 MayorNumOfUseButton,紧急会议次数上限,"Max Of Mobile Emergency Button","Количество портативных Кнопок"

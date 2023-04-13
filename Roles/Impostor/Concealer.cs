@@ -17,9 +17,9 @@ public static class Concealer
     public static void SetupCustomOption()
     {
         Options.SetupRoleOptions(Id, TabGroup.OtherRoles, CustomRoles.Concealer);
-        ShapeshiftCooldown = FloatOptionItem.Create(Id + 2, "ShapeshiftCooldown", new(1f, 999f, 1f), 25f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Concealer])
+        ShapeshiftCooldown = FloatOptionItem.Create(Id + 2, "ShapeshiftCooldown", new(1f, 999f, 1f), 25f, TabGroup.OtherRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Concealer])
             .SetValueFormat(OptionFormat.Seconds);
-        ShapeshiftDuration = FloatOptionItem.Create(Id + 4, "ShapeshiftDuration", new(1f, 999f, 1f), 10f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Concealer])
+        ShapeshiftDuration = FloatOptionItem.Create(Id + 4, "ShapeshiftDuration", new(1f, 999f, 1f), 10f, TabGroup.OtherRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Concealer])
             .SetValueFormat(OptionFormat.Seconds);
     }
     public static void Init()
