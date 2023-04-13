@@ -950,8 +950,11 @@ class ReportDeadBodyPatch
 
             Main.AllPlayerControls
                 .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
+                .Do(pc => pc.RpcRevertShapeshift(false));
+            Main.AllPlayerControls
+                .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
                 .Do(pc => Camouflage.RpcSetSkin(pc, RevertToDefault: true));
-            Main.AllPlayerControls.Do(pc => pc.RpcRevertShapeshift(false));
+
             MeetingTimeManager.OnReportDeadBody();
 
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
