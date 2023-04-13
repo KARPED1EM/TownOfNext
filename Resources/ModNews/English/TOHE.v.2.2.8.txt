@@ -13,7 +13,6 @@ Sry for my suck English :)
 ## Fix
 - Fixed bug that Jackal Can Sabotage' doesn't work
 - Fixed bug that Killing Machine Can Sabotage
-- Fixed bug that shapeshifting doesn't revert when meeting start
 - Fixed bug that Concealer's skills will not expire
 - Fixed bug that vanilla players can see other player's names while the camouflage
 - Fixed bug that vanilla players can see name and skill notify while the camouflage

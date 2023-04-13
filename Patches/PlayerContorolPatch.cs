@@ -951,9 +951,6 @@ class ReportDeadBodyPatch
 
             Main.AllPlayerControls
                 .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
-                .Do(pc => pc.RpcRevertShapeshift(false));
-            Main.AllPlayerControls
-                .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
                 .Do(pc => Camouflage.RpcSetSkin(pc, RevertToDefault: true));
 
             MeetingTimeManager.OnReportDeadBody();
