@@ -103,11 +103,11 @@ public class ModUpdater
             string[] notices = data[1].Split("&&");
             if (CultureInfo.CurrentCulture.Name.StartsWith("zh")) notice = notices[0];
             else notice = notices[1];
-            int create = int.Parse(data[0]);
-            if (create.ToString().Length == 7) create = int.Parse(data[0][..2]);
             MD5 = data[2];
             visit = int.TryParse(data[3], out int x) ? x : 0;
             visit += 26810; //1x版本的访问量
+            var create = 1;
+            if (int.TryParse(data[0], out int ct) && ct < 1000) create = ct;
             if (create > Main.PluginCreate)
             {
                 hasUpdate = true;
