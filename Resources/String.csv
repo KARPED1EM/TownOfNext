@@ -680,7 +680,7 @@ LoverSpawnChances,出现概率,Spawn Chance of Lovers,Шанс появлени�
 AdditionRolesSpawnRate,出现概率,Spawn Chance,Шанс появления
 BewilderVision,迷幻视野大小,Bewilder Vision,Дальность обзора Сбитого с Толку
 FlashmanSpeed,初始移动速度,Flash Speed,Скорость Флеша
-LoverSuicide,恋人共生死,Lovers suicide,Любовники могут суициднуться
+LoverSuicide,恋人共生死,Lovers die together,Любовники могут суициднуться
 NumberOfLovers,恋人对数,Number of Lovers (x2 members),Количество Любовников (x2 участника)
 LoverKnowRoles,恋人知道对方的职业,Lovers know roles of eachother,Любовники знают роли друг-друга
 TrapperBlockMoveTime,封锁凶手移动时长,Freeze time,Время заморозки
