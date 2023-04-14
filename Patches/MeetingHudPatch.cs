@@ -539,7 +539,6 @@ class MeetingHudStartPatch
 
         Main.CyberStarDead.Clear();
         Main.DetectiveNotify.Clear();
-        Mediumshiper.ContactPlayer.Clear();
         Mortician.msgToSend.Clear();
     }
     public static void Prefix(MeetingHud __instance)
