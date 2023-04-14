@@ -559,8 +559,8 @@ class MeetingHudStartPatch
         }
         foreach(var ms in Mediumshiper.ContactPlayer)
         {
-            var pc = Utils.GetPlayerById(ms.Key);
-            var tar = Utils.GetPlayerById(ms.Value);
+            var tar = Utils.GetPlayerById(ms.Key);
+            var pc = Utils.GetPlayerById(ms.Value);
             if (pc == null || tar == null) continue;
             new LateTask(() =>
             {
