@@ -481,7 +481,7 @@ FormatNameMode,玩家名字同步模式,Player Name Mode,Режим имён
 FormatNameModes.None,无,Disable,Нету
 FormatNameModes.Color,颜色,Color,Цвета
 FormatNameModes.Snacks,随机,Random,Рандом
-DisableEmojiName,禁止玩家使用表情符号作为名字, Disable Emoji in names, Отключить Эмодзи в именах
+DisableEmojiName,禁止玩家使用表情符号作为名字,Disable Emoji in names,Отключить Эмодзи в именах
 FixFirstKillCooldown,修正首刀冷却时间,Normalize First Kill Cooldown,Нормализовать откат убийства в начале Игры
 GhostCanSeeOtherRoles,幽灵可见他人职业,Ghosts Can See Other Roles,Призраки могут видеть все Роли
 GhostCanSeeOtherVotes,幽灵可见投票情况,Ghosts Can See Other Votes,Призраки могут видеть цвета Голосов
