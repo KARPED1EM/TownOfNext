@@ -515,9 +515,10 @@ class MeetingHudStartPatch
             //侦探报告线索
             if (Main.DetectiveNotify.ContainsKey(pc.PlayerId))
             {
+                var msg = Main.DetectiveNotify[pc.PlayerId];
                 new LateTask(() =>
                 {
-                    Utils.SendMessage(Main.DetectiveNotify[pc.PlayerId], pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Detective), GetString("DetectiveNoticeTitle")));
+                    Utils.SendMessage(msg, pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Detective), GetString("DetectiveNoticeTitle")));
                 }, 5.0f, "Notice Detective Skill");
             }
             //提示神存活
