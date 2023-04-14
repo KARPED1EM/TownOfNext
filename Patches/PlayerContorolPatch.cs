@@ -1009,7 +1009,7 @@ class FixedUpdatePatch
             }
 
             //踢出低等级的人
-            if (GameStates.IsLobby && player.Data.PlayerLevel != 0 && player.Data.PlayerLevel < Options.KickLowLevelPlayer.GetInt())
+            if (GameStates.IsLobby && !player.AmOwner && player.Data.PlayerLevel != 0 && player.Data.PlayerLevel < Options.KickLowLevelPlayer.GetInt())
             {
                 BufferTime--;
                 if (BufferTime <= 0)
