@@ -559,6 +559,7 @@ public static class Options
         Hangman.SetupCustomOption();
         SetupRoleOptions(905486, TabGroup.ImpostorRoles, CustomRoles.Error404);
         Error404KillCooldown = FloatOptionItem.Create(905724, "Error404KillCooldown", new(20f, 100f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Error404]);
+        SetupRoleOptions(1054564, TabGroup.ImpostorRoles, CustomRoles.Depressed); 
 
         // Crewmate
         SetupRoleOptions(102255, TabGroup.CrewmateRoles, CustomRoles.NiceGuesser);

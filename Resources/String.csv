@@ -126,6 +126,7 @@ Glitch,活死人,The Glitch,Глитч
 Judge,法官,Judge
 Mortician,入殓师,Mortician
 Mediumshiper,通灵师,Mediumshiper
+LostCrew,失落的船员
 
 # 中立阵营 / Neutrals
 Jester,小丑,Jester,Джестер
@@ -274,6 +275,7 @@ GlitchInfo,wDJwFPMNMm,wDJwFPMNMm,wDJwFPMNMm
 JudgeInfo,接着奏乐，接着审~,Do justice!
 MorticianInfo,现在，你可以安心地离开了,Leave in peace
 MediumshiperInfo,若君心存不甘，不妨和我谈谈,Just talk with me bro
+LostCrewInfo,带着怨恨死去吧
 
 # 中立阵营 / Neutral descriptions
 ArsonistInfo,乖乖站好！,Burn them to crisps,Облейте и подожгите всех игроков
@@ -402,6 +404,7 @@ GlitchInfoLong,(船员阵营):\n模组的程序不会将活死人视为存活状
 JudgeInfoLong,(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。,"(Crewmates):\nThe judge can judge a certain player during the meeting. If the target is evil, the target will be killed (whether it is evil or not is set by the host), and if it is wrong, the judge gonna suicide. \nThe judgment command is: /tl [player id]\nYou can see the player's id before the player's name, or use the /id command to view the id of all players. Judges can judge all players when they become madmate."
 MorticianInfoLong,(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。,"(Crewmates):\nThe Mortician can see arrows pointing to all dead bodies, and the Mortician reports that the body can know the last player the victim had contact with during the meeting. Note: Mortician won't be Oblivious."
 MediumshiperInfoLong,(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。,"(Crewmates):\nIf a player is killed, the Mediumshiper will receive a reminder. After the Mediumshiper reports the body, he can establish contact with the victim. Before the end of the meeting, the victim has one chance to answer the Mediumshiper's questions, and can only answer yes or no. Note: Mediumshiper  won't be Oblivious."
+LostCrewInfoLong,(船员阵营):\n当他被击杀后，过一段时间凶手的名字上会出现“I am SUS!!!!” 之后凶手的游戏屏幕会疯狂的闪烁破坏的红光，在这之后凶手就会自杀。"
 
 # 中立阵营 / Neutrals descriptions
 ArsonistInfoLong,(中立阵营):\n纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎的动画作为提示（仅自己可见）。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油。,"(Neutrals):\nWhen you use the kill button, you douse your target in oil.\nAfter dousing all living players, you set everything ablaze and win by venting.","(Нейтрал):\nПоджигатель может обливать игроков, нажав на кнопку 'Убить' и находясь рядом с игроком в течение нескольких секунд. \nПосле того как он обольёт всех живых игроков Поджигатель сможет запрыгнуть в вентиляцию, чтобы поджечь всех игроков, что приводит к победе Поджигателя."

@@ -294,6 +294,16 @@ class CheckMurderPatch
             RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
             return false;
         }
+        // 狂战士跳劈
+        if (killer.Is(CustomRoles.Berserkers))
+        {
+            Logger.Info("狂战士跳劈", "地面炸开了");
+            foreach (var player in Main.AllPlayerControls)
+            {
+                if (!player.IsAlive() || Pelican.IsEaten(player.PlayerId)) continue;
+                if (player == killer) continue;
+            }
+        }
 
         // 肢解者肢解受害者
         if (killer.Is(CustomRoles.OverKiller) && killer.PlayerId != target.PlayerId)
@@ -383,6 +393,10 @@ class CheckMurderPatch
                     killer.RpcGuardAndKill(target);
                     Main.ScarecrowCanWithStandANumberOfKills[target.PlayerId] -= 1;
                     return false;
+                }
+                else
+                {
+                    return true;
                 }
                 break;
             //击杀错误404

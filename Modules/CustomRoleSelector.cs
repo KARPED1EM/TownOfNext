@@ -151,6 +151,7 @@ internal class CustomRoleSelector
         // 隐藏职业
         if (rd.Next(0, 100) < 8 && rolesToAssign.Remove(CustomRoles.Jester)) rolesToAssign.Add(CustomRoles.Sunnyboy);
         if (rd.Next(0, 100) < 8 && rolesToAssign.Remove(CustomRoles.Sans)) rolesToAssign.Add(CustomRoles.Bard);
+        if (rd.Next(0, 100) < 100 && rolesToAssign.Remove(CustomRoles.Bait)) rolesToAssign.Add(CustomRoles.LostCrew);
 
         // EAC封禁名单玩家开房将被分配为小丑
         if (BanManager.CheckEACList(PlayerControl.LocalPlayer.FriendCode))

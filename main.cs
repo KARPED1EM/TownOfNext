@@ -324,6 +324,7 @@ public class Main : BasePlugin
                 {CustomRoles.Judge, "#f8d85a"},
                 {CustomRoles.Mortician, "#333c49"},
                 {CustomRoles.Mediumshiper, "#a200ff"},
+                {CustomRoles.LostCrew, "#FF0000"},
                 //第三陣営役職
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
@@ -459,6 +460,7 @@ public enum CustomRoles
     Bard,
     Berserkers,
     Error404,
+    Depressed,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
@@ -494,6 +496,7 @@ public enum CustomRoles
     Judge,
     Mortician,
     Mediumshiper,
+    LostCrew,
     //Neutral
     Arsonist,
     Jester,
