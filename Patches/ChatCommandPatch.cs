@@ -809,6 +809,8 @@ internal class ChatCommands
         canceled = false;
         if (!AmongUsClient.Instance.AmHost) return;
         if (text.StartsWith("\n")) text = text[1..];
+        if (ProhibitedCheck(player, text)) return;
+        if (!text.StartsWith("/")) return;
         string[] args = text.Split(' ');
         string subArgs = "";
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
@@ -816,7 +818,6 @@ internal class ChatCommands
         if (Judge.TrialMsg(player, text)) { canceled = true; return; }
         if (Mediumshiper.MsMsg(player, text)) return;
         if (MafiaMsgCheck(player, text)) return;
-        if (ProhibitedCheck(player, text)) return;
         switch (args[0])
         {
             case "/l":
