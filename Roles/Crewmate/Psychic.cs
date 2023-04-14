@@ -67,7 +67,7 @@ public static class Psychic
     }
     public static void GetRedName()
     {
-        if (!IsEnable || !AmongUsClient.Instance.AmHost) return;
+        if (!IsEnable) return;
 
         List<PlayerControl> BadListPc = Main.AllAlivePlayerControls.Where(x =>
         x.GetCustomRole().IsImpostorTeam() || x.Is(CustomRoles.Madmate) ||
