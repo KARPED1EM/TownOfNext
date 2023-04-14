@@ -673,7 +673,6 @@ internal class ChatCommands
             "up" or "up主" => GetString("Youtuber"),
             "利己主義者" or "利己主义" or "利己" => GetString("Egoist"),
             "贗品商" or "赝品" => GetString("Counterfeiter"),
-            "吹笛者" or "吹笛" => GetString("Piper"),
             "擲雷兵" or "掷雷" or "闪光弹" => GetString("Grenadier"),
             "竊票者" or "偷票" or "偷票者" or "窃票师" or "窃票" => GetString("TicketsStealer"),
             "教父" => GetString("Gangster"),

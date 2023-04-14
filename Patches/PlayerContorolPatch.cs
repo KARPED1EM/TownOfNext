@@ -1052,32 +1052,6 @@ class FixedUpdatePatch
                 }
             }
 
-            //吹笛者的加速
-            if (GameStates.IsInTask && player.Is(CustomRoles.Piper))
-            {
-                BufferTime--;
-                if (BufferTime <= 0)
-                {
-                    BufferTime = 30;
-                    foreach (var apc in Main.AllAlivePlayerControls.Where(x => x.PlayerId != player.PlayerId))
-                    {
-                        var pos = player.transform.position;
-                        var dis = Vector2.Distance(pos, apc.transform.position);
-                        bool acc = true;
-
-                        if (!apc.IsAlive() || Pelican.IsEaten(apc.PlayerId)) acc = false;
-                        if (dis > Options.PiperAccelerationRadius.GetFloat()) acc = false;
-                        if (acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()) break;
-                        if (acc) Main.AllPlayerSpeed[apc.PlayerId] = Options.PiperAccelerationSpeed.GetFloat();
-                        if (acc || (!acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()))
-                        {
-                            ExtendedPlayerControl.MarkDirtySettings(apc);
-                            Logger.Info($"{apc.GetRealName()} 因靠近吹笛者 {player.GetRealName()} 速度被改变", "Piper Speed Boost");
-                        }
-                    }
-                }
-            }
-
             //检查马里奥是否完成
             if (GameStates.IsInTask && player.Is(CustomRoles.Mario))
             {

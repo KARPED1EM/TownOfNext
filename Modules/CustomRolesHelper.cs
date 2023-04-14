@@ -129,7 +129,6 @@ internal static class CustomRolesHelper
             CustomRoles.Avanger or
             CustomRoles.Youtuber or
             CustomRoles.Egoist or
-            CustomRoles.Piper or
             CustomRoles.TicketsStealer or
             CustomRoles.DualPersonality or
             CustomRoles.Mimic;
