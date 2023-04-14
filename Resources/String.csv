@@ -935,6 +935,7 @@ OnCyberStarDead,紧急通知：网红死亡,Warning: Celebrity death,Знаме�
 TeleportedByTransporter,您被传送至：{0},Teleporting to: {0},Телепортирован к: {0}
 LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了,You lost your role because of <color=#ff1919>Eraser</color>,Вы потеряли свою роль из-за <color=#ff1919>Стирачки</color>
 KilledByScavenger,您被清道夫击杀因此传送至地图外,You were killed by Scavenger and thus teleported off-map
+SnitchDoneTasks,您已完成全部任务，启动会议以发动技能,Call a meeting to active your skill
 
 ## 信息 / Message
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды

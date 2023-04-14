@@ -117,6 +117,9 @@ public static class Snitch
                     TargetColorlist.Add(targetId, target.GetRoleColor());
             }
         }
+
+        NameNotifyManager.Notify(snitch, Translator.GetString("SnitchDoneTasks"));
+
         IsComplete[snitchId] = true;
     }
 
