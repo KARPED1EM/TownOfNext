@@ -56,9 +56,9 @@ public static class Psychic
     }
     public static bool IsRedForPsy(this PlayerControl target, PlayerControl seer)
     {
-        if (target == null || seer == null || RedPlayer == null) return false;
+        if (target == null || seer == null) return false;
         if (seer.Is(CustomRoles.Madmate)) return target.GetCustomRole().IsNeutral() || target.GetCustomRole().IsCK();
-        else return RedPlayer.Contains(seer.PlayerId);
+        else return RedPlayer != null && RedPlayer.Contains(target.PlayerId);
     }
     public static void OnReportDeadBody()
     {
@@ -67,7 +67,7 @@ public static class Psychic
     }
     public static void GetRedName()
     {
-        if (!IsEnable) return;
+        if (!IsEnable || !AmongUsClient.Instance.AmHost) return;
 
         List<PlayerControl> BadListPc = Main.AllAlivePlayerControls.Where(x =>
         x.GetCustomRole().IsImpostorTeam() || x.Is(CustomRoles.Madmate) ||
