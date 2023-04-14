@@ -26,6 +26,7 @@ public static class Mediumshiper
     public static bool IsEnable => playerIdList.Count > 0;
     public static void OnReportDeadBody(PlayerControl pc, GameData.PlayerInfo target)
     {
+        ContactPlayer = new();
         if (!pc.Is(CustomRoles.Mediumshiper) || target == null) return;
         ContactPlayer.TryAdd(target.PlayerId, pc.PlayerId);
         Logger.Info($"通灵师{pc.GetNameWithRole()}报告了{target.PlayerName}的尸体，已建立联系", "Mediumshiper");
@@ -33,11 +34,11 @@ public static class Mediumshiper
     public static bool MsMsg(PlayerControl pc, string msg)
     {
         if (!AmongUsClient.Instance.AmHost) return false;
-        if (!GameStates.IsInGame || pc == null) return false;
+        if (!GameStates.IsMeeting || pc == null) return false;
         if (!ContactPlayer.ContainsKey(pc.PlayerId)) return false;
         if (pc.IsAlive()) return false;
         msg = msg.ToLower().TrimStart().TrimEnd();
-        if (!CheckCommond(ref msg, "通灵|ms", false)) return false;
+        if (!CheckCommond(ref msg, "通灵|ms|mediumship|medium", false)) return false;
 
         bool ans;
         if (msg.Contains("n") || msg.Contains(GetString("No")) || msg.Contains("错") || msg.Contains("不是")) ans = false;
