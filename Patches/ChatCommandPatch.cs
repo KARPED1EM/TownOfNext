@@ -156,7 +156,7 @@ internal class ChatCommands
                 case "/r":
                     canceled = true;
                     subArgs = text.Remove(0, 2);
-                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsDev);
+                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.FriendCode.GetDevUser().CanUseDevCommand);
                     break;
 
                 case "/up":
@@ -637,7 +637,7 @@ internal class ChatCommands
 
             case "/r":
                 subArgs = text.Remove(0, 2);
-                SendRolesInfo(subArgs, player.PlayerId, player.FriendCode.GetDevUser().IsDev);
+                SendRolesInfo(subArgs, player.PlayerId, player.FriendCode.GetDevUser().CanUseDevCommand);
                 break;
 
             case "/h":
@@ -724,12 +724,12 @@ internal class ChatCommands
                 if (player.FriendCode.GetDevUser().IsDev)
                 {
                     if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{"【 ★ 开发者消息 ★ 】"}</color>");
+                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{GetString("MessageFromDev")}</color>");
                 }
                 else if (player.FriendCode.IsDevUser())
                 {
                     if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#4bc9b0>{"【 ★ 贡献者消息 ★ 】"}</color>");
+                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#4bc9b0>{GetString("MessageFromSponsor")}</color>");
                 }
                 break;
 

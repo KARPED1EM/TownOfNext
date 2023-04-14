@@ -1010,7 +1010,9 @@ DetectiveNoticeTitle,【 ★ 侦探线索 ★ 】,【 ★ Message for the Detect
 GuessKillTitle,【 ★ 赌场事件 ★ 】,【 ★ Message about Guessing ★ 】,【 ★ Сообщение о Угадывании ★ 】
 CyberStarNewsTitle,【 ★ 紧急新闻 ★ 】,【 ★ Urgent news ★ 】,【 ★ Срочные Новости ★ 】
 GodAliveTitle,【 ★ 神的共鸣 ★ 】,【 ★ Message about God ★ 】,【 ★ Сообщение о Боге ★ 】
-MessageFromDevTitle,【 ★ 咔皮呆留言 ★ 】,【 ★ Self-Guessing ★ 】,【 ★ Само-Угадывание ★ 】
+MessageFromKPD,【 ★ 咔皮呆留言 ★ 】,【 ★ KARPED1EM ★ 】,【 ★ KARPED1EM ★ 】
+MessageFromSponsor,【 ★ 贡献者消息 ★ 】,【 ★ Sponsor ★ 】
+MessageFromDev,【 ★ 开发者消息 ★ 】,【 ★ Developer ★ 】
 DivinatorCheckMsgTitle,【 ★ 水晶球 ★ 】,【 ★ Crystall Ball ★ 】,【 ★ Хрустальный Шар ★ 】
 MimicMsgTitle,【 ★ 宝箱怪 ★ 】,【 ★ Mimic ★ 】,【 ★ Мимик ★ 】
 EraserEraseMsgTitle,【 ★ 抹除者 ★ 】,【 ★ Eraser ★ 】,【 ★ Стирачка ★ 】

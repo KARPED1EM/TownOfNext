@@ -94,7 +94,7 @@ public static class Judge
                 }
                 if (pc.PlayerId == target.PlayerId)
                 {
-                    Utils.SendMessage(GetString("LaughToWhoTrialSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromDevTitle")));
+                    Utils.SendMessage(GetString("LaughToWhoTrialSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromKPD")));
                     judgeSuicide = true;
                 }
                 else if (pc.Is(CustomRoles.Madmate)) judgeSuicide = false;
