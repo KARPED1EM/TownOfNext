@@ -32,7 +32,6 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
-    public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.2.8";
     public const int PluginCreate = 22;
@@ -276,6 +275,7 @@ public class Main : BasePlugin
         Translator.Init();
         BanManager.Init();
         TemplateManager.Init();
+        SpamManager.Init();
         DevManager.Init();
         Cloud.Init();
 

@@ -49,16 +49,13 @@ public static class TemplateManager
             try
             {
                 if (!Directory.Exists(@"TOHE_DATA")) Directory.CreateDirectory(@"TOHE_DATA");
-                if (File.Exists(@"./template.txt"))
-                {
-                    File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
-                }
+                if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
                 else
                 {
                     string fileName;
                     string[] name = CultureInfo.CurrentCulture.Name.Split("-");
                     if (name.Count() >= 2)
-                        fileName = name[1] switch
+                        fileName = name[0] switch
                         {
                             "zh" => "SChinese",
                             "ru" => "Russian",
