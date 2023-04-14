@@ -25,8 +25,8 @@ class DevUser
         CanUseDevCommand = canUseDevCommand;
         UpName = upName;
     }
-    public bool HasTag() => Tag != "null" && Color != "null";
-    public string GetTag() => $"<color={Color}><size=1.7>{Tag}</size></color>\r\n";
+    public bool HasTag() => Tag != "null";
+    public string GetTag() => Color == "null" ? $"<size=1.7>{Tag}</size>\r\n" : $"<color={Color}><size=1.7>{Tag}</size></color>\r\n";
 }
 
 internal static class DevManager

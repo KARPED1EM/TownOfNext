@@ -173,6 +173,9 @@ internal class RPCHandlerPatch
 
                     if (Main.VersionCheat.Value && __instance.PlayerId == 0) RPC.RpcVersionCheck();
 
+                    if(Main.VersionCheat.Value && AmongUsClient.Instance.AmHost)
+                        Main.playerVersion[__instance.PlayerId] = Main.playerVersion[0];
+
                     // Kick Unmached Player Start
                     if (AmongUsClient.Instance.AmHost && tag != $"{ThisAssembly.Git.Commit}({ThisAssembly.Git.Branch})")
                     {
