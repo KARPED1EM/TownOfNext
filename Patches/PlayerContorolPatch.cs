@@ -292,6 +292,7 @@ class CheckMurderPatch
             target.RpcMurderPlayerV3(target);
             killer.SetKillCooldown();
             RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
+            NameNotifyManager.Notify(target, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Scavenger), GetString("KilledByScavenger")));
             return false;
         }
 
