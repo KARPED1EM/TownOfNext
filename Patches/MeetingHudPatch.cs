@@ -488,6 +488,34 @@ class MeetingHudStartPatch
         void AddMsg(string text, byte sendTo = 255, string title = "")
             => msgToSend.Add((text, sendTo, title));
 
+        //首次会议技能提示
+        if (Options.SendRoleDescriptionFirstMeeting.GetBool() && MeetingStates.FirstMeeting)
+            foreach(var pc in Main.AllAlivePlayerControls.Where(x => !x.IsModClient()))
+            {
+                var role = pc.GetCustomRole();
+                var sb = new StringBuilder();
+                sb.Append(GetString(role.ToString()) + pc.GetRoleInfo(true));
+                Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
+                var txt = sb.ToString();
+                sb.Clear().Append(txt.RemoveHtmlTags());
+                foreach (var subRole in Main.PlayerStates[pc.PlayerId].SubRoles)
+                    sb.Append($"\n\n" + GetString($"{subRole}") + GetString($"{subRole}InfoLong"));
+                if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                    sb.Append($"\n\n" + GetString($"Lovers") + GetString($"LoversInfoLong"));
+                AddMsg(sb.ToString(), pc.PlayerId);
+            }
+        if (msgToSend.Count >= 1)
+        {
+            new LateTask(() => { msgToSend.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3)); }, 3f, "Skill Description First Meeting");
+            msgToSend.Clear();
+        }
+
+        //主动叛变模式提示
+        if (Options.MadmateSpawnMode.GetInt() == 2 && CustomRoles.Madmate.GetCount() > 0)
+            AddMsg(string.Format(GetString("Message.MadmateSelfVoteModeNotify"), GetString("MadmateSpawnMode.SelfVote")));
+        //提示神存活
+        if (CustomRoles.God.RoleExist() && Options.NotifyGodAlive.GetBool())
+            AddMsg(GetString("GodNoticeAlive"), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.God), GetString("GodAliveTitle")));
         string MimicMsg = "";
         foreach (var pc in Main.AllPlayerControls)
         {
@@ -520,12 +548,6 @@ class MeetingHudStartPatch
             if (Mediumshiper.ContactPlayer.ContainsKey(pc.PlayerId))
                 AddMsg(string.Format(GetString("MediumshipNotifyTarget"), Main.AllPlayerNames[Mediumshiper.ContactPlayer[pc.PlayerId]]), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
         }
-        //主动叛变模式提示
-        if (Options.MadmateSpawnMode.GetInt() == 2 && CustomRoles.Madmate.GetCount() > 0)
-            AddMsg(string.Format(GetString("Message.MadmateSelfVoteModeNotify"), GetString("MadmateSpawnMode.SelfVote")));
-        //提示神存活
-        if (CustomRoles.God.RoleExist() && Options.NotifyGodAlive.GetBool())
-            AddMsg(GetString("GodNoticeAlive"), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.God), GetString("GodAliveTitle")));
         //宝箱怪的消息（合并）
         if (MimicMsg != "")
         {

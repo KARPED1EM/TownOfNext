@@ -559,7 +559,8 @@ AirshipAdditionalSpawn,额外出生点（飞艇地图）,Additional Spawn(Airshi
 CommsCamouflage,通信破坏时小黑人（有Bug慎开）,Camouflage During Comms,Камуфляж при Саботаже Связи
 DisableReportWhenCC,小黑人时禁止报告尸体,Disable body report in camouflage,Запретить репортить трупы при Камуфляже
 EnableDebugMode,开启调试模式,Enable Debug Mode,Включить режим отладки
-ChangeNameToRoleInfo,首次会议替换玩家名字为介绍,Show Role Descriptions to Unmodded Client,Показать описания Ролей игрокам играющие без Мода
+ChangeNameToRoleInfo,刚开局用玩家名字显示职业简介,Show Role Info to Unmodded Client,Показать описания Ролей игрокам играющие без Мода
+SendRoleDescriptionFirstMeeting,首次会议自动向非模组玩家发送职业介绍,Show Role Descriptions To Unmodded Client At First Meeting
 RoleAssigningAlgorithm,职业分配算法,Role Assigning Algorithm,Алгоритм назначения Ролей
 RoleAssigningAlgorithm.Default,默认,Default,По Умолчанию
 RoleAssigningAlgorithm.NetRandom,.NET系统,.NET System.Random,Случайный
