@@ -954,7 +954,7 @@ Message.AddedPlayerToBanList,【{0}】被添加至黑名单,Added 【{0}】 to t
 Message.KickWhoSayStart,【{0}】被系统请离\n请不要催开始，可能会被判定为违规信息,"[{0}] has been kicked by the system. \nThe lobby host doesn't want to see messages where the player asks to start","[{0}] кикнут системой. \nХост лобби не желает видеть сообщения, где игрок просит начать"
 Message.WarnWhoSayStart,【{0}】被警告：{1}次\n请不要催开始，可能会被判定为违规信息,"[{0}] has been warned:{1} times \nThe lobby host doesn't want to see messages where the player asks to start","[{0}] был предупреждён:{1} раз \nХост лобби не желает видеть сообщения, где игрок просит начать"
 Message.KickStartAfterWarn,【{0}】达到 {1} 次警告被请离房间\n请不要催开始，可能会被判定为违规信息,"[{0}] has received {1} warnings, he will be kicked. \nThe lobby host doesn't want to see messages where the player asks to start","[{0}] набрал {1} предупреждений, он будет кикнут. \nХост лобби не желает видеть сообщения, где игрок просит начать"
-Message.WarnWhoSayBanWord,【{0}】，请友善讨论哦~,【{0}】, stop sending banned words!,【{0}】был исключен за запретное слово
+Message.WarnWhoSayBanWord,【{0}】，请友善讨论哦~,"【{0}】, stop sending banned words!",【{0}】был исключен за запретное слово
 Message.WarnWhoSayBanWordTimes,【{0}】被警告：{1}次\n请友善讨论哦~,"[{0}] has been warned:{1} times \nif you continue you will be kicked","[{0}] был предупреждён:{1} раз \nесли продожите, вы будете кикнуты"
 Message.KickWhoSayBanWordAfterWarn,【{0}】达到 {1} 次警告被请离房间\n请友善讨论哦~,[{0}] received {1} warnings.\nHe was expelled for forbidden words,"[{0}] набрал {1} предупреждений.\nОн был исключен за запретные слова"
 Message.KickedByEAC,【{0}】被EAC踢出，理由：{1},"【{0}】Kicked by EAC, reason:{1}","【{0}】Кикнут EAC-ом, причина:{1}
