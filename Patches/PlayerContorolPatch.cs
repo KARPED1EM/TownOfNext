@@ -1,7 +1,6 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-using Il2CppSystem.Net;
 using InnerNet;
 using System;
 using System.Collections.Generic;

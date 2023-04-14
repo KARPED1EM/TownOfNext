@@ -7,9 +7,7 @@ using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
-using static Il2CppMono.Security.X509.X520;
 using static TOHE.Translator;
-using static UnityEngine.RemoteConfigSettingsHelper;
 
 namespace TOHE;
 
