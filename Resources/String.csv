@@ -1053,7 +1053,7 @@ CanNotJoinPublicRoomNoLatest,我们有一个重要的更新，请更新本模组
 ModBrokenMessage,模组文件损坏，请重启游戏或重装本模组,The MOD file is damaged.\nPlease reinstall.,Мод был поврежден.\nПожалуйста переустановите его снова.
 DisabledByProgram,公开房间的操作已被程序禁用,Public rooms have been disabled by the program,Создание публичного лобби отключена программой
 EnterVentToWin,跳管道来获得胜利！,Enter Vent to Win!!,Запрыгните в вентиляцию чтобы победить!!
-EatenByPelican,您被鹈鹕吞了，请等待鹈鹕死亡或会议...,"You have been swallowed by a Pelican, Wait for his death or an emergency meeting...","Вы были проглочены Пеликаном, Дождитесь его смерти или экстренной встречи..."
+EatenByPelican,您被鹈鹕吞了，请等待鹈鹕死亡或会议...,"Ur swallowed, waiting for the Pelican dies or meeting","Вы были проглочены Пеликаном, Дождитесь его смерти или экстренной встречи..."
 KBBackCountDown,您已阵亡，等待{0}秒后复活...,Wait for {0} seconds to revive
 FireworksPutPhase,还要安放{0}枚烟花,{0} Fireworks Left,Осталось {0} Фейерверков
 FireworksWaitPhase,耐心等待....,Wait for it...,Подожди время...
@@ -1246,7 +1246,7 @@ DivinatorCheck.None,【{0}】或许会就这么平凡一辈子,"Looks like 【{0
 DivinatorCheck.Glitch,TV2gPZ4wUJWYr{0}05gA6T5PKzBG17,TV2gPZ4wUJWYr{0}05gA6T5PKzBG17,TV2gPZ4wUJWYr{0}05gA6T5PKzBG17
 DivinatorCheck.TaskDone,【{0}】的职业是【{1}】,【{0}】Role -【{1}】,【{0}】Роль -【{1}】
 
-## 模组信息 / 
+## 模组信息 / Mod Info
 DevAndSpnTitle,TOHE大家族,"""TOHE"" family","Семья ""TOHE"""
 Developer,开发者,Developer,Разрабочик
 Sponsor,金主爹爹,Sponsor,Спонсор
