@@ -893,8 +893,9 @@ public static class Options
             .SetColor(new Color32(255, 238, 232, byte.MaxValue));
         ShowNKRemainOnEject = BooleanOptionItem.Create(6090119, "ShowNKRemainOnEject", true, TabGroup.GameSettings, false).SetParent(ShowImpRemainOnEject)
             .SetGameMode(CustomGameMode.Standard);
-        ConfirmMadmateOnEject = BooleanOptionItem.Create(6090120, "ConfirmMadmateOnEject", true, TabGroup.GameSettings, false).SetParent(ShowImpRemainOnEject)
-            .SetGameMode(CustomGameMode.Standard);
+        ConfirmMadmateOnEject = BooleanOptionItem.Create(6090120, "ConfirmMadmateOnEject", true, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(new Color32(255, 238, 232, byte.MaxValue));
 
         //禁用相关设定
         TextOptionItem.Create(66_123_120, "MenuTitle.Disable", TabGroup.GameSettings)
