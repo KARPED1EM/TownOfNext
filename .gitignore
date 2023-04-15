@@ -2,9 +2,11 @@
 .vs/
 bin/
 obj/
-Img Sources/
 
-Resources/Config/Port.txt
+Resources/Config
+Resources/Images
+Resources/ModNews
+Resources/Sounds
 
 FodyWeavers.xsd
 TOHE.sln
