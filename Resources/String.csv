@@ -11,11 +11,8 @@
 "#05 Russian: Tommy-XL (@Tommy-XL) & Tem (@mogekonik1)"
 
 "### If you want to translate the mod into other languages -"
-"### here is the 'id' of all supported languages:"
-"### English = 0 / Latam = 1 / Brazilian = 2 / Portuguese = 3"
-"### Korean = 4 / Russian = 5 / Dutch = 6 / Filipino = 7"
-"### French = 8 / German = 9 / Italian = 10 / Japanese = 11"
-"### Spanish = 12 / SChinese = 13 / TChinese = 14 / Irish = 15"
+"### Visit: https://crowdin.com/project/tohe"
+"### Thank you very much for translating for us"
 
 "### 生草作者你好呀！"
 "### 其实一直想跟你道个谢，毕竟翻译是一件很累的事情"
@@ -25,9 +22,9 @@
 "### 但感谢有你，感谢TOHE短暂的生命中的每一位过客"
 
 "## 作者署名（会显示在右上角，不需要请留空）/ A sign of an author (Please leave blank when not needed)"
+"TextBelowVersionText","","<color=#0FE60F>Dev:</color> KARPED1EM","<color=#0FE60F>Разраб:</color> KARPED1EM\n<color=#06DEEC>Перевод:</color> TommyXL & Tem"
 
 "# 阵营 / Teams"
-"TextBelowVersionText","","<color=#0FE60F>Dev:</color> KARPED1EM","<color=#0FE60F>Разраб:</color> KARPED1EM\n<color=#06DEEC>Перевод:</color> TommyXL & Tem"
 "TeamImpostor","内鬼阵营","Team Impostor","Команда Предателей"
 "TeamNeutral","中立阵营","Neutral","Нейтрал"
 "TeamJackal","豺狼阵营","Team Jackal","Команда Шакалов"
