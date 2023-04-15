@@ -4,9 +4,5 @@
 /obj
 /.editorconfig
 
-Resources/Config
-Resources/ModNews
-Resources/Sounds
-
 FodyWeavers.xsd
 TOHE.sln
