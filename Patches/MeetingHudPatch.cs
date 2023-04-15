@@ -549,26 +549,6 @@ class MeetingHudStartPatch
                 }
                 Mortician.msgToSend.RemoveAll(x => x.Item1 == pc.PlayerId);
             }
-            //通灵师目标的技能提示
-            if (Mediumshiper.ContactPlayer.ContainsKey(pc.PlayerId))
-            {
-                new LateTask(() =>
-                {
-                    var msPlayer = Utils.GetPlayerById(Mediumshiper.ContactPlayer[pc.PlayerId]);
-                    if (msPlayer != null)
-                        Utils.SendMessage(string.Format(GetString("MediumshipNotifyTarget"), msPlayer.GetRealName()), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
-                }, 5.0f, "Notice Mediumshiper Target Skill");
-            }
-            //通灵师自己的技能提示
-            if (Mediumshiper.ContactPlayer.ContainsValue(pc.PlayerId))
-            {
-                new LateTask(() =>
-                {
-                    var msPlayer = Utils.GetPlayerById(Mediumshiper.ContactPlayer.Where(x => x.Value == pc.PlayerId).FirstOrDefault().Key);
-                    if (msPlayer != null)
-                        Utils.SendMessage(string.Format(GetString("MediumshipNotifySelf"), msPlayer.GetRealName()), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
-                }, 5.0f, "Notice Mediumshiper Skill");
-            }
         }
         if (MimicMsg != "")
         {
@@ -579,6 +559,20 @@ class MeetingHudStartPatch
                     Utils.SendMessage(MimicMsg, ipc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mimic), GetString("MimicMsgTitle")));
             }, 5.0f, "Notice Mimic Dead Msg");
         }
+        foreach(var ms in Mediumshiper.ContactPlayer)
+        {
+            var pc = Utils.GetPlayerById(ms.Key);
+            var tar = Utils.GetPlayerById(ms.Value);
+            if (pc == null || tar == null) continue;
+            new LateTask(() =>
+            {
+                Utils.SendMessage(string.Format(GetString("MediumshipNotifyTarget"), pc.GetRealName()), tar.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
+                Utils.SendMessage(string.Format(GetString("MediumshipNotifySelf"), tar.GetRealName()), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshipTitle")));
+            }, 5.0f, "Notice Mediumshiper Skill");
+        }
+        Main.CyberStarDead.Clear();
+        Main.DetectiveNotify.Clear();
+        Mediumshiper.ContactPlayer.Clear();
     }
     public static void Prefix(MeetingHud __instance)
     {
@@ -588,25 +582,8 @@ class MeetingHudStartPatch
         Main.AllPlayerControls.Do(x => ReportDeadBodyPatch.WaitReport[x.PlayerId].Clear());
         MeetingStates.MeetingCalled = true;
 
-        if (!AmongUsClient.Instance.AmHost) return;
-
-        Main.LastVotedPlayerInfo = null;
-        Main.GuesserGuessed.Clear();
-        Main.VeteranInProtect.Clear();
-        Main.GrenadierBlinding.Clear();
-        Main.MadGrenadierBlinding.Clear();
-        Divinator.didVote.Clear();
-
-        Counterfeiter.OnMeetingStart();
-        BallLightning.OnMeetingStart();
-        QuickShooter.OnMeetingStart();
-        Eraser.OnMeetingStart();
-        Hacker.OnMeetingStart();
-        Psychic.OnMeetingStart();
-        Judge.OnMeetingStart();
-        Mortician.OnMeetingStart();
-
-        NotifyRoleSkillOnMeetingStart();
+        if (AmongUsClient.Instance.AmHost)
+            NotifyRoleSkillOnMeetingStart();
     }
     public static void Postfix(MeetingHud __instance)
     {
@@ -631,8 +608,10 @@ class MeetingHudStartPatch
                 pc.AmOwner || //対象がLocalPlayer
                 (Main.VisibleTasksCount && PlayerControl.LocalPlayer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool()) || //LocalPlayerが死亡していて幽霊が他人の役職を見れるとき
                 (pc.Is(CustomRoles.Lovers) && PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && Options.LoverKnowRoles.GetBool()) ||
-                (pc.GetCustomRole().IsImpostor() && PlayerControl.LocalPlayer.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool()) ||
-                (pc.GetCustomRole().IsImpostor() && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate)) ||
+                (pc.Is(CustomRoleTypes.Impostor) && PlayerControl.LocalPlayer.Is(CustomRoleTypes.Impostor) && Options.ImpKnowAlliesRole.GetBool()) ||
+                (pc.Is(CustomRoleTypes.Impostor) && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosImp.GetBool()) ||
+                (pc.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoleTypes.Impostor) && Options.ImpKnowWhosMadmate.GetBool()) ||
+                (pc.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) ||
                 PlayerControl.LocalPlayer.Is(CustomRoles.God) ||
                 PlayerControl.LocalPlayer.Is(CustomRoles.GM);
             if (EvilTracker.IsTrackTarget(PlayerControl.LocalPlayer, pc) && EvilTracker.CanSeeLastRoomInMeeting)
@@ -836,12 +815,8 @@ class MeetingHudOnDestroyPatch
             AntiBlackout.SetIsDead();
             Main.AllPlayerControls.Do(pc => RandomSpawn.CustomNetworkTransformPatch.NumOfTP[pc.PlayerId] = 0);
 
-            Main.CyberStarDead.Clear();
-            Main.DetectiveNotify.Clear();
             Main.LastVotedPlayerInfo = null;
             EAC.MeetingTimes = 0;
-            Mediumshiper.ContactPlayer.Clear();
-            Eraser.OnMeetingDestroy();
         }
     }
 }

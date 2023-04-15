@@ -126,6 +126,11 @@ public static class Options
 
     public static OptionItem DefaultShapeshiftCooldown;
     public static OptionItem ImpKnowAlliesRole;
+    public static OptionItem ImpKnowWhosMadmate;
+    public static OptionItem MadmateKnowWhosImp;
+    public static OptionItem MadmateKnowWhosMadmate;
+    public static OptionItem ImpCanKillMadmate;
+    public static OptionItem MadmateCanKillImp;
 
     public static OptionItem ShapeMasterShapeshiftDuration;
     public static OptionItem EGCanGuessImp;
@@ -476,8 +481,22 @@ public static class Options
         ImpKnowAlliesRole = BooleanOptionItem.Create(900045, "ImpKnowAlliesRole", true, TabGroup.ImpostorRoles, false)
             .SetGameMode(CustomGameMode.Standard)
            .SetHeader(true);
+        ImpKnowWhosMadmate = BooleanOptionItem.Create(900046, "ImpKnowWhosMadmate", false, TabGroup.ImpostorRoles, false)
+            .SetGameMode(CustomGameMode.Standard);
+        ImpCanKillMadmate = BooleanOptionItem.Create(900049, "ImpCanKillMadmate", true, TabGroup.ImpostorRoles, false)
+            .SetGameMode(CustomGameMode.Standard);
+
+        MadmateKnowWhosMadmate = BooleanOptionItem.Create(900048, "MadmateKnowWhosMadmate", false, TabGroup.ImpostorRoles, false)
+            .SetHeader(true)
+            .SetGameMode(CustomGameMode.Standard);
+        MadmateKnowWhosImp = BooleanOptionItem.Create(900047, "MadmateKnowWhosImp", true, TabGroup.ImpostorRoles, false)
+            .SetGameMode(CustomGameMode.Standard);
+        MadmateCanKillImp = BooleanOptionItem.Create(900050, "MadmateCanKillImp", true, TabGroup.ImpostorRoles, false)
+            .SetGameMode(CustomGameMode.Standard);
+
         DefaultShapeshiftCooldown = FloatOptionItem.Create(5011, "DefaultShapeshiftCooldown", new(5f, 999f, 5f), 15f, TabGroup.ImpostorRoles, false)
             .SetGameMode(CustomGameMode.Standard)
+            .SetHeader(true)
             .SetValueFormat(OptionFormat.Seconds);
 
         NeutralRolesMinPlayer = IntegerOptionItem.Create(505007, "NeutralRolesMinPlayer", new(0, 15, 1), 0, TabGroup.NeutralRoles, false)

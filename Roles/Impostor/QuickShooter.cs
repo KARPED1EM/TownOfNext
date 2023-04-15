@@ -73,7 +73,7 @@ internal static class QuickShooter
             Main.AllPlayerKillCooldown[id] = 0.01f;
         Storaging = false;
     }
-    public static void OnMeetingStart()
+    public static void OnReportDeadBody()
     {
         Dictionary<byte, int> NewSL = new();
         foreach (var sl in ShotLimit)

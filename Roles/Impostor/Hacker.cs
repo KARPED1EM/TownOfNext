@@ -63,7 +63,7 @@ public static class Hacker
         if (HackLimit.TryGetValue(playerId, out var x) && x >= 1)
             __instance.AbilityButton.OverrideText($"{GetString("HackerShapeshiftText")}");
     }
-    public static void OnMeetingStart() => DeadBodyList = new();
+    public static void OnReportDeadBody() => DeadBodyList = new();
     public static void AddDeadBody(PlayerControl target)
     {
         if (target != null && !DeadBodyList.Contains(target.PlayerId))

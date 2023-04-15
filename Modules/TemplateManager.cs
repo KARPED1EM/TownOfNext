@@ -2,6 +2,7 @@ using AmongUs.Data;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -55,7 +56,7 @@ public static class TemplateManager
                 else
                 {
                     Logger.Warn("创建新的 Template 文件", "TemplateManager");
-                    if (GetUserTrueLang() is SupportedLangs.SChinese or SupportedLangs.TChinese)
+                    if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
                         File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt("TOHE.Resources.Config.template-chinese.txt"));
                     else
                         File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt("TOHE.Resources.Config.template.txt"));

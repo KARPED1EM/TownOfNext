@@ -96,8 +96,8 @@ public class MainMenuManagerPatch
             if (freeplayButton != null)
             {
                 freeplayButton.GetComponent<PassiveButton>().OnClick = new();
-                freeplayButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Application.OpenURL("https://github.com/KARPED1EM/TownOfHostEdited")));
-                __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText("GitHub"))));
+                freeplayButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Application.OpenURL("https://tohe.cc")));
+                __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText(Translator.GetString("Website")))));
             }
 #endif
 

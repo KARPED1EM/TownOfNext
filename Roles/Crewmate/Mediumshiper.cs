@@ -24,7 +24,7 @@ public static class Mediumshiper
         playerIdList.Add(playerId);
     }
     public static bool IsEnable => playerIdList.Count > 0;
-    public static void OnReportOnReportDeadBody(PlayerControl pc, GameData.PlayerInfo target)
+    public static void OnReportDeadBody(PlayerControl pc, GameData.PlayerInfo target)
     {
         if (!pc.Is(CustomRoles.Mediumshiper) || target == null) return;
         ContactPlayer.TryAdd(target.PlayerId, pc.PlayerId);

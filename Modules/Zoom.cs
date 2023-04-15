@@ -64,6 +64,9 @@ public static class Zoom
         DestroyableSingleton<HudManager>.Instance?.ShadowQuad?.gameObject?.SetActive((reset || Camera.main.orthographicSize == 3.0f) && PlayerControl.LocalPlayer.IsAlive());
         ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height);
     }
+
+    public static void OnFixedUpdate()
+        => DestroyableSingleton<HudManager>.Instance?.ShadowQuad?.gameObject?.SetActive((Camera.main.orthographicSize == 3.0f) && PlayerControl.LocalPlayer.IsAlive());
 }
 
 public static class Flag

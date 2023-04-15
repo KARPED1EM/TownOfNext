@@ -17,6 +17,10 @@ public static class Sheriff
     private static OptionItem CanKillAllAlive;
     public static OptionItem CanKillNeutrals;
     public static OptionItem CanKillMadmate;
+    public static OptionItem SetMadCanKill;
+    public static OptionItem MadCanKillCrew;
+    public static OptionItem MadCanKillImp;
+    public static OptionItem MadCanKillNeutral;
     public static Dictionary<CustomRoles, OptionItem> KillTargetOptions = new();
     public static Dictionary<byte, int> ShotLimit = new();
     public static Dictionary<byte, float> CurrentKillCooldown = new();
@@ -36,6 +40,10 @@ public static class Sheriff
         CanKillMadmate = BooleanOptionItem.Create(Id + 17, "SheriffCanKillMadmate", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         CanKillNeutrals = StringOptionItem.Create(Id + 14, "SheriffCanKillNeutrals", KillOption, 0, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         SetUpNeutralOptions(Id + 30);
+        SetMadCanKill = BooleanOptionItem.Create(Id + 18, "SheriffSetMadCanKill", false, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
+        MadCanKillImp = BooleanOptionItem.Create(Id + 19, "SheriffMadCanKillImp", true, TabGroup.CrewmateRoles, false).SetParent(SetMadCanKill);
+        MadCanKillNeutral = BooleanOptionItem.Create(Id + 20, "SheriffMadCanKillNeutral", true, TabGroup.CrewmateRoles, false).SetParent(SetMadCanKill);
+        MadCanKillCrew = BooleanOptionItem.Create(Id + 21, "SheriffMadCanKillCrew", true, TabGroup.CrewmateRoles, false).SetParent(SetMadCanKill);
     }
     public static void SetUpNeutralOptions(int Id)
     {
@@ -98,14 +106,19 @@ public static class Sheriff
         ShotLimit[killer.PlayerId]--;
         Logger.Info($"{killer.GetNameWithRole()} : 残り{ShotLimit[killer.PlayerId]}発", "Sheriff");
         SendRPC(killer.PlayerId);
-        if (!killer.Is(CustomRoles.Madmate) && !target.CanBeKilledBySheriff())
+        if (
+            (killer.Is(CustomRoles.Madmate) && ( !SetMadCanKill.GetBool() ||
+            target.GetCustomRole().IsCrewmate() && MadCanKillCrew.GetBool() ||
+            target.GetCustomRole().IsNeutral() && MadCanKillNeutral.GetBool() ||
+            target.GetCustomRole().IsImpostor() && MadCanKillImp.GetBool()
+            ) ) || target.CanBeKilledBySheriff())
         {
-            Main.PlayerStates[killer.PlayerId].deathReason = PlayerState.DeathReason.Misfire;
-            killer.RpcMurderPlayerV3(killer);
-            return MisfireKillsTarget.GetBool();
+            SetKillCooldown(killer.PlayerId);
+            return true;
         }
-        SetKillCooldown(killer.PlayerId);
-        return true;
+        Main.PlayerStates[killer.PlayerId].deathReason = PlayerState.DeathReason.Misfire;
+        killer.RpcMurderPlayerV3(killer);
+        return MisfireKillsTarget.GetBool();
     }
     public static string GetShotLimit(byte playerId) => Utils.ColorString(CanUseKillButton(playerId) ? Color.yellow : Color.gray, ShotLimit.TryGetValue(playerId, out var shotLimit) ? $"({shotLimit})" : "Invalid");
     public static bool CanBeKilledBySheriff(this PlayerControl player)

@@ -406,12 +406,8 @@ public static class Utils
         var Comms = false;
         if (taskState.hasTasks)
         {
-            foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks)
-                if (task.TaskType == TaskTypes.FixComms)
-                {
-                    Comms = true;
-                    break;
-                }
+            if (Concealer.IsHidding) Comms = true;
+            if (PlayerControl.LocalPlayer.myTasks.ToArray().Any(x => x.TaskType == TaskTypes.FixComms)) Comms = true;
         }
         return GetProgressText(pc.PlayerId, Comms);
     }
@@ -548,6 +544,44 @@ public static class Utils
         {
             sb.Append($"\n{opt.GetName(true)}: {opt.GetString()}");
             //ShowChildrenSettings(opt, ref sb);
+            var text = sb.ToString();
+            sb.Clear().Append(text.RemoveHtmlTags());
+        }
+
+        SendMessage(sb.ToString(), PlayerId);
+    }
+    public static void ShowAllActiveSettings(byte PlayerId = byte.MaxValue)
+    {
+        var mapId = Main.NormalOptions.MapId;
+        if (Options.HideGameSettings.GetBool() && PlayerId != byte.MaxValue)
+        {
+            SendMessage(GetString("Message.HideGameSettings"), PlayerId);
+            return;
+        }
+        if (Options.DIYGameSettings.GetBool())
+        {
+            SendMessage(GetString("Message.NowOverrideText"), PlayerId);
+            return;
+        }
+        var sb = new StringBuilder();
+
+        sb.Append(GetString("Settings")).Append(":");
+        foreach (var role in Options.CustomRoleCounts)
+        {
+            if (!role.Key.IsEnable()) continue;
+            string mode = role.Key.GetMode() == 1 ? GetString("RoleRateNoColor") : GetString("RoleOnNoColor");
+            sb.Append($"\n【{GetRoleName(role.Key)}:{mode}×{role.Key.GetCount()}】\n");
+            ShowChildrenSettings(Options.CustomRoleSpawnChances[role.Key], ref sb);
+            var text = sb.ToString();
+            sb.Clear().Append(text.RemoveHtmlTags());
+        }
+        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Id >= 80000 && !x.IsHiddenOn(Options.CurrentGameMode)))
+        {
+            if (opt.Name is "KillFlashDuration" or "RoleAssigningAlgorithm")
+                sb.Append($"\n【{opt.GetName(true)}: {opt.GetString()}】\n");
+            else
+                sb.Append($"\n【{opt.GetName(true)}】\n");
+            ShowChildrenSettings(opt, ref sb);
             var text = sb.ToString();
             sb.Clear().Append(text.RemoveHtmlTags());
         }
@@ -1010,6 +1044,8 @@ public static class Utils
             }
             else SelfName = SelfRoleName + "\r\n" + SelfName;
             SelfName += SelfSuffix.ToString() == "" ? "" : "\r\n " + SelfSuffix.ToString();
+            if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && !isForMeeting)
+                SelfName = SelfRoleName;
             if (!isForMeeting) SelfName += "\r\n";
 
             //適用
@@ -1092,8 +1128,10 @@ public static class Utils
                     string TargetRoleText =
                         (seer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool()) ||
                         (seer.Is(CustomRoles.Lovers) && target.Is(CustomRoles.Lovers) && Options.LoverKnowRoles.GetBool()) ||
-                        (seer.GetCustomRole().IsImpostor() && target.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool()) ||
-                        (seer.Is(CustomRoles.Madmate) && target.GetCustomRole().IsImpostor()) ||
+                        (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoleTypes.Impostor) && Options.ImpKnowAlliesRole.GetBool()) ||
+                        (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor) && Options.MadmateKnowWhosImp.GetBool()) ||
+                        (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Madmate) && Options.ImpKnowWhosMadmate.GetBool()) ||
+                        (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) ||
                         (seer.Is(CustomRoles.God)) ||
                         (target.Is(CustomRoles.GM))
                         ? $"<size={fontSize}>{target.GetDisplayRoleName(seer.PlayerId != target.PlayerId && !seer.Data.IsDead)}</size>\r\n" : "";
@@ -1183,6 +1221,7 @@ public static class Utils
     }
     public static void AfterMeetingTasks()
     {
+        Eraser.AfterMeetingTasks();
         BountyHunter.AfterMeetingTasks();
         EvilTracker.AfterMeetingTasks();
         SerialKiller.AfterMeetingTasks();

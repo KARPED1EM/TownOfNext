@@ -74,19 +74,19 @@ internal static class Eraser
 
         Utils.NotifyRoles(player);
     }
-    public static void OnMeetingStart()
+    public static void OnReportDeadBody()
     {
         PlayerToErase = new();
         didVote = new();
     }
-    public static void OnMeetingDestroy()
+    public static void AfterMeetingTasks()
     {
         foreach (var pc in PlayerToErase)
         {
             var player = Utils.GetPlayerById(pc);
             if (player == null) continue;
             player.RpcSetCustomRole(CustomRolesHelper.GetVNRole(player.GetCustomRole()));
-            Utils.NotifyRoles(player);
+            NameNotifyManager.Notify(player, GetString("LostRoleByEraser"));
             Logger.Info($"{player.GetNameWithRole()} 被擦除了", "Eraser");
         }
         Utils.MarkEveryoneDirtySettings();

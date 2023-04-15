@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using Il2CppSystem.Net;
 using InnerNet;
 using System;
 using System.Collections.Generic;
@@ -335,6 +336,14 @@ class CheckMurderPatch
     {
         if (!AmongUsClient.Instance.AmHost) return false;
         if (target == null) target = killer;
+
+        //禁止内鬼刀叛徒
+        if (killer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Madmate) && !Options.ImpCanKillMadmate.GetBool())
+            return false;
+
+        //禁止叛徒刀内鬼
+        if (killer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor) && !Options.MadmateCanKillImp.GetBool())
+            return false;
 
         //医生护盾检查
         if (Medicaler.OnCheckMurder(killer, target))
@@ -776,7 +785,7 @@ class ShapeshiftPatch
                 QuickShooter.OnShapeshift(shapeshifter, shapeshifting);
                 break;
             case CustomRoles.Concealer:
-                Concealer.OnShapeshift(shapeshifter, shapeshifting);
+                Concealer.OnShapeshift(shapeshifting);
                 break;
             case CustomRoles.Hacker:
                 Hacker.OnShapeshift(shapeshifter, shapeshifting, target);
@@ -933,15 +942,28 @@ class ReportDeadBodyPatch
 
             Main.ArsonistTimer.Clear();
             Main.PuppeteerList.Clear();
+            Main.LastVotedPlayerInfo = null;
+            Main.GuesserGuessed.Clear();
+            Main.VeteranInProtect.Clear();
+            Main.GrenadierBlinding.Clear();
+            Main.MadGrenadierBlinding.Clear();
+            Divinator.didVote.Clear();
 
+            Psychic.OnReportDeadBody();
             BountyHunter.OnReportDeadBody();
             SerialKiller.OnReportDeadBody();
             Sniper.OnReportDeadBody();
             Vampire.OnStartMeeting();
             Pelican.OnReportDeadBody();
             Concealer.OnReportDeadBody();
-            Mortician.OnReportOnReportDeadBody(__instance, target);
-            Mediumshiper.OnReportOnReportDeadBody(__instance, target);
+            Mortician.OnReportDeadBody(__instance, target);
+            Mediumshiper.OnReportDeadBody(__instance, target);
+            Counterfeiter.OnReportDeadBody();
+            BallLightning.OnReportDeadBody();
+            QuickShooter.OnReportDeadBody();
+            Eraser.OnReportDeadBody();
+            Hacker.OnReportDeadBody();
+            Judge.OnReportDeadBody();
 
             foreach (var x in Main.RevolutionistStart)
             {
@@ -960,6 +982,7 @@ class ReportDeadBodyPatch
             Main.AllPlayerControls
                 .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
                 .Do(pc => Camouflage.RpcSetSkin(pc, RevertToDefault: true));
+
             MeetingTimeManager.OnReportDeadBody();
 
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
@@ -1000,6 +1023,7 @@ class FixedUpdatePatch
         TargetArrow.OnFixedUpdate(player);
         LocateArrow.OnFixedUpdate(player);
         Sniper.OnFixedUpdate(player);
+        Zoom.OnFixedUpdate();
 
         if (AmongUsClient.Instance.AmHost)
         {//実行クライアントがホストの場合のみ実行
@@ -1014,85 +1038,85 @@ class FixedUpdatePatch
                 __instance.ReportDeadBody(info);
             }
 
-            //检查老兵技能是否失效
-            if (GameStates.IsInTask && CustomRoles.Veteran.IsEnable())
-            {
-                var vpList = Main.VeteranInProtect.Where(x => x.Value + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now));
-                foreach (var vp in vpList)
-                {
-                    Main.VeteranInProtect.Remove(vp.Key);
-                    var pc = Utils.GetPlayerById(vp.Key);
-                    if (pc != null && GameStates.IsInTask) pc.RpcGuardAndKill(pc);
-                    pc.Notify(string.Format(GetString("VeteranOffGuard"), Main.VeteranNumOfUsed[pc.PlayerId]));
-                    break;
-                }
-            }
-
-            //检查掷雷兵技能是否生效
-            if (GameStates.IsInTask && CustomRoles.Grenadier.IsEnable())
-            {
-                var gbList = Main.GrenadierBlinding.Where(x => x.Value + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now));
-                foreach (var gb in gbList)
-                {
-                    Main.GrenadierBlinding.Remove(gb.Key);
-                    var pc = Utils.GetPlayerById(gb.Key);
-                    if (pc != null && GameStates.IsInTask) pc.RpcGuardAndKill(pc);
-                    pc.Notify(GetString("GrenadierSkillStop"));
-                    Utils.MarkEveryoneDirtySettings();
-                    break;
-                }
-                var mgbList = Main.MadGrenadierBlinding.Where(x => x.Value + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now));
-                foreach (var mgb in mgbList)
-                {
-                    Main.MadGrenadierBlinding.Remove(mgb.Key);
-                    var pc = Utils.GetPlayerById(mgb.Key);
-                    if (pc != null && GameStates.IsInTask) pc.RpcGuardAndKill(pc);
-                    Utils.MarkEveryoneDirtySettings();
-                    break;
-                }
-            }
-
-            //吹笛者的加速
-            if (GameStates.IsInTask && CustomRoles.Piper.IsEnable())
+            //踢出低等级的人
+            if (GameStates.IsLobby && player.Data.PlayerLevel != 0 && player.Data.PlayerLevel < Options.KickLowLevelPlayer.GetInt())
             {
                 BufferTime--;
                 if (BufferTime <= 0)
                 {
-                    BufferTime = 50;
-                    foreach (var pc in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Piper)))
-                    {
-                        foreach (var apc in Main.AllAlivePlayerControls.Where(x => x.PlayerId != pc.PlayerId))
-                        {
-                            var pos = pc.transform.position;
-                            var dis = Vector2.Distance(pos, apc.transform.position);
-                            bool acc = true;
+                    BufferTime = 20;
+                    AmongUsClient.Instance.KickPlayer(player.GetClientId(), false);
+                    string msg = string.Format(GetString("KickBecauseLowLevel"), player.GetRealName().RemoveHtmlTags());
+                    Logger.SendInGame(msg);
+                    Logger.Info(msg, "LowLevel Kick");
+                }
+            }
 
-                            if (!apc.IsAlive() || Pelican.IsEaten(apc.PlayerId)) acc = false;
-                            if (dis > Options.PiperAccelerationRadius.GetFloat()) acc = false;
-                            if (acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()) break;
-                            if (acc) Main.AllPlayerSpeed[apc.PlayerId] = Options.PiperAccelerationSpeed.GetFloat();
-                            if (acc || (!acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()))
-                            {
-                                ExtendedPlayerControl.MarkDirtySettings(apc);
-                                Logger.Info($"{apc.GetRealName()} 因靠近吹笛者 {pc.GetRealName()} 速度被改变", "Piper Speed Boost");
-                            }
+            //检查老兵技能是否失效
+            if (GameStates.IsInTask && player.Is(CustomRoles.Veteran))
+            {
+                if (Main.VeteranInProtect.TryGetValue(player.PlayerId, out var vtime) && vtime + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
+                {
+                    Main.VeteranInProtect.Remove(player.PlayerId);
+                    player.RpcGuardAndKill();
+                    player.Notify(string.Format(GetString("VeteranOffGuard"), Main.VeteranNumOfUsed[player.PlayerId]));
+                }
+            }
+
+            //检查掷雷兵技能是否生效
+            if (GameStates.IsInTask && player.Is(CustomRoles.Grenadier))
+            {
+                if (Main.GrenadierBlinding.TryGetValue(player.PlayerId, out var gtime) && gtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
+                {
+                    Main.GrenadierBlinding.Remove(player.PlayerId);
+                    player.RpcGuardAndKill();
+                    player.Notify(GetString("GrenadierSkillStop"));
+                    Utils.MarkEveryoneDirtySettings();
+                }
+                if (Main.MadGrenadierBlinding.TryGetValue(player.PlayerId, out var mgtime) && mgtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
+                {
+                    Main.MadGrenadierBlinding.Remove(player.PlayerId);
+                    player.RpcGuardAndKill();
+                    player.Notify(GetString("GrenadierSkillStop"));
+                    Utils.MarkEveryoneDirtySettings();
+                }
+            }
+
+            //吹笛者的加速
+            if (GameStates.IsInTask && player.Is(CustomRoles.Piper))
+            {
+                BufferTime--;
+                if (BufferTime <= 0)
+                {
+                    BufferTime = 30;
+                    foreach (var apc in Main.AllAlivePlayerControls.Where(x => x.PlayerId != player.PlayerId))
+                    {
+                        var pos = player.transform.position;
+                        var dis = Vector2.Distance(pos, apc.transform.position);
+                        bool acc = true;
+
+                        if (!apc.IsAlive() || Pelican.IsEaten(apc.PlayerId)) acc = false;
+                        if (dis > Options.PiperAccelerationRadius.GetFloat()) acc = false;
+                        if (acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()) break;
+                        if (acc) Main.AllPlayerSpeed[apc.PlayerId] = Options.PiperAccelerationSpeed.GetFloat();
+                        if (acc || (!acc && Main.AllPlayerSpeed[apc.PlayerId] == Options.PiperAccelerationSpeed.GetFloat()))
+                        {
+                            ExtendedPlayerControl.MarkDirtySettings(apc);
+                            Logger.Info($"{apc.GetRealName()} 因靠近吹笛者 {player.GetRealName()} 速度被改变", "Piper Speed Boost");
                         }
                     }
                 }
             }
 
             //检查马里奥是否完成
-            if (GameStates.IsInTask && CustomRoles.Mario.IsEnable())
+            if (GameStates.IsInTask && player.Is(CustomRoles.Mario))
             {
-                foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Mario)))
+                if (Main.MarioVentCount[player.PlayerId] > Options.MarioVentNumWin.GetInt())
                 {
-                    if (Main.MarioVentCount[pc.PlayerId] > Options.MarioVentNumWin.GetInt())
-                    {
 
-                        Main.MarioVentCount[pc.PlayerId] = Options.MarioVentNumWin.GetInt();
-                        CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
-                        CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                    }
+                    Main.MarioVentCount[player.PlayerId] = Options.MarioVentNumWin.GetInt();
+                    CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
+                    CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
                 }
             }
 
@@ -1103,7 +1127,6 @@ class FixedUpdatePatch
                 Pelican.OnFixedUpdate();
                 Vampire.OnFixedUpdate(player);
                 BallLightning.OnFixedUpdate();
-                Concealer.OnFixedUpdate();
             }
 
             if (GameStates.IsInTask && CustomRoles.SerialKiller.IsEnable()) SerialKiller.FixedUpdate(player);
@@ -1373,8 +1396,10 @@ class FixedUpdatePatch
                 else if (Options.CurrentGameMode == CustomGameMode.SoloKombat) RoleText.enabled = true;
                 else if (Main.VisibleTasksCount && PlayerControl.LocalPlayer.Data.IsDead && Options.GhostCanSeeOtherRoles.GetBool()) RoleText.enabled = true; //他プレイヤーでVisibleTasksCountが有効なおかつ自分が死んでいるならロールを表示
                 else if (__instance.Is(CustomRoles.Lovers) && PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && Options.LoverKnowRoles.GetBool()) RoleText.enabled = true;
-                else if (__instance.GetCustomRole().IsImpostor() && PlayerControl.LocalPlayer.GetCustomRole().IsImpostor() && Options.ImpKnowAlliesRole.GetBool()) RoleText.enabled = true;
-                else if (__instance.GetCustomRole().IsImpostor() && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate)) RoleText.enabled = true;
+                else if (__instance.Is(CustomRoleTypes.Impostor) && PlayerControl.LocalPlayer.Is(CustomRoleTypes.Impostor) && Options.ImpKnowAlliesRole.GetBool()) RoleText.enabled = true;
+                else if (__instance.Is(CustomRoleTypes.Impostor) && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosImp.GetBool()) RoleText.enabled = true;
+                else if (__instance.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoleTypes.Impostor) && Options.ImpKnowWhosMadmate.GetBool()) RoleText.enabled = true;
+                else if (__instance.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) RoleText.enabled = true;
                 else if (PlayerControl.LocalPlayer.Is(CustomRoles.God)) RoleText.enabled = true;
                 else if (PlayerControl.LocalPlayer.Is(CustomRoles.GM)) RoleText.enabled = true;
                 else RoleText.enabled = false; //そうでなければロールを非表示
@@ -1650,7 +1675,7 @@ class EnterVentPatch
             Main.MarioVentCount.TryAdd(pc.PlayerId, 0);
             Main.MarioVentCount[pc.PlayerId]++;
             Utils.NotifyRoles(pc);
-            if (Main.MarioVentCount[pc.PlayerId] >= Options.MarioVentNumWin.GetInt() && AmongUsClient.Instance.AmHost)
+            if (AmongUsClient.Instance.AmHost && Main.MarioVentCount[pc.PlayerId] >= Options.MarioVentNumWin.GetInt())
             {
                 CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
                 CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);

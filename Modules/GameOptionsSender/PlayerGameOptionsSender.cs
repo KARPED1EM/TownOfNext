@@ -178,7 +178,7 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 AURoleOptions.ShapeshifterCooldown = QuickShooter.ShapeshiftCooldown.GetFloat();
                 break;
             case CustomRoles.Concealer:
-                AURoleOptions.ShapeshifterCooldown = Concealer.SkillCooldown.GetFloat();
+                Concealer.ApplyGameOptions();
                 break;
             case CustomRoles.Assassin:
                 Assassin.ApplyGameOptions();
