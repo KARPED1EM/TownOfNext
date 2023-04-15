@@ -56,12 +56,12 @@ public static class CredentialsPatch
             SponsersData += $"\n波奇酱";
             SponsersData += $"\n法师";
             SponsersData += $"\n沐煊";
+            SponsersData += $"\nSolarFlare";
             SponsersData += $"\n林林林";
             SponsersData += $"\n撒币";
+            SponsersData += $"\n斯卡蒂Skadi";
             SponsersData += $"\nltemten";
-            SponsersData += $"\nSlok";
-            SponsersData += $"\n辣鸡";
-            SponsersData += $"\n湛蓝色";
+            SponsersData += $"\nNight_瓜";
             SponsersData += $"\n<size=60%>({GetString("OnlyShowPart")})</size>";
         }
 
