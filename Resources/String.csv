@@ -7,7 +7,7 @@
 
 ## TOHE
 #13 SChinese: KARPED1EM
-#00 English: Tommy-XL (@Tommy-XL) & Tem (@mogekonik1)
+#00 English: Tommy-XL (@Tommy-XL) & Tem (@mogekonik1) & Gurge44
 #05 Russian: Tommy-XL (@Tommy-XL) & Tem (@mogekonik1)
 
 ### If you want to translate the mod into other languages -
@@ -651,13 +651,13 @@ SheriffMadCanKillImp,背叛后可以执法<color=#ff1919>内鬼阵营</color>,Ca
 SheriffMadCanKillNeutral,背叛后可以执法<color=#ffaa1b>中立阵营</color>,Can kill <color=#ffaa1b>Neutrals</color>,Может убивать <color=#ffaa1b>Нейтралов</color>
 SheriffMadCanKillCrew,背叛后可以执法<color=#8cffff>船员阵营</color>,Can kill <color=#8cffff>Crewmate</color>,Может убивать <color=#8cffff>Членов Экипажа</color>
 DoctorTaskCompletedBatteryCharge,完成任务增加的设备充能数,Battery Duration,Длительность батарейки
-SnitchEnableTargetArrow,完成任务后显示箭头指向所有目标,Can See Arrow To Target,Может видеть стрелку цели
-SnitchCanGetArrowColor,对不同阵营的目标显示不同颜色的箭头,Can See Target Team Colored Arrow,Может видеть цвета стрелок
-SnitchCanFindNeutralKiller,可以确认带刀<color=#ffaa1b>中立</color>,Can Find Neutral Killers,Может видеть нейтральных убийц
+SnitchEnableTargetArrow,完成任务后显示箭头指向所有目标,See Arrow Towards Target,Может видеть стрелку цели
+SnitchCanGetArrowColor,对不同阵营的目标显示不同颜色的箭头,See Colored Arrows based on Team Colors,Может видеть цвета стрелок
+SnitchCanFindNeutralKiller,可以确认带刀<color=#ffaa1b>中立</color>,Find Killing <color=#ffaa1b>Neutrals</color>,Может видеть нейтральных убийц
 SnitchCanFindMadmate,可以确认<color=#ff1919>叛徒</color>,Can Find <color=#ff1919>Madmates</color>,Может видеть <color=#ff1919>Безумцев</color>
-SnitchRemainingTaskFound,在剩余多少任务时被发现,Remaining tasks to be found,Оставшиеся задания при которых он будет виден
-SpeedBoosterUpSpeed,增速者每次加速,Boost speed,Повысить скорость игрока на
-SpeedBoosterTimes,增速次数上限,Max of boosting,На сколько секунд можно ускорить
+SnitchRemainingTaskFound,在剩余多少任务时被发现,Remaining tasks to be known,Оставшиеся задания при которых он будет виден
+SpeedBoosterUpSpeed,增速者每次加速,Increase Speed by,Повысить скорость игрока на
+SpeedBoosterTimes,增速次数上限,Max Boosts,На сколько секунд можно ускорить
 MayorAdditionalVote,附加票数,Additional Votes Count,Дополнительные голоса
 MayorHasPortableButton,跳通风管触发紧急会议,"Mayor Has Mobile Emergency Button",У Мэра есть портативная Кнопка
 MayorNumOfUseButton,紧急会议次数上限,"Max Of Mobile Emergency Button","Количество портативных Кнопок"
@@ -666,7 +666,7 @@ ExecutionerCanTargetImpostor,<color=#ff1919>内鬼</color>可以成为目标,Can
 ExecutionerCanTargetNeutralKiller,带刀<color=#ffab1b>中立</color>玩家可以成为目标,Can Target <color=#ffab1b>Neutral Killer</color>,Может иметь цель изгнать <color=#ffab1b>Нейтрального Убийцу</color>
 ExecutionerChangeRolesAfterTargetKilled,目标死亡后将变为,Role Changes When Target Dies,Роль после смерти его цели
 SerialKillerLimit,自杀倒计时,Time Until Suicide,Лимит времени до Самоубийства
-ArsonistDouseTime,涂油所需时间,Time Until Douse Complete,Длительность обливания
+ArsonistDouseTime,涂油所需时间,Douse Duration,Длительность обливания
 CanTerroristSuicideWin,恐怖分子可以通过自杀获胜,Can Win By Suicide,Для победы достаточно сделать Суицид
 FireWorksMaxCount,可放置烟花的数量上限,Fireworks Count,Количество фейерверков
 FireWorksRadius,烟花爆炸半径,Firework Explosion Radius,Радиус фейерверка
@@ -732,16 +732,16 @@ CapitalismSkillCooldown,技能使用冷却,Skill cooldown,Откат навык�
 ImpCanBeAvanger,<color=#ff1919>内鬼</color>可以成为复仇者,<color=#ff1919>Impostor</color> can become an Avenger,<color=#ff1919>Предатель</color> может стать Мстителем
 ImpCanBeDualPersonality,<color=#ff1919>内鬼</color>可以成为双重人格,<color=#ff1919>Impostors</color> can become Schizophrenic,<color=#ff1919>Предатели</color> могут стать Шизофреником
 CrewCanBeDualPersonality,<color=#8cffff>船员</color>可以成为双重人格,<color=#8cffff>Crewmates</color> can become Schizophrenic,<color=#8cffff>Члены Экипажа</color> могут стать Шизофреником
-VeteranSkillCooldown,发动戒备冷却时间,Skill cooldown,Откат навыка
-VeteranSkillDuration,戒备状态持续时间,Skill duration,Продолжительность навыка
+VeteranSkillCooldown,发动戒备冷却时间,Alert Cooldown,Откат навыка
+VeteranSkillDuration,戒备状态持续时间,Alert Duration,Продолжительность навыка
 BodyguardProtectRadius,保护范围,Protect Radius,Радиус Защиты
 ImpCanBeEgoist,<color=#ff1919>内鬼</color>可以成为利己主义者,<color=#ff1919>Impostor</color> can become Egoist,<color=#ff1919>Предатель</color> может стать Эгоистом
 CrewCanBeEgoist,<color=#8cffff>船员</color>可以成为利己主义者,<color=#8cffff>Crewmate</color> can become Egoist,<color=#8cffff>Член Экипажа</color> может стать Эгоистом
 CounterfeiterSkillCooldown,贩卖赝品冷却,Skill cooldown,Откат навыка
 CounterfeiterSkillLimitTimes,贩卖赝品次数上限,Max of skills,Количество навыков
-GrenadierSkillCooldown,使用闪光弹冷却时间,Skill cooldown,Откат навыка
-GrenadierSkillDuration,闪光弹状态持续时间,Skill duration,Продолжительность навыка
-GrenadierCauseVision,受闪光弹影响后的视野,Vision during skill,Поле зрение после активации светошумовой гранаты
+GrenadierSkillCooldown,使用闪光弹冷却时间,Grenade Cooldown,Откат навыка
+GrenadierSkillDuration,闪光弹状态持续时间,Grenade Duration,Продолжительность навыка
+GrenadierCauseVision,受闪光弹影响后的视野,Lowered vision,Поле зрение после активации светошумовой гранаты
 GrenadierCanAffectNeutral,<color=#ffab1b>中立阵营</color>玩家会受到闪光弹影响,Can affect <color=#ffab1b>Neutrals</color>,<color=#ffab1b>Нейтралы</color> могут быть поражены светошумовой гранатой
 TicketsPerKill,每次击杀增加票数,Increase in votes for kill,Увеличение голосов за убийство
 GangsterRecruitCooldown,击杀/招募冷却时间,Recruit cooldown, Откат переманивания
@@ -750,11 +750,11 @@ GanSheriffCanBeMadmate,可以招募<color=#f8cd46>警长</color>,<color=#f8cd46>
 GanMayorCanBeMadmate,可以招募<color=#204d42>市长</color>,<color=#204d42>Mayor</color> can be converted,<color=#204d42>Мэр</color> может быть превращен
 GanNGuesserCanBeMadmate,可以招募<color=#eede26>正义赌怪</color>,<color=#eede26>Nice Guesser</color> can be converted,<color=#eede26>Добрый Угадыватель</color> может быть превращен
 GanJudgeCanBeMadmate,可以招募<color=#f8d85a>法官</color>,<color=#f8d85a>Judge</color> can be converted,<color=#f8d85a>Судья</color> может быть превращен
-RevolutionistDrawTime,拉拢玩家所需时间,Retention duration,Длительность удерживания
-RevolutionistCooldown,拉拢玩家冷却时间,Skill сooldown,Откат навыка
-RevolutionistDrawCount,需要拉拢人数,Number of players he needs to tag,Количество игроков которых ему нужно пометить
-RevolutionistKillProbability,被拉拢玩家牺牲概率,Probability of successful retention,Вероятность успешного удерживания
-RevolutionistVentCountDown,达到胜利条件后跳管道时间限制,To enter vent he is given:,Чтобы прыгнуть в вентиляцию ему даётся:
+RevolutionistDrawTime,拉拢玩家所需时间,Tag Duration,Длительность удерживания
+RevolutionistCooldown,拉拢玩家冷却时间,Tag Cooldown,Откат навыка
+RevolutionistDrawCount,需要拉拢人数,Amount of Players needed to Tag,Количество игроков которых ему нужно пометить
+RevolutionistKillProbability,被拉拢玩家牺牲概率,Tagged player sacrifice probability,Вероятность успешного удерживания
+RevolutionistVentCountDown,达到胜利条件后跳管道时间限制,Time to Vent,Чтобы прыгнуть в вентиляцию ему даётся:
 PelicanKillCooldown,吞人冷却时间,Eat Cooldown,Откат поглощения
 SheriffCanBeMadmate,<color=#f8cd46>警长</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8cd46>Sheriff</color> can become <color=#ff1919>Madmate</color>,<color=#f8cd46>Шериф</color> может стать <color=#ff1919>Безумцем</color>
 MayorCanBeMadmate,<color=#204d42>市长</color>可以成为<color=#ff1919>叛徒</color>,<color=#204d42>Mayor</color> can become <color=#ff1919>Madmate</color>,<color=#204d42>Мэр</color> может стать <color=#ff1919>Безумцем</color>
@@ -763,7 +763,7 @@ SnitchCanBeMadmate,<color=#b8fb4f>告密者</color>可以成为<color=#ff1919>�
 JudgeCanBeMadmate,<color=#f8d85a>法官</color>可以成为<color=#ff1919>叛徒</color>,<color=#f8d85a>Judge</color> can become<color=#ff1919>MadMate</color>,<color=#f8d85a>Судья</color>может стать <color=#ff1919>Безумцем</color>¶
 MadSnitchTasks,背叛的告密者的任务数,<color=#b8fb4f>Snitch</color> Tasks,Задания <color=#b8fb4f>Стукача</color> 
 MedicalerCooldown,发放护盾冷却时间,Shield Cooldown,Откат Щита
-MedicalerSkillLimit,发放护盾次数上限,Skill Limit,Лимит Способности
+MedicalerSkillLimit,发放护盾次数上限,Max Number of Shields,Лимит Способности
 MedicalerTargetCanSeeProtect,玩家可以知道自己是否持有护盾,Target can see Protection,Цель может видеть Защиту
 DivinatorSkillLimit,占卜次数上限,Skill Limit,Лимит Способности
 MadmateSpawnMode,<color=#ff1919>叛徒</color>生成模式,Spawn Mode Madmate,Режим появления Безумца
@@ -781,7 +781,7 @@ BallLightningKillerConvertGhost,被击杀时凶手汽化为量子幽灵,Killer c
 CanCountNeutralKiller,当<color=#8cffff>船员</color>通过击杀<color=#ffab1b>中立</color>玩家胜利时可以抢夺胜利,"When <color=#8cffff>Crewmates</color> win by killing a neutral player, they can snatch victory","Когда <color=#8cffff>Члены Экипажа</color> побеждают убив нейтрального игрока, они могут вырвать победу"
 OddKillCooldown,单数击杀冷却时间,Odd kill cooldown,Откат Нечётного убийства
 EvenKillCooldown,双数击杀冷却时间,Even kill cooldown,Откат Чётного убийства
-WorkaholicCannotWinAtDeath,死亡后无法胜利,Can't win at death,Не может победить когда он мёртв
+WorkaholicCannotWinAtDeath,死亡后无法胜利,Can't win after death,Не может победить когда он мёртв
 GuardSpellTimes,反杀次数上限,Max of Cursed Shields,Количество проклятых щитов
 CollectorCollectAmount,需要集票数量,Required number of votes,Необходимое количество голосов
 GlitchCanVote,可以投票,Can vote,Может голосовать
@@ -790,7 +790,7 @@ MeetingReserved,会议保留子弹数量,"Max of bullets reserved for the meetin
 AccurateCheckMode,未完成任务时可占卜准确职业,"Can know specific role when tasks are not done","Точное занятие для гадания, когда все задания не выполнены"
 ConcealerSkillCooldown,隐蔽冷却时间,Skill cooldown,Откат навыка
 ConcealerSkillDuration,隐蔽持续时间,Skill duration,Длительность навыка
-EraseLimit,抹除次数上限,Limit of Erasing,Лимит Стираний
+EraseLimit,抹除次数上限,Max Erases,Лимит Стираний
 AssassinMarkCooldown,标记冷却时间,Mark Cooldown,Откат метки
 AssassinAssassinateCooldown,刺杀冷却时间,Assassinate Cooldown,Откат Ассасированния
 AssassinCanKillAfterAssassinate,可以在刺杀后进行常规击杀,Can kill after Assassinating,Может убивать после Ассасирования
