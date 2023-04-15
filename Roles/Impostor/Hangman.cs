@@ -42,6 +42,7 @@ public static class Hangman
         if (Main.CheckShapeshift.TryGetValue(killer.PlayerId, out var s) && s)
         {
             target.Data.IsDead = true;
+            target.SetRealKiller(killer);
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.LossOfHead;
             target.RpcExileV2();
             Main.PlayerStates[target.PlayerId].SetDead();
