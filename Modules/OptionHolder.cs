@@ -199,6 +199,9 @@ public static class Options
     public static OptionItem Error404KillCooldown;
     public static OptionItem BerserkersRadius;
     public static OptionItem DepressedIdioctoniaProbability;
+    public static OptionItem RudepeopleSkillDuration;
+    public static OptionItem RudepeopleSkillCooldown;
+    public static OptionItem RudepeoplekillMaxOfUseage;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -581,7 +584,7 @@ public static class Options
         SetupRoleOptions(905486, TabGroup.ImpostorRoles, CustomRoles.Error404);
         Error404KillCooldown = FloatOptionItem.Create(905724, "Error404KillCooldown", new(20f, 100f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Error404]);
         SetupRoleOptions(1415494, TabGroup.ImpostorRoles, CustomRoles.Berserkers);
-        BerserkersRadius = FloatOptionItem.Create(902137, "BomberRadius", new(0.5f, 5f, 0.5f), 2f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Berserkers]);
+        BerserkersRadius = FloatOptionItem.Create(95611765, "BerserkersRadius", new(0.5f, 3f, 0.5f), 2f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Berserkers]);
         SetupRoleOptions(1054564, TabGroup.ImpostorRoles, CustomRoles.Depressed);
         DepressedIdioctoniaProbability = IntegerOptionItem.Create(10251515, "DepressedIdioctoniaProbability", new(0, 100, 5), 50, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Depressed]);
 
@@ -658,6 +661,11 @@ public static class Options
         Judge.SetupCustomOption();
         Mortician.SetupCustomOption();
         Mediumshiper.SetupCustomOption();
+        SetupRoleOptions(451515, TabGroup.CrewmateRoles, CustomRoles.Rudepeople);
+        RudepeopleSkillCooldown = FloatOptionItem.Create(55645131, "RudepeopleSkillCooldown", new(1f, 180f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
+        RudepeopleSkillDuration = FloatOptionItem.Create(807412747, "RudepeopleSkillDuration", new(1f, 999f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
+        RudepeoplekillMaxOfUseage = IntegerOptionItem.Create(75345351, "RudepeoplekillMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
+
 
         // Neutral
         SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);

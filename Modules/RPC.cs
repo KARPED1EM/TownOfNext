@@ -675,6 +675,9 @@ internal static class RPC
             case CustomRoles.Veteran:
                 Main.VeteranNumOfUsed.Add(targetId, Options.VeteranSkillMaxOfUseage.GetInt());
                 break;
+            case CustomRoles.Rudepeople:
+                Main.VeteranNumOfUsed.Add(targetId, Options.VeteranSkillMaxOfUseage.GetInt());
+                break;
             case CustomRoles.Scarecrow:
                 Main.ScarecrowCanWithStandANumberOfKills[targetId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
                 break;

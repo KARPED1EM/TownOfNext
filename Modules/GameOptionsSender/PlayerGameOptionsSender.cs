@@ -193,6 +193,10 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 AURoleOptions.ScientistCooldown = 0f;
                 AURoleOptions.ScientistBatteryCharge = 60f;
                 break;
+            case CustomRoles.Rudepeople:
+                AURoleOptions.EngineerCooldown = Options.RudepeopleSkillCooldown.GetFloat();
+                AURoleOptions.EngineerInVentMaxTime = 1;
+                break;
         }
 
         // 为迷惑者的凶手
@@ -207,6 +211,11 @@ public class PlayerGameOptionsSender : GameOptionsSender
         {
             opt.SetVision(false);
             opt.SetFloat(FloatOptionNames.PlayerSpeedMod, Options.RamblerSpeed.GetFloat());
+        }
+        // 为失落的船员的凶手
+        if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.LostCrew) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId).Count() > 0)
+        {
+            player.SetName("<size=100%><color=#666666>I am SUS!!!</color></size>");
         }
 
         // 投掷傻瓜蛋啦！！！！！

@@ -87,6 +87,7 @@ internal static class CustomRolesHelper
                 CustomRoles.Berserkers => CustomRoles.Impostor,
                 CustomRoles.Error404 => CustomRoles.Impostor,
                 CustomRoles.LostCrew => CustomRoles.Crewmate,
+                CustomRoles.Rudepeople => CustomRoles.Engineer,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
     }

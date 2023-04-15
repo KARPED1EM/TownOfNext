@@ -163,6 +163,8 @@ public class Main : BasePlugin
     public static int MadmateNum;
     public static int BardCreations;
     public static Dictionary<byte, byte> Provoked = new();
+    public static Dictionary<byte, long> RudepeopleInProtect = new();
+    public static Dictionary<byte, int> RudepeopleNumOfUsed = new();
 
     public static Dictionary<byte, CustomRoles> DevRole = new();
 
@@ -261,6 +263,8 @@ public class Main : BasePlugin
         MadmateNum = 0;
         BardCreations = 0;
         ScarecrowCanWithStandANumberOfKills = new Dictionary<byte, int>();
+        RudepeopleInProtect = new Dictionary<byte, long>();
+        RudepeopleNumOfUsed = new Dictionary<byte, int>();
 
         Preset1 = Config.Bind("Preset Name Options", "Preset1", "Preset_1");
         Preset2 = Config.Bind("Preset Name Options", "Preset2", "Preset_2");
@@ -325,7 +329,8 @@ public class Main : BasePlugin
                 {CustomRoles.Judge, "#f8d85a"},
                 {CustomRoles.Mortician, "#333c49"},
                 {CustomRoles.Mediumshiper, "#a200ff"},
-                {CustomRoles.LostCrew, "#FF0000"},
+                {CustomRoles.LostCrew, "#666666"},
+                {CustomRoles.Rudepeople, "#66CC00"},
                 //第三陣営役職
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
@@ -498,6 +503,7 @@ public enum CustomRoles
     Mortician,
     Mediumshiper,
     LostCrew,
+    Rudepeople,
     //Neutral
     Arsonist,
     Jester,

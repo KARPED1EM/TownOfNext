@@ -128,7 +128,9 @@ class ExileControllerWrapUpPatch
             if (pc.Is(CustomRoles.Veteran))
                 pc.RpcResetAbilityCooldown();
             if (pc.Is(CustomRoles.Grenadier))
+            if (pc.Is(CustomRoles.Rudepeople))
                 pc.RpcResetAbilityCooldown();
+            pc.RpcResetAbilityCooldown();
         }
         if (Options.RandomSpawn.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {

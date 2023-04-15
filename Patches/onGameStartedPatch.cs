@@ -82,6 +82,8 @@ internal class ChangeRoleSettings
             Main.FirstDied = byte.MaxValue;
             Main.MadmateNum = 0;
             Main.BardCreations = 0;
+            Main.RudepeopleInProtect = new();
+            Main.RudepeopleNumOfUsed = new();
 
             ReportDeadBodyPatch.CanReport = new();
 
@@ -514,6 +516,9 @@ internal class SelectRolesPatch
                         break;
                     case CustomRoles.Scarecrow:
                         Main.ScarecrowCanWithStandANumberOfKills[pc.PlayerId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
+                        break;
+                    case CustomRoles.Rudepeople:
+                        Main.RudepeopleNumOfUsed.Add(pc.PlayerId, Options.RudepeoplekillMaxOfUseage.GetInt());
                         break;
                 }
                 foreach (var subRole in pc.GetCustomSubRoles())

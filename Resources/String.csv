@@ -94,6 +94,8 @@ Concealer,隐蔽者,Concealer,Консилер
 Eraser,抹除者,Eraser,Стирачка
 OverKiller,肢解者,Butcher,Мясник
 Hangman,刽子手,Hangman,Вешатель
+Berserkers,狂战士
+Depressed,抑郁者
 
 # 船员阵营 / Crewmates
 Bait,诱饵,Bait,Байт
@@ -127,6 +129,7 @@ Judge,法官,Judge
 Mortician,入殓师,Mortician
 Mediumshiper,通灵师,Mediumshiper
 LostCrew,失落的船员
+Rudepeople,挑衅者
 
 # 中立阵营 / Neutrals
 Jester,小丑,Jester,Джестер
@@ -241,6 +244,8 @@ ConcealerInfo,当所有人戴上面具，一切都自由了,Change the appearanc
 EraserInfo,恕我直言，你不配拥有能力,Im sorry，but you don't deserve that.,Простите，вы этого не заслужили.
 OverKillerInfo,且欣赏我美丽的作品,Enjoy my beautiful work,Наслаждайтесь моей работой
 HangmanInfo,就由我，来结束你的生命,I will choice when your live will end,Это Я выбираю когда ты умрешь
+BerserkersInfo,吃我一击！
+DepressedInfo,我自闭了
 
 # 船员阵营 / Crewmate descriptions
 BaitInfo,好消息，杀了我可以吃席,Bait your enemies,Убийца моментально зарепортит ваш труп
@@ -275,6 +280,7 @@ JudgeInfo,接着奏乐，接着审~,Do justice!
 MorticianInfo,现在，你可以安心地离开了,Leave in peace
 MediumshiperInfo,若君心存不甘，不妨和我谈谈,Just talk with me bro
 LostCrewInfo,带着怨恨死去吧
+RudepeopleInfo,F**k you
 
 # 中立阵营 / Neutral descriptions
 ArsonistInfo,乖乖站好！,Burn them to crisps,Облейте и подожгите всех игроков
@@ -370,6 +376,8 @@ ConcealerInfoLong,(内鬼阵营):\n隐蔽者变形后会让所有人变成小黑
 EraserInfoLong,(内鬼阵营):\n抹除者可以在会议上投票给任意船员阵营目标以抹除目标的职业技能，抹除将在会议结束后生效。请注意：被抹除技能的玩家将被永远视为白板，包括游戏结算页面。,"(Impostors):\nErasers can vote for any crewmate at the meeting to erase the target's skills, and the removal will take effect after the meeting. Please note: Players with erased skills will always be treated as whiteboards, including game results.","(Предатель):\nСтирачка может проголосовать за любого Члена Экипажа на собрании, чтобы стереть профессиональные навыки цели, и удаление вступит в силу после собрания. Пожалуйста, обратите внимание: Игроки со стертыми навыками всегда будут рассматриваться как белые доски, включая резкльтат игры"
 OverKillerInfoLong,(内鬼阵营):\n肢解者击杀（包括被动击杀）的目标会出现多具尸体，以至于报告尸体时无法准确分辨其他受害者。请注意：因实现原理，被击杀的目标不得不重复地显示自己被击杀的动画，此动画无法跳过且期间无法正常参与会议。此外，若肢解者肢解了复仇者，则复仇者会因愤怒带走全场所有人。\n\n该职业在发动技能时可能造成房主严重卡顿，请谨慎开启。,"(Impostors):\nA target killed by Butcher will be treated as a set of dead bodies, so other dead bodies cannot be shown when reporting dead. Please note: A killed target may repeatedly display its kill animation. This animation cannot be skipped and cannot participate in the meeting during the period. You must wait for the animation to finish before you can participate normally in the game.","(Предатель):\nЦель, убитая Мясником, будет рассматриваться как множество трупов, так что другие трупы не могут быть показаны при сообщении о мёртвых. Пожалуйста, обратите внимание: Убитая цель может неоднократно отображать анимацию своего убийства. Эта анимация не может быть пропущена и не может участвовать во встрече в течение периода. Вы должны дождаться окончания анимации, прежде чем сможете нормально участвовать в игре."
 HangmanInfoLong,(内鬼阵营):\n刽子手在变形期间的击杀方式为绞杀，绞杀无视目标的任何状态例如医生的护盾、保镖的守护、大明星的技能等，被绞杀的玩家不会留下尸体，也不会触发其任何技能例如老兵反杀、幸运儿挡伤等（包括附加职业），此外，灵媒也不会得到提示。,"(Impostor):\nKills people by strangling them. Strangling ignores any kind of protection, like shield of a Medic, protection of Bodyguard and so on. Player who got stragnled will leave no body nor will activate any of perks, like Veteran's alert, the luck of Luckey. Doesn't appear for psychic.","(Предатель):\nВешатель убивает игроков, душа их. Удушение игнорирует любой вид защиты, такой как щит Медика, защита Телохранителя и тд. Игрок, которого задушили, не оставит тела и не активирует ни одну из способностей, таких как самозащита Ветерана, удача Удачника. Не появляется для Экстрасенса."
+BerserkersInfoLong,(内鬼阵营):\n狂战士的击杀是范围击杀，可以消灭范围里的所有人，但是跟自爆兵不同，他自己不会死亡."
+DepressedInfoLong,(内鬼阵营):\n抑郁者在击杀时有几率触发自己的抑郁症，之后和被击杀者同归于尽."
 
 # 船员阵营 / Crewmates descriptions
 BaitInfoLong,(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。,"(Crewmates):\nWhen you are killed, you force your killer to immediately self-report.","(Член Экипажа):\nКогда Приманку убивают, он заставляет убившего игрока \nмоментально зарепортить ваш труп."
@@ -404,6 +412,7 @@ JudgeInfoLong,(船员阵营):\n法官可以在会议时审判某位玩家的，�
 MorticianInfoLong,(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。,"(Crewmates):\nThe Mortician can see arrows pointing to all dead bodies, and the Mortician reports that the body can know the last player the victim had contact with during the meeting. Note: Mortician won't be Oblivious."
 MediumshiperInfoLong,(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。,"(Crewmates):\nIf a player is killed, the Mediumshiper will receive a reminder. After the Mediumshiper reports the body, he can establish contact with the victim. Before the end of the meeting, the victim has one chance to answer the Mediumshiper's questions, and can only answer yes or no. Note: Mediumshiper  won't be Oblivious."
 LostCrewInfoLong,(船员阵营):\n当他被击杀后，过一段时间凶手的名字上会出现“I am SUS!!!!” 之后凶手的游戏屏幕会疯狂的闪烁破坏的红光，在这之后凶手就会自杀。"
+RudepeopleInfoLong,(船员阵营):\n当他使用跳管键时，会开启挑衅阶段。\n如果在挑衅阶段击杀挑衅者，则挑衅者会和凶手同归于尽."
 
 # 中立阵营 / Neutrals descriptions
 ArsonistInfoLong,(中立阵营):\n纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎的动画作为提示（仅自己可见）。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油。,"(Neutrals):\nWhen you use the kill button, you douse your target in oil.\nAfter dousing all living players, you set everything ablaze and win by venting.","(Нейтрал):\nПоджигатель может обливать игроков, нажав на кнопку 'Убить' и находясь рядом с игроком в течение нескольких секунд. \nПосле того как он обольёт всех живых игроков Поджигатель сможет запрыгнуть в вентиляцию, чтобы поджечь всех игроков, что приводит к победе Поджигателя."
@@ -824,6 +833,10 @@ JudgeCanTrialnCrewKilling,可以审判带刀<color=#8cffff>船员</color>,Can tr
 JudgeCanTrialNeutralB,可以审判无刀<color=#ffab1b>中立</color>,Can trial Non-Killing<color=#ffab1b> Neutrals</color>
 JudgeCanTrialNeutralK,可以审判带刀<color=#ffab1b>中立</color>,Can trial Killing<color=#ffab1b> Neutrals</color>
 VeteranSkillMaxOfUseage,技能使用次数上限,Max of skills
+RudepeopleSkillCooldown,挑衅技能冷却
+RudepeopleSkillDuration,挑衅技能持续时间
+RudepeoplekillMaxOfUseage,挑衅技能使用次数上限
+
 
 ## 死因 / Death Reasons
 DeathReason.Kill,被杀,Kill,Убит
@@ -952,6 +965,9 @@ WarlockControlKill,已操纵目标完成击杀,Target dead
 OnCyberStarDead,紧急通知：网红死亡,Warning: Celebrity death
 TeleportedByTransporter,您被传送至：{0},Teleporting to: {0}
 LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了,You lost roles cuz <color=#ff1919>Eraser</color>
+RudepeopleOnGuard,已进入挑衅阶段
+RudepeopleOffGuard,挑衅结束
+RudepeopleMaxUsage,挑衅技能使用完了
 
 ## 信息 / Message
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды
