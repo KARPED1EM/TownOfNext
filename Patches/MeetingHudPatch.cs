@@ -490,7 +490,7 @@ class MeetingHudStartPatch
 
         //首次会议技能提示
         if (Options.SendRoleDescriptionFirstMeeting.GetBool() && MeetingStates.FirstMeeting)
-            foreach(var pc in Main.AllAlivePlayerControls.Where(x => !x.IsModClient()))
+            foreach (var pc in Main.AllAlivePlayerControls.Where(x => !x.IsModClient()))
             {
                 var role = pc.GetCustomRole();
                 var sb = new StringBuilder();
@@ -699,7 +699,7 @@ class MeetingHudStartPatch
                 case CustomRoles.Judge:
                     if (!seer.Data.IsDead && !target.Data.IsDead)
                         pva.NameText.text = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Judge), target.PlayerId.ToString()) + " " + pva.NameText.text;
-                    
+
                     break;
                 case CustomRoles.Medicaler:
                     sb.Append(Medicaler.TargetMark(seer, target));
