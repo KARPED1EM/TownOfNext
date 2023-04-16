@@ -4,5 +4,10 @@
 /obj
 /.editorconfig
 
+/Resources/Config
+/Resources/ModNews
+/Resources/Images
+/Resources/Sounds
+
 FodyWeavers.xsd
 TOHE.sln
