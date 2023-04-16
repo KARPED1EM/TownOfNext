@@ -6,6 +6,7 @@ using System.Text;
 using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
+using Unity.Services.Analytics;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -527,7 +528,7 @@ class MeetingHudStartPatch
             {
                 if (!Options.ImpKnowCyberStarDead.GetBool() && pc.GetCustomRole().IsImpostor()) continue;
                 if (!Options.NeutralKnowCyberStarDead.GetBool() && pc.GetCustomRole().IsNeutral()) continue;
-                AddMsg(string.Format(GetString("CyberStarDead"), Main.AllPlayerNames[csId], Utils.ColorString(Utils.GetRoleColor(CustomRoles.CyberStar), GetString("CyberStarNewsTitle"))));
+                AddMsg(string.Format(GetString("CyberStarDead"), Main.AllPlayerNames[csId], Utils.ColorString(Utils.GetRoleColor(CustomRoles.CyberStar), GetString("CyberStarNewsTitle"))), pc.PlayerId);
             }
             //侦探报告线索
             if (Main.DetectiveNotify.ContainsKey(pc.PlayerId))
@@ -555,6 +556,8 @@ class MeetingHudStartPatch
             foreach (var ipc in Main.AllPlayerControls.Where(x => x.GetCustomRole().IsImpostorTeam()))
                 AddMsg(MimicMsg, ipc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mimic), GetString("MimicMsgTitle")));
         }
+
+        msgToSend.Do(x => Logger.Info($"To:{x.Item2} {x.Item3} => {x.Item1}", "Skill Notice OnMeeting Start"));
 
         //总体延迟发送
         new LateTask(() => { msgToSend.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3)); }, 3f, "Skill Notice OnMeeting Start");
