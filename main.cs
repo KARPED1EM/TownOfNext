@@ -5,6 +5,7 @@ using BepInEx.IL2CPP;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using TOHE.Modules;
@@ -272,6 +273,13 @@ public class Main : BasePlugin
         MessageWait = Config.Bind("Other", "MessageWait", 1);
         LastKillCooldown = Config.Bind("Other", "LastKillCooldown", (float)30);
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
+
+        if (Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.*").Any(x => x.EndsWith(".bak")) && PluginVersion == "2.2.8")
+        {
+            TOHE.Logger.Warn("本次版本更新要求清空TOHE数据", "Update Init");
+            DirectoryInfo TOHE_DATA = new(@"./TOHE_DATA/");
+            if (TOHE_DATA.Exists) TOHE_DATA.Delete(true);
+        }
 
         CustomWinnerHolder.Reset();
         CustomSoundsManager.Load();

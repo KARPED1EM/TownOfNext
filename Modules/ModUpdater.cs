@@ -32,7 +32,7 @@ public class ModUpdater
     public static void Start_Prefix(MainMenuManager __instance)
     {
         NewVersionCheck();
-        DeleteOldDLL();
+        DeleteOldFiles();
         InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
         InfoPopup.name = "InfoPopup";
         InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
@@ -206,7 +206,7 @@ public class ModUpdater
         }
         catch
         {
-            Logger.Error("バックアップに失敗しました", "BackupDLL");
+            Logger.Error("备份文件失败", "BackupDLL");
             return false;
         }
         return true;
@@ -217,8 +217,12 @@ public class ModUpdater
         {
             foreach (var path in Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.dll"))
             {
-                Logger.Info($"{Path.GetFileName(path)}を削除", "BackOldDLL");
+                Logger.Info($"{Path.GetFileName(path)} 已删除", "BackOldDLL");
                 File.Delete(path);
+                BanManager.Init();
+                TemplateManager.Init();
+                SpamManager.Init();
+                DevManager.Init();
             }
             File.Move(Assembly.GetExecutingAssembly().Location + ".bak", Assembly.GetExecutingAssembly().Location);
         }
@@ -229,7 +233,7 @@ public class ModUpdater
         }
         return true;
     }
-    public static void DeleteOldDLL()
+    public static void DeleteOldFiles()
     {
         try
         {
@@ -237,13 +241,13 @@ public class ModUpdater
             {
                 if (path.EndsWith(Path.GetFileName(Assembly.GetExecutingAssembly().Location))) continue;
                 if (path.EndsWith("TOHE.dll")) continue;
-                Logger.Info($"{Path.GetFileName(path)}を削除", "DeleteOldDLL");
+                Logger.Info($"{Path.GetFileName(path)} 已删除", "DeleteOldFiles");
                 File.Delete(path);
             }
         }
-        catch
+        catch (Exception e)
         {
-            Logger.Error("削除に失敗しました", "DeleteOldDLL");
+            Logger.Error($"清除更新残留失败\n{e}", "DeleteOldFiles");
         }
         return;
     }
@@ -270,7 +274,7 @@ public class ModUpdater
         }
         catch (Exception ex)
         {
-            Logger.Error($"ダウンロードに失敗しました。\n{ex}", "DownloadDLL", false);
+            Logger.Error($"更新失败\n{ex}", "DownloadDLL", false);
             ShowPopup(GetString("updateManually"), true);
             return false;
         }
