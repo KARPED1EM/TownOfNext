@@ -4,5 +4,7 @@
 /obj
 /.editorconfig
 
+Resources/Config/Port.txt
+
 FodyWeavers.xsd
 TOHE.sln
