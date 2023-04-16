@@ -115,12 +115,9 @@ public class ModUpdater
             }
 
 #if DEBUG
-            if (!hasUpdate && Main.PluginVersion == info[4])
-            {
-                hasUpdate = true;
-                forceUpdate = false;
-            }
+            if (!hasUpdate && Main.PluginVersion == info[4]) hasUpdate = true;
 #endif
+
             if (!Main.AlreadyShowMsgBox || create == 0)
             {
                 Main.AlreadyShowMsgBox = true;

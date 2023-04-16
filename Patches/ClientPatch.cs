@@ -1,3 +1,4 @@
+using AmongUs.Data;
 using HarmonyLib;
 using InnerNet;
 using System.Globalization;
@@ -67,10 +68,12 @@ internal class SplashLogoAnimatorPatch
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsAllowedOnline))]
 internal class RunLoginPatch
 {
+    public static int ClickCount = 0;
     public static void Prefix(ref bool canOnline)
     {
 #if DEBUG
-        if (CultureInfo.CurrentCulture.Name != "zh-CN") canOnline = false;
+        if (CultureInfo.CurrentCulture.Name == "zh-CN" && ClickCount < 10) canOnline = false;
+        if (ClickCount >= 10) ModUpdater.forceUpdate = false;
 #endif
     }
 }
