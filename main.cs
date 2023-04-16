@@ -34,8 +34,8 @@ public class Main : BasePlugin
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.2.8";
-    public const int PluginCreate = 22;
+    public const string PluginVersion = "2.2.9";
+    public const int PluginCreate = 23;
 
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
@@ -274,7 +274,7 @@ public class Main : BasePlugin
         LastKillCooldown = Config.Bind("Other", "LastKillCooldown", (float)30);
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
-        if (Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.*").Any(x => x.EndsWith(".bak")) && PluginVersion == "2.2.8")
+        if (Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.*").Any(x => x.EndsWith(".bak")) && PluginVersion == "2.2.9")
         {
             TOHE.Logger.Warn("本次版本更新要求清空TOHE数据", "Update Init");
             DirectoryInfo TOHE_DATA = new(@"./TOHE_DATA/");
