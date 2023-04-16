@@ -46,7 +46,7 @@ public static class Workhorse
         var taskState = pc.GetPlayerTaskState();
         if (taskState.CompletedTasksCount + 1 < taskState.AllTasksCount) return false;
         if (AssignOnlyToCrewmate) //クルーメイトのみ
-            return pc.Is(CustomRoles.Crewmate);
+            return pc.Is(CustomRoleTypes.Crewmate);
         return Utils.HasTasks(pc.Data) //タスクがある
             && !OverrideTasksData.AllData.ContainsKey(pc.GetCustomRole()); //タスク上書きオプションが無い
     }
