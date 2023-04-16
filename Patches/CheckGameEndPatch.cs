@@ -189,6 +189,15 @@ class GameEndChecker
                                 CustomWinnerHolder.WinnerIds.Add(tar.PlayerId);
                     }
                 }
+
+                //补充恋人胜利名单
+                if (CustomWinnerHolder.WinnerTeam == CustomWinner.Lovers || CustomWinnerHolder.AdditionalWinnerTeams.Contains(AdditionalWinners.Lovers))
+                {
+                    Main.AllPlayerControls
+                                .Where(p => p.Is(CustomRoles.Lovers) && !CustomWinnerHolder.WinnerIds.Contains(p.PlayerId))
+                                .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
+                }
+
             }
             ShipStatus.Instance.enabled = false;
             StartEndGame(reason);
