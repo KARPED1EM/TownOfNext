@@ -582,7 +582,7 @@ static class ExtendedPlayerControl
                 Hacker.SetKillCooldown(player.PlayerId);
                 break;
             case CustomRoles.KB_Normal:
-                Main.AllPlayerKillCooldown[player.PlayerId] = 1f;
+                Main.AllPlayerKillCooldown[player.PlayerId] = SoloKombatManager.KB_ATKCooldown.GetFloat();
                 break;
             case CustomRoles.Bard:
                 for (int i = 0; i < Main.BardCreations; i++)

@@ -797,6 +797,8 @@
 "KB_RecoverPerSecond","每秒回复血量","Recover Per Second","Восстановления каждую секунду","每秒回复血量"
 "KB_ResurrectionWaitingTime","死亡后复活等待时间","Resurrection waiting time","Время возрождения","死亡后复活等待时间"
 "KB_KillBonusMultiplier","击杀奖励倍率","Kill bonus multiplier","Множитель бонуса за убийство","击杀奖励倍率"
+"KB_ATKCooldown","攻击冷却时间"
+"KB_BootVentWhenDead","弹出卡进管道的玩家（可能触发官方反作弊）"
 "JudgeTryHideMsg","尝试混淆法官指令（试验性）","Try hide the judge's command","Спрятать приказ судьи","尝试混淆法官指令（试验性）"
 "TrialLimitPerMeeting","每次会议审判次数上限","Skill times limit per meeting","Количество судов за собрание","每次会议审判次数上限"
 "JudgeCanTrialMadmate","可以审判<color=#ff1919>叛徒</color>","Can trial <color=#ff1919>MadMate</color>","Может судить<color=#ff1919>Безумца</color>","可以审判<color=#ff1919>叛徒</color>"

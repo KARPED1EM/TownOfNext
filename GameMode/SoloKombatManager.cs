@@ -29,6 +29,57 @@ internal static class SoloKombatManager
     public static Dictionary<byte, int> KBScore = new();
     public static int RoundTime = new();
 
+    //Options
+    public static OptionItem KB_GameTime;
+    public static OptionItem KB_ATKCooldown;
+    public static OptionItem KB_HPMax;
+    public static OptionItem KB_ATK;
+    public static OptionItem KB_RecoverAfterSecond;
+    public static OptionItem KB_RecoverPerSecond;
+    public static OptionItem KB_ResurrectionWaitingTime;
+    public static OptionItem KB_KillBonusMultiplier;
+    public static OptionItem KB_BootVentWhenDead;
+
+    public static void SetupCustomOption()
+    {
+        KB_GameTime = IntegerOptionItem.Create(66_233_001, "KB_GameTime", new(30, 300, 5), 180, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Seconds)
+            .SetHeader(true);
+        KB_ATKCooldown = FloatOptionItem.Create(66_223_008, "KB_ATKCooldown", new(1f, 10f, 0.1f), 1f, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Seconds);
+        KB_HPMax = FloatOptionItem.Create(66_233_002, "KB_HPMax", new(10f, 990f, 5f), 100f, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Health);
+        KB_ATK = FloatOptionItem.Create(66_233_003, "KB_ATK", new(1f, 100f, 1f), 8f, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Health);
+        KB_RecoverPerSecond = FloatOptionItem.Create(66_233_005, "KB_RecoverPerSecond", new(1f, 180f, 1f), 2f, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Health);
+        KB_RecoverAfterSecond = IntegerOptionItem.Create(66_233_004, "KB_RecoverAfterSecond", new(0, 60, 1), 8, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Seconds);
+        KB_ResurrectionWaitingTime = IntegerOptionItem.Create(66_233_006, "KB_ResurrectionWaitingTime", new(3, 990, 1), 15, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Seconds);
+        KB_KillBonusMultiplier = FloatOptionItem.Create(66_233_007, "KB_KillBonusMultiplier", new(0.25f, 5f, 0.25f), 1.25f, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
+            .SetValueFormat(OptionFormat.Multiplier);
+        KB_BootVentWhenDead = BooleanOptionItem.Create(66_233_009, "KB_BootVentWhenDead", false, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.SoloKombat)
+            .SetColor(new Color32(245, 82, 82, byte.MaxValue));
+    }
+
     public static void Init()
     {
         if (Options.CurrentGameMode != CustomGameMode.SoloKombat) return;
@@ -43,14 +94,14 @@ internal static class SoloKombatManager
         originalSpeed = new();
         BackCountdown = new();
         KBScore = new();
-        RoundTime = Options.KB_GameTime.GetInt() + 8;
+        RoundTime = KB_GameTime.GetInt() + 8;
 
         foreach (var pc in Main.AllAlivePlayerControls)
         {
-            PlayerHPMax.TryAdd(pc.PlayerId, Options.KB_HPMax.GetFloat());
-            PlayerHP.TryAdd(pc.PlayerId, Options.KB_HPMax.GetFloat());
-            PlayerHPReco.TryAdd(pc.PlayerId, Options.KB_RecoverPerSecond.GetFloat());
-            PlayerATK.TryAdd(pc.PlayerId, Options.KB_ATK.GetFloat());
+            PlayerHPMax.TryAdd(pc.PlayerId, KB_HPMax.GetFloat());
+            PlayerHP.TryAdd(pc.PlayerId, KB_HPMax.GetFloat());
+            PlayerHPReco.TryAdd(pc.PlayerId, KB_RecoverPerSecond.GetFloat());
+            PlayerATK.TryAdd(pc.PlayerId, KB_ATK.GetFloat());
             PlayerDF.TryAdd(pc.PlayerId, 0f);
 
             KBScore.TryAdd(pc.PlayerId, 0);
@@ -193,8 +244,6 @@ internal static class SoloKombatManager
     }
     public static void OnPlayerBack(PlayerControl pc)
     {
-        pc.MyPhysics.RpcExitVent(2);
-
         BackCountdown.Remove(pc.PlayerId);
         PlayerHP[pc.PlayerId] = pc.HPMAX();
         SendRPCSyncKBPlayer(pc.PlayerId);
@@ -229,8 +278,6 @@ internal static class SoloKombatManager
     }
     public static void OnPlyaerDead(PlayerControl target)
     {
-        target.MyPhysics.RpcExitVent(2);
-
         originalSpeed.Remove(target.PlayerId);
         originalSpeed.Add(target.PlayerId, Main.AllPlayerSpeed[target.PlayerId]);
 
@@ -238,7 +285,7 @@ internal static class SoloKombatManager
         Main.AllPlayerSpeed[target.PlayerId] = 0.3f;
         target.MarkDirtySettings();
 
-        BackCountdown.TryAdd(target.PlayerId, Options.KB_ResurrectionWaitingTime.GetInt());
+        BackCountdown.TryAdd(target.PlayerId, KB_ResurrectionWaitingTime.GetInt());
         SendRPCSyncKBBackCountdown(target);
     }
     public static void OnPlayerKill(PlayerControl killer)
@@ -250,7 +297,7 @@ internal static class SoloKombatManager
         KBScore[killer.PlayerId]++;
 
         float addRate = IRandom.Instance.Next(3, 5 + GetRankOfScore(killer.PlayerId)) / 100f;
-        addRate *= Options.KB_KillBonusMultiplier.GetFloat();
+        addRate *= KB_KillBonusMultiplier.GetFloat();
         float addin;
         switch (IRandom.Instance.Next(0, 3))
         {
@@ -298,7 +345,7 @@ internal static class SoloKombatManager
                     // 锁定死亡玩家在小黑屋
                     if (!pc.SoloAlive())
                     {
-                        if (pc.inVent) pc.MyPhysics.RpcExitVent(2);
+                        if (pc.inVent && KB_BootVentWhenDead.GetBool()) pc.MyPhysics.RpcExitVent(2);
                         var pos = Pelican.GetBlackRoomPS();
                         var dis = Vector2.Distance(pos, pc.GetTruePosition());
                         if (dis > 1f) Utils.TP(pc.NetTransform, pos);
@@ -317,7 +364,7 @@ internal static class SoloKombatManager
                 {
                     bool notifyRoles = false;
                     // 每秒回复血量
-                    if (LastHurt[pc.PlayerId] + Options.KB_RecoverAfterSecond.GetInt() < Utils.GetTimeStamp(DateTime.Now) && pc.HP() < pc.HPMAX() && pc.SoloAlive() && !pc.inVent)
+                    if (LastHurt[pc.PlayerId] + KB_RecoverAfterSecond.GetInt() < Utils.GetTimeStamp(DateTime.Now) && pc.HP() < pc.HPMAX() && pc.SoloAlive() && !pc.inVent)
                     {
                         PlayerHP[pc.PlayerId] += pc.HPRECO();
                         PlayerHP[pc.PlayerId] = Math.Min(pc.HPMAX(), pc.HP());
@@ -350,26 +397,6 @@ internal static class SoloKombatManager
                     // 必要时刷新玩家名字
                     if (notifyRoles) Utils.NotifyRoles(pc);
                 }
-            }
-        }
-
-        [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoEnterVent))]
-        class KBCoEnterVentPatch
-        {
-            public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
-            {
-                if (!AmongUsClient.Instance.AmHost || Options.CurrentGameMode != CustomGameMode.SoloKombat) return true;
-                return __instance.myPlayer.SoloAlive();
-            }
-        }
-        [HarmonyPatch(typeof(Vent), nameof(Vent.EnterVent))]
-        class KBEnterVentPatch
-        {
-            public static void Postfix(Vent __instance, [HarmonyArgument(0)] PlayerControl pc)
-            {
-                if (!AmongUsClient.Instance.AmHost || Options.CurrentGameMode != CustomGameMode.SoloKombat) return;
-                if (!pc.SoloAlive())
-                    pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
             }
         }
     }
