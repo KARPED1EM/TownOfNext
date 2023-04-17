@@ -678,9 +678,6 @@ internal static class RPC
             case CustomRoles.Rudepeople:
                 Main.RudepeopleNumOfUsed.Add(targetId, Options.RudepeoplekillMaxOfUseage.GetInt());
                 break;
-            case CustomRoles.Introverted:
-                Main.IntrovertedNumOfUsed.Add(targetId, Options.IntrovertedMaxOfUseage.GetInt());
-                break;
             case CustomRoles.Scarecrow:
                 Main.ScarecrowNumOfUsed.Add(targetId, Options.ScarecrowCanWithStandANumberOfKills.GetInt());
                 break;

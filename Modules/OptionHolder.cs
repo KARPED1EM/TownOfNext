@@ -669,7 +669,6 @@ public static class Options
         RudepeopleSkillCooldown = FloatOptionItem.Create(55645131, "RudepeopleSkillCooldown", new(1f, 180f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
         RudepeopleSkillDuration = FloatOptionItem.Create(807412747, "RudepeopleSkillDuration", new(1f, 999f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
         RudepeoplekillMaxOfUseage = IntegerOptionItem.Create(75345351, "RudepeoplekillMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
-        SetupRoleOptions(212313, TabGroup.CrewmateRoles, CustomRoles.Introverted);
 
 
         // Neutral

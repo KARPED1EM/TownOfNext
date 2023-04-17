@@ -1148,16 +1148,6 @@ class FixedUpdatePatch
                     player.Notify(string.Format(GetString("RudepeopleOffGuard"), Main.RudepeopleNumOfUsed[player.PlayerId]));
                 }
             }
-            //检查内敛者技能是否失效
-            if (GameStates.IsInTask && player.Is(CustomRoles.Introverted))
-            {
-                if (Main.IntrovertedInpeep.TryGetValue(player.PlayerId, out var vtime) && vtime + Options.IntrovertedDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
-                {
-                    Main.IntrovertedInpeep.Remove(player.PlayerId);
-                    player.RpcGuardAndKill();
-                    player.Notify(string.Format(GetString("IntrovertedOffGuard"), Main.IntrovertedNumOfUsed[player.PlayerId]));
-                }
-            }
 
             //吹笛者的加速
             if (GameStates.IsInTask && player.Is(CustomRoles.Piper))
@@ -1798,46 +1788,6 @@ class EnterVentPatch
                 pc.Notify(GetString("RudepeopleOnGuard"), Options.RudepeopleSkillDuration.GetFloat());
             }
         }
-        if (pc.Is(CustomRoles.Introverted))
-        {
-            if (Main.IntrovertedNumOfUsed[pc.PlayerId] < 1)
-            {
-                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
-                pc.Notify(GetString("IntrovertedMaxUsage"));
-            }
-            else
-            {
-                        Main.IntrovertedInpeep.Remove(pc.PlayerId);
-                        Main.IntrovertedInpeep.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
-                        Main.IntrovertedNumOfUsed[pc.PlayerId]--;
-                        Vector3 playerPos = pc.transform.position;
-                        float minDistance = float.MaxValue;
-                        string closestColor = "";
-                        Color color = Color.white;
-
-                        // 遍历其他玩家的位置信息，计算出距离当前玩家最近的玩家，并获取该玩家的颜色信息
-                        foreach (PlayerControl otherPlayer in PlayerControl.AllPlayerControls)
-                        {
-                            if (otherPlayer.PlayerId != pc.PlayerId)
-                            {
-                                Vector3 otherPos = otherPlayer.transform.position;
-                                float distance = Vector3.Distance(playerPos, otherPos);
-                            }
-                        }
-                        if (pc != null)
-                        {
-                            var arrow = UnityEngine.Object.Instantiate(pc.nameText());
-                    arrow.transform.SetParent(pc.transform);
-                    arrow.transform.localPosition = new Vector3(0f, 1f, 0f);
-                    arrow.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                    arrow.color = Color.white;
-                    arrow.color = color;
-                }
-
-                        pc.RpcGuardAndKill(pc);
-                        pc.Notify(GetString("IntrovertedOnGuard"), Options.IntrovertedDuration.GetFloat());
-                    }
-            }
             if (pc.Is(CustomRoles.Grenadier))
             {
                 if (pc.Is(CustomRoles.Madmate))

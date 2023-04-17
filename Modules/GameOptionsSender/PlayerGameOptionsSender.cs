@@ -197,10 +197,6 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 AURoleOptions.EngineerCooldown = Options.RudepeopleSkillCooldown.GetFloat();
                 AURoleOptions.EngineerInVentMaxTime = 1;
                 break;
-            case CustomRoles.Introverted:
-                AURoleOptions.EngineerCooldown = Options.IntrovertedCooldown.GetFloat();
-                AURoleOptions.EngineerInVentMaxTime = 1;
-                break;
         }
 
         // 为迷惑者的凶手
