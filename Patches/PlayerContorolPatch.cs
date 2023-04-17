@@ -423,7 +423,6 @@ class CheckMurderPatch
                     killer.SetRealKiller(target);
                     target.RpcMurderPlayerV3(killer);
                     Logger.Info($"{target.GetRealName()} 狂乱同化：{killer.GetRealName()}", "Derangement Kill");
-                    return false;
                 break;
             //击杀挑衅者
             case CustomRoles.Rudepeople:
