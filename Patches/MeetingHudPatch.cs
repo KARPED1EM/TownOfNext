@@ -502,9 +502,10 @@ class MeetingHudStartPatch
             }
         if (msgToSend.Count >= 1)
         {
-            new LateTask(() => { msgToSend.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3)); }, 3f, "Skill Description First Meeting");
-            msgToSend.Clear();
+            var msgTemp = msgToSend.ToArray();
+            new LateTask(() => { msgTemp.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3)); }, 3f, "Skill Description First Meeting");
         }
+        msgToSend = new();
 
         //主动叛变模式提示
         if (Options.MadmateSpawnMode.GetInt() == 2 && CustomRoles.Madmate.GetCount() > 0)
