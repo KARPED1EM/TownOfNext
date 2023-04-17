@@ -165,6 +165,9 @@ public class Main : BasePlugin
     public static Dictionary<byte, byte> Provoked = new();
     public static Dictionary<byte, long> RudepeopleInProtect = new();
     public static Dictionary<byte, int> RudepeopleNumOfUsed = new();
+    public static Dictionary<byte, long> IntrovertedInpeep = new();
+    public static Dictionary<byte, int> IntrovertedNumOfUsed = new();
+    public static Dictionary<byte, int> ScarecrowNumOfUsed = new();
 
     public static Dictionary<byte, CustomRoles> DevRole = new();
 
@@ -262,9 +265,11 @@ public class Main : BasePlugin
         FirstDied = byte.MaxValue;
         MadmateNum = 0;
         BardCreations = 0;
-        ScarecrowCanWithStandANumberOfKills = new Dictionary<byte, int>();
+        ScarecrowNumOfUsed = new Dictionary<byte, int>();
         RudepeopleInProtect = new Dictionary<byte, long>();
         RudepeopleNumOfUsed = new Dictionary<byte, int>();
+        IntrovertedInpeep = new Dictionary<byte, long>();
+        IntrovertedNumOfUsed = new Dictionary<byte, int>();
 
         Preset1 = Config.Bind("Preset Name Options", "Preset1", "Preset_1");
         Preset2 = Config.Bind("Preset Name Options", "Preset2", "Preset_2");
@@ -331,6 +336,7 @@ public class Main : BasePlugin
                 {CustomRoles.Mediumshiper, "#a200ff"},
                 {CustomRoles.LostCrew, "#666666"},
                 {CustomRoles.Rudepeople, "#66CC00"},
+                {CustomRoles.Introverted, "#FFCCCC"},
                 //第三陣営役職
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
@@ -379,6 +385,7 @@ public class Main : BasePlugin
                 {CustomRoles.Bitch, "#333333"},
                 {CustomRoles.Rambler, "#99CCFF"},
                 {CustomRoles.Scarecrow, "#663333"},
+                {CustomRoles.Derangement, "#663366" },
                 //SoloKombat
                 {CustomRoles.KB_Normal, "#f55252"}
             };
@@ -504,6 +511,7 @@ public enum CustomRoles
     Mediumshiper,
     LostCrew,
     Rudepeople,
+    Introverted,
     //Neutral
     Arsonist,
     Jester,
@@ -556,6 +564,7 @@ public enum CustomRoles
     Bitch,
     Rambler,
     Scarecrow,
+    Derangement,
 }
 //WinData
 public enum CustomWinner

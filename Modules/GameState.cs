@@ -103,6 +103,7 @@ public class PlayerState
         Execution,
         Disconnected,
         Fall,
+        depressed,
 
         // TOHE
         Gambled,

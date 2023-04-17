@@ -85,9 +85,9 @@ internal static class CustomRolesHelper
                 CustomRoles.Mediumshiper => CustomRoles.Crewmate,
                 CustomRoles.Bard => CustomRoles.Impostor,
                 CustomRoles.Berserkers => CustomRoles.Impostor,
-                CustomRoles.Error404 => CustomRoles.Impostor,
                 CustomRoles.LostCrew => CustomRoles.Crewmate,
                 CustomRoles.Rudepeople => CustomRoles.Engineer,
+                CustomRoles.Introverted => CustomRoles.Engineer,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
     }
@@ -139,8 +139,9 @@ internal static class CustomRolesHelper
             CustomRoles.Mimic or
             CustomRoles.Bitch or
             CustomRoles.Rambler or
-            CustomRoles.Scarecrow;
-    }
+            CustomRoles.Scarecrow or
+            CustomRoles.Derangement;
+    } 
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
         return role is
@@ -271,7 +272,7 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.Scarecrow && (!pc.GetCustomRole().IsCrewmate() || pc.Is(CustomRoles.Luckey))) return false;
         if (role is CustomRoles.Bitch && pc.Is(CustomRoles.Jester)) return false;
         if (role is CustomRoles.Rambler && (pc.Is(CustomRoles.Flashman) || pc.Is(CustomRoles.SpeedBooster))) return false;
-        return true;
+       return true;
     }
     public static RoleTypes GetRoleTypes(this CustomRoles role)
         => GetVNRole(role) switch

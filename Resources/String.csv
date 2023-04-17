@@ -174,7 +174,8 @@ DualPersonality,双重人格,Schizophrenic,Шизофреник
 Mimic,宝箱怪,Mimic,Мимик
 Bitch,贱人
 Rambler,漫步者
-Scarecrow,稻草人
+Scarecrow,稻草人(bug)
+Derangement,狂乱
 
 ## 附加职业作为前缀时 / Prefixes for Add-ons
 
@@ -195,9 +196,10 @@ Prefix.Piper,吹笛,Piper,Пайпер
 Prefix.TicketsStealer,窃票,Stealer,Похититель
 Prefix.DualPersonality,双重人格,Schizophrenic,Шизофреник
 Prefix.Mimic,宝箱怪,Mimic,Мимик
-Prefix,Bitch,贱人
-Prefix,Rambler,漫步者
-Prefix,Scarecrow,稻草人
+Prefix.Bitch,贱人
+Prefix.Rambler,漫步者
+Prefix.Scarecrow,稻草人(bug)
+Prefix.Derangement,狂乱
 
 ## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at "Impostor/Crewmate" screen
 
@@ -326,6 +328,7 @@ MimicInfo,噔↗噔↗当→当↘当→当↗,imitate others,Имитируй �
 BitchInfo,哦你妈个头啊哦有完没完
 RamblerInfo,WC是僵尸！执法了
 ScarecrowInfo,在靶场，一般挨打最多的就是我
+DerangementInfo,世界，终将被狂乱吞没！
 
 # 其它 / Other descriptions
 GMInfo,开局死的冤魂隔岸观火,You are the Game Master,Вы Мастер Игры
@@ -411,7 +414,7 @@ GlitchInfoLong,(船员阵营):\n模组的程序不会将活死人视为存活状
 JudgeInfoLong,(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。,"(Crewmates):\nThe judge can judge a certain player during the meeting. If the target is evil, the target will be killed (whether it is evil or not is set by the host), and if it is wrong, the judge gonna suicide. \nThe judgment command is: /tl [player id]\nYou can see the player's id before the player's name, or use the /id command to view the id of all players. Judges can judge all players when they become madmate."
 MorticianInfoLong,(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。,"(Crewmates):\nThe Mortician can see arrows pointing to all dead bodies, and the Mortician reports that the body can know the last player the victim had contact with during the meeting. Note: Mortician won't be Oblivious."
 MediumshiperInfoLong,(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。,"(Crewmates):\nIf a player is killed, the Mediumshiper will receive a reminder. After the Mediumshiper reports the body, he can establish contact with the victim. Before the end of the meeting, the victim has one chance to answer the Mediumshiper's questions, and can only answer yes or no. Note: Mediumshiper  won't be Oblivious."
-LostCrewInfoLong,(船员阵营):\n当他被击杀后，过一段时间凶手的名字上会出现“I am SUS!!!!” 之后凶手的游戏屏幕会疯狂的闪烁破坏的红光，在这之后凶手就会自杀。"
+LostCrewInfoLong,(船员阵营):\n当他被击杀后，凶手的名字上会出现“I am SUS!!!!”持续到游戏结束 之后凶手的游戏屏幕会闪烁红光，之后凶手因为精神压力自杀了。"
 RudepeopleInfoLong,(船员阵营):\n当他使用跳管键时，会开启挑衅阶段。\n如果在挑衅阶段击杀挑衅者，则挑衅者会和凶手同归于尽."
 
 # 中立阵营 / Neutrals descriptions
@@ -457,6 +460,7 @@ MimicInfoLong,(附加职业)\n只有除黑手党以外的内鬼会成为宝箱�
 BitchInfoLong,(附加职业)\n作为贱人，投给你的票数会强制变为999票，因为你很贱:)\nPS:小丑不会成为贱人."
 RamblerInfoLong,(附加职业)\n你走路的速度很慢，但是击杀你的人也会变为漫步者。\nPS:闪电侠和增速者不会成为漫步者"
 ScarecrowInfoLong,(附加职业)\n只有船员才能当上稻草人。\n你可以免疫几次击杀（根据房主设定）之后别人才能击杀你。\nPS:幸运儿不会成为稻草人。"
+DerangementInfoLong,(附加职业)\n当击杀狂乱时，狂乱会把击杀者融为身体的一部分."
 
 # 其它 / Other long description
 GMInfoLong,(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。,"(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры."
@@ -864,6 +868,7 @@ DeathReason.Dismembered,肢解,Dismembered,Расчленен
 DeathReason.LossOfHead,绞杀,Strangled,Задушен
 DeathReason.Trialed,审判,Judged
 DeathReason.etc,其它,Other,Другое
+DeathReason.depressed,抑郁症发作
 Alive,存活,Alive,Выжил
 Win,胜利, Wins, Победили
 Last-,仅存,Last ,Последний 
@@ -967,7 +972,11 @@ TeleportedByTransporter,您被传送至：{0},Teleporting to: {0}
 LostRoleByEraser,您的职业被<color=#ff1919>抹除者</color>抹除了,You lost roles cuz <color=#ff1919>Eraser</color>
 RudepeopleOnGuard,已进入挑衅阶段
 RudepeopleOffGuard,挑衅结束
-RudepeopleMaxUsage,挑衅技能使用完了
+RudepeopleMaxUsage,挑衅技能使用完了 剩余{0}次使用次数
+BerserkersKillCooldown,狂战士击杀冷却
+BerserkersRadius,狂战士击杀范围
+DepressedIdioctoniaProbability,抑郁者自杀概率
+DepressedKillCooldown,抑郁者击杀冷却
 
 ## 信息 / Message
 Message.SetToSeconds,信息发送冷却时间为【{0}】秒,Set to 【{0}】 seconds.,Установлен на 【{0}】 секунды

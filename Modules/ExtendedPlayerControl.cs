@@ -591,6 +591,12 @@ static class ExtendedPlayerControl
             case CustomRoles.Error404:
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.Error404KillCooldown.GetFloat();
                 break;
+            case CustomRoles.Berserkers:
+                Main.AllPlayerKillCooldown[player.PlayerId] = Options.BerserkersKillCooldown.GetFloat();
+                break;
+            case CustomRoles.Depressed:
+                Main.AllPlayerKillCooldown[player.PlayerId] = Options.DepressedKillCooldown.GetFloat();
+                break;
         }
         if (player.PlayerId == LastImpostor.currentId)
             LastImpostor.SetKillCooldown();

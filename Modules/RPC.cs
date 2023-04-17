@@ -676,10 +676,13 @@ internal static class RPC
                 Main.VeteranNumOfUsed.Add(targetId, Options.VeteranSkillMaxOfUseage.GetInt());
                 break;
             case CustomRoles.Rudepeople:
-                Main.VeteranNumOfUsed.Add(targetId, Options.VeteranSkillMaxOfUseage.GetInt());
+                Main.RudepeopleNumOfUsed.Add(targetId, Options.RudepeoplekillMaxOfUseage.GetInt());
+                break;
+            case CustomRoles.Introverted:
+                Main.IntrovertedNumOfUsed.Add(targetId, Options.IntrovertedMaxOfUseage.GetInt());
                 break;
             case CustomRoles.Scarecrow:
-                Main.ScarecrowCanWithStandANumberOfKills[targetId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
+                Main.ScarecrowNumOfUsed.Add(targetId, Options.ScarecrowCanWithStandANumberOfKills.GetInt());
                 break;
         }
         HudManager.Instance.SetHudActive(true);

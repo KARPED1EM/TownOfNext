@@ -514,11 +514,11 @@ internal class SelectRolesPatch
                     case CustomRoles.Veteran:
                         Main.VeteranNumOfUsed.Add(pc.PlayerId, Options.VeteranSkillMaxOfUseage.GetInt());
                         break;
-                    case CustomRoles.Scarecrow:
-                        Main.ScarecrowCanWithStandANumberOfKills[pc.PlayerId] = Options.ScarecrowCanWithStandANumberOfKills.GetInt();
-                        break;
                     case CustomRoles.Rudepeople:
                         Main.RudepeopleNumOfUsed.Add(pc.PlayerId, Options.RudepeoplekillMaxOfUseage.GetInt());
+                        break;
+                    case CustomRoles.Introverted:
+                        Main.IntrovertedNumOfUsed.Add(pc.PlayerId, Options.IntrovertedMaxOfUseage.GetInt());
                         break;
                 }
                 foreach (var subRole in pc.GetCustomSubRoles())

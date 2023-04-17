@@ -705,6 +705,9 @@ internal class ChatCommands
             "入殮師" or "入检师" or "入殓" => GetString("Mortician"),
             "通靈師" or "通灵" => GetString("Mediumshiper"),
             "吟游詩人" or "诗人" => GetString("Bard"),
+            "失落的船员" or "失落的船員" or "失落船员" => GetString("LostCrew"),
+            "狂战士" or "狂戰士" => GetString("Berserkers"),
+            "抑郁者" or "抑郁者" => GetString("Depressed"),
             _ => text,
         };
     }
