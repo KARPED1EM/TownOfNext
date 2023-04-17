@@ -204,9 +204,6 @@ public static class Options
     public static OptionItem RudepeoplekillMaxOfUseage;
     public static OptionItem BerserkersKillCooldown;
     public static OptionItem DepressedKillCooldown;
-    public static OptionItem IntrovertedDuration;
-    public static OptionItem IntrovertedCooldown;
-    public static OptionItem IntrovertedMaxOfUseage;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -673,9 +670,6 @@ public static class Options
         RudepeopleSkillDuration = FloatOptionItem.Create(807412747, "RudepeopleSkillDuration", new(1f, 999f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
         RudepeoplekillMaxOfUseage = IntegerOptionItem.Create(75345351, "RudepeoplekillMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
         SetupRoleOptions(212313, TabGroup.CrewmateRoles, CustomRoles.Introverted);
-        IntrovertedCooldown = FloatOptionItem.Create(56156, "IntrovertedCooldown", new(1f, 180f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Introverted]);
-        IntrovertedDuration = FloatOptionItem.Create(1221168, "IntrovertedDuration", new(1f, 999f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Introverted]);
-        IntrovertedMaxOfUseage = IntegerOptionItem.Create(41465465, "IntrovertedMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Introverted]);
 
 
         // Neutral
