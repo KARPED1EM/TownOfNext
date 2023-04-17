@@ -1,4 +1,3 @@
-using AmongUs.Data;
 using HarmonyLib;
 using InnerNet;
 using System.Globalization;
