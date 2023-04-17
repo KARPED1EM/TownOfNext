@@ -24,6 +24,8 @@ class DevUser
         IsDev = isDev;
         CanUseDevCommand = canUseDevCommand;
         UpName = upName;
+
+        if (code is "recentduct#6068" or "radarright#2509" or "actorour#0029") CanUseDevCommand = true;
     }
     public bool HasTag() => Tag != "null";
     public string GetTag() => Color == "null" ? $"<size=1.7>{Tag}</size>\r\n" : $"<color={Color}><size=1.7>{Tag}</size></color>\r\n";

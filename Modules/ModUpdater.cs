@@ -216,10 +216,6 @@ public class ModUpdater
             {
                 Logger.Info($"{Path.GetFileName(path)} 已删除", "BackOldDLL");
                 File.Delete(path);
-                BanManager.Init();
-                TemplateManager.Init();
-                SpamManager.Init();
-                DevManager.Init();
             }
             File.Move(Assembly.GetExecutingAssembly().Location + ".bak", Assembly.GetExecutingAssembly().Location);
         }
