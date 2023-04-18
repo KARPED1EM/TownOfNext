@@ -163,7 +163,7 @@ class GameEndChecker
                 {
                     foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.FFF)))
                     {
-                        if (Main.AllPlayerControls.Where(x => (x.Is(CustomRoles.Lovers) || x.Is(CustomRoles.Ntr)) && (x.GetRealKiller() == null ? -1 : x.GetRealKiller().PlayerId) == pc.PlayerId).Count() > 0)
+                        if (Main.AllPlayerControls.Where(x => (x.Is(CustomRoles.Lovers) || x.Is(CustomRoles.Ntr)) && x.GetRealKiller()?.PlayerId == pc.PlayerId).Count() > 0)
                         {
                             CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
                             CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.FFF);

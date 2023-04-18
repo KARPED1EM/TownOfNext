@@ -459,7 +459,7 @@ static class ExtendedMeetingHud
                     ) VoteNum += Options.MayorAdditionalVote.GetInt();
                 //窃票者附加票数
                 if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.TicketsStealer))
-                    VoteNum += (int)(Main.AllPlayerControls.Where(x => (x.GetRealKiller() == null ? -1 : x.GetRealKiller().PlayerId) == ps.TargetPlayerId).Count() * Options.TicketsPerKill.GetFloat());
+                    VoteNum += (int)(Main.AllPlayerControls.Where(x => x.GetRealKiller()?.PlayerId == ps.TargetPlayerId).Count() * Options.TicketsPerKill.GetFloat());
 
                 // 主动叛变模式下自票无效
                 if (ps.TargetPlayerId == ps.VotedFor && Options.MadmateSpawnMode.GetInt() == 2) VoteNum = 0;
