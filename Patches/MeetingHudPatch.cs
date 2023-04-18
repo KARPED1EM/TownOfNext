@@ -576,6 +576,7 @@ class MeetingHudStartPatch
 
         //提前储存赌怪游戏组件的模板
         GuessManager.textTemplate = UnityEngine.Object.Instantiate(__instance.playerStates[0].NameText);
+        GuessManager.textTemplate.transform.localPosition = new(100, 100, 100);
 
         foreach (var pva in __instance.playerStates)
         {
@@ -754,8 +755,31 @@ class MeetingHudStartPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 class MeetingHudUpdatePatch
 {
+    private static int bufferTIme = 15;
     public static void Postfix(MeetingHud __instance)
     {
+
+        // 会议技能按钮的取消
+        bufferTIme--;
+        if (bufferTIme < 0)
+        {
+            var myRole = PlayerControl.LocalPlayer.GetCustomRole();
+            if (myRole is CustomRoles.NiceGuesser or CustomRoles.EvilGuesser or CustomRoles.Judge)
+            {
+                if (!PlayerControl.LocalPlayer.IsAlive())
+                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                else
+                    __instance.playerStates.ToList().ForEach(x => { if (x.AmDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+            }
+            else if (myRole is CustomRoles.Mafia)
+            {
+                if (!PlayerControl.LocalPlayer.IsAlive() && GameObject.Find("ShootButton") == null)
+                    MafiaRevengeManager.CreateJudgeButton(__instance);
+                else 
+                    __instance.playerStates.ToList().ForEach(x => { if (x.AmDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+            }
+        }
+
         if (!AmongUsClient.Instance.AmHost) return;
         if (Input.GetMouseButtonUp(1) && Input.GetKey(KeyCode.LeftControl))
         {

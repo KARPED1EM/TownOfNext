@@ -82,7 +82,7 @@ public static class MafiaRevengeManager
                 RPC.PlaySoundRPC(pc.PlayerId, Sounds.KillSound);
             ChatUpdatePatch.DoBlockChat = false;
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
-        }, 0.9f, "Mafia Kill");
+        }, 0.2f, "Mafia Kill");
         return true;
     }
 
