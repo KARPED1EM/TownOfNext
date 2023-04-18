@@ -904,7 +904,12 @@ class ReportDeadBodyPatch
                     {
                         string msg;
                         msg = string.Format(GetString("DetectiveNoticeVictim"), tpc.GetRealName(), tpc.GetDisplayRoleName());
-                        if (Options.DetectiveCanknowKiller.GetBool()) msg += "；" + string.Format(GetString("DetectiveNoticeKiller"), tpc.GetRealKiller().GetDisplayRoleName());
+                        if (Options.DetectiveCanknowKiller.GetBool())
+                        {
+                            var realKiller = tpc.GetRealKiller();
+                            if (realKiller == null) msg += "；" + GetString("DetectiveNoticeKillerNotFound");
+                            else msg += "；" + string.Format(GetString("DetectiveNoticeKiller"), realKiller.GetDisplayRoleName());
+                        }
                         Main.DetectiveNotify.Add(__instance.PlayerId, msg);
                     }
                 }
