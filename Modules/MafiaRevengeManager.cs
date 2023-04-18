@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HarmonyLib;
+using Hazel;
+using System;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -81,5 +84,55 @@ public static class MafiaRevengeManager
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
         }, 0.9f, "Mafia Kill");
         return true;
+    }
+
+    private static void SendRPC(int playerId)
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.MafiaRevenge, SendOption.Reliable, -1);
+        writer.Write(playerId);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static void ReceiveRPC(MessageReader reader, PlayerControl pc)
+    {
+        int PlayerId = reader.ReadInt32();
+        MafiaMsgCheck(pc, $"/rv {PlayerId}");
+    }
+
+    private static void MafiaOnClick(int index, MeetingHud __instance)
+    {
+        Logger.Msg($"Click: {index}", "Mafia UI");
+        var pc = Utils.GetPlayerById(index);
+        if (pc == null || !pc.IsAlive()) return;
+        if (AmongUsClient.Instance.AmHost) MafiaMsgCheck(PlayerControl.LocalPlayer, $"/rv {index}");
+        else SendRPC(index);
+    }
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+    class StartMeetingPatch
+    {
+        public static void Postfix(MeetingHud __instance)
+        {
+            if (PlayerControl.LocalPlayer.Is(CustomRoles.Mafia) && !PlayerControl.LocalPlayer.IsAlive())
+                CreateJudgeButton(__instance);
+        }
+    }
+    public static void CreateJudgeButton(MeetingHud __instance)
+    {
+        for (int i = 0; i < __instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+            if (playerVoteArea.AmDead) continue;
+
+            GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+            GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+            targetBox.name = "ShootButton";
+            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
+            SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+            renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
+            PassiveButton button = targetBox.GetComponent<PassiveButton>();
+            button.OnClick.RemoveAllListeners();
+            int copiedIndex = i;
+            button.OnClick.AddListener((Action)(() => MafiaOnClick(copiedIndex, __instance)));
+        }
     }
 }

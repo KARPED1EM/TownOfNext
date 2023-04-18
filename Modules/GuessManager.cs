@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Hazel;
+using Il2CppSystem.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -370,7 +371,7 @@ public static class GuessManager
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.GetCustomRole() is CustomRoles.NiceGuesser or CustomRoles.EvilGuesser)
+            if (PlayerControl.LocalPlayer.GetCustomRole() is CustomRoles.NiceGuesser or CustomRoles.EvilGuesser && PlayerControl.LocalPlayer.IsAlive())
                 CreateGuesserButton(__instance);
         }
     }
@@ -428,6 +429,9 @@ public static class GuessManager
     public static TextMeshPro textTemplate;
     static void GuesserOnClick(int buttonTarget, MeetingHud __instance)
     {
+        var pc = Utils.GetPlayerById(buttonTarget);
+        if (pc == null || !pc.IsAlive()) return;
+
         if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
         if (__instance.playerStates[buttonTarget].AmDead) return;
         Page = 1;
@@ -606,7 +610,8 @@ public static class GuessManager
 
                     Logger.Msg($"Click: {__instance.playerStates[buttonTarget].TargetPlayerId}({focusedTarget.GetCustomRole()}) => {role}", "Guesser UI");
 
-                    SendRPC(__instance.playerStates[buttonTarget].TargetPlayerId, role);
+                    if (AmongUsClient.Instance.AmHost) GuesserMsg(PlayerControl.LocalPlayer, $"/bt {__instance.playerStates[buttonTarget].TargetPlayerId} {GetString(role.ToString())}");
+                    else SendRPC(__instance.playerStates[buttonTarget].TargetPlayerId, role);
 
                     // Reset the GUI
                     __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));

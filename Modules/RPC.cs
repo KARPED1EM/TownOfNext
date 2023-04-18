@@ -72,6 +72,7 @@ enum CustomRPC
     SetMorticianArrow,
     Judge,
     Guess,
+    MafiaRevenge,
 
     //SoloKombat
     SyncKBPlayer,
@@ -91,7 +92,7 @@ public enum Sounds
 internal class RPCHandlerPatch
 {
     public static bool TrustedRpc(byte id)
-    => (CustomRPC)id is CustomRPC.VersionCheck or CustomRPC.RequestRetryVersionCheck or CustomRPC.AntiBlackout or CustomRPC.Judge or CustomRPC.Guess;
+    => (CustomRPC)id is CustomRPC.VersionCheck or CustomRPC.RequestRetryVersionCheck or CustomRPC.AntiBlackout or CustomRPC.Judge or CustomRPC.Guess or CustomRPC.MafiaRevenge;
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
     {
         var rpcType = (RpcCalls)callId;
@@ -403,6 +404,9 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.Guess:
                 GuessManager.ReceiveRPC(reader, __instance);
+                break;
+            case CustomRPC.MafiaRevenge:
+                MafiaRevengeManager.ReceiveRPC(reader, __instance);
                 break;
         }
     }

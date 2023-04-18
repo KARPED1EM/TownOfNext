@@ -214,7 +214,10 @@ public static class Judge
     private static void JudgeOnClick(int index, MeetingHud __instance)
     {
         Logger.Msg($"Click: {index}", "Judge UI");
-        SendRPC(index);
+        var pc = Utils.GetPlayerById(index);
+        if (pc == null || !pc.IsAlive()) return;
+        if (AmongUsClient.Instance.AmHost) TrialMsg(PlayerControl.LocalPlayer, $"/tl {index}");
+        else SendRPC(index);
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
@@ -222,7 +225,7 @@ public static class Judge
     {
         public static void Postfix(MeetingHud __instance)
         {
-            if (PlayerControl.LocalPlayer.Is(CustomRoles.Judge))
+            if (PlayerControl.LocalPlayer.Is(CustomRoles.Judge) && PlayerControl.LocalPlayer.IsAlive())
                 CreateJudgeButton(__instance);
         }
     }
