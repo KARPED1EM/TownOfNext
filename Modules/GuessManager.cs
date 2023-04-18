@@ -448,6 +448,7 @@ public static class GuessManager
         var buttonTemplate = __instance.playerStates[0].transform.FindChild("votePlayerBase");
         var maskTemplate = __instance.playerStates[0].transform.FindChild("MaskArea");
         var smallButtonTemplate = __instance.playerStates[0].Buttons.transform.Find("CancelButton");
+        textTemplate.enabled = true;
         if (textTemplate.transform.FindChild("RoleTextMeeting") != null) UnityEngine.Object.Destroy(textTemplate.transform.FindChild("RoleTextMeeting").gameObject);
 
         Transform exitButtonParent = new GameObject().transform;
@@ -616,6 +617,7 @@ public static class GuessManager
                     // Reset the GUI
                     __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));
                     UnityEngine.Object.Destroy(container.gameObject);
+                    textTemplate.enabled = false;
 
                 }
             }));
@@ -625,6 +627,15 @@ public static class GuessManager
         container.transform.localScale *= 0.75f;
         GuesserSelectRole(CustomRoleTypes.Crewmate);
         ReloadPage();
+    }
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
+    class MeetingHudOnDestroyGuesserUIClose
+    {
+        public static void Postfix()
+        {
+            UnityEngine.Object.Destroy(textTemplate.gameObject);
+        }
     }
 
     private static void SendRPC(int playerId, CustomRoles role)

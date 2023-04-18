@@ -576,7 +576,7 @@ class MeetingHudStartPatch
 
         //提前储存赌怪游戏组件的模板
         GuessManager.textTemplate = UnityEngine.Object.Instantiate(__instance.playerStates[0].NameText);
-        GuessManager.textTemplate.transform.localPosition = new(100, 100, 100);
+        GuessManager.textTemplate.enabled = false;
 
         foreach (var pva in __instance.playerStates)
         {
