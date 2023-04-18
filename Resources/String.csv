@@ -926,6 +926,7 @@
 "BecomeMadmateCuzMadmateMode","您因死亡成为叛徒","You became a Madmate because you died","Вы стали Безумцем из-за своей смерти","您因死亡成为叛徒","您因死亡成为叛徒"
 "ExecutionerRoleChanged","您因目标死亡转变为{0}","You became {0} because your target died","Вы стали {0}","您因目标死亡转变为{0}","您因目标死亡转变为{0}"
 "SpeedBoosterTaskDone","您的速度提升至{0}x","Your speed is {0} now","Ваша скорость теперь {0}","您的速度提升至{0}x","您的速度提升至{0}x"
+"SpeedBoosterSpeedLimit","您已达到速度上限3.0x","","","",""
 "CleanerCleanBody","目标的尸体已被清理","The body has been cleaned","Труп очищен","目标的尸体已被清理","目标的尸体已被清理"
 "QuickShooterStoraging","子弹储存成功","Bullets stored successfully","Пули сохранены успешно","子弹储存成功","子弹储存成功"
 "VampireTargetDead","您的目标已死亡","Target died","Цель мертва","您的目标已死亡","您的目标已死亡"
