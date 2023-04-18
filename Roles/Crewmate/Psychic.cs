@@ -87,6 +87,8 @@ public static class Psychic
             if (IRandom.Instance.Next(0, 100) < 18) ENum++;
         int BNum = CanSeeNum.GetInt() - ENum;
 
+        if (BadList.Count < 1 || ENum < 1) goto EndOfSelect;
+
         RedPlayer = new();
         for (int i = 0; i < ENum && BadList.Count >= 1; i++)
         {
@@ -100,6 +102,8 @@ public static class Psychic
             RedPlayer.Add(AllList[IRandom.Instance.Next(0, AllList.Count)]);
             AllList.RemoveAll(RedPlayer.Contains);
         }
+
+    EndOfSelect:
 
         Logger.Info($"需要{CanSeeNum.GetInt()}个红名，其中需要{ENum}个邪恶。计算后显示红名{RedPlayer.Count}个", "Psychic");
         SendRPC(); //RPC同步红名名单
