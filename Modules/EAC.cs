@@ -9,7 +9,6 @@ namespace TOHE;
 
 internal class EAC
 {
-    public static List<string> Msgs = new();
     public static int MeetingTimes = 0;
     public static int DeNum = 0;
     public static void WarnHost(int denum = 1)
@@ -72,9 +71,6 @@ internal class EAC
                 case RpcCalls.SendChat:
                     var text = sr.ReadString();
                     if (text.StartsWith("/")) return false;
-                    if (Msgs.Contains(text)) return true;
-                    Msgs.Add(text);
-                    if (Msgs.Count > 1) Msgs.Remove(Msgs[0]);
                     if (
                         text.Contains("░") ||
                         text.Contains("▄") ||
