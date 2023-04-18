@@ -924,13 +924,13 @@ class ReportDeadBodyPatch
             Main.MadGrenadierBlinding.Clear();
             Divinator.didVote.Clear();
 
+            Concealer.OnReportDeadBody();
             Psychic.OnReportDeadBody();
             BountyHunter.OnReportDeadBody();
             SerialKiller.OnReportDeadBody();
             Sniper.OnReportDeadBody();
             Vampire.OnStartMeeting();
             Pelican.OnReportDeadBody();
-            Concealer.OnReportDeadBody();
             Mortician.OnReportDeadBody(__instance, target);
             Mediumshiper.OnReportDeadBody(__instance, target);
             Counterfeiter.OnReportDeadBody();
