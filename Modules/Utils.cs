@@ -1276,11 +1276,13 @@ public static class Utils
     }
     public static void DumpLog()
     {
+        string f = $"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/TOHE-logs/";
         string t = DateTime.Now.ToString("yyyy-MM-dd_HH.mm.ss");
-        string filename = $"{System.Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}/TOHE-v{Main.PluginVersion}-{t}.log";
-        FileInfo file = new(@$"{System.Environment.CurrentDirectory}/BepInEx/LogOutput.log");
+        string filename = $"{f}TOHE-v{Main.PluginVersion}-{t}.log";
+        if (!Directory.Exists(f)) Directory.CreateDirectory(f);
+        FileInfo file = new(@$"{Environment.CurrentDirectory}/BepInEx/LogOutput.log");
         file.CopyTo(@filename);
-        System.Diagnostics.Process.Start(@$"{Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory)}");
+        System.Diagnostics.Process.Start(@f);
         if (PlayerControl.LocalPlayer != null)
             HudManager.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
     }
