@@ -1202,6 +1202,8 @@
 "AntiBlackOutRequestHostToForceEnd","您触发了黑屏Bug，正在请求房主终止游戏...","You were the reason of the black screen, you are asking the host to stop the game...","Вы были причиной черного экрана, сейчас вы просите хоста остановить игру...","您触发了黑屏Bug，正在请求房主终止游戏...","您触发了黑屏Bug，正在请求房主终止游戏..."
 "AntiBlackOutHostRejectForceEnd","您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接","You were the reason of the black screen, and the host is not going to end the game, we will disconnect you soon.","Вы были причиной черного экрана, хост отказывается завершать игру, и скоро мы вас отключим.","您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接","您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接"
 "Website","模组官网","Website","Сайт","模组官网","模组官网"
+"NextPage","下一页","","","",""
+"PreviousPage","上一页","","","",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.EAC","开挂（使用AUM）","Cheating usage detected (Using AUM)","Обнаружено использование читов (используется AUM)","开挂（使用AUM）","开挂（使用AUM）"

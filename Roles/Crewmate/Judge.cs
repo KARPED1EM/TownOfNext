@@ -213,7 +213,7 @@ public static class Judge
 
     private static void JudgeOnClick(int index, MeetingHud __instance)
     {
-        Logger.Msg($"玩家按键点击：{index}", "Judge");
+        Logger.Msg($"Click: {index}", "Judge UI");
         SendRPC(index);
     }
 
@@ -231,7 +231,7 @@ public static class Judge
         for (int i = 0; i < __instance.playerStates.Length; i++)
         {
             PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-            if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+            if (playerVoteArea.AmDead) continue;
 
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
