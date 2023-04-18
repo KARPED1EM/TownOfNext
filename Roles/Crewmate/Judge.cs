@@ -1,9 +1,13 @@
-﻿using System;
+﻿using HarmonyLib;
+using Hazel;
+using Sentry.Internal.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TOHE.Roles.Neutral;
 using UnityEngine;
+using UnityEngine.Networking.Types;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Crewmate;
@@ -193,5 +197,52 @@ public static class Judge
             }
         }
         return false;
+    }
+
+    private static void SendRPC(int playerId)
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Judge, SendOption.Reliable, -1);
+        writer.Write(playerId);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static void ReceiveRPC(MessageReader reader, PlayerControl pc)
+    {
+        int PlayerId = reader.ReadInt32();
+        TrialMsg(pc, $"/tl {PlayerId}");
+    }
+
+    private static void JudgeOnClick(int index, MeetingHud __instance)
+    {
+        Logger.Msg($"玩家按键点击：{index}", "Judge");
+        SendRPC(index);
+    }
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+    class StartMeetingPatch
+    {
+        public static void Postfix(MeetingHud __instance)
+        {
+            if (PlayerControl.LocalPlayer.Is(CustomRoles.Judge))
+                CreateJudgeButton(__instance);
+        }
+    }
+    public static void CreateJudgeButton(MeetingHud __instance)
+    {
+        for (int i = 0; i < __instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+            if (playerVoteArea.AmDead || playerVoteArea.TargetPlayerId == PlayerControl.LocalPlayer.PlayerId) continue;
+
+            GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+            GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+            targetBox.name = "ShootButton";
+            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
+            SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+            renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
+            PassiveButton button = targetBox.GetComponent<PassiveButton>();
+            button.OnClick.RemoveAllListeners();
+            int copiedIndex = i;
+            button.OnClick.AddListener((Action)(() => JudgeOnClick(copiedIndex, __instance)));
+        }
     }
 }

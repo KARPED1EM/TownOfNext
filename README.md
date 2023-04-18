@@ -48,6 +48,7 @@
 > - Reference: Credentials menu
 > - Reference: Switch Horse Mode
 > - Reference: Search Mod Game
+> - Reference: Custom Button
 >
 ### :star: [TOP](https://github.com/tugaru1975/TownOfPlus) :
 > 

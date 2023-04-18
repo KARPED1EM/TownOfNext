@@ -239,7 +239,7 @@ public static class GuessManager
             if (!voteAreaPlayer.AmOwner) continue;
             meetingHud.ClearVote();
         }
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Guess, SendOption.Reliable, -1);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.GuessKill, SendOption.Reliable, -1);
         writer.Write(pc.PlayerId);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }

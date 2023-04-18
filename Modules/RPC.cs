@@ -63,13 +63,14 @@ enum CustomRPC
     SetCollectorVotes,
     SetQuickShooterShotLimit,
     SetEraseLimit,
-    Guess,
+    GuessKill,
     SetMarkedPlayer,
     SetConcealerTimer,
     SetMedicalerProtectList,
     SetHackerHackLimit,
     SyncPsychicRedList,
     SetMorticianArrow,
+    Judge,
 
     //SoloKombat
     SyncKBPlayer,
@@ -88,6 +89,8 @@ public enum Sounds
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
 internal class RPCHandlerPatch
 {
+    public static bool TrustedRpc(byte id)
+    => (CustomRPC)id is CustomRPC.VersionCheck or CustomRPC.RequestRetryVersionCheck or CustomRPC.AntiBlackout or CustomRPC.Judge;
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
     {
         var rpcType = (RpcCalls)callId;
@@ -118,7 +121,7 @@ internal class RPCHandlerPatch
         }
         if (__instance.PlayerId != 0
             && Enum.IsDefined(typeof(CustomRPC), (int)callId)
-            && !(callId == (byte)CustomRPC.VersionCheck || callId == (byte)CustomRPC.RequestRetryVersionCheck || callId == (byte)CustomRPC.AntiBlackout)) //ホストではなく、CustomRPCで、VersionCheckではない
+            && !TrustedRpc(callId)) //ホストではなく、CustomRPCで、VersionCheckではない
         {
             Logger.Warn($"{__instance?.Data?.PlayerName}:{callId}({RPC.GetRpcName(callId)}) 已取消，因为它是由主机以外的其他人发送的。", "CustomRPC");
             if (AmongUsClient.Instance.AmHost)
@@ -352,7 +355,7 @@ internal class RPCHandlerPatch
             case CustomRPC.SetEraseLimit:
                 Eraser.ReceiveRPC(reader);
                 break;
-            case CustomRPC.Guess:
+            case CustomRPC.GuessKill:
                 GuessManager.RpcClientGuess(Utils.GetPlayerById(reader.ReadByte()));
                 break;
             case CustomRPC.SetMarkedPlayer:
@@ -393,6 +396,9 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.SyncNameNotify:
                 NameNotifyManager.ReceiveRPC(reader);
+                break;
+            case CustomRPC.Judge:
+                Judge.ReceiveRPC(reader, __instance);
                 break;
         }
     }
