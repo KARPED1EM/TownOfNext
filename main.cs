@@ -39,7 +39,7 @@ public class Main : BasePlugin
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
     public static readonly bool ShowDiscordButton = true;
-    public static readonly string DiscordInviteUrl = "https://discord.gg/5PNwUaN5";
+    public static readonly string DiscordInviteUrl = "https://discord.gg/hkk2p9ggv4";
 
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);

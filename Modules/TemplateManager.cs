@@ -71,6 +71,11 @@ public static class TemplateManager
                 Logger.Exception(ex, "TemplateManager");
             }
         }
+        else
+        {
+            var text = File.ReadAllText(TEMPLATE_FILE_PATH, Encoding.GetEncoding("UTF-8"));
+            File.WriteAllText(TEMPLATE_FILE_PATH, text.Replace("5PNwUaN5", "hkk2p9ggv4"));
+        }
     }
 
     private static string GetResourcesTxt(string path)
