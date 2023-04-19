@@ -1079,6 +1079,7 @@ class FixedUpdatePatch
                 Pelican.OnFixedUpdate();
                 Vampire.OnFixedUpdate(player);
                 BallLightning.OnFixedUpdate();
+                Swooper.OnFixedUpdate(player);
             }
 
             if (GameStates.IsInTask && CustomRoles.SerialKiller.IsEnable()) SerialKiller.FixedUpdate(player);
@@ -1733,6 +1734,10 @@ class CoEnterVentPatch
             }, 0.5f, "Fix DesyncImpostor Stuck");
             return false;
         }
+
+        if (__instance.myPlayer.Is(CustomRoles.Swooper))
+            Swooper.OnCoEnterVent(__instance, id);
+
         return true;
     }
 }

@@ -493,6 +493,7 @@ internal class ChatCommands
             "入殮師" or "入检师" or "入殓" => GetString("Mortician"),
             "通靈師" or "通灵" => GetString("Mediumshiper"),
             "吟游詩人" or "诗人" => GetString("Bard"),
+            "隱匿者" or "隐匿" or "隐身" or "隐身人" or "印尼" => GetString("Swooper"),
             _ => text,
         };
     }

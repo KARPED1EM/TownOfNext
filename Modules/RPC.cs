@@ -73,6 +73,7 @@ enum CustomRPC
     Judge,
     Guess,
     MafiaRevenge,
+    SetSwooperTimer,
 
     //SoloKombat
     SyncKBPlayer,
@@ -408,6 +409,9 @@ internal class RPCHandlerPatch
             case CustomRPC.MafiaRevenge:
                 MafiaRevengeManager.ReceiveRPC(reader, __instance);
                 break;
+            case CustomRPC.SetSwooperTimer:
+                Swooper.ReceiveRPC(reader);
+                break;
         }
     }
 }
@@ -691,6 +695,9 @@ internal static class RPC
                 break;
             case CustomRoles.Veteran:
                 Main.VeteranNumOfUsed.Add(targetId, Options.VeteranSkillMaxOfUseage.GetInt());
+                break;
+            case CustomRoles.Swooper:
+                Swooper.Add(targetId);
                 break;
         }
         HudManager.Instance.SetHudActive(true);

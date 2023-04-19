@@ -454,6 +454,7 @@ public enum CustomRoles
     OverKiller,
     Hangman,
     Bard,
+    Swooper,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,

@@ -720,6 +720,7 @@ public static class Options
         Concealer.SetupCustomOption();
         Eraser.SetupCustomOption();
         SetupRoleOptions(902622, TabGroup.OtherRoles, CustomRoles.OverKiller);
+        Swooper.SetupCustomOption();
 
         // 船员
         TextOptionItem.Create(909092, "OtherRoles.CrewmateRoles", TabGroup.OtherRoles)

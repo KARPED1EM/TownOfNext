@@ -91,6 +91,7 @@
 "Eraser","抹除者","Eraser","Стёрка","抹除者","Borrador"
 "OverKiller","肢解者","Butcher","Мясник","肢解者","SobreAsesino"
 "Hangman","刽子手","Hangman","Вешатель","劊子手","Hangman"
+"Swooper","隐匿者","","","",""
 
 "# 船员阵营 / Crewmates"
 "Bait","诱饵","Bait","Байт","誘餌","Bait"
@@ -229,6 +230,7 @@
 "EraserInfo","恕我直言，你不配拥有能力","Erase the Role of Vote Target","Сотри роль игрока за которого голосуешь","抹除他人的職業並殺光所有人","恕我直言，你不配拥有能力"
 "OverKillerInfo","且欣赏我美丽的作品","Enjoy my beautiful work","Наслаждайтесь моей работой","欣賞我美麗的作品","且欣赏我美丽的作品"
 "HangmanInfo","就由我，来结束你的生命","I will decide when your life will end","Я решу когда твоя жизнь окончится","我將會結束你的生命","就由我，来结束你的生命"
+"SwooperInfo","感受未知的恐惧吧","","","",""
 
 "# 船员阵营 / Crewmate descriptions"
 "BaitInfo","好消息，杀了我可以吃席","Your Killer self-reports your body","Убийца моментально саморепнет ваше тело","犧牲小我，完成大我","好消息，杀了我可以吃席"
@@ -352,6 +354,7 @@
 "EraserInfoLong","(内鬼阵营):\n抹除者可以在会议上投票给任意船员阵营目标以抹除目标的职业技能，抹除将在会议结束后生效。请注意：被抹除技能的玩家将被永远视为白板，包括游戏结算页面。","(Impostors):\nEraser can vote for any crew target at the meeting to erase the target's roles, and the erasure will take effect after the meeting ends. Note: Players whose skills are erased will always be considered a vanilla role, including the game result page.","(Предатель):\nСтирачка может проголосовать за любого Члена Экипажа на собрании, чтобы стереть профессиональные навыки цели, и удаление вступит в силу после собрания. Пожалуйста, обратите внимание: Игроки со стертыми навыками всегда будут рассматриваться как белые доски, включая резкльтат игры","(偽裝者陣營):\n抹除者可以通過在會議上投票給某位玩家以抹除他的職業，抹除技能將在會議結束後生效\n請注意: 被抹除身分的玩家將永遠被視為普通船員，包括遊戲遊戲結算頁面。","(内鬼阵营):\n抹除者可以在会议上投票给任意船员阵营目标以抹除目标的职业技能，抹除将在会议结束后生效。请注意：被抹除技能的玩家将被永远视为白板，包括游戏结算页面。"
 "OverKillerInfoLong","(内鬼阵营):\n肢解者击杀（包括被动击杀）的目标会出现多具尸体，以至于报告尸体时无法准确分辨其他受害者。请注意：因实现原理，被击杀的目标不得不重复地显示自己被击杀的动画，此动画无法跳过且期间无法正常参与会议。此外，若肢解者肢解了复仇者，则复仇者会因愤怒带走全场所有人。\n\n该职业在发动技能时可能造成房主严重卡顿，请谨慎开启。","(Impostors):\nButcher kills (including passive kills) have multiple dead bodies on targets, making it impossible to accurately identify other dead body when reporting. Note: Due to the principle of implementation, the killed target has to repeatedly display the animation of being killed. This animation cannot be skipped and cannot participate in the meeting normally during this period. In addition, if the Butcher kills the Avenger, the Avenger will revenges everyone in anger.\n\nThis role may cause serious lag to the host when activating the skill, please enable it with caution.","(Предатель):\nЦель, убитая Мясником, будет рассматриваться как множество трупов, так что другие трупы не могут быть показаны при сообщении о мёртвых. Пожалуйста, обратите внимание: Убитая цель может неоднократно отображать анимацию своего убийства. Эта анимация не может быть пропущена и не может участвовать во встрече в течение периода. Вы должны дождаться окончания анимации, прежде чем сможете нормально участвовать в игре.","(偽裝者陣營):\n當肢解者殺人(包括被術士、傀儡師操控等) 時，被殺的目標將會同時出現多具屍體，以至於無法分辨該輪其他的受害者。\n請注意: 因實現原理，被肢解者殺死的人將會不停顯示自己被殺死的動畫，此動畫無法跳過，且該期間內無法參與會議，此外，如果肢解者殺死了復仇者，復仇者則會因為憤怒而帶走全場所有人。\n\n<color=#ffd500>警告: 該職業發動技能時會造成房主嚴重卡頓，請謹慎開啟。</color>","(内鬼阵营):\n肢解者击杀（包括被动击杀）的目标会出现多具尸体，以至于报告尸体时无法准确分辨其他受害者。请注意：因实现原理，被击杀的目标不得不重复地显示自己被击杀的动画，此动画无法跳过且期间无法正常参与会议。此外，若肢解者肢解了复仇者，则复仇者会因愤怒带走全场所有人。\n\n该职业在发动技能时可能造成房主严重卡顿，请谨慎开启。"
 "HangmanInfoLong","(内鬼阵营):\n刽子手在变形期间的击杀方式为绞杀，绞杀无视目标的任何状态例如医生的护盾、保镖的守护、大明星的技能等，被绞杀的玩家不会留下尸体，也不会触发其任何技能例如老兵反杀、幸运儿挡伤等（包括附加职业），此外，灵媒也不会得到提示。","(Impostor):\nThe killing method of the Hangman during the shapeshifting is strangling. Strangling ignores any status of the target, such as the shield of the Medic, the protection of the Bodyguard, the skills of the Super Star, etc. The strangled player will not leave a dead body, nor will it trigger any of its skills For example, Veteran kill back, Luckey stay alive, etc. (including additional roles), in addition, Seer will not be prompted.","(Предатель):\nВешатель убивает игроков, душа их. Удушение игнорирует любой вид защиты, такой как щит Медика, защита Телохранителя и тд. Игрок, которого задушили, не оставит тела и не активирует ни одну из способностей, таких как самозащита Ветерана, удача Удачника. Не появляется для Экстрасенса.","(偽裝者陣營):\n劊子手在變形時的殺人方式為絞殺，絞殺下將會無視任何一切可保護受害者不死亡的職業、附加效果和附加職業等等，例如軍醫的護盾、保鑣同歸於盡、大明星的技能，此外被動技能也不會生效，例如老兵反殺，幸運兒擋傷等等，被絞殺的玩家將不會留下屍體，並且也不會顯示被殺動畫。此外，由於不會留下屍體，因此靈媒也會不會收到任何提示。","(内鬼阵营):\n刽子手在变形期间的击杀方式为绞杀，绞杀无视目标的任何状态例如医生的护盾、保镖的守护、大明星的技能等，被绞杀的玩家不会留下尸体，也不会触发其任何技能例如老兵反杀、幸运儿挡伤等（包括附加职业），此外，灵媒也不会得到提示。"
+"SwooperInfoLong","(内鬼阵营):\n隐匿者可以通过管道进入隐身状态。\n\n请注意：由于技术限制，非房主模组端隐匿者可能在一回合只能使用一次技能。","","","",""
 
 "# 船员阵营 / Crewmates descriptions"
 "BaitInfoLong","(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。","(Crewmates):\nWhen a Bait is killed, the murderer who killed the Bait will be forced to report the Bait's body. However, the skill will be invalid when the Bait is killed by a Scavenger or Cleaner.","(Член Экипажа):\nКогда Байта убивают, он заставляет убившего игрока \nмоментально зарепортить ваш труп.","(船員陣營):\n當誘餌被殺時，殺死誘餌的兇手將會立刻自行報告誘餌的屍體，但是當清道夫殺死誘餌時，誘餌不會觸發技能。","(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。"
@@ -804,7 +807,9 @@
 "JudgeCanTrialnCrewKilling","可以审判带刀<color=#8cffff>船员</color>","Can trial <color=#8cffff>Crewmate Killings</color>","Может судить <color=#8cffff>Убийц Экипажа</color>","可以审判带刀<color=#8cffff>船员</color>","可以审判带刀<color=#8cffff>船员</color>"
 "JudgeCanTrialNeutralB","可以审判无刀<color=#ffab1b>中立</color>","Can trial <color=#ffab1b>Neutral Benigns</color>","Может судить <color=#ffab1b>Добрых Нейтралов</color>","可以审判无刀<color=#ffab1b>中立</color>","可以审判无刀<color=#ffab1b>中立</color>"
 "JudgeCanTrialNeutralK","可以审判带刀<color=#ffab1b>中立</color>","Can trial <color=#ffab1b>Neutral Killings</color>","Может судить <color=#ffab1b>Злых Нейтралов</color>","可以审判带刀<color=#ffab1b>中立</color>","可以审判带刀<color=#ffab1b>中立</color>"
-"VeteranSkillMaxOfUseage","技能使用次数上限","Max number of Alerts","Количество способности","技能使用次数上限","技能使用次数上限"
+"VeteranSkillMaxOfUseage","警戒次数上限","Max number of Alerts","Количество способности","技能使用次数上限","技能使用次数上限"
+"SwooperCooldown","隐身冷却时间","","","",""
+"SwooperDuration","隐身持续时间","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被杀","被杀"
@@ -937,6 +942,12 @@
 "LostRoleByEraser","您的职业被<color=#ff1919>抹除者</color>抹除了","You lost your role because of the <color=#ff1919>Eraser</color>","Вы потеряли свою роль из-за <color=#ff1919>Стирачки</color>","您的职业被<color=#ff1919>抹除者</color>抹除了","您的职业被<color=#ff1919>抹除者</color>抹除了"
 "KilledByScavenger","您被清道夫击杀因此传送至地图外","You were killed by the Scavenger and thus teleported off-map","Вы были убиты Уборщиком и поэтому телепортированы за предел карты","您被清道夫击杀因此传送至地图外","您被清道夫击杀因此传送至地图外"
 "SnitchDoneTasks","您已完成全部任务，启动会议以发动技能","Call a meeting to find the impostors","Созовите собрание, чтобы активировать свой навык","您已完成全部任务，启动会议以发动技能","您已完成全部任务，启动会议以发动技能"
+"SwooperCanVent","冷却结束，跳进管道隐身","","","",""
+"SwooperInvisState","隐身状态中","","","",""
+"SwooperInvisStateOut","隐身状态失效","","","",""
+"SwooperInvisInCooldown","技能冷却中，隐身失败","","","",""
+"SwooperInvisStateCountdown","隐身状态将在{0}秒后失效","","","",""
+"SwooperInvisCooldownRemain","隐身剩余冷却时间：{0}","","","",""
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","信息发送冷却时间为【{0}】秒","信息发送冷却时间为【{0}】秒"
