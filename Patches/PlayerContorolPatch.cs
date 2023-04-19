@@ -413,7 +413,7 @@ class CheckMurderPatch
         }
 
         //首刀保护
-        if (Main.ShieldPlayer != byte.MaxValue && Main.ShieldPlayer == target.PlayerId)
+        if (Main.ShieldPlayer != byte.MaxValue && Main.ShieldPlayer == target.PlayerId && Utils.IsAllAlive)
         {
             Main.ShieldPlayer = byte.MaxValue;
             killer.SetKillCooldown();
