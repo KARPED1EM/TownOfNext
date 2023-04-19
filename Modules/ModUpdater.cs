@@ -1,8 +1,10 @@
 using HarmonyLib;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,8 @@ namespace TOHE;
 [HarmonyPatch]
 public class ModUpdater
 {
-    private static readonly string URL = "http://api.2018k.cn";
+    private static readonly string URL_2018k = "http://api.2018k.cn";
+    private static readonly string URL_Github = "https://api.github.com/repos/KARPED1EM/TownOfHostEdited";
     public static bool hasUpdate = false;
     public static bool forceUpdate = true;
     public static bool isBroken = false;
@@ -38,7 +41,21 @@ public class ModUpdater
         InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
         if (!isChecked)
         {
-            CheckRelease().GetAwaiter().GetResult();
+            var done = false;
+            if (CultureInfo.CurrentCulture.Name == "zh-CN")
+            {
+                done = CheckRelease().GetAwaiter().GetResult();
+            }
+            else
+            {
+                done = CheckReleaseFromGithub(Main.BetaBuildURL.Value != "").GetAwaiter().GetResult();
+                done = CheckRelease(done).GetAwaiter().GetResult();
+            }
+            Logger.Warn("检查更新结果: " + done, "CheckRelease");
+            Logger.Info("hasupdate: " + hasUpdate, "CheckRelease");
+            Logger.Info("forceupdate: " + forceUpdate, "CheckRelease");
+            Logger.Info("downloadUrl: " + downloadUrl, "CheckRelease");
+            Logger.Info("latestVersionl: " + latestVersion, "CheckRelease");
         }
         MainMenuManagerPatch.updateButton.SetActive(hasUpdate);
         MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.template.transform.position + new Vector3(0.25f, 0.75f);
@@ -74,31 +91,35 @@ public class ModUpdater
         return result;
     }
 
-    public static Task<bool> CheckRelease()
+    public static Task<bool> CheckRelease(bool onlyInfo = false)
     {
-        string url = UrlSetId(UrlSetCheck(URL)) + "&version=" + Main.PluginVersion;
+        Logger.Warn("开始从2018k检查更新", "CheckRelease");
+        string url = UrlSetId(UrlSetCheck(URL_2018k)) + "&version=" + Main.PluginVersion;
         try
         {
             string res = Get(url);
             string[] info = res.Split("|");
-            hasUpdate = false;
-            forceUpdate = info[1] == "true";
-            downloadUrl = info[3];
-            latestVersion = new(info[4]);
-            latestTitle = new("TOHE");
-
-            string[] num = info[4].Split(".");
-            string[] inum = Main.PluginVersion.Split(".");
-            if (num.Length > inum.Length) inum.AddItem("0");
-            for (int i = 0; i < num.Length; i++)
+            if (!onlyInfo)
             {
-                int c = int.Parse(num[i]);
-                int m = int.Parse(inum[i]);
-                if (c > m) hasUpdate = true;
-                if (c != m) break;
-            }
+                hasUpdate = false;
+                forceUpdate = info[1] == "true";
+                latestVersion = new(info[4]);
+                latestTitle = new("TOHE");
 
-            url = UrlSetId(UrlSetInfo(URL)) + "&data=remark|notice|md5|visit";
+                string[] num = info[4].Split(".");
+                string[] inum = Main.PluginVersion.Split(".");
+                if (num.Length > inum.Length) inum.AddItem("0");
+                for (int i = 0; i < num.Length; i++)
+                {
+                    int c = int.Parse(num[i]);
+                    int m = int.Parse(inum[i]);
+                    if (c > m) hasUpdate = true;
+                    if (c != m) break;
+                }
+            }
+            if (downloadUrl == null || downloadUrl == "") downloadUrl = info[3];
+
+            url = UrlSetId(UrlSetInfo(URL_2018k)) + "&data=remark|notice|md5|visit";
             string[] data = Get(url).Split("|");
             string[] notices = data[1].Split("&&");
             if (CultureInfo.CurrentCulture.Name.StartsWith("zh")) notice = notices[0];
@@ -115,7 +136,7 @@ public class ModUpdater
             }
 
 #if DEBUG
-            if (!hasUpdate && Main.PluginVersion == info[4]) hasUpdate = true;
+            if (!hasUpdate && Main.PluginVersion == info[4] && !onlyInfo) hasUpdate = true;
 #endif
 
             if (!Main.AlreadyShowMsgBox || create == 0)
@@ -144,20 +165,91 @@ public class ModUpdater
         }
         catch (Exception ex)
         {
-            if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
+            if (CultureInfo.CurrentCulture.Name == "zh-CN")
             {
                 isChecked = false;
                 isBroken = true;
             }
-            else
+            else if (!onlyInfo)
             {
                 isChecked = true;
                 isBroken = false;
+                Logger.Error($"检查更新时发生错误\n{ex}", "CheckRelease", false);
             }
-            Logger.Error($"检查更新时发生错误\n{ex}", "CheckRelease", false);
+            Logger.Error($"检查更新时发生错误，已忽略\n{ex}", "CheckRelease", false);
             return Task.FromResult(false);
         }
         return Task.FromResult(true);
+    }
+    public static async Task<bool> CheckReleaseFromGithub(bool beta = false)
+    {
+        Logger.Warn("开始从Github检查更新", "CheckRelease");
+        string url = beta ? Main.BetaBuildURL.Value : URL_Github + "/releases/latest";
+        try
+        {
+            string result;
+            using (HttpClient client = new())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "TOHE Updater");
+                using var response = await client.GetAsync(new Uri(url), HttpCompletionOption.ResponseContentRead);
+                if (!response.IsSuccessStatusCode || response.Content == null)
+                {
+                    Logger.Error($"状态码: {response.StatusCode}", "CheckRelease");
+                    return false;
+                }
+                result = await response.Content.ReadAsStringAsync();
+            }
+            JObject data = JObject.Parse(result);
+            if (beta)
+            {
+                latestTitle = data["name"].ToString();
+                downloadUrl = data["url"].ToString();
+                hasUpdate = latestTitle != ThisAssembly.Git.Commit;
+            }
+            else
+            {
+                latestVersion = new(data["tag_name"]?.ToString().TrimStart('v'));
+                latestTitle = $"Ver. {latestVersion}";
+                JArray assets = data["assets"].Cast<JArray>();
+                for (int i = 0; i < assets.Count; i++)
+                {
+                    if (assets[i]["name"].ToString() == "TOHE_Steam.dll" && Constants.GetPlatformType() == Platforms.StandaloneSteamPC)
+                    {
+                        downloadUrl = assets[i]["browser_download_url"].ToString();
+                        break;
+                    }
+                    if (assets[i]["name"].ToString() == "TOHE_Epic.dll" && Constants.GetPlatformType() == Platforms.StandaloneEpicPC)
+                    {
+                        downloadUrl = assets[i]["browser_download_url"].ToString();
+                        break;
+                    }
+                    if (assets[i]["name"].ToString() == "TOHE.dll")
+                        downloadUrl = assets[i]["browser_download_url"].ToString();
+                }
+                hasUpdate = latestVersion.CompareTo(Main.version) > 0;
+            }
+
+            Logger.Info("hasupdate: " + hasUpdate, "Github");
+            Logger.Info("forceupdate: " + forceUpdate, "Github");
+            Logger.Info("downloadUrl: " + downloadUrl, "Github");
+            Logger.Info("latestVersionl: " + latestVersion, "Github");
+            Logger.Info("latestTitle: " + latestTitle, "Github");
+
+            if (downloadUrl == null || downloadUrl == "")
+            {
+                Logger.Error("获取下载地址失败", "CheckRelease");
+                return false;
+            }
+            isChecked = true;
+            isBroken = false;
+        }
+        catch (Exception ex)
+        {
+            isBroken = true;
+            Logger.Error($"发布检查失败\n{ex}", "CheckRelease", false);
+            return false;
+        }
+        return true;
     }
     public static void StartUpdate(string url)
     {

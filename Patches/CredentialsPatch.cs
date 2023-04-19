@@ -94,7 +94,7 @@ internal class VersionShowerStartPatch
             OVersionShower.transform.position = new Vector3(-5.3f, 2.9f, 0f);
             if (TitleLogoPatch.amongUsLogo != null)
             {
-                if (VisitText == null)
+                if (VisitText == null && ModUpdater.visit > 0)
                 {
                     VisitText = Object.Instantiate(__instance.text);
                     VisitText.text = string.Format(GetString("TOHEVisitorCount"), Main.ModColor, ModUpdater.visit);
