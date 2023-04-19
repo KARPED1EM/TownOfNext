@@ -756,7 +756,7 @@ class MeetingHudStartPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 class MeetingHudUpdatePatch
 {
-    private static int bufferTIme = 15;
+    private static int bufferTIme = 50;
     public static void Postfix(MeetingHud __instance)
     {
 
@@ -770,15 +770,16 @@ class MeetingHudUpdatePatch
                 if (!PlayerControl.LocalPlayer.IsAlive())
                     __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
                 else
-                    __instance.playerStates.ToList().ForEach(x => { if (x.AmDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                    __instance.playerStates.ToList().ForEach(x => { if (Main.PlayerStates[x.TargetPlayerId].IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
             else if (myRole is CustomRoles.Mafia)
             {
                 if (!PlayerControl.LocalPlayer.IsAlive() && GameObject.Find("ShootButton") == null)
                     MafiaRevengeManager.CreateJudgeButton(__instance);
                 else
-                    __instance.playerStates.ToList().ForEach(x => { if (x.AmDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+                    __instance.playerStates.ToList().ForEach(x => { if (Main.PlayerStates[x.TargetPlayerId].IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
+            __instance.playerStates.Where(x => Main.PlayerStates[x.TargetPlayerId].IsDead && !x.AmDead).Do(x => x.SetDead(x.DidReport, true));
         }
 
         if (!AmongUsClient.Instance.AmHost) return;
