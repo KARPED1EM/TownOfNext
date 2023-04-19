@@ -4,7 +4,7 @@
 #ShortTitle:★TOHE v2.2.9
 #Date:2023-4-16T00:00:00Z
 #-----------------------------
-Thanks for you playing TOHE!
+Thank you for using TOHE!
 
 
 ## Base

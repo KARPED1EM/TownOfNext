@@ -33,7 +33,7 @@ public class Main : BasePlugin
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.2.9";
+    public const string PluginVersion = "2.2.10";
     public const int PluginCreate = 23;
 
     public static readonly bool ShowQQButton = true;
