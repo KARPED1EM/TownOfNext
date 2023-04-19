@@ -490,7 +490,8 @@ class MeetingHudStartPatch
                 var role = pc.GetCustomRole();
                 var sb = new StringBuilder();
                 sb.Append(GetString(role.ToString()) + pc.GetRoleInfo(true));
-                Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
+                if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
+                    Utils.ShowChildrenSettings(opt, ref sb, command: true);
                 var txt = sb.ToString();
                 sb.Clear().Append(txt.RemoveHtmlTags());
                 foreach (var subRole in Main.PlayerStates[pc.PlayerId].SubRoles)
