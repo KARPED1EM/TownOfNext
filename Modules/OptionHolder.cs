@@ -873,7 +873,7 @@ public static class Options
             .SetGameMode(CustomGameMode.Standard)
             .SetHeader(true)
             .SetColor(new Color32(255, 153, 153, byte.MaxValue));
-        DisableHiddenRoles = BooleanOptionItem.Create(6090071, "DisableHiddenRoles", true, TabGroup.GameSettings, false)
+        DisableHiddenRoles = BooleanOptionItem.Create(6090070, "DisableHiddenRoles", true, TabGroup.GameSettings, false)
             .SetGameMode(CustomGameMode.Standard)
             .SetColor(new Color32(255, 153, 153, byte.MaxValue));
         DisableTaskWin = BooleanOptionItem.Create(66_900_001, "DisableTaskWin", false, TabGroup.GameSettings, false)
