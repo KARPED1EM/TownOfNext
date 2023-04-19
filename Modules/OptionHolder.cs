@@ -111,6 +111,7 @@ public static class Options
     public static OptionItem SendCodeToQQ;
     public static OptionItem SendCodeMinPlayer;
     public static OptionItem DisableVanillaRoles;
+    public static OptionItem DisableHiddenRoles;
     public static OptionItem CEMode;
     public static OptionItem ConfirmEjectionsNK;
     public static OptionItem ConfirmEjectionsNonNK;
@@ -871,6 +872,9 @@ public static class Options
         DisableVanillaRoles = BooleanOptionItem.Create(6090069, "DisableVanillaRoles", true, TabGroup.GameSettings, false)
             .SetGameMode(CustomGameMode.Standard)
             .SetHeader(true)
+            .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+        DisableHiddenRoles = BooleanOptionItem.Create(6090071, "DisableHiddenRoles", true, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.Standard)
             .SetColor(new Color32(255, 153, 153, byte.MaxValue));
         DisableTaskWin = BooleanOptionItem.Create(66_900_001, "DisableTaskWin", false, TabGroup.GameSettings, false)
             .SetGameMode(CustomGameMode.Standard)

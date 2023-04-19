@@ -513,6 +513,7 @@
 "SendCodeToQQ","允许车队姬自动群发您的房号","(Only for China)允许车队姬自动群发您的房号","(Только для Китая)允许车队姬自动群发您的房号","允许车队姬自动群发您的房号","允许车队姬自动群发您的房号"
 "SendCodeMinPlayer","房间人数达到多少时群发","(Only for China)房间人数达到多少时群发","(Только для Китая)房间人数达到多少时群发","房间人数达到多少时群发","房间人数达到多少时群发"
 "DisableVanillaRoles","禁用原版职业","Disable Vanilla Roles","Отключить ванильные Роли","禁用原版职业","禁用原版职业"
+"DisableHiddenRoles","禁用隐藏职业","","","",""
 "VoteMode","投票相关设定","Voting Mode","Режим Голосования","投票相关设定","投票相关设定"
 "WhenSkipVote","跳过投票相当于投给自己","If the Player Skipped","Когда пропускаете Голосование","跳过投票相当于投给自己","跳过投票相当于投给自己"
 "WhenSkipVoteIgnoreFirstMeeting","忽略首次会议","Ignore the First Meeting","Игнорировать первое собрание","忽略首次会议","忽略首次会议"
