@@ -42,6 +42,7 @@ public static class Judge
     public static void Add(byte playerId)
     {
         playerIdList.Add(playerId);
+        TrialLimit.Add(playerId, TrialLimitPerMeeting.GetInt());
     }
     public static bool IsEnable => playerIdList.Count > 0;
     public static void OnReportDeadBody()
@@ -239,7 +240,7 @@ public static class Judge
             targetBox.name = "ShootButton";
             targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-            renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
+            renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
             int copiedIndex = i;
