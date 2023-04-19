@@ -110,10 +110,10 @@ public static class CredentialsPatch
 
             var boostertext = Object.Instantiate(devtext, obj.transform);
             boostertext.GetComponent<TextMeshPro>().text = SponsersData;
-            boostertext.GetComponent<TextMeshPro>().alignment= TextAlignmentOptions.Capline;
+            boostertext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Capline;
             boostertext.localPosition = new Vector3(2.4f, 1.27f, -2f);
             boostertext.localScale = new Vector3(0.5f, 0.5f, 1f);
-            
+
             var textobj = obj.transform.FindChild("Title_TMP");
             Object.Destroy(textobj.GetComponent<TextTranslatorTMP>());
             textobj.GetComponent<TextMeshPro>().text = GetString("DevAndSpnTitle");

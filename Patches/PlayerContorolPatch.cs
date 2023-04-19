@@ -959,7 +959,7 @@ class ReportDeadBodyPatch
                 .Do(pc => Camouflage.RpcSetSkin(pc, RevertToDefault: true));
 
             MeetingTimeManager.OnReportDeadBody();
-            
+
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
             Utils.SyncAllSettings();

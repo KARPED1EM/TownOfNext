@@ -1,13 +1,11 @@
 ﻿using HarmonyLib;
 using Hazel;
-using Sentry.Internal.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TOHE.Roles.Neutral;
 using UnityEngine;
-using UnityEngine.Networking.Types;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Crewmate;

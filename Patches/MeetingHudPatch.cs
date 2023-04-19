@@ -776,7 +776,7 @@ class MeetingHudUpdatePatch
             {
                 if (!PlayerControl.LocalPlayer.IsAlive() && GameObject.Find("ShootButton") == null)
                     MafiaRevengeManager.CreateJudgeButton(__instance);
-                else 
+                else
                     __instance.playerStates.ToList().ForEach(x => { if (x.AmDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
         }

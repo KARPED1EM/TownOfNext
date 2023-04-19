@@ -73,7 +73,7 @@ public static class Swooper
 
         var now = Utils.GetTimeStamp(System.DateTime.Now);
 
-         if (lastTime.TryGetValue(player.PlayerId, out var time) && time + (long)SwooperCooldown.GetFloat() < now)
+        if (lastTime.TryGetValue(player.PlayerId, out var time) && time + (long)SwooperCooldown.GetFloat() < now)
         {
             lastTime.Remove(player.PlayerId);
             player.Notify(GetString("SwooperCanVent"));
@@ -130,7 +130,7 @@ public static class Swooper
                 __instance.myPlayer.MyPhysics.RpcBootFromVent(ventId);
                 NameNotifyManager.Notify(pc, GetString("SwooperInvisInCooldown"));
             }
-        },0.5f, "Swooper Vent");
+        }, 0.5f, "Swooper Vent");
     }
     public static string GetHudText(PlayerControl pc)
     {

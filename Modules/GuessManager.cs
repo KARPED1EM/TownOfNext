@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Hazel;
-using Il2CppSystem.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -439,7 +438,7 @@ public static class GuessManager
         RoleSelectButtons = new();
         PageButtons = new();
         __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(false));
-        
+
         Transform container = UnityEngine.Object.Instantiate(GameObject.Find("PhoneUI").transform, __instance.transform);
         container.transform.localPosition = new Vector3(0, 0, -200f);
         guesserUI = container.gameObject;
@@ -490,7 +489,7 @@ public static class GuessManager
             Teamlabel.transform.localPosition = new Vector3(0, 0, Teamlabel.transform.localPosition.z);
             Teamlabel.transform.localScale *= 1.6f;
             Teamlabel.autoSizeTextContainer = true;
-           
+
             static void CreateTeamButton(Transform Teambutton, CustomRoleTypes type)
             {
                 Teambutton.GetComponent<PassiveButton>().OnClick.AddListener((UnityEngine.Events.UnityAction)(() =>
@@ -576,7 +575,7 @@ public static class GuessManager
             button.FindChild("ControllerHighlight").gameObject.SetActive(false);
             Transform buttonMask = UnityEngine.Object.Instantiate(maskTemplate, buttonParent);
             TextMeshPro label = UnityEngine.Object.Instantiate(textTemplate, button);
-            
+
             button.GetComponent<SpriteRenderer>().sprite = DestroyableSingleton<HatManager>.Instance.GetNamePlateById("nameplate_NoPlate")?.viewData?.viewData?.Image;
             if (!RoleButtons.ContainsKey(role.GetCustomRoleTypes()))
             {
