@@ -27,7 +27,9 @@ public static class NameColorManager
     private static bool KnowTargetRoleColor(PlayerControl seer, PlayerControl target, bool isMeeting)
     {
         return seer == target
+            || (Main.GodMode.Value && seer.AmOwner)
             || target.Is(CustomRoles.GM)
+            || seer.Is(CustomRoles.GM)
             || seer.Is(CustomRoles.God)
             || (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoleTypes.Impostor))
             || (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor) && Options.MadmateKnowWhosImp.GetBool())

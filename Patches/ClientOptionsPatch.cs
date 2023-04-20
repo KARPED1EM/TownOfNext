@@ -13,6 +13,7 @@ public static class OptionsMenuBehaviourStartPatch
     private static ClientOptionItem ForceOwnLanguage;
     private static ClientOptionItem ForceOwnLanguageRoleName;
     private static ClientOptionItem VersionCheat;
+    private static ClientOptionItem GodMode;
 
     public static void Postfix(OptionsMenuBehaviour __instance)
     {
@@ -67,6 +68,10 @@ public static class OptionsMenuBehaviourStartPatch
         if ((VersionCheat == null || VersionCheat.ToggleButton == null) && DebugModeManager.AmDebugger)
         {
             VersionCheat = ClientOptionItem.Create("VersionCheat", Main.VersionCheat, __instance);
+        }
+        if ((GodMode == null || GodMode.ToggleButton == null) && DebugModeManager.AmDebugger)
+        {
+            GodMode = ClientOptionItem.Create("GodMode", Main.GodMode, __instance);
         }
     }
 }

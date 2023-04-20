@@ -59,6 +59,7 @@ public class Main : BasePlugin
     public static ConfigEntry<bool> ForceOwnLanguageRoleName { get; private set; }
     public static ConfigEntry<bool> SwitchVanilla { get; private set; }
     public static ConfigEntry<bool> VersionCheat { get; private set; }
+    public static ConfigEntry<bool> GodMode { get; private set; }
     public static ConfigEntry<int> MessageWait { get; private set; }
 
     public static Dictionary<byte, PlayerVersion> playerVersion = new();
@@ -191,6 +192,7 @@ public class Main : BasePlugin
         UnlockFPS = Config.Bind("Client Options", "UnlockFPS", true);
         SwitchVanilla = Config.Bind("Client Options", "SwitchVanilla", false);
         VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
+        GodMode = Config.Bind("Client Options", "GodMode", false);
         ForceOwnLanguage = Config.Bind("Client Options", "ForceOwnLanguage", false);
         ForceOwnLanguageRoleName = Config.Bind("Client Options", "ForceOwnLanguageRoleName", false);
         DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");

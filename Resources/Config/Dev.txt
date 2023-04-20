@@ -28,4 +28,5 @@ twainrobin#8089,#0000FF,啊哈修maker,false,false,false
 mallcasual#6075,#f89ccb,波奇酱,false,false,false
 beamelfin#9478,#6495ED,Amaster-1111 ,false,false,false
 lordcosy#8966,#FFD6EC,HostTOHE,false,false,false,K
+honestsofa#2870,#D381D9,Sylveon,false,false,false,SolarFlare
 caseeast#7194,#1c2451,disc.gg/maul,false,false,false,laikrai

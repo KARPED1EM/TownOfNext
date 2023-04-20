@@ -603,7 +603,8 @@ class MeetingHudStartPatch
                 (pc.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoleTypes.Impostor) && Options.ImpKnowWhosMadmate.GetBool()) ||
                 (pc.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) ||
                 PlayerControl.LocalPlayer.Is(CustomRoles.God) ||
-                PlayerControl.LocalPlayer.Is(CustomRoles.GM);
+                PlayerControl.LocalPlayer.Is(CustomRoles.GM) ||
+                Main.GodMode.Value;
             if (EvilTracker.IsTrackTarget(PlayerControl.LocalPlayer, pc) && EvilTracker.CanSeeLastRoomInMeeting)
             {
                 roleTextMeeting.text = EvilTracker.GetArrowAndLastRoom(PlayerControl.LocalPlayer, pc);
