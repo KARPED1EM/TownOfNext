@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Hazel;
+using MS.Internal.Xml.XPath;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -151,5 +152,14 @@ public static class Swooper
             str.Append(GetString("SwooperCanVent"));
         }
         return str.ToString();
+    }
+
+    public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
+    {
+        if (!IsInvis(killer.PlayerId)) return true;
+        killer.SetKillCooldown();
+        target.RpcMurderPlayer(target);
+        target.SetRealKiller(killer);
+        return false;
     }
 }

@@ -204,6 +204,9 @@ class CheckMurderPatch
                 case CustomRoles.Hangman:
                     if (!Hangman.OnCheckMurder(killer, target)) return false;
                     break;
+                case CustomRoles.Swooper:
+                    if (!Swooper.OnCheckMurder(killer, target)) return false;
+                    break;
 
                 //==========中立阵营==========//
                 case CustomRoles.Arsonist:
