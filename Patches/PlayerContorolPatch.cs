@@ -474,9 +474,13 @@ class CheckMurderPatch
                 }, 15f, ("SUS!!!!"));
                 new LateTask(() =>
                 {
-                 killer.MurderPlayer(killer);
-                Utils.NotifyRoles();
-                }, 17f, ("KILLER!!!!!!!!"))
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.MurderPlayer(killer);
+                    Utils.NotifyRoles();
+                }, 17f, ("KILLER!!!!!!!!"));
                 break;
         }
         //保镖保护
