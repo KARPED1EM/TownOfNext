@@ -160,6 +160,7 @@ public static class Swooper
         killer.SetKillCooldown();
         target.RpcMurderPlayer(target);
         target.SetRealKiller(killer);
+        if ()
         return false;
     }
 }

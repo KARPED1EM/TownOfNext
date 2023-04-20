@@ -496,7 +496,7 @@ class MurderPlayerPatch
         {
             //When Bait is killed
             case CustomRoles.Bait:
-                if (killer.PlayerId != target.PlayerId)
+                if (killer.PlayerId != target.PlayerId || target.GetRealKiller()?.GetCustomRole() is CustomRoles.Swooper)
                 {
                     if (target.Is(CustomRoles.Madmate)) //背叛诱饵
                     {
