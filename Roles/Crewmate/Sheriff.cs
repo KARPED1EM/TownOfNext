@@ -16,6 +16,7 @@ public static class Sheriff
     private static OptionItem ShotLimitOpt;
     private static OptionItem CanKillAllAlive;
     public static OptionItem CanKillNeutrals;
+    public static OptionItem CanKillNeutralsMode;
     public static OptionItem CanKillMadmate;
     public static OptionItem SetMadCanKill;
     public static OptionItem MadCanKillCrew;
@@ -26,7 +27,7 @@ public static class Sheriff
     public static Dictionary<byte, float> CurrentKillCooldown = new();
     public static readonly string[] KillOption =
     {
-        "SheriffCanKillAll", "SheriffCanKillNone", "SheriffCanKillSeparately"
+        "SheriffCanKillAll", "SheriffCanKillSeparately"
     };
     public static void SetupCustomOption()
     {
@@ -38,7 +39,8 @@ public static class Sheriff
             .SetValueFormat(OptionFormat.Times);
         CanKillAllAlive = BooleanOptionItem.Create(Id + 15, "SheriffCanKillAllAlive", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         CanKillMadmate = BooleanOptionItem.Create(Id + 17, "SheriffCanKillMadmate", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
-        CanKillNeutrals = StringOptionItem.Create(Id + 14, "SheriffCanKillNeutrals", KillOption, 0, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
+        CanKillNeutrals = BooleanOptionItem.Create(Id + 16, "SheriffCanKillNeutrals", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
+        CanKillNeutralsMode = StringOptionItem.Create(Id + 14, "SheriffCanKillNeutralsMode", KillOption, 0, TabGroup.CrewmateRoles, false).SetParent(CanKillNeutrals);
         SetUpNeutralOptions(Id + 30);
         SetMadCanKill = BooleanOptionItem.Create(Id + 18, "SheriffSetMadCanKill", false, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         MadCanKillImp = BooleanOptionItem.Create(Id + 19, "SheriffMadCanKillImp", true, TabGroup.CrewmateRoles, false).SetParent(SetMadCanKill);
@@ -47,9 +49,9 @@ public static class Sheriff
     }
     public static void SetUpNeutralOptions(int Id)
     {
-        foreach (var neutral in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x.IsNeutral()))
+        foreach (var neutral in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x.IsNeutral() && x is not CustomRoles.KB_Normal))
         {
-            SetUpKillTargetOption(neutral, Id, true, CanKillNeutrals);
+            SetUpKillTargetOption(neutral, Id, true, CanKillNeutralsMode);
             Id++;
         }
     }
@@ -135,7 +137,7 @@ public static class Sheriff
         return cRole.GetCustomRoleTypes() switch
         {
             CustomRoleTypes.Impostor => true,
-            CustomRoleTypes.Neutral => CanKillNeutrals.GetValue() != 2 && (CanKillNeutrals.GetValue() == 0 || !KillTargetOptions.TryGetValue(cRole, out var option) || option.GetBool()),
+            CustomRoleTypes.Neutral => CanKillNeutrals.GetBool() && (CanKillNeutralsMode.GetValue() == 0 || (!KillTargetOptions.TryGetValue(cRole, out var option) || option.GetBool())),
             _ => IsMadmate,//それでもない場合マッドが切れるand重複マッドか調べる
         };
     }
