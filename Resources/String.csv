@@ -414,7 +414,7 @@ GlitchInfoLong,(船员阵营):\n模组的程序不会将活死人视为存活状
 JudgeInfoLong,(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。,"(Crewmates):\nThe judge can judge a certain player during the meeting. If the target is evil, the target will be killed (whether it is evil or not is set by the host), and if it is wrong, the judge gonna suicide. \nThe judgment command is: /tl [player id]\nYou can see the player's id before the player's name, or use the /id command to view the id of all players. Judges can judge all players when they become madmate."
 MorticianInfoLong,(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。,"(Crewmates):\nThe Mortician can see arrows pointing to all dead bodies, and the Mortician reports that the body can know the last player the victim had contact with during the meeting. Note: Mortician won't be Oblivious."
 MediumshiperInfoLong,(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。,"(Crewmates):\nIf a player is killed, the Mediumshiper will receive a reminder. After the Mediumshiper reports the body, he can establish contact with the victim. Before the end of the meeting, the victim has one chance to answer the Mediumshiper's questions, and can only answer yes or no. Note: Mediumshiper  won't be Oblivious."
-LostCrewInfoLong,(船员阵营):\n当他被击杀后，凶手的名字上会出现“I am SUS!!!!”持续到游戏结束 之后凶手的游戏屏幕会闪烁红光，之后凶手因为精神压力自杀了。"
+LostCrewInfoLong,(船员阵营):\n当他被击杀后，凶手的名字会被强制改为“I am SUS!!!!”持续到游戏结束 之后凶手的游戏屏幕会闪烁红光，之后凶手因为精神压力自杀了。"
 RudepeopleInfoLong,(船员阵营):\n当他使用跳管键时，会开启挑衅阶段。\n如果在挑衅阶段击杀挑衅者，则挑衅者会和凶手同归于尽."
 
 # 中立阵营 / Neutrals descriptions
