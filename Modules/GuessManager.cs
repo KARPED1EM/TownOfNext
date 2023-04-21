@@ -80,7 +80,7 @@ public static class GuessManager
         return false;
     }
 
-    public static bool GuesserMsg(PlayerControl pc, string msg)
+    public static bool GuesserMsg(PlayerControl pc, string msg, bool isUI = false)
     {
         var originMsg = msg;
 
@@ -112,7 +112,7 @@ public static class GuessManager
             (pc.Is(CustomRoles.NiceGuesser) && Options.GGTryHideMsg.GetBool()) ||
             (pc.Is(CustomRoles.EvilGuesser) && Options.EGTryHideMsg.GetBool())
             ) TryHideMsg();
-            else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
+            else if (pc.AmOwner && !isUI) Utils.SendMessage(originMsg, 255, pc.GetRealName());
 
             if (!MsgToPlayerAndRole(msg, out byte targetId, out CustomRoles role, out string error))
             {
@@ -610,7 +610,7 @@ public static class GuessManager
 
                     Logger.Msg($"Click: {__instance.playerStates[buttonTarget].TargetPlayerId}({focusedTarget.GetCustomRole()}) => {role}", "Guesser UI");
 
-                    if (AmongUsClient.Instance.AmHost) GuesserMsg(PlayerControl.LocalPlayer, $"/bt {__instance.playerStates[buttonTarget].TargetPlayerId} {GetString(role.ToString())}");
+                    if (AmongUsClient.Instance.AmHost) GuesserMsg(PlayerControl.LocalPlayer, $"/bt {__instance.playerStates[buttonTarget].TargetPlayerId} {GetString(role.ToString())}", true);
                     else SendRPC(__instance.playerStates[buttonTarget].TargetPlayerId, role);
 
                     // Reset the GUI
