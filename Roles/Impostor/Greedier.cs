@@ -50,9 +50,16 @@ public static class Greedier
 
     public static void SetKillCooldown(byte id)
     {
-        IsOdd[id] = true;
-        SendRPC(id);
         Main.AllPlayerKillCooldown[id] = OddKillCooldown.GetFloat();
+    }
+    public static void OnReportDeadBody()
+    {
+        foreach (var x in IsOdd)
+        {
+            IsOdd[x.Key] = true;
+            SendRPC(x.Key);
+            Main.AllPlayerKillCooldown[x.Key] = OddKillCooldown.GetFloat();
+        }
     }
     public static void OnCheckMurder(PlayerControl killer)
     {

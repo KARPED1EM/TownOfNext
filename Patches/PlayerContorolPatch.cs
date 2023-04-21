@@ -942,6 +942,7 @@ class ReportDeadBodyPatch
             Eraser.OnReportDeadBody();
             Hacker.OnReportDeadBody();
             Judge.OnReportDeadBody();
+            Greedier.OnReportDeadBody();
 
             foreach (var x in Main.RevolutionistStart)
             {
