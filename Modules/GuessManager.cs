@@ -331,14 +331,14 @@ public static class GuessManager
     public static void TryHideMsg()
     {
         ChatUpdatePatch.DoBlockChat = true;
-        Array values = Enum.GetValues(typeof(CustomRoles));
+        List<CustomRoles> roles = Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x is not CustomRoles.NotAssigned and not CustomRoles.KB_Normal).ToList();
         var rd = IRandom.Instance;
         string msg;
         string[] command = new string[] { "bet", "bt", "guess", "gs", "shoot", "st", "赌", "猜", "审判", "tl", "判", "审" };
         for (int i = 0; i < 20; i++)
         {
             msg = "/";
-            if (rd.Next(1, 100) < 30)
+            if (rd.Next(1, 100) < 20)
             {
                 msg += "id";
             }
@@ -348,7 +348,7 @@ public static class GuessManager
                 msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
                 msg += rd.Next(0, 15).ToString();
                 msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
-                CustomRoles role = (CustomRoles)values.GetValue(rd.Next(values.Length));
+                CustomRoles role = roles[rd.Next(0, roles.Count())];
                 msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
                 msg += Utils.GetRoleName(role);
             }
