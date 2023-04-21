@@ -77,7 +77,7 @@ public static class Swooper
         if (lastTime.TryGetValue(player.PlayerId, out var time) && time + (long)SwooperCooldown.GetFloat() < now)
         {
             lastTime.Remove(player.PlayerId);
-            player.Notify(GetString("SwooperCanVent"));
+            if (!player.IsModClient()) player.Notify(GetString("SwooperCanVent"));
             SendRPC(player);
         }
 
@@ -95,6 +95,7 @@ public static class Swooper
                 {
                     lastTime.Add(pc.PlayerId, now);
                     pc?.MyPhysics?.RpcBootFromVent(Main.LastEnteredVent[pc.PlayerId].Id);
+                    pc?.RpcGuesserMurderPlayer();
                     NameNotifyManager.Notify(pc, GetString("SwooperInvisStateOut"));
                     SendRPC(pc);
                     continue;
