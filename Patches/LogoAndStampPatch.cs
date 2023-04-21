@@ -53,6 +53,7 @@ public static class CredentialsPatch
             TransData += $"\nGurge44 - <size=75%>{GetString("TranEN")}</size>";
             TransData += $"\n法官 - <size=75%>{GetString("TranCHT")}</size>";
             TransData += $"\nSolarFlare - <size=75%>{GetString("TranEN")}</size>";
+            TransData += $"\nchill_ultimated - <size=75%>{GetString("TranRU")}</size>";
 
             SponsersData += $"罗寄";
             SponsersData += $"\n喜";

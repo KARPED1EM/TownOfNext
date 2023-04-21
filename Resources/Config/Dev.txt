@@ -10,6 +10,7 @@ drilldinky#1386,null,null,true,false,false,爱玩AU的河豚
 farardour#6818,null,null,true,false,false,-提米SaMa-
 vealused#8192,null,null,true,false,false,lag丶xy
 storyeager#0815,null,null,true,false,false,航娜丽莎
+versegame#3885,null,null,true,false,false,柴唔cw
 
 heavyclod#2286,#FFFF00,小叨.exe已停止运行,true,false,false,小叨院长
 storeroan#0331,#FF0066,Night_瓜,true,false,false,Night_瓜
