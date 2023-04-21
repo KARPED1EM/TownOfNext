@@ -252,9 +252,9 @@ public static class Utils
         var TextData = GetRoleText(playerId, pure);
         return ColorString(TextData.Item2, TextData.Item1);
     }
-    public static string GetRoleName(CustomRoles role)
+    public static string GetRoleName(CustomRoles role, bool forUser = true)
     {
-        return GetRoleString(Enum.GetName(typeof(CustomRoles), role));
+        return GetRoleString(Enum.GetName(typeof(CustomRoles), role), forUser);
     }
     public static string GetDeathReason(PlayerState.DeathReason status)
     {

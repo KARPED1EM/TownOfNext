@@ -64,9 +64,10 @@ public static class Translator
         }
     }
 
-    public static string GetString(string s, Dictionary<string, string> replacementDic = null)
+    public static string GetString(string s, Dictionary<string, string> replacementDic = null, bool console = false)
     {
         var langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.SChinese;
+        if (console) langId = SupportedLangs.SChinese;
         if (Main.ForceOwnLanguage.Value) langId = GetUserTrueLang();
         string str = GetString(s, langId);
         if (replacementDic != null)
@@ -103,10 +104,10 @@ public static class Translator
     }
     public static string GetString(StringNames stringName)
         => DestroyableSingleton<TranslationController>.Instance.GetString(stringName, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
-    public static string GetRoleString(string str)
+    public static string GetRoleString(string str, bool forUser = true)
     {
         var CurrentLanguage = TranslationController.Instance.currentLanguage.languageID;
-        var lang = CurrentLanguage;
+        var lang = forUser ? CurrentLanguage : SupportedLangs.SChinese;
         if (Main.ForceOwnLanguageRoleName.Value)
             lang = GetUserTrueLang();
 

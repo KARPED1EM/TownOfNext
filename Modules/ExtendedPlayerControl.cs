@@ -326,7 +326,7 @@ static class ExtendedPlayerControl
     {
         return Utils.GetDisplayRoleName(player.PlayerId, pure);
     }
-    public static string GetSubRoleName(this PlayerControl player)
+    public static string GetSubRoleName(this PlayerControl player, bool forUser = false)
     {
         var SubRoles = Main.PlayerStates[player.PlayerId].SubRoles;
         if (SubRoles.Count == 0) return "";
@@ -334,21 +334,22 @@ static class ExtendedPlayerControl
         foreach (var role in SubRoles)
         {
             if (role == CustomRoles.NotAssigned) continue;
-            sb.Append($"{Utils.ColorString(Color.white, " + ")}{Utils.GetRoleName(role)}");
+            sb.Append($"{Utils.ColorString(Color.white, " + ")}{Utils.GetRoleName(role, forUser)}");
         }
 
         return sb.ToString();
     }
-    public static string GetAllRoleName(this PlayerControl player)
+    public static string GetAllRoleName(this PlayerControl player, bool forUser = true)
     {
         if (!player) return null;
-        var text = Utils.GetRoleName(player.GetCustomRole());
-        text += player.GetSubRoleName();
+        var text = Utils.GetRoleName(player.GetCustomRole(), forUser);
+        text += player.GetSubRoleName(forUser);
         return text;
     }
-    public static string GetNameWithRole(this PlayerControl player)
+    public static string GetNameWithRole(this PlayerControl player, bool forUser = false)
     {
-        return $"{player?.Data?.PlayerName}" + (GameStates.IsInGame ? $"({player?.GetAllRoleName()})" : "");
+        var ret = $"{player?.Data?.PlayerName}" + (GameStates.IsInGame ? $"({player?.GetAllRoleName(forUser)})" : "");
+        return (forUser ? ret : ret.RemoveHtmlTags());
     }
     public static string GetRoleColorCode(this PlayerControl player)
     {

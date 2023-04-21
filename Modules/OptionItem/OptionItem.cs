@@ -146,10 +146,10 @@ public abstract class OptionItem
         => Do(i => ReplacementDictionary?.Remove(key));
 
     // Getter
-    public virtual string GetName(bool disableColor = false)
+    public virtual string GetName(bool disableColor = false, bool console = false)
     {
         return disableColor ?
-            Translator.GetString(Name, ReplacementDictionary) :
+            Translator.GetString(Name, ReplacementDictionary, console) :
             Utils.ColorString(NameColor, Translator.GetString(Name, ReplacementDictionary));
     }
     public virtual bool GetBool() => CurrentValue != 0 && (Parent == null || Parent.GetBool());
