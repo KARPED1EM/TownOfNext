@@ -502,7 +502,7 @@ class MeetingHudStartPatch
             }
         if (msgToSend.Count >= 1)
         {
-            var msgTemp = msgToSend.ToArray();
+            var msgTemp = msgToSend.ToList();
             new LateTask(() => { msgTemp.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3)); }, 3f, "Skill Description First Meeting");
         }
         msgToSend = new();
