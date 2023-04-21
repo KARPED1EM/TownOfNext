@@ -8,7 +8,6 @@ using static TOHE.Translator;
 namespace TOHE;
 
 //参考：https://github.com/ykundesu/SuperNewRoles/blob/master/SuperNewRoles/Patches/LogoAndStampPatch.cs
-
 [HarmonyPatch]
 public static class CredentialsPatch
 {

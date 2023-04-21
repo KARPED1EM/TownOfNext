@@ -26,6 +26,11 @@ public static class OptionsMenuBehaviourStartPatch
             Main.AutoStart.Value = false;
             Main.SetAutoStartToDisable = true;
         }
+        if (!DebugModeManager.AmDebugger)
+        {
+            Main.VersionCheat.Value = false;
+            Main.GodMode.Value = false;
+        }
 
         if (UnlockFPS == null || UnlockFPS.ToggleButton == null)
         {
