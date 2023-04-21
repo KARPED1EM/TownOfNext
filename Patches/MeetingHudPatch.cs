@@ -524,7 +524,7 @@ class MeetingHudStartPatch
             {
                 if (!Options.ImpKnowCyberStarDead.GetBool() && pc.GetCustomRole().IsImpostor()) continue;
                 if (!Options.NeutralKnowCyberStarDead.GetBool() && pc.GetCustomRole().IsNeutral()) continue;
-                AddMsg(string.Format(GetString("CyberStarDead"), Main.AllPlayerNames[csId], Utils.ColorString(Utils.GetRoleColor(CustomRoles.CyberStar), GetString("CyberStarNewsTitle"))), pc.PlayerId);
+                AddMsg(string.Format(GetString("CyberStarDead"), Main.AllPlayerNames[csId]), pc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.CyberStar), GetString("CyberStarNewsTitle")));
             }
             //侦探报告线索
             if (Main.DetectiveNotify.ContainsKey(pc.PlayerId))
