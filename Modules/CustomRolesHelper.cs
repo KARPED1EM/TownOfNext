@@ -84,6 +84,7 @@ internal static class CustomRolesHelper
                 CustomRoles.Mortician => CustomRoles.Crewmate,
                 CustomRoles.Mediumshiper => CustomRoles.Crewmate,
                 CustomRoles.Bard => CustomRoles.Impostor,
+                CustomRoles.Swooper => CustomRoles.Impostor,
                 CustomRoles.Berserkers => CustomRoles.Impostor,
                 CustomRoles.LostCrew => CustomRoles.Crewmate,
                 CustomRoles.Rudepeople => CustomRoles.Engineer,
@@ -132,7 +133,6 @@ internal static class CustomRolesHelper
             CustomRoles.Avanger or
             CustomRoles.Youtuber or
             CustomRoles.Egoist or
-            CustomRoles.Piper or
             CustomRoles.TicketsStealer or
             CustomRoles.DualPersonality or
             CustomRoles.Mimic or
@@ -215,6 +215,8 @@ internal static class CustomRolesHelper
             CustomRoles.Eraser or
             CustomRoles.OverKiller or
             CustomRoles.Hangman or
+            CustomRoles.Bard or
+            CustomRoles.Swooper;
             CustomRoles.Bard or
             CustomRoles.Berserkers or
             CustomRoles.Depressed;

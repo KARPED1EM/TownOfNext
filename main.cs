@@ -32,15 +32,14 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public static readonly string MainMenuText = "开源社区项目，仅供交流学习";
-    public static readonly string BANNEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.2.10";
-    public const int PluginCreate = 22;
+    public const int PluginCreate = 23;
 
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
     public static readonly bool ShowDiscordButton = true;
-    public static readonly string DiscordInviteUrl = "https://discord.gg/5PNwUaN5";
+    public static readonly string DiscordInviteUrl = "https://discord.gg/hkk2p9ggv4";
 
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
@@ -179,8 +178,11 @@ public class Main : BasePlugin
     public static string OverrideWelcomeMsg = "";
     public static int HostClientId;
 
-    public static List<string> TName_Snacks = new() { "冰激凌", "奶茶", "巧克力", "蛋糕", "甜甜圈", "可乐", "柠檬水", "冰糖葫芦", "果冻", "糖果", "牛奶", "抹茶", "烧仙草", "菠萝包", "布丁", "椰子冻", "曲奇", "红豆土司", "三彩团子", "艾草团子", "泡芙", "可丽饼", "桃酥", "麻薯", "鸡蛋仔", "马卡龙", "雪梅娘", "炒酸奶", "蛋挞", "松饼", "西米露", "奶冻", "奶酥", "可颂", "奶糖" };
-    public static string Get_TName_Snacks => TName_Snacks[IRandom.Instance.Next(0, TName_Snacks.Count)];
+    public static List<string> TName_Snacks_CN = new() { "冰激凌", "奶茶", "巧克力", "蛋糕", "甜甜圈", "可乐", "柠檬水", "冰糖葫芦", "果冻", "糖果", "牛奶", "抹茶", "烧仙草", "菠萝包", "布丁", "椰子冻", "曲奇", "红豆土司", "三彩团子", "艾草团子", "泡芙", "可丽饼", "桃酥", "麻薯", "鸡蛋仔", "马卡龙", "雪梅娘", "炒酸奶", "蛋挞", "松饼", "西米露", "奶冻", "奶酥", "可颂", "奶糖" };
+    public static List<string> TName_Snacks_EN = new() { "Ice cream", "Milk tea", "Chocolate", "Cake", "Donut", "Coke", "Lemonade", "Candied haws", "Jelly", "Candy", "Milk", "Matcha", "Burning Grass Jelly", "Pineapple Bun", "Pudding", "Coconut Jelly", "Cookies", "Red Bean Toast", "Three Color Dumplings", "Wormwood Dumplings", "Puffs", "Can be Crepe", "Peach Crisp", "Mochi", "Egg Waffle", "Macaron", "Snow Plum Niang", "Fried Yogurt", "Egg Tart", "Muffin", "Sago Dew", "panna cotta", "soufflé", "croissant", "toffee" };
+    public static string Get_TName_Snacks => TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese ?
+        TName_Snacks_CN[IRandom.Instance.Next(0, TName_Snacks_CN.Count)] :
+        TName_Snacks_EN[IRandom.Instance.Next(0, TName_Snacks_EN.Count)];
 
     public override void Load()
     {
@@ -205,6 +207,7 @@ public class Main : BasePlugin
         if (!DebugModeManager.AmDebugger)
         {
             TOHE.Logger.Disable("2018k");
+            TOHE.Logger.Disable("Github");
             TOHE.Logger.Disable("CustomRpcSender");
             //TOHE.Logger.Disable("ReceiveRPC");
             TOHE.Logger.Disable("SendRPC");
@@ -283,6 +286,7 @@ public class Main : BasePlugin
         Translator.Init();
         BanManager.Init();
         TemplateManager.Init();
+        SpamManager.Init();
         DevManager.Init();
         Cloud.Init();
 
@@ -373,7 +377,6 @@ public class Main : BasePlugin
                 {CustomRoles.Avanger, "#ffab1b"},
                 {CustomRoles.Youtuber, "#fb749b"},
                 {CustomRoles.Egoist, "#5600ff"},
-                {CustomRoles.Piper, "#a3d7a8"},
                 {CustomRoles.TicketsStealer, "#ff1919"},
                 {CustomRoles.DualPersonality, "#3a648f"},
                 {CustomRoles.Mimic, "#ff1919"},
@@ -466,6 +469,7 @@ public enum CustomRoles
     OverKiller,
     Hangman,
     Bard,
+    Swooper,
     Berserkers,
     Error404,
     Depressed,
@@ -551,7 +555,6 @@ public enum CustomRoles
     Avanger,
     Youtuber,
     Egoist,
-    Piper,
     TicketsStealer,
     DualPersonality,
     Mimic,

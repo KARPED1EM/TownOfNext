@@ -90,6 +90,7 @@ public static class Vampire
     }
     public static void KillBitten(PlayerControl vampire, PlayerControl target, bool isButton = false)
     {
+        if (vampire == null || target == null || target.Data.Disconnected) return;
         if (target.IsAlive())
         {
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Bite;

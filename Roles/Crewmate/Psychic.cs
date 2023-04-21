@@ -1,7 +1,8 @@
+using HarmonyLib;
 using Hazel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using static TOHE.Options;
 
 namespace TOHE.Roles.Crewmate;
@@ -56,9 +57,9 @@ public static class Psychic
     }
     public static bool IsRedForPsy(this PlayerControl target, PlayerControl seer)
     {
-        if (target == null || seer == null || RedPlayer == null) return false;
+        if (target == null || seer == null) return false;
         if (seer.Is(CustomRoles.Madmate)) return target.GetCustomRole().IsNeutral() || target.GetCustomRole().IsCK();
-        else return RedPlayer.Contains(seer.PlayerId);
+        else return RedPlayer != null && RedPlayer.Contains(target.PlayerId);
     }
     public static void OnReportDeadBody()
     {
@@ -70,22 +71,25 @@ public static class Psychic
         if (!IsEnable || !AmongUsClient.Instance.AmHost) return;
 
         List<PlayerControl> BadListPc = Main.AllAlivePlayerControls.Where(x =>
-        x.GetCustomRole().IsImpostorTeam() || x.Is(CustomRoles.Madmate) ||
+        x.Is(CustomRoleTypes.Impostor) || x.Is(CustomRoles.Madmate) ||
         (x.GetCustomRole().IsCK() && CkshowEvil.GetBool()) ||
         (x.GetCustomRole().IsNeutralKilling() && NEshowEvil.GetBool()) ||
         (x.GetCustomRole().IsNeutral() && !x.GetCustomRole().IsNeutralKilling() && NBshowEvil.GetBool())
         ).ToList();
 
         List<byte> BadList = new();
-        foreach (var pc in BadListPc) BadList.Add(pc.PlayerId);
+        BadListPc.Do(x => BadList.Add(x.PlayerId));
         List<byte> AllList = new();
-        foreach (var pc in Main.AllAlivePlayerControls.Where(x => !BadList.Contains(x.PlayerId) && !x.Is(CustomRoles.Psychic)))
-            AllList.Add(pc.PlayerId);
+        Main.AllAlivePlayerControls.Where(x => !BadList.Contains(x.PlayerId) && !x.Is(CustomRoles.Psychic)).Do(x => AllList.Add(x.PlayerId));
 
         int ENum = 1;
         for (int i = 1; i < CanSeeNum.GetInt(); i++)
             if (IRandom.Instance.Next(0, 100) < 18) ENum++;
         int BNum = CanSeeNum.GetInt() - ENum;
+        ENum = Math.Min(ENum, BadList.Count);
+        BNum = Math.Min(BNum, AllList.Count);
+
+        if (ENum < 1) goto EndOfSelect;
 
         RedPlayer = new();
         for (int i = 0; i < ENum && BadList.Count >= 1; i++)
@@ -101,7 +105,10 @@ public static class Psychic
             AllList.RemoveAll(RedPlayer.Contains);
         }
 
+    EndOfSelect:
+
         Logger.Info($"需要{CanSeeNum.GetInt()}个红名，其中需要{ENum}个邪恶。计算后显示红名{RedPlayer.Count}个", "Psychic");
+        RedPlayer.Do(x => Logger.Info($"红名：{x}: {Main.AllPlayerNames[x]}", "Psychic"));
         SendRPC(); //RPC同步红名名单
 
     }

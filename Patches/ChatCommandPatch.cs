@@ -3,7 +3,6 @@ using HarmonyLib;
 using Hazel;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -18,216 +17,6 @@ namespace TOHE;
 internal class ChatCommands
 {
     public static List<string> ChatHistory = new();
-
-    public static bool MafiaMsgCheck(PlayerControl pc, string msg)
-    {
-        if (!AmongUsClient.Instance.AmHost) return false;
-        if (!GameStates.IsInGame || pc == null) return false;
-        if (!pc.Is(CustomRoles.Mafia)) return false;
-        msg = msg.Trim().ToLower();
-        if (msg.Length < 3 || msg[..3] != "/rv") return false;
-        if (Options.MafiaCanKillNum.GetInt() < 1)
-        {
-            Utils.SendMessage(GetString("MafiaKillDisable"), pc.PlayerId);
-            return true;
-        }
-
-        if (!pc.Data.IsDead)
-        {
-            Utils.SendMessage(GetString("MafiaAliveKill"), pc.PlayerId);
-            return true;
-        }
-
-        if (msg == "/rv")
-        {
-            string text = GetString("PlayerIdList");
-            foreach (var npc in Main.AllAlivePlayerControls)
-                text += "\n" + npc.PlayerId.ToString() + " → (" + npc.GetDisplayRoleName() + ") " + npc.GetRealName();
-            Utils.SendMessage(text, pc.PlayerId);
-            return true;
-        }
-
-        if (Main.MafiaRevenged.ContainsKey(pc.PlayerId))
-        {
-            if (Main.MafiaRevenged[pc.PlayerId] >= Options.MafiaCanKillNum.GetInt())
-            {
-                Utils.SendMessage(GetString("MafiaKillMax"), pc.PlayerId);
-                return true;
-            }
-        }
-        else
-        {
-            Main.MafiaRevenged.Add(pc.PlayerId, 0);
-        }
-
-        int targetId;
-        PlayerControl target;
-        try
-        {
-            targetId = int.Parse(msg.Replace("/rv", String.Empty));
-            target = Utils.GetPlayerById(targetId);
-        }
-        catch
-        {
-            Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
-            return true;
-        }
-
-        if (target == null || target.Data.IsDead)
-        {
-            Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
-            return true;
-        }
-
-        string Name = target.GetRealName();
-        Utils.SendMessage(string.Format(GetString("MafiaKillSucceed"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), " ★ 特供情报 ★ "));
-
-        new LateTask(() =>
-        {
-            target.SetRealKiller(pc);
-            Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
-            target.RpcMurderPlayerV3(target);
-            Main.PlayerStates[target.PlayerId].SetDead();
-            Main.MafiaRevenged[pc.PlayerId]++;
-            foreach (var pc in Main.AllPlayerControls)
-                RPC.PlaySoundRPC(pc.PlayerId, Sounds.KillSound);
-            ChatUpdatePatch.DoBlockChat = false;
-            Utils.NotifyRoles(isForMeeting: true, NoCache: true);
-        }, 0.9f, "Mafia Kill");
-        return true;
-    }
-
-    public static bool ContainsStart(string text)
-    {
-        text = text.Trim().ToLower();
-
-        int stNum = 0;
-        for (int i = 0; i < text.Length; i++)
-        {
-            if (text[i..].Equals("k")) stNum++;
-            if (text[i..].Equals("开")) stNum++;
-        }
-        if (stNum >= 3) return true;
-
-        if (text == "Start") return true;
-        if (text == "start") return true;
-        if (text == "开") return true;
-        if (text == "快开") return true;
-        if (text == "开始") return true;
-        if (text == "开啊") return true;
-        if (text == "开阿") return true;
-        if (text == "kai") return true;
-        if (text == "kaishi") return true;
-        if (text.Contains("started")) return false;
-        if (text.Contains("starter")) return false;
-        if (text.Contains("Starting")) return false;
-        if (text.Contains("starting")) return false;
-        if (text.Contains("beginner")) return false;
-        if (text.Contains("beginned")) return false;
-        if (text.Contains("了")) return false;
-        if (text.Contains("没")) return false;
-        if (text.Contains("吗")) return false;
-        if (text.Contains("哈")) return false;
-        if (text.Contains("还")) return false;
-        if (text.Contains("现")) return false;
-        if (text.Contains("不")) return false;
-        if (text.Contains("可")) return false;
-        if (text.Contains("刚")) return false;
-        if (text.Contains("的")) return false;
-        if (text.Contains("打")) return false;
-        if (text.Contains("门")) return false;
-        if (text.Contains("关")) return false;
-        if (text.Contains("怎")) return false;
-        if (text.Contains("要")) return false;
-        if (text.Contains("摆")) return false;
-        if (text.Contains("啦")) return false;
-        if (text.Contains("咯")) return false;
-        if (text.Contains("嘞")) return false;
-        if (text.Contains("勒")) return false;
-        if (text.Contains("心")) return false;
-        if (text.Contains("呢")) return false;
-        if (text.Contains("门")) return false;
-        if (text.Contains("总")) return false;
-        if (text.Contains("哥")) return false;
-        if (text.Contains("姐")) return false;
-        if (text.Contains("《")) return false;
-        if (text.Contains("?")) return false;
-        if (text.Contains("？")) return false;
-        if (text.Length >= 3) return false;
-        if (text.Contains("start")) return true;
-        if (text.Contains("s t a r t")) return true;
-        if (text.Contains("begin")) return true;
-        return text.Contains("开") || text.Contains("kai");
-    }
-
-    public static bool ProhibitedCheck(PlayerControl player, string text)
-    {
-        if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
-        string name = player.GetRealName();
-        bool kick = false;
-        string msg = "";
-
-        if (Options.AutoKickStart.GetBool())
-        {
-            if (ContainsStart(text) && GameStates.IsLobby)
-            {
-                msg = string.Format(GetString("Message.KickWhoSayStart"), name);
-                if (Options.AutoKickStart.GetBool())
-                {
-                    if (!Main.SayStartTimes.ContainsKey(player.GetClientId())) Main.SayStartTimes.Add(player.GetClientId(), 0);
-                    Main.SayStartTimes[player.GetClientId()]++;
-                    msg = string.Format(GetString("Message.WarnWhoSayStart"), name, Main.SayStartTimes[player.GetClientId()]);
-                    if (Main.SayStartTimes[player.GetClientId()] > Options.AutoKickStartTimes.GetInt())
-                    {
-                        msg = string.Format(GetString("Message.KickStartAfterWarn"), name, Main.SayStartTimes[player.GetClientId()]);
-                        kick = true;
-                    }
-                }
-                if (msg != "") Utils.SendMessage(msg);
-                if (kick) AmongUsClient.Instance.KickPlayer(player.GetClientId(), Options.AutoKickStartAsBan.GetBool());
-                return true;
-            }
-        }
-
-        var list = ReturnAllNewLinesInFile(Main.BANNEDWORDS_FILE_PATH, noErr: true);
-        bool banned = false;
-        foreach (var word in list)
-        {
-            if (word != null && text.Contains(word))
-            {
-                string banedWord = word;
-                banned = true;
-                break;
-            }
-        }
-        if (!banned) return false;
-
-        if (Options.AutoWarnStopWords.GetBool()) msg = string.Format(GetString("Message.WarnWhoSayBanWord"), name);
-        if (Options.AutoKickStopWords.GetBool())
-        {
-            if (!Main.SayBanwordsTimes.ContainsKey(player.GetClientId())) Main.SayBanwordsTimes.Add(player.GetClientId(), 0);
-            Main.SayBanwordsTimes[player.GetClientId()]++;
-            msg = string.Format(GetString("Message.WarnWhoSayBanWordTimes"), name, Main.SayBanwordsTimes[player.GetClientId()]);
-            if (Main.SayBanwordsTimes[player.GetClientId()] > Options.AutoKickStopWordsTimes.GetInt())
-            {
-                msg = string.Format(GetString("Message.KickWhoSayBanWordAfterWarn"), name, Main.SayBanwordsTimes[player.GetClientId()]);
-                kick = true;
-            }
-        }
-
-        if (msg != "")
-        {
-            if (kick || !GameStates.IsInGame) Utils.SendMessage(msg);
-            else
-            {
-                foreach (var pc in Main.AllPlayerControls)
-                    if (pc.IsAlive() == player.IsAlive())
-                        Utils.SendMessage(msg, pc.PlayerId);
-            }
-        }
-        if (kick) AmongUsClient.Instance.KickPlayer(player.GetClientId(), Options.AutoKickStopWordsAsBan.GetBool());
-        return true;
-    }
 
     public static bool Prefix(ChatController __instance)
     {
@@ -247,7 +36,7 @@ internal class ChatCommands
         if (GuessManager.GuesserMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
         if (Judge.TrialMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
         if (Mediumshiper.MsMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
-        if (MafiaMsgCheck(PlayerControl.LocalPlayer, text)) goto Canceled;
+        if (MafiaRevengeManager.MafiaMsgCheck(PlayerControl.LocalPlayer, text)) goto Canceled;
         switch (args[0])
         {
             case "/dump":
@@ -367,7 +156,7 @@ internal class ChatCommands
                 case "/r":
                     canceled = true;
                     subArgs = text.Remove(0, 2);
-                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsDev);
+                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.FriendCode.GetDevUser().CanUseDevCommand);
                     break;
 
                 case "/up":
@@ -673,7 +462,6 @@ internal class ChatCommands
             "up" or "up主" => GetString("Youtuber"),
             "利己主義者" or "利己主义" or "利己" => GetString("Egoist"),
             "贗品商" or "赝品" => GetString("Counterfeiter"),
-            "吹笛者" or "吹笛" => GetString("Piper"),
             "擲雷兵" or "掷雷" or "闪光弹" => GetString("Grenadier"),
             "竊票者" or "偷票" or "偷票者" or "窃票师" or "窃票" => GetString("TicketsStealer"),
             "教父" => GetString("Gangster"),
@@ -705,6 +493,7 @@ internal class ChatCommands
             "入殮師" or "入检师" or "入殓" => GetString("Mortician"),
             "通靈師" or "通灵" => GetString("Mediumshiper"),
             "吟游詩人" or "诗人" => GetString("Bard"),
+            "隱匿者" or "隐匿" or "隐身" or "隐身人" or "印尼" => GetString("Swooper"),
             "失落的船员" or "失落的船員" or "失落船员" => GetString("LostCrew"),
             "狂战士" or "狂戰士" => GetString("Berserkers"),
             "抑郁者" or "抑郁者" => GetString("Depressed"),
@@ -813,14 +602,15 @@ internal class ChatCommands
         canceled = false;
         if (!AmongUsClient.Instance.AmHost) return;
         if (text.StartsWith("\n")) text = text[1..];
+        if (SpamManager.CheckSpam(player, text)) return;
+        if (!text.StartsWith("/")) return;
         string[] args = text.Split(' ');
         string subArgs = "";
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
         if (GuessManager.GuesserMsg(player, text)) { canceled = true; return; }
         if (Judge.TrialMsg(player, text)) { canceled = true; return; }
         if (Mediumshiper.MsMsg(player, text)) return;
-        if (MafiaMsgCheck(player, text)) return;
-        if (ProhibitedCheck(player, text)) return;
+        if (MafiaRevengeManager.MafiaMsgCheck(player, text)) return;
         switch (args[0])
         {
             case "/l":
@@ -851,7 +641,7 @@ internal class ChatCommands
 
             case "/r":
                 subArgs = text.Remove(0, 2);
-                SendRolesInfo(subArgs, player.PlayerId, player.FriendCode.GetDevUser().IsDev);
+                SendRolesInfo(subArgs, player.PlayerId, player.FriendCode.GetDevUser().CanUseDevCommand);
                 break;
 
             case "/h":
@@ -938,52 +728,17 @@ internal class ChatCommands
                 if (player.FriendCode.GetDevUser().IsDev)
                 {
                     if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{"【 ★ 开发者消息 ★ 】"}</color>");
+                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{GetString("MessageFromDev")}</color>");
                 }
                 else if (player.FriendCode.IsDevUser())
                 {
                     if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#4bc9b0>{"【 ★ 贡献者消息 ★ 】"}</color>");
+                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#4bc9b0>{GetString("MessageFromSponsor")}</color>");
                 }
                 break;
 
             default:
                 break;
-        }
-    }
-
-    public static List<string> ReturnAllNewLinesInFile(string filename, byte playerId = 0xff, bool noErr = false)
-    {
-        // Logger.Info($"Checking lines in directory {filename}.", "ReturnAllNewLinesInFile (ChatCommands)");
-        if (!File.Exists(filename))
-        {
-            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, (PlayerControl.LocalPlayer.FriendCode.GetDevUser().HasTag() ? "\n" : string.Empty) + $"No {filename} file found.");
-            File.WriteAllText(filename, "Enter the desired stuff here.");
-            return new List<string>();
-        }
-        using StreamReader sr = new(filename, Encoding.GetEncoding("UTF-8"));
-        string text;
-        string[] tmp = { };
-        List<string> sendList = new();
-        HashSet<string> tags = new();
-        while ((text = sr.ReadLine()) != null)
-        {
-            if (text.Length > 1 && text != "")
-            {
-                tags.Add(text.ToLower());
-                sendList.Add(text.Join(delimiter: "").Replace("\\n", "\n").ToLower());
-            }
-        }
-        if (sendList.Count == 0 && !noErr)
-        {
-            if (playerId == 0xff)
-                HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, (PlayerControl.LocalPlayer.FriendCode.GetDevUser().HasTag() ? "\n" : string.Empty) + string.Format(GetString("Message.TemplateNotFoundHost"), Main.BANNEDWORDS_FILE_PATH, tags.Join(delimiter: ", ")));
-            else Utils.SendMessage(string.Format(GetString("Message.TemplateNotFoundClient"), Main.BANNEDWORDS_FILE_PATH), playerId);
-            return new List<string>();
-        }
-        else
-        {
-            return sendList;
         }
     }
 }

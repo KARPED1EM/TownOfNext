@@ -49,23 +49,32 @@ public static class TemplateManager
             try
             {
                 if (!Directory.Exists(@"TOHE_DATA")) Directory.CreateDirectory(@"TOHE_DATA");
-                if (File.Exists(@"./template.txt"))
-                {
-                    File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
-                }
+                if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
                 else
                 {
-                    Logger.Warn("创建新的 Template 文件", "TemplateManager");
-                    if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
-                        File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt("TOHE.Resources.Config.template-chinese.txt"));
-                    else
-                        File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt("TOHE.Resources.Config.template.txt"));
+                    string fileName;
+                    string[] name = CultureInfo.CurrentCulture.Name.Split("-");
+                    if (name.Count() >= 2)
+                        fileName = name[0] switch
+                        {
+                            "zh" => "SChinese",
+                            "ru" => "Russian",
+                            _ => "English"
+                        };
+                    else fileName = "English";
+                    Logger.Warn($"创建新的 Template 文件：{fileName}", "TemplateManager");
+                    File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt($"TOHE.Resources.Config.template.{fileName}.txt"));
                 }
             }
             catch (Exception ex)
             {
                 Logger.Exception(ex, "TemplateManager");
             }
+        }
+        else
+        {
+            var text = File.ReadAllText(TEMPLATE_FILE_PATH, Encoding.GetEncoding("UTF-8"));
+            File.WriteAllText(TEMPLATE_FILE_PATH, text.Replace("5PNwUaN5", "hkk2p9ggv4"));
         }
     }
 

@@ -115,6 +115,7 @@ public class MainMenuManagerPatch
         passiveHorseButton.OnClick = new ButtonClickedEvent();
         passiveHorseButton.OnClick.AddListener((Action)(() =>
         {
+            RunLoginPatch.ClickCount++;
             spriteHorseButton.transform.localScale *= -1;
             HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode;
             var particles = Object.FindObjectOfType<PlayerParticles>();

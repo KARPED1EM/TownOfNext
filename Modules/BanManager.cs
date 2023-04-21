@@ -14,7 +14,6 @@ public static class BanManager
 {
     private static readonly string DENY_NAME_LIST_PATH = @"./TOHE_DATA/DenyName.txt";
     private static readonly string BAN_LIST_PATH = @"./TOHE_DATA/BanList.txt";
-    private static readonly string BAN_WORDS_PATH = @"./TOHE_DATA/BanWords.txt";
     private static List<string> EACList = new();
     public static void Init()
     {
@@ -32,12 +31,6 @@ public static class BanManager
                 Logger.Warn("创建新的 DenyName.txt 文件", "BanManager");
                 File.Create(DENY_NAME_LIST_PATH).Close();
                 File.WriteAllText(DENY_NAME_LIST_PATH, GetResourcesTxt("TOHE.Resources.Config.DenyName.txt"));
-            }
-            if (!File.Exists(BAN_WORDS_PATH))
-            {
-                Logger.Warn("创建新的 BanWords.txt 文件", "BanManager");
-                File.Create(BAN_WORDS_PATH).Close();
-                File.WriteAllText(BAN_WORDS_PATH, GetResourcesTxt("TOHE.Resources.Config.BanWords.txt"));
             }
 
             //读取EAC名单

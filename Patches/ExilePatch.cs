@@ -61,8 +61,7 @@ class ExileControllerWrapUpPatch
             var role = exiled.GetCustomRole();
 
             //判断冤罪师胜利
-            var playerList = Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Innocent) && !x.IsAlive() && x.GetRealKiller().PlayerId == exiled.PlayerId);
-            if (playerList.Count() > 0)
+            if (Main.AllPlayerControls.Any(x => x.Is(CustomRoles.Innocent) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == exiled.PlayerId))
             {
                 if (!Options.InnocentCanWinByImp.GetBool() && role.IsImpostor())
                 {
@@ -72,13 +71,14 @@ class ExileControllerWrapUpPatch
                 {
                     if (DecidedWinner) CustomWinnerHolder.ShiftWinnerAndSetWinner(CustomWinner.Innocent);
                     else CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Innocent);
-                    foreach (var pc in playerList) CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
+                    Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Innocent) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == exiled.PlayerId)
+                        .Do(x => CustomWinnerHolder.WinnerIds.Add(x.PlayerId));
                     DecidedWinner = true;
                 }
             }
 
             //判断小丑胜利 (EAC封禁名单成为小丑达成胜利条件无法胜利)
-            if (role == CustomRoles.Jester && !(exiled.PlayerId == PlayerControl.LocalPlayer.PlayerId && BanManager.CheckEACList(exiled.FriendCode)))
+            if (role == CustomRoles.Jester)
             {
                 if (DecidedWinner) CustomWinnerHolder.ShiftWinnerAndSetWinner(CustomWinner.Jester);
                 else CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Jester);

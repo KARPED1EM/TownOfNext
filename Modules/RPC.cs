@@ -63,13 +63,17 @@ enum CustomRPC
     SetCollectorVotes,
     SetQuickShooterShotLimit,
     SetEraseLimit,
-    Guess,
+    GuessKill,
     SetMarkedPlayer,
     SetConcealerTimer,
     SetMedicalerProtectList,
     SetHackerHackLimit,
     SyncPsychicRedList,
     SetMorticianArrow,
+    Judge,
+    Guess,
+    MafiaRevenge,
+    SetSwooperTimer,
 
     //SoloKombat
     SyncKBPlayer,
@@ -88,6 +92,8 @@ public enum Sounds
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
 internal class RPCHandlerPatch
 {
+    public static bool TrustedRpc(byte id)
+    => (CustomRPC)id is CustomRPC.VersionCheck or CustomRPC.RequestRetryVersionCheck or CustomRPC.AntiBlackout or CustomRPC.Judge or CustomRPC.Guess or CustomRPC.MafiaRevenge;
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
     {
         var rpcType = (RpcCalls)callId;
@@ -118,7 +124,7 @@ internal class RPCHandlerPatch
         }
         if (__instance.PlayerId != 0
             && Enum.IsDefined(typeof(CustomRPC), (int)callId)
-            && !(callId == (byte)CustomRPC.VersionCheck || callId == (byte)CustomRPC.RequestRetryVersionCheck || callId == (byte)CustomRPC.AntiBlackout)) //ホストではなく、CustomRPCで、VersionCheckではない
+            && !TrustedRpc(callId)) //ホストではなく、CustomRPCで、VersionCheckではない
         {
             Logger.Warn($"{__instance?.Data?.PlayerName}:{callId}({RPC.GetRpcName(callId)}) 已取消，因为它是由主机以外的其他人发送的。", "CustomRPC");
             if (AmongUsClient.Instance.AmHost)
@@ -172,6 +178,9 @@ internal class RPCHandlerPatch
                     Main.playerVersion[__instance.PlayerId] = new PlayerVersion(version, tag, forkId);
 
                     if (Main.VersionCheat.Value && __instance.PlayerId == 0) RPC.RpcVersionCheck();
+
+                    if (Main.VersionCheat.Value && AmongUsClient.Instance.AmHost)
+                        Main.playerVersion[__instance.PlayerId] = Main.playerVersion[0];
 
                     // Kick Unmached Player Start
                     if (AmongUsClient.Instance.AmHost && tag != $"{ThisAssembly.Git.Commit}({ThisAssembly.Git.Branch})")
@@ -349,7 +358,7 @@ internal class RPCHandlerPatch
             case CustomRPC.SetEraseLimit:
                 Eraser.ReceiveRPC(reader);
                 break;
-            case CustomRPC.Guess:
+            case CustomRPC.GuessKill:
                 GuessManager.RpcClientGuess(Utils.GetPlayerById(reader.ReadByte()));
                 break;
             case CustomRPC.SetMarkedPlayer:
@@ -390,6 +399,18 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.SyncNameNotify:
                 NameNotifyManager.ReceiveRPC(reader);
+                break;
+            case CustomRPC.Judge:
+                Judge.ReceiveRPC(reader, __instance);
+                break;
+            case CustomRPC.Guess:
+                GuessManager.ReceiveRPC(reader, __instance);
+                break;
+            case CustomRPC.MafiaRevenge:
+                MafiaRevengeManager.ReceiveRPC(reader, __instance);
+                break;
+            case CustomRPC.SetSwooperTimer:
+                Swooper.ReceiveRPC(reader);
                 break;
         }
     }
@@ -674,6 +695,9 @@ internal static class RPC
                 break;
             case CustomRoles.Veteran:
                 Main.VeteranNumOfUsed.Add(targetId, Options.VeteranSkillMaxOfUseage.GetInt());
+                break;
+            case CustomRoles.Swooper:
+                Swooper.Add(targetId);
                 break;
             case CustomRoles.Rudepeople:
                 Main.RudepeopleNumOfUsed.Add(targetId, Options.RudepeoplekillMaxOfUseage.GetInt());

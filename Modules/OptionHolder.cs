@@ -111,12 +111,14 @@ public static class Options
     public static OptionItem SendCodeToQQ;
     public static OptionItem SendCodeMinPlayer;
     public static OptionItem DisableVanillaRoles;
+    public static OptionItem DisableHiddenRoles;
     public static OptionItem CEMode;
     public static OptionItem ConfirmEjectionsNK;
     public static OptionItem ConfirmEjectionsNonNK;
     public static OptionItem ConfirmEjectionsNeutralAsImp;
     public static OptionItem ShowImpRemainOnEject;
     public static OptionItem ShowNKRemainOnEject;
+    public static OptionItem ConfirmMadmateOnEject;
     public static OptionItem CheatResponses;
 
     public static OptionItem NeutralRolesMinPlayer;
@@ -332,6 +334,7 @@ public static class Options
     public static OptionItem ColorNameMode;
     public static OptionItem DisableEmojiName;
     public static OptionItem ChangeNameToRoleInfo;
+    public static OptionItem SendRoleDescriptionFirstMeeting;
     public static OptionItem RoleAssigningAlgorithm;
     public static OptionItem EndWhenPlayerBug;
 
@@ -370,22 +373,11 @@ public static class Options
     public static OptionItem LoverSuicide;
     public static OptionItem ImpCanBeEgoist;
     public static OptionItem CrewCanBeEgoist;
-    public static OptionItem PiperAccelerationSpeed;
-    public static OptionItem PiperAccelerationRadius;
     public static OptionItem TicketsPerKill;
     public static OptionItem ImpCanBeDualPersonality;
     public static OptionItem CrewCanBeDualPersonality;
     public static OptionItem RamblerSpeed;
     public static OptionItem ScarecrowCanWithStandANumberOfKills;
-
-    //SoloKombat
-    public static OptionItem KB_GameTime;
-    public static OptionItem KB_HPMax;
-    public static OptionItem KB_ATK;
-    public static OptionItem KB_RecoverAfterSecond;
-    public static OptionItem KB_RecoverPerSecond;
-    public static OptionItem KB_ResurrectionWaitingTime;
-    public static OptionItem KB_KillBonusMultiplier;
 
     public static readonly string[] suffixModes =
     {
@@ -757,6 +749,7 @@ public static class Options
         Concealer.SetupCustomOption();
         Eraser.SetupCustomOption();
         SetupRoleOptions(902622, TabGroup.OtherRoles, CustomRoles.OverKiller);
+        Swooper.SetupCustomOption();
 
         // 船员
         TextOptionItem.Create(909092, "OtherRoles.CrewmateRoles", TabGroup.OtherRoles)
@@ -806,13 +799,6 @@ public static class Options
         SetupAdtRoleOptions(6050490, CustomRoles.Egoist, canSetNum: true, tab: TabGroup.OtherRoles);
         ImpCanBeEgoist = BooleanOptionItem.Create(6050495, "ImpCanBeEgoist", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
         CrewCanBeEgoist = BooleanOptionItem.Create(6050497, "CrewCanBeEgoist", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
-        /*
-        SetupAdtRoleOptions(6050560, CustomRoles.Piper, canSetNum: true, tab: TabGroup.OtherRoles);
-        PiperAccelerationSpeed = FloatOptionItem.Create(6050570, "PiperAccelerationSpeed", new(0.25f, 5f, 0.25f), 2f, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Piper])
-            .SetValueFormat(OptionFormat.Multiplier);
-        PiperAccelerationRadius = FloatOptionItem.Create(6050572, "PiperAccelerationRadius", new(0.5f, 5f, 0.5f), 2f, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Piper])
-            .SetValueFormat(OptionFormat.Multiplier);
-        */
 
         #endregion
 
@@ -866,6 +852,7 @@ public static class Options
         FormatNameMode = StringOptionItem.Create(1_000_003, "FormatNameMode", formatNameModes, 0, TabGroup.SystemSettings, false);
         DisableEmojiName = BooleanOptionItem.Create(1_000_016, "DisableEmojiName", true, TabGroup.SystemSettings, false);
         ChangeNameToRoleInfo = BooleanOptionItem.Create(1_000_004, "ChangeNameToRoleInfo", false, TabGroup.SystemSettings, false);
+        SendRoleDescriptionFirstMeeting = BooleanOptionItem.Create(1_000_0016, "SendRoleDescriptionFirstMeeting", false, TabGroup.SystemSettings, false);
         NoGameEnd = BooleanOptionItem.Create(900_002, "NoGameEnd", false, TabGroup.SystemSettings, false);
         AllowConsole = BooleanOptionItem.Create(900_005, "AllowConsole", false, TabGroup.SystemSettings, false);
         RoleAssigningAlgorithm = StringOptionItem.Create(1_000_005, "RoleAssigningAlgorithm", roleAssigningAlgorithms, 4, TabGroup.SystemSettings, true)
@@ -885,35 +872,7 @@ public static class Options
         #region 游戏设置
 
         //SoloKombat
-        KB_GameTime = IntegerOptionItem.Create(66_233_001, "KB_GameTime", new(30, 300, 5), 180, TabGroup.GameSettings, false)
-            .SetGameMode(CustomGameMode.SoloKombat)
-            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
-            .SetValueFormat(OptionFormat.Seconds)
-            .SetHeader(true);
-        KB_HPMax = FloatOptionItem.Create(66_233_002, "KB_HPMax", new(10f, 990f, 5f), 100f, TabGroup.GameSettings, false)
-            .SetGameMode(CustomGameMode.SoloKombat)
-            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
-            .SetValueFormat(OptionFormat.Health);
-        KB_ATK = FloatOptionItem.Create(66_233_003, "KB_ATK", new(1f, 100f, 1f), 8f, TabGroup.GameSettings, false)
-            .SetGameMode(CustomGameMode.SoloKombat)
-            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
-            .SetValueFormat(OptionFormat.Health);
-        KB_RecoverPerSecond = FloatOptionItem.Create(66_233_005, "KB_RecoverPerSecond", new(1f, 180f, 1f), 2f, TabGroup.GameSettings, false)
-            .SetGameMode(CustomGameMode.SoloKombat)
-            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
-            .SetValueFormat(OptionFormat.Health);
-        KB_RecoverAfterSecond = IntegerOptionItem.Create(66_233_004, "KB_RecoverAfterSecond", new(0, 60, 1), 8, TabGroup.GameSettings, false)
-            .SetGameMode(CustomGameMode.SoloKombat)
-            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
-            .SetValueFormat(OptionFormat.Seconds);
-        KB_ResurrectionWaitingTime = IntegerOptionItem.Create(66_233_006, "KB_ResurrectionWaitingTime", new(3, 990, 1), 15, TabGroup.GameSettings, false)
-            .SetGameMode(CustomGameMode.SoloKombat)
-            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
-            .SetValueFormat(OptionFormat.Seconds);
-        KB_KillBonusMultiplier = FloatOptionItem.Create(66_233_007, "KB_KillBonusMultiplier", new(0.25f, 5f, 0.25f), 1.25f, TabGroup.GameSettings, false)
-            .SetGameMode(CustomGameMode.SoloKombat)
-            .SetColor(new Color32(245, 82, 82, byte.MaxValue))
-            .SetValueFormat(OptionFormat.Multiplier);
+        SoloKombatManager.SetupCustomOption();
 
         //驱逐相关设定
         TextOptionItem.Create(66_123_126, "MenuTitle.Ejections", TabGroup.GameSettings)
@@ -929,6 +888,9 @@ public static class Options
             .SetColor(new Color32(255, 238, 232, byte.MaxValue));
         ShowNKRemainOnEject = BooleanOptionItem.Create(6090119, "ShowNKRemainOnEject", true, TabGroup.GameSettings, false).SetParent(ShowImpRemainOnEject)
             .SetGameMode(CustomGameMode.Standard);
+        ConfirmMadmateOnEject = BooleanOptionItem.Create(6090120, "ConfirmMadmateOnEject", true, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(new Color32(255, 238, 232, byte.MaxValue));
 
         //禁用相关设定
         TextOptionItem.Create(66_123_120, "MenuTitle.Disable", TabGroup.GameSettings)
@@ -938,6 +900,9 @@ public static class Options
         DisableVanillaRoles = BooleanOptionItem.Create(6090069, "DisableVanillaRoles", true, TabGroup.GameSettings, false)
             .SetGameMode(CustomGameMode.Standard)
             .SetHeader(true)
+            .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+        DisableHiddenRoles = BooleanOptionItem.Create(6090070, "DisableHiddenRoles", true, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.Standard)
             .SetColor(new Color32(255, 153, 153, byte.MaxValue));
         DisableTaskWin = BooleanOptionItem.Create(66_900_001, "DisableTaskWin", false, TabGroup.GameSettings, false)
             .SetGameMode(CustomGameMode.Standard)

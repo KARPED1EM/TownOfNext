@@ -35,9 +35,14 @@ public static class Hangman
     }
     public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
     {
+        //禁止内鬼刀叛徒
+        if (target.Is(CustomRoles.Madmate) && !ImpCanKillMadmate.GetBool())
+            return false;
+
         if (Main.CheckShapeshift.TryGetValue(killer.PlayerId, out var s) && s)
         {
             target.Data.IsDead = true;
+            target.SetRealKiller(killer);
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.LossOfHead;
             target.RpcExileV2();
             Main.PlayerStates[target.PlayerId].SetDead();

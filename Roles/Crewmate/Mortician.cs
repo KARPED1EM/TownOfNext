@@ -10,7 +10,7 @@ public static class Mortician
     private static List<byte> playerIdList = new();
 
     private static Dictionary<byte, string> lastPlayerName = new();
-    public static List<(byte, string)> msgToSend = new();
+    public static Dictionary<byte, string> msgToSend = new();
 
     public static void SetupCustomOption()
     {
@@ -85,8 +85,8 @@ public static class Mortician
 
         if (!pc.Is(CustomRoles.Mortician) || target == null) return;
         lastPlayerName.TryGetValue(target.PlayerId, out var name);
-        if (name == "") msgToSend.Add((pc.PlayerId, string.Format(Translator.GetString("MorticianGetNoInfo"), target.PlayerName)));
-        else msgToSend.Add((pc.PlayerId, string.Format(Translator.GetString("MorticianGetInfo"), target.PlayerName, name)));
+        if (name == "") msgToSend.Add(pc.PlayerId, string.Format(Translator.GetString("MorticianGetNoInfo"), target.PlayerName));
+        else msgToSend.Add(pc.PlayerId, string.Format(Translator.GetString("MorticianGetInfo"), target.PlayerName, name));
     }
     public static string GetTargetArrow(PlayerControl seer, PlayerControl target = null)
     {

@@ -44,7 +44,7 @@ internal class VersionShowerStartPatch
         Main.credentialsText = $"\r\n<color={Main.ModColor}>{Main.ModName}</color> v{Main.PluginVersion}";
         if (Main.IsAprilFools) Main.credentialsText = $"\r\n<color=#00bfff>Town Of Host</color> v11.45.14";
 #if DEBUG
-        Main.credentialsText += $"\r\n<color={Main.ModColor}>内测({ThisAssembly.Git.Commit})</color>";
+        Main.credentialsText += $"\r\n<color={Main.ModColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
 #endif
 
 #if RELEASE
@@ -94,7 +94,7 @@ internal class VersionShowerStartPatch
             OVersionShower.transform.position = new Vector3(-5.3f, 2.9f, 0f);
             if (TitleLogoPatch.amongUsLogo != null)
             {
-                if (VisitText == null)
+                if (VisitText == null && ModUpdater.visit > 0)
                 {
                     VisitText = Object.Instantiate(__instance.text);
                     VisitText.text = string.Format(GetString("TOHEVisitorCount"), Main.ModColor, ModUpdater.visit);

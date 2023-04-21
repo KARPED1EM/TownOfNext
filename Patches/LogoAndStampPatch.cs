@@ -48,7 +48,11 @@ public static class CredentialsPatch
             DevsData += $"\nSHAAARKY - <size=75%>{GetString("RoleDev")}</size>";
 
             TransData += $"Tommy-XL - <size=75%>{GetString("TranEN")}&{GetString("TranRU")}</size>";
-            TransData += $"\nTem - <size=75%>{GetString("TranRU")}</size>";
+            TransData += $"\nTem - <size=75%>{GetString("TranEN")}&{GetString("TranRU")}</size>";
+            TransData += $"\nNetherDragon - <size=75%>{GetString("TranCHT")}</size>";
+            TransData += $"\nGurge44 - <size=75%>{GetString("TranEN")}</size>";
+            TransData += $"\n法官 - <size=75%>{GetString("TranCHT")}</size>";
+            TransData += $"\nSolarFlare - <size=75%>{GetString("TranEN")}</size>";
 
             SponsersData += $"罗寄";
             SponsersData += $"\n喜";
@@ -56,13 +60,14 @@ public static class CredentialsPatch
             SponsersData += $"\n波奇酱";
             SponsersData += $"\n法师";
             SponsersData += $"\n沐煊";
+            SponsersData += $"\nSolarFlare";
             SponsersData += $"\n林林林";
             SponsersData += $"\n撒币";
+            SponsersData += $"\n斯卡蒂Skadi";
             SponsersData += $"\nltemten";
-            SponsersData += $"\nSlok";
-            SponsersData += $"\n辣鸡";
-            SponsersData += $"\n湛蓝色";
-            SponsersData += $"\n<size=60%>({GetString("OnlyShowPart")})</size>";
+            SponsersData += $"\nNight_瓜";
+            SponsersData += $"\n\n<size=60%>({GetString("OnlyShowPart")})</size>";
+
         }
 
         public static GameObject CreditsPopup;
@@ -72,42 +77,49 @@ public static class CredentialsPatch
             var obj = Object.Instantiate(template, template.transform.parent).gameObject;
             CreditsPopup = obj;
             Object.Destroy(obj.GetComponent<StatsPopup>());
+
             var devtitletext = obj.transform.FindChild("StatNumsText_TMP");
             devtitletext.GetComponent<TextMeshPro>().text = GetString("Developer");
-            devtitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Left;
-            devtitletext.localPosition = new Vector3(-2.75f, 1.73f, -2f);
-            devtitletext.localScale = new Vector3(1f, 1f, 1f);
+            devtitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
+            devtitletext.localPosition = new Vector3(-2.4f, 1.65f, -2f);
+            devtitletext.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+
             var devtext = obj.transform.FindChild("StatsText_TMP");
-            devtext.localPosition = new Vector3(-2f, -0.35f, -2f);
-            devtext.localScale = new Vector3(0.7f, 0.7f, 1f);
             devtext.GetComponent<TextMeshPro>().text = DevsData;
-
-            var boostertitletext = Object.Instantiate(devtitletext, obj.transform);
-            boostertitletext.GetComponent<TextMeshPro>().text = GetString("Sponsor");
-            boostertitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Left;
-            boostertitletext.localPosition = new Vector3(0.7f, 1.45f, -2f);
-            boostertitletext.localScale = new Vector3(1f, 1f, 1f);
-
-            var boostertext = Object.Instantiate(devtext, obj.transform);
-            boostertext.localPosition = new Vector3(1.5f, -0.65f, -2f);
-            boostertext.localScale = new Vector3(0.7f, 0.7f, 1f);
-            boostertext.GetComponent<TextMeshPro>().text = SponsersData;
+            devtext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Capline;
+            devtext.localPosition = new Vector3(-2.4f, 1.27f, -2f);
+            devtext.localScale = new Vector3(0.5f, 0.5f, 1f);
 
             var transtitletext = Object.Instantiate(devtitletext, obj.transform);
             transtitletext.GetComponent<TextMeshPro>().text = GetString("Translator");
-            transtitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Left;
-            transtitletext.localPosition = new Vector3(-2.75f, -1.1f, -2f);
-            transtitletext.localScale = new Vector3(1f, 1f, 1f);
+            transtitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
+            transtitletext.localPosition = new Vector3(0f, 1.65f, -2f);
+            transtitletext.localScale = new Vector3(0.8f, 0.8f, 1f);
 
             var transtext = Object.Instantiate(devtext, obj.transform);
-            transtext.localPosition = new Vector3(-2f, -3.2f, -2f);
-            transtext.localScale = new Vector3(0.7f, 0.7f, 1f);
             transtext.GetComponent<TextMeshPro>().text = TransData;
+            transtext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Capline;
+            transtext.localPosition = new Vector3(0f, 1.27f, -2f);
+            transtext.localScale = new Vector3(0.5f, 0.5f, 1f);
+
+            var boostertitletext = Object.Instantiate(devtitletext, obj.transform);
+            boostertitletext.GetComponent<TextMeshPro>().text = GetString("Sponsor");
+            boostertitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
+            boostertitletext.localPosition = new Vector3(2.4f, 1.65f, -2f);
+            boostertitletext.localScale = new Vector3(0.8f, 0.8f, 1f);
+
+            var boostertext = Object.Instantiate(devtext, obj.transform);
+            boostertext.GetComponent<TextMeshPro>().text = SponsersData;
+            boostertext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Capline;
+            boostertext.localPosition = new Vector3(2.4f, 1.27f, -2f);
+            boostertext.localScale = new Vector3(0.5f, 0.5f, 1f);
 
             var textobj = obj.transform.FindChild("Title_TMP");
             Object.Destroy(textobj.GetComponent<TextTranslatorTMP>());
             textobj.GetComponent<TextMeshPro>().text = GetString("DevAndSpnTitle");
+            textobj.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
             textobj.localScale = new Vector3(1.2f, 1.2f, 1f);
+            textobj.localPosition = new Vector3(0f, 2.2f, -2f);
             obj.transform.FindChild("Background").localScale = new Vector3(1.5f, 1f, 1f);
             obj.transform.FindChild("CloseButton").localPosition = new Vector3(-3.75f, 2.65f, 0);
         }

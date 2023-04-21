@@ -189,6 +189,10 @@ class HudManagerPatch
                     var stateText = FireWorks.GetStateText(player);
                     LowerInfoText.text = stateText;
                 }
+                else if (player.Is(CustomRoles.Swooper))
+                {
+                    LowerInfoText.text = Swooper.GetHudText(player);
+                }
                 else
                 {
                     LowerInfoText.text = "";

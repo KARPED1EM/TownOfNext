@@ -11,6 +11,7 @@ public static class NameNotifyManager
     public static bool Notifying(this PlayerControl pc) => Notice.ContainsKey(pc.PlayerId);
     public static void Notify(this PlayerControl pc, string text, float time = 4f)
     {
+        if (!AmongUsClient.Instance.AmHost || pc == null) return;
         if (!GameStates.IsInTask) return;
         if (!text.Contains("<color=#")) text = Utils.ColorString(Utils.GetRoleColor(pc.GetCustomRole()), text);
         Notice.Remove(pc.PlayerId);
@@ -40,6 +41,7 @@ public static class NameNotifyManager
     }
     private static void SendRPC(byte playerId)
     {
+        if (!AmongUsClient.Instance.AmHost) return;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncNameNotify, SendOption.Reliable, -1);
         writer.Write(playerId);
         if (Notice.ContainsKey(playerId))

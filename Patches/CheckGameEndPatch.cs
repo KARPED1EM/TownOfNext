@@ -163,7 +163,7 @@ class GameEndChecker
                 {
                     foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.FFF)))
                     {
-                        if (Main.AllPlayerControls.Where(x => (x.Is(CustomRoles.Lovers) || x.Is(CustomRoles.Ntr)) && (x.GetRealKiller() == null ? -1 : x.GetRealKiller().PlayerId) == pc.PlayerId).Count() > 0)
+                        if (Main.AllPlayerControls.Where(x => (x.Is(CustomRoles.Lovers) || x.Is(CustomRoles.Ntr)) && x.GetRealKiller()?.PlayerId == pc.PlayerId).Count() > 0)
                         {
                             CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
                             CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.FFF);
@@ -189,6 +189,15 @@ class GameEndChecker
                                 CustomWinnerHolder.WinnerIds.Add(tar.PlayerId);
                     }
                 }
+
+                //补充恋人胜利名单
+                if (CustomWinnerHolder.WinnerTeam == CustomWinner.Lovers || CustomWinnerHolder.AdditionalWinnerTeams.Contains(AdditionalWinners.Lovers))
+                {
+                    Main.AllPlayerControls
+                                .Where(p => p.Is(CustomRoles.Lovers) && !CustomWinnerHolder.WinnerIds.Contains(p.PlayerId))
+                                .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
+                }
+
             }
             ShipStatus.Instance.enabled = false;
             StartEndGame(reason);

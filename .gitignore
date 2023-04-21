@@ -1,12 +1,10 @@
 
-.vs/
-bin/
-obj/
-Img Sources/
+/.vs
+/bin
+/obj
+/.editorconfig
 
 Resources/Config/Port.txt
 
 FodyWeavers.xsd
 TOHE.sln
-
-/.editorconfig

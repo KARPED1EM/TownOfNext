@@ -197,6 +197,7 @@ internal class ChangeRoleSettings
             Judge.Init();
             Mortician.Init();
             Mediumshiper.Init();
+            Swooper.Init();
             SoloKombatManager.Init();
             CustomWinnerHolder.Reset();
             AntiBlackout.Reset();
@@ -513,6 +514,9 @@ internal class SelectRolesPatch
                         break;
                     case CustomRoles.Veteran:
                         Main.VeteranNumOfUsed.Add(pc.PlayerId, Options.VeteranSkillMaxOfUseage.GetInt());
+                        break;
+                    case CustomRoles.Swooper:
+                        Swooper.Add(pc.PlayerId);
                         break;
                     case CustomRoles.Rudepeople:
                         Main.RudepeopleNumOfUsed.Add(pc.PlayerId, Options.RudepeoplekillMaxOfUseage.GetInt());

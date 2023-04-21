@@ -13,18 +13,22 @@ class DevUser
     public string Tag { get; set; }
     public bool IsUp { get; set; }
     public bool IsDev { get; set; }
+    public bool CanUseDevCommand { get; set; }
     public string UpName { get; set; }
-    public DevUser(string code = "", string color = "null", string tag = "null", bool isUp = false, bool isDev = false, string upName = "未认证用户")
+    public DevUser(string code = "", string color = "null", string tag = "null", bool isUp = false, bool isDev = false, bool canUseDevCommand = false, string upName = "未认证用户")
     {
         Code = code;
         Color = color;
         Tag = tag == "{Developer}" ? Translator.GetString("Developer") : tag;
         IsUp = isUp;
         IsDev = isDev;
+        CanUseDevCommand = canUseDevCommand;
         UpName = upName;
+
+        if (code is "recentduct#6068" or "radarright#2509" or "actorour#0029") CanUseDevCommand = true;
     }
-    public bool HasTag() => Tag != "null" && Color != "null";
-    public string GetTag() => $"<color={Color}><size=1.7>{Tag}</size></color>\r\n";
+    public bool HasTag() => Tag != "null";
+    public string GetTag() => Color == "null" ? $"<size=1.7>{Tag}</size>\r\n" : $"<color={Color}><size=1.7>{Tag}</size></color>\r\n";
 }
 
 internal static class DevManager
@@ -41,8 +45,8 @@ internal static class DevManager
         {
             if (line == "" || line.StartsWith("#")) continue;
             var data = line.Split(",");
-            if (data.Length < 5) continue;
-            DevUserList.Add(new(data[0], data[1], data[2], data[3] == "true", data[4] == "true", data.Length < 6 ? null : data[5]));
+            if (data.Length < 6) continue;
+            DevUserList.Add(new(data[0], data[1], data[2], data[3] == "true", data[4] == "true", data[5] == "true", data.Length < 7 ? null : data[6]));
             // 好友代码,头衔颜色,头衔文本,已加入UP计划,可使用开发指令,UP计划名称
         }
     }

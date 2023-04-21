@@ -149,6 +149,11 @@ internal class CustomRoleSelector
     EndOfAssign:
 
         // 隐藏职业
+        if (!Options.DisableHiddenRoles.GetBool())
+        {
+            if (rd.Next(0, 100) < 3 && rolesToAssign.Remove(CustomRoles.Jester)) rolesToAssign.Add(CustomRoles.Sunnyboy);
+            if (rd.Next(0, 100) < 5 && rolesToAssign.Remove(CustomRoles.Sans)) rolesToAssign.Add(CustomRoles.Bard);
+        }
         if (rd.Next(0, 100) < 90 && rolesToAssign.Remove(CustomRoles.Jester)) rolesToAssign.Add(CustomRoles.Sunnyboy);
         if (rd.Next(0, 100) < 90 && rolesToAssign.Remove(CustomRoles.Sans)) rolesToAssign.Add(CustomRoles.Bard);
         if (rd.Next(0, 100) < 100 && rolesToAssign.Remove(CustomRoles.Bait)) rolesToAssign.Add(CustomRoles.LostCrew);

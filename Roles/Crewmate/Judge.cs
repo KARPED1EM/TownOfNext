@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HarmonyLib;
+using Hazel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -40,6 +42,7 @@ public static class Judge
     public static void Add(byte playerId)
     {
         playerIdList.Add(playerId);
+        TrialLimit.Add(playerId, TrialLimitPerMeeting.GetInt());
     }
     public static bool IsEnable => playerIdList.Count > 0;
     public static void OnReportDeadBody()
@@ -94,7 +97,7 @@ public static class Judge
                 }
                 if (pc.PlayerId == target.PlayerId)
                 {
-                    Utils.SendMessage(GetString("LaughToWhoTrialSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromDevTitle")));
+                    Utils.SendMessage(GetString("LaughToWhoTrialSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromKPD")));
                     judgeSuicide = true;
                 }
                 else if (pc.Is(CustomRoles.Madmate)) judgeSuicide = false;
@@ -193,5 +196,55 @@ public static class Judge
             }
         }
         return false;
+    }
+
+    private static void SendRPC(int playerId)
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Judge, SendOption.Reliable, -1);
+        writer.Write(playerId);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static void ReceiveRPC(MessageReader reader, PlayerControl pc)
+    {
+        int PlayerId = reader.ReadInt32();
+        TrialMsg(pc, $"/tl {PlayerId}");
+    }
+
+    private static void JudgeOnClick(int index, MeetingHud __instance)
+    {
+        Logger.Msg($"Click: {index}", "Judge UI");
+        var pc = Utils.GetPlayerById(index);
+        if (pc == null || !pc.IsAlive()) return;
+        if (AmongUsClient.Instance.AmHost) TrialMsg(PlayerControl.LocalPlayer, $"/tl {index}");
+        else SendRPC(index);
+    }
+
+    [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+    class StartMeetingPatch
+    {
+        public static void Postfix(MeetingHud __instance)
+        {
+            if (PlayerControl.LocalPlayer.Is(CustomRoles.Judge) && PlayerControl.LocalPlayer.IsAlive())
+                CreateJudgeButton(__instance);
+        }
+    }
+    public static void CreateJudgeButton(MeetingHud __instance)
+    {
+        for (int i = 0; i < __instance.playerStates.Length; i++)
+        {
+            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
+            if (Main.PlayerStates[playerVoteArea.TargetPlayerId].IsDead) continue;
+
+            GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
+            GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+            targetBox.name = "ShootButton";
+            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
+            SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
+            renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
+            PassiveButton button = targetBox.GetComponent<PassiveButton>();
+            button.OnClick.RemoveAllListeners();
+            int copiedIndex = i;
+            button.OnClick.AddListener((Action)(() => JudgeOnClick(copiedIndex, __instance)));
+        }
     }
 }
