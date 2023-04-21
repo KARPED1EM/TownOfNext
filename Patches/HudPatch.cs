@@ -156,6 +156,12 @@ class HudManagerPatch
                     case CustomRoles.KB_Normal:
                         __instance.KillButton.OverrideText($"{GetString("GamerButtonText")}");
                         break;
+                    case CustomRoles.Cleaner:
+                        __instance.ReportButton.OverrideText($"{GetString("CleanerReportButtonText")}");
+                        break;
+                    case CustomRoles.Swooper:
+                        __instance.ImpostorVentButton.OverrideText($"{GetString(Swooper.IsInvis(PlayerControl.LocalPlayer.PlayerId) ? "SwooperRevertVentButtonText" : "SwooperVentButtonText")}");
+                        break;
                 }
 
                 //バウンティハンターのターゲットテキスト
