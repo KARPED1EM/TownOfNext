@@ -169,8 +169,12 @@ public static class GuessManager
                 else if (pc.Is(CustomRoles.EvilGuesser) && role.IsImpostor() && !Options.EGCanGuessImp.GetBool()) guesserSuicide = true;
                 else if (!target.Is(role)) guesserSuicide = true;
 
+                Logger.Info($"{pc.GetNameWithRole()} 猜测了 {target.GetNameWithRole()}", "Guesser");
+
                 var dp = guesserSuicide ? pc : target;
                 target = dp;
+
+                Logger.Info($"赌场事件：{target.GetNameWithRole()} 死亡", "Guesser");
 
                 string Name = dp.GetRealName();
 
@@ -384,7 +388,7 @@ public static class GuessManager
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
             targetBox.name = "ShootButton";
-            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
+            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -100f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();

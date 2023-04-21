@@ -89,6 +89,7 @@ public static class Judge
             var target = Utils.GetPlayerById(targetId);
             if (target != null)
             {
+                Logger.Info($"{pc.GetNameWithRole()} 审判了 {target.GetNameWithRole()}", "Judge");
                 bool judgeSuicide = true;
                 if (TrialLimit[pc.PlayerId] < 1)
                 {
@@ -238,7 +239,7 @@ public static class Judge
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
             targetBox.name = "ShootButton";
-            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
+            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -100f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();

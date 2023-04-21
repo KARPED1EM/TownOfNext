@@ -68,6 +68,8 @@ public static class MafiaRevengeManager
             return true;
         }
 
+        Logger.Info($"{pc.GetNameWithRole()} 复仇了 {target.GetNameWithRole()}", "Mafia");
+
         string Name = target.GetRealName();
         Utils.SendMessage(string.Format(GetString("MafiaKillSucceed"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), GetString("MafiaRevengeTitle")));
 
@@ -126,7 +128,7 @@ public static class MafiaRevengeManager
             GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
             targetBox.name = "ShootButton";
-            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.3f);
+            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -100f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
