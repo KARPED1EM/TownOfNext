@@ -293,6 +293,7 @@ internal static class CustomRolesHelper
         CustomRoleTypes type = CustomRoleTypes.Crewmate;
         if (role.IsImpostor()) type = CustomRoleTypes.Impostor;
         if (role.IsNeutral()) type = CustomRoleTypes.Neutral;
+        if (role.IsAdditionRole()) type = CustomRoleTypes.Addon;
         return type;
     }
     public static bool RoleExist(this CustomRoles role, bool countDead = false) => Main.AllPlayerControls.Any(x => x.Is(role) && (x.IsAlive() || countDead));
@@ -355,7 +356,8 @@ public enum CustomRoleTypes
 {
     Crewmate,
     Impostor,
-    Neutral
+    Neutral,
+    Addon
 }
 public enum CountTypes
 {

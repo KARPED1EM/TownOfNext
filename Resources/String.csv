@@ -24,6 +24,12 @@
 "## 作者署名（会显示在右上角，不需要请留空）/ A sign of an author (Please leave blank when not needed)"
 "TextBelowVersionText","","","","",""
 
+"# 职业类型 / Role Type"
+"TypeImpostor","内鬼职业","Impostor","","",""
+"TypeCrewmate","船员职业","Crewmate","","",""
+"TypeNeutral","中立职业","Neutral","","",""
+"TypeAddon","附加职业","Add-On","","",""
+
 "# 阵营 / Teams"
 "TeamImpostor","内鬼阵营","Team Impostor","Предатели","偽裝者陣營","EquipoImpostor"
 "TeamNeutral","中立阵营","Neutral","Нейтралы","中立陣營","EquipoNeutro"
