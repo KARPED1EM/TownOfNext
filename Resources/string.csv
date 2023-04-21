@@ -96,6 +96,7 @@ OverKiller,肢解者,Butcher,Мясник
 Hangman,刽子手,Hangman,Вешатель
 Berserkers,狂战士
 Depressed,抑郁者
+Gambler,赌徒
 
 # 船员阵营 / Crewmates
 Bait,诱饵,Bait,Байт
@@ -248,6 +249,7 @@ OverKillerInfo,且欣赏我美丽的作品,Enjoy my beautiful work,Наслаж�
 HangmanInfo,就由我，来结束你的生命,I will choice when your live will end,Это Я выбираю когда ты умрешь
 BerserkersInfo,吃我一击！
 DepressedInfo,我自闭了
+GamblerInfo,赌博？一场游戏罢了
 
 # 船员阵营 / Crewmate descriptions
 BaitInfo,好消息，杀了我可以吃席,Bait your enemies,Убийца моментально зарепортит ваш труп

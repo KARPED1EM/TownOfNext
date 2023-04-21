@@ -209,8 +209,7 @@ public class PlayerGameOptionsSender : GameOptionsSender
         // 为漫步者的凶手
         if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Rambler) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId).Count() > 0)
         {
-            opt.SetVision(false);
-            opt.SetFloat(FloatOptionNames.PlayerSpeedMod, Options.RamblerSpeed.GetFloat());
+            Main.AllPlayerSpeed[player.PlayerId] = Options.RamblerSpeed.GetFloat();
         }
         // 为失落的船员的凶手
         if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.LostCrew) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId).Count() > 0)

@@ -597,6 +597,9 @@ static class ExtendedPlayerControl
             case CustomRoles.Depressed:
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.DepressedKillCooldown.GetFloat();
                 break;
+            case CustomRoles.Gambler:
+                Main.AllPlayerKillCooldown[player.PlayerId] = Options.GamblersKillCooldown.GetFloat();
+                break;
         }
         if (player.PlayerId == LastImpostor.currentId)
             LastImpostor.SetKillCooldown();
