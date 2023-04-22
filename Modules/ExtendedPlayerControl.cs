@@ -588,9 +588,6 @@ static class ExtendedPlayerControl
                 for (int i = 0; i < Main.BardCreations; i++)
                     Main.AllPlayerKillCooldown[player.PlayerId] /= 2;
                 break;
-            case CustomRoles.Error404:
-                Main.AllPlayerKillCooldown[player.PlayerId] = Options.Error404KillCooldown.GetFloat();
-                break;
             case CustomRoles.Berserkers:
                 Main.AllPlayerKillCooldown[player.PlayerId] = Options.BerserkersKillCooldown.GetFloat();
                 break;

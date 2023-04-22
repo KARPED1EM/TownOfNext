@@ -359,7 +359,6 @@ public class Main : BasePlugin
                 {CustomRoles.Collector, "#9d8892"},
                 {CustomRoles.Provocateur, "#74ba43"},
                 {CustomRoles.Sunnyboy, "#ff9902"},
-                {CustomRoles.Error404, "#333333"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
@@ -472,7 +471,6 @@ public enum CustomRoles
     Bard,
     Swooper,
     Berserkers,
-    Error404,
     Depressed,
     //Crewmate(Vanilla)
     Engineer,

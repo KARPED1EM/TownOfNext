@@ -471,6 +471,7 @@ class CheckMurderPatch
                 }, 17f, ("KILLER!!!!!!!!"));
                 break;
         }
+
         //保镖保护
         if (killer.PlayerId != target.PlayerId)
         {

@@ -198,7 +198,6 @@ public static class Options
     public static OptionItem RevolutionistVentCountDown;
     public static OptionItem ShapeImperiusCurseShapeshiftDuration;
     public static OptionItem ImperiusCurseShapeshiftCooldown;
-    public static OptionItem Error404KillCooldown;
     public static OptionItem BerserkersRadius;
     public static OptionItem DepressedIdioctoniaProbability;
     public static OptionItem RudepeopleSkillDuration;
@@ -577,8 +576,6 @@ public static class Options
             .SetValueFormat(OptionFormat.Seconds);
         QuickShooter.SetupCustomOption();
         Hangman.SetupCustomOption();
-        SetupRoleOptions(905486, TabGroup.ImpostorRoles, CustomRoles.Error404);
-        Error404KillCooldown = FloatOptionItem.Create(905724, "Error404KillCooldown", new(20f, 100f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Error404]);
         SetupRoleOptions(1415494, TabGroup.ImpostorRoles, CustomRoles.Berserkers);
         BerserkersRadius = FloatOptionItem.Create(95611765, "BerserkersRadius", new(0.5f, 3f, 0.5f), 2f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Berserkers]);
         BerserkersKillCooldown = FloatOptionItem.Create(9054564, "BerserkersKillCooldown", new(25f, 100f, 1f), 40f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Berserkers]);

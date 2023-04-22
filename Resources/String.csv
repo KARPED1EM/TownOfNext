@@ -43,6 +43,7 @@
 "# 隐藏 / Hidden"
 "Sunnyboy","阳光开朗大男孩","Sunnyboy","Солнечный мальчик","陽光開朗大男孩","Chico Soleado"
 "Bard","吟游诗人","Bard","Бард","吟遊詩人","Bard"
+"LostCrew","失落的船员"
 
 "# 原版职业 / Vanilla"
 "Crewmate","船员","Crewmate","Член Экипажа","船員","Tripulante"
@@ -92,6 +93,8 @@
 "OverKiller","肢解者","Butcher","Мясник","肢解者","SobreAsesino"
 "Hangman","刽子手","Hangman","Вешатель","劊子手","Hangman"
 "Swooper","隐匿者","Swooper","Невидимка","隱身人",""
+"Berserkers","狂战士"
+"Depressed","抑郁者"
 
 "# 船员阵营 / Crewmates"
 "Bait","诱饵","Bait","Байт","誘餌","Bait"
@@ -124,6 +127,8 @@
 "Judge","法官","Judge","Судья","法官","法官"
 "Mortician","入殓师","Mortician","Гробовщик","送葬者","入殓师"
 "Mediumshiper","通灵师","Medium","Медиум","通靈師","通灵师"
+"Rudepeople","挑衅者"
+"DovesOfNeace","和平之鸽"
 
 "# 中立阵营 / Neutrals"
 "Jester","小丑","Jester","Шут","小丑","小丑"
@@ -165,6 +170,9 @@
 "TicketsStealer","窃票者","Stealer","Вор","竊票者","窃票者"
 "DualPersonality","双重人格","Schizophrenic","Шизофреник","雙重人格","双重人格"
 "Mimic","宝箱怪","Mimic","Мимик","保險箱","宝箱怪"
+"Bitch","贱人"
+"Rambler","漫步者"
+"Scarecrow","稻草人"
 
 "## 附加职业作为前缀时 / Prefixes for Add-ons"
 
@@ -184,6 +192,9 @@
 "Prefix.TicketsStealer","窃票","Stealer ","Ворующий ","竊票","窃票"
 "Prefix.DualPersonality","双重人格","Schizophrenic ","Шизофренический ","雙重人格","双重人格"
 "Prefix.Mimic","宝箱怪","Mimic ","Мимикующий ","保險箱","宝箱怪"
+"Prefix.Bitch","贱人"
+"Prefix.Scarecrow","稻草人"
+"Prefix.Rambler","漫步者"
 
 "## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen"
 
@@ -231,6 +242,8 @@
 "OverKillerInfo","且欣赏我美丽的作品","Enjoy my beautiful work","Наслаждайтесь моей работой","欣賞我美麗的作品","且欣赏我美丽的作品"
 "HangmanInfo","就由我，来结束你的生命","I will decide when your life will end","Я решу когда твоя жизнь окончится","我將會結束你的生命","就由我，来结束你的生命"
 "SwooperInfo","感受未知的恐惧吧","Turn invisible temporarily","Становитесь невидимым на какое-то время","一道風掠過，所有人恐懼",""
+"BerserkersInfo","嗨嗨嗨，大斧头来啦"
+"DepressedInfo","我自闭了"
 
 "# 船员阵营 / Crewmate descriptions"
 "BaitInfo","好消息，杀了我可以吃席","Your Killer self-reports your body","Убийца моментально саморепнет ваше тело","犧牲小我，完成大我","好消息，杀了我可以吃席"
@@ -264,6 +277,9 @@
 "JudgeInfo","接着奏乐，接着审~","Silence in the courtroom!","Тишина в зале суда!","現在就開庭!","接着奏乐，接着审~"
 "MorticianInfo","现在，你可以安心地离开了","Locate the dead bodies","Находите трупы","現在，你可以安心的走了","现在，你可以安心地离开了"
 "MediumshiperInfo","若君心存不甘，不妨和我谈谈","Talk with ghosts","Разговаривайте с призраками","若君心存不甘，不妨和我談談","若君心存不甘，不妨和我谈谈"
+"LostCrewInfo","我 是 可 疑 的！！！！"
+"RudepeopleInfo","操你***"
+"DovesOfNeaceInfo","何必打打杀杀呢？"
 
 "# 中立阵营 / Neutral descriptions"
 "ArsonistInfo","乖乖站好！","Douse Everyone and Ignite","Облейте всех игроков, а потом подожгите","燒吧，燒吧，燃燒吧","乖乖站好！"
@@ -305,6 +321,9 @@
 "TicketsStealerInfo","要懂得珍惜，死者最后的价值","Gain votes with Kills","Набирайте голоса с помощью убийств","讓這場投票變的無意義起來","要懂得珍惜，死者最后的价值"
 "DualPersonalityInfo","我真的很...奇怪吗？","You're dead and alive simultaneously","У вас теперь Шизофрения","我怎麼感覺是不是需要去掛精神科了","我真的很...奇怪吗？"
 "MimicInfo","噔↗噔↗当→当↘当→当↗","Reveal killed players' roles to imps upon death","Раскрывайте роли убитых игроков предателям, после смерти","人家是存錢，我是存資料","噔↗噔↗当→当↘当→当↗"
+"BitchInfo","你tm跟挑衅者有得一拼"
+"RamblerInfo","啊欸嘿我就走的慢"
+"ScarecrowInfo","你打不动我awa"
 
 "# 其它 / Other descriptions"
 "GMInfo","开局死的冤魂隔岸观火","Spectate the Chaos!","Вы Мастер Игры, наслаждайтесь хаосом!","當吃瓜群眾在一旁看戲吧","开局死的冤魂隔岸观火"
@@ -355,6 +374,8 @@
 "OverKillerInfoLong","(内鬼阵营):\n肢解者击杀（包括被动击杀）的目标会出现多具尸体，以至于报告尸体时无法准确分辨其他受害者。请注意：因实现原理，被击杀的目标不得不重复地显示自己被击杀的动画，此动画无法跳过且期间无法正常参与会议。此外，若肢解者肢解了复仇者，则复仇者会因愤怒带走全场所有人。\n\n该职业在发动技能时可能造成房主严重卡顿，请谨慎开启。","(Impostors):\nButcher kills (including passive kills) have multiple dead bodies on targets, making it impossible to accurately identify other dead body when reporting. Note: Due to the principle of implementation, the killed target has to repeatedly display the animation of being killed. This animation cannot be skipped and cannot participate in the meeting normally during this period. In addition, if the Butcher kills the Avenger, the Avenger will revenges everyone in anger.\n\nThis role may cause serious lag to the host when activating the skill, please enable it with caution.","(Предатель):\nЦель, убитая Мясником, будет рассматриваться как множество трупов, так что другие трупы не могут быть показаны при сообщении о мёртвых. Пожалуйста, обратите внимание: Убитая цель может неоднократно отображать анимацию своего убийства. Эта анимация не может быть пропущена и не может участвовать во встрече в течение периода. Вы должны дождаться окончания анимации, прежде чем сможете нормально участвовать в игре.","(偽裝者陣營):\n當肢解者殺人(包括被術士、傀儡師操控等) 時，被殺的目標將會同時出現多具屍體，以至於無法分辨該輪其他的受害者。\n請注意: 因實現原理，被肢解者殺死的人將會不停顯示自己被殺死的動畫，此動畫無法跳過，且該期間內無法參與會議，此外，如果肢解者殺死了復仇者，復仇者則會因為憤怒而帶走全場所有人。\n\n<color=#ffd500>警告: 該職業發動技能時會造成房主嚴重卡頓，請謹慎開啟。</color>","(内鬼阵营):\n肢解者击杀（包括被动击杀）的目标会出现多具尸体，以至于报告尸体时无法准确分辨其他受害者。请注意：因实现原理，被击杀的目标不得不重复地显示自己被击杀的动画，此动画无法跳过且期间无法正常参与会议。此外，若肢解者肢解了复仇者，则复仇者会因愤怒带走全场所有人。\n\n该职业在发动技能时可能造成房主严重卡顿，请谨慎开启。"
 "HangmanInfoLong","(内鬼阵营):\n刽子手在变形期间的击杀方式为绞杀，绞杀无视目标的任何状态例如医生的护盾、保镖的守护、大明星的技能等，被绞杀的玩家不会留下尸体，也不会触发其任何技能例如老兵反杀、幸运儿挡伤等（包括附加职业），此外，灵媒也不会得到提示。","(Impostor):\nThe killing method of the Hangman during the shapeshifting is strangling. Strangling ignores any status of the target, such as the shield of the Medic, the protection of the Bodyguard, the skills of the Super Star, etc. The strangled player will not leave a dead body, nor will it trigger any of its skills For example, Veteran kill back, Luckey stay alive, etc. (including additional roles), in addition, Seer will not be prompted.","(Предатель):\nВешатель убивает игроков, душа их. Удушение игнорирует любой вид защиты, такой как щит Медика, защита Телохранителя и тд. Игрок, которого задушили, не оставит тела и не активирует ни одну из способностей, таких как самозащита Ветерана, удача Удачника. Не появляется для Экстрасенса.","(偽裝者陣營):\n劊子手在變形時的殺人方式為絞殺，絞殺下將會無視任何一切可保護受害者不死亡的職業、附加效果和附加職業等等，例如軍醫的護盾、保鑣同歸於盡、大明星的技能，此外被動技能也不會生效，例如老兵反殺，幸運兒擋傷等等，被絞殺的玩家將不會留下屍體，並且也不會顯示被殺動畫。此外，由於不會留下屍體，因此靈媒也會不會收到任何提示。","(内鬼阵营):\n刽子手在变形期间的击杀方式为绞杀，绞杀无视目标的任何状态例如医生的护盾、保镖的守护、大明星的技能等，被绞杀的玩家不会留下尸体，也不会触发其任何技能例如老兵反杀、幸运儿挡伤等（包括附加职业），此外，灵媒也不会得到提示。"
 "SwooperInfoLong","(内鬼阵营):\n隐匿者可以通过管道进入隐身状态。\n\n请注意：由于技术限制，非房主模组端隐匿者可能在一回合只能使用一次技能。","(Impostors):\nThe Swooper can vent to temporarily turn invisible.\n\n★ Note: For a technical issues, can only use his ability once in a round.★","(Предатель)\nНевидимка может использовать люк, чтобы стать невидимым.\n\n★Обратите внимание★: Из-за технических лимитов, может становиться невидимым только 1 раз в раунд.","(偽裝者陣營):\n隱身人可以通過使用管道來隱身，在隱身情況下，除了自己以外其他人都看不到隱身人的存在。(包括幽靈)\n\n請注意: 由於技術限制，非房主模組端的隱身人可能只能在一回合中使用一次技能。",""
+"BerserkersInfoLong","(内鬼阵营):\n狂战士的击杀是范围击杀，跟自爆兵一样，但是不会杀死自己"
+"DepressedInfoLong","(内鬼阵营):\n当抑郁者击杀时，有几率和被击杀者同归于尽，同时死因会被设置为“抑郁”"
 
 "# 船员阵营 / Crewmates descriptions"
 "BaitInfoLong","(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。","(Crewmates):\nWhen a Bait is killed, the murderer who killed the Bait will be forced to report the Bait's body. However, the skill will be invalid when the Bait is killed by a Scavenger or Cleaner.","(Член Экипажа):\nКогда Байта убивают, он заставляет убившего игрока \nмоментально зарепортить ваш труп.","(船員陣營):\n當誘餌被殺時，殺死誘餌的兇手將會立刻自行報告誘餌的屍體，但是當清道夫殺死誘餌時，誘餌不會觸發技能。","(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。"
@@ -388,6 +409,9 @@
 "JudgeInfoLong","(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。","(Crewmates):\nThe judge can judge a certain player during the meeting. If the target is evil, the target will be killed (whether it is evil or not is set by the host), and if it is wrong, the judge gonna suicide.\nThe judgment command is: /tl [player id]\nYou can see the player's id before the player's name, or use the /id command to view the id of all players.\nJudges can judge all players when they become Madmate.","(Член Экипажа): Судья может судить определенного игрока во время встречи. Если цель - плохая роль, он будет убит, а если нет, судья покончит с собой.\n Пробная команда: /tl [Номер игрока] \n Вы можете увидеть номер игрока перед именем игрока или использовать команду /id для просмотра номеров всех игроков. Когда судья - Безумец, он может судить любого, кто захочет.","(船員陣營):\n法官在會議時可以審判某位玩家，若該玩家的職業為邪惡方職業則殺死該目標(部分邪惡方是否可以審判視房主設定)，錯誤則會自殺，\n審判指令為:/tl [玩家ID]\n你可以在玩家名字前看到該玩家的ID，或使用/id來查詢所有玩家的編號，當法官成為叛徒時可以隨意審判。","(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。"
 "MorticianInfoLong","(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。","(Crewmates):\nThe Mortician can see arrows pointing to all dead bodies, and the Mortician reports that the body can know the last player the victim had contact with during the meeting. Note: Mortician won't be Oblivious.","(Член Экипажа):\n Гробовщик может видеть стрелки, указывающие на все трупы. На собрании получает информацию, кто был последний игрок, с которым жертва контактировала при жизни.\n ★Пожалуйста, обратите внимание★ Гробовщик не будет забывчивым.","(船員陣營):\n送葬者可以看到指向所有屍體的箭頭，當送葬者報告屍體時可以在會議上得知被害者生前最後一個接觸的玩家。請注意: 送葬者不會成為膽小鬼。","(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。"
 "MediumshiperInfoLong","(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。","(Crewmember):\nIf a player is killed, the Medium will receive a reminder. After the Medium reports the body, he can establish contact with the victim. Before the end of the meeting, the victim has one chance to answer the Medium's questions, and can only answer yes or no. Note: Medium won't be Oblivious.","(Член экипажа):\n Медиум может установить контакт с жертвой после того, как сообщит о теле. До окончания этой встречи у жертвы есть один шанс ответить на вопрос Медиума, и она может ответить только 「да」 или 「нет」.\n ★Пожалуйста, обратите внимание★ Медиумы не будут забывчивыми.","(船員陣營):\n當場尚有玩家被殺死，通靈師會收到提示。當通靈師報告屍體後可以與他報告的被害者建立聯繫，在此次會議結束前，被害者擁有一次機會回答通靈師的問題，只能回答是或否。請注意: 通靈師不會成為膽小鬼。","(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。"
+"LostCrewInfoLong","(船员阵营):\n当击杀失落的船员时，凶手的名字会被强制替换为“I am SUS!!!”然后凶手的屏幕会闪烁破坏的红光，之后凶手就会自杀"
+"RudepeopleInfoLong","(船员阵营):\n当他跳管时，会开启挑衅阶段。\n在挑衅阶段杀死挑衅者，挑衅者会和凶手同归于尽"
+"DovesOfNeaceInfoLong","(船员阵营):\n当他跳管时，会重置所有带刀职业的冷却"
 
 "# 中立阵营 / Neutrals descriptions"
 "ArsonistInfoLong","(中立阵营):\n纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎的动画作为提示（仅自己可见）。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油。","(Neutrals):\nThe Arsonist can douse by clicking the kill button on the player and following them for a few seconds. When the dousing starts and its successful, a shield-animation will be displayed as a reminder (only visible to themselves). When all surviving players have been doused by the Arsonist, the Arsonist can vent to start the fire and win alone.\n\nIf the player name shows 「△」, that means they are being doused;\nif the player name shows 「▲」, it means they have been completely doused.","(нейтральный): поджигатель может закончить смазку, нажав на кнопку убийства игрока и следуя за ним в течение нескольких секунд, начать мазать, а также показать анимацию разбитого щита, когда она будет успешной (только для себя). После того, как все выжившие игроки были смазаны поджигателем, поджигатель мог воспламенить его, перепрыгнув через вентиляционную трубу и одержать победу в одиночку. \ n что n игрок показыва「△」заяв в смазыва \ что n что игрок показыва「▲」что смазыва.","(中立陣營):\n縱火犯可以通過對玩家使用殺人鍵並跟隨數秒來澆油，開始以及結束澆油時會出現盾牌破碎的效果作為提示。當所有存活玩家都被縱火犯澆上油時，縱火犯可以以跳管道的方式來點火，並單獨獲勝。\n\n玩家名字顯示「△」表示澆油中\n顯示「▲」表示已經澆油。","(中立阵营):\n纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎的动画作为提示（仅自己可见）。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油。"
@@ -428,6 +452,10 @@
 "TicketsStealerInfoLong","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。","(Add-ons):\nOnly Impostor other than Bombers and Booby Traps will become Stealer. Every time a Stealer kills a person, he gets an additional vote (the vote number is set by the host, and the decimal is rounded down). Also, extra votes from the Stealer are hidden during meeting.","(Атрибут):\nТолько Предатель может стать Вором. Каждый раз, когда Вор убивает игрока, он увеличивает свое собственное количество голосов в игре (увеличение голосов устанавливается в соответствии с количеством голосов, а десятичная дробь округляется в меньшую сторону). Кроме того, дополнительные голоса Вора скрыты.","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。"
 "DualPersonalityInfoLong","(附加职业)\n中立和叛徒不会成为双重人格，计算其阵营人数时双重人格被视为两人。例如场上剩余一个内鬼和一个双重人格船员，则视为两名船员和一名内鬼，因此游戏不会结束。","(Add-ons):\nNeutrals and Madmates can't become Schizophrenic. Schizophrenic will be considered as 2 players in the game (not applying to meeting votes). Having at least one player as Schizophrenic won't end the game if there are only them and the Impostor left.","(Атрибут):\nНейтралы и Предатели не могут быть с Шизофринией. При подсчете количества игроков в их команде Шизофреник рассматривает как два игрока. Например, если в игре останется один Предатель и одна команда с Шизофринией, то это будет рассматриваться как два Члена Экипажа и один Предатель, поэтому игра не закончится пока Шизофреник не будет убит.","(附加职业)\n中立和叛徒不会成为双重人格，计算其阵营人数时双重人格被视为两人。例如场上剩余一个内鬼和一个双重人格船员，则视为两名船员和一名内鬼，因此游戏不会结束。","(附加职业)\n中立和叛徒不会成为双重人格，计算其阵营人数时双重人格被视为两人。例如场上剩余一个内鬼和一个双重人格船员，则视为两名船员和一名内鬼，因此游戏不会结束。"
 "MimicInfoLong","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。","(Add-ons):\nOnly Impostor can become Mimic. When the Mimic is dead, other Impostors will receive a message once a meeting is called, this message will include information on roles who were killed by the Mimic.","(Атрибут):\nТолько Предатели могут стать Мимиком. После того как Мимик умрёт, призраки получат сообщение на собрании. Сообщение содержит роли всех кого убил Мимик пока он был жив.","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。"
+"BitchInfoLong","(附加职业)\n投给贱人的票数变为999，因为很贱:)"
+"RamblerInfoLong","(附加职业)\n他不能被赌杀。\n他的速度很慢，但是击杀他的人会成为漫步者。\n涉及速度一类的都不会成为漫步者"
+"ScarecrowInfoLong","(附加职业)\n只有船员才能成为稻草人。\n幸运儿不会成为稻草人。\n他可以承受住几次击杀。\n他不能被赌杀"
+
 
 "# 其它 / Other long description"
 "GMInfoLong","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры.","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。"
@@ -811,6 +839,17 @@
 "VeteranSkillMaxOfUseage","警戒次数上限","Max number of Alerts","Количество способности","警戒次数上限","技能使用次数上限"
 "SwooperCooldown","隐身冷却时间","Swoop Cooldown","Откат навыка","隐身冷却时间",""
 "SwooperDuration","隐身持续时间","Swoop Duration","Длительность навыка","隐身持续时间",""
+"BerserkersRadius","狂战士波及范围"
+"BerserkersKillCooldown","狂战士击杀冷却"
+"DepressedKillCooldown","抑郁者击杀冷却"
+"DepressedIdioctoniaProbability","抑郁者自杀概率"
+"RudepeopleSkillDuration","挑衅持续时间"
+"RudepeopleSkillCooldown","挑衅技能冷却时间"
+"RudepeoplekillMaxOfUseage","挑衅技能使用上限"
+"RamblerSpeed","漫步者移动速度"
+"ScarecrowCanWithStandANumberOfKills","稻草人最大承受击杀数"
+"DovesOfNeaceCooldown","和平技能冷却时间"
+"DovesOfNeaceMaxOfUseage","和平技能使用最大数"
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被杀","被杀"
@@ -949,6 +988,10 @@
 "SwooperInvisInCooldown","技能冷却中，隐身失败","Skills are still cooling, swoop failed","Откат способности, невидимости нет","技能冷却中，隐身失败",""
 "SwooperInvisStateCountdown","隐身状态将在{0}秒后失效","Invisibility will expire after {0}s","Невидимость пропадёт через {0} секунд","隐身状态将在{0}秒后失效",""
 "SwooperInvisCooldownRemain","隐身剩余冷却时间：{0}","{0}s left in invisibility","Осталось {0} секунд до использования способности","隐身剩余冷却时间：{0}",""
+"RudepeopleMaxUsage","挑衅技能用完了"
+"RudepeopleOnGuard","正在挑衅"
+"RudepeopleOffGuard","挑衅技能已失效，剩余{0}次使用次数"
+"DovesOfNeaceMaxUsage","不能再和平了"
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","信息发送冷却时间为【{0}】秒","信息发送冷却时间为【{0}】秒"
