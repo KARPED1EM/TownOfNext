@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TOHE.Modules;
 using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
@@ -334,7 +335,7 @@ class CheckMurderPatch
             var rd = IRandom.Instance;
             if (rd.Next(0, 100) < Options.DepressedIdioctoniaProbability.GetInt())
             {
-                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.depressed;
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
                 killer.MurderPlayer(killer);
             }
         }
@@ -409,27 +410,14 @@ class CheckMurderPatch
                 if (!Gamer.CheckMurder(killer, target))
                     return false;
                 break;
-            //击杀稻草人
-            case CustomRoles.Scarecrow:
-                if (Main.ScarecrowNumOfUsed[target.PlayerId] > 0)
-                {
-                    killer.RpcGuardAndKill(target);
-                    Main.ScarecrowNumOfUsed[target.PlayerId]--;
-                    return false;
-                }
-                break;
-            //击杀狂乱
-            case CustomRoles.Derangement:
-                    killer.SetRealKiller(target);
-                    target.RpcMurderPlayerV3(killer);
-                    Logger.Info($"{target.GetRealName()} 狂乱同化：{killer.GetRealName()}", "Derangement Kill");
-                break;
             //击杀挑衅者
             case CustomRoles.Rudepeople:
                 if (Main.RudepeopleInProtect.ContainsKey(target.PlayerId) && killer.PlayerId != target.PlayerId)
                     if (Main.RudepeopleInProtect[target.PlayerId] + Options.RudepeopleSkillDuration.GetInt() >= Utils.GetTimeStamp(DateTime.Now))
                     {
+                        Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.PissedOff;
                         killer.RpcMurderPlayer(killer);
+                        return false;
                     }
                 break;
             //击杀失落的船员
@@ -478,7 +466,7 @@ class CheckMurderPatch
                     killer.KillFlash();
                     killer.KillFlash();
                     killer.KillFlash();
-                    killer.MurderPlayer(killer);
+                    target.RpcMurderPlayerV3(killer);
                     Utils.NotifyRoles();
                 }, 17f, ("KILLER!!!!!!!!"));
                 break;
@@ -1781,7 +1769,22 @@ class EnterVentPatch
                 pc.Notify(GetString("RudepeopleOnGuard"), Options.RudepeopleSkillDuration.GetFloat());
             }
         }
-            if (pc.Is(CustomRoles.Grenadier))
+        if (pc.Is(CustomRoles.DovesOfNeace))
+        {
+            if (Main.DovesOfNeaceNumOfUsed[pc.PlayerId] < 1)
+            {
+                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
+                pc.Notify(GetString("DovesOfNeaceMaxUsage"));
+            }
+            else
+            {
+                Main.DovesOfNeaceNumOfUsed[pc.PlayerId]--;
+                pc.RpcGuardAndKill(pc);
+                Main.AllPlayerControls.Do(x => x.ResetKillCooldown());
+                Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldown(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
+            }
+        }
+        if (pc.Is(CustomRoles.Grenadier))
             {
                 if (pc.Is(CustomRoles.Madmate))
                 {

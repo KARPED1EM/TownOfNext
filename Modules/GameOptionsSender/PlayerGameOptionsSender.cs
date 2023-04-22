@@ -197,6 +197,10 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 AURoleOptions.EngineerCooldown = Options.RudepeopleSkillCooldown.GetFloat();
                 AURoleOptions.EngineerInVentMaxTime = 1;
                 break;
+            case CustomRoles.DovesOfNeace:
+                AURoleOptions.EngineerCooldown = Options.DovesOfNeaceCooldown.GetFloat();
+                AURoleOptions.EngineerInVentMaxTime = 1;
+                break;
         }
 
         // 为迷惑者的凶手
@@ -255,12 +259,8 @@ public class PlayerGameOptionsSender : GameOptionsSender
                     opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
                     opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
                     break;
-                case CustomRoles.Piper:
-                    Main.AllPlayerSpeed[player.PlayerId] = Options.PiperAccelerationSpeed.GetFloat();
-                    break;
                 case CustomRoles.Rambler:
                     Main.AllPlayerSpeed[player.PlayerId] = Options.RamblerSpeed.GetFloat();
-                    opt.SetFloat(FloatOptionNames.PlayerSpeedMod, Options.RamblerSpeed.GetFloat());
                     break;
             }
         }

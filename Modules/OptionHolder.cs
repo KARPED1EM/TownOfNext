@@ -206,6 +206,8 @@ public static class Options
     public static OptionItem RudepeoplekillMaxOfUseage;
     public static OptionItem BerserkersKillCooldown;
     public static OptionItem DepressedKillCooldown;
+    public static OptionItem DovesOfNeaceCooldown;
+    public static OptionItem DovesOfNeaceMaxOfUseage;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -661,6 +663,9 @@ public static class Options
         RudepeopleSkillCooldown = FloatOptionItem.Create(55645131, "RudepeopleSkillCooldown", new(1f, 180f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
         RudepeopleSkillDuration = FloatOptionItem.Create(807412747, "RudepeopleSkillDuration", new(1f, 999f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
         RudepeoplekillMaxOfUseage = IntegerOptionItem.Create(75345351, "RudepeoplekillMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rudepeople]);
+        SetupRoleOptions(8948971, TabGroup.CrewmateRoles, CustomRoles.DovesOfNeace);
+        DovesOfNeaceCooldown = FloatOptionItem.Create(165647, "DovesOfNeaceCooldown", new(1f, 180f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.DovesOfNeace]);
+        DovesOfNeaceMaxOfUseage = IntegerOptionItem.Create(151574, "DovesOfNeaceMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.DovesOfNeace]);
 
 
         // Neutral
@@ -710,8 +715,6 @@ public static class Options
         SetupAdtRoleOptions(6052146, CustomRoles.Bitch, canSetNum: true);
         SetupAdtRoleOptions(6052954, CustomRoles.Rambler, canSetNum: true);
         RamblerSpeed = FloatOptionItem.Create(60504874, "RamblerSpeed", new(0.1f, 1f, 0.1f), 2.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rambler]);
-        SetupAdtRoleOptions(6048284, CustomRoles.Scarecrow, canSetNum: true);
-        ScarecrowCanWithStandANumberOfKills = FloatOptionItem.Create(234415, "ScarecrowCanWithStandANumberOfKills", new(1f, 100f, 1f), 10f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Scarecrow]); 
 
         SetupAdtRoleOptions(6050390, CustomRoles.Madmate, canSetNum: true, canSetChance: false);
         MadmateSpawnMode = StringOptionItem.Create(6060444, "MadmateSpawnMode", madmateSpawnMode, 0, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Madmate]);

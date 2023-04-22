@@ -84,6 +84,8 @@ internal class ChangeRoleSettings
             Main.BardCreations = 0;
             Main.RudepeopleInProtect = new();
             Main.RudepeopleNumOfUsed = new();
+            Main.DovesOfNeaceNumOfUsed = new();
+            Main.ScarecrowNumOfUsed = new();
 
             ReportDeadBodyPatch.CanReport = new();
 
@@ -521,6 +523,9 @@ internal class SelectRolesPatch
                     case CustomRoles.Rudepeople:
                         Main.RudepeopleNumOfUsed.Add(pc.PlayerId, Options.RudepeoplekillMaxOfUseage.GetInt());
                         break;
+                    case CustomRoles.DovesOfNeace:
+                        Main.DovesOfNeaceNumOfUsed.Add(pc.PlayerId, Options.DovesOfNeaceMaxOfUseage.GetInt());
+                        break;;
                 }
                 foreach (var subRole in pc.GetCustomSubRoles())
                 {

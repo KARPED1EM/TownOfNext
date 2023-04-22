@@ -88,6 +88,7 @@ internal static class CustomRolesHelper
                 CustomRoles.Berserkers => CustomRoles.Impostor,
                 CustomRoles.LostCrew => CustomRoles.Crewmate,
                 CustomRoles.Rudepeople => CustomRoles.Engineer,
+                CustomRoles.DovesOfNeace => CustomRoles.Engineer,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
     }
@@ -137,9 +138,7 @@ internal static class CustomRolesHelper
             CustomRoles.DualPersonality or
             CustomRoles.Mimic or
             CustomRoles.Bitch or
-            CustomRoles.Rambler or
-            CustomRoles.Scarecrow or
-            CustomRoles.Derangement;
+            CustomRoles.Rambler;
     } 
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
@@ -216,8 +215,7 @@ internal static class CustomRolesHelper
             CustomRoles.OverKiller or
             CustomRoles.Hangman or
             CustomRoles.Bard or
-            CustomRoles.Swooper;
-            CustomRoles.Bard or
+            CustomRoles.Swooper or
             CustomRoles.Berserkers or
             CustomRoles.Depressed;
     }
@@ -270,7 +268,6 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.DualPersonality && ((!pc.GetCustomRole().IsImpostor() && !pc.GetCustomRole().IsCrewmate()) || pc.Is(CustomRoles.Madmate))) return false;
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeDualPersonality.GetBool()) return false;
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeDualPersonality.GetBool()) return false;
-        if (role is CustomRoles.Scarecrow && (!pc.GetCustomRole().IsCrewmate() || pc.Is(CustomRoles.Luckey))) return false;
         if (role is CustomRoles.Bitch && pc.Is(CustomRoles.Jester)) return false;
         if (role is CustomRoles.Rambler && (pc.Is(CustomRoles.Flashman) || pc.Is(CustomRoles.SpeedBooster))) return false;
        return true;

@@ -497,6 +497,9 @@ internal class ChatCommands
             "失落的船员" or "失落的船員" or "失落船员" => GetString("LostCrew"),
             "狂战士" or "狂戰士" => GetString("Berserkers"),
             "抑郁者" or "抑郁者" => GetString("Depressed"),
+            "贱人" or "賤人" => GetString("Bitch"),
+            "挑衅者" or "挑衅" or "挑釁者" => GetString("Rudepeople"),
+            "和平之鸽" or "和平之鴿" or "和平的鸽子" or "和平" => GetString("DovesOfNeace"),
             _ => text,
         };
     }
