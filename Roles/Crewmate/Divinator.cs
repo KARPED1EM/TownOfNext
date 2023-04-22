@@ -169,7 +169,8 @@ public static class Divinator
                 => "Disturbed",
 
                 CustomRoles.Glitch or
-                CustomRoles.Concealer
+                CustomRoles.Concealer or
+                CustomRoles.Swooper
                 => "Glitch",
 
                 _ => "None",
