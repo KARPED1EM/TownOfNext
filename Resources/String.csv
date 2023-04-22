@@ -172,7 +172,6 @@
 "Mimic","宝箱怪","Mimic","Мимик","保險箱","宝箱怪"
 "Bitch","贱人"
 "Rambler","漫步者"
-"Scarecrow","稻草人"
 
 "## 附加职业作为前缀时 / Prefixes for Add-ons"
 
@@ -193,7 +192,6 @@
 "Prefix.DualPersonality","双重人格","Schizophrenic ","Шизофренический ","雙重人格","双重人格"
 "Prefix.Mimic","宝箱怪","Mimic ","Мимикующий ","保險箱","宝箱怪"
 "Prefix.Bitch","贱人"
-"Prefix.Scarecrow","稻草人"
 "Prefix.Rambler","漫步者"
 
 "## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen"
@@ -323,7 +321,6 @@
 "MimicInfo","噔↗噔↗当→当↘当→当↗","Reveal killed players' roles to imps upon death","Раскрывайте роли убитых игроков предателям, после смерти","人家是存錢，我是存資料","噔↗噔↗当→当↘当→当↗"
 "BitchInfo","你tm跟挑衅者有得一拼"
 "RamblerInfo","啊欸嘿我就走的慢"
-"ScarecrowInfo","你打不动我awa"
 
 "# 其它 / Other descriptions"
 "GMInfo","开局死的冤魂隔岸观火","Spectate the Chaos!","Вы Мастер Игры, наслаждайтесь хаосом!","當吃瓜群眾在一旁看戲吧","开局死的冤魂隔岸观火"
@@ -409,7 +406,6 @@
 "JudgeInfoLong","(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。","(Crewmates):\nThe judge can judge a certain player during the meeting. If the target is evil, the target will be killed (whether it is evil or not is set by the host), and if it is wrong, the judge gonna suicide.\nThe judgment command is: /tl [player id]\nYou can see the player's id before the player's name, or use the /id command to view the id of all players.\nJudges can judge all players when they become Madmate.","(Член Экипажа): Судья может судить определенного игрока во время встречи. Если цель - плохая роль, он будет убит, а если нет, судья покончит с собой.\n Пробная команда: /tl [Номер игрока] \n Вы можете увидеть номер игрока перед именем игрока или использовать команду /id для просмотра номеров всех игроков. Когда судья - Безумец, он может судить любого, кто захочет.","(船員陣營):\n法官在會議時可以審判某位玩家，若該玩家的職業為邪惡方職業則殺死該目標(部分邪惡方是否可以審判視房主設定)，錯誤則會自殺，\n審判指令為:/tl [玩家ID]\n你可以在玩家名字前看到該玩家的ID，或使用/id來查詢所有玩家的編號，當法官成為叛徒時可以隨意審判。","(船员阵营):\n法官可以在会议时审判某位玩家的，若目标为邪恶角色则击杀目标（是否邪恶根据房主设定），错误则会自杀。\n审判指令为：/tl [玩家编号]\n您可以在玩家名字前看到该玩家的编号，或者使用/id指令查看所有玩家的编号。当法官成为叛徒时可以随意审判。"
 "MorticianInfoLong","(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。","(Crewmates):\nThe Mortician can see arrows pointing to all dead bodies, and the Mortician reports that the body can know the last player the victim had contact with during the meeting. Note: Mortician won't be Oblivious.","(Член Экипажа):\n Гробовщик может видеть стрелки, указывающие на все трупы. На собрании получает информацию, кто был последний игрок, с которым жертва контактировала при жизни.\n ★Пожалуйста, обратите внимание★ Гробовщик не будет забывчивым.","(船員陣營):\n送葬者可以看到指向所有屍體的箭頭，當送葬者報告屍體時可以在會議上得知被害者生前最後一個接觸的玩家。請注意: 送葬者不會成為膽小鬼。","(船员阵营):\n入殓师可以看到指向所有尸体的箭头，入殓师报告尸体可以在会议上得知被害者生前最后一个接触的玩家。请注意：入殓师不会成为胆小鬼。"
 "MediumshiperInfoLong","(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。","(Crewmember):\nIf a player is killed, the Medium will receive a reminder. After the Medium reports the body, he can establish contact with the victim. Before the end of the meeting, the victim has one chance to answer the Medium's questions, and can only answer yes or no. Note: Medium won't be Oblivious.","(Член экипажа):\n Медиум может установить контакт с жертвой после того, как сообщит о теле. До окончания этой встречи у жертвы есть один шанс ответить на вопрос Медиума, и она может ответить только 「да」 или 「нет」.\n ★Пожалуйста, обратите внимание★ Медиумы не будут забывчивыми.","(船員陣營):\n當場尚有玩家被殺死，通靈師會收到提示。當通靈師報告屍體後可以與他報告的被害者建立聯繫，在此次會議結束前，被害者擁有一次機會回答通靈師的問題，只能回答是或否。請注意: 通靈師不會成為膽小鬼。","(船员阵营):\n当场上有玩家被击杀，通灵师会收到提示。通灵师报告尸体后可以与被害者建立联系，在本次会议结束前，被害者拥有一次机会回答通灵师的问题，只能回答是或否。请注意：通灵师不会成为胆小鬼。"
-"LostCrewInfoLong","(船员阵营):\n当击杀失落的船员时，凶手的名字会被强制替换为“I am SUS!!!”然后凶手的屏幕会闪烁破坏的红光，之后凶手就会自杀"
 "RudepeopleInfoLong","(船员阵营):\n当他跳管时，会开启挑衅阶段。\n在挑衅阶段杀死挑衅者，挑衅者会和凶手同归于尽"
 "DovesOfNeaceInfoLong","(船员阵营):\n当他跳管时，会重置所有带刀职业的冷却"
 
@@ -454,8 +450,6 @@
 "MimicInfoLong","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。","(Add-ons):\nOnly Impostor can become Mimic. When the Mimic is dead, other Impostors will receive a message once a meeting is called, this message will include information on roles who were killed by the Mimic.","(Атрибут):\nТолько Предатели могут стать Мимиком. После того как Мимик умрёт, призраки получат сообщение на собрании. Сообщение содержит роли всех кого убил Мимик пока он был жив.","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。"
 "BitchInfoLong","(附加职业)\n投给贱人的票数变为999，因为很贱:)"
 "RamblerInfoLong","(附加职业)\n他不能被赌杀。\n他的速度很慢，但是击杀他的人会成为漫步者。\n涉及速度一类的都不会成为漫步者"
-"ScarecrowInfoLong","(附加职业)\n只有船员才能成为稻草人。\n幸运儿不会成为稻草人。\n他可以承受住几次击杀。\n他不能被赌杀"
-
 
 "# 其它 / Other long description"
 "GMInfoLong","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры.","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。"
@@ -463,6 +457,7 @@
 "# 隐藏 / Hidden long descriptions"
 "SunnyboyInfoLong","(中立阵营):\n阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。","(Neutrals):\nThe Sunnyboy can check the life status of others through the life panel. When the Sunnyboy is alive, the game will not end due to a numerical advantage (for example, the number of imporstors is greater than the crew or there are no survivors). If the Sunnyboy dies at the end of the game, the Sunnyboy will win with the winning team.","(Добрый - Нейтрал):\n Солнечний мальчик может просматривать жизненный статус других людей через планшет. Когда присутствует Солнечний Мальчик, игра не заканчивается из-за преимущества в количестве людей (например, количество Предателей больше, чем Членов Экипажа, или Предателей в живых нет). Если Солнечний мальчик умрет в конце игры, Солнечний мальчик выиграет с выжившей коммандой.","(中立阵营):\n阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。","(中立阵营):\n阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。"
 "BardInfoLong","(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。","(Impostor):\nWhen a bard is alive, the exile confirmation will display a sentence composed by the bard. Whenever the bard completes a creation, the bard's kill cooldown is permanently halved.","(Предатель):\nКогда Бард жив, в подтверждении изгнания будет отображаться предложение, составленное бардом. Всякий раз, когда бард завершает создание предложений, время восстановления после убийства барда постоянно уменьшается вдвое.","(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。","(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。"
+"LostCrewInfoLong","(船员阵营):\n当击杀失落的船员时，凶手的名字会被强制替换为“I am SUS!!!”然后凶手的屏幕会闪烁破坏的红光，之后凶手就会自杀"
 
 "## 模式选项 / Settings"
 "DisableMeeting","禁用会议与报告尸体","Disable Meetings","Отключить Собрания","禁用会议与报告尸体","禁用会议与报告尸体"
