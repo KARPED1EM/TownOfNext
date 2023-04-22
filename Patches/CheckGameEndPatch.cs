@@ -316,8 +316,9 @@ class GameEndChecker
             int Crew = Utils.AlivePlayersCount(CountTypes.Crew);
             int Gam = Utils.AlivePlayersCount(CountTypes.Gamer);
 
-            Imp += Main.AllAlivePlayerControls.Where(x => x.GetCustomRole().IsImpostor() && x.Is(CustomRoles.DualPersonality)).Count();
-            Crew += Main.AllAlivePlayerControls.Where(x => x.GetCustomRole().IsCrewmate() && x.Is(CustomRoles.DualPersonality)).Count();
+            Imp += Main.AllAlivePlayerControls.Count(x => x.GetCustomRole().IsImpostor() && x.Is(CustomRoles.DualPersonality));
+            Crew += Main.AllAlivePlayerControls.Count(x => x.GetCustomRole().IsCrewmate() && !x.Is(CustomRoles.Madmate) && x.Is(CustomRoles.DualPersonality));
+            Crew -= Main.AllAlivePlayerControls.Count(x => x.Is(CustomRoles.Madmate));
 
             if (Imp == 0 && Crew == 0 && Jackal == 0 && Pel == 0 && Gam == 0) //全灭
             {
