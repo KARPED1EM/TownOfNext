@@ -794,11 +794,9 @@ public static class Options
         AutoWarnStopWords = BooleanOptionItem.Create(1_000_012, "AutoWarnStopWords", false, TabGroup.SystemSettings, false);
 
         ShareLobby = BooleanOptionItem.Create(6090065, "ShareLobby", true, TabGroup.SystemSettings, false)
-            .SetHidden(CultureInfo.CurrentCulture.Name != "zh-CN")
             .SetHeader(true)
             .SetColor(Color.cyan);
         ShareLobbyMinPlayer = IntegerOptionItem.Create(6090067, "ShareLobbyMinPlayer", new(3, 12, 1), 5, TabGroup.SystemSettings, false).SetParent(ShareLobby)
-            .SetHidden(CultureInfo.CurrentCulture.Name != "zh-CN")
             .SetValueFormat(OptionFormat.Players);
 
         EndWhenPlayerBug = BooleanOptionItem.Create(1_000_025, "EndWhenPlayerBug", true, TabGroup.SystemSettings, false)
