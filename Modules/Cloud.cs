@@ -50,9 +50,9 @@ internal class Cloud
             if (IP == null || LOBBY_PORT == 0) throw new("Has no ip or port");
 
             Main.newLobby = false;
-            string msg = $"{GameStartManager.Instance.GameRoomNameCode.text}|{Main.PluginVersion}|{GameData.Instance.PlayerCount + 1}|{TranslationController.Instance.currentLanguage.languageID}|{DataManager.player.customization.name}";
+            string msg = $"{GameStartManager.Instance.GameRoomNameCode.text}|{Main.PluginVersion}|{GameData.Instance.PlayerCount + 1}|{TranslationController.Instance.currentLanguage.languageID}|{ServerManager.Instance.CurrentRegion.Name}|{DataManager.player.customization.name}";
             
-            if (msg.Length <= 50)
+            if (msg.Length <= 60)
             {
                 byte[] buffer = Encoding.Default.GetBytes(msg);
                 ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
