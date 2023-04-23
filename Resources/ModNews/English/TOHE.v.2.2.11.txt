@@ -37,3 +37,4 @@ Thank you for using TOHE!
 - Guesser UI now has additional roles
 - The shield-animation will display as a reminder when the Swooper skill ends
 - Discord TOHE-Chan
+- Option: Low Load Mode
