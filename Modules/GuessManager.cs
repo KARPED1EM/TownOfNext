@@ -380,21 +380,20 @@ public static class GuessManager
     }
     public static void CreateGuesserButton(MeetingHud __instance)
     {
-        for (int i = 0; i < __instance.playerStates.Length; i++)
-        {
-            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-            if (Main.PlayerStates[playerVoteArea.TargetPlayerId].IsDead) continue;
 
-            GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-            GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+        foreach (var pva in __instance.playerStates)
+        {
+            var pc = Utils.GetPlayerById(pva.TargetPlayerId);
+            if (pc == null || !pc.IsAlive()) continue;
+            GameObject template = pva.Buttons.transform.Find("CancelButton").gameObject;
+            GameObject targetBox = UnityEngine.Object.Instantiate(template, pva.transform);
             targetBox.name = "ShootButton";
             targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -100f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
-            int copiedIndex = i;
-            button.OnClick.AddListener((Action)(() => GuesserOnClick(copiedIndex, __instance)));
+            button.OnClick.AddListener((Action)(() => GuesserOnClick(pva.TargetPlayerId, __instance)));
         }
     }
 
@@ -430,13 +429,11 @@ public static class GuessManager
     }
 
     public static TextMeshPro textTemplate;
-    static void GuesserOnClick(int buttonTarget, MeetingHud __instance)
+    static void GuesserOnClick(byte playerId, MeetingHud __instance)
     {
-        var pc = Utils.GetPlayerById(buttonTarget);
+        var pc = Utils.GetPlayerById(playerId);
         if (pc == null || !pc.IsAlive()) return;
-
         if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
-        if (__instance.playerStates[buttonTarget].AmDead) return;
 
         try
         {
@@ -630,13 +627,12 @@ public static class GuessManager
                     }
                     else
                     {
-                        var focusedTarget = Utils.GetPlayerById(__instance.playerStates[buttonTarget].TargetPlayerId);
-                        if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || focusedTarget == null || !PlayerControl.LocalPlayer.IsAlive()) return;
+                        if (!(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted) || !PlayerControl.LocalPlayer.IsAlive()) return;
 
-                        Logger.Msg($"Click: {__instance.playerStates[buttonTarget].TargetPlayerId}({focusedTarget.GetCustomRole()}) => {role}", "Guesser UI");
+                        Logger.Msg($"Click: {pc.GetNameWithRole()} => {role}", "Guesser UI");
 
-                        if (AmongUsClient.Instance.AmHost) GuesserMsg(PlayerControl.LocalPlayer, $"/bt {__instance.playerStates[buttonTarget].TargetPlayerId} {GetString(role.ToString())}", true);
-                        else SendRPC(__instance.playerStates[buttonTarget].TargetPlayerId, role);
+                        if (AmongUsClient.Instance.AmHost) GuesserMsg(PlayerControl.LocalPlayer, $"/bt {playerId} {GetString(role.ToString())}", true);
+                        else SendRPC(playerId, role);
 
                         // Reset the GUI
                         __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));

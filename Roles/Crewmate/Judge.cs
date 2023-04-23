@@ -199,7 +199,7 @@ public static class Judge
         return false;
     }
 
-    private static void SendRPC(int playerId)
+    private static void SendRPC(byte playerId)
     {
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.Judge, SendOption.Reliable, -1);
         writer.Write(playerId);
@@ -207,17 +207,17 @@ public static class Judge
     }
     public static void ReceiveRPC(MessageReader reader, PlayerControl pc)
     {
-        int PlayerId = reader.ReadInt32();
+        int PlayerId = reader.ReadByte();
         TrialMsg(pc, $"/tl {PlayerId}");
     }
 
-    private static void JudgeOnClick(int index, MeetingHud __instance)
+    private static void JudgeOnClick(byte playerId, MeetingHud __instance)
     {
-        Logger.Msg($"Click: {index}", "Judge UI");
-        var pc = Utils.GetPlayerById(index);
+        Logger.Msg($"Click: ID {playerId}", "Judge UI");
+        var pc = Utils.GetPlayerById(playerId);
         if (pc == null || !pc.IsAlive()) return;
-        if (AmongUsClient.Instance.AmHost) TrialMsg(PlayerControl.LocalPlayer, $"/tl {index}");
-        else SendRPC(index);
+        if (AmongUsClient.Instance.AmHost) TrialMsg(PlayerControl.LocalPlayer, $"/tl {playerId}");
+        else SendRPC(playerId);
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
@@ -231,21 +231,19 @@ public static class Judge
     }
     public static void CreateJudgeButton(MeetingHud __instance)
     {
-        for (int i = 0; i < __instance.playerStates.Length; i++)
+        foreach (var pva in __instance.playerStates)
         {
-            PlayerVoteArea playerVoteArea = __instance.playerStates[i];
-            if (Main.PlayerStates[playerVoteArea.TargetPlayerId].IsDead) continue;
-
-            GameObject template = playerVoteArea.Buttons.transform.Find("CancelButton").gameObject;
-            GameObject targetBox = UnityEngine.Object.Instantiate(template, playerVoteArea.transform);
+            var pc = Utils.GetPlayerById(pva.TargetPlayerId);
+            if (pc == null || !pc.IsAlive()) continue;
+            GameObject template = pva.Buttons.transform.Find("CancelButton").gameObject;
+            GameObject targetBox = UnityEngine.Object.Instantiate(template, pva.transform);
             targetBox.name = "ShootButton";
             targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -100f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
-            int copiedIndex = i;
-            button.OnClick.AddListener((Action)(() => JudgeOnClick(copiedIndex, __instance)));
+            button.OnClick.AddListener((Action)(() => JudgeOnClick(pva.TargetPlayerId, __instance)));
         }
     }
 }
