@@ -1,5 +1,6 @@
 ﻿using Hazel;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TOHE;
 
@@ -54,11 +55,11 @@ public static class Greedier
     }
     public static void OnReportDeadBody()
     {
-        foreach (var x in IsOdd)
+        foreach (var pc in Main.AllAlivePlayerControls.Where(x => playerIdList.Contains(x.PlayerId)))
         {
-            IsOdd[x.Key] = true;
-            SendRPC(x.Key);
-            Main.AllPlayerKillCooldown[x.Key] = OddKillCooldown.GetFloat();
+            IsOdd[pc.PlayerId] = true;
+            SendRPC(pc.PlayerId);
+            Main.AllPlayerKillCooldown[pc.PlayerId] = OddKillCooldown.GetFloat();
         }
     }
     public static void OnCheckMurder(PlayerControl killer)
