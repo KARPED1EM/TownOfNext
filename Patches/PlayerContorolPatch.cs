@@ -14,7 +14,6 @@ using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 using static TOHE.Translator;
-
 namespace TOHE;
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckProtect))]
@@ -787,7 +786,6 @@ class ReportDeadBodyPatch
     {
         if (GameStates.IsMeeting) return false;
         if (Options.DisableMeeting.GetBool()) return false;
-        Logger.Info($"{__instance.GetNameWithRole()} => {target?.Object?.GetNameWithRole().RemoveHtmlTags() ?? "null"}", "ReportDeadBody");
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat) return false;
         if (!CanReport[__instance.PlayerId])
         {
@@ -795,6 +793,9 @@ class ReportDeadBodyPatch
             Logger.Warn($"{__instance.GetNameWithRole()}:通報禁止中のため可能になるまで待機します", "ReportDeadBody");
             return false;
         }
+
+        Logger.Info($"{__instance.GetNameWithRole()} => {target?.Object?.GetNameWithRole().RemoveHtmlTags() ?? "null"}", "ReportDeadBody");
+
         foreach (var kvp in Main.PlayerStates)
         {
             var pc = Utils.GetPlayerById(kvp.Key);
@@ -885,88 +886,7 @@ class ReportDeadBodyPatch
                 }
             }
 
-            //=============================================
-            //以下、ボタンが押されることが確定したものとする。
-            //=============================================
-
-
-            if (target == null) //ボタン
-            {
-                if (__instance.Is(CustomRoles.Mayor))
-                {
-                    Main.MayorUsedButtonCount[__instance.PlayerId] += 1;
-                }
-            }
-            else
-            {
-                var tpc = Utils.GetPlayerById(target.PlayerId);
-                if (tpc != null)
-                {
-                    // 侦探报告
-                    if (__instance.Is(CustomRoles.Detective))
-                    {
-                        string msg;
-                        msg = string.Format(GetString("DetectiveNoticeVictim"), tpc.GetRealName(), tpc.GetDisplayRoleName());
-                        if (Options.DetectiveCanknowKiller.GetBool())
-                        {
-                            var realKiller = tpc.GetRealKiller();
-                            if (realKiller == null) msg += "；" + GetString("DetectiveNoticeKillerNotFound");
-                            else msg += "；" + string.Format(GetString("DetectiveNoticeKiller"), realKiller.GetDisplayRoleName());
-                        }
-                        Main.DetectiveNotify.Add(__instance.PlayerId, msg);
-                    }
-                }
-            }
-
-            Main.ArsonistTimer.Clear();
-            Main.PuppeteerList.Clear();
-            Main.LastVotedPlayerInfo = null;
-            Main.GuesserGuessed.Clear();
-            Main.VeteranInProtect.Clear();
-            Main.GrenadierBlinding.Clear();
-            Main.MadGrenadierBlinding.Clear();
-            Divinator.didVote.Clear();
-
-            Concealer.OnReportDeadBody();
-            Psychic.OnReportDeadBody();
-            BountyHunter.OnReportDeadBody();
-            SerialKiller.OnReportDeadBody();
-            Sniper.OnReportDeadBody();
-            Vampire.OnStartMeeting();
-            Pelican.OnReportDeadBody();
-            Mortician.OnReportDeadBody(__instance, target);
-            Mediumshiper.OnReportDeadBody(__instance, target);
-            Counterfeiter.OnReportDeadBody();
-            BallLightning.OnReportDeadBody();
-            QuickShooter.OnReportDeadBody();
-            Eraser.OnReportDeadBody();
-            Hacker.OnReportDeadBody();
-            Judge.OnReportDeadBody();
-            Greedier.OnReportDeadBody();
-
-            foreach (var x in Main.RevolutionistStart)
-            {
-                var tar = Utils.GetPlayerById(x.Key);
-                if (tar == null) continue;
-                tar.Data.IsDead = true;
-                Main.PlayerStates[tar.PlayerId].deathReason = PlayerState.DeathReason.Sacrifice;
-                tar.RpcExileV2();
-                Main.PlayerStates[tar.PlayerId].SetDead();
-                Logger.Info($"{tar.GetRealName()} 因会议革命失败", "Revolutionist");
-            }
-            Main.RevolutionistTimer.Clear();
-            Main.RevolutionistStart.Clear();
-            Main.RevolutionistLastTime.Clear();
-
-            Main.AllPlayerControls
-                .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
-                .Do(pc => Camouflage.RpcSetSkin(pc, RevertToDefault: true));
-
-            MeetingTimeManager.OnReportDeadBody();
-
-            Utils.NotifyRoles(isForMeeting: true, NoCache: true);
-
-            Utils.SyncAllSettings();
+            AfterReportTasks(__instance, target);
 
         }
         catch (Exception e)
@@ -976,6 +896,90 @@ class ReportDeadBodyPatch
         }
 
         return true;
+    }
+    public static void AfterReportTasks(PlayerControl player, GameData.PlayerInfo target)
+    {
+        //=============================================
+        //以下、ボタンが押されることが確定したものとする。
+        //=============================================
+
+        if (target == null) //ボタン
+        {
+            if (player.Is(CustomRoles.Mayor))
+            {
+                Main.MayorUsedButtonCount[player.PlayerId] += 1;
+            }
+        }
+        else
+        {
+            var tpc = Utils.GetPlayerById(target.PlayerId);
+            if (tpc != null)
+            {
+                // 侦探报告
+                if (player.Is(CustomRoles.Detective))
+                {
+                    string msg;
+                    msg = string.Format(GetString("DetectiveNoticeVictim"), tpc.GetRealName(), tpc.GetDisplayRoleName());
+                    if (Options.DetectiveCanknowKiller.GetBool())
+                    {
+                        var realKiller = tpc.GetRealKiller();
+                        if (realKiller == null) msg += "；" + GetString("DetectiveNoticeKillerNotFound");
+                        else msg += "；" + string.Format(GetString("DetectiveNoticeKiller"), realKiller.GetDisplayRoleName());
+                    }
+                    Main.DetectiveNotify.Add(player.PlayerId, msg);
+                }
+            }
+        }
+
+        Main.ArsonistTimer.Clear();
+        Main.PuppeteerList.Clear();
+        Main.LastVotedPlayerInfo = null;
+        Main.GuesserGuessed.Clear();
+        Main.VeteranInProtect.Clear();
+        Main.GrenadierBlinding.Clear();
+        Main.MadGrenadierBlinding.Clear();
+        Divinator.didVote.Clear();
+
+        Concealer.OnReportDeadBody();
+        Psychic.OnReportDeadBody();
+        BountyHunter.OnReportDeadBody();
+        SerialKiller.OnReportDeadBody();
+        Sniper.OnReportDeadBody();
+        Vampire.OnStartMeeting();
+        Pelican.OnReportDeadBody();
+        Mortician.OnReportDeadBody(player, target);
+        Mediumshiper.OnReportDeadBody(player, target);
+        Counterfeiter.OnReportDeadBody();
+        BallLightning.OnReportDeadBody();
+        QuickShooter.OnReportDeadBody();
+        Eraser.OnReportDeadBody();
+        Hacker.OnReportDeadBody();
+        Judge.OnReportDeadBody();
+        Greedier.OnReportDeadBody();
+
+        foreach (var x in Main.RevolutionistStart)
+        {
+            var tar = Utils.GetPlayerById(x.Key);
+            if (tar == null) continue;
+            tar.Data.IsDead = true;
+            Main.PlayerStates[tar.PlayerId].deathReason = PlayerState.DeathReason.Sacrifice;
+            tar.RpcExileV2();
+            Main.PlayerStates[tar.PlayerId].SetDead();
+            Logger.Info($"{tar.GetRealName()} 因会议革命失败", "Revolutionist");
+        }
+        Main.RevolutionistTimer.Clear();
+        Main.RevolutionistStart.Clear();
+        Main.RevolutionistLastTime.Clear();
+
+        Main.AllPlayerControls
+            .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
+            .Do(pc => Camouflage.RpcSetSkin(pc, RevertToDefault: true));
+
+        MeetingTimeManager.OnReportDeadBody();
+
+        Utils.NotifyRoles(isForMeeting: true, NoCache: true);
+
+        Utils.SyncAllSettings();
     }
     public static async void ChangeLocalNameAndRevert(string name, int time)
     {
