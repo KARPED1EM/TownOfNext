@@ -85,10 +85,10 @@ public class Main : BasePlugin
     public static float RefixCooldownDelay = 0f;
     public static GameData.PlayerInfo LastVotedPlayerInfo;
     public static string LastVotedPlayer;
-    public static List<byte> ResetCamPlayerList;
-    public static List<byte> winnerList;
-    public static List<int> clientIdList;
-    public static List<(string, byte, string)> MessagesToSend;
+    public static List<byte> ResetCamPlayerList = new();
+    public static List<byte> winnerList = new();
+    public static List<int> clientIdList = new();
+    public static List<(string, byte, string)> MessagesToSend = new();
     public static bool isChatCommand = false;
     public static List<PlayerControl> LoversPlayers = new();
     public static bool isLoversDead = true;
@@ -99,13 +99,12 @@ public class Main : BasePlugin
     public static List<byte> BoobyTrapBody = new();
     public static Dictionary<byte, byte> KillerOfBoobyTrapBody = new();
     public static Dictionary<byte, string> DetectiveNotify = new();
-
+    public static List<byte> OverDeadPlayerList = new();
     public static bool DoBlockNameChange = false;
     public static int updateTime;
     public static bool newLobby = false;
     public static Dictionary<int, int> SayStartTimes = new();
     public static Dictionary<int, int> SayBanwordsTimes = new();
-
     public static Dictionary<byte, float> AllPlayerSpeed = new();
     public const float MinSpeed = 0.0001f;
     public static List<byte> CleanerBodies = new();
@@ -126,9 +125,6 @@ public class Main : BasePlugin
     public static Dictionary<byte, long> RevolutionistStart = new();
     public static Dictionary<byte, long> RevolutionistLastTime = new();
     public static Dictionary<byte, int> RevolutionistCountdown = new();
-    /// <summary>
-    /// Key: ターゲットのPlayerId, Value: パペッティアのPlayerId
-    /// </summary>
     public static Dictionary<byte, byte> PuppeteerList = new();
     public static Dictionary<byte, byte> SpeedBoostTarget = new();
     public static Dictionary<byte, int> MayorUsedButtonCount = new();
@@ -145,22 +141,22 @@ public class Main : BasePlugin
     public static Dictionary<byte, byte> ShapeshiftTarget = new();
     public static Dictionary<(byte, byte), string> targetArrows = new();
     public static Dictionary<byte, Vector2> EscapeeLocation = new();
-    public static bool VisibleTasksCount;
+    public static bool VisibleTasksCount = false;
     public static string nickName = "";
     public static bool introDestroyed = false;
     public static int DiscussionTime;
     public static int VotingTime;
-    public static byte currentDousingTarget;
-    public static byte currentDrawTarget;
+    public static byte currentDousingTarget= byte.MaxValue;
+    public static byte currentDrawTarget= byte.MaxValue;
     public static float DefaultCrewmateVision;
     public static float DefaultImpostorVision;
     public static bool IsInitialRelease = DateTime.Now.Month == 1 && DateTime.Now.Day is 17;
     public static bool IsAprilFools = DateTime.Now.Month == 4 && DateTime.Now.Day is 1;
     public static bool SetAutoStartToDisable = false;
-    public static byte FirstDied;
-    public static byte ShieldPlayer;
-    public static int MadmateNum;
-    public static int BardCreations;
+    public static byte FirstDied = byte.MaxValue;
+    public static byte ShieldPlayer = byte.MaxValue;
+    public static int MadmateNum = 0;
+    public static int BardCreations = 0;
     public static Dictionary<byte, byte> Provoked = new();
 
     public static Dictionary<byte, CustomRoles> DevRole = new();
@@ -230,40 +226,6 @@ public class Main : BasePlugin
 
         // 認証関連-認証
         DebugModeManager.Auth(DebugKeyAuth, DebugKeyInput.Value);
-
-        BrakarVoteFor = new List<byte>();
-        WarlockTimer = new Dictionary<byte, float>();
-        CursedPlayers = new Dictionary<byte, PlayerControl>();
-        MafiaRevenged = new Dictionary<byte, int>();
-        isDoused = new Dictionary<(byte, byte), bool>();
-        isDraw = new Dictionary<(byte, byte), bool>();
-        ArsonistTimer = new Dictionary<byte, (PlayerControl, float)>();
-        RevolutionistTimer = new Dictionary<byte, (PlayerControl, float)>();
-        RevolutionistStart = new Dictionary<byte, long>();
-        RevolutionistLastTime = new Dictionary<byte, long>();
-        RevolutionistCountdown = new Dictionary<byte, int>();
-        MayorUsedButtonCount = new Dictionary<byte, int>();
-        ParaUsedButtonCount = new Dictionary<byte, int>();
-        VeteranInProtect = new Dictionary<byte, long>();
-        VeteranNumOfUsed = new Dictionary<byte, int>();
-        GrenadierBlinding = new Dictionary<byte, long>();
-        MadGrenadierBlinding = new Dictionary<byte, long>();
-        MarioVentCount = new Dictionary<byte, int>();
-        MafiaRevenged = new Dictionary<byte, int>();
-        GuesserGuessed = new Dictionary<byte, int>();
-        CleanerBodies = new List<byte>();
-        CapitalismAddTask = new Dictionary<byte, int>();
-        CapitalismAssignTask = new Dictionary<byte, int>();
-        CursedWolfSpellCount = new Dictionary<byte, int>();
-        winnerList = new();
-        VisibleTasksCount = false;
-        MessagesToSend = new List<(string, byte, string)>();
-        currentDousingTarget = byte.MaxValue;
-        currentDrawTarget = byte.MaxValue;
-        ShieldPlayer = byte.MaxValue;
-        FirstDied = byte.MaxValue;
-        MadmateNum = 0;
-        BardCreations = 0;
 
         Preset1 = Config.Bind("Preset Name Options", "Preset1", "Preset_1");
         Preset2 = Config.Bind("Preset Name Options", "Preset2", "Preset_2");

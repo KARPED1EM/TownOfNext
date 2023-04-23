@@ -304,17 +304,28 @@ class CheckMurderPatch
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Dismembered;
             new LateTask(() =>
             {
+                if (!Main.OverDeadPlayerList.Contains(target.PlayerId)) Main.OverDeadPlayerList.Add(target.PlayerId);
                 var ops = target.GetTruePosition();
                 var rd = IRandom.Instance;
                 for (int i = 0; i < 20; i++)
                 {
-                    Utils.TP(target.NetTransform, new(ops.x + ((float)(rd.Next(0, 201) - 100) / 100), ops.y + ((float)(rd.Next(0, 201) - 100) / 100)));
+                    Vector2 location = new(ops.x + ((float)(rd.Next(0, 201) - 100) / 100), ops.y + ((float)(rd.Next(0, 201) - 100) / 100));
+                    location += new Vector2(0, 0.3636f);
+
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(target.NetTransform.NetId, (byte)RpcCalls.SnapTo, SendOption.None, -1);
+                    NetHelpers.WriteVector2(location, writer);
+                    writer.Write(target.NetTransform.lastSequenceId);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+
+                    target.NetTransform.SnapTo(location);
                     killer.MurderPlayer(target);
+
                     MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, -1);
                     messageWriter.WriteNetObject(target);
                     AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
                 }
-            }, 0.01f, "OverKiller Murder");
+                Utils.TP(killer.NetTransform, ops);
+            }, 0.05f, "OverKiller Murder");
         }
 
         //==キル処理==
@@ -458,6 +469,8 @@ class MurderPlayerPatch
     {
         if (target.AmOwner) RemoveDisableDevicesPatch.UpdateDisableDevices();
         if (!target.Data.IsDead || !AmongUsClient.Instance.AmHost) return;
+
+        if (Main.OverDeadPlayerList.Contains(target.PlayerId)) return;
 
         PlayerControl killer = __instance; //読み替え変数
 

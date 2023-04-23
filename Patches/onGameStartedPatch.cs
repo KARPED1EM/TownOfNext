@@ -77,6 +77,7 @@ internal class ChangeRoleSettings
             Main.GrenadierBlinding = new();
             Main.MadGrenadierBlinding = new();
             Main.CursedWolfSpellCount = new();
+            Main.OverDeadPlayerList = new();
             Main.Provoked = new();
             Main.ShieldPlayer = Options.ShieldPersonDiedFirst.GetBool() ? Main.FirstDied : byte.MaxValue;
             Main.FirstDied = byte.MaxValue;
