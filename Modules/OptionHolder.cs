@@ -120,6 +120,7 @@ public static class Options
     public static OptionItem ShowNKRemainOnEject;
     public static OptionItem ConfirmMadmateOnEject;
     public static OptionItem CheatResponses;
+    public static OptionItem LowLoadMode;
 
     public static OptionItem NeutralRolesMinPlayer;
     public static OptionItem NeutralRolesMaxPlayer;
@@ -798,6 +799,10 @@ public static class Options
             .SetColor(Color.cyan);
         ShareLobbyMinPlayer = IntegerOptionItem.Create(6090067, "ShareLobbyMinPlayer", new(3, 12, 1), 5, TabGroup.SystemSettings, false).SetParent(ShareLobby)
             .SetValueFormat(OptionFormat.Players);
+
+        LowLoadMode = BooleanOptionItem.Create(6080069, "LowLoadMode", false, TabGroup.SystemSettings, false)
+            .SetHeader(true)
+            .SetColor(Color.red);
 
         EndWhenPlayerBug = BooleanOptionItem.Create(1_000_025, "EndWhenPlayerBug", true, TabGroup.SystemSettings, false)
             .SetHeader(true)

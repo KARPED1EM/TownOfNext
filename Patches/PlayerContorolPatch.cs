@@ -600,7 +600,16 @@ class MurderPlayerPatch
 
         Utils.TargetDies(__instance, target);
 
-        Utils.SyncAllSettings();
+        if (Options.LowLoadMode.GetBool())
+        {
+            __instance.MarkDirtySettings();
+            target.MarkDirtySettings();
+        }
+        else
+        {
+            Utils.SyncAllSettings();
+        }
+
         Utils.NotifyRoles();
     }
 }
@@ -995,7 +1004,8 @@ class FixedUpdatePatch
 {
     private static StringBuilder Mark = new(20);
     private static StringBuilder Suffix = new(120);
-    private static int BufferTime = 10;
+    private static int LevelKickBufferTime = 10;
+    private static Dictionary<byte, int> BufferTime = new();
     public static void Postfix(PlayerControl __instance)
     {
         var player = __instance;
@@ -1007,6 +1017,14 @@ class FixedUpdatePatch
         LocateArrow.OnFixedUpdate(player);
         Sniper.OnFixedUpdate(player);
         Zoom.OnFixedUpdate();
+
+        if (Options.LowLoadMode.GetBool())
+        {
+            BufferTime.TryAdd(player.PlayerId, 10);
+            BufferTime[player.PlayerId]--;
+            if (BufferTime[player.PlayerId] > 0) return;
+            BufferTime[player.PlayerId] = 10;
+        }
 
         if (AmongUsClient.Instance.AmHost)
         {//実行クライアントがホストの場合のみ実行
@@ -1027,10 +1045,10 @@ class FixedUpdatePatch
                 player.Data.FriendCode == ""
                 ))
             {
-                BufferTime--;
-                if (BufferTime <= 0)
+                LevelKickBufferTime--;
+                if (LevelKickBufferTime <= 0)
                 {
-                    BufferTime = 20;
+                    LevelKickBufferTime = 20;
                     AmongUsClient.Instance.KickPlayer(player.GetClientId(), false);
                     string msg = string.Format(GetString("KickBecauseLowLevel"), player.GetRealName().RemoveHtmlTags());
                     Logger.SendInGame(msg);
