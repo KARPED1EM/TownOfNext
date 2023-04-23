@@ -39,12 +39,12 @@ internal class Cloud
         using StreamReader reader = new(stream, Encoding.UTF8);
         return reader.ReadToEnd();
     }
-    public static bool SendCodeToQQ(bool command = false)
+    public static bool ShareLobby(bool command = false)
     {
         try
         {
-            if (!Options.SendCodeToQQ.GetBool() && !command) return false;
-            if (!Main.newLobby || (GameData.Instance.PlayerCount < Options.SendCodeMinPlayer.GetInt() && !command) || !GameStates.IsLobby) return false;
+            if (!Options.ShareLobby.GetBool() && !command) return false;
+            if (!Main.newLobby || (GameData.Instance.PlayerCount < Options.ShareLobbyMinPlayer.GetInt() && !command) || !GameStates.IsLobby) return false;
             if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) return false;
 
             if (IP == null || LOBBY_PORT == 0) throw new("Has no ip or port");
@@ -61,13 +61,12 @@ internal class Cloud
                 ClientSocket.Close();
             }
 
-            if (CultureInfo.CurrentCulture.Name == "zh-CN")
-                Utils.SendMessage("已请求车队姬群发您的房号", PlayerControl.LocalPlayer.PlayerId);
+            Utils.SendMessage(Translator.GetString("Message.LobbyShared"), PlayerControl.LocalPlayer.PlayerId);
+
         }
         catch (Exception e)
         {
-            if (CultureInfo.CurrentCulture.Name == "zh-CN")
-                Utils.SendMessage("车队姬似乎不在线捏", PlayerControl.LocalPlayer.PlayerId);
+            Utils.SendMessage(Translator.GetString("Message.LobbyShareFailed"), PlayerControl.LocalPlayer.PlayerId);
             Logger.Exception(e, "SentLobbyToQQ");
             throw e;
         }

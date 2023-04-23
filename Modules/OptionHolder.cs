@@ -108,8 +108,8 @@ public static class Options
     public static OptionItem DisableTaskWin;
 
     public static OptionItem KillFlashDuration;
-    public static OptionItem SendCodeToQQ;
-    public static OptionItem SendCodeMinPlayer;
+    public static OptionItem ShareLobby;
+    public static OptionItem ShareLobbyMinPlayer;
     public static OptionItem DisableVanillaRoles;
     public static OptionItem DisableHiddenRoles;
     public static OptionItem CEMode;
@@ -793,11 +793,11 @@ public static class Options
         AutoKickStopWordsAsBan = BooleanOptionItem.Create(1_000_028, "AutoKickStopWordsAsBan", false, TabGroup.SystemSettings, false).SetParent(AutoKickStopWords);
         AutoWarnStopWords = BooleanOptionItem.Create(1_000_012, "AutoWarnStopWords", false, TabGroup.SystemSettings, false);
 
-        SendCodeToQQ = BooleanOptionItem.Create(6090065, "SendCodeToQQ", true, TabGroup.SystemSettings, false)
+        ShareLobby = BooleanOptionItem.Create(6090065, "ShareLobby", true, TabGroup.SystemSettings, false)
             .SetHidden(CultureInfo.CurrentCulture.Name != "zh-CN")
             .SetHeader(true)
             .SetColor(Color.cyan);
-        SendCodeMinPlayer = IntegerOptionItem.Create(6090067, "SendCodeMinPlayer", new(3, 12, 1), 5, TabGroup.SystemSettings, false).SetParent(SendCodeToQQ)
+        ShareLobbyMinPlayer = IntegerOptionItem.Create(6090067, "ShareLobbyMinPlayer", new(3, 12, 1), 5, TabGroup.SystemSettings, false).SetParent(ShareLobby)
             .SetHidden(CultureInfo.CurrentCulture.Name != "zh-CN")
             .SetValueFormat(OptionFormat.Players);
 

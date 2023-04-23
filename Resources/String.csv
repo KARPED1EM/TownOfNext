@@ -516,8 +516,8 @@
 "AutoKickStopWordsAsBan","踢出时封禁该玩家","Block a player after they're kicked","Заблокировать игрока после его кика","踢出時封禁該玩家","踢出时封禁该玩家"
 "AutoWarnStopWords","警告使用违禁词的人","Warning to those who write banned words","Предупреждение тем кто пишет запрещенные слова","警告使用違禁詞的人","警告使用违禁词的人"
 "KickAndroidPlayer","踢出使用安卓的玩家","Kick mobile players","Кикнуть игроков которые зашли в лобби через телефон","踢出使用Android平台遊玩的玩家","踢出使用安卓的玩家"
-"SendCodeToQQ","允许车队姬自动群发您的房号","(Only for China)允许车队姬自动群发您的房号","(Только для Китая)允许车队姬自动群发您的房号","允許車隊姬自動群發您的房號至","允许车队姬自动群发您的房号"
-"SendCodeMinPlayer","房间人数达到多少时群发","(Only for China)房间人数达到多少时群发","(Только для Китая)房间人数达到多少时群发","房間人數達到多少人時群發","房间人数达到多少时群发"
+"ShareLobby","允许车队姬自动群发您的房号","Allow TOHE-chan share your lobby code to Discord","Позволяет TOHE-Chan делиться кодом зала с Discord","允許TOHE-chan自動群發您的房號至Discord","Allow TOHE-chan share your lobby code to Discord"
+"ShareLobbyMinPlayer","房间人数达到多少时群发","Share lobby when the number of players reaches","","房間人數達到多少人時發送",""
 "DisableVanillaRoles","禁用原版职业","Disable Vanilla Roles","Отключить ванильные Роли","禁用原版職業","禁用原版职业"
 "DisableHiddenRoles","禁用隐藏职业","Disable Hidden Roles","Отключить скрытые роли","禁用隱藏職業",""
 "VoteMode","投票相关设定","Voting Mode","Режим Голосования","投票相關設定","投票相关设定"
@@ -994,6 +994,9 @@
 "Message.MadmateSelfVoteModeNotify","请注意：当前叛徒生成模式为【{0}】\n投票给自己代表您希望成为叛徒。若您符合成为叛徒的条件且还有剩余名额，将立刻成为叛徒。","Please note: The current Madness generation mode is [{0}]\n Voting for yourself means you want to be Madmate. If you meet the conditions to become Madmate and there are still spaces left, you will immediately become Madmate","Пожалуйста, обратите внимание: Текущий режим появления Безумцев - [{0}]\n Голосование за себя означает, что вы хотите быть Безумцем. Если вы соответствуете условиям, чтобы стать Безумцем и еще остались места, вы немедленно станете Безумцем","请注意：当前叛徒生成模式为【{0}】\n投票给自己代表您希望成为叛徒。若您符合成为叛徒的条件且还有剩余名额，将立刻成为叛徒。","请注意：当前叛徒生成模式为【{0}】\n投票给自己代表您希望成为叛徒。若您符合成为叛徒的条件且还有剩余名额，将立刻成为叛徒。"
 "Message.HostLeftGameInGame","警告：房主已退出游戏，接下来游戏将无法正常运行，请各位退出游戏，或等待新房主重开游戏。","★Warning★ Host left the game, in next time game wouldn't start normally. Please, exit the lobby or wait until new Host opens a lobby.","★Предупреждение★ Хост покинул игру, и в следуйщий раз игра не запуститься нормально. Пожайлуста, выйдите из лобби или подождите пока новый Хост начнёт игру.","警告：房主已退出游戏，接下来游戏将无法正常运行，请各位退出游戏，或等待新房主重开游戏。","警告：房主已退出游戏，接下来游戏将无法正常运行，请各位退出游戏，或等待新房主重开游戏。"
 "Message.HostLeftGameInLobby","警告：房主已退出游戏，接下来游戏将无法正常运行，若新房主已安装TOHE，需要至少重开一次房间才能正常游戏。","★Warning★ Host left the game, in next time game wouldn't start normally. If new host has TOHE, you need to re-enter the lobby to play normally.","★Предупреждение★ Хост покинул игру, и в следуйщий раз игра не запуститься нормально. Если у нового Хоста есть TOHE, вам нужно перезайти чтобы играть нормально.","警告：房主已退出游戏，接下来游戏将无法正常运行，若新房主已安装TOHE，需要至少重开一次房间才能正常游戏。","警告：房主已退出游戏，接下来游戏将无法正常运行，若新房主已安装TOHE，需要至少重开一次房间才能正常游戏。"
+"Message.LobbyShared","已请求车队姬群发您的房号","We have requested TOHE-chan to share your lobby.","Мы попросили Tohe Chan поделиться вашим залом.","已請求TOHE-chan群發您的房號",""
+"Message.LobbyShareFailed","车队姬似乎不在线捏","We have requested TOHE-chan to share your lobby.","Мы попросили Tohe Chan поделиться вашим залом.","已請求TOHE-chan群發您的房號",""
+
 
 "## 警告 / Warnings"
 "Warning.OverrideExiledPlayer","设置内鬼人数为一个时，放逐动画会显示为平票","All ejects will be displayed as a tie since the total number of impostors is 1.","Все изгнания будут отображаться как ничья, потому что общее количество Предателей равно 1.","设置内鬼人数为一个时，放逐动画会显示为平票","设置内鬼人数为一个时，放逐动画会显示为平票"
