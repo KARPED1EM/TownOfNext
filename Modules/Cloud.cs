@@ -51,12 +51,16 @@ internal class Cloud
 
             Main.newLobby = false;
             string msg = $"{GameStartManager.Instance.GameRoomNameCode.text}|{Main.PluginVersion}|{GameData.Instance.PlayerCount + 1}|{TranslationController.Instance.currentLanguage.languageID}|{DataManager.player.customization.name}";
-            byte[] buffer = Encoding.Default.GetBytes(msg);
+            
+            if (msg.Length <= 50)
+            {
+                byte[] buffer = Encoding.Default.GetBytes(msg);
+                ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                ClientSocket.Connect(IP, LOBBY_PORT);
+                ClientSocket.Send(buffer);
+                ClientSocket.Close();
+            }
 
-            ClientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            ClientSocket.Connect(IP, LOBBY_PORT);
-            ClientSocket.Send(buffer);
-            ClientSocket.Close();
             if (CultureInfo.CurrentCulture.Name == "zh-CN")
                 Utils.SendMessage("已请求车队姬群发您的房号", PlayerControl.LocalPlayer.PlayerId);
         }
