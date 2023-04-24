@@ -1,7 +1,7 @@
 ## Dev
-actorour#0029,#ffc0cb,{Developer},true,true,true,KARPED1EM
-pinklaze#1776,#30548e,{Developer},true,true,true,NCSIMON
-keepchirpy#6354,#E42217,{Developer},false,true,false,Tommy-XL
+actorour#0029,#ffc0cb,{{Developer}},true,true,true,KARPED1EM
+pinklaze#1776,#30548e,{{Developer}},true,true,true,NCSIMON
+keepchirpy#6354,#E42217,{{Developer}},false,true,false,Tommy-XL
 taskunsold#2701,null,<color=#426798>Tem</color><color=#f6e509>mie</color>,false,true,false
 timedapper#9496,#48FFFF,阿龍,false,true,false,NetherDragon
 

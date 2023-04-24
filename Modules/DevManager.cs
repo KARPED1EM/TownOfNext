@@ -19,7 +19,7 @@ class DevUser
     {
         Code = code;
         Color = color;
-        Tag = tag == "{Developer}" ? Translator.GetString("Developer") : tag;
+        Tag = tag == "{{Developer}}" ? Translator.GetString("Developer") : tag;
         IsUp = isUp;
         IsDev = isDev;
         CanUseDevCommand = canUseDevCommand;
