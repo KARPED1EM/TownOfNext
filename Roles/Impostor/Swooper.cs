@@ -95,7 +95,7 @@ public static class Swooper
                 {
                     lastTime.Add(pc.PlayerId, now);
                     pc?.MyPhysics?.RpcBootFromVent(Main.LastEnteredVent[pc.PlayerId].Id);
-                    pc?.RpcGuesserMurderPlayer();
+                    pc?.RpcGuardAndKill();
                     NameNotifyManager.Notify(pc, GetString("SwooperInvisStateOut"));
                     SendRPC(pc);
                     continue;
