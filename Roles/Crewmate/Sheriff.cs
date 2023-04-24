@@ -108,12 +108,13 @@ public static class Sheriff
         ShotLimit[killer.PlayerId]--;
         Logger.Info($"{killer.GetNameWithRole()} : 残り{ShotLimit[killer.PlayerId]}発", "Sheriff");
         SendRPC(killer.PlayerId);
-        if (
-            (killer.Is(CustomRoles.Madmate) && (!SetMadCanKill.GetBool() ||
-            target.GetCustomRole().IsCrewmate() && MadCanKillCrew.GetBool() ||
-            target.GetCustomRole().IsNeutral() && MadCanKillNeutral.GetBool() ||
-            target.GetCustomRole().IsImpostor() && MadCanKillImp.GetBool()
-            )) || target.CanBeKilledBySheriff())
+        if (!killer.Is(CustomRoles.Madmate) ?
+            target.CanBeKilledBySheriff() :
+            (!SetMadCanKill.GetBool() ||
+            (target.GetCustomRole().IsCrewmate() && MadCanKillCrew.GetBool()) ||
+            (target.GetCustomRole().IsNeutral() && MadCanKillNeutral.GetBool()) ||
+            (target.GetCustomRole().IsImpostor() && MadCanKillImp.GetBool())
+            ))
         {
             SetKillCooldown(killer.PlayerId);
             return true;
