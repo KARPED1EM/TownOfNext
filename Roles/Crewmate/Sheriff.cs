@@ -74,11 +74,12 @@ public static class Sheriff
         playerIdList.Add(playerId);
         CurrentKillCooldown.Add(playerId, KillCooldown.GetFloat());
 
-        if (!Main.ResetCamPlayerList.Contains(playerId))
-            Main.ResetCamPlayerList.Add(playerId);
-
         ShotLimit.TryAdd(playerId, ShotLimitOpt.GetInt());
         Logger.Info($"{Utils.GetPlayerById(playerId)?.GetNameWithRole()} : 残り{ShotLimit[playerId]}発", "Sheriff");
+
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (!Main.ResetCamPlayerList.Contains(playerId))
+            Main.ResetCamPlayerList.Add(playerId);
     }
     public static bool IsEnable => playerIdList.Count > 0;
     private static void SendRPC(byte playerId)

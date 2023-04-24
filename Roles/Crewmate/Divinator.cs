@@ -29,10 +29,6 @@ public static class Divinator
     {
         playerIdList.Add(playerId);
         CheckLimit.TryAdd(playerId, CheckLimitOpt.GetInt());
-
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (!Main.ResetCamPlayerList.Contains(playerId))
-            Main.ResetCamPlayerList.Add(playerId);
     }
     public static bool IsEnable => playerIdList.Count > 0;
     public static void OnVote(PlayerControl player, PlayerControl target)
