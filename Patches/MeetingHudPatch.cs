@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Il2CppSystem.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -763,8 +764,9 @@ class MeetingHudUpdatePatch
 
         // 会议技能按钮的取消
         bufferTIme--;
-        if (bufferTIme < 0)
+        if (bufferTIme < 0 && __instance.lastSecond > 3)
         {
+            bufferTIme = 50;
             var myRole = PlayerControl.LocalPlayer.GetCustomRole();
             if (myRole is CustomRoles.NiceGuesser or CustomRoles.EvilGuesser or CustomRoles.Judge)
             {
