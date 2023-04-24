@@ -1033,10 +1033,10 @@ class FixedUpdatePatch
 
         if (Options.LowLoadMode.GetBool())
         {
-            BufferTime.TryAdd(player.PlayerId, 5);
+            BufferTime.TryAdd(player.PlayerId, 2);
             BufferTime[player.PlayerId]--;
             if (BufferTime[player.PlayerId] > 0) return;
-            BufferTime[player.PlayerId] = 5;
+            BufferTime[player.PlayerId] = 2;
         }
 
         if (AmongUsClient.Instance.AmHost)
