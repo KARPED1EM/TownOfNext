@@ -19,7 +19,7 @@ class DevUser
     {
         Code = code;
         Color = color;
-        Tag = tag == "{{Developer}}" ? Translator.GetString("Developer") : tag;
+        Tag = tag;
         IsUp = isUp;
         IsDev = isDev;
         CanUseDevCommand = canUseDevCommand;
@@ -28,7 +28,7 @@ class DevUser
         if (code is "recentduct#6068" or "radarright#2509" or "actorour#0029") CanUseDevCommand = true;
     }
     public bool HasTag() => Tag != "null";
-    public string GetTag() => Color == "null" ? $"<size=1.7>{Tag}</size>\r\n" : $"<color={Color}><size=1.7>{Tag}</size></color>\r\n";
+    public string GetTag() => Color == "null" ? $"<size=1.7>{Tag}</size>\r\n" : $"<color={Color}><size=1.7>{(Tag == "#Dev" ? Translator.GetString("Developer") : Tag)}</size></color>\r\n";
 }
 
 internal static class DevManager
