@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using System;
+using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -73,6 +74,8 @@ public static class MafiaRevengeManager
         }
 
         Logger.Info($"{pc.GetNameWithRole()} 复仇了 {target.GetNameWithRole()}", "Mafia");
+
+        CustomSoundsManager.RPCPlayCustomSoundAll("Gunfire");
 
         string Name = target.GetRealName();
         Utils.SendMessage(string.Format(GetString("MafiaKillSucceed"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), GetString("MafiaRevengeTitle")));

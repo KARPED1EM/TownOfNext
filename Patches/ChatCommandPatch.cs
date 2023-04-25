@@ -353,7 +353,7 @@ internal class ChatCommands
                 case "/cs":
                     canceled = true;
                     subArgs = text.Remove(0, 3);
-                    CustomSoundsManager.RPCPlay(PlayerControl.LocalPlayer.PlayerId, subArgs.Trim());
+                    PlayerControl.LocalPlayer.RPCPlayCustomSound(subArgs.Trim());
                     break;
 
                 case "/sd":

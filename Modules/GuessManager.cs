@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
+using TOHE.Modules;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 using static TOHE.Translator;
@@ -185,6 +186,8 @@ public static class GuessManager
                 string Name = dp.GetRealName();
 
                 Main.GuesserGuessed[pc.PlayerId]++;
+
+                CustomSoundsManager.RPCPlayCustomSoundAll("Gunfire");
 
                 new LateTask(() =>
                 {
@@ -659,6 +662,9 @@ public static class GuessManager
             Logger.Exception(ex, "Guesser UI");
             return;
         }
+
+        PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload");
+
     }
 
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.OnDestroy))]
