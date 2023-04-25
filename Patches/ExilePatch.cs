@@ -87,20 +87,6 @@ class ExileControllerWrapUpPatch
             }
 
             //判断处刑人胜利
-            if (DecidedWinner)
-            {
-                foreach (var executioner in Executioner.playerIdList)
-                {
-                    var pc = Utils.GetPlayerById(executioner);
-                    if (pc == null || !pc.IsAlive()) continue;
-                    var GetValue = Executioner.Target.TryGetValue(executioner, out var targetId);
-                    if (GetValue && exiled.PlayerId == targetId)
-                    {
-                        CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Executioner);
-                        CustomWinnerHolder.WinnerIds.Add(executioner);
-                    }
-                }
-            }
             if (Executioner.CheckExileTarget(exiled, DecidedWinner)) DecidedWinner = true;
 
             //判断恐怖分子胜利

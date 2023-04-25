@@ -329,7 +329,7 @@ class CheckForEndVotingPatch
             DecidedWinner = true;
         }
         //处刑人胜利
-        if (Executioner.Target.ContainsValue(exileId) && (!Main.PlayerStates[Executioner.Target.Where(x => x.Value == exileId).FirstOrDefault().Key].IsDead))
+        if (Executioner.CheckExileTarget(exiledPlayer, DecidedWinner, true))
         {
             name = string.Format(GetString("ExiledExeTarget"), realName, coloredRole);
             DecidedWinner = true;

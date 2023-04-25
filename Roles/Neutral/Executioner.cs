@@ -1,6 +1,7 @@
 using HarmonyLib;
 using Hazel;
 using System.Collections.Generic;
+using System.Linq;
 using static TOHE.Options;
 
 namespace TOHE.Roles.Neutral;
@@ -131,18 +132,27 @@ public static class Executioner
         var GetValue = Target.TryGetValue(seer.PlayerId, out var targetId);
         return GetValue && targetId == target.PlayerId ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Executioner), "♦") : "";
     }
-    public static bool CheckExileTarget(GameData.PlayerInfo exiled, bool DecidedWinner)
+    public static bool CheckExileTarget(GameData.PlayerInfo exiled, bool DecidedWinner, bool Check = false)
     {
-        foreach (var kvp in Target)
+        foreach (var kvp in Target.Where(x =>x.Value == exiled.PlayerId))
         {
             var executioner = Utils.GetPlayerById(kvp.Key);
-            if (executioner == null || !executioner.IsAlive()) continue;
-            if (kvp.Value == exiled.PlayerId && !DecidedWinner)
-            {
-                SendRPC(kvp.Key, Progress: "WinCheck");
-                return true;
-            }
+            if (executioner == null || !executioner.IsAlive() || executioner.Data.Disconnected) continue;
+            if (!Check) ExeWin(kvp.Key, DecidedWinner);
+            return true;
         }
         return false;
+    }
+    public static void ExeWin(byte playerId, bool DecidedWinner)
+    {
+        if (!DecidedWinner)
+        {
+            SendRPC(playerId, Progress: "WinCheck");
+        }
+        else
+        {
+            CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Executioner);
+            CustomWinnerHolder.WinnerIds.Add(playerId);
+        }
     }
 }
