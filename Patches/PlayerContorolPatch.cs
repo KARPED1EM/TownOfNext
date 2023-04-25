@@ -1727,6 +1727,7 @@ class CoEnterVentPatch
         if (AmongUsClient.Instance.IsGameStarted &&
             __instance.myPlayer.IsDouseDone())
         {
+            CustomSoundsManager.RPCPlayCustomSoundAll("Boom");
             foreach (var pc in Main.AllAlivePlayerControls)
             {
                 if (pc != __instance.myPlayer)
@@ -1737,8 +1738,6 @@ class CoEnterVentPatch
                     pc.RpcMurderPlayerV3(pc);
                     Main.PlayerStates[pc.PlayerId].SetDead();
                 }
-                else
-                    RPC.PlaySoundRPC(pc.PlayerId, Sounds.KillSound);
             }
             foreach (var pc in Main.AllPlayerControls) pc.KillFlash();
             CustomWinnerHolder.ShiftWinnerAndSetWinner(CustomWinner.Arsonist); //焼殺で勝利した人も勝利させる
