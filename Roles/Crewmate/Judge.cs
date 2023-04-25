@@ -50,7 +50,7 @@ public static class Judge
         TrialLimit.Clear();
         foreach (var pc in playerIdList) TrialLimit.Add(pc, TrialLimitPerMeeting.GetInt());
     }
-    public static bool TrialMsg(PlayerControl pc, string msg)
+    public static bool TrialMsg(PlayerControl pc, string msg, bool isUI = false)
     {
         var originMsg = msg;
 
@@ -93,12 +93,14 @@ public static class Judge
                 bool judgeSuicide = true;
                 if (TrialLimit[pc.PlayerId] < 1)
                 {
-                    Utils.SendMessage(GetString("JudgeTrialMax"), pc.PlayerId);
+                    if (!isUI) Utils.SendMessage(GetString("JudgeTrialMax"), pc.PlayerId);
+                    else pc.ShowPopUp(GetString("JudgeTrialMax"));
                     return true;
                 }
                 if (pc.PlayerId == target.PlayerId)
                 {
-                    Utils.SendMessage(GetString("LaughToWhoTrialSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromKPD")));
+                    if (!isUI) Utils.SendMessage(GetString("LaughToWhoTrialSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromKPD")));
+                    else pc.ShowPopUp(Utils.ColorString(Color.cyan, GetString("MessageFromKPD")) + "\n" + GetString("LaughToWhoTrialSelf"));
                     judgeSuicide = true;
                 }
                 else if (pc.Is(CustomRoles.Madmate)) judgeSuicide = false;
@@ -208,7 +210,7 @@ public static class Judge
     public static void ReceiveRPC(MessageReader reader, PlayerControl pc)
     {
         int PlayerId = reader.ReadByte();
-        TrialMsg(pc, $"/tl {PlayerId}");
+        TrialMsg(pc, $"/tl {PlayerId}", true);
     }
 
     private static void JudgeOnClick(byte playerId, MeetingHud __instance)
@@ -216,7 +218,7 @@ public static class Judge
         Logger.Msg($"Click: ID {playerId}", "Judge UI");
         var pc = Utils.GetPlayerById(playerId);
         if (pc == null || !pc.IsAlive()) return;
-        if (AmongUsClient.Instance.AmHost) TrialMsg(PlayerControl.LocalPlayer, $"/tl {playerId}");
+        if (AmongUsClient.Instance.AmHost) TrialMsg(PlayerControl.LocalPlayer, $"/tl {playerId}", true);
         else SendRPC(playerId);
     }
 
