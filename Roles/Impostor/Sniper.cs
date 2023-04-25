@@ -1,6 +1,7 @@
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -206,6 +207,8 @@ public static class Sniper
 
         //命中判定はホストのみ行う
         if (!AmongUsClient.Instance.AmHost) return;
+
+        sniper.RPCPlayCustomSound("AWP");
 
         var targets = GetSnipeTargets(sniper);
 

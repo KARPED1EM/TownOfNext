@@ -75,7 +75,7 @@ public static class MafiaRevengeManager
 
         Logger.Info($"{pc.GetNameWithRole()} 复仇了 {target.GetNameWithRole()}", "Mafia");
 
-        CustomSoundsManager.RPCPlayCustomSoundAll("Gunfire");
+        CustomSoundsManager.RPCPlayCustomSoundAll("AWP");
 
         string Name = target.GetRealName();
         Utils.SendMessage(string.Format(GetString("MafiaKillSucceed"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), GetString("MafiaRevengeTitle")));
