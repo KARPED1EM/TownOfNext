@@ -496,6 +496,7 @@ class MurderPlayerPatch
         //看看UP是不是被首刀了
         if (Main.FirstDied == byte.MaxValue && target.Is(CustomRoles.Youtuber))
         {
+            CustomSoundsManager.RPCPlayCustomSoundAll("Congratulations");
             CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Youtuber); //UP主被首刀了，哈哈哈哈哈
             CustomWinnerHolder.WinnerIds.Add(target.PlayerId);
         }
@@ -510,6 +511,8 @@ class MurderPlayerPatch
             case CustomRoles.Bait:
                 if (killer.PlayerId != target.PlayerId || target.GetRealKiller()?.GetCustomRole() is CustomRoles.Swooper)
                 {
+                    killer.RPCPlayCustomSound("Congratulations");
+                    target.RPCPlayCustomSound("Congratulations");
                     if (target.Is(CustomRoles.Madmate)) //背叛诱饵
                     {
                         List<PlayerControl> playerList = new();
