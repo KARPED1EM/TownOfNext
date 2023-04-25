@@ -10,7 +10,7 @@ public static class CustomSoundsManager
 {
     public static void RPCPlayCustomSound(this PlayerControl pc, string sound)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
+        if (!AmongUsClient.Instance.AmHost || !pc.IsModClient()) return;
         if (PlayerControl.LocalPlayer.PlayerId == pc.PlayerId)
         {
             Play(sound);

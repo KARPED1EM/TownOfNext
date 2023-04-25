@@ -710,6 +710,7 @@ class ShapeshiftPatch
                         Main.EscapeeLocation.Remove(shapeshifter.PlayerId);
                         Logger.Msg($"{shapeshifter.GetNameWithRole()}:{position}", "EscapeeTeleport");
                         Utils.TP(shapeshifter.NetTransform, position);
+                        shapeshifter.RPCPlayCustomSound("Teleport");
                     }
                     else
                     {
