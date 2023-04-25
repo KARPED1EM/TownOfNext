@@ -731,6 +731,7 @@ class ShapeshiftPatch
                 if (shapeshifting)
                 {
                     Logger.Info("炸弹爆炸了", "Boom");
+                    CustomSoundsManager.RPCPlayCustomSoundAll("Boom");
                     foreach (var tg in Main.AllPlayerControls)
                     {
                         tg.KillFlash();
