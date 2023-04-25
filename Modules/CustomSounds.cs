@@ -52,7 +52,7 @@ public static class CustomSoundsManager
             fs.Close();
         }
         StartPlay(path);
-        Logger.Msg($"播放声音：{path}", "CustomSounds");
+        Logger.Msg($"播放声音：{sound}", "CustomSounds");
     }
 
     [DllImport("winmm.dll")]

@@ -734,7 +734,7 @@ class ShapeshiftPatch
                     CustomSoundsManager.RPCPlayCustomSoundAll("Boom");
                     foreach (var tg in Main.AllPlayerControls)
                     {
-                        tg.KillFlash();
+                        if (!tg.IsModClient()) tg.KillFlash();
                         var pos = shapeshifter.transform.position;
                         var dis = Vector2.Distance(pos, tg.transform.position);
 
