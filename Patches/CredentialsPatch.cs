@@ -18,6 +18,14 @@ internal class PingTrackerUpdatePatch
 
         sb.Append(Main.credentialsText);
 
+        var ping = AmongUsClient.Instance.Ping;
+        string color = "#ff4500";
+        if (ping < 30) color = "#44dfcc";
+        else if (ping < 100) color = "#7bc690";
+        else if (ping < 200) color = "#f3920e";
+        else if (ping < 400) color = "#ff146e";
+        sb.Append($"\r\n").Append($"<color={color}>Ping: {ping} ms</color>");
+
         if (Options.NoGameEnd.GetBool()) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("NoGameEnd")));
         if (Options.AllowConsole.GetBool()) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("AllowConsole")));
         if (!GameStates.IsModHost) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("Warning.NoModHost")));
@@ -29,7 +37,7 @@ internal class PingTrackerUpdatePatch
         if (FriendsListManager.InstanceExists && FriendsListManager._instance.FriendsListButton.Button.active) offset_x += 0.8f; //フレンドリストボタンがある場合の追加オフセット
         __instance.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(offset_x, 0f, 0f);
 
-        __instance.text.text += sb.ToString();
+        __instance.text.text = sb.ToString();
     }
 }
 [HarmonyPatch(typeof(VersionShower), nameof(VersionShower.Start))]
