@@ -435,6 +435,7 @@ static class ExtendedPlayerControl
             CustomRoles.DarkHide => DarkHide.CanUseKillButton(pc),
             CustomRoles.Provocateur => pc.IsAlive(),
             CustomRoles.Assassin => Assassin.CanUseKillButton(pc),
+            CustomRoles.BloodKnight => pc.IsAlive(),
             _ => pc.Is(CustomRoleTypes.Impostor),
         };
     }
@@ -457,6 +458,7 @@ static class ExtendedPlayerControl
             CustomRoles.Jackal => Jackal.CanVent.GetBool(),
             CustomRoles.Pelican => Pelican.CanVent.GetBool(),
             CustomRoles.Gamer => Gamer.CanVent.GetBool(),
+            CustomRoles.BloodKnight => BloodKnight.CanVent.GetBool(),
 
             CustomRoles.Arsonist => pc.IsDouseDone(),
             CustomRoles.Revolutionist => pc.IsDrawDone(),
@@ -588,6 +590,9 @@ static class ExtendedPlayerControl
             case CustomRoles.Bard:
                 for (int i = 0; i < Main.BardCreations; i++)
                     Main.AllPlayerKillCooldown[player.PlayerId] /= 2;
+                break;
+            case CustomRoles.BloodKnight:
+                BloodKnight.SetKillCooldown(player.PlayerId);
                 break;
         }
         if (player.PlayerId == LastImpostor.currentId)

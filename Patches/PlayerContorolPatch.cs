@@ -398,6 +398,16 @@ class CheckMurderPatch
                 if (!Gamer.CheckMurder(killer, target))
                     return false;
                 break;
+            //嗜血骑士技能生效中
+            case CustomRoles.BloodKnight:
+                if (BloodKnight.InProtect(target.PlayerId))
+                {
+                    killer.RpcGuardAndKill(target);
+                    target.RpcGuardAndKill();
+                    target.Notify(GetString("BKOffsetKill"));
+                    return false;
+                }
+                break;
         }
 
         //保镖保护
@@ -583,6 +593,9 @@ class MurderPlayerPatch
             case CustomRoles.SwordsMan:
                 if (killer != target)
                     SwordsMan.OnMurder(killer);
+                break;
+            case CustomRoles.BloodKnight:
+                BloodKnight.OnMurderPlayer(killer, target);
                 break;
         }
 
@@ -1124,6 +1137,7 @@ class FixedUpdatePatch
                 Vampire.OnFixedUpdate(player);
                 BallLightning.OnFixedUpdate();
                 Swooper.OnFixedUpdate(player);
+                BloodKnight.OnFixedUpdate(player);
             }
 
             if (GameStates.IsInTask && CustomRoles.SerialKiller.IsEnable()) SerialKiller.FixedUpdate(player);

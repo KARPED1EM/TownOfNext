@@ -199,6 +199,10 @@ class HudManagerPatch
                 {
                     LowerInfoText.text = Swooper.GetHudText(player);
                 }
+                else if (player.Is(CustomRoles.BloodKnight))
+                {
+                    LowerInfoText.text = BloodKnight.GetHudText(player);
+                }
                 else
                 {
                     LowerInfoText.text = "";

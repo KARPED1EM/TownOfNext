@@ -310,6 +310,7 @@ public class Main : BasePlugin
                 {CustomRoles.Collector, "#9d8892"},
                 {CustomRoles.Provocateur, "#74ba43"},
                 {CustomRoles.Sunnyboy, "#ff9902"},
+                {CustomRoles.BloodKnight, "#630000"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
@@ -474,6 +475,7 @@ public enum CustomRoles
     Collector,
     Provocateur,
     Sunnyboy,
+    BloodKnight,
 
     //SoloKombat
     KB_Normal,
@@ -529,6 +531,7 @@ public enum CustomWinner
     DarkHide = CustomRoles.DarkHide,
     Workaholic = CustomRoles.Workaholic,
     Collector = CustomRoles.Collector,
+    BloodKnight = CustomRoles.BloodKnight,
 }
 public enum AdditionalWinners
 {

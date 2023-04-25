@@ -193,6 +193,9 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 AURoleOptions.ScientistCooldown = 0f;
                 AURoleOptions.ScientistBatteryCharge = 60f;
                 break;
+            case CustomRoles.BloodKnight:
+                BloodKnight.ApplyGameOptions(opt);
+                break;
         }
 
         // 为迷惑者的凶手

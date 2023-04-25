@@ -75,6 +75,7 @@ enum CustomRPC
     Guess,
     MafiaRevenge,
     SetSwooperTimer,
+    SetBKTimer,
 
     //SoloKombat
     SyncKBPlayer,
@@ -414,6 +415,9 @@ internal class RPCHandlerPatch
             case CustomRPC.SetSwooperTimer:
                 Swooper.ReceiveRPC(reader);
                 break;
+            case CustomRPC.SetBKTimer:
+                BloodKnight.ReceiveRPC(reader);
+                break;
         }
     }
 }
@@ -707,6 +711,9 @@ internal static class RPC
                 break;
             case CustomRoles.Swooper:
                 Swooper.Add(targetId);
+                break;
+            case CustomRoles.BloodKnight:
+                BloodKnight.Add(targetId);
                 break;
         }
         HudManager.Instance.SetHudActive(true);

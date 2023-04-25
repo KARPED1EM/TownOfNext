@@ -668,6 +668,7 @@ public static class Options
             .SetValueFormat(OptionFormat.Seconds);
         WorkaholicTasks = OverrideTasksData.Create(60114, TabGroup.NeutralRoles, CustomRoles.Workaholic);
         Collector.SetupCustomOption();
+        BloodKnight.SetupCustomOption();
 
         // Add-Ons
         SetupLoversRoleOptionsToggle(50300);

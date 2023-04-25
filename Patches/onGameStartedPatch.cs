@@ -197,6 +197,7 @@ internal class ChangeRoleSettings
             Mortician.Init();
             Mediumshiper.Init();
             Swooper.Init();
+            BloodKnight.Init();
             SoloKombatManager.Init();
             CustomWinnerHolder.Reset();
             AntiBlackout.Reset();
@@ -516,6 +517,9 @@ internal class SelectRolesPatch
                         break;
                     case CustomRoles.Swooper:
                         Swooper.Add(pc.PlayerId);
+                        break;
+                    case CustomRoles.BloodKnight:
+                        BloodKnight.Add(pc.PlayerId);
                         break;
                 }
                 foreach (var subRole in pc.GetCustomSubRoles())

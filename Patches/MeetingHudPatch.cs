@@ -677,6 +677,7 @@ class MeetingHudStartPatch
                 case CustomRoles.Jackal:
                 case CustomRoles.Pelican:
                 case CustomRoles.DarkHide:
+                case CustomRoles.BloodKnight:
                     sb.Append(Snitch.GetWarningMark(seer, target));
                     break;
                 case CustomRoles.EvilTracker:

@@ -108,6 +108,7 @@ internal static class CustomRolesHelper
             CustomRoles.Gamer => RoleTypes.Impostor,
             CustomRoles.DarkHide => RoleTypes.Impostor,
             CustomRoles.Provocateur => RoleTypes.Impostor,
+            CustomRoles.BloodKnight => RoleTypes.Impostor,
             _ => RoleTypes.GuardianAngel
         };
     }
@@ -142,7 +143,8 @@ internal static class CustomRolesHelper
             CustomRoles.FFF or
             CustomRoles.Gamer or
             CustomRoles.DarkHide or
-            CustomRoles.Provocateur;
+            CustomRoles.Provocateur or
+            CustomRoles.BloodKnight;
     }
     public static bool IsNeutralKilling(this CustomRoles role) //是否邪恶中立（抢夺或单独胜利的中立）
     {
@@ -158,7 +160,8 @@ internal static class CustomRolesHelper
             CustomRoles.Gamer or
             CustomRoles.DarkHide or
             CustomRoles.Workaholic or
-            CustomRoles.Collector;
+            CustomRoles.Collector or
+            CustomRoles.BloodKnight;
     }
     public static bool IsCK(this CustomRoles role) // 是否带刀船员
     {
@@ -235,7 +238,8 @@ internal static class CustomRolesHelper
             CustomRoles.Workaholic or
             CustomRoles.Collector or
             CustomRoles.Provocateur or
-            CustomRoles.Sunnyboy;
+            CustomRoles.Sunnyboy or
+            CustomRoles.BloodKnight;
     }
     public static bool CheckAddonConfilct(CustomRoles role, PlayerControl pc)
     {
@@ -347,6 +351,7 @@ internal static class CustomRolesHelper
            CustomRoles.Jackal => CountTypes.Jackal,
            CustomRoles.Pelican => CountTypes.Pelican,
            CustomRoles.Gamer => CountTypes.Gamer,
+           CustomRoles.BloodKnight => CountTypes.BloodKnight,
            _ => role.IsImpostorTeam() ? CountTypes.Impostor : CountTypes.Crew,
        };
 
@@ -368,4 +373,5 @@ public enum CountTypes
     Jackal,
     Pelican,
     Gamer,
+    BloodKnight,
 }

@@ -354,6 +354,7 @@ public static class Utils
             case CustomRoles.ImperiusCurse:
             case CustomRoles.Provocateur:
             case CustomRoles.Medicaler:
+            case CustomRoles.BloodKnight:
                 hasTasks = false;
                 break;
             case CustomRoles.Workaholic:

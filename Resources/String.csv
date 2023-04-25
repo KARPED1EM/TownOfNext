@@ -36,6 +36,7 @@
 "TeamJackal","豺狼阵营","Team Jackal","Шакалы","豺狼陣營","EquipoJackal"
 "TeamPelican","鹈鹕阵营","Team Pelican","Пеликаны","鵜鶘陣營","EquipoPelican"
 "TeamGamer","玩家阵营","Team Demons","Демоны","玩家陣營","EquipoGamer"
+"TeamBloodKnight","嗜血骑士阵营","","","",""
 
 "## 个人竞技模式 / PVP"
 "KB_Normal","挑战者","Challenger","Боец","挑戰者","KB_Normal"
@@ -149,6 +150,7 @@
 "Workaholic","工作狂","Workaholic","Трудоголик","工作狂","工作狂"
 "Collector","集票者","Collector","Коллектор","集票者","集票者"
 "Provocateur","自爆卡车","Provocateur","Провокатор","神風特攻隊","自爆卡车"
+"BloodKnight","嗜血骑士","","","",""
 
 "# 附加职业 / Add-ons"
 "LastImpostor","绝境者","Last Impostor","Последний Предатель","絕境者","绝境者"
@@ -289,6 +291,7 @@
 "WorkaholicInfo","卷死他们！","Finish all tasks to solo win!","Сделайте все свои задания и победите в одиночку!","把這波工作做完就可以下班了","卷死他们！"
 "CollectorInfo","是收集癖的胜利！","Collect votes from Players","Соберите достаточное количество голосов","收集票數來獲勝","是收集癖的胜利！"
 "ProvocateurInfo","你急了，你寄了","Victory with help target","Победите с помощью цели","急了嗎，你沒了","你急了，你寄了"
+"BloodKnightInfo","这一杯，敬给彼岸的你","","","",""
 
 "# 附加职业 / Add-ons descriptions"
 "LoversInfo","最重要的是，记得照顾好你的另一半","Stay Alive and win together","Выживите со своим Любовником","你墜入了愛河","最重要的是，记得照顾好你的另一半"
@@ -412,6 +415,7 @@
 "WorkaholicInfoLong","(中立阵营):\n工作狂拥有更多的任务，当工作狂完成所有任务后单独胜利。（根据房主设定，工作狂死后完成任务也可能胜利）","(Neutrals):\nWorkaholics have more tasks and win alone when they complete all quests. (According to the settings of the host, completing the task after the death of the Workaholic may also lead to win)","(Злой - Нейтрал)\nТрудоголики имеют больше заданий, когда Трудоголик сделает все свои задания, он побеждает сам. (Может быть установлено Хостом, сделая залания после смерти Трудоголика также даёт возможность победить.)","(中立陣營):\n工作狂擁有更多任務，當工作狂做完所有任務後將獨立獲勝。(根據房主設定，工作狂死後做完所有任務時也可能勝利)","(中立阵营):\n工作狂拥有更多的任务，当工作狂完成所有任务后单独胜利。（根据房主设定，工作狂死后完成任务也可能胜利）"
 "CollectorInfoLong","(中立阵营):\n集票者投票给一名玩家后，可以收集到本次会议该玩家被投的所有票数。当集票者收集到指定数量的票后，则集票者单独胜利。请注意：集票者的胜利优先于驱逐玩家。","(Neutrals):\nAfter vote Collector vote for a target, they can collect all the votes cast by that target in this meeting. When the Collector collects the specified number of votes, the Collector alone wins. Note: Collector wins take precedence over exile players.","(Злой - Нейтрал):\nПосле того, как Коллектор проголосует за игрока, он может собрать все голоса, поданные игроком на этой встрече. Когда Коллектор собирает указанное количество голосов, Коллектор выигрывает отдельно. Пожалуйста, обратите внимание: победа Коллектора имеет приоритет перед исключением игрока.","(中立陣營):\n當集票者在會議上投票給一名玩家時，他將會收集到本次會議該玩家被投的所有票數。當集票者收集到指定票數之後，集票者將獨立獲勝。\n請注意: 集票者的勝利優先於被逐出玩家的勝利。","(中立阵营):\n集票者投票给一名玩家后，可以收集到本次会议该玩家被投的所有票数。当集票者收集到指定数量的票后，则集票者单独胜利。请注意：集票者的胜利优先于驱逐玩家。"
 "ProvocateurInfoLong","(中立阵营):\n自爆卡车可以用击杀键与任意目标同归于尽。若游戏结束时目标输了，则自爆卡车与胜利阵营一起胜利。","(Neutrals):\nThe Provocateur can kill any target with the kill button. If the target loses at the end of the game, the Provocateur wins with the winning team.","(Злой -Нейтрал)\nПровокатор может использовать кнопку уничтожения, чтобы погибнуть вместе с любой целью. Если цель проиграет в конце игры, Провокатор выиграет вместе с победной командой.","(中立陣營):\n神風特攻隊可以使用殺人鍵與任何玩家同歸於盡。若遊戲結束時目標輸了，那麼神風特攻隊與獲勝方一同獲勝。","(中立阵营):\n自爆卡车可以用击杀键与任意目标同归于尽。若游戏结束时目标输了，则自爆卡车与胜利阵营一起胜利。"
+"BloodKnightInfoLong","(中立阵营):\n仅剩嗜血骑士阵营与船员阵营且嗜血骑士阵营人数大于船员人数，嗜血骑士获得胜利。嗜血骑士每次击杀后都可以获得一定时间的护盾，护盾可以抵消所有常规击杀，直到护盾超时失效。","","","",""
 
 "# 附加职业 / Add-ons descriptions"
 "LastImpostorInfoLong","(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。","(Add-ons):\nThis effect is given to the last surviving Impostor. Reduces their kill cooldown.","(Атрибут):\nАтрибут, присваивается последнему Предателю. \nВремя отката убийства становится меньше, чем обычно. \nНе назначается Охотнику за головами, Серийному убийце или Вампиру.","(附加職業):\n這個效果只在偽裝者陣營只剩下一人時賦予該玩家，被賦予效果的玩家殺人冷卻將會縮短。","(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。"
@@ -818,6 +822,7 @@
 "SwooperCooldown","隐身冷却时间","Swoop Cooldown","Откат навыка","隱身冷卻時間",""
 "SwooperDuration","隐身持续时间","Swoop Duration","Длительность навыка","隱身持續時間",""
 "LowLoadMode","低负载模式（尽量别开）","Low Load Mode (May cause a lot of bugs)","Режим низкой нагрузки (Экспериментально)","低负载模式（尽量别开）",""
+"BKProtectDuration","免疫伤害持续时间","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被杀","被杀"
@@ -956,6 +961,11 @@
 "SwooperInvisInCooldown","技能冷却中，隐身失败","Skills are still cooling, swoop failed","Откат способности, невидимости нет","技能正在冷卻中，隱身失敗",""
 "SwooperInvisStateCountdown","隐身状态将在{0}秒后失效","Invisibility will expire after {0}s","Невидимость пропадёт через {0} секунд","隱身狀態將在{0}秒後失效",""
 "SwooperInvisCooldownRemain","隐身剩余冷却时间：{0}","{0}s left in invisibility","Осталось {0} секунд до использования способности","剩餘隱身冷卻時間：{0} 秒",""
+"BKInProtect","已进入免疫状态","","","",""
+"BKProtectOut","免疫状态已失效","","","",""
+"BKSkillTimeRemain","免疫状态剩余：{0}秒","","","",""
+"BKSkillNotice","击杀一名玩家以进入免疫状态","","","",""
+"BKOffsetKill","免疫伤害成功","","","",""
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","信息发送冷却时间为【{0}】秒","信息发送冷却时间为【{0}】秒"
