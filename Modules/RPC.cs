@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
+using Il2CppSystem.Xml.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,7 @@ enum CustomRPC
     SetKillTimer,
     SyncAllPlayerNames,
     SyncNameNotify,
+    ShowPopUp,
 
     //Roles
     SetDrawPlayer,
@@ -233,6 +235,10 @@ internal class RPCHandlerPatch
                 byte playerID = reader.ReadByte();
                 Sounds sound = (Sounds)reader.ReadByte();
                 RPC.PlaySound(playerID, sound);
+                break;
+            case CustomRPC.ShowPopUp:
+                string msg = reader.ReadString();
+                HudManager.Instance.ShowPopUp(msg);
                 break;
             case CustomRPC.SetCustomRole:
                 byte CustomRoleTargetId = reader.ReadByte();
@@ -476,6 +482,13 @@ internal static class RPC
             writer.Write(name.Key);
             writer.Write(name.Value);
         }
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static void ShowPopUp(this PlayerControl pc, string msg)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.ShowPopUp, SendOption.Reliable, pc.GetClientId());
+        writer.Write(msg);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void ExileAsync(PlayerControl player)
