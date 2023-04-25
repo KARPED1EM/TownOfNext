@@ -43,7 +43,6 @@ enum CustomRPC
     AntiBlackout,
     RestTOHESetting,
     PlayCustomSound,
-    PlayCustomSoundAll,
     SetKillTimer,
     SyncAllPlayerNames,
     SyncNameNotify,
@@ -330,9 +329,6 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.PlayCustomSound:
                 CustomSoundsManager.ReceiveRPC(reader);
-                break;
-            case CustomRPC.PlayCustomSoundAll:
-                CustomSoundsManager.ReceiveRPCAll(reader);
                 break;
             case CustomRPC.SetGhostPlayer:
                 BallLightning.ReceiveRPC(reader);

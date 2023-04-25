@@ -239,7 +239,6 @@ public class Main : BasePlugin
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
         CustomWinnerHolder.Reset();
-        CustomSoundsManager.Load();
         Translator.Init();
         BanManager.Init();
         TemplateManager.Init();
