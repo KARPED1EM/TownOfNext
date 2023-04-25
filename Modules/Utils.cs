@@ -256,6 +256,18 @@ public static class Utils
     {
         return GetRoleString(Enum.GetName(typeof(CustomRoles), role), forUser);
     }
+    public static string GetRoleMode(CustomRoles role, bool parentheses = true)
+    {
+        if (Options.HideGameSettings.GetBool() && Main.AllPlayerControls.Count() > 1)
+            return string.Empty;
+        string mode = role.GetMode() switch
+        {
+            0 => GetString("RoleOffNoColor"),
+            1 => GetString("RoleRateNoColor"),
+            _ => GetString("RoleOnNoColor")
+        };
+        return parentheses ? $"({mode})" : mode;
+    }
     public static string GetDeathReason(PlayerState.DeathReason status)
     {
         return GetString("DeathReason." + Enum.GetName(typeof(PlayerState.DeathReason), status));
@@ -512,7 +524,7 @@ public static class Utils
         if (Options.EnableGM.GetBool()) { SendMessage(GetRoleName(CustomRoles.GM) + GetString("GMInfoLong"), PlayerId); }
         foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
         {
-            if (role.IsEnable() && !role.IsVanilla()) SendMessage(GetRoleName(role) + GetString(Enum.GetName(typeof(CustomRoles), role) + "InfoLong"), PlayerId);
+            if (role.IsEnable() && !role.IsVanilla()) SendMessage(GetRoleName(role) + GetRoleMode(role) + GetString(Enum.GetName(typeof(CustomRoles), role) + "InfoLong"), PlayerId);
         }
 
         if (Options.NoGameEnd.GetBool()) { SendMessage(GetString("NoGameEndInfo"), PlayerId); }
