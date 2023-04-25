@@ -8,7 +8,7 @@ namespace TOHE;
 
 public static class MafiaRevengeManager
 {
-    public static bool MafiaMsgCheck(PlayerControl pc, string msg)
+    public static bool MafiaMsgCheck(PlayerControl pc, string msg, bool isUI = false)
     {
         if (!AmongUsClient.Instance.AmHost) return false;
         if (!GameStates.IsInGame || pc == null) return false;
@@ -17,7 +17,8 @@ public static class MafiaRevengeManager
         if (msg.Length < 3 || msg[..3] != "/rv") return false;
         if (Options.MafiaCanKillNum.GetInt() < 1)
         {
-            Utils.SendMessage(GetString("MafiaKillDisable"), pc.PlayerId);
+            if (!isUI) Utils.SendMessage(GetString("MafiaKillDisable"), pc.PlayerId);
+            else pc.ShowPopUp(GetString("MafiaKillDisable"));
             return true;
         }
 
@@ -40,7 +41,8 @@ public static class MafiaRevengeManager
         {
             if (Main.MafiaRevenged[pc.PlayerId] >= Options.MafiaCanKillNum.GetInt())
             {
-                Utils.SendMessage(GetString("MafiaKillMax"), pc.PlayerId);
+                if (!isUI) Utils.SendMessage(GetString("MafiaKillMax"), pc.PlayerId);
+                else pc.ShowPopUp(GetString("MafiaKillMax"));
                 return true;
             }
         }
@@ -58,13 +60,15 @@ public static class MafiaRevengeManager
         }
         catch
         {
-            Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
+            if (!isUI) Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
+            else pc.ShowPopUp(GetString("MafiaKillDead"));
             return true;
         }
 
         if (target == null || target.Data.IsDead)
         {
-            Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
+            if (!isUI) Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
+            else pc.ShowPopUp(GetString("MafiaKillDead"));
             return true;
         }
 
@@ -97,7 +101,7 @@ public static class MafiaRevengeManager
     public static void ReceiveRPC(MessageReader reader, PlayerControl pc)
     {
         int PlayerId = reader.ReadByte();
-        MafiaMsgCheck(pc, $"/rv {PlayerId}");
+        MafiaMsgCheck(pc, $"/rv {PlayerId}", true);
     }
 
     private static void MafiaOnClick(byte playerId, MeetingHud __instance)
@@ -105,7 +109,7 @@ public static class MafiaRevengeManager
         Logger.Msg($"Click: ID {playerId}", "Mafia UI");
         var pc = Utils.GetPlayerById(playerId);
         if (pc == null || !pc.IsAlive()) return;
-        if (AmongUsClient.Instance.AmHost) MafiaMsgCheck(PlayerControl.LocalPlayer, $"/rv {playerId}");
+        if (AmongUsClient.Instance.AmHost) MafiaMsgCheck(PlayerControl.LocalPlayer, $"/rv {playerId}", true);
         else SendRPC(playerId);
     }
 
