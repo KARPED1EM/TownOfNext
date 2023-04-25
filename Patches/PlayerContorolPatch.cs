@@ -1710,11 +1710,13 @@ class EnterVentPatch
             {
                 Main.MadGrenadierBlinding.Remove(pc.PlayerId);
                 Main.MadGrenadierBlinding.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+                Main.AllPlayerControls.Where(x => x.IsModClient()).Where(x => !x.GetCustomRole().IsImpostorTeam() && !x.Is(CustomRoles.Madmate)).Do(x => x.RPCPlayCustomSound("FlashBang"));
             }
             else
             {
                 Main.GrenadierBlinding.Remove(pc.PlayerId);
                 Main.GrenadierBlinding.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+                Main.AllPlayerControls.Where(x => x.IsModClient()).Where(x => x.GetCustomRole().IsImpostor() || (x.GetCustomRole().IsNeutral() && Options.GrenadierCanAffectNeutral.GetBool())).Do(x => x.RPCPlayCustomSound("FlashBang"));
             }
             pc.RpcGuardAndKill(pc);
             pc.Notify(GetString("GrenadierSkillInUse"), Options.GrenadierSkillDuration.GetFloat());
