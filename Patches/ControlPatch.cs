@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using Il2CppSystem.Text;
 using System.Linq;
 using UnityEngine;
 
@@ -30,6 +31,15 @@ internal class ControllerManagerUpdatePatch
         if (GetKeysDown(KeyCode.LeftAlt, KeyCode.Return))
         {
             new LateTask(SetResolutionManager.Postfix, 0.01f, "Fix Button Position");
+        }
+        //职业介绍
+        if (Input.GetKeyDown(KeyCode.F1) && GameStates.InGame)
+        {
+            var role = PlayerControl.LocalPlayer.GetCustomRole();
+            var sb = new StringBuilder();
+            sb.Append(Utils.ColorString(Utils.GetRoleColor(role), Translator.GetString(role.ToString())));
+            sb.Append(Translator.GetString($"{role}InfoLong"));
+            HudManager.Instance.ShowPopUp(sb.ToString());
         }
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
