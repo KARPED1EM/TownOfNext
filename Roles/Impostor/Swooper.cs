@@ -159,7 +159,7 @@ public static class Swooper
     {
         if (!IsInvis(killer.PlayerId)) return true;
         killer.SetKillCooldown();
-        target.RpcMurderPlayer(target);
+        target.RpcCheckAndMurder(target);
         target.SetRealKiller(killer);
         return false;
     }

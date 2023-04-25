@@ -436,6 +436,7 @@ static class ExtendedPlayerControl
             CustomRoles.Provocateur => pc.IsAlive(),
             CustomRoles.Assassin => Assassin.CanUseKillButton(pc),
             CustomRoles.BloodKnight => pc.IsAlive(),
+            CustomRoles.Crewpostor => false,
             _ => pc.Is(CustomRoleTypes.Impostor),
         };
     }
@@ -593,6 +594,9 @@ static class ExtendedPlayerControl
                 break;
             case CustomRoles.BloodKnight:
                 BloodKnight.SetKillCooldown(player.PlayerId);
+                break;
+            case CustomRoles.Crewpostor:
+                Main.AllPlayerKillCooldown[player.PlayerId] = 300f;
                 break;
         }
         if (player.PlayerId == LastImpostor.currentId)

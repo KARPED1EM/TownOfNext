@@ -141,7 +141,10 @@ class BeginCrewmatePatch
                 PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Crewmate);
                 break;
             case CustomRoleTypes.Impostor:
-                __instance.ImpostorText.text = GetString("TeamImpostor");
+                __instance.TeamTitle.text = GetString("TeamImpostor");
+                __instance.TeamTitle.color = Utils.GetRoleColor(role);
+                __instance.BackgroundBar.material.color = Utils.GetRoleColor(role);
+                __instance.ImpostorText.gameObject.SetActive(false);
                 PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Impostor);
                 break;
         }

@@ -199,6 +199,7 @@ public static class Options
     public static OptionItem RevolutionistVentCountDown;
     public static OptionItem ShapeImperiusCurseShapeshiftDuration;
     public static OptionItem ImperiusCurseShapeshiftCooldown;
+    public static OptionItem CrewpostorCanKillAllies;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -304,6 +305,7 @@ public static class Options
     public static OverrideTasksData TerroristTasks;
     public static OverrideTasksData TransporterTasks;
     public static OverrideTasksData WorkaholicTasks;
+    public static OverrideTasksData CrewpostorTasks;
 
     // その他
     public static OptionItem FixFirstKillCooldown;
@@ -527,8 +529,8 @@ public static class Options
             .SetValueFormat(OptionFormat.Seconds);
         Vampire.SetupCustomOption();
         SetupRoleOptions(1400, TabGroup.ImpostorRoles, CustomRoles.Warlock);
-        WarlockCanKillAllies = BooleanOptionItem.Create(901406, "WarlockCanKillAllies", true, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Warlock]);
-        WarlockCanKillSelf = BooleanOptionItem.Create(901408, "WarlockCanKillSelf", false, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Warlock]);
+        WarlockCanKillAllies = BooleanOptionItem.Create(901406, "CanKillAllies", true, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Warlock]);
+        WarlockCanKillSelf = BooleanOptionItem.Create(901408, "CanKillSelf", false, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Warlock]);
         Assassin.SetupCustomOption();
         Hacker.SetupCustomOption();
         SetupRoleOptions(905520, TabGroup.ImpostorRoles, CustomRoles.Scavenger);
@@ -566,6 +568,9 @@ public static class Options
             .SetValueFormat(OptionFormat.Seconds);
         QuickShooter.SetupCustomOption();
         Hangman.SetupCustomOption();
+        SetupRoleOptions(907090, TabGroup.ImpostorRoles, CustomRoles.Crewpostor);
+        CrewpostorCanKillAllies = BooleanOptionItem.Create(907092, "CanKillAllies", true, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Crewpostor]);
+        CrewpostorTasks = OverrideTasksData.Create(9079094, TabGroup.ImpostorRoles, CustomRoles.Crewpostor);
 
         // Crewmate
         SetupRoleOptions(102255, TabGroup.CrewmateRoles, CustomRoles.NiceGuesser);

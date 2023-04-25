@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TOHE.Modules;
 using TOHE.Roles.Neutral;
+using UnityEngine;
 
 namespace TOHE;
 
@@ -259,6 +260,27 @@ public class TaskState
                 CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Workaholic); //爆破で勝利した人も勝利させる
                 CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
             }
+
+            //船鬼要抽奖啦
+            if (player.Is(CustomRoles.Crewpostor))
+            {
+
+                List<PlayerControl> list = Main.AllAlivePlayerControls.Where(x => x.PlayerId != player.PlayerId && (!Options.CrewpostorCanKillAllies.GetBool() || !x.GetCustomRole().IsImpostorTeam())).ToList();
+                if (list.Count < 1)
+                {
+                    Logger.Info($"船鬼没有可击杀目标", "Crewpostor");
+                }
+                else
+                {
+                    list.OrderBy(x => Vector2.Distance(player.GetTruePosition(), x.GetTruePosition()));
+                    var target = list[0];
+                    target.SetRealKiller(player);
+                    target.RpcCheckAndMurder(target);
+                    player.RpcGuardAndKill();
+                    Logger.Info($"船鬼完成任务击杀：{player.GetNameWithRole()} => {target.GetNameWithRole()}", "Crewpostor");
+                }
+            }
+
         }
 
         //クリアしてたらカウントしない

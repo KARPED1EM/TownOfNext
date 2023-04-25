@@ -98,6 +98,7 @@
 "OverKiller","肢解者","Butcher","Мясник","肢解者","SobreAsesino"
 "Hangman","刽子手","Hangman","Вешатель","劊子手","Hangman"
 "Swooper","隐匿者","Swooper","Невидимка","隱身人",""
+"Crewpostor","船鬼","","","",""
 
 "# 船员阵营 / Crewmates"
 "Bait","诱饵","Bait","Байт","誘餌","Bait"
@@ -238,6 +239,7 @@
 "OverKillerInfo","且欣赏我美丽的作品","Enjoy my beautiful work","Наслаждайтесь моей работой","欣賞我美麗的作品","且欣赏我美丽的作品"
 "HangmanInfo","就由我，来结束你的生命","I will decide when your life will end","Я решу когда твоя жизнь окончится","我將會結束你的生命","就由我，来结束你的生命"
 "SwooperInfo","感受未知的恐惧吧","Turn invisible temporarily","Становитесь невидимым на какое-то время","一道風掠過，所有人恐懼",""
+"CrewpostorInfo","这是场完美的犯罪","","","",""
 
 "# 船员阵营 / Crewmate descriptions"
 "BaitInfo","好消息，杀了我可以吃席","Your Killer self-reports your body","Убийца моментально саморепнет ваше тело","犧牲小我，完成大我","好消息，杀了我可以吃席"
@@ -363,6 +365,7 @@
 "OverKillerInfoLong","(内鬼阵营):\n肢解者击杀（包括被动击杀）的目标会出现多具尸体，以至于报告尸体时无法准确分辨其他受害者。请注意：因实现原理，被击杀的目标不得不重复地显示自己被击杀的动画，此动画无法跳过且期间无法正常参与会议。此外，若肢解者肢解了复仇者，则复仇者会因愤怒带走全场所有人。","(Impostors):\nButcher kills (including passive kills) have multiple dead bodies on targets, making it impossible to accurately identify other dead body when reporting. Note: Due to the principle of implementation, the killed target has to repeatedly display the animation of being killed. This animation cannot be skipped and cannot participate in the meeting normally during this period. In addition, if the Butcher kills the Avenger, the Avenger will revenges everyone in anger.","(Предатель):\nЦель, убитая Мясником, будет рассматриваться как множество трупов, так что другие трупы не могут быть показаны при сообщении о мёртвых. Пожалуйста, обратите внимание: Убитая цель может неоднократно отображать анимацию своего убийства. Эта анимация не может быть пропущена и не может участвовать во встрече в течение периода. Вы должны дождаться окончания анимации, прежде чем сможете нормально участвовать в игре.","(偽裝者陣營):\n當肢解者殺人(包括被術士、傀儡師操控等) 時，被殺的目標將會同時出現多具屍體，以至於無法分辨該輪其他的受害者。\n請注意: 因實現原理，被肢解者殺死的人將會不停顯示自己被殺死的動畫，此動畫無法跳過，且該期間內無法參與會議，此外，如果肢解者殺死了復仇者，復仇者則會因為憤怒而帶走全場所有人。","(内鬼阵营):\n肢解者击杀（包括被动击杀）的目标会出现多具尸体，以至于报告尸体时无法准确分辨其他受害者。请注意：因实现原理，被击杀的目标不得不重复地显示自己被击杀的动画，此动画无法跳过且期间无法正常参与会议。此外，若肢解者肢解了复仇者，则复仇者会因愤怒带走全场所有人。"
 "HangmanInfoLong","(内鬼阵营):\n刽子手在变形期间的击杀方式为绞杀，绞杀无视目标的任何状态例如医生的护盾、保镖的守护、大明星的技能等，被绞杀的玩家不会留下尸体，也不会触发其任何技能例如老兵反杀、幸运儿挡伤等（包括附加职业），此外，灵媒也不会得到提示。","(Impostors):\nThe killing method of the Hangman during the shapeshifting is strangling. Strangling ignores any status of the target, such as the shield of the Medic, the protection of the Bodyguard, the skills of the Super Star, etc. The strangled player will not leave a dead body, nor will it trigger any of its skills For example, Veteran kill back, Luckey stay alive, etc. (including additional roles), in addition, Seer will not be prompted.","(Предатель):\nВешатель убивает игроков, душа их. Удушение игнорирует любой вид защиты, такой как щит Медика, защита Телохранителя и тд. Игрок, которого задушили, не оставит тела и не активирует ни одну из способностей, таких как самозащита Ветерана, удача Удачника. Не появляется для Экстрасенса.","(偽裝者陣營):\n劊子手在變形時的殺人方式為絞殺，絞殺下將會無視任何一切可保護受害者不死亡的職業、附加效果和附加職業等等，例如軍醫的護盾、保鑣同歸於盡、大明星的技能，此外被動技能也不會生效，例如老兵反殺，幸運兒擋傷等等，被絞殺的玩家將不會留下屍體，並且也不會顯示被殺動畫。此外，由於不會留下屍體，因此靈媒也會不會收到任何提示。","(内鬼阵营):\n刽子手在变形期间的击杀方式为绞杀，绞杀无视目标的任何状态例如医生的护盾、保镖的守护、大明星的技能等，被绞杀的玩家不会留下尸体，也不会触发其任何技能例如老兵反杀、幸运儿挡伤等（包括附加职业），此外，灵媒也不会得到提示。"
 "SwooperInfoLong","(内鬼阵营):\n隐匿者可以通过管道进入隐身状态。\n\n请注意：由于技术限制，非房主模组端隐匿者可能在一回合只能使用一次技能。","(Impostors):\nThe Swooper can vent to temporarily turn invisible.\n\n★ Note: For a technical issues, can only use his ability once in a round.★","(Предатель)\nНевидимка может использовать люк, чтобы стать невидимым на какое-то время.\n\n★Обратите внимание★: Из-за технических лимитов, может становиться невидимым только 1 раз за раунд.","(偽裝者陣營):\n隱身人可以通過進入管道來隱身，在隱身情況下，除了自己以外其他人都看不到隱身人的存在。(包括幽靈)\n\n請注意: 由於技術限制，非房主模組端的隱身人可能只能在一回合中使用一次技能。",""
+"CrewpostorInfoLong","(内鬼阵营):\n船鬼拥有任务，每当船鬼完成任务时，距离船鬼最近的玩家就会死亡。","","","",""
 
 "# 船员阵营 / Crewmates descriptions"
 "BaitInfoLong","(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。","(Crewmates):\nWhen a Bait is killed, the murderer who killed the Bait will be forced to report the Bait's body. However, the skill will be invalid when the Bait is killed by a Scavenger or Cleaner.","(Член Экипажа):\nКогда Байта убивают, он заставляет убившего игрока \nмоментально зарепортить ваш труп.","(船員陣營):\n當誘餌被殺時，殺死誘餌的兇手將會立刻自行報告誘餌的屍體，但是當清道夫殺死誘餌時，誘餌不會觸發技能。","(船员阵营):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。"
@@ -611,6 +614,8 @@
 "CanVent","可以使用通风管道","Can Vent","Может использовать Вентиляцию","可以使用通風管","可以使用通风管道"
 "ImpostorVision","拥有<color=#ff1919>内鬼</color>视野","Has <color=#ff1919>Impostor</color> Vision","Имеет дальность Обзора <color=#ff1919>Предателя</color>","擁有<color=#ff1919>偽裝者</color>視野","拥有<color=#ff1919>内鬼</color>视野"
 "CanUseSabotage","可以破坏","Can Sabotage","Может использовать Саботаж","可以破壞","可以破坏"
+"CanKillAllies","可以击杀<color=#ff1919>内鬼</color>","Can kill Crewmates","Может убивать Членов Экипажа","可以殺死<color=#ff1919>偽裝者</color>","可以击杀<color=#ff1919>内鬼</color>"
+"CanKillSelf","可以击杀自己","Can kill Themself","Может убить себя","可以殺死自己","可以击杀自己"
 "NeutralRolesMinPlayer","<color=#ffab1b>中立阵营</color>玩家数量下限","Minimum Amount of <color=#ffab1b>Neutral</color> roles","Минимальное количество <color=#ffab1b>нейтральных</color> ролей","<color=#ffab1b>中立陣營</color>玩家數量下限","<color=#ffab1b>中立阵营</color>玩家数量下限"
 "NeutralRolesMaxPlayer","<color=#ffab1b>中立阵营</color>玩家数量上限","Maximum Amount of <color=#ffab1b>Neutral</color> roles","Максимальное количество <color=#ffab1b>нейтральных</color> ролей","<color=#ffab1b>中立陣營</color>玩家數量上限","<color=#ffab1b>中立阵营</color>玩家数量上限"
 "ImpKnowAlliesRole","<color=#ff1919>内鬼</color>知道队友的职业","<color=#ff1919>Impostors</color> know the roles of other <color=#ff1919>Impostors</color>","<color=#ff1919>Предатель</color> может знать роли других <color=#ff1919>Предателей</color>","<color=#ff1919>偽裝者</color>知道隊友的職業","<color=#ff1919>内鬼</color>知道队友的职业"
@@ -619,8 +624,6 @@
 "MadmateKnowWhosMadmate","<color=#ff1919>叛徒</color>可以互认","<color=#ff1919>Madmates</color> know each other","<color=#ff1919>Безумцы</color> знают друг друга","<color=#ff1919>叛徒</color>可以互認","<color=#ff1919>叛徒</color>可以互认"
 "ImpCanKillMadmate","<color=#ff1919>内鬼</color>可以击杀<color=#ff1919>叛徒</color>","<color=#ff1919>Impostors</color> can kill <color=#ff1919>Madmates</color>","<color=#ff1919>Предатель</color> может убить <color=#ff1919>Безумца</color>","<color=#ff1919>偽裝者</color>可以殺死<color=#ff1919>叛徒</color>","<color=#ff1919>内鬼</color>可以击杀<color=#ff1919>叛徒</color>"
 "MadmateCanKillImp","<color=#ff1919>叛徒</color>可以击杀<color=#ff1919>内鬼</color>","<color=#ff1919>Madmates</color> can kill <color=#ff1919>Impostors</color>","<color=#ff1919>Безумец</color> может убить <color=#ff1919>Предателя</color>","<color=#ff1919>叛徒</color>可以殺死<color=#ff1919>偽裝者</color>","<color=#ff1919>叛徒</color>可以击杀<color=#ff1919>内鬼</color>"
-"WarlockCanKillAllies","可以击杀<color=#ff1919>内鬼</color>","Can kill Crewmates","Может убивать Членов Экипажа","可以殺死<color=#ff1919>偽裝者</color>","可以击杀<color=#ff1919>内鬼</color>"
-"WarlockCanKillSelf","可以击杀自己","Can kill Themself","Может убить себя","可以殺死自己","可以击杀自己"
 "EGCanGuessImp","可以猜测<color=#ff1919>内鬼</color>","Can Guess <color=#ff1919>Impostor</color> Roles","Может угадывать роли <color=#ff1919>Предателей</color>","可以猜測<color=#ff1919>偽裝者</color>","可以猜测<color=#ff1919>内鬼</color>"
 "GGCanGuessCrew","可以猜测<color=#8cffff>船员</color>","Can Guess <color=#8cffff>Crewmate</color> Roles","Может угадывать роли <color=#8cffff>Членов Экипажа</color>","可以猜測<color=#8cffff>船員</color>","可以猜测<color=#8cffff>船员</color>"
 "EGCanGuessAdt","可以猜测附加职业","Can Guess Add-Ons","Может угадывать Атрибуты","可以猜測附加職業","可以猜测附加职业"

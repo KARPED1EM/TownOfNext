@@ -58,14 +58,13 @@ public static class BloodKnight
         string Time = reader.ReadString();
         TimeStamp.TryAdd(PlayerId, long.Parse(Time));
         TimeStamp[PlayerId] = long.Parse(Time);
-        Logger.Test(TimeStamp[PlayerId].ToString());
     }
     public static bool InProtect(byte playerId) => TimeStamp.TryGetValue(playerId, out var time) && time > Utils.GetTimeStamp(DateTime.Now);
     public static void OnMurderPlayer(PlayerControl killer, PlayerControl target)
     {
+        if (killer.PlayerId == target.PlayerId) return;
         TimeStamp[killer.PlayerId] = Utils.GetTimeStamp(DateTime.Now) + (long)ProtectDuration.GetFloat();
         SendRPC(killer.PlayerId);
-        Logger.Test(TimeStamp[killer.PlayerId].ToString());
         killer.Notify(Translator.GetString("BKInProtect"));
         killer.RpcGuardAndKill();
     }

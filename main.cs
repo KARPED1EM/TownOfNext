@@ -420,6 +420,7 @@ public enum CustomRoles
     Hangman,
     Bard,
     Swooper,
+    Crewpostor,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
