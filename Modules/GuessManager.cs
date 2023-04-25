@@ -96,7 +96,8 @@ public static class GuessManager
 
         if (!pc.IsAlive())
         {
-            Utils.SendMessage(GetString("GuessDead"), pc.PlayerId);
+            if (!isUI) Utils.SendMessage(GetString("GuessDead"), pc.PlayerId);
+            else pc.ShowPopUp(GetString("GuessDead"));
             return true;
         }
 
@@ -116,7 +117,8 @@ public static class GuessManager
 
             if (!MsgToPlayerAndRole(msg, out byte targetId, out CustomRoles role, out string error))
             {
-                Utils.SendMessage(error, pc.PlayerId);
+                if (!isUI) Utils.SendMessage(error, pc.PlayerId);
+                else pc.ShowPopUp(error);
                 return true;
             }
             var target = Utils.GetPlayerById(targetId);
@@ -126,12 +128,14 @@ public static class GuessManager
                 if (!Main.GuesserGuessed.ContainsKey(pc.PlayerId)) Main.GuesserGuessed.Add(pc.PlayerId, 0);
                 if (pc.Is(CustomRoles.NiceGuesser) && Main.GuesserGuessed[pc.PlayerId] >= Options.GGCanGuessTime.GetInt())
                 {
-                    Utils.SendMessage(GetString("GGGuessMax"), pc.PlayerId);
+                    if (!isUI) Utils.SendMessage(GetString("GGGuessMax"), pc.PlayerId);
+                    else pc.ShowPopUp(GetString("GGGuessMax"));
                     return true;
                 }
                 if (pc.Is(CustomRoles.EvilGuesser) && Main.GuesserGuessed[pc.PlayerId] >= Options.EGCanGuessTime.GetInt())
                 {
-                    Utils.SendMessage(GetString("EGGuessMax"), pc.PlayerId);
+                    if (!isUI) Utils.SendMessage(GetString("EGGuessMax"), pc.PlayerId);
+                    else pc.ShowPopUp(GetString("EGGuessMax"));
                     return true;
                 }
                 if (role == CustomRoles.SuperStar && target.Is(CustomRoles.SuperStar))
@@ -146,7 +150,8 @@ public static class GuessManager
                 }
                 if (target.Is(CustomRoles.Snitch) && target.AllTasksCompleted())
                 {
-                    Utils.SendMessage(GetString("EGGuessSnitchTaskDone"), pc.PlayerId);
+                    if (!isUI) Utils.SendMessage(GetString("EGGuessSnitchTaskDone"), pc.PlayerId);
+                    else pc.ShowPopUp(GetString("EGGuessSnitchTaskDone"));
                     return true;
                 }
                 if (role.IsAdditionRole())
@@ -162,7 +167,8 @@ public static class GuessManager
                 }
                 if (pc.PlayerId == target.PlayerId)
                 {
-                    Utils.SendMessage(GetString("LaughToWhoGuessSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromKPD")));
+                    if (!isUI) Utils.SendMessage(GetString("LaughToWhoGuessSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromKPD")));
+                    else pc.ShowPopUp(Utils.ColorString(Color.cyan, GetString("MessageFromKPD")) + "\n" + GetString("LaughToWhoGuessSelf"));
                     guesserSuicide = true;
                 }
                 else if (pc.Is(CustomRoles.NiceGuesser) && role.IsCrewmate() && !Options.GGCanGuessCrew.GetBool() && !pc.Is(CustomRoles.Madmate)) guesserSuicide = true;
@@ -675,6 +681,6 @@ public static class GuessManager
     {
         int PlayerId = reader.ReadInt32();
         CustomRoles role = (CustomRoles)reader.ReadByte();
-        GuesserMsg(pc, $"/bt {PlayerId} {GetString(role.ToString())}");
+        GuesserMsg(pc, $"/bt {PlayerId} {GetString(role.ToString())}", true);
     }
 }
