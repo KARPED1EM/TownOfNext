@@ -137,6 +137,7 @@ class HudManagerPatch
                         break;
                     case CustomRoles.QuickShooter:
                         __instance.AbilityButton.OverrideText($"{GetString("QuickShooterShapeshiftText")}");
+                        __instance.AbilityButton.SetUsesRemaining(QuickShooter.ShotLimit.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var qx) ? qx : 0);
                         break;
                     case CustomRoles.Provocateur:
                         __instance.KillButton.OverrideText($"{GetString("ProvocateurButtonText")}");
@@ -165,7 +166,7 @@ class HudManagerPatch
                         break;
                     case CustomRoles.Mario:
                         __instance.AbilityButton.buttonLabelText.text = GetString("MarioVentButtonText");
-                        __instance.AbilityButton.SetUsesRemaining(Options.MarioVentNumWin.GetInt() - (Main.MarioVentCount.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var x) ? x : 0));
+                        __instance.AbilityButton.SetUsesRemaining(Options.MarioVentNumWin.GetInt() - (Main.MarioVentCount.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var mx) ? mx : 0));
                         break;
                     case CustomRoles.Veteran:
                         __instance.AbilityButton.buttonLabelText.text = GetString("VeteranVetnButtonText");

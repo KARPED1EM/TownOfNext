@@ -12,6 +12,7 @@ internal static class QuickShooter
     private static OptionItem KillCooldown;
     private static OptionItem MeetingReserved;
     public static OptionItem ShapeshiftCooldown;
+
     public static Dictionary<byte, int> ShotLimit = new();
 
     public static void SetupCustomOption()
