@@ -61,7 +61,10 @@ public static class Hacker
     public static void GetAbilityButtonText(HudManager __instance, byte playerId)
     {
         if (HackLimit.TryGetValue(playerId, out var x) && x >= 1)
+        {
             __instance.AbilityButton.OverrideText($"{GetString("HackerShapeshiftText")}");
+            __instance.AbilityButton.SetUsesRemaining(x);
+        }
     }
     public static void OnReportDeadBody() => DeadBodyList = new();
     public static void AddDeadBody(PlayerControl target)
