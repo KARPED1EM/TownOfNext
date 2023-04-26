@@ -777,6 +777,7 @@
 "MedicalerCooldown","发放护盾冷却时间","Shield Cooldown","Откат Щита","发放护盾冷却时间","发放护盾冷却时间"
 "MedicalerSkillLimit","发放护盾次数上限","Max Number of Shields","Лимит Способности","发放护盾次数上限","发放护盾次数上限"
 "MedicalerTargetCanSeeProtect","玩家可以知道自己是否持有护盾","Target can see Protection","Цель может видеть Защиту","玩家可以知道自己是否持有护盾","玩家可以知道自己是否持有护盾"
+"KnowTargetShieldBroken","可以得知某位玩家的护盾破碎","","","",""
 "DivinatorSkillLimit","占卜次数上限","Max number of Ability uses","Лимит Способности","占卜次数上限","占卜次数上限"
 "MadmateSpawnMode","<color=#ff1919>叛徒</color>生成模式","<color=#ff1919>Madmate</color> spawning mode","Режим появления Безумца","<color=#ff1919>叛徒</color>生成模式","<color=#ff1919>叛徒</color>生成模式"
 "MadmateSpawnMode.Assign","开局分配","Assign","Назначать","开局分配","开局分配"
@@ -969,6 +970,7 @@
 "BKSkillTimeRemain","免疫状态剩余：{0}秒","","","",""
 "BKSkillNotice","击杀一名玩家以进入免疫状态","","","",""
 "BKOffsetKill","免疫伤害成功","","","",""
+"MedicalerTargetShieldBroken","目标护盾破碎","","","",""
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","信息发送冷却时间为【{0}】秒","信息发送冷却时间为【{0}】秒"

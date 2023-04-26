@@ -1,5 +1,7 @@
-﻿using Hazel;
+﻿using HarmonyLib;
+using Hazel;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
@@ -13,6 +15,7 @@ public static class Medicaler
     private static OptionItem SkillLimitOpt;
     private static OptionItem SkillCooldown;
     private static OptionItem TargetCanSeeProtect;
+    private static OptionItem KnowTargetShieldBroken;
 
     public static void SetupCustomOption()
     {
@@ -22,6 +25,7 @@ public static class Medicaler
         SkillLimitOpt = IntegerOptionItem.Create(Id + 12, "MedicalerSkillLimit", new(1, 990, 1), 3, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Medicaler])
             .SetValueFormat(OptionFormat.Times);
         TargetCanSeeProtect = BooleanOptionItem.Create(Id + 13, "MedicalerTargetCanSeeProtect", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Medicaler]);
+        KnowTargetShieldBroken = BooleanOptionItem.Create(Id + 14, "MedicalerKnowTargetShieldBroken", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Medicaler]);
     }
     public static void Init()
     {
@@ -107,7 +111,11 @@ public static class Medicaler
         if (TargetCanSeeProtect.GetBool())
             target.RpcGuardAndKill(target);
         killer.SetKillCooldown();
-        Utils.NotifyRoles();
+        Utils.NotifyRoles(target);
+        if (KnowTargetShieldBroken.GetBool())
+            Main.AllPlayerControls.Where(x => playerIdList.Contains(x.PlayerId)).Do(x => x.Notify(Translator.GetString("MedicalerTargetShieldBroken")));
+        else
+            Main.AllPlayerControls.Where(x => playerIdList.Contains(x.PlayerId)).Do(x => Utils.NotifyRoles(x));
 
         Logger.Info($"{target.GetNameWithRole()} : 来自医生的盾破碎", "Medicaler");
         return true;
