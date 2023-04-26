@@ -337,6 +337,7 @@ class SetHudActivePatch
                 __instance.AbilityButton.ToggleVisible(false);
                 break;
             case CustomRoles.Minimalism:
+            case CustomRoles.KB_Normal:
                 __instance.SabotageButton.ToggleVisible(false);
                 __instance.AbilityButton.ToggleVisible(false);
                 __instance.ReportButton.ToggleVisible(false);
