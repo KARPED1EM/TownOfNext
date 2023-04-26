@@ -120,32 +120,23 @@ class BeginCrewmatePatch
         //チーム表示変更
         CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
 
+        __instance.ImpostorText.gameObject.SetActive(false);
         switch (role.GetCustomRoleTypes())
         {
-            case CustomRoleTypes.Neutral:
-                __instance.TeamTitle.text = Utils.GetRoleName(role);
-                __instance.TeamTitle.color = Utils.GetRoleColor(role);
-                __instance.ImpostorText.gameObject.SetActive(true);
-                __instance.ImpostorText.text = role switch
-                {
-                    CustomRoles.Jackal => GetString("TeamJackal"),
-                    CustomRoles.Pelican => GetString("TeamPelican"),
-                    CustomRoles.Gamer => GetString("TeamGamer"),
-                    CustomRoles.BloodKnight => GetString("TeamBloodKnight"),
-                    _ => GetString("NeutralInfo"),
-                };
-                __instance.BackgroundBar.material.color = Utils.GetRoleColor(role);
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
+            case CustomRoleTypes.Impostor:
+                __instance.TeamTitle.text = GetString("TeamImpostor");
+                __instance.TeamTitle.color = __instance.BackgroundBar.material.color = new Color32(255, 25, 25, byte.MaxValue);
+                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Impostor);
                 break;
             case CustomRoleTypes.Crewmate:
+                __instance.TeamTitle.text = GetString("TeamCrewmate");
+                __instance.TeamTitle.color = __instance.BackgroundBar.material.color = new Color32(140, 255, 255, byte.MaxValue);
                 PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Crewmate);
                 break;
-            case CustomRoleTypes.Impostor:
-                __instance.TeamTitle.text = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese ? GetString("TeamImpostor") : GetString("Impostor");
-                __instance.TeamTitle.color = Utils.GetRoleColor(role);
-                __instance.BackgroundBar.material.color = Utils.GetRoleColor(role);
-                __instance.ImpostorText.gameObject.SetActive(false);
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Impostor);
+            case CustomRoleTypes.Neutral:
+                __instance.TeamTitle.text = GetString("TeamNeutral");
+                __instance.TeamTitle.color = __instance.BackgroundBar.material.color = new Color32(255, 171, 27, byte.MaxValue);
+                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Shapeshifter);
                 break;
         }
         switch (role)
@@ -171,20 +162,8 @@ class BeginCrewmatePatch
                 PlayerControl.LocalPlayer.Data.Role.IntroSound = ShipStatus.Instance.SabotageSound;
                 break;
 
-            case CustomRoles.Sheriff:
-            case CustomRoles.SwordsMan:
-            case CustomRoles.Medicaler:
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(role == CustomRoles.Medicaler ? RoleTypes.Scientist : RoleTypes.Crewmate);
-                __instance.BackgroundBar.material.color = Palette.CrewmateBlue;
-                __instance.ImpostorText.gameObject.SetActive(true);
-                var numImpostors = Main.NormalOptions.NumImpostors;
-                var text = numImpostors == 1
-                    ? GetString(StringNames.NumImpostorsS)
-                    : string.Format(GetString(StringNames.NumImpostorsP), numImpostors);
-                __instance.ImpostorText.text = text.Replace("[FF1919FF]", "<color=#FF1919FF>").Replace("[]", "</color>");
-                break;
-
             case CustomRoles.Doctor:
+            case CustomRoles.Medicaler:
                 PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Scientist);
                 break;
 
@@ -199,10 +178,8 @@ class BeginCrewmatePatch
 
         if (PlayerControl.LocalPlayer.Is(CustomRoles.Madmate))
         {
-            __instance.TeamTitle.text = GetString("Madmate");
-            __instance.TeamTitle.color = Utils.GetRoleColor(CustomRoles.Madmate);
-            __instance.ImpostorText.text = GetString("TeamImpostor");
-            StartFadeIntro(__instance, Palette.CrewmateBlue, Palette.ImpostorRed);
+            __instance.TeamTitle.text = GetString("TeamImpostor");
+            __instance.TeamTitle.color = __instance.BackgroundBar.material.color = new Color32(255, 25, 25, byte.MaxValue);
             PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Impostor);
         }
 

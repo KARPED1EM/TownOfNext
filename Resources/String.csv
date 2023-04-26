@@ -31,12 +31,9 @@
 "TypeAddon","附加职业","Add-ons","Атрибут","附加職業",""
 
 "# 阵营 / Teams"
-"TeamImpostor","内鬼阵营","Team Impostor","Предатели","偽裝者陣營","EquipoImpostor"
+"TeamImpostor","内鬼阵营","Impostor","Предатели","偽裝者陣營","EquipoImpostor"
 "TeamNeutral","中立阵营","Neutral","Нейтралы","中立陣營","EquipoNeutro"
-"TeamJackal","豺狼阵营","Team Jackal","Шакалы","豺狼陣營","EquipoJackal"
-"TeamPelican","鹈鹕阵营","Team Pelican","Пеликаны","鵜鶘陣營","EquipoPelican"
-"TeamGamer","玩家阵营","Team Demons","Демоны","玩家陣營","EquipoGamer"
-"TeamBloodKnight","嗜血骑士阵营","Blood Knight","嗜血骑士阵营","嗜血骑士阵营",""
+"TeamCrewmate","船员阵营","Crewmate","","",""
 
 "## 个人竞技模式 / PVP"
 "KB_Normal","挑战者","Challenger","Боец","挑戰者","KB_Normal"
@@ -194,9 +191,6 @@
 "Prefix.Mimic","宝箱怪","Mimic ","Мимикующий ","保險箱","宝箱怪"
 
 "## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen"
-
-"# 中立阵营 / Neutral descriptions"
-"NeutralInfo","中立阵营","A team on their own.","Команда, которая играет за себя","你屬於一個獨立陣營","中立阵营"
 
 "# 内鬼阵营 / Impostor descriptions"
 "BountyHunterInfo","走，去拿下你的目标！","Eliminate your target","Охотьтесь за своей целью","拿下你的目標","走，去拿下你的目标！"
