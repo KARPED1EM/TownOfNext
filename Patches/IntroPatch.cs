@@ -141,7 +141,7 @@ class BeginCrewmatePatch
                 PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Crewmate);
                 break;
             case CustomRoleTypes.Impostor:
-                __instance.TeamTitle.text = GetString("TeamImpostor");
+                __instance.TeamTitle.text = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese ? GetString("TeamImpostor") : GetString("Impostor");
                 __instance.TeamTitle.color = Utils.GetRoleColor(role);
                 __instance.BackgroundBar.material.color = Utils.GetRoleColor(role);
                 __instance.ImpostorText.gameObject.SetActive(false);
