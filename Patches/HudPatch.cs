@@ -88,6 +88,7 @@ class HudManagerPatch
                         break;
                     case CustomRoles.Arsonist:
                         __instance.KillButton.OverrideText($"{GetString("ArsonistDouseButtonText")}");
+                        __instance.AbilityButton.buttonLabelText.text = GetString("ArsonistVetnButtonText");
                         break;
                     case CustomRoles.Revolutionist:
                         __instance.KillButton.OverrideText($"{GetString("RevolutionistDrawButtonText")}");
@@ -182,9 +183,6 @@ class HudManagerPatch
                         break;
                     case CustomRoles.Sheriff:
                         __instance.KillButton.OverrideText($"{GetString("SheriffKillButtonText")}");
-                        break;
-                    case CustomRoles.Terrorist:
-                        __instance.AbilityButton.buttonLabelText.text = GetString("TerroristVetnButtonText");
                         break;
                 }
 
