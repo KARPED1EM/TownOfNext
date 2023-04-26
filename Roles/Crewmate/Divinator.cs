@@ -79,7 +79,8 @@ public static class Divinator
                 CustomRoles.SabotageMaster or
                 CustomRoles.Jackal or
                 CustomRoles.Mario or
-                CustomRoles.Cleaner
+                CustomRoles.Cleaner or
+                CustomRoles.Crewpostor
                 => "Honest",
 
                 CustomRoles.SerialKiller or
