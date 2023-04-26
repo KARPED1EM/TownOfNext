@@ -495,6 +495,8 @@ internal class ChatCommands
             "通靈師" or "通灵" => GetString("Mediumshiper"),
             "吟游詩人" or "诗人" => GetString("Bard"),
             "隱匿者" or "隐匿" or "隐身" or "隐身人" or "印尼" => GetString("Swooper"),
+            "船鬼" => GetString("Crewpostor"),
+            "嗜血騎士" or "血骑" or "骑士" => GetString("BloodKnight"),
             _ => text,
         };
     }
