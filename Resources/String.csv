@@ -1198,6 +1198,7 @@
 "MayorVetnButtonText","集合","Button","СОБРАНИЕ","集合",""
 "ParanoiaVetnButtonText","呼救","Panic","СОБРАНИЕ","呼救",""
 "SheriffKillButtonText","执法","Shoot","ПРОВЕРИТЬ","执法",""
+"ArsonistVetnButtonText","点火","Ignite","ЗАЖИГАНИЕ","点火",""
 "RevolutionistVetnButtonText","革命","Revolution","РЕВОЛЮЦИЯ","革命",""
 "DisabledBySettings","已在设置被中禁用","Disabled by Settings","Отключено настройкой","已在设置被中禁用","已在设置被中禁用"
 "Disabled","禁用","Disabled","Отключено","禁用","禁用"
