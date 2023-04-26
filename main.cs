@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TOHE.Modules;
 using TOHE.Roles.Neutral;
 using UnhollowerRuntimeLib;
 using UnityEngine;
@@ -146,8 +145,8 @@ public class Main : BasePlugin
     public static bool introDestroyed = false;
     public static int DiscussionTime;
     public static int VotingTime;
-    public static byte currentDousingTarget= byte.MaxValue;
-    public static byte currentDrawTarget= byte.MaxValue;
+    public static byte currentDousingTarget = byte.MaxValue;
+    public static byte currentDrawTarget = byte.MaxValue;
     public static float DefaultCrewmateVision;
     public static float DefaultImpostorVision;
     public static bool IsInitialRelease = DateTime.Now.Month == 1 && DateTime.Now.Day is 17;

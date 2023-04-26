@@ -1,7 +1,6 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-using Il2CppSystem.Xml.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,7 +1,6 @@
 ﻿using AmongUs.Data;
 using HarmonyLib;
 using System;
-using System.Globalization;
 using System.IO;
 using System.Net.Sockets;
 using System.Reflection;
@@ -51,7 +50,7 @@ internal class Cloud
 
             Main.newLobby = false;
             string msg = $"{GameStartManager.Instance.GameRoomNameCode.text}|{Main.PluginVersion}|{GameData.Instance.PlayerCount + 1}|{TranslationController.Instance.currentLanguage.languageID}|{ServerManager.Instance.CurrentRegion.Name}|{DataManager.player.customization.name}";
-            
+
             if (msg.Length <= 60)
             {
                 byte[] buffer = Encoding.Default.GetBytes(msg);

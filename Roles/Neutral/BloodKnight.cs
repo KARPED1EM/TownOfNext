@@ -1,6 +1,5 @@
 using AmongUs.GameOptions;
 using Hazel;
-using MS.Internal.Xml.XPath;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -71,7 +70,7 @@ public static class BloodKnight
     public static void OnFixedUpdate(PlayerControl pc)
     {
         if (!pc.Is(CustomRoles.BloodKnight)) return;
-        if (TimeStamp[pc.PlayerId] < Utils.GetTimeStamp(DateTime.Now) && TimeStamp[pc.PlayerId] != 0 )
+        if (TimeStamp[pc.PlayerId] < Utils.GetTimeStamp(DateTime.Now) && TimeStamp[pc.PlayerId] != 0)
         {
             TimeStamp[pc.PlayerId] = 0;
             pc.Notify(Translator.GetString("BKProtectOut"));
@@ -100,7 +99,7 @@ public static class BloodKnight
     {
         bool canUse = CanVent.GetBool();
         DestroyableSingleton<HudManager>.Instance.ImpostorVentButton.ToggleVisible(canUse && !player.Data.IsDead);
-        player.Data.Role.CanVent =canUse;
+        player.Data.Role.CanVent = canUse;
     }
-    
+
 }

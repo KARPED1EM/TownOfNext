@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Hazel;
-using MS.Internal.Xml.XPath;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
