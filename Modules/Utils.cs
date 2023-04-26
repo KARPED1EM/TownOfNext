@@ -18,6 +18,7 @@ using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnhollowerBaseLib;
 using UnityEngine;
+using static TOHE.PlayerState;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -305,16 +306,11 @@ public static class Utils
 
         return (RoleText, RoleColor);
     }
-    public static string GetKillerText(byte playerId)
+    public static string GetKillCountText(byte playerId)
     {
-        var state = Main.PlayerStates[playerId];
-
-        var KillerId = state.GetRealKiller();
-        Color color = KillerId != byte.MaxValue ? Main.PlayerColors[KillerId] : GetRoleColor(CustomRoles.Doctor);
-        string killer = state.IsDead ? (GetString("KilledBy") + Main.AllPlayerNames[KillerId].RemoveHtmlTags().Replace("\r\n", string.Empty)) : "";
-        killer = ColorString(color, killer);
-
-        return killer;
+        int count = Main.PlayerStates.Count(x => x.Value.GetRealKiller() == playerId);
+        if (count < 1) return "";
+        return ColorString(new Color32(255, 69, 0, byte.MaxValue), string.Format(GetString("KillCount"), count));
     }
     public static string GetVitalText(byte playerId, bool RealKillerColor = false)
     {
@@ -1337,10 +1333,11 @@ public static class Utils
     public static string SummaryTexts(byte id, bool disableColor = true, bool check = false)
     {
         var RolePos = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian ? 47 : 37;
+        var KillsPos = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian ? 13 : 9;
         var name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
         if (id == PlayerControl.LocalPlayer.PlayerId) name = DataManager.player.Customization.Name;
         else name = GetPlayerById(id)?.Data.PlayerName ?? name;
-        string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=24%>{GetProgressText(id)}</pos><pos=32%> {GetVitalText(id, true)}</pos><pos={RolePos}%> {GetDisplayRoleName(id, true)}{GetSubRolesText(id, summary: true)}</pos>";
+        string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=24%>{GetProgressText(id)}</pos><pos=32%> {GetKillCountText(id)}</pos><pos={32 + KillsPos}%> {GetVitalText(id, true)}</pos><pos={RolePos + KillsPos}%> {GetDisplayRoleName(id, true)}{GetSubRolesText(id, summary: true)}</pos>";
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             if (TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese)

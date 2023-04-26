@@ -1200,7 +1200,7 @@
 "Disabled","禁用","Disabled","Отключено","禁用","禁用"
 "FailToTrack","无法追踪","Failed To Track","Не Удалось Отследить","无法追踪","无法追踪"
 "Mad-","背叛的","Mad ","Безумный ","背叛的","背叛的"
-"KilledBy"," ← "," ← "," ← "," ← "," ← "
+"KillCount","击杀: {0}","Kills: {0}","","",""
 "CantUse.lastroles","不可以在游戏中查看上局职业","Unable to use /lastroles during a game.","Нельзя использовать /lastroles во время игры.","不可以在游戏中查看上局职业","不可以在游戏中查看上局职业"
 "CantUse.killlog","不可以在游戏中查看击杀记录","Unable to use /killlog during a game.","Нельзя использовать /killlog во время игры.","不可以在游戏中查看击杀记录","不可以在游戏中查看击杀记录"
 "CantUse.lastresult","不可以在游戏中查看游戏结果","Unable to use /lastresult during a game.","Нельзя использовать /lastresult во время игры.","不可以在游戏中查看游戏结果","不可以在游戏中查看游戏结果"
