@@ -16,7 +16,7 @@ public static class CredentialsPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     public static class LogoPatch
     {
-        static IEnumerator ViewBoosterCoro(MainMenuManager __instance)
+        static IEnumerator ViewCredentialsCoro(MainMenuManager __instance)
         {
             while (true)
             {
@@ -28,12 +28,14 @@ public static class CredentialsPatch
                 break;
             }
         }
+        public static string BoosterData = "";
         public static string SponsersData = "";
         public static string DevsData = "";
         public static string TransData = "";
 
-        public static void InitCreditData()
+        public static void InitCredentialsData()
         {
+            BoosterData = "";
             SponsersData = "";
             DevsData = "";
             TransData = "";
@@ -53,6 +55,9 @@ public static class CredentialsPatch
             TransData += $"\n法官 - <size=75%>{GetString("TranCHT")}</size>";
             TransData += $"\nSolarFlare - <size=75%>{GetString("TranEN")}</size>";
             TransData += $"\nchill_ultimated - <size=75%>{GetString("TranRU")}</size>";
+
+            BoosterData += $"Namra";
+            BoosterData += $"\nKNIGHT";
 
             SponsersData += $"罗寄";
             SponsersData += $"\n喜";
@@ -103,16 +108,28 @@ public static class CredentialsPatch
             transtext.localScale = new Vector3(0.5f, 0.5f, 1f);
 
             var boostertitletext = Object.Instantiate(devtitletext, obj.transform);
-            boostertitletext.GetComponent<TextMeshPro>().text = GetString("Sponsor");
+            boostertitletext.GetComponent<TextMeshPro>().text = GetString("Booster");
             boostertitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
-            boostertitletext.localPosition = new Vector3(2.4f, 1.65f, -2f);
+            boostertitletext.localPosition = new Vector3(-2.4f, -1f, -2f);
             boostertitletext.localScale = new Vector3(0.8f, 0.8f, 1f);
 
             var boostertext = Object.Instantiate(devtext, obj.transform);
-            boostertext.GetComponent<TextMeshPro>().text = SponsersData;
+            boostertext.GetComponent<TextMeshPro>().text = BoosterData;
             boostertext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Capline;
-            boostertext.localPosition = new Vector3(2.4f, 1.27f, -2f);
+            boostertext.localPosition = new Vector3(-2.4f, -1.38f, -2f);
             boostertext.localScale = new Vector3(0.5f, 0.5f, 1f);
+
+            var sponsortitletext = Object.Instantiate(devtitletext, obj.transform);
+            sponsortitletext.GetComponent<TextMeshPro>().text = GetString("Sponsor");
+            sponsortitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
+            sponsortitletext.localPosition = new Vector3(2.4f, 1.65f, -2f);
+            sponsortitletext.localScale = new Vector3(0.8f, 0.8f, 1f);
+
+            var sponsortext = Object.Instantiate(devtext, obj.transform);
+            sponsortext.GetComponent<TextMeshPro>().text = SponsersData;
+            sponsortext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Capline;
+            sponsortext.localPosition = new Vector3(2.4f, 1.27f, -2f);
+            sponsortext.localScale = new Vector3(0.5f, 0.5f, 1f);
 
             var textobj = obj.transform.FindChild("Title_TMP");
             Object.Destroy(textobj.GetComponent<TextTranslatorTMP>());
@@ -126,9 +143,9 @@ public static class CredentialsPatch
         public static MainMenuManager instance;
         public static void Postfix(MainMenuManager __instance)
         {
-            InitCreditData();
+            InitCredentialsData();
             instance = __instance;
-            AmongUsClient.Instance.StartCoroutine(ViewBoosterCoro(__instance));
+            AmongUsClient.Instance.StartCoroutine(ViewCredentialsCoro(__instance));
         }
     }
 }
