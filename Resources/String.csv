@@ -33,7 +33,7 @@
 "# 阵营 / Teams"
 "TeamImpostor","内鬼阵营","Impostor","Предатели","偽裝者陣營","EquipoImpostor"
 "TeamNeutral","中立阵营","Neutral","Нейтралы","中立陣營","EquipoNeutro"
-"TeamCrewmate","船员阵营","Crewmate","","",""
+"TeamCrewmate","船员阵营","Crewmate","船员阵营","船員陣營",""
 
 "## 个人竞技模式 / PVP"
 "KB_Normal","挑战者","Challenger","Боец","挑戰者","KB_Normal"
@@ -148,7 +148,7 @@
 "Workaholic","工作狂","Workaholic","Трудоголик","工作狂","工作狂"
 "Collector","集票者","Collector","Коллектор","集票者","集票者"
 "Provocateur","自爆卡车","Provocateur","Провокатор","神風特攻隊","自爆卡车"
-"BloodKnight","嗜血骑士","Blood Knight","嗜血骑士","嗜血骑士",""
+"BloodKnight","嗜血骑士","Blood Knight","嗜血骑士","嗜血騎士",""
 
 "# 附加职业 / Add-ons"
 "LastImpostor","绝境者","Last Impostor","Последний Предатель","絕境者","绝境者"
@@ -233,7 +233,7 @@
 "OverKillerInfo","且欣赏我美丽的作品","Enjoy my beautiful work","Наслаждайтесь моей работой","欣賞我美麗的作品","且欣赏我美丽的作品"
 "HangmanInfo","就由我，来结束你的生命","I will decide when your life will end","Я решу когда твоя жизнь окончится","我將會結束你的生命","就由我，来结束你的生命"
 "SwooperInfo","感受未知的恐惧吧","Turn invisible temporarily","Становитесь невидимым на какое-то время","一道風掠過，所有人恐懼",""
-"CrewpostorInfo","这是场完美的犯罪","Kill by completing tasks","这是场完美的犯罪","这是场完美的犯罪",""
+"CrewpostorInfo","这是场完美的犯罪","Kill by completing tasks","这是场完美的犯罪","誰又能知道我是披著船員皮的偽裝者呢?",""
 
 "# 船员阵营 / Crewmate descriptions"
 "BaitInfo","好消息，杀了我可以吃席","Your Killer self-reports your body","Убийца моментально саморепнет ваше тело","犧牲小我，完成大我","好消息，杀了我可以吃席"
@@ -287,7 +287,7 @@
 "WorkaholicInfo","卷死他们！","Finish all tasks to solo win!","Сделайте все свои задания и победите в одиночку!","把這波工作做完就可以下班了","卷死他们！"
 "CollectorInfo","是收集癖的胜利！","Collect votes from Players","Соберите достаточное количество голосов","收集票數來獲勝","是收集癖的胜利！"
 "ProvocateurInfo","你急了，你寄了","Victory with help target","Победите с помощью цели","急了嗎，你沒了","你急了，你寄了"
-"BloodKnightInfo","这一杯，敬给彼岸的你","Killing gives you a temporary shield","这一杯，敬给彼岸的你","这一杯，敬给彼岸的你",""
+"BloodKnightInfo","这一杯，敬给彼岸的你","Killing gives you a temporary shield","这一杯，敬给彼岸的你","先下手為強也是個不錯的選擇",""
 
 "# 附加职业 / Add-ons descriptions"
 "LoversInfo","最重要的是，记得照顾好你的另一半","Stay Alive and win together","Выживите со своим Любовником","你墜入了愛河","最重要的是，记得照顾好你的另一半"
