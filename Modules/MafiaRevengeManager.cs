@@ -111,7 +111,7 @@ public static class MafiaRevengeManager
     {
         Logger.Msg($"Click: ID {playerId}", "Mafia UI");
         var pc = Utils.GetPlayerById(playerId);
-        if (pc == null || !pc.IsAlive()) return;
+        if (pc == null || !pc.IsAlive() || !GameStates.IsVoting) return;
         if (AmongUsClient.Instance.AmHost) MafiaMsgCheck(PlayerControl.LocalPlayer, $"/rv {playerId}", true);
         else SendRPC(playerId);
     }

@@ -441,9 +441,8 @@ public static class GuessManager
     static void GuesserOnClick(byte playerId, MeetingHud __instance)
     {
         var pc = Utils.GetPlayerById(playerId);
-        if (pc == null || !pc.IsAlive()) return;
-        if (guesserUI != null || !(__instance.state == MeetingHud.VoteStates.Voted || __instance.state == MeetingHud.VoteStates.NotVoted)) return;
-
+        if (pc == null || !pc.IsAlive() || guesserUI != null || !GameStates.IsVoting) return;
+        
         try
         {
             Page = 1;

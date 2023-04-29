@@ -217,7 +217,7 @@ public static class Judge
     {
         Logger.Msg($"Click: ID {playerId}", "Judge UI");
         var pc = Utils.GetPlayerById(playerId);
-        if (pc == null || !pc.IsAlive()) return;
+        if (pc == null || !pc.IsAlive() || !GameStates.IsVoting) return;
         if (AmongUsClient.Instance.AmHost) TrialMsg(PlayerControl.LocalPlayer, $"/tl {playerId}", true);
         else SendRPC(playerId);
     }
