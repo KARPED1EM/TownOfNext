@@ -187,11 +187,18 @@ public static class Witch
             var dic = SpelledPlayer.Where(x => x.Value.Contains(pc.PlayerId));
             if (dic.Count() == 0) continue;
             var whichId = dic.FirstOrDefault().Key;
-            if (!Main.AfterMeetingDeathPlayers.ContainsKey(pc.PlayerId))
+            var witch = Utils.GetPlayerById(whichId);
+            if (witch != null && witch.IsAlive())
             {
-                var witch = Utils.GetPlayerById(whichId);
-                pc.SetRealKiller(witch);
-                spelledIdList.Add(pc.PlayerId);
+                if (!Main.AfterMeetingDeathPlayers.ContainsKey(pc.PlayerId))
+                {
+                    pc.SetRealKiller(witch);
+                    spelledIdList.Add(pc.PlayerId);
+                }
+            }
+            else
+            {
+                Main.AfterMeetingDeathPlayers.Remove(pc.PlayerId);
             }
         }
         CheckForEndVotingPatch.TryAddAfterMeetingDeathPlayers(PlayerState.DeathReason.Spell, spelledIdList.ToArray());
