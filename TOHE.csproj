@@ -3,6 +3,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
+	<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <Description>Town Of Host Edited</Description>
     <Authors>KARPED1EM</Authors>
     <langVersion>preview</langVersion>

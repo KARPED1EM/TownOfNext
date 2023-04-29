@@ -13,6 +13,7 @@ using UnityEngine;
 
 [assembly: AssemblyFileVersion(TOHE.Main.PluginVersion)]
 [assembly: AssemblyInformationalVersion(TOHE.Main.PluginVersion)]
+[assembly: AssemblyVersion(TOHE.Main.PluginVersion)]
 namespace TOHE;
 
 [BepInPlugin(PluginGuid, "TOHE", PluginVersion)]
