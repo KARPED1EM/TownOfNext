@@ -272,7 +272,7 @@ public class TaskState
                 }
                 else
                 {
-                    list.OrderBy(x => Vector2.Distance(player.GetTruePosition(), x.GetTruePosition()));
+                    list = list.OrderBy(x => Vector2.Distance(player.GetTruePosition(), x.GetTruePosition())).ToList();
                     var target = list[0];
                     target.SetRealKiller(player);
                     target.RpcCheckAndMurder(target);
