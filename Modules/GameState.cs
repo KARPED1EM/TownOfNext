@@ -265,7 +265,7 @@ public class TaskState
             if (player.Is(CustomRoles.Crewpostor))
             {
 
-                List<PlayerControl> list = Main.AllAlivePlayerControls.Where(x => x.PlayerId != player.PlayerId && (!Options.CrewpostorCanKillAllies.GetBool() || !x.GetCustomRole().IsImpostorTeam())).ToList();
+                List<PlayerControl> list = Main.AllAlivePlayerControls.Where(x => x.PlayerId != player.PlayerId && (Options.CrewpostorCanKillAllies.GetBool() || !x.GetCustomRole().IsImpostorTeam())).ToList();
                 if (list.Count < 1)
                 {
                     Logger.Info($"船鬼没有可击杀目标", "Crewpostor");
