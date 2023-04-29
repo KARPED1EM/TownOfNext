@@ -65,7 +65,6 @@ public static class BloodKnight
         TimeStamp[killer.PlayerId] = Utils.GetTimeStamp(DateTime.Now) + (long)ProtectDuration.GetFloat();
         SendRPC(killer.PlayerId);
         killer.Notify(Translator.GetString("BKInProtect"));
-        killer.RpcGuardAndKill();
     }
     public static void OnFixedUpdate(PlayerControl pc)
     {
@@ -74,7 +73,6 @@ public static class BloodKnight
         {
             TimeStamp[pc.PlayerId] = 0;
             pc.Notify(Translator.GetString("BKProtectOut"));
-            pc.RpcGuardAndKill();
         }
     }
     public static string GetHudText(PlayerControl pc)
