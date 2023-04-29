@@ -758,31 +758,31 @@ class MeetingHudStartPatch
 [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Update))]
 class MeetingHudUpdatePatch
 {
-    private static int bufferTIme = 50;
+    private static int bufferTIme = 20;
+    private static void ClearShootButton(MeetingHud __instance, bool forceAll = false)
+     => __instance.playerStates.ToList().ForEach(x => { if ((forceAll || (!Main.PlayerStates.TryGetValue(x.TargetPlayerId, out var ps) || ps.IsDead)) && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
+    
     public static void Postfix(MeetingHud __instance)
     {
 
-        // 会议技能按钮的取消
+        //会议技能UI处理
         bufferTIme--;
         if (bufferTIme < 0 && __instance.lastSecond > 3)
         {
-            bufferTIme = 50;
+            bufferTIme = 20;
             var myRole = PlayerControl.LocalPlayer.GetCustomRole();
-            if (myRole is CustomRoles.NiceGuesser or CustomRoles.EvilGuesser or CustomRoles.Judge)
-            {
-                if (!PlayerControl.LocalPlayer.IsAlive())
-                    __instance.playerStates.ToList().ForEach(x => { if (x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
-                else
-                    __instance.playerStates.ToList().ForEach(x => { if (Main.PlayerStates[x.TargetPlayerId].IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
-            }
-            else if (myRole is CustomRoles.Mafia)
-            {
-                if (!PlayerControl.LocalPlayer.IsAlive() && GameObject.Find("ShootButton") == null)
-                    MafiaRevengeManager.CreateJudgeButton(__instance);
-                else
-                    __instance.playerStates.ToList().ForEach(x => { if (Main.PlayerStates[x.TargetPlayerId].IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
-            }
-            __instance.playerStates.Where(x => Main.PlayerStates.TryGetValue(x.TargetPlayerId, out var ps) && ps.IsDead && !x.AmDead).Do(x => x.SetDead(x.DidReport, true));
+
+            //若玩家死亡则销毁技能按钮
+            if (myRole is CustomRoles.NiceGuesser or CustomRoles.EvilGuesser or CustomRoles.Judge && !PlayerControl.LocalPlayer.IsAlive())
+                ClearShootButton(__instance, true);
+
+            //若黑手党死亡则创建技能按钮
+            if (myRole is CustomRoles.Mafia && !PlayerControl.LocalPlayer.IsAlive() && GameObject.Find("ShootButton") == null)
+                MafiaRevengeManager.CreateJudgeButton(__instance);
+
+            //若某玩家死亡则修复会议该玩家状态
+            __instance.playerStates.Where(x => (!Main.PlayerStates.TryGetValue(x.TargetPlayerId, out var ps) || ps.IsDead) && !x.AmDead).Do(x => x.SetDead(x.DidReport, true));
+
         }
 
         if (!AmongUsClient.Instance.AmHost) return;
