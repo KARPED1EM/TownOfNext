@@ -1122,14 +1122,11 @@ class FixedUpdatePatch
 
             DoubleTrigger.OnFixedUpdate(player);
 
-            if (GameStates.IsInTask)
-            {
-                Pelican.OnFixedUpdate();
-                Vampire.OnFixedUpdate(player);
-                BallLightning.OnFixedUpdate();
-                Swooper.OnFixedUpdate(player);
-                BloodKnight.OnFixedUpdate(player);
-            }
+            Pelican.OnFixedUpdate();
+            Vampire.OnFixedUpdate(player);
+            BallLightning.OnFixedUpdate();
+            Swooper.OnFixedUpdate(player);
+            BloodKnight.OnFixedUpdate(player);
 
             if (GameStates.IsInTask && CustomRoles.SerialKiller.IsEnable()) SerialKiller.FixedUpdate(player);
             if (GameStates.IsInTask && Main.WarlockTimer.ContainsKey(player.PlayerId))//処理を1秒遅らせる
