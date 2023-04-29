@@ -1230,6 +1230,7 @@ public static class Utils
     }
     public static void AfterMeetingTasks()
     {
+        Swooper.AfterMeetingTasks();
         Eraser.AfterMeetingTasks();
         BountyHunter.AfterMeetingTasks();
         EvilTracker.AfterMeetingTasks();
