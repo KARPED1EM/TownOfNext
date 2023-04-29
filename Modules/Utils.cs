@@ -1143,7 +1143,7 @@ public static class Utils
                         (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) ||
                         (seer.Is(CustomRoles.God)) ||
                         (target.Is(CustomRoles.GM))
-                        ? $"<size={fontSize}>{target.GetDisplayRoleName(seer.PlayerId != target.PlayerId && !seer.Data.IsDead)}</size>\r\n" : "";
+                        ? $"<size={fontSize}>{target.GetDisplayRoleName(seer.PlayerId != target.PlayerId && !seer.Data.IsDead)}{GetProgressText(target)}</size>\r\n" : "";
 
                     if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
                         TargetRoleText = $"<size={fontSize}>{GetProgressText(target)}</size>\r\n";
