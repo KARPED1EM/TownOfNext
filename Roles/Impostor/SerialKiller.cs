@@ -56,6 +56,7 @@ public static class SerialKiller
     }
     public static void FixedUpdate(PlayerControl player)
     {
+        if (!GameStates.IsInTask || !CustomRoles.SerialKiller.IsEnable()) return;
         if (!HasKilled(player))
         {
             SuicideTimer.Remove(player.PlayerId);

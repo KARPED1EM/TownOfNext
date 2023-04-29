@@ -1036,17 +1036,31 @@ class FixedUpdatePatch
     private static StringBuilder Mark = new(20);
     private static StringBuilder Suffix = new(120);
     private static int LevelKickBufferTime = 10;
+    private static Dictionary<byte, int> BufferTime = new();
     public static void Postfix(PlayerControl __instance)
     {
         var player = __instance;
 
         if (!GameStates.IsModHost) return;
 
-        NameNotifyManager.OnFixedUpdate(player);
-        TargetArrow.OnFixedUpdate(player);
-        LocateArrow.OnFixedUpdate(player);
+        bool lowLoad = false;
+        if (Options.LowLoadMode.GetBool())
+        {
+            BufferTime.TryAdd(player.PlayerId, 10);
+            BufferTime[player.PlayerId]--;
+            if (BufferTime[player.PlayerId] > 0) lowLoad = true;
+            else BufferTime[player.PlayerId] = 10;
+        }
+
         Sniper.OnFixedUpdate(player);
         Zoom.OnFixedUpdate();
+        if (!lowLoad)
+        {
+            NameNotifyManager.OnFixedUpdate(player);
+            TargetArrow.OnFixedUpdate(player);
+            LocateArrow.OnFixedUpdate(player);
+        }
+
 
         if (AmongUsClient.Instance.AmHost)
         {//実行クライアントがホストの場合のみ実行
@@ -1078,57 +1092,12 @@ class FixedUpdatePatch
                 }
             }
 
-            //检查老兵技能是否失效
-            if (GameStates.IsInTask && player.Is(CustomRoles.Veteran))
-            {
-                if (Main.VeteranInProtect.TryGetValue(player.PlayerId, out var vtime) && vtime + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
-                {
-                    Main.VeteranInProtect.Remove(player.PlayerId);
-                    player.RpcGuardAndKill();
-                    player.Notify(string.Format(GetString("VeteranOffGuard"), Main.VeteranNumOfUsed[player.PlayerId]));
-                }
-            }
-
-            //检查掷雷兵技能是否生效
-            if (GameStates.IsInTask && player.Is(CustomRoles.Grenadier))
-            {
-                if (Main.GrenadierBlinding.TryGetValue(player.PlayerId, out var gtime) && gtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
-                {
-                    Main.GrenadierBlinding.Remove(player.PlayerId);
-                    player.RpcGuardAndKill();
-                    player.Notify(GetString("GrenadierSkillStop"));
-                    Utils.MarkEveryoneDirtySettings();
-                }
-                if (Main.MadGrenadierBlinding.TryGetValue(player.PlayerId, out var mgtime) && mgtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
-                {
-                    Main.MadGrenadierBlinding.Remove(player.PlayerId);
-                    player.RpcGuardAndKill();
-                    player.Notify(GetString("GrenadierSkillStop"));
-                    Utils.MarkEveryoneDirtySettings();
-                }
-            }
-
-            //检查马里奥是否完成
-            if (GameStates.IsInTask && player.Is(CustomRoles.Mario))
-            {
-                if (Main.MarioVentCount[player.PlayerId] > Options.MarioVentNumWin.GetInt())
-                {
-
-                    Main.MarioVentCount[player.PlayerId] = Options.MarioVentNumWin.GetInt();
-                    CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
-                    CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
-                }
-            }
-
             DoubleTrigger.OnFixedUpdate(player);
-
-            Pelican.OnFixedUpdate();
             Vampire.OnFixedUpdate(player);
-            BallLightning.OnFixedUpdate();
-            Swooper.OnFixedUpdate(player);
-            BloodKnight.OnFixedUpdate(player);
+            BountyHunter.FixedUpdate(player);
+            SerialKiller.FixedUpdate(player);
 
-            if (GameStates.IsInTask && CustomRoles.SerialKiller.IsEnable()) SerialKiller.FixedUpdate(player);
+            #region 女巫处理
             if (GameStates.IsInTask && Main.WarlockTimer.ContainsKey(player.PlayerId))//処理を1秒遅らせる
             {
                 if (player.IsAlive())
@@ -1148,14 +1117,9 @@ class FixedUpdatePatch
                 }
             }
             //ターゲットのリセット
-            if (GameStates.IsInTask) BountyHunter.FixedUpdate(player);
-            if (GameStates.IsInTask && player.IsAlive() && Options.LadderDeath.GetBool())
-            {
-                FallFromLadder.FixedUpdate(player);
-            }
+            #endregion
 
-            if (GameStates.IsInGame) LoversSuicide();
-
+            #region 纵火犯浇油处理
             if (GameStates.IsInTask && Main.ArsonistTimer.ContainsKey(player.PlayerId))//アーソニストが誰かを塗っているとき
             {
                 if (!player.IsAlive() || Pelican.IsEaten(player.PlayerId))
@@ -1200,7 +1164,9 @@ class FixedUpdatePatch
                     }
                 }
             }
+            #endregion
 
+            #region 革命家拉人处理
             if (GameStates.IsInTask && Main.RevolutionistTimer.ContainsKey(player.PlayerId))//当革命家拉拢一个玩家时
             {
                 if (!player.IsAlive() || Pelican.IsEaten(player.PlayerId))
@@ -1295,61 +1261,119 @@ class FixedUpdatePatch
                     Main.RevolutionistStart.TryAdd(player.PlayerId, Utils.GetTimeStamp(DateTime.Now));
                 }
             }
+            #endregion
 
-            if (GameStates.IsInTask && Main.PuppeteerList.ContainsKey(player.PlayerId))
+            if (!lowLoad)
             {
-                if (!player.IsAlive() || Pelican.IsEaten(player.PlayerId))
+                //检查老兵技能是否失效
+                if (GameStates.IsInTask && player.Is(CustomRoles.Veteran))
                 {
-                    Main.PuppeteerList.Remove(player.PlayerId);
-                }
-                else
-                {
-                    Vector2 puppeteerPos = player.transform.position;//PuppeteerListのKeyの位置
-                    Dictionary<byte, float> targetDistance = new();
-                    float dis;
-                    foreach (var target in Main.AllAlivePlayerControls)
+                    if (Main.VeteranInProtect.TryGetValue(player.PlayerId, out var vtime) && vtime + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
                     {
-                        if (target.PlayerId != player.PlayerId && !target.Is(CountTypes.Impostor))
-                        {
-                            dis = Vector2.Distance(puppeteerPos, target.transform.position);
-                            targetDistance.Add(target.PlayerId, dis);
-                        }
+                        Main.VeteranInProtect.Remove(player.PlayerId);
+                        player.RpcGuardAndKill();
+                        player.Notify(string.Format(GetString("VeteranOffGuard"), Main.VeteranNumOfUsed[player.PlayerId]));
                     }
-                    if (targetDistance.Count() != 0)
+                }
+
+                //检查掷雷兵技能是否生效
+                if (GameStates.IsInTask && player.Is(CustomRoles.Grenadier))
+                {
+                    if (Main.GrenadierBlinding.TryGetValue(player.PlayerId, out var gtime) && gtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
                     {
-                        var min = targetDistance.OrderBy(c => c.Value).FirstOrDefault();//一番値が小さい
-                        PlayerControl target = Utils.GetPlayerById(min.Key);
-                        var KillRange = NormalGameOptionsV07.KillDistances[Mathf.Clamp(Main.NormalOptions.KillDistance, 0, 2)];
-                        if (min.Value <= KillRange && player.CanMove && target.CanMove)
+                        Main.GrenadierBlinding.Remove(player.PlayerId);
+                        player.RpcGuardAndKill();
+                        player.Notify(GetString("GrenadierSkillStop"));
+                        Utils.MarkEveryoneDirtySettings();
+                    }
+                    if (Main.MadGrenadierBlinding.TryGetValue(player.PlayerId, out var mgtime) && mgtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
+                    {
+                        Main.MadGrenadierBlinding.Remove(player.PlayerId);
+                        player.RpcGuardAndKill();
+                        player.Notify(GetString("GrenadierSkillStop"));
+                        Utils.MarkEveryoneDirtySettings();
+                    }
+                }
+
+                //检查马里奥是否完成
+                if (GameStates.IsInTask && player.Is(CustomRoles.Mario))
+                {
+                    if (Main.MarioVentCount[player.PlayerId] > Options.MarioVentNumWin.GetInt())
+                    {
+
+                        Main.MarioVentCount[player.PlayerId] = Options.MarioVentNumWin.GetInt();
+                        CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
+                        CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
+                    }
+                }
+
+                Pelican.OnFixedUpdate();
+                BallLightning.OnFixedUpdate();
+                Swooper.OnFixedUpdate(player);
+                BloodKnight.OnFixedUpdate(player);
+
+                if (GameStates.IsInTask && player.IsAlive() && Options.LadderDeath.GetBool()) FallFromLadder.FixedUpdate(player);
+
+                if (GameStates.IsInGame) LoversSuicide();
+
+                #region 傀儡师处理
+                if (GameStates.IsInTask && Main.PuppeteerList.ContainsKey(player.PlayerId))
+                {
+                    if (!player.IsAlive() || Pelican.IsEaten(player.PlayerId))
+                    {
+                        Main.PuppeteerList.Remove(player.PlayerId);
+                    }
+                    else
+                    {
+                        Vector2 puppeteerPos = player.transform.position;//PuppeteerListのKeyの位置
+                        Dictionary<byte, float> targetDistance = new();
+                        float dis;
+                        foreach (var target in Main.AllAlivePlayerControls)
                         {
-                            if (player.RpcCheckAndMurder(target, true))
+                            if (target.PlayerId != player.PlayerId && !target.Is(CountTypes.Impostor))
                             {
-                                var puppeteerId = Main.PuppeteerList[player.PlayerId];
-                                RPC.PlaySoundRPC(puppeteerId, Sounds.KillSound);
-                                target.SetRealKiller(Utils.GetPlayerById(puppeteerId));
-                                player.RpcMurderPlayerV3(target);
-                                Utils.MarkEveryoneDirtySettings();
-                                Main.PuppeteerList.Remove(player.PlayerId);
-                                Utils.NotifyRoles();
+                                dis = Vector2.Distance(puppeteerPos, target.transform.position);
+                                targetDistance.Add(target.PlayerId, dis);
+                            }
+                        }
+                        if (targetDistance.Count() != 0)
+                        {
+                            var min = targetDistance.OrderBy(c => c.Value).FirstOrDefault();//一番値が小さい
+                            PlayerControl target = Utils.GetPlayerById(min.Key);
+                            var KillRange = NormalGameOptionsV07.KillDistances[Mathf.Clamp(Main.NormalOptions.KillDistance, 0, 2)];
+                            if (min.Value <= KillRange && player.CanMove && target.CanMove)
+                            {
+                                if (player.RpcCheckAndMurder(target, true))
+                                {
+                                    var puppeteerId = Main.PuppeteerList[player.PlayerId];
+                                    RPC.PlaySoundRPC(puppeteerId, Sounds.KillSound);
+                                    target.SetRealKiller(Utils.GetPlayerById(puppeteerId));
+                                    player.RpcMurderPlayerV3(target);
+                                    Utils.MarkEveryoneDirtySettings();
+                                    Main.PuppeteerList.Remove(player.PlayerId);
+                                    Utils.NotifyRoles();
+                                }
                             }
                         }
                     }
                 }
+                #endregion
+
+                if (GameStates.IsInTask && player == PlayerControl.LocalPlayer)
+                    DisableDevice.FixedUpdate();
+                if (GameStates.IsInTask && player == PlayerControl.LocalPlayer)
+                    AntiAdminer.FixedUpdate();
+
+                if (GameStates.IsInGame && Main.RefixCooldownDelay <= 0)
+                    foreach (var pc in Main.AllPlayerControls)
+                    {
+                        if (pc.Is(CustomRoles.Vampire) || pc.Is(CustomRoles.Warlock) || pc.Is(CustomRoles.Assassin))
+                            Main.AllPlayerKillCooldown[pc.PlayerId] = Options.DefaultKillCooldown * 2;
+                    }
+
+                if (!Main.DoBlockNameChange && AmongUsClient.Instance.AmHost)
+                    Utils.ApplySuffix(__instance);
             }
-            if (GameStates.IsInTask && player == PlayerControl.LocalPlayer)
-                DisableDevice.FixedUpdate();
-            if (GameStates.IsInTask && player == PlayerControl.LocalPlayer)
-                AntiAdminer.FixedUpdate();
-
-            if (GameStates.IsInGame && Main.RefixCooldownDelay <= 0)
-                foreach (var pc in Main.AllPlayerControls)
-                {
-                    if (pc.Is(CustomRoles.Vampire) || pc.Is(CustomRoles.Warlock) || pc.Is(CustomRoles.Assassin))
-                        Main.AllPlayerKillCooldown[pc.PlayerId] = Options.DefaultKillCooldown * 2;
-                }
-
-            if (!Main.DoBlockNameChange && AmongUsClient.Instance.AmHost)
-                Utils.ApplySuffix(__instance);
         }
         //LocalPlayer専用
         if (__instance.AmOwner)
@@ -1366,7 +1390,7 @@ class FixedUpdatePatch
         //役職テキストの表示
         var RoleTextTransform = __instance.cosmetics.nameText.transform.Find("RoleText");
         var RoleText = RoleTextTransform.GetComponent<TMPro.TextMeshPro>();
-        if (RoleText != null && __instance != null)
+        if (RoleText != null && __instance != null && !lowLoad)
         {
             if (GameStates.IsLobby)
             {
