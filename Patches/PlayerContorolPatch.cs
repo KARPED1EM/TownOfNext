@@ -1036,7 +1036,6 @@ class FixedUpdatePatch
     private static StringBuilder Mark = new(20);
     private static StringBuilder Suffix = new(120);
     private static int LevelKickBufferTime = 10;
-    private static Dictionary<byte, int> BufferTime = new();
     public static void Postfix(PlayerControl __instance)
     {
         var player = __instance;
@@ -1048,14 +1047,6 @@ class FixedUpdatePatch
         LocateArrow.OnFixedUpdate(player);
         Sniper.OnFixedUpdate(player);
         Zoom.OnFixedUpdate();
-
-        if (Options.LowLoadMode.GetBool())
-        {
-            BufferTime.TryAdd(player.PlayerId, 2);
-            BufferTime[player.PlayerId]--;
-            if (BufferTime[player.PlayerId] > 0) return;
-            BufferTime[player.PlayerId] = 2;
-        }
 
         if (AmongUsClient.Instance.AmHost)
         {//実行クライアントがホストの場合のみ実行
