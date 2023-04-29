@@ -782,7 +782,7 @@ class MeetingHudUpdatePatch
                 else
                     __instance.playerStates.ToList().ForEach(x => { if (Main.PlayerStates[x.TargetPlayerId].IsDead && x.transform.FindChild("ShootButton") != null) UnityEngine.Object.Destroy(x.transform.FindChild("ShootButton").gameObject); });
             }
-            __instance.playerStates.Where(x => Main.PlayerStates[x.TargetPlayerId].IsDead && !x.AmDead).Do(x => x.SetDead(x.DidReport, true));
+            __instance.playerStates.Where(x => Main.PlayerStates.TryGetValue(x.TargetPlayerId, out var ps) && ps.IsDead && !x.AmDead).Do(x => x.SetDead(x.DidReport, true));
         }
 
         if (!AmongUsClient.Instance.AmHost) return;
