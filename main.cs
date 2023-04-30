@@ -220,7 +220,6 @@ public class Main : BasePlugin
             TOHE.Logger.Disable("SyncCustomSettings");
         }
         //TOHE.Logger.isDetail = true;
-        TOHE.Logger.Msg("========= TOHE loaded! =========", "Plugin Load");
 
         // 認証関連-初期化
         DebugKeyAuth = new HashAuth(DebugKeyHash, DebugKeySalt);
@@ -371,6 +370,8 @@ public class Main : BasePlugin
         ClassInjector.RegisterTypeInIl2Cpp<ErrorText>();
 
         Harmony.PatchAll();
+
+        TOHE.Logger.Msg("========= TOHE loaded! =========", "Plugin Load");
     }
 }
 public enum CustomRoles

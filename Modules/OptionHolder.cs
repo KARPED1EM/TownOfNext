@@ -685,9 +685,9 @@ public static class Options
         SetupAdtRoleOptions(6050320, CustomRoles.Watcher, canSetNum: true);
         SetupAdtRoleOptions(6050340, CustomRoles.Lighter, canSetNum: true);
         SetupAdtRoleOptions(6050350, CustomRoles.Seer, canSetNum: true);
-        ImpCanBeSeer = BooleanOptionItem.Create(6050352, "ImpCanBeSeer", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Seer]);
-        CrewCanBeSeer = BooleanOptionItem.Create(6050353, "CrewCanBeSeer", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Seer]);
-        NeutralCanBeSeer = BooleanOptionItem.Create(6050354, "NeutralCanBeSeer", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Seer]);
+        ImpCanBeSeer = BooleanOptionItem.Create(6050353, "ImpCanBeSeer", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Seer]);
+        CrewCanBeSeer = BooleanOptionItem.Create(6050354, "CrewCanBeSeer", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Seer]);
+        NeutralCanBeSeer = BooleanOptionItem.Create(6050355, "NeutralCanBeSeer", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Seer]);
         SetupAdtRoleOptions(6050360, CustomRoles.Brakar, canSetNum: true);
         SetupAdtRoleOptions(6050370, CustomRoles.Oblivious, canSetNum: true);
         SetupAdtRoleOptions(6050380, CustomRoles.Bewilder, canSetNum: true);
