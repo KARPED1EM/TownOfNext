@@ -792,6 +792,7 @@
 "OddKillCooldown","单数击杀冷却时间","Odd-Numbered kill cooldown","Откат Нечётного убийства","单数击杀冷却时间","单数击杀冷却时间"
 "EvenKillCooldown","双数击杀冷却时间","Even-Numbered kill cooldown","Откат Чётного убийства","双数击杀冷却时间","双数击杀冷却时间"
 "WorkaholicCannotWinAtDeath","死亡后无法胜利","Can't win after they died","Не может победить когда он мёртв","死亡后无法胜利","死亡后无法胜利"
+"WorkaholicVisibleToEveryone","所有人知道谁是工作狂","","","",""
 "GuardSpellTimes","反杀次数上限","Amount of Cursed Shields","Количество проклятых щитов","反杀次数上限","反杀次数上限"
 "CollectorCollectAmount","需要集票数量","Required number of votes","Необходимое количество голосов","需要集票数量","需要集票数量"
 "GlitchCanVote","可以投票","Can vote","Может голосовать","可以投票","可以投票"
