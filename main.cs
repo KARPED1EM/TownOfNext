@@ -371,6 +371,9 @@ public class Main : BasePlugin
 
         Harmony.PatchAll();
 
+        if (!DebugModeManager.AmDebugger) ConsoleManager.DetachConsole();
+        else ConsoleManager.CreateConsole();
+
         TOHE.Logger.Msg("========= TOHE loaded! =========", "Plugin Load");
     }
 }
