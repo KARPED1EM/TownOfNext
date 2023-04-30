@@ -362,6 +362,7 @@ public static class Utils
             case CustomRoles.Provocateur:
             case CustomRoles.Medicaler:
             case CustomRoles.BloodKnight:
+            case CustomRoles.Concealer:
                 hasTasks = false;
                 break;
             case CustomRoles.Workaholic:
