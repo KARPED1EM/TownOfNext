@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -25,7 +26,7 @@ public class ModUpdater
     public static Version latestVersion = null;
     public static string latestTitle = null;
     public static string downloadUrl = null;
-    public static string MD5 = null;
+    public static string md5 = null;
     public static string notice = null;
     public static GenericPopup InfoPopup;
     public static int visit = 0;
@@ -75,9 +76,9 @@ public class ModUpdater
     public static string Get(string url)
     {
         string result = "";
-        HttpWebRequest req = (HttpWebRequest)WebRequest.Create(url);
-        HttpWebResponse resp = (HttpWebResponse)req.GetResponse();
-        Stream stream = resp.GetResponseStream();
+        HttpClient req = new HttpClient();
+        var res = req.GetAsync(url).Result;
+        Stream stream = res.Content.ReadAsStreamAsync().Result;
         try
         {
             //获取内容
@@ -124,7 +125,7 @@ public class ModUpdater
             string[] notices = data[1].Split("&&");
             if (CultureInfo.CurrentCulture.Name.StartsWith("zh")) notice = notices[0];
             else notice = notices[1];
-            MD5 = data[2];
+            md5 = data[2];
             visit = int.TryParse(data[3], out int x) ? x : 0;
             visit += 26810; //1x版本的访问量
             var create = 1;
@@ -344,7 +345,7 @@ public class ModUpdater
             client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadCallBack);
             client.DownloadFileAsync(new Uri(url), "BepInEx/plugins/TOHE.dll");
             while (client.IsBusy) await Task.Delay(1);
-            if (GetMD5HashFromFile("BepInEx/plugins/TOHE.dll") != MD5)
+            if (GetMD5HashFromFile("BepInEx/plugins/TOHE.dll") != md5)
             {
                 BackOldDLL();
                 ShowPopup(GetString("downloadFailed"), true, false);
@@ -370,7 +371,7 @@ public class ModUpdater
         try
         {
             FileStream file = new(fileName, FileMode.Open);
-            System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            MD5 md5 = MD5.Create();
             byte[] retVal = md5.ComputeHash(file);
             file.Close();
 
