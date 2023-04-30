@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
     <GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
 	<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <Description>Town Of Host Edited</Description>
     <Authors>KARPED1EM</Authors>
-    <langVersion>preview</langVersion>
+    <langVersion>latest</langVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,8 +15,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.3.28" />
-		<PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="1.1.1" />
-		<PackageReference Include="BepInEx.IL2CPP" Version="6.0.0-be.577" />
+		<PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" />
+		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.664" Private="false" ExcludeAssets="runtime;native" />
 	</ItemGroup>
 
   <ItemGroup>

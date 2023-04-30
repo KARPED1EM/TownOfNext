@@ -80,18 +80,17 @@ class Logger
             case LogLevel.Message:
                 logger.LogMessage(log_text);
                 break;
+            case LogLevel.Debug:
+                logger.LogFatal(log_text);
+                break;
             default:
                 logger.LogWarning("Error:Invalid LogLevel");
                 logger.LogInfo(log_text);
                 break;
         }
     }
-    public static void Test(string text, string tag = "######Test######", bool escapeCRLF = true, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-        SendToFile(text.ToString(), LogLevel.Fatal, tag, escapeCRLF, lineNumber, fileName);
-    public static void Test(int text, string tag = "######Test######", bool escapeCRLF = true, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-        SendToFile(text.ToString(), LogLevel.Fatal, tag, escapeCRLF, lineNumber, fileName);
-    public static void Test(bool text, string tag = "######Test######", bool escapeCRLF = true, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
-        SendToFile(text.ToString(), LogLevel.Fatal, tag, escapeCRLF, lineNumber, fileName);
+    public static void Test(object content, string tag = "======= Test =======", bool escapeCRLF = true, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
+        SendToFile(content.ToString(), LogLevel.Debug, tag, escapeCRLF, lineNumber, fileName);
     public static void Info(string text, string tag, bool escapeCRLF = true, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>
         SendToFile(text, LogLevel.Info, tag, escapeCRLF, lineNumber, fileName);
     public static void Warn(string text, string tag, bool escapeCRLF = true, [CallerLineNumber] int lineNumber = 0, [CallerFilePath] string fileName = "") =>

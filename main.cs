@@ -1,14 +1,14 @@
 using AmongUs.GameOptions;
 using BepInEx;
 using BepInEx.Configuration;
-using BepInEx.IL2CPP;
+using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
+using Il2CppInterop.Runtime.Injection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using TOHE.Roles.Neutral;
-using UnhollowerRuntimeLib;
 using UnityEngine;
 
 [assembly: AssemblyFileVersion(TOHE.Main.PluginVersion)]
@@ -220,6 +220,7 @@ public class Main : BasePlugin
             TOHE.Logger.Disable("SyncCustomSettings");
         }
         //TOHE.Logger.isDetail = true;
+        TOHE.Logger.Msg("========= TOHE loaded! =========", "Plugin Load");
 
         // 認証関連-初期化
         DebugKeyAuth = new HashAuth(DebugKeyHash, DebugKeySalt);
@@ -360,7 +361,6 @@ public class Main : BasePlugin
         TOHE.Logger.Info($"{Application.version}", "AmongUs Version");
 
         var handler = TOHE.Logger.Handler("GitVersion");
-        handler.Info($"{nameof(ThisAssembly.Git.Branch)}: {ThisAssembly.Git.Branch}");
         handler.Info($"{nameof(ThisAssembly.Git.BaseTag)}: {ThisAssembly.Git.BaseTag}");
         handler.Info($"{nameof(ThisAssembly.Git.Commit)}: {ThisAssembly.Git.Commit}");
         handler.Info($"{nameof(ThisAssembly.Git.Commits)}: {ThisAssembly.Git.Commits}");

@@ -1,9 +1,9 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnhollowerBaseLib;
 using UnityEngine;
 using static TOHE.Translator;
 using Object = UnityEngine.Object;

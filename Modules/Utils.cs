@@ -1,6 +1,7 @@
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes;
 using InnerNet;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,6 @@ using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
-using UnhollowerBaseLib;
 using UnityEngine;
 using static TOHE.Translator;
 

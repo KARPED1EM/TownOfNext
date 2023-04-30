@@ -1,9 +1,8 @@
 using AmongUs.GameOptions;
 using Hazel;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using InnerNet;
 using System;
-using UnhollowerBaseLib;
-
 namespace TOHE;
 
 public class CustomRpcSender

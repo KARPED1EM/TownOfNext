@@ -1,8 +1,9 @@
 using AmongUs.Data;
 using AmongUs.Data.Player;
 using Assets.InnerNet;
-using BepInEx.IL2CPP.Utils.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using UnhollowerBaseLib;
 using UnityEngine;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;

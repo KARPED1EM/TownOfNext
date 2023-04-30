@@ -442,7 +442,7 @@ public static class GuessManager
     {
         var pc = Utils.GetPlayerById(playerId);
         if (pc == null || !pc.IsAlive() || guesserUI != null || !GameStates.IsVoting) return;
-        
+
         try
         {
             Page = 1;
