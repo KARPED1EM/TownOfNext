@@ -819,7 +819,7 @@
 "VeteranSkillMaxOfUseage","警戒次数上限","Max number of Alerts","Количество способности","警戒次数上限","技能使用次数上限"
 "SwooperCooldown","隐身冷却时间","Swoop Cooldown","Откат навыка","隱身冷卻時間",""
 "SwooperDuration","隐身持续时间","Swoop Duration","Длительность навыка","隱身持續時間",""
-"LowLoadMode","低负载模式（尽量别开）","Low Load Mode (May cause a lot of bugs)","Режим низкой нагрузки (Экспериментально)","低负载模式（尽量别开）",""
+"LowLoadMode","低负载模式","Low Load Mode (May cause a lot of bugs)","Режим низкой нагрузки (Экспериментально)","低负载模式（尽量别开）",""
 "BKProtectDuration","免疫伤害持续时间","Protection Duration","Длительность щита","免疫伤害持续时间",""
 
 "## 死因 / Death Reasons"
