@@ -68,7 +68,7 @@ public class ModUpdater
         })));
     }
 
-    public static string UrlSetId(string url) => url + "?id=2494EF351D6844E496596C3B78F93519";
+    public static string UrlSetId(string url) => url + "?id=6C5A46D1420E476ABD560271FC8040D7";
     public static string UrlSetCheck(string url) => url + "/checkVersion";
     public static string UrlSetInfo(string url) => url + "/getExample";
     public static string UrlSetToday(string url) => url + "/today";
@@ -122,12 +122,12 @@ public class ModUpdater
 
             url = UrlSetId(UrlSetInfo(URL_2018k)) + "&data=remark|notice|md5|visit";
             string[] data = Get(url).Split("|");
-            string[] notices = data[1].Split("&&");
+            string[] notices = data[1].Split("\n&&\n");
             if (CultureInfo.CurrentCulture.Name.StartsWith("zh")) notice = notices[0];
             else notice = notices[1];
             md5 = data[2];
             visit = int.TryParse(data[3], out int x) ? x : 0;
-            visit += 26810; //1x版本的访问量
+            visit += 26820 + 99280; //旧版本数据
             var create = 1;
             if (int.TryParse(data[0], out int ct) && ct < 1000) create = ct;
             if (create > Main.PluginCreate)
