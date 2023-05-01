@@ -106,7 +106,7 @@ internal static class SoloKombatManager
 
             KBScore.TryAdd(pc.PlayerId, 0);
 
-            LastHurt.TryAdd(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+            LastHurt.TryAdd(pc.PlayerId, Utils.GetTimeStamp());
         }
     }
     private static void SendRPCSyncKBBackCountdown(PlayerControl player)
@@ -230,7 +230,7 @@ internal static class SoloKombatManager
             OnPlayerKill(killer);
         }
 
-        LastHurt[target.PlayerId] = Utils.GetTimeStamp(DateTime.Now);
+        LastHurt[target.PlayerId] = Utils.GetTimeStamp();
 
         killer.SetKillCooldownV2(1f, target);
         RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
@@ -248,7 +248,7 @@ internal static class SoloKombatManager
         PlayerHP[pc.PlayerId] = pc.HPMAX();
         SendRPCSyncKBPlayer(pc.PlayerId);
 
-        LastHurt[pc.PlayerId] = Utils.GetTimeStamp(DateTime.Now);
+        LastHurt[pc.PlayerId] = Utils.GetTimeStamp();
         Main.AllPlayerSpeed[pc.PlayerId] = Main.AllPlayerSpeed[pc.PlayerId] - 0.3f + originalSpeed[pc.PlayerId];
         pc.MarkDirtySettings();
 
@@ -321,7 +321,7 @@ internal static class SoloKombatManager
     public static void AddNameNotify(PlayerControl pc, string text, int time = 5)
     {
         NameNotify.Remove(pc.PlayerId);
-        NameNotify.Add(pc.PlayerId, (text, Utils.GetTimeStamp(DateTime.Now) + time));
+        NameNotify.Add(pc.PlayerId, (text, Utils.GetTimeStamp() + time));
         SendRPCSyncNameNotify(pc);
         SendRPCSyncKBPlayer(pc.PlayerId);
         Utils.NotifyRoles(pc);
@@ -352,8 +352,8 @@ internal static class SoloKombatManager
                     }
                 }
 
-                if (LastFixedUpdate == Utils.GetTimeStamp(DateTime.Now)) return;
-                LastFixedUpdate = Utils.GetTimeStamp(DateTime.Now);
+                if (LastFixedUpdate == Utils.GetTimeStamp()) return;
+                LastFixedUpdate = Utils.GetTimeStamp();
 
                 // 减少全局倒计时
                 RoundTime--;
@@ -364,7 +364,7 @@ internal static class SoloKombatManager
                 {
                     bool notifyRoles = false;
                     // 每秒回复血量
-                    if (LastHurt[pc.PlayerId] + KB_RecoverAfterSecond.GetInt() < Utils.GetTimeStamp(DateTime.Now) && pc.HP() < pc.HPMAX() && pc.SoloAlive() && !pc.inVent)
+                    if (LastHurt[pc.PlayerId] + KB_RecoverAfterSecond.GetInt() < Utils.GetTimeStamp() && pc.HP() < pc.HPMAX() && pc.SoloAlive() && !pc.inVent)
                     {
                         PlayerHP[pc.PlayerId] += pc.HPRECO();
                         PlayerHP[pc.PlayerId] = Math.Min(pc.HPMAX(), pc.HP());
@@ -388,7 +388,7 @@ internal static class SoloKombatManager
                         notifyRoles = true;
                     }
                     // 清除过期的提示信息
-                    if (NameNotify.ContainsKey(pc.PlayerId) && NameNotify[pc.PlayerId].Item2 < Utils.GetTimeStamp(DateTime.Now))
+                    if (NameNotify.ContainsKey(pc.PlayerId) && NameNotify[pc.PlayerId].Item2 < Utils.GetTimeStamp())
                     {
                         NameNotify.Remove(pc.PlayerId);
                         SendRPCSyncNameNotify(pc);

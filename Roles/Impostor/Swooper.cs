@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using Hazel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -69,7 +68,7 @@ public static class Swooper
         InvisTime = new();
         foreach (var pc in Main.AllAlivePlayerControls.Where(x => playerIdList.Contains(x.PlayerId)))
         {
-            lastTime.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+            lastTime.Add(pc.PlayerId, Utils.GetTimeStamp());
             SendRPC(pc);
         }
     }
@@ -77,7 +76,7 @@ public static class Swooper
     {
         if (!GameStates.IsInTask || !IsEnable) return;
 
-        var now = Utils.GetTimeStamp(DateTime.Now);
+        var now = Utils.GetTimeStamp();
 
         if (lastTime.TryGetValue(player.PlayerId, out var time) && time + (long)SwooperCooldown.GetFloat() < now)
         {
@@ -131,7 +130,7 @@ public static class Swooper
                 writer.WritePacked(ventId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
 
-                InvisTime.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+                InvisTime.Add(pc.PlayerId, Utils.GetTimeStamp());
                 SendRPC(pc);
                 NameNotifyManager.Notify(pc, GetString("SwooperInvisState"), SwooperDuration.GetFloat());
             }
@@ -146,7 +145,7 @@ public static class Swooper
         if (!pc.Is(CustomRoles.Swooper) || !IsInvis(pc.PlayerId)) return;
 
         InvisTime.Remove(pc.PlayerId);
-        lastTime.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+        lastTime.Add(pc.PlayerId, Utils.GetTimeStamp());
         SendRPC(pc);
 
         pc?.MyPhysics?.RpcBootFromVent(vent.Id);
@@ -158,12 +157,12 @@ public static class Swooper
         var str = new StringBuilder();
         if (IsInvis(pc.PlayerId))
         {
-            var remainTime = InvisTime[pc.PlayerId] + (long)SwooperDuration.GetFloat() - Utils.GetTimeStamp(DateTime.Now);
+            var remainTime = InvisTime[pc.PlayerId] + (long)SwooperDuration.GetFloat() - Utils.GetTimeStamp();
             str.Append(string.Format(GetString("SwooperInvisStateCountdown"), remainTime));
         }
         else if (lastTime.TryGetValue(pc.PlayerId, out var time))
         {
-            var cooldown = time + (long)SwooperCooldown.GetFloat() - Utils.GetTimeStamp(DateTime.Now);
+            var cooldown = time + (long)SwooperCooldown.GetFloat() - Utils.GetTimeStamp();
             str.Append(string.Format(GetString("SwooperInvisCooldownRemain"), cooldown));
         }
         else

@@ -377,7 +377,7 @@ class CheckMurderPatch
             //击杀老兵
             case CustomRoles.Veteran:
                 if (Main.VeteranInProtect.ContainsKey(target.PlayerId) && killer.PlayerId != target.PlayerId)
-                    if (Main.VeteranInProtect[target.PlayerId] + Options.VeteranSkillDuration.GetInt() >= Utils.GetTimeStamp(DateTime.Now))
+                    if (Main.VeteranInProtect[target.PlayerId] + Options.VeteranSkillDuration.GetInt() >= Utils.GetTimeStamp())
                     {
                         killer.SetRealKiller(target);
                         target.RpcMurderPlayerV3(killer);
@@ -1203,7 +1203,7 @@ class FixedUpdatePatch
                 {
                     if (Main.RevolutionistLastTime.ContainsKey(player.PlayerId))
                     {
-                        long nowtime = Utils.GetTimeStamp(DateTime.Now);
+                        long nowtime = Utils.GetTimeStamp();
                         if (Main.RevolutionistLastTime[player.PlayerId] != nowtime) Main.RevolutionistLastTime[player.PlayerId] = nowtime;
                         int time = (int)(Main.RevolutionistLastTime[player.PlayerId] - Main.RevolutionistStart[player.PlayerId]);
                         int countdown = Options.RevolutionistVentCountDown.GetInt() - time;
@@ -1236,7 +1236,7 @@ class FixedUpdatePatch
                 }
                 else //如果不存在字典
                 {
-                    Main.RevolutionistStart.TryAdd(player.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+                    Main.RevolutionistStart.TryAdd(player.PlayerId, Utils.GetTimeStamp());
                 }
             }
             #endregion
@@ -1246,7 +1246,7 @@ class FixedUpdatePatch
                 //检查老兵技能是否失效
                 if (GameStates.IsInTask && player.Is(CustomRoles.Veteran))
                 {
-                    if (Main.VeteranInProtect.TryGetValue(player.PlayerId, out var vtime) && vtime + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
+                    if (Main.VeteranInProtect.TryGetValue(player.PlayerId, out var vtime) && vtime + Options.VeteranSkillDuration.GetInt() < Utils.GetTimeStamp())
                     {
                         Main.VeteranInProtect.Remove(player.PlayerId);
                         player.RpcGuardAndKill();
@@ -1257,14 +1257,14 @@ class FixedUpdatePatch
                 //检查掷雷兵技能是否生效
                 if (GameStates.IsInTask && player.Is(CustomRoles.Grenadier))
                 {
-                    if (Main.GrenadierBlinding.TryGetValue(player.PlayerId, out var gtime) && gtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
+                    if (Main.GrenadierBlinding.TryGetValue(player.PlayerId, out var gtime) && gtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp())
                     {
                         Main.GrenadierBlinding.Remove(player.PlayerId);
                         player.RpcGuardAndKill();
                         player.Notify(GetString("GrenadierSkillStop"));
                         Utils.MarkEveryoneDirtySettings();
                     }
-                    if (Main.MadGrenadierBlinding.TryGetValue(player.PlayerId, out var mgtime) && mgtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp(DateTime.Now))
+                    if (Main.MadGrenadierBlinding.TryGetValue(player.PlayerId, out var mgtime) && mgtime + Options.GrenadierSkillDuration.GetInt() < Utils.GetTimeStamp())
                     {
                         Main.MadGrenadierBlinding.Remove(player.PlayerId);
                         player.RpcGuardAndKill();
@@ -1711,7 +1711,7 @@ class EnterVentPatch
             else
             {
                 Main.VeteranInProtect.Remove(pc.PlayerId);
-                Main.VeteranInProtect.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+                Main.VeteranInProtect.Add(pc.PlayerId, Utils.GetTimeStamp());
                 Main.VeteranNumOfUsed[pc.PlayerId]--;
                 pc.RpcGuardAndKill(pc);
                 pc.Notify(GetString("VeteranOnGuard"), Options.VeteranSkillDuration.GetFloat());
@@ -1722,13 +1722,13 @@ class EnterVentPatch
             if (pc.Is(CustomRoles.Madmate))
             {
                 Main.MadGrenadierBlinding.Remove(pc.PlayerId);
-                Main.MadGrenadierBlinding.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+                Main.MadGrenadierBlinding.Add(pc.PlayerId, Utils.GetTimeStamp());
                 Main.AllPlayerControls.Where(x => x.IsModClient()).Where(x => !x.GetCustomRole().IsImpostorTeam() && !x.Is(CustomRoles.Madmate)).Do(x => x.RPCPlayCustomSound("FlashBang"));
             }
             else
             {
                 Main.GrenadierBlinding.Remove(pc.PlayerId);
-                Main.GrenadierBlinding.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+                Main.GrenadierBlinding.Add(pc.PlayerId, Utils.GetTimeStamp());
                 Main.AllPlayerControls.Where(x => x.IsModClient()).Where(x => x.GetCustomRole().IsImpostor() || (x.GetCustomRole().IsNeutral() && Options.GrenadierCanAffectNeutral.GetBool())).Do(x => x.RPCPlayCustomSound("FlashBang"));
             }
             pc.RpcGuardAndKill(pc);

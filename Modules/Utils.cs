@@ -25,9 +25,7 @@ namespace TOHE;
 public static class Utils
 {
     private static readonly DateTime timeStampStartTime = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-    /// <param name="dateTime">现在的时间</param>
-    /// <returns></returns>
-    public static long GetTimeStamp(DateTime dateTime) => (long)(dateTime.ToUniversalTime() - timeStampStartTime).TotalSeconds;
+    public static long GetTimeStamp(DateTime? dateTime = null) => (long)((dateTime ?? DateTime.Now).ToUniversalTime() - timeStampStartTime).TotalSeconds;
     public static void ErrorEnd(string text)
     {
         if (AmongUsClient.Instance.AmHost)
