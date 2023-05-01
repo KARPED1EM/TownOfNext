@@ -385,6 +385,17 @@ class SetHudActivePatch
         __instance.ImpostorVentButton.ToggleVisible(player.CanUseImpostorVentButton());
     }
 }
+[HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
+class VentButtonDoClickPatch
+{ 
+    public static bool Prefix(VentButton __instance)
+    {
+        if (!AmongUsClient.Instance.AmHost) return true;
+        if (__instance.currentTarget != null)
+            PlayerControl.LocalPlayer?.MyPhysics?.RpcEnterVent(__instance.currentTarget.Id);
+        return false;
+    }
+}
 [HarmonyPatch(typeof(MapBehaviour), nameof(MapBehaviour.Show))]
 class MapBehaviourShowPatch
 {
