@@ -105,7 +105,7 @@ public class ModUpdater
                 hasUpdate = false;
                 forceUpdate = info[1] == "true";
                 latestVersion = new(info[4]);
-                latestTitle = new("TOHE");
+                latestTitle = "Ver. " + info[4];
 
                 string[] num = info[4].Split(".");
                 string[] inum = Main.PluginVersion.Split(".");
