@@ -1692,10 +1692,14 @@ class EnterVentPatch
 
         if (!AmongUsClient.Instance.AmHost) return;
 
+        Logger.Info($"{pc.GetNameWithRole()} EnterVent: {__instance.Id}", "EnterVent");
+
         Main.LastEnteredVent.Remove(pc.PlayerId);
         Main.LastEnteredVent.Add(pc.PlayerId, __instance);
         Main.LastEnteredVentLocation.Remove(pc.PlayerId);
         Main.LastEnteredVentLocation.Add(pc.PlayerId, pc.GetTruePosition());
+
+        Swooper.OnEnterVent(pc, __instance);
 
         if (pc.Is(CustomRoles.Veteran))
         {
@@ -1739,6 +1743,8 @@ class CoEnterVentPatch
     public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
     {
         if (!AmongUsClient.Instance.AmHost) return true;
+
+        Logger.Info($"{__instance.myPlayer.GetNameWithRole()} CoEnterVent: {id}", "CoEnterVent");
 
         if (AmongUsClient.Instance.IsGameStarted &&
             __instance.myPlayer.IsDouseDone())

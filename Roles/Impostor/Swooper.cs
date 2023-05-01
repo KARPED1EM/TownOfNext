@@ -19,6 +19,7 @@ public static class Swooper
 
     private static Dictionary<byte, long> InvisTime = new();
     private static Dictionary<byte, long> lastTime = new();
+    private static Dictionary<byte, int> ventedId = new();
 
     public static void SetupCustomOption()
     {
@@ -33,6 +34,7 @@ public static class Swooper
         playerIdList = new();
         InvisTime = new();
         lastTime = new();
+        ventedId = new();
     }
     public static void Add(byte playerId)
     {
@@ -97,7 +99,7 @@ public static class Swooper
                 if (remainTime < 0)
                 {
                     lastTime.Add(pc.PlayerId, now);
-                    pc?.MyPhysics?.RpcBootFromVent(Main.LastEnteredVent[pc.PlayerId].Id);
+                    pc?.MyPhysics?.RpcBootFromVent(ventedId.TryGetValue(pc.PlayerId, out var id) ? id : Main.LastEnteredVent[pc.PlayerId].Id);
                     pc?.RpcGuardAndKill();
                     NameNotifyManager.Notify(pc, GetString("SwooperInvisStateOut"));
                     SendRPC(pc);
@@ -120,8 +122,11 @@ public static class Swooper
         var pc = __instance.myPlayer;
         new LateTask(() =>
         {
-            if (CanGoInvis(pc.PlayerId))
+            if (!IsInvis(pc.PlayerId) && CanGoInvis(pc.PlayerId))
             {
+                ventedId.Remove(pc.PlayerId);
+                ventedId.Add(pc.PlayerId, ventId);
+
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, 34, SendOption.Reliable, pc.GetClientId());
                 writer.WritePacked(ventId);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -133,9 +138,19 @@ public static class Swooper
             else
             {
                 __instance.myPlayer.MyPhysics.RpcBootFromVent(ventId);
-                NameNotifyManager.Notify(pc, GetString("SwooperInvisInCooldown"));
             }
         }, 0.5f, "Swooper Vent");
+    }
+    public static void OnEnterVent(PlayerControl pc, Vent vent)
+    {
+        if (!pc.Is(CustomRoles.Swooper) || !IsInvis(pc.PlayerId)) return;
+
+        InvisTime.Remove(pc.PlayerId);
+        lastTime.Add(pc.PlayerId, Utils.GetTimeStamp(DateTime.Now));
+        SendRPC(pc);
+
+        pc?.MyPhysics?.RpcBootFromVent(vent.Id);
+        NameNotifyManager.Notify(pc, GetString("SwooperInvisStateOut"));
     }
     public static string GetHudText(PlayerControl pc)
     {
