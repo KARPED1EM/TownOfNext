@@ -116,11 +116,11 @@ public static class Swooper
     }
     public static void OnCoEnterVent(PlayerPhysics __instance, int ventId)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
         var pc = __instance.myPlayer;
+        if (!AmongUsClient.Instance.AmHost || IsInvis(pc.PlayerId)) return;
         new LateTask(() =>
         {
-            if (!IsInvis(pc.PlayerId) && CanGoInvis(pc.PlayerId))
+            if (CanGoInvis(pc.PlayerId))
             {
                 ventedId.Remove(pc.PlayerId);
                 ventedId.Add(pc.PlayerId, ventId);
@@ -136,6 +136,7 @@ public static class Swooper
             else
             {
                 __instance.myPlayer.MyPhysics.RpcBootFromVent(ventId);
+                NameNotifyManager.Notify(pc, GetString("SwooperInvisInCooldown"));
             }
         }, 0.5f, "Swooper Vent");
     }

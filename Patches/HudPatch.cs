@@ -390,9 +390,9 @@ class VentButtonDoClickPatch
 { 
     public static bool Prefix(VentButton __instance)
     {
-        if (!AmongUsClient.Instance.AmHost) return true;
-        if (__instance.currentTarget != null)
-            PlayerControl.LocalPlayer?.MyPhysics?.RpcEnterVent(__instance.currentTarget.Id);
+        var pc = PlayerControl.LocalPlayer;
+        if (!pc.Is(CustomRoles.Swooper) || pc.inVent || __instance.currentTarget == null) return true;
+        pc?.MyPhysics?.RpcEnterVent(__instance.currentTarget.Id);
         return false;
     }
 }
