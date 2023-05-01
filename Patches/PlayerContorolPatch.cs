@@ -550,28 +550,9 @@ class MurderPlayerPatch
                     }
                 }
                 break;
-            //Terrorist
-            case CustomRoles.Terrorist:
-                Logger.Info(target?.Data?.PlayerName + "はTerroristだった", "MurderPlayer");
-                Utils.CheckTerroristWin(target.Data);
-                break;
             case CustomRoles.Trapper:
                 if (killer != target)
                     killer.TrapperKilled(target);
-                break;
-            case CustomRoles.Executioner:
-                if (Executioner.Target.ContainsKey(target.PlayerId))
-                {
-                    Executioner.Target.Remove(target.PlayerId);
-                    Executioner.SendRPC(target.PlayerId);
-                }
-                break;
-            case CustomRoles.CyberStar:
-                if (!Main.CyberStarDead.Contains(target.PlayerId))
-                    Main.CyberStarDead.Add(target.PlayerId);
-                break;
-            case CustomRoles.Pelican:
-                Pelican.OnPelicanDied(target.PlayerId);
                 break;
             case CustomRoles.BallLightning:
                 if (killer != target)
@@ -600,9 +581,7 @@ class MurderPlayerPatch
         }
 
         if (killer.Is(CustomRoles.TicketsStealer) && killer.PlayerId != target.PlayerId)
-        {
             killer.Notify(string.Format(GetString("TicketsStealerGetTicket"), (Main.AllPlayerControls.Where(x => x.GetRealKiller()?.PlayerId == killer.PlayerId).Count() * Options.TicketsPerKill.GetFloat()).ToString("0.0#####")));
-        }
 
         if (target.Is(CustomRoles.Avanger))
         {
@@ -616,12 +595,10 @@ class MurderPlayerPatch
         foreach (var pc in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Mediumshiper)))
             pc.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mediumshiper), GetString("MediumshiperKnowPlayerDead")));
 
-        if (Executioner.Target.ContainsValue(target.PlayerId))
-            Executioner.ChangeRoleByTarget(target);
         Hacker.AddDeadBody(target);
         Mortician.OnPlayerDead(target);
 
-        FixedUpdatePatch.LoversSuicide(target.PlayerId);
+        Utils.AfterPlayerDeathTasks(target);
 
         Main.PlayerStates[target.PlayerId].SetDead();
         target.SetRealKiller(killer, true); //既に追加されてたらスキップ
@@ -633,13 +610,14 @@ class MurderPlayerPatch
         {
             __instance.MarkDirtySettings();
             target.MarkDirtySettings();
+            Utils.NotifyRoles(killer);
+            Utils.NotifyRoles(target);
         }
         else
         {
             Utils.SyncAllSettings();
+            Utils.NotifyRoles();
         }
-
-        Utils.NotifyRoles();
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Shapeshift))]

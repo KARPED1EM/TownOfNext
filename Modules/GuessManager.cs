@@ -196,14 +196,7 @@ public static class GuessManager
                     RpcGuesserMurderPlayer(dp);
 
                     //死者检查
-                    FixedUpdatePatch.LoversSuicide(target.PlayerId);
-                    if (target.Is(CustomRoles.Terrorist))
-                    {
-                        Logger.Info(target?.Data?.PlayerName + "はTerroristだった", "MurderPlayer");
-                        Utils.CheckTerroristWin(target.Data);
-                    }
-                    if (Executioner.Target.ContainsValue(target.PlayerId))
-                        Executioner.ChangeRoleByTarget(target);
+                    Utils.AfterPlayerDeathTasks(dp);
 
                     Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 

@@ -19,6 +19,7 @@ using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 using static TOHE.Translator;
+using static UnityEngine.GraphicsBuffer;
 
 namespace TOHE;
 
@@ -1239,6 +1240,49 @@ public static class Utils
         SerialKiller.AfterMeetingTasks();
         if (Options.AirShipVariableElectrical.GetBool())
             AirShipElectricalDoors.Initialize();
+    }
+    public static void AfterPlayerDeathTasks(PlayerControl target)
+    {
+        switch (target.GetCustomRole())
+        {
+            case CustomRoles.Terrorist:
+                Logger.Info(target?.Data?.PlayerName + "はTerroristだった", "MurderPlayer");
+                CheckTerroristWin(target.Data);
+                break;
+            case CustomRoles.Executioner:
+                if (Executioner.Target.ContainsKey(target.PlayerId))
+                {
+                    Executioner.Target.Remove(target.PlayerId);
+                    Executioner.SendRPC(target.PlayerId);
+                }
+                break;
+            case CustomRoles.CyberStar:
+                if (GameStates.IsMeeting)
+                {
+                    //网红死亡消息提示
+                    foreach (var pc in Main.AllPlayerControls)
+                    {
+                        if (!Options.ImpKnowCyberStarDead.GetBool() && pc.GetCustomRole().IsImpostor()) continue;
+                        if (!Options.NeutralKnowCyberStarDead.GetBool() && pc.GetCustomRole().IsNeutral()) continue;
+                        SendMessage(string.Format(GetString("CyberStarDead"), target.GetRealName()), pc.PlayerId, ColorString(GetRoleColor(CustomRoles.CyberStar), GetString("CyberStarNewsTitle")));
+                    }
+                }
+                else
+                {
+                    if (!Main.CyberStarDead.Contains(target.PlayerId))
+                        Main.CyberStarDead.Add(target.PlayerId);
+                }
+                break;
+            case CustomRoles.Pelican:
+                Pelican.OnPelicanDied(target.PlayerId);
+                break;
+        }
+
+        if (Executioner.Target.ContainsValue(target.PlayerId))
+            Executioner.ChangeRoleByTarget(target);
+
+        FixedUpdatePatch.LoversSuicide(target.PlayerId);
+
     }
     public static void ChangeInt(ref int ChangeTo, int input, int max)
     {

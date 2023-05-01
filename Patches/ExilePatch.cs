@@ -171,8 +171,7 @@ class ExileControllerWrapUpPatch
                         player?.SetRealKiller(player, true);
                     if (Main.ResetCamPlayerList.Contains(x.Key))
                         player?.ResetPlayerCam(1f);
-                    if (Executioner.Target.ContainsValue(x.Key))
-                        Executioner.ChangeRoleByTarget(player);
+                    Utils.AfterPlayerDeathTasks(player);
                 });
                 Main.AfterMeetingDeathPlayers.Clear();
             }, 0.5f, "AfterMeetingDeathPlayers Task");
