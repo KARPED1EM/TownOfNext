@@ -893,20 +893,20 @@ public static class Utils
                 if (GameStates.IsOnlineGame)
                     name = $"<color=#ffd6ec>TOHE</color><color=#baf7ca>★</color>" + name;
                 if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-                    name = $"<color=#f55252><size=1.9>{GetString("ModeSoloKombat")}</size></color>\r\n" + name;
+                    name = $"<color=#f55252><size=1.7>{GetString("ModeSoloKombat")}</size></color>\r\n" + name;
             }
-            if (!name.Contains("\r") && player.FriendCode.GetDevUser().HasTag())
+            if (!name.Contains('\r') && player.FriendCode.GetDevUser().HasTag())
                 name = player.FriendCode.GetDevUser().GetTag() + name;
             else
                 name = Options.GetSuffixMode() switch
                 {
                     SuffixModes.TOHE => name += $"\r\n<color={Main.ModColor}>TOHE v{Main.PluginVersion}</color>",
-                    SuffixModes.Streaming => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.Streaming")}</color>",
-                    SuffixModes.Recording => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.Recording")}</color>",
-                    SuffixModes.RoomHost => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixMode.RoomHost")}</color>",
-                    SuffixModes.OriginalName => name += $"\r\n<color={Main.ModColor}>{DataManager.player.Customization.Name}</color>",
-                    SuffixModes.DoNotKillMe => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixModeText.DoNotKillMe")}</color>",
-                    SuffixModes.NoAndroidPlz => name += $"\r\n<color={Main.ModColor}>{GetString("SuffixModeText.NoAndroidPlz")}</color>",
+                    SuffixModes.Streaming => name += $"\r\n<size=1.7><color={Main.ModColor}>{GetString("SuffixMode.Streaming")}</color></size>",
+                    SuffixModes.Recording => name += $"\r\n<size=1.7><color={Main.ModColor}>{GetString("SuffixMode.Recording")}</color></size>",
+                    SuffixModes.RoomHost => name += $"\r\n<size=1.7><color={Main.ModColor}>{GetString("SuffixMode.RoomHost")}</color></size>",
+                    SuffixModes.OriginalName => name += $"\r\n<size=1.7><color={Main.ModColor}>{DataManager.player.Customization.Name}</color></size>",
+                    SuffixModes.DoNotKillMe => name += $"\r\n<size=1.7><color={Main.ModColor}>{GetString("SuffixModeText.DoNotKillMe")}</color></size>",
+                    SuffixModes.NoAndroidPlz => name += $"\r\n<size=1.7><color={Main.ModColor}>{GetString("SuffixModeText.NoAndroidPlz")}</color></size>",
                     _ => name
                 };
         }
