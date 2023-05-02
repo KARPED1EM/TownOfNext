@@ -53,12 +53,11 @@ public static class Camouflage
         if (oldIsCamouflage != IsCamouflage)
         {
             Main.AllPlayerControls.Do(pc => RpcSetSkin(pc));
-            Utils.NotifyRoles(isForMeeting: GameStates.IsMeeting, NoCache: true);
         }
     }
     public static void RpcSetSkin(PlayerControl target, bool ForceRevert = false, bool RevertToDefault = false)
     {
-        if (!(AmongUsClient.Instance.AmHost && (Options.CommsCamouflage.GetBool() || Concealer.IsHidding))) return;
+        if (!(AmongUsClient.Instance.AmHost && (Options.CommsCamouflage.GetBool() || CustomRoles.Concealer.IsEnable()))) return;
         if (target == null) return;
 
         var id = target.PlayerId;
