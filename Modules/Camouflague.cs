@@ -55,6 +55,7 @@ public static class Camouflage
         if (oldIsCamouflage != IsCamouflage)
         {
             Main.AllPlayerControls.Do(pc => RpcSetSkin(pc));
+            Utils.NotifyRoles();
         }
     }
     public static void RpcSetSkin(PlayerControl target, bool ForceRevert = false, bool RevertToDefault = false)
