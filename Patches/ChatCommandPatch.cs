@@ -362,6 +362,17 @@ internal class ChatCommands
                     RPC.PlaySoundRPC(PlayerControl.LocalPlayer.PlayerId, (Sounds)sound1);
                     break;
 
+                case "/cosid":
+                    canceled = true;
+                    var of = PlayerControl.LocalPlayer.Data.DefaultOutfit;
+                    Logger.Warn($"ColorId: {of.ColorId}", "Get Cos Id");
+                    Logger.Warn($"PetId: {of.PetId}", "Get Cos Id");
+                    Logger.Warn($"HatId: {of.HatId}", "Get Cos Id");
+                    Logger.Warn($"SkinId: {of.SkinId}", "Get Cos Id");
+                    Logger.Warn($"VisorId: {of.VisorId}", "Get Cos Id");
+                    Logger.Warn($"NamePlateId: {of.NamePlateId}", "Get Cos Id");
+                    break;
+
                 default:
                     Main.isChatCommand = false;
                     break;

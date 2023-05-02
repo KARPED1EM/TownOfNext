@@ -350,9 +350,9 @@ public static class Options
     public static OptionItem KickLowLevelPlayer;
     public static OptionItem ApplyBanList;
     public static OptionItem AutoWarnStopWords;
-
     public static OptionItem DIYGameSettings;
     public static OptionItem PlayerCanSetColor;
+    public static OptionItem KPDCamouflageMode;
 
     //Add-Ons
     public static OptionItem NameDisplayAddons;
@@ -848,6 +848,10 @@ public static class Options
            .RegisterUpdateValueEvent(
                 (object obj, OptionItem.UpdateValueEventArgs args) => IRandom.SetInstanceById(args.CurrentValue)
             );
+
+        KPDCamouflageMode = BooleanOptionItem.Create(1_000_015, "KPDCamouflageMode", false, TabGroup.SystemSettings, false)
+            .SetHeader(true)
+            .SetColor(new Color32(255, 192, 203, byte.MaxValue));
 
         DebugModeManager.SetupCustomOption();
 

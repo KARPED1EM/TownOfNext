@@ -495,6 +495,7 @@
 "HideGameSettings","隐藏游戏设置","Hide Game Settings","Скрыть настройки Игры","隱藏遊戲設定","隐藏游戏设置"
 "DIYGameSettings","显示自定义的/n消息","Enable only custom /n messages","Включить только пользовательские /n сообщения","顯示自定義的/n訊息","显示自定义的/n消息"
 "PlayerCanSetColor","允许玩家使用/color指令","Players can use the /color command","Игроки могут использовать команду /color","允許玩家使用/color指令","允许玩家使用/color指令"
+"KPDCamouflageMode","咔皮呆伪装效果（包括通讯破坏以及隐蔽者）","","","",""
 "RoleOptions","职业设置","Role Options","Настройка Ролей","職業設定","职业设置"
 "ModeOptions","模组设置","Mode Options","Настройка Режима","模組設定","模组设置"
 "AutoStart","人满自动开始","Auto start at full lobby","Авто. запуск игры при полном лобби","人滿自動開始","人满自动开始"
