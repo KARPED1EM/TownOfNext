@@ -36,8 +36,6 @@ public static class FindAGameManagerHandleListPatch
                 _ => "#ffffff"
             };
 
-            Logger.Test(game.GameId);
-
             string str = Math.Abs(game.GameId).ToString();
             int id = Math.Min(Math.Max(int.Parse(str.Substring(str.Length - 2, 2)), 1) * nameList.Count / 100, nameList.Count);
 
