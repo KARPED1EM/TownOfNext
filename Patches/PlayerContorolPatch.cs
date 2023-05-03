@@ -644,7 +644,7 @@ class ShapeshiftPatch
         if (!AmongUsClient.Instance.AmHost) return;
         if (!shapeshifting) Camouflage.RpcSetSkin(__instance);
 
-        if (Pelican.IsEaten(shapeshifter.PlayerId))
+        if (Pelican.IsEaten(shapeshifter.PlayerId) || GameStates.IsVoting)
             goto End;
 
         switch (shapeshifter.GetCustomRole())
