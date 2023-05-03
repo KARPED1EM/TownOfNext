@@ -1,8 +1,10 @@
 using HarmonyLib;
 using Hazel;
-using Il2CppSystem.Text;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
+using static TOHE.Translator;
 
 namespace TOHE;
 
@@ -11,6 +13,9 @@ internal class ControllerManagerUpdatePatch
 {
     private static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
     private static int resolutionIndex = 0;
+
+    public static List<string> addDes = new();
+    public static int addonIndex = -1;
 
     public static void Postfix(ControllerManager __instance)
     {
@@ -36,10 +41,30 @@ internal class ControllerManagerUpdatePatch
         if (Input.GetKeyDown(KeyCode.F1) && GameStates.InGame)
         {
             var role = PlayerControl.LocalPlayer.GetCustomRole();
+            var lp = PlayerControl.LocalPlayer;
             var sb = new StringBuilder();
-            sb.Append(Utils.ColorString(Utils.GetRoleColor(role), Translator.GetString(role.ToString())));
-            sb.Append(Translator.GetString($"{role}InfoLong"));
+            sb.Append(GetString(role.ToString()) + Utils.GetRoleMode(role) + lp.GetRoleInfo(true));
+            if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
+                Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
             HudManager.Instance.ShowPopUp(sb.ToString());
+        }
+        //附加职业介绍
+        if (Input.GetKeyDown(KeyCode.F2) && GameStates.InGame)
+        {
+            var role = PlayerControl.LocalPlayer.GetCustomRole();
+            var lp = PlayerControl.LocalPlayer;
+            if (Main.PlayerStates[lp.PlayerId].SubRoles.Count < 1) return;
+
+            addDes = new();
+            foreach (var subRole in Main.PlayerStates[lp.PlayerId].SubRoles)
+                addDes.Add(GetString($"{subRole}") + Utils.GetRoleMode(subRole) + GetString($"{subRole}InfoLong"));
+            if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                addDes.Add(GetString($"Lovers") + Utils.GetRoleMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
+
+            addonIndex++;
+            if (addonIndex >= addDes.Count) addonIndex = 0;
+            HudManager.Instance.ShowPopUp(addDes[addonIndex]);
+
         }
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
