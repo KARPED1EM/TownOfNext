@@ -8,16 +8,21 @@ public static class Divinator
 {
     private static readonly int Id = 8022560;
     private static List<byte> playerIdList = new();
-    public static List<byte> didVote = new();
-    private static Dictionary<byte, int> CheckLimit = new();
+    
     private static OptionItem CheckLimitOpt;
     private static OptionItem AccurateCheckMode;
+    public static OptionItem HideVote;
+
+    public static List<byte> didVote = new();
+    private static Dictionary<byte, int> CheckLimit = new();
+
     public static void SetupCustomOption()
     {
         SetupRoleOptions(Id, TabGroup.CrewmateRoles, CustomRoles.Divinator);
         CheckLimitOpt = IntegerOptionItem.Create(Id + 10, "DivinatorSkillLimit", new(1, 990, 1), 5, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Divinator])
             .SetValueFormat(OptionFormat.Times);
         AccurateCheckMode = BooleanOptionItem.Create(Id + 12, "AccurateCheckMode", false, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Divinator]);
+        HideVote = BooleanOptionItem.Create(Id + 14, "DivinatorHideVote", false, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Divinator]);
         OverrideTasksData.Create(Id + 20, TabGroup.CrewmateRoles, CustomRoles.Divinator);
     }
     public static void Init()

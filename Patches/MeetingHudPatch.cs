@@ -145,14 +145,19 @@ class CheckForEndVotingPatch
                         }
                     }
                 }
-                if (ps.TargetPlayerId != ps.VotedFor || Options.MadmateSpawnMode.GetInt() != 2) //主动叛变模式下自票无效
+
+                //隐藏占卜师的票
+                if (CheckRole(ps.TargetPlayerId, CustomRoles.Divinator) && Divinator.HideVote.GetBool()) continue;
+
+                //主动叛变模式下自票无效
+                if (ps.TargetPlayerId == ps.VotedFor && Options.MadmateSpawnMode.GetInt() == 2) continue;
+
+                statesList.Add(new MeetingHud.VoterState()
                 {
-                    statesList.Add(new MeetingHud.VoterState()
-                    {
-                        VoterId = ps.TargetPlayerId,
-                        VotedForId = ps.VotedFor
-                    });
-                }
+                    VoterId = ps.TargetPlayerId,
+                    VotedForId = ps.VotedFor
+                });
+
                 if (CheckRole(ps.TargetPlayerId, CustomRoles.Mayor) && !Options.MayorHideVote.GetBool()) //Mayorの投票数
                 {
                     for (var i2 = 0; i2 < Options.MayorAdditionalVote.GetFloat(); i2++)

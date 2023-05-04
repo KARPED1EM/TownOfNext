@@ -840,6 +840,7 @@
 "TotocalcioBetCooldownIncrese","每当场上减少一人时下注冷却时间增加","","","",""
 "TotocalcioKnowTargetRole","可以知道下注目标的职业","","","",""
 "TotocalcioBetTargetKnowTotocalcio","下注目标可以知道自己被下注","","","",""
+"DivinatorHideVote","隐藏占卜师的投票","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被杀","被杀"
