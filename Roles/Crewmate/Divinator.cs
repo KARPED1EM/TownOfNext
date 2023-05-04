@@ -149,7 +149,8 @@ public static class Divinator
                 CustomRoles.CyberStar or
                 CustomRoles.Collector or
                 CustomRoles.Sunnyboy or
-                CustomRoles.Bard
+                CustomRoles.Bard or
+                CustomRoles.Totocalcio
                 => "Enthusiasm",
 
                 CustomRoles.BoobyTrap or

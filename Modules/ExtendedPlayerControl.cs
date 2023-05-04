@@ -437,6 +437,7 @@ static class ExtendedPlayerControl
             CustomRoles.Assassin => Assassin.CanUseKillButton(pc),
             CustomRoles.BloodKnight => pc.IsAlive(),
             CustomRoles.Crewpostor => false,
+            CustomRoles.Totocalcio => Totocalcio.CanUseKillButton(pc),
             _ => pc.Is(CustomRoleTypes.Impostor),
         };
     }
@@ -453,7 +454,8 @@ static class ExtendedPlayerControl
             CustomRoles.FFF or
             CustomRoles.Medicaler or
             CustomRoles.DarkHide or
-            CustomRoles.Provocateur
+            CustomRoles.Provocateur or
+            CustomRoles.Totocalcio
             => false,
 
             CustomRoles.Jackal => Jackal.CanVent.GetBool(),
@@ -597,6 +599,9 @@ static class ExtendedPlayerControl
                 break;
             case CustomRoles.Crewpostor:
                 Main.AllPlayerKillCooldown[player.PlayerId] = 300f;
+                break;
+            case CustomRoles.Totocalcio:
+                Totocalcio.SetKillCooldown(player.PlayerId);
                 break;
         }
         if (player.PlayerId == LastImpostor.currentId)

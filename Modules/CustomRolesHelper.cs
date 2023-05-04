@@ -110,6 +110,7 @@ internal static class CustomRolesHelper
             CustomRoles.DarkHide => RoleTypes.Impostor,
             CustomRoles.Provocateur => RoleTypes.Impostor,
             CustomRoles.BloodKnight => RoleTypes.Impostor,
+            CustomRoles.Totocalcio => RoleTypes.Impostor,
             _ => RoleTypes.GuardianAngel
         };
     }
@@ -241,7 +242,8 @@ internal static class CustomRolesHelper
             CustomRoles.Collector or
             CustomRoles.Provocateur or
             CustomRoles.Sunnyboy or
-            CustomRoles.BloodKnight;
+            CustomRoles.BloodKnight or
+            CustomRoles.Totocalcio;
     }
     public static bool CheckAddonConfilct(CustomRoles role, PlayerControl pc)
     {

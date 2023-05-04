@@ -311,6 +311,7 @@ public class Main : BasePlugin
                 {CustomRoles.Provocateur, "#74ba43"},
                 {CustomRoles.Sunnyboy, "#ff9902"},
                 {CustomRoles.BloodKnight, "#630000"},
+                {CustomRoles.Totocalcio, "#ff9409"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
@@ -481,6 +482,7 @@ public enum CustomRoles
     Provocateur,
     Sunnyboy,
     BloodKnight,
+    Totocalcio,
 
     //SoloKombat
     KB_Normal,
@@ -547,6 +549,7 @@ public enum AdditionalWinners
     FFF = CustomRoles.FFF,
     Provocateur = CustomRoles.Provocateur,
     Sunnyboy = CustomRoles.Sunnyboy,
+    Totocalcio = CustomRoles.Totocalcio,
 }
 public enum SuffixModes
 {

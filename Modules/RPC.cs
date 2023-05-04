@@ -75,6 +75,7 @@ enum CustomRPC
     MafiaRevenge,
     SetSwooperTimer,
     SetBKTimer,
+    SyncTotocalcioTargetAndTimes,
 
     //SoloKombat
     SyncKBPlayer,
@@ -417,6 +418,9 @@ internal class RPCHandlerPatch
             case CustomRPC.SetBKTimer:
                 BloodKnight.ReceiveRPC(reader);
                 break;
+            case CustomRPC.SyncTotocalcioTargetAndTimes:
+                Totocalcio.ReceiveRPC(reader);
+                break;
         }
     }
 }
@@ -713,6 +717,9 @@ internal static class RPC
                 break;
             case CustomRoles.BloodKnight:
                 BloodKnight.Add(targetId);
+                break;
+            case CustomRoles.Totocalcio:
+                Totocalcio.Add(targetId);
                 break;
         }
         HudManager.Instance.SetHudActive(true);

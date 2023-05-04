@@ -261,6 +261,9 @@ class CheckMurderPatch
                     killer.SetRealKiller(target);
                     Main.Provoked.TryAdd(killer.PlayerId, target.PlayerId);
                     return false;
+                case CustomRoles.Totocalcio:
+                    if (!Totocalcio.OnCheckMurder(killer, target)) return false;
+                    break;
 
                 //==========船员职业==========//
                 case CustomRoles.Sheriff:
@@ -1402,6 +1405,7 @@ class FixedUpdatePatch
                 else if (__instance.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoleTypes.Impostor) && Options.ImpKnowWhosMadmate.GetBool()) RoleText.enabled = true;
                 else if (__instance.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) RoleText.enabled = true;
                 else if (__instance.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool()) RoleText.enabled = true;
+                else if (Totocalcio.KnowRole(PlayerControl.LocalPlayer, __instance)) RoleText.enabled = true;
                 else if (PlayerControl.LocalPlayer.Is(CustomRoles.God)) RoleText.enabled = true;
                 else if (PlayerControl.LocalPlayer.Is(CustomRoles.GM)) RoleText.enabled = true;
                 else if (Main.GodMode.Value) RoleText.enabled = true;
@@ -1486,6 +1490,8 @@ class FixedUpdatePatch
                 Mark.Append(Gamer.TargetMark(seer, target));
 
                 Mark.Append(Medicaler.TargetMark(seer, target));
+
+                Mark.Append(Totocalcio.TargetMark(seer, target));
 
                 if (seer.Is(CustomRoles.Puppeteer))
                 {

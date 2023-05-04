@@ -681,6 +681,7 @@ public static class Options
         WorkaholicTasks = OverrideTasksData.Create(60115, TabGroup.NeutralRoles, CustomRoles.Workaholic);
         Collector.SetupCustomOption();
         BloodKnight.SetupCustomOption();
+        Totocalcio.SetupCustomOption();
 
         // Add-Ons
         SetupLoversRoleOptionsToggle(50300);

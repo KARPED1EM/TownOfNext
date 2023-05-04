@@ -24,7 +24,6 @@ class HudManagerPatch
         if (!GameStates.IsModHost) return;
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
-        var TaskTextPrefix = "";
         //壁抜け
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -185,6 +184,9 @@ class HudManagerPatch
                         break;
                     case CustomRoles.Sheriff:
                         __instance.KillButton.OverrideText($"{GetString("SheriffKillButtonText")}");
+                        break;
+                    case CustomRoles.Totocalcio:
+                        __instance.KillButton.OverrideText($"{GetString("TotocalcioKillButtonText")}");
                         break;
                 }
 
