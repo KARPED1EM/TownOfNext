@@ -270,6 +270,11 @@ internal class ChatCommands
                 case "/colour":
                 case "/color":
                     canceled = true;
+                    if (GameStates.IsInGame)
+                    {
+                        Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+                        break;
+                    }
                     subArgs = args.Length < 2 ? "" : args[1];
                     var color = Utils.MsgToColor(subArgs, true);
                     if (color == byte.MaxValue)
@@ -690,9 +695,14 @@ internal class ChatCommands
             case "/color":
                 if (Options.PlayerCanSetColor.GetBool())
                 {
+                    if (GameStates.IsInGame)
+                    {
+                        Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"), player.PlayerId);
+                        break;
+                    }
                     subArgs = args.Length < 2 ? "" : args[1];
                     var color = Utils.MsgToColor(subArgs);
-                    if (color == Byte.MaxValue)
+                    if (color == byte.MaxValue)
                     {
                         Utils.SendMessage(GetString("IllegalColor"), player.PlayerId);
                         break;
