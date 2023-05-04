@@ -1251,6 +1251,8 @@
 "NextPage","下一页","Next Page","Следующая страница","下一页",""
 "PreviousPage","上一页","Previous Page","Прошлая страница","上一页",""
 "EAC.CheatDetected.EAC","开挂（使用AUM）","Cheating usage detected (Using AUM)","Обнаружено использование читов (используется AUM)","开挂（使用AUM）","开挂（使用AUM）"
+"PressF1ShowMainRoleDes","按F1查看您的主职业介绍","","","",""
+"PressF2ShowAddRoleDes","按F2查看您的附加职业介绍","","","",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.HighLevel","警告：EAC正在抵御炸房外挂","Warning: EAC detected High Level of cheats.","Предупреждение: EAC обнаружил высокий уровень читов.","警告：EAC正在抵御炸房外挂","警告：EAC正在抵御炸房外挂"

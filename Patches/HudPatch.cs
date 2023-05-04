@@ -248,12 +248,6 @@ class HudManagerPatch
                     __instance.KillButton.SetDisabled();
                     __instance.KillButton.ToggleVisible(false);
                 }
-                switch (player.GetCustomRole())
-                {
-                    case CustomRoles.Jester:
-                        TaskTextPrefix += GetString(StringNames.FakeTasks);
-                        break;
-                }
 
                 bool CanUseVent = player.CanUseImpostorVentButton();
                 __instance.ImpostorVentButton.ToggleVisible(CanUseVent);
@@ -434,7 +428,19 @@ class TaskPanelBehaviourPatch
         {
             var RoleWithInfo = $"{player.GetDisplayRoleName()}:\r\n";
             RoleWithInfo += player.GetRoleInfo();
-            __instance.taskText.text = Utils.ColorString(player.GetRoleColor(), RoleWithInfo) + "\n" + __instance.taskText.text;
+
+            var AllText = Utils.ColorString(player.GetRoleColor(), RoleWithInfo) + "\r\n\r\n";
+
+            var taskText = __instance.taskText.text;
+            if (taskText != "None" && Utils.HasTasks(player.Data, false))
+            {
+                int endOf = taskText.LastIndexOf("</color>\r\n") + "</color>\r\n".Length;
+                if (endOf != -1) AllText += taskText[endOf..] + "\r\n\r\n";
+            }
+
+            AllText += $"<size=70%>{GetString("PressF1ShowMainRoleDes")}\r\n{GetString("PressF2ShowAddRoleDes")}</size>";
+
+            __instance.taskText.text = AllText;
         }
 
         // RepairSenderの表示
