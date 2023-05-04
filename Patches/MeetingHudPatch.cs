@@ -724,9 +724,6 @@ class MeetingHudStartPatch
                     sb.Append(Gamer.TargetMark(seer, target));
                     sb.Append(Snitch.GetWarningMark(seer, target));
                     break;
-                case CustomRoles.Totocalcio:
-                    sb.Append(Totocalcio.TargetMark(seer, target));
-                    break;
             }
 
             bool isLover = false;
@@ -764,6 +761,9 @@ class MeetingHudStartPatch
             //医生护盾提示
             if (seer.PlayerId == target.PlayerId)
                 sb.Append(Medicaler.GetSheildMark(seer));
+
+            //赌徒提示
+            sb.Append(Totocalcio.TargetMark(seer, target));
 
             //会議画面ではインポスター自身の名前にSnitchマークはつけません。
 
