@@ -114,7 +114,7 @@ internal static class CustomRolesHelper
             _ => RoleTypes.GuardianAngel
         };
     }
-    public static bool IsAdditionRole(this CustomRoles role)
+    public static bool IsAdditionRole(this CustomRoles role) // 是否附加
     {
         return role is
             CustomRoles.Lovers or
@@ -135,7 +135,8 @@ internal static class CustomRolesHelper
             CustomRoles.Egoist or
             CustomRoles.TicketsStealer or
             CustomRoles.DualPersonality or
-            CustomRoles.Mimic;
+            CustomRoles.Mimic or
+            CustomRoles.Reach;
     }
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
@@ -269,6 +270,7 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeDualPersonality.GetBool()) return false;
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeDualPersonality.GetBool()) return false;
         if (role is CustomRoles.Seer && ((pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeSeer.GetBool()) || (pc.GetCustomRole().IsNeutral() && !Options.NeutralCanBeSeer.GetBool()) || (pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeSeer.GetBool()))) return false;
+        if (role is CustomRoles.Reach && !pc.CanUseKillButton()) return false;
         return true;
     }
     public static RoleTypes GetRoleTypes(this CustomRoles role)

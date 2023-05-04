@@ -335,6 +335,7 @@ public class Main : BasePlugin
                 {CustomRoles.TicketsStealer, "#ff1919"},
                 {CustomRoles.DualPersonality, "#3a648f"},
                 {CustomRoles.Mimic, "#ff1919"},
+                {CustomRoles.Reach, "#74ba43"},
                 //SoloKombat
                 {CustomRoles.KB_Normal, "#f55252"}
             };
@@ -511,6 +512,7 @@ public enum CustomRoles
     TicketsStealer,
     DualPersonality,
     Mimic,
+    Reach,
 }
 //WinData
 public enum CustomWinner

@@ -171,6 +171,7 @@
 "TicketsStealer","窃票者","Stealer","Вор","竊票者","窃票者"
 "DualPersonality","双重人格","Schizophrenic","Шизофреник","雙重人格","双重人格"
 "Mimic","宝箱怪","Mimic","Мимик","保險箱","宝箱怪"
+"Reach","持枪","","","",""
 
 "## 附加职业作为前缀时 / Prefixes for Add-ons"
 
@@ -190,6 +191,7 @@
 "Prefix.TicketsStealer","窃票","Stealer ","Ворующий ","竊票","窃票"
 "Prefix.DualPersonality","双重人格","Schizophrenic ","Шизофренический ","雙重人格","双重人格"
 "Prefix.Mimic","宝箱怪","Mimic ","Мимикующий ","保險箱","宝箱怪"
+"Prefix.Reach","持枪","","","",""
 
 "## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen"
 
@@ -311,6 +313,7 @@
 "TicketsStealerInfo","要懂得珍惜，死者最后的价值","Gain votes with Kills","Набирайте голоса с помощью убийств","讓這場投票變的無意義起來","要懂得珍惜，死者最后的价值"
 "DualPersonalityInfo","我真的很...奇怪吗？","You're dead and alive simultaneously","У вас теперь Шизофрения","我怎麼感覺是不是需要去掛精神科了","我真的很...奇怪吗？"
 "MimicInfo","噔↗噔↗当→当↘当→当↗","Reveal killed players' roles to imps upon death","Раскрывайте роли убитых игроков предателям, после смерти","人家是存錢，我是存資料","噔↗噔↗当→当↘当→当↗"
+"ReachInfo","大人，时代变啦！","","","",""
 
 "# 其它 / Other descriptions"
 "GMInfo","开局死的冤魂隔岸观火","Spectate the Chaos!","Вы Мастер Игры, наслаждайтесь хаосом!","當吃瓜群眾在一旁看戲吧","开局死的冤魂隔岸观火"
@@ -437,6 +440,7 @@
 "TicketsStealerInfoLong","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。","(Add-ons):\nOnly Impostor other than Bombers and Booby Traps will become Stealer. Every time a Stealer kills a person, he gets an additional vote (the vote number is set by the host, and the decimal is rounded down). Also, extra votes from the Stealer are hidden during meeting.","(Атрибут):\nТолько Предатель может стать Вором. Каждый раз, когда Вор убивает игрока, он увеличивает свое собственное количество голосов в игре (увеличение голосов устанавливается в соответствии с количеством голосов, а десятичная дробь округляется в меньшую сторону). Кроме того, дополнительные голоса Вора скрыты.","(附加職業):\n竊票者每次殺死一個人都會增加相對應的票數(增加的數量根據房主設定，無條件捨去成整數)。\n請注意:\n1. 自爆兵和陷阱師不會成為竊票者。\n2. 竊票者額外的票是隱藏的。","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。"
 "DualPersonalityInfoLong","(附加职业)\n中立和叛徒不会成为双重人格，计算其阵营人数时双重人格被视为两人。例如场上剩余一个内鬼和一个双重人格船员，则视为两名船员和一名内鬼，因此游戏不会结束。","(Add-ons):\nNeutrals and Madmates can't become Schizophrenic. Schizophrenic will be considered as 2 players in the game (not applying to meeting votes). Having at least one player as Schizophrenic won't end the game if there are only them and the Impostor left.","(Атрибут):\nНейтралы и Предатели не могут быть с Шизофринией. При подсчете количества игроков в их команде Шизофреник рассматривает как два игрока. Например, если в игре останется один Предатель и одна команда с Шизофринией, то это будет рассматриваться как два Члена Экипажа и один Предатель, поэтому игра не закончится пока Шизофреник не будет убит.","(附加職業):\n模組計算陣營人數時雙重人格被視為兩名玩家。請注意: 中立職業和叛徒不會成為雙重人格。","(附加职业)\n中立和叛徒不会成为双重人格，计算其阵营人数时双重人格被视为两人。例如场上剩余一个内鬼和一个双重人格船员，则视为两名船员和一名内鬼，因此游戏不会结束。"
 "MimicInfoLong","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。","(Add-ons):\nOnly Impostor can become Mimic. When the Mimic is dead, other Impostors will receive a message once a meeting is called, this message will include information on roles who were killed by the Mimic.","(Атрибут):\nТолько Предатели могут стать Мимиком. После того как Мимик умрёт, призраки получат сообщение на собрании. Сообщение содержит роли всех кого убил Мимик пока он был жив.","(附加職業):\n保險箱死後他的隊友會在會議上收到訊息，內容包括保險箱生前殺死的所有人的職業。請注意: 黑手黨不會成為保險箱。","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。"
+"ReachInfoLong","(附加职业)\n只有拥有击杀键的玩家能持枪。持枪的玩家的击杀键交互距离比一般人长。","","","",""
 
 "# 其它 / Other long description"
 "GMInfoLong","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры.","(房主):\n看我幹嘛，我只是開始遊戲時就在冥界吃瓜而已。","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。"
