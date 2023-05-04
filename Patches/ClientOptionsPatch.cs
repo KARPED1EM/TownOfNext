@@ -20,14 +20,9 @@ public static class OptionsMenuBehaviourStartPatch
         if (__instance.DisableMouseMovement == null) return;
 
         Main.SwitchVanilla.Value = false;
-        if (!Main.SetAutoStartToDisable)
+        if (Main.ResetOptions || !DebugModeManager.AmDebugger)
         {
-            Main.VersionCheat.Value = false;
-            Main.AutoStart.Value = false;
-            Main.SetAutoStartToDisable = true;
-        }
-        if (!DebugModeManager.AmDebugger)
-        {
+            Main.ResetOptions = false;
             Main.VersionCheat.Value = false;
             Main.GodMode.Value = false;
         }
