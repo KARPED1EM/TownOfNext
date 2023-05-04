@@ -149,6 +149,7 @@
 "Collector","集票者","Collector","Коллектор","集票者","集票者"
 "Provocateur","自爆卡车","Provocateur","Провокатор","神風特攻隊","自爆卡车"
 "BloodKnight","嗜血骑士","Vigilante","Кровный Рыцарь","嗜血騎士",""
+"Totocalcio","赌徒","","","",""
 
 "# 附加职业 / Add-ons"
 "LastImpostor","绝境者","Last Impostor","Последний Предатель","絕境者","绝境者"
@@ -288,6 +289,7 @@
 "CollectorInfo","是收集癖的胜利！","Collect votes from Players","Соберите достаточное количество голосов","收集票數來獲勝","是收集癖的胜利！"
 "ProvocateurInfo","你急了，你寄了","Victory with help target","Победите с помощью цели","急了嗎，你沒了","你急了，你寄了"
 "BloodKnightInfo","这一杯，敬给彼岸的你","Killing gives you a temporary shield","Используй трупы как щит","先下手為強也是個不錯的選擇",""
+"TotocalcioInfo","诶哟，你看人真准~","","","",""
 
 "# 附加职业 / Add-ons descriptions"
 "LoversInfo","最重要的是，记得照顾好你的另一半","Stay Alive and win together","Выживите со своим Любовником","你墜入了愛河","最重要的是，记得照顾好你的另一半"
@@ -413,6 +415,7 @@
 "CollectorInfoLong","(中立阵营):\n集票者投票给一名玩家后，可以收集到本次会议该玩家被投的所有票数。当集票者收集到指定数量的票后，则集票者单独胜利。请注意：集票者的胜利优先于驱逐玩家。","(Neutrals):\nAfter vote Collector vote for a target, they can collect all the votes cast by that target in this meeting. When the Collector collects the specified number of votes, the Collector alone wins. Note: Collector wins take precedence over exile players.","(Злой - Нейтрал):\nПосле того, как Коллектор проголосует за игрока, он может собрать все голоса, поданные игроком на этой встрече. Когда Коллектор собирает указанное количество голосов, Коллектор выигрывает отдельно. Пожалуйста, обратите внимание: победа Коллектора имеет приоритет перед исключением игрока.","(中立陣營):\n當集票者在會議上投票給一名玩家時，他將會收集到本次會議該玩家被投的所有票數。當集票者收集到指定票數之後，集票者將獨立獲勝。\n請注意: 集票者的勝利優先於被逐出玩家的勝利。","(中立阵营):\n集票者投票给一名玩家后，可以收集到本次会议该玩家被投的所有票数。当集票者收集到指定数量的票后，则集票者单独胜利。请注意：集票者的胜利优先于驱逐玩家。"
 "ProvocateurInfoLong","(中立阵营):\n自爆卡车可以用击杀键与任意目标同归于尽。若游戏结束时目标输了，则自爆卡车与胜利阵营一起胜利。","(Neutrals):\nThe Provocateur can kill any target with the kill button. If the target loses at the end of the game, the Provocateur wins with the winning team.","(Злой -Нейтрал)\nПровокатор может использовать кнопку уничтожения, чтобы погибнуть вместе с любой целью. Если цель проиграет в конце игры, Провокатор выиграет вместе с победной командой.","(中立陣營):\n神風特攻隊可以使用殺人鍵與任何玩家同歸於盡。若遊戲結束時目標輸了，那麼神風特攻隊與獲勝方一同獲勝。","(中立阵营):\n自爆卡车可以用击杀键与任意目标同归于尽。若游戏结束时目标输了，则自爆卡车与胜利阵营一起胜利。"
 "BloodKnightInfoLong","(中立阵营):\n仅剩嗜血骑士阵营与船员阵营且嗜血骑士阵营人数大于船员人数，嗜血骑士获得胜利。嗜血骑士每次击杀后都可以获得一定时间的护盾，护盾可以抵消所有常规击杀，直到护盾超时失效。","(Neutrals):\nThe Vigilante wins when they're the last killing role alive and the amount of crewmates is lower or equal to the amount of Vigilantes. The Vigilantet gains a temporary shield after every kill that makes them immortal for a few seconds.","(Злой - Нейтрал):\n Кровный рыцарь получает щит после убийства, который игнорирует обычные атаки. Если Кровных рыцарей больше или ровняется количеству Членов экипажа, то Кровные рыцари побеждают.",""(中立陣營):\n嗜血騎士每次殺人後都可以獲得一定時間的護盾，護盾可以抵擋掉所有正常殺人的舉動，直到護盾時間結束並失效。當只剩下嗜血騎士陣營與船員陣營且嗜血騎士陣營人數大於船員陣營，則嗜血騎士方獲勝。",""
+"TotocalcioInfoLong","(中立阵营):\n赌徒可以通过击杀键在任何玩家身上下注，且中途可以切换下注目标。若下注目标胜利，则赌徒一起胜利。请注意：赌徒死亡后也可以胜利。","","","",""
 
 "# 附加职业 / Add-ons descriptions"
 "LastImpostorInfoLong","(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。","(Add-ons):\nThis effect is given to the last surviving Impostor. Reduces their kill cooldown.","(Атрибут):\nАтрибут, присваивается последнему Предателю. \nВремя отката убийства становится меньше, чем обычно. \nНе назначается Охотнику за головами, Серийному убийце или Вампиру.","(附加職業):\n這個效果只在偽裝者陣營只剩下一人時賦予該玩家，被賦予效果的玩家殺人冷卻將會縮短。","(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。"
@@ -827,6 +830,12 @@
 "SwooperDuration","隐身持续时间","Swoop Duration","Длительность навыка","隱身持續時間",""
 "LowLoadMode","低负载模式","Low Load Mode","Режим низкой нагрузки","低负载模式",""
 "BKProtectDuration","免疫伤害持续时间","Protection Duration","Длительность щита","免疫伤害持续时间",""
+"TotocalcioMaxBetTimes","下注次数上限","","","",""
+"TotocalcioBetCooldown","下注冷却时间","","","",""
+"TotocalcioMaxBetCooldown","下注冷却时间上限","","","",""
+"TotocalcioBetCooldownIncrese","每当场上减少一人时下注冷却时间增加","","","",""
+"TotocalcioKnowTargetRole","可以知道下注目标的职业","","","",""
+"TotocalcioBetTargetKnowTotocalcio","下注目标可以知道自己被下注","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被杀","被杀"
@@ -971,6 +980,8 @@
 "BKSkillNotice","击杀一名玩家以进入免疫状态","Kill a player to enter immune status","Убей, чтобы получить щит","击杀一名玩家以进入免疫状态",""
 "BKOffsetKill","免疫伤害成功","Someone tried killing you","Щит сработал","免疫伤害成功",""
 "MedicalerTargetShieldBroken","目标护盾破碎","Someone's shield was broken","У кого-то сломан щит!!","目标护盾破碎",""
+"TotocalcioBetPlayer","您下注了一位玩家","","","",""
+"TotocalcioBetOnYou","赌徒在您身上下了注","","","",""
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","信息发送冷却时间为【{0}】秒","信息发送冷却时间为【{0}】秒"
@@ -1206,6 +1217,7 @@
 "SheriffKillButtonText","执法","Shoot","ПРОВЕРИТЬ","执法",""
 "ArsonistVetnButtonText","点火","Ignite","ЗАЖИГАНИЕ","点火",""
 "RevolutionistVetnButtonText","革命","Revolution","РЕВОЛЮЦИЯ","革命",""
+"TotocalcioKillButtonText","下注","","","",""
 "DisabledBySettings","已在设置被中禁用","Disabled by Settings","Отключено настройкой","已在设置被中禁用","已在设置被中禁用"
 "Disabled","禁用","Disabled","Отключено","禁用","禁用"
 "FailToTrack","无法追踪","Failed To Track","Не Удалось Отследить","无法追踪","无法追踪"
