@@ -512,6 +512,8 @@ internal class ChatCommands
             "隱匿者" or "隐匿" or "隐身" or "隐身人" or "印尼" => GetString("Swooper"),
             "船鬼" => GetString("Crewpostor"),
             "嗜血騎士" or "血骑" or "骑士" => GetString("BloodKnight"),
+            "賭徒" => GetString("Totocalcio"),
+            "持槍" or "持械" or "手长" => GetString("Reach"),
             _ => text,
         };
     }
