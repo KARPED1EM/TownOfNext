@@ -318,6 +318,17 @@ class CheckForEndVotingPatch
                 break;
             case 2:
                 name = string.Format(GetString("PlayerIsRole"), realName, coloredRole);
+                if (Options.ShowTeamNextToRoleNameOnEject.GetBool())
+                {
+                    name += " (";
+                    if (player.GetCustomRole().IsImpostor())
+                        name += Utils.ColorString(new Color32(255, 25, 25, byte.MaxValue), GetString("TeamImpostor"));
+                    else if (player.GetCustomRole().IsCrewmate())
+                        name += Utils.ColorString(new Color32(140, 255, 255, byte.MaxValue), GetString("TeamCrewmate"));
+                    else if (player.GetCustomRole().IsNeutral())
+                        name += Utils.ColorString(new Color32(255, 171, 27, byte.MaxValue), GetString("TeamNeutral"));
+                    name += ")";
+                }
                 break;
         }
         var DecidedWinner = false;

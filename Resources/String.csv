@@ -587,6 +587,7 @@
 "ShowImpRemainOnEject","驱逐确认时显示剩余<color=#ff1919>内鬼</color>数量","Show remaining <color=#ff1919>Impostors</color> on ejects","Отображать оставшихся <color=#ff1919>Предателей</color> при изгнании","逐出確認時顯示剩餘<color=#ff1919>偽裝者</color>數量","驱逐确认时显示剩余<color=#ff1919>内鬼</color>数量"
 "ShowNKRemainOnEject","同时显示剩余邪恶<color=#ffab1b>中立</color>数量","Show remaining <color=#ffab1b>Neutral Killers</color> on ejects","Отображать оставшихся <color=#ffab1b>Нейтральных Убийц</color> при изгнании","同時顯示剩餘邪惡<color=#ffab1b>中立</color>數量","同时显示剩余邪恶<color=#ffab1b>中立</color>数量"
 "ConfirmMadmateOnEject","驱逐确认<color=#ff1919>叛徒</color>","Confirm <color=#ff1919>Madmates</color> on ejection","Показывать <color=#ff1919>Безумцев</color> при изгнании","逐出確認<color=#ff1919>叛徒</color>","驱逐确认<color=#ff1919>叛徒</color>"
+"ShowTeamNextToRoleNameOnEject","确认职业同时显示所属阵营","","","",""
 "Ban","封禁","Ban","Забанить","封禁","封禁"
 "Kick","踢出","Kick","Кикнуть","踢出","踢出"
 "NoticeMe","通知我","Notify me","Уведомить меня","通知我","通知我"
