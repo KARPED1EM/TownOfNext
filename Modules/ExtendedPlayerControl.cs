@@ -162,9 +162,10 @@ static class ExtendedPlayerControl
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
-    public static void RpcGuardAndKill(this PlayerControl killer, PlayerControl target = null, int colorId = 0)
+    public static void RpcGuardAndKill(this PlayerControl killer, PlayerControl target = null, int colorId = 0, bool forObserver = false)
     {
         if (target == null) target = killer;
+        if (!forObserver) killer.RpcGuardAndKill(target, colorId, true);
         // Host
         if (killer.AmOwner)
         {

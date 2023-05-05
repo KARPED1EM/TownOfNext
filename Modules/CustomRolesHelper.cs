@@ -86,6 +86,7 @@ internal static class CustomRolesHelper
                 CustomRoles.Bard => CustomRoles.Impostor,
                 CustomRoles.Swooper => CustomRoles.Impostor,
                 CustomRoles.Crewpostor => CustomRoles.Crewmate,
+                CustomRoles.Observer => CustomRoles.Crewmate,
                 _ => role.IsImpostor() ? CustomRoles.Impostor : CustomRoles.Crewmate,
             };
     }

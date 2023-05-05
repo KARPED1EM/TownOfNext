@@ -290,6 +290,7 @@ public class Main : BasePlugin
                 {CustomRoles.Judge, "#f8d85a"},
                 {CustomRoles.Mortician, "#333c49"},
                 {CustomRoles.Mediumshiper, "#a200ff"},
+                {CustomRoles.Observer, "#a8e0fa"},
                 //第三陣営役職
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
@@ -462,6 +463,7 @@ public enum CustomRoles
     Judge,
     Mortician,
     Mediumshiper,
+    Observer,
     //Neutral
     Arsonist,
     Jester,

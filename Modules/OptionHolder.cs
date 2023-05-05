@@ -651,6 +651,7 @@ public static class Options
         Judge.SetupCustomOption();
         Mortician.SetupCustomOption();
         Mediumshiper.SetupCustomOption();
+        SetupRoleOptions(8021618, TabGroup.CrewmateRoles, CustomRoles.Observer);
 
         // Neutral
         SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);
