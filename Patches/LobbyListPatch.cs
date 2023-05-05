@@ -2,8 +2,27 @@
 using Il2CppSystem;
 using Il2CppSystem.Collections.Generic;
 using InnerNet;
+//using UnityEngine;
 
 namespace TOHE;
+
+//[HarmonyPatch(typeof(FindAGameManager), nameof(FindAGameManager.Update))]
+//public static class FindAGameManagerUpdatePatch
+//{
+//    private static int buffer = 80;
+//    private static GameObject RefreshButton;
+//    private static GameObject InputDisplayGlyph;
+//    public static void Postfix(FindAGameManager __instance)
+//    {
+//        if ((RefreshButton = GameObject.Find("RefreshButton")) != null)
+//            RefreshButton.transform.localPosition = new Vector3(100f, 100f, 100f);
+//        if ((InputDisplayGlyph = GameObject.Find("InputDisplayGlyph")) != null)
+//            InputDisplayGlyph.transform.localPosition = new Vector3(100f, 100f, 100f);
+
+//        buffer--; if (buffer > 0) return; buffer = 80;
+//        __instance.RefreshList();
+//    }
+//}
 
 [HarmonyPatch(typeof(FindAGameManager), nameof(FindAGameManager.HandleList))]
 public static class FindAGameManagerHandleListPatch
