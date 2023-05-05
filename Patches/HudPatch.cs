@@ -433,13 +433,8 @@ class TaskPanelBehaviourPatch
 
             var AllText = Utils.ColorString(player.GetRoleColor(), RoleWithInfo) + "\r\n\r\n";
 
-            var taskText = __instance.taskText.text;
-            if (taskText != "None" && Utils.HasTasks(player.Data, false))
-            {
-                AllText += taskText + "\r\n\r\n";
-                //int endOf = taskText.LastIndexOf("</color>\r\n") + "</color>\r\n".Length;
-                //if (endOf != -1) AllText += taskText[endOf..] + "\r\n\r\n";
-            }
+            if (__instance.taskText.text != "None" && Utils.HasTasks(player.Data, false))
+                AllText += __instance.taskText.text + "\r\n\r\n";
 
             AllText += $"<size=70%>{GetString("PressF1ShowMainRoleDes")}";
             if (Main.PlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
@@ -451,9 +446,7 @@ class TaskPanelBehaviourPatch
 
         // RepairSenderの表示
         if (RepairSender.enabled && AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
-        {
             __instance.taskText.text = RepairSender.GetText();
-        }
     }
 }
 
