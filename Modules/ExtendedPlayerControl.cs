@@ -1,4 +1,5 @@
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Hazel;
 using InnerNet;
 using System;
@@ -165,7 +166,7 @@ static class ExtendedPlayerControl
     public static void RpcGuardAndKill(this PlayerControl killer, PlayerControl target = null, int colorId = 0, bool forObserver = false)
     {
         if (target == null) target = killer;
-        if (!forObserver) killer.RpcGuardAndKill(target, colorId, true);
+        if (!forObserver) Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Observer)).Do(x => x.RpcGuardAndKill(target, colorId, true));
         // Host
         if (killer.AmOwner)
         {
