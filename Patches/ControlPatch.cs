@@ -1,5 +1,6 @@
 using HarmonyLib;
 using Hazel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,31 +41,46 @@ internal class ControllerManagerUpdatePatch
         //职业介绍
         if (Input.GetKeyDown(KeyCode.F1) && GameStates.InGame)
         {
-            var role = PlayerControl.LocalPlayer.GetCustomRole();
-            var lp = PlayerControl.LocalPlayer;
-            var sb = new StringBuilder();
-            sb.Append(GetString(role.ToString()) + Utils.GetRoleMode(role) + lp.GetRoleInfo(true));
-            if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
-            HudManager.Instance.ShowPopUp(sb.ToString());
+            try
+            {
+                var role = PlayerControl.LocalPlayer.GetCustomRole();
+                var lp = PlayerControl.LocalPlayer;
+                var sb = new StringBuilder();
+                sb.Append(GetString(role.ToString()) + Utils.GetRoleMode(role) + lp.GetRoleInfo(true));
+                if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
+                    Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
+                HudManager.Instance.ShowPopUp(sb.ToString());
+            }
+            catch (Exception ex)
+            {
+                Logger.Exception(ex, "ControllerManagerUpdatePatch");
+                throw;
+            }
         }
         //附加职业介绍
         if (Input.GetKeyDown(KeyCode.F2) && GameStates.InGame)
         {
-            var role = PlayerControl.LocalPlayer.GetCustomRole();
-            var lp = PlayerControl.LocalPlayer;
-            if (Main.PlayerStates[lp.PlayerId].SubRoles.Count < 1) return;
+            try
+            {
+                var role = PlayerControl.LocalPlayer.GetCustomRole();
+                var lp = PlayerControl.LocalPlayer;
+                if (Main.PlayerStates[lp.PlayerId].SubRoles.Count < 1) return;
 
-            addDes = new();
-            foreach (var subRole in Main.PlayerStates[lp.PlayerId].SubRoles)
-                addDes.Add(GetString($"{subRole}") + Utils.GetRoleMode(subRole) + GetString($"{subRole}InfoLong"));
-            if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                addDes.Add(GetString($"Lovers") + Utils.GetRoleMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
+                addDes = new();
+                foreach (var subRole in Main.PlayerStates[lp.PlayerId].SubRoles)
+                    addDes.Add(GetString($"{subRole}") + Utils.GetRoleMode(subRole) + GetString($"{subRole}InfoLong"));
+                if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                    addDes.Add(GetString($"Lovers") + Utils.GetRoleMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
 
-            addonIndex++;
-            if (addonIndex >= addDes.Count) addonIndex = 0;
-            HudManager.Instance.ShowPopUp(addDes[addonIndex]);
-
+                addonIndex++;
+                if (addonIndex >= addDes.Count) addonIndex = 0;
+                HudManager.Instance.ShowPopUp(addDes[addonIndex]);
+            }
+            catch (Exception ex)
+            {
+                Logger.Exception(ex, "ControllerManagerUpdatePatch");
+                throw;
+            }
         }
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
