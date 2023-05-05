@@ -150,7 +150,7 @@
 "Collector","集票者","Collector","Коллектор","集票者","集票者"
 "Provocateur","自爆卡车","Provocateur","Провокатор","神風特攻隊","自爆卡车"
 "BloodKnight","嗜血骑士","Vigilante","Кровный Рыцарь","嗜血騎士",""
-"Totocalcio","赌徒","","","",""
+"Totocalcio","赌徒","赌徒","赌徒","赌徒",""
 
 "# 附加职业 / Add-ons"
 "LastImpostor","绝境者","Last Impostor","Последний Предатель","絕境者","绝境者"
@@ -172,7 +172,7 @@
 "TicketsStealer","窃票者","Stealer","Вор","竊票者","窃票者"
 "DualPersonality","双重人格","Schizophrenic","Шизофреник","雙重人格","双重人格"
 "Mimic","宝箱怪","Mimic","Мимик","保險箱","宝箱怪"
-"Reach","持枪","","","",""
+"Reach","持枪","Reach","持枪","持枪",""
 
 "## 附加职业作为前缀时 / Prefixes for Add-ons"
 
@@ -192,7 +192,7 @@
 "Prefix.TicketsStealer","窃票","Stealer ","Ворующий ","竊票","窃票"
 "Prefix.DualPersonality","双重人格","Schizophrenic ","Шизофренический ","雙重人格","双重人格"
 "Prefix.Mimic","宝箱怪","Mimic ","Мимикующий ","保險箱","宝箱怪"
-"Prefix.Reach","持枪","","","",""
+"Prefix.Reach","持枪","Reach ","持枪","持枪",""
 
 "## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen"
 
@@ -293,7 +293,7 @@
 "CollectorInfo","是收集癖的胜利！","Collect votes from Players","Соберите достаточное количество голосов","收集票數來獲勝","是收集癖的胜利！"
 "ProvocateurInfo","你急了，你寄了","Victory with help target","Победите с помощью цели","急了嗎，你沒了","你急了，你寄了"
 "BloodKnightInfo","这一杯，敬给彼岸的你","Killing gives you a temporary shield","Используй трупы как щит","先下手為強也是個不錯的選擇",""
-"TotocalcioInfo","诶哟，你看人真准~","","","",""
+"TotocalcioInfo","诶哟，你看人真准~","诶哟，你看人真准~","诶哟，你看人真准~","诶哟，你看人真准~",""
 
 "# 附加职业 / Add-ons descriptions"
 "LoversInfo","最重要的是，记得照顾好你的另一半","Stay Alive and win together","Выживите со своим Любовником","你墜入了愛河","最重要的是，记得照顾好你的另一半"
@@ -315,7 +315,7 @@
 "TicketsStealerInfo","要懂得珍惜，死者最后的价值","Gain votes with Kills","Набирайте голоса с помощью убийств","讓這場投票變的無意義起來","要懂得珍惜，死者最后的价值"
 "DualPersonalityInfo","我真的很...奇怪吗？","You're dead and alive simultaneously","У вас теперь Шизофрения","我怎麼感覺是不是需要去掛精神科了","我真的很...奇怪吗？"
 "MimicInfo","噔↗噔↗当→当↘当→当↗","Reveal killed players' roles to imps upon death","Раскрывайте роли убитых игроков предателям, после смерти","人家是存錢，我是存資料","噔↗噔↗当→当↘当→当↗"
-"ReachInfo","大人，时代变啦！","","","",""
+"ReachInfo","大人，时代变啦！","You have a longer kill range","大人，时代变啦！","大人，时代变啦！",""
 
 "# 其它 / Other descriptions"
 "GMInfo","开局死的冤魂隔岸观火","Spectate the Chaos!","Вы Мастер Игры, наслаждайтесь хаосом!","當吃瓜群眾在一旁看戲吧","开局死的冤魂隔岸观火"
@@ -421,7 +421,7 @@
 "CollectorInfoLong","(中立阵营):\n集票者投票给一名玩家后，可以收集到本次会议该玩家被投的所有票数。当集票者收集到指定数量的票后，则集票者单独胜利。请注意：集票者的胜利优先于驱逐玩家。","(Neutrals):\nAfter vote Collector vote for a target, they can collect all the votes cast by that target in this meeting. When the Collector collects the specified number of votes, the Collector alone wins. Note: Collector wins take precedence over exile players.","(Злой - Нейтрал):\nПосле того, как Коллектор проголосует за игрока, он может собрать все голоса, поданные игроком на этой встрече. Когда Коллектор собирает указанное количество голосов, Коллектор выигрывает отдельно. Пожалуйста, обратите внимание: победа Коллектора имеет приоритет перед исключением игрока.","(中立陣營):\n當集票者在會議上投票給一名玩家時，他將會收集到本次會議該玩家被投的所有票數。當集票者收集到指定票數之後，集票者將獨立獲勝。\n請注意: 集票者的勝利優先於被逐出玩家的勝利。","(中立阵营):\n集票者投票给一名玩家后，可以收集到本次会议该玩家被投的所有票数。当集票者收集到指定数量的票后，则集票者单独胜利。请注意：集票者的胜利优先于驱逐玩家。"
 "ProvocateurInfoLong","(中立阵营):\n自爆卡车可以用击杀键与任意目标同归于尽。若游戏结束时目标输了，则自爆卡车与胜利阵营一起胜利。","(Neutrals):\nThe Provocateur can kill any target with the kill button. If the target loses at the end of the game, the Provocateur wins with the winning team.","(Злой -Нейтрал)\nПровокатор может использовать кнопку уничтожения, чтобы погибнуть вместе с любой целью. Если цель проиграет в конце игры, Провокатор выиграет вместе с победной командой.","(中立陣營):\n神風特攻隊可以使用殺人鍵與任何玩家同歸於盡。若遊戲結束時目標輸了，那麼神風特攻隊與獲勝方一同獲勝。","(中立阵营):\n自爆卡车可以用击杀键与任意目标同归于尽。若游戏结束时目标输了，则自爆卡车与胜利阵营一起胜利。"
 "BloodKnightInfoLong","(中立阵营):\n仅剩嗜血骑士阵营与船员阵营且嗜血骑士阵营人数大于船员人数，嗜血骑士获得胜利。嗜血骑士每次击杀后都可以获得一定时间的护盾，护盾可以抵消所有常规击杀，直到护盾超时失效。","(Neutrals):\nThe Vigilante wins when they're the last killing role alive and the amount of crewmates is lower or equal to the amount of Vigilantes. The Vigilantet gains a temporary shield after every kill that makes them immortal for a few seconds.","(Злой - Нейтрал):\n Кровный рыцарь получает щит после убийства, который игнорирует обычные атаки. Если Кровных рыцарей больше или ровняется количеству Членов экипажа, то Кровные рыцари побеждают.",""(中立陣營):\n嗜血騎士每次殺人後都可以獲得一定時間的護盾，護盾可以抵擋掉所有正常殺人的舉動，直到護盾時間結束並失效。當只剩下嗜血騎士陣營與船員陣營且嗜血騎士陣營人數大於船員陣營，則嗜血騎士方獲勝。",""
-"TotocalcioInfoLong","(中立阵营):\n赌徒可以通过击杀键在任何玩家身上下注，且中途可以切换下注目标。若下注目标胜利，则赌徒一起胜利。请注意：赌徒死亡后也可以胜利。","","","",""
+"TotocalcioInfoLong","(中立阵营):\n赌徒可以通过击杀键在任何玩家身上下注，且中途可以切换下注目标。若下注目标胜利，则赌徒一起胜利。请注意：赌徒死亡后也可以胜利。","(中立阵营):\n赌徒可以通过击杀键在任何玩家身上下注，且中途可以切换下注目标。若下注目标胜利，则赌徒一起胜利。请注意：赌徒死亡后也可以胜利。","(中立阵营):\n赌徒可以通过击杀键在任何玩家身上下注，且中途可以切换下注目标。若下注目标胜利，则赌徒一起胜利。请注意：赌徒死亡后也可以胜利。","(中立阵营):\n赌徒可以通过击杀键在任何玩家身上下注，且中途可以切换下注目标。若下注目标胜利，则赌徒一起胜利。请注意：赌徒死亡后也可以胜利。",""
 
 "# 附加职业 / Add-ons descriptions"
 "LastImpostorInfoLong","(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。","(Add-ons):\nThis effect is given to the last surviving Impostor. Reduces their kill cooldown.","(Атрибут):\nАтрибут, присваивается последнему Предателю. \nВремя отката убийства становится меньше, чем обычно. \nНе назначается Охотнику за головами, Серийному убийце или Вампиру.","(附加職業):\n這個效果只在偽裝者陣營只剩下一人時賦予該玩家，被賦予效果的玩家殺人冷卻將會縮短。","(附加职业):\n这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。"
@@ -443,7 +443,7 @@
 "TicketsStealerInfoLong","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。","(Add-ons):\nOnly Impostor other than Bombers and Booby Traps will become Stealer. Every time a Stealer kills a person, he gets an additional vote (the vote number is set by the host, and the decimal is rounded down). Also, extra votes from the Stealer are hidden during meeting.","(Атрибут):\nТолько Предатель может стать Вором. Каждый раз, когда Вор убивает игрока, он увеличивает свое собственное количество голосов в игре (увеличение голосов устанавливается в соответствии с количеством голосов, а десятичная дробь округляется в меньшую сторону). Кроме того, дополнительные голоса Вора скрыты.","(附加職業):\n竊票者每次殺死一個人都會增加相對應的票數(增加的數量根據房主設定，無條件捨去成整數)。\n請注意:\n1. 自爆兵和陷阱師不會成為竊票者。\n2. 竊票者額外的票是隱藏的。","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为窃票者。窃票者每次击杀一个人都会增加自己本局的票数（增加数量根据房主设定，小数向下取整）。此外，窃票者额外的票是隐藏的。"
 "DualPersonalityInfoLong","(附加职业)\n中立和叛徒不会成为双重人格，计算其阵营人数时双重人格被视为两人。例如场上剩余一个内鬼和一个双重人格船员，则视为两名船员和一名内鬼，因此游戏不会结束。","(Add-ons):\nNeutrals and Madmates can't become Schizophrenic. Schizophrenic will be considered as 2 players in the game (not applying to meeting votes). Having at least one player as Schizophrenic won't end the game if there are only them and the Impostor left.","(Атрибут):\nНейтралы и Предатели не могут быть с Шизофринией. При подсчете количества игроков в их команде Шизофреник рассматривает как два игрока. Например, если в игре останется один Предатель и одна команда с Шизофринией, то это будет рассматриваться как два Члена Экипажа и один Предатель, поэтому игра не закончится пока Шизофреник не будет убит.","(附加職業):\n模組計算陣營人數時雙重人格被視為兩名玩家。請注意: 中立職業和叛徒不會成為雙重人格。","(附加职业)\n中立和叛徒不会成为双重人格，计算其阵营人数时双重人格被视为两人。例如场上剩余一个内鬼和一个双重人格船员，则视为两名船员和一名内鬼，因此游戏不会结束。"
 "MimicInfoLong","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。","(Add-ons):\nOnly Impostor can become Mimic. When the Mimic is dead, other Impostors will receive a message once a meeting is called, this message will include information on roles who were killed by the Mimic.","(Атрибут):\nТолько Предатели могут стать Мимиком. После того как Мимик умрёт, призраки получат сообщение на собрании. Сообщение содержит роли всех кого убил Мимик пока он был жив.","(附加職業):\n保險箱死後他的隊友會在會議上收到訊息，內容包括保險箱生前殺死的所有人的職業。請注意: 黑手黨不會成為保險箱。","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。"
-"ReachInfoLong","(附加职业)\n只有拥有击杀键的玩家能持枪。持枪的玩家的击杀键交互距离比一般人长。","","","",""
+"ReachInfoLong","(附加职业)\n只有拥有击杀键的玩家能持枪。持枪的玩家的击杀键交互距离比一般人长。","(Add-on)\nOnly roles with a kill button can get this add-on. You have the longest kill range possible in the game, unlike everyone else.","(附加职业)\n只有拥有击杀键的玩家能持枪。持枪的玩家的击杀键交互距离比一般人长。","(附加职业)\n只有拥有击杀键的玩家能持枪。持枪的玩家的击杀键交互距离比一般人长。",""
 
 "# 其它 / Other long description"
 "GMInfoLong","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры.","(房主):\n看我幹嘛，我只是開始遊戲時就在冥界吃瓜而已。","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。"
@@ -597,7 +597,7 @@
 "ShowImpRemainOnEject","驱逐确认时显示剩余<color=#ff1919>内鬼</color>数量","Show remaining <color=#ff1919>Impostors</color> on ejects","Отображать оставшихся <color=#ff1919>Предателей</color> при изгнании","逐出確認時顯示剩餘<color=#ff1919>偽裝者</color>數量","驱逐确认时显示剩余<color=#ff1919>内鬼</color>数量"
 "ShowNKRemainOnEject","同时显示剩余邪恶<color=#ffab1b>中立</color>数量","Show remaining <color=#ffab1b>Neutral Killers</color> on ejects","Отображать оставшихся <color=#ffab1b>Нейтральных Убийц</color> при изгнании","同時顯示剩餘邪惡<color=#ffab1b>中立</color>數量","同时显示剩余邪恶<color=#ffab1b>中立</color>数量"
 "ConfirmMadmateOnEject","驱逐确认<color=#ff1919>叛徒</color>","Confirm <color=#ff1919>Madmates</color> on ejection","Показывать <color=#ff1919>Безумцев</color> при изгнании","逐出確認<color=#ff1919>叛徒</color>","驱逐确认<color=#ff1919>叛徒</color>"
-"ShowTeamNextToRoleNameOnEject","确认职业同时显示所属阵营","","","",""
+"ShowTeamNextToRoleNameOnEject","确认职业同时显示所属阵营","Show what team the ejected player's role is on","确认职业同时显示所属阵营","确认职业同时显示所属阵营",""
 "Ban","封禁","Ban","Забанить","封禁","封禁"
 "Kick","踢出","Kick","Кикнуть","踢出","踢出"
 "NoticeMe","通知我","Notify me","Уведомить меня","通知我","通知我"
@@ -837,13 +837,13 @@
 "SwooperDuration","隐身持续时间","Swoop Duration","Длительность навыка","隱身持續時間",""
 "LowLoadMode","低负载模式","Low Load Mode","Режим низкой нагрузки","低负载模式",""
 "BKProtectDuration","免疫伤害持续时间","Protection Duration","Длительность щита","免疫伤害持续时间",""
-"TotocalcioMaxBetTimes","下注次数上限","","","",""
-"TotocalcioBetCooldown","下注冷却时间","","","",""
-"TotocalcioMaxBetCooldown","下注冷却时间上限","","","",""
-"TotocalcioBetCooldownIncrese","每当场上减少一人时下注冷却时间增加","","","",""
-"TotocalcioKnowTargetRole","可以知道下注目标的职业","","","",""
-"TotocalcioBetTargetKnowTotocalcio","下注目标可以知道自己被下注","","","",""
-"DivinatorHideVote","隐藏占卜师的投票","","","",""
+"TotocalcioMaxBetTimes","下注次数上限","下注次数上限","下注次数上限","下注次数上限",""
+"TotocalcioBetCooldown","下注冷却时间","下注冷却时间","下注冷却时间","下注冷却时间",""
+"TotocalcioMaxBetCooldown","下注冷却时间上限","下注冷却时间上限","下注冷却时间上限","下注冷却时间上限",""
+"TotocalcioBetCooldownIncrese","每当场上减少一人时下注冷却时间增加","每当场上减少一人时下注冷却时间增加","每当场上减少一人时下注冷却时间增加","每当场上减少一人时下注冷却时间增加",""
+"TotocalcioKnowTargetRole","可以知道下注目标的职业","可以知道下注目标的职业","可以知道下注目标的职业","可以知道下注目标的职业",""
+"TotocalcioBetTargetKnowTotocalcio","下注目标可以知道自己被下注","下注目标可以知道自己被下注","下注目标可以知道自己被下注","下注目标可以知道自己被下注",""
+"DivinatorHideVote","隐藏占卜师的投票","Hide Fortune Teller Votes","隐藏占卜师的投票","隐藏占卜师的投票",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被杀","被杀"
@@ -988,8 +988,8 @@
 "BKSkillNotice","击杀一名玩家以进入免疫状态","Kill a player to enter immune status","Убей, чтобы получить щит","击杀一名玩家以进入免疫状态",""
 "BKOffsetKill","免疫伤害成功","Someone tried killing you","Щит сработал","免疫伤害成功",""
 "MedicalerTargetShieldBroken","目标护盾破碎","Someone's shield was broken","У кого-то сломан щит!!","目标护盾破碎",""
-"TotocalcioBetPlayer","您下注了一位玩家","","","",""
-"TotocalcioBetOnYou","赌徒在您身上下了注","","","",""
+"TotocalcioBetPlayer","您下注了一位玩家","您下注了一位玩家","您下注了一位玩家","您下注了一位玩家",""
+"TotocalcioBetOnYou","赌徒在您身上下了注","赌徒在您身上下了注","赌徒在您身上下了注","赌徒在您身上下了注",""
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","信息发送冷却时间为【{0}】秒","信息发送冷却时间为【{0}】秒"
@@ -1225,7 +1225,7 @@
 "SheriffKillButtonText","执法","Shoot","ПРОВЕРИТЬ","执法",""
 "ArsonistVetnButtonText","点火","Ignite","ЗАЖИГАНИЕ","点火",""
 "RevolutionistVetnButtonText","革命","Revolution","РЕВОЛЮЦИЯ","革命",""
-"TotocalcioKillButtonText","下注","","","",""
+"TotocalcioKillButtonText","下注","Bet","下注","下注",""
 "DisabledBySettings","已在设置被中禁用","Disabled by Settings","Отключено настройкой","已在设置被中禁用","已在设置被中禁用"
 "Disabled","禁用","Disabled","Отключено","禁用","禁用"
 "FailToTrack","无法追踪","Failed To Track","Не Удалось Отследить","无法追踪","无法追踪"
@@ -1272,8 +1272,8 @@
 "NextPage","下一页","Next Page","Следующая страница","下一页",""
 "PreviousPage","上一页","Previous Page","Прошлая страница","上一页",""
 "EAC.CheatDetected.EAC","开挂（使用AUM）","Cheating usage detected (Using AUM)","Обнаружено использование читов (используется AUM)","开挂（使用AUM）","开挂（使用AUM）"
-"PressF1ShowMainRoleDes","按F1查看您的主职业介绍","","","",""
-"PressF2ShowAddRoleDes","按F2查看您的附加职业介绍","","","",""
+"PressF1ShowMainRoleDes","按F1查看您的主职业介绍","Press F1 to get a description of your current role","按F1查看您的主职业介绍","按F1查看您的主职业介绍",""
+"PressF2ShowAddRoleDes","按F2查看您的附加职业介绍","Press F2 to get a description of what your add-ons do","按F2查看您的附加职业介绍","按F2查看您的附加职业介绍",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.HighLevel","警告：EAC正在抵御炸房外挂","Warning: EAC detected High Level of cheats.","Предупреждение: EAC обнаружил высокий уровень читов.","警告：EAC正在抵御炸房外挂","警告：EAC正在抵御炸房外挂"
