@@ -431,15 +431,19 @@ class TaskPanelBehaviourPatch
             var RoleWithInfo = $"{player.GetDisplayRoleName()}:\r\n";
             RoleWithInfo += player.GetRoleInfo();
 
-            var AllText = Utils.ColorString(player.GetRoleColor(), RoleWithInfo) + "\r\n\r\n";
+            var AllText = Utils.ColorString(player.GetRoleColor(), RoleWithInfo);
 
-            if (__instance.taskText.text != "None" && Utils.HasTasks(player.Data, false))
-                AllText += __instance.taskText.text + "\r\n\r\n";
+            var taskText = __instance.taskText.text;
+            if (taskText != "None" && Utils.HasTasks(player.Data, false))
+                AllText += "\r\n\r\n" + taskText.Split("\r\n\n")[0];
 
-            AllText += $"<size=70%>{GetString("PressF1ShowMainRoleDes")}";
-            if (Main.PlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
-                AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
-            AllText += "</size>";
+            if (MeetingStates.FirstMeeting)
+            {
+                AllText += $"\r\n\r\n<size=70%>{GetString("PressF1ShowMainRoleDes")}";
+                if (Main.PlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
+                    AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
+                AllText += "</size>";
+            }
 
             __instance.taskText.text = AllText;
         }
