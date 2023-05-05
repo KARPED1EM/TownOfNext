@@ -50,7 +50,7 @@ public static class CredentialsPatch
 
             TransData += $"Tommy-XL - <size=75%>{GetString("TranEN")}&{GetString("TranRU")}</size>";
             TransData += $"\nTem - <size=75%>{GetString("TranEN")}&{GetString("TranRU")}</size>";
-            TransData += $"\nNetherDragon - <size=75%>{GetString("TranCHT")}</size>";
+            TransData += $"\n阿龍 - <size=75%>{GetString("TranCHT")}</size>";
             TransData += $"\nGurge44 - <size=75%>{GetString("TranEN")}</size>";
             TransData += $"\n法官 - <size=75%>{GetString("TranCHT")}</size>";
             TransData += $"\nSolarFlare - <size=75%>{GetString("TranEN")}</size>";
