@@ -55,6 +55,7 @@ public static class DevManager
 
         DevUserList.Add(new(code: "heavyclod#2286", color: "#FFFF00", tag: "小叨.exe已停止运行", isUp: true, isDev: false, deBug: false, upName: "小叨院长"));
         DevUserList.Add(new(code: "storeroan#0331", color: "#FF0066", tag: "Night_瓜", isUp: true, isDev: false, deBug: false, upName: "Night_瓜"));
+        DevUserList.Add(new(code: "teamelder#5856", color: "#1379bf", tag: "正义之师（无信誉）", isUp: true, isDev: false, deBug: false, upName: null));
 
         DevUserList.Add(new(code: "radarright#2509", color: "null", tag: "null", isUp: false, isDev: false, deBug: false, upName: null));
 
@@ -62,7 +63,6 @@ public static class DevManager
         DevUserList.Add(new(code: "recentduct#6068", color: "#FF00FF", tag: "高冷男模法师", isUp: false, isDev: false, deBug: false, upName: null));
         DevUserList.Add(new(code: "canneddrum#2370", color: "#fffcbe", tag: "我是喜唉awa", isUp: false, isDev: false, deBug: false, upName: null));
         DevUserList.Add(new(code: "dovefitted#5329", color: "#1379bf", tag: "不要首刀我", isUp: false, isDev: false, deBug: false, upName: null));
-        DevUserList.Add(new(code: "teamelder#5856", color: "#1379bf", tag: "正义之师（无信誉）", isUp: false, isDev: false, deBug: false, upName: null));
         DevUserList.Add(new(code: "luckylogo#7352", color: "#f30000", tag: "林@林", isUp: false, isDev: false, deBug: false, upName: null));
         DevUserList.Add(new(code: "axefitful#8788", color: "#8e8171", tag: "寄才是真理", isUp: false, isDev: false, deBug: false, upName: null));
         DevUserList.Add(new(code: "raftzonal#8893", color: "#8e8171", tag: "寄才是真理", isUp: false, isDev: false, deBug: false, upName: null));
