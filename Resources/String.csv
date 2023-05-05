@@ -746,6 +746,7 @@
 "AssignOnlyTo%role%","只有%role%会成为加班狂","Assign Only To %role%","Назначить только для %role%","只有%role%會成為加班狂","只有%role%会成为加班狂"
 "WorkhorseNumLongTasks","额外的长任务数","Additional Long Tasks","Дополнительные долгие задания","額外的長任務數量","额外的长任务数"
 "WorkhorseNumShortTasks","额外的短任务数","Additional Short Tasks","Дополнительные короткие задания","額外的短任務數量","额外的短任务数"
+"SnitchCanBeWorkhorse","<color=#b8fb4f>告密者</color>可以成为加班狂","","","",""
 "InnocentCanWinByImp","栽赃<color=#ff1919>内鬼</color>时可以获胜","If their target was an <color=#ff1919>Impostor</color> then they win with them","Если его цель был <color=#ff1919>Предателем</color> то он победит вместе с ним","栽贓<color=#ff1919>偽裝者</color>時可以獲勝","栽赃<color=#ff1919>内鬼</color>时可以获胜"
 "CapitalismSkillCooldown","技能使用冷却","Ability Cooldown","Откат навыка","技能使用冷卻","技能使用冷却"
 "ImpCanBeAvanger","<color=#ff1919>内鬼</color>可以成为复仇者","An <color=#ff1919>Impostor</color> can become an Avenger","<color=#ff1919>Предатель</color> может стать Мстителем","<color=#ff1919>偽裝者</color>可以成為復仇者","<color=#ff1919>内鬼</color>可以成为复仇者"
