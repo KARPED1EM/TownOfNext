@@ -436,11 +436,15 @@ class TaskPanelBehaviourPatch
             var taskText = __instance.taskText.text;
             if (taskText != "None" && Utils.HasTasks(player.Data, false))
             {
-                int endOf = taskText.LastIndexOf("</color>\r\n") + "</color>\r\n".Length;
-                if (endOf != -1) AllText += taskText[endOf..] + "\r\n\r\n";
+                AllText += taskText + "\r\n\r\n";
+                //int endOf = taskText.LastIndexOf("</color>\r\n") + "</color>\r\n".Length;
+                //if (endOf != -1) AllText += taskText[endOf..] + "\r\n\r\n";
             }
 
-            AllText += $"<size=70%>{GetString("PressF1ShowMainRoleDes")}\r\n{GetString("PressF2ShowAddRoleDes")}</size>";
+            AllText += $"<size=70%>{GetString("PressF1ShowMainRoleDes")}";
+            if (Main.PlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
+                AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
+            AllText += "</size>";
 
             __instance.taskText.text = AllText;
         }
