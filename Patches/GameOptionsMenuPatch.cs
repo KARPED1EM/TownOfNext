@@ -77,11 +77,13 @@ public static class GameOptionsMenuPatch
             var tohSettings = Object.Instantiate(gameSettings, gameSettings.transform.parent);
             tohSettings.name = tab + "Tab";
             tohSettings.transform.FindChild("BackPanel").transform.localScale =
-            tohSettings.transform.FindChild("Bottom Gradient").transform.localScale = new Vector3(1.2f, 1f, 1f);
-            tohSettings.transform.FindChild("Background").transform.localScale = new Vector3(1.3f, 1f, 1f);
-            tohSettings.transform.FindChild("UI_Scrollbar").transform.localPosition += new Vector3(0.35f, 0f, 0f);
-            tohSettings.transform.FindChild("UI_ScrollbarTrack").transform.localPosition += new Vector3(0.35f, 0f, 0f);
-            tohSettings.transform.FindChild("GameGroup/SliderInner").transform.localPosition += new Vector3(-0.15f, 0f, 0f);
+            tohSettings.transform.FindChild("Bottom Gradient").transform.localScale = new Vector3(1.6f, 1f, 1f);
+            tohSettings.transform.FindChild("BackPanel").transform.localPosition += new Vector3(0.2f, 0f, 0f);
+            tohSettings.transform.FindChild("Bottom Gradient").transform.localPosition += new Vector3(0.2f, 0f, 0f);
+            tohSettings.transform.FindChild("Background").transform.localScale = new Vector3(1.8f, 1f, 1f);
+            tohSettings.transform.FindChild("UI_Scrollbar").transform.localPosition += new Vector3(1.4f, 0f, 0f);
+            tohSettings.transform.FindChild("UI_ScrollbarTrack").transform.localPosition += new Vector3(1.4f, 0f, 0f);
+            tohSettings.transform.FindChild("GameGroup/SliderInner").transform.localPosition += new Vector3(-0.3f, 0f, 0f);
             var tohMenu = tohSettings.transform.FindChild("GameGroup/SliderInner").GetComponent<GameOptionsMenu>();
 
             //OptionBehaviourを破棄
@@ -93,6 +95,7 @@ public static class GameOptionsMenuPatch
                 if (option.Tab != (TabGroup)tab) continue;
                 if (option.OptionBehaviour == null)
                 {
+                    float yoffset = option.IsText ? 100f : 0f;
                     var stringOption = Object.Instantiate(template, tohMenu.transform);
                     scOptions.Add(stringOption);
                     stringOption.OnValueChanged = new Action<OptionBehaviour>((o) => { });
@@ -100,12 +103,13 @@ public static class GameOptionsMenuPatch
                     stringOption.Value = stringOption.oldValue = option.CurrentValue;
                     stringOption.ValueText.text = option.GetString();
                     stringOption.name = option.Name;
-                    stringOption.transform.FindChild("Background").localScale = new Vector3(1.2f, 1f, 1f);
-                    stringOption.transform.FindChild("Plus_TMP").localPosition += new Vector3(0.3f, option.IsText ? 100f : 0f, 0f);
-                    stringOption.transform.FindChild("Minus_TMP").localPosition += new Vector3(0.3f, option.IsText ? 100f : 0f, 0f);
-                    stringOption.transform.FindChild("Value_TMP").localPosition += new Vector3(0.3f, option.IsText ? 100f : 0f, 0f);
-                    stringOption.transform.FindChild("Title_TMP").localPosition += new Vector3(option.IsText ? 0.3f : 0.15f, option.IsText ? -0.15f : 0f, 0f);
-                    stringOption.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(3.5f, 0.37f);
+                    stringOption.transform.FindChild("Background").localScale = new Vector3(1.6f, 1f, 1f);
+                    stringOption.transform.FindChild("Plus_TMP").localPosition += new Vector3(1.4f, yoffset, 0f);
+                    stringOption.transform.FindChild("Minus_TMP").localPosition += new Vector3(1.0f, yoffset, 0f);
+                    stringOption.transform.FindChild("Value_TMP").localPosition += new Vector3(1.2f, yoffset, 0f);
+                    stringOption.transform.FindChild("Value_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(1.6f, 0.26f);
+                    stringOption.transform.FindChild("Title_TMP").localPosition += new Vector3(option.IsText ? 0.25f : 0.1f, option.IsText ? -0.1f : 0f, 0f);
+                    stringOption.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(5.5f, 0.37f);
 
                     option.OptionBehaviour = stringOption;
                 }
@@ -189,30 +193,31 @@ public class GameOptionsMenuUpdatePatch
                 opt.size = new(5.0f, 0.45f);
                 while (parent != null && enabled)
                 {
-                    enabled = parent.GetBool();
+                    enabled = parent.GetBool() && !parent.IsHiddenOn(Options.CurrentGameMode);
                     parent = parent.Parent;
                     opt.color = new(0f, 1f, 0f);
                     opt.size = new(4.8f, 0.45f);
                     opt.transform.localPosition = new Vector3(0.11f, 0f);
-                    option.OptionBehaviour.transform.Find("Title_TMP").transform.localPosition = new Vector3(-0.95f, 0f);
-                    option.OptionBehaviour.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(3.4f, 0.37f);
+                    option.OptionBehaviour.transform.Find("Title_TMP").transform.localPosition = new Vector3(-1.08f, 0f);
+                    option.OptionBehaviour.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(5.1f, 0.28f);
                     if (option.Parent?.Parent != null)
                     {
                         opt.color = new(0f, 0f, 1f);
                         opt.size = new(4.6f, 0.45f);
                         opt.transform.localPosition = new Vector3(0.24f, 0f);
-                        option.OptionBehaviour.transform.Find("Title_TMP").transform.localPosition = new Vector3(-0.7f, 0f);
-                        option.OptionBehaviour.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(3.3f, 0.37f);
+                        option.OptionBehaviour.transform.Find("Title_TMP").transform.localPosition = new Vector3(-0.88f, 0f);
+                        option.OptionBehaviour.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(4.9f, 0.28f);
                         if (option.Parent?.Parent?.Parent != null)
                         {
                             opt.color = new(1f, 0f, 0f);
                             opt.size = new(4.4f, 0.45f);
                             opt.transform.localPosition = new Vector3(0.37f, 0f);
-                            option.OptionBehaviour.transform.Find("Title_TMP").transform.localPosition = new Vector3(-0.55f, 0f);
-                            option.OptionBehaviour.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(3.2f, 0.37f);
+                            option.OptionBehaviour.transform.Find("Title_TMP").transform.localPosition = new Vector3(-0.68f, 0f);
+                            option.OptionBehaviour.transform.FindChild("Title_TMP").GetComponent<RectTransform>().sizeDelta = new Vector2(4.7f, 0.28f);
                         }
                     }
                 }
+
                 if (option.IsText)
                 {
                     opt.color = new(0, 0, 0);
@@ -230,7 +235,7 @@ public class GameOptionsMenuUpdatePatch
 
                     if (option.IsHeader)
                     {
-                        numItems += 0.5f;
+                        numItems += 0.3f;
                     }
                 }
                 else
