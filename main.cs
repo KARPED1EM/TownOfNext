@@ -186,7 +186,7 @@ public class Main : BasePlugin
         HideName = Config.Bind("Client Options", "Hide Game Code Name", "TOHE");
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
         AutoStart = Config.Bind("Client Options", "AutoStart", false);
-        UnlockFPS = Config.Bind("Client Options", "UnlockFPS", true);
+        UnlockFPS = Config.Bind("Client Options", "UnlockFPS", false);
         SwitchVanilla = Config.Bind("Client Options", "SwitchVanilla", false);
         VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
         GodMode = Config.Bind("Client Options", "GodMode", false);
