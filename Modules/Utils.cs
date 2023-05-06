@@ -309,7 +309,7 @@ public static class Utils
             RoleColor = GetRoleColor(CustomRoles.Madmate);
             RoleText = GetRoleString("Mad-") + RoleText;
         }
-        if (targetSubRoles.Contains(CustomRoles.Charmed) && (self || pure || seerMainRole == CustomRoles.Succubus))
+        if (targetSubRoles.Contains(CustomRoles.Charmed) && (self || pure || seerMainRole == CustomRoles.Succubus || (Succubus.TargetKnowOtherTarget.GetBool() && seerSubRoles.Contains(CustomRoles.Charmed))))
         {
             RoleColor = GetRoleColor(CustomRoles.Charmed);
             RoleText = GetRoleString("Charmed-") + RoleText;

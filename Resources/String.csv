@@ -855,6 +855,7 @@
 "SuccubusCharmCooldownIncrese","每次魅惑增加魅惑冷却时间","Increases Charm Cooldown For Each Charm","每次魅惑增加魅惑冷却时间","每次魅惑增加魅惑冷却时间",""
 "SuccubusCharmMax","魅惑次数上限","Maximum Number Of Charm","魅惑次数上限","魅惑次数上限",""
 "SuccubusKnowTargetRole","可以知道魅惑目标的职业","Know Charmed Player's Role","可以知道魅惑目标的职业","可以知道魅惑目标的职业",""
+"SuccubusTargetKnowOtherTarget","被魅惑的玩家可以互认","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被杀","被杀"
