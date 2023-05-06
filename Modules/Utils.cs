@@ -247,7 +247,7 @@ public static class Utils
     }
     public static string GetDisplayRoleName(byte playerId, bool pure = false)
     {
-        var TextData = GetRoleText(playerId, pure, true);
+        var TextData = GetRoleText(playerId, playerId, pure);
         return ColorString(TextData.Item2, TextData.Item1);
     }
     public static string GetRoleName(CustomRoles role, bool forUser = true)
@@ -281,31 +281,43 @@ public static class Utils
         if (!Main.roleColors.TryGetValue(role, out var hexColor)) hexColor = "#ffffff";
         return hexColor;
     }
-    public static (string, Color) GetRoleText(byte playerId, bool pure = false, bool forself = false)
+    public static (string, Color) GetRoleText(byte seerId, byte targetId, bool pure = false)
     {
         string RoleText = "Invalid Role";
-        Color RoleColor = Color.red;
+        Color RoleColor;
 
-        var mainRole = Main.PlayerStates[playerId].MainRole;
-        var SubRoles = Main.PlayerStates[playerId].SubRoles;
-        RoleText = GetRoleName(mainRole);
-        RoleColor = GetRoleColor(mainRole);
+        var seerMainRole = Main.PlayerStates[seerId].MainRole;
+        var seerSubRoles = Main.PlayerStates[seerId].SubRoles;
 
-        if (SubRoles.Contains(CustomRoles.Madmate)) RoleColor = GetRoleColor(CustomRoles.Madmate);
-        if (SubRoles.Contains(CustomRoles.Charmed) && forself) RoleColor = GetRoleColor(CustomRoles.Charmed);
-        if (SubRoles.Contains(CustomRoles.Egoist) && Options.ImpEgoistVisibalToAllies.GetBool() && !forself) RoleColor = GetRoleColor(CustomRoles.Egoist);
+        var targetMainRole = Main.PlayerStates[targetId].MainRole;
+        var targetSubRoles = Main.PlayerStates[targetId].SubRoles;
 
-        if (LastImpostor.currentId == playerId)
+        var self = seerId == targetId || Main.PlayerStates[seerId].IsDead;
+
+        RoleText = GetRoleName(targetMainRole);
+        RoleColor = GetRoleColor(targetMainRole);
+
+        if (LastImpostor.currentId == targetId)
             RoleText = GetRoleString("Last-") + RoleText;
 
-        if (Options.NameDisplayAddons.GetBool() && !pure)
-            foreach (var subRole in SubRoles.Where(x => x is not CustomRoles.LastImpostor and not CustomRoles.Madmate and not CustomRoles.Charmed and not CustomRoles.Lovers))
+        if (Options.NameDisplayAddons.GetBool() && !pure && self)
+            foreach (var subRole in targetSubRoles.Where(x => x is not CustomRoles.LastImpostor and not CustomRoles.Madmate and not CustomRoles.Charmed and not CustomRoles.Lovers))
                 RoleText = ColorString(GetRoleColor(subRole), GetString("Prefix." + subRole.ToString())) + RoleText;
 
-        if (SubRoles.Contains(CustomRoles.Madmate))
+        if (targetSubRoles.Contains(CustomRoles.Madmate))
+        {
+            RoleColor = GetRoleColor(CustomRoles.Madmate);
             RoleText = GetRoleString("Mad-") + RoleText;
-        if (SubRoles.Contains(CustomRoles.Charmed) && forself)
+        }
+        if (targetSubRoles.Contains(CustomRoles.Charmed) && (self || pure || seerMainRole == CustomRoles.Succubus))
+        {
+            RoleColor = GetRoleColor(CustomRoles.Charmed);
             RoleText = GetRoleString("Charmed-") + RoleText;
+        }
+        if (targetSubRoles.Contains(CustomRoles.Egoist) && Options.ImpEgoistVisibalToAllies.GetBool() && !self && seerMainRole.IsImpostor())
+        {
+            RoleColor = GetRoleColor(CustomRoles.Egoist);
+        }
 
         return (RoleText, RoleColor);
     }
