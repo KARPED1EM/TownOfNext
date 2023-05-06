@@ -60,7 +60,7 @@ class GameEndChecker
                     break;
                 case CustomWinner.Succubus:
                     Main.AllPlayerControls
-                        .Where(pc => (pc.Is(CustomRoles.Succubus) || pc.Is(CustomRoles.Charmed)) && !pc.Is(CustomRoles.Lovers))
+                        .Where(pc => pc.Is(CustomRoles.Succubus) || pc.Is(CustomRoles.Charmed))
                         .Do(pc => CustomWinnerHolder.WinnerIds.Add(pc.PlayerId));
                     break;
             }
