@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -143,7 +142,7 @@ public class ModUpdater
             if (!Main.AlreadyShowMsgBox || create == 0)
             {
                 Main.AlreadyShowMsgBox = true;
-                ShowPopup(notice, true, create == 0);
+                ShowPopup(notice, create == 0 ? StringNames.ExitGame : StringNames.Okay, true, create == 0);
             }
 
             Logger.Info("hasupdate: " + info[0], "2018k");
@@ -254,12 +253,7 @@ public class ModUpdater
     }
     public static void StartUpdate(string url)
     {
-        ShowPopup(GetString("updatePleaseWait"));
-        if (!BackupDLL())
-        {
-            ShowPopup(GetString("updateManually"), true);
-            return;
-        }
+        ShowPopup(GetString("updatePleaseWait"), StringNames.Cancel, true, false);
         _ = DownloadDLL(url);
         return;
     }
@@ -268,12 +262,6 @@ public class ModUpdater
         try
         {
             var fileName = Assembly.GetExecutingAssembly().Location;
-            if (fileName.Contains("TownOfHost.dll"))
-            {
-                var newFileName = Directory.GetParent(fileName).FullName + @"\TOHE.dll";
-                File.Move(fileName, newFileName);
-                Logger.Warn("更名自文件为：TOHE.dll", "NewVersionCheck");
-            }
             if (Directory.Exists("TOH_DATA") && File.Exists(@"./TOHE_DATA/BanWords.txt"))
             {
                 DirectoryInfo di = new("TOH_DATA");
@@ -284,19 +272,6 @@ public class ModUpdater
         catch (Exception ex)
         {
             Logger.Exception(ex, "NewVersionCheck");
-            return false;
-        }
-        return true;
-    }
-    public static bool BackupDLL()
-    {
-        try
-        {
-            File.Move(Assembly.GetExecutingAssembly().Location, Assembly.GetExecutingAssembly().Location + ".bak");
-        }
-        catch
-        {
-            Logger.Error("备份文件失败", "BackupDLL");
             return false;
         }
         return true;
@@ -337,31 +312,76 @@ public class ModUpdater
         }
         return;
     }
+    private static readonly object downloadLock = new();
     public static async Task<bool> DownloadDLL(string url)
     {
         try
         {
-            using WebClient client = new();
-            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadCallBack);
-            client.DownloadFileAsync(new Uri(url), "BepInEx/plugins/TOHE.dll");
-            while (client.IsBusy) await Task.Delay(1);
-            if (GetMD5HashFromFile("BepInEx/plugins/TOHE.dll") != md5)
+            var savePath = "BepInEx/plugins/TOHE.dll.temp";
+            File.Delete(savePath);
+
+            var downloadCallBack = DownloadCallBack;
+            HttpResponseMessage? response = null;
+            using (HttpClient client = new HttpClient())
+                response = await client.GetAsync(url);
+            if (response == null)
+                throw new Exception("文件获取失败");
+            var total = response.Content.Headers.ContentLength ?? 0;
+            var stream = await response.Content.ReadAsStreamAsync();
+            var file = new FileInfo(savePath);
+            using (var fileStream = file.Create())
+            using (stream)
             {
-                BackOldDLL();
-                ShowPopup(GetString("downloadFailed"), true, false);
+                if (downloadCallBack == null)
+                {
+                    await stream.CopyToAsync(fileStream);
+                }
+                else
+                {
+                    byte[] buffer = new byte[1024];
+                    long readLength = 0;
+                    int length;
+                    while ((length = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
+                    {
+                        // 写入到文件
+                        fileStream.Write(buffer, 0, length);
+
+                        //更新进度
+                        readLength += length;
+                        double? progress = Math.Round((double)readLength / total * 100, 2, MidpointRounding.ToZero);
+                        lock (downloadLock)
+                        {
+                            //下载完毕立刻关闭释放文件流
+                            if (total == readLength && progress == 100)
+                            {
+                                fileStream.Close();
+                                fileStream.Dispose();
+                            }
+                            downloadCallBack?.Invoke(total, readLength, progress ?? 0);
+                        }
+                    }
+                }
+            }
+
+            if (GetMD5HashFromFile(savePath) != md5)
+            {
+                File.Delete(savePath);
+                ShowPopup(GetString("downloadFailed"), StringNames.Okay, true, false);
                 MainMenuManagerPatch.updateButton.SetActive(true);
                 MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.template.transform.position + new Vector3(0.25f, 0.75f);
             }
             else
             {
-                ShowPopup(GetString("updateRestart"), true);
+                var fileName = Assembly.GetExecutingAssembly().Location;
+                File.Move(fileName, fileName + ".bak");
+                File.Move("BepInEx/plugins/TOHE.dll.temp", fileName);
+                ShowPopup(GetString("updateRestart"), StringNames.ExitGame, true, true);
             }
-
         }
         catch (Exception ex)
         {
             Logger.Error($"更新失败\n{ex}", "DownloadDLL", false);
-            ShowPopup(GetString("updateManually"), true);
+            ShowPopup(GetString("updateManually"), StringNames.ExitGame, true, true);
             return false;
         }
         return true;
@@ -387,11 +407,11 @@ public class ModUpdater
             throw new Exception("GetMD5HashFromFile() fail,error:" + ex.Message);
         }
     }
-    private static void DownloadCallBack(object sender, DownloadProgressChangedEventArgs e)
+    private static void DownloadCallBack(long total, long downloaded, double progress)
     {
-        ShowPopup($"{GetString("updateInProgress")}\n{e.BytesReceived}/{e.TotalBytesToReceive}({e.ProgressPercentage}%)");
+        ShowPopup($"{GetString("updateInProgress")}\n{downloaded}/{total}({progress}%)", StringNames.Cancel, true, false);
     }
-    private static void ShowPopup(string message, bool showButton = false, bool buttonIsExit = true)
+    private static void ShowPopup(string message, StringNames buttonText, bool showButton = false, bool buttonIsExit = true)
     {
         if (InfoPopup != null)
         {
@@ -400,7 +420,7 @@ public class ModUpdater
             if (button != null)
             {
                 button.gameObject.SetActive(showButton);
-                button.GetChild(0).GetComponent<TextTranslatorTMP>().TargetText = buttonIsExit ? StringNames.QuitLabel : StringNames.OK;
+                button.GetChild(0).GetComponent<TextTranslatorTMP>().TargetText = buttonText;
                 button.GetComponent<PassiveButton>().OnClick = new();
                 if (buttonIsExit) button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Application.Quit()));
                 else button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => InfoPopup.Close()));
