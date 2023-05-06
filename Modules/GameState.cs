@@ -67,7 +67,13 @@ public class PlayerState
 
         if (role == CustomRoles.Madmate)
         {
-            countTypes = CountTypes.Impostor;
+            countTypes = Options.MadmateCountMode.GetInt() switch
+            {
+                0 => CountTypes.OutOfGame,
+                1 => CountTypes.Impostor,
+                2 => CountTypes.Crew,
+                _ => throw new NotImplementedException()
+            };
             SubRoles.Remove(CustomRoles.Charmed);
         }
         if (role == CustomRoles.Charmed)
