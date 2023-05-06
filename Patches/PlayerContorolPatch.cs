@@ -1390,7 +1390,7 @@ class FixedUpdatePatch
             }
             if (GameStates.IsInGame)
             {
-                var RoleTextData = Utils.GetRoleText(__instance.PlayerId, !__instance.AmOwner && !PlayerControl.LocalPlayer.Data.IsDead);
+                var RoleTextData = Utils.GetRoleText(__instance.PlayerId, !__instance.AmOwner && !PlayerControl.LocalPlayer.Data.IsDead, __instance.AmOwner);
                 //if (Options.CurrentGameMode == CustomGameMode.HideAndSeek)
                 //{
                 //    var hasRole = main.AllPlayerCustomRoles.TryGetValue(__instance.PlayerId, out var role);

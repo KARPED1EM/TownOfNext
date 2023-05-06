@@ -247,7 +247,7 @@ public static class Utils
     }
     public static string GetDisplayRoleName(byte playerId, bool pure = false)
     {
-        var TextData = GetRoleText(playerId, pure);
+        var TextData = GetRoleText(playerId, pure, true);
         return ColorString(TextData.Item2, TextData.Item1);
     }
     public static string GetRoleName(CustomRoles role, bool forUser = true)
@@ -281,7 +281,7 @@ public static class Utils
         if (!Main.roleColors.TryGetValue(role, out var hexColor)) hexColor = "#ffffff";
         return hexColor;
     }
-    public static (string, Color) GetRoleText(byte playerId, bool pure = false)
+    public static (string, Color) GetRoleText(byte playerId, bool pure = false, bool forself = false)
     {
         string RoleText = "Invalid Role";
         Color RoleColor = Color.red;
@@ -292,8 +292,8 @@ public static class Utils
         RoleColor = GetRoleColor(mainRole);
 
         if (SubRoles.Contains(CustomRoles.Madmate)) RoleColor = GetRoleColor(CustomRoles.Madmate);
-        if (SubRoles.Contains(CustomRoles.Charmed)) RoleColor = GetRoleColor(CustomRoles.Charmed);
-        if (SubRoles.Contains(CustomRoles.Egoist) && Options.ImpEgoistVisibalToAllies.GetBool()) RoleColor = GetRoleColor(CustomRoles.Egoist);
+        if (SubRoles.Contains(CustomRoles.Charmed) && forself) RoleColor = GetRoleColor(CustomRoles.Charmed);
+        if (SubRoles.Contains(CustomRoles.Egoist) && Options.ImpEgoistVisibalToAllies.GetBool() && !forself) RoleColor = GetRoleColor(CustomRoles.Egoist);
 
         if (LastImpostor.currentId == playerId)
             RoleText = GetRoleString("Last-") + RoleText;
@@ -304,7 +304,7 @@ public static class Utils
 
         if (SubRoles.Contains(CustomRoles.Madmate))
             RoleText = GetRoleString("Mad-") + RoleText;
-        if (SubRoles.Contains(CustomRoles.Charmed))
+        if (SubRoles.Contains(CustomRoles.Charmed) && forself)
             RoleText = GetRoleString("Charmed-") + RoleText;
 
         return (RoleText, RoleColor);
