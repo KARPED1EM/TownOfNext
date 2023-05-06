@@ -188,6 +188,9 @@ class HudManagerPatch
                     case CustomRoles.Totocalcio:
                         __instance.KillButton.OverrideText($"{GetString("TotocalcioKillButtonText")}");
                         break;
+                    case CustomRoles.Succubus:
+                        __instance.KillButton.OverrideText($"{GetString("SuccubusKillButtonText")}");
+                        break;
                 }
 
                 //バウンティハンターのターゲットテキスト
