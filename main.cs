@@ -34,7 +34,7 @@ public class Main : BasePlugin
     public static readonly string MainMenuText = "哟这不TOHE吗，几天不见Bug又多了？";
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.3.2";
-    public const int PluginCreate = 2;
+    public const int PluginCreate = 3;
 
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
