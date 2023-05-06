@@ -293,6 +293,7 @@ public static class Utils
 
         if (SubRoles.Contains(CustomRoles.Madmate)) RoleColor = GetRoleColor(CustomRoles.Madmate);
         if (SubRoles.Contains(CustomRoles.Charmed)) RoleColor = GetRoleColor(CustomRoles.Charmed);
+        if (SubRoles.Contains(CustomRoles.Egoist) && Options.ImpEgoistVisibalToAllies.GetBool()) RoleColor = GetRoleColor(CustomRoles.Egoist);
 
         if (LastImpostor.currentId == playerId)
             RoleText = GetRoleString("Last-") + RoleText;
