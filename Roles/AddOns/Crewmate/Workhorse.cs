@@ -27,7 +27,7 @@ public static class Workhorse
             .SetValueFormat(OptionFormat.Pieces);
         OptionNumShortTasks = IntegerOptionItem.Create(Id + 12, "WorkhorseNumShortTasks", new(0, 5, 1), 1, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workhorse])
             .SetValueFormat(OptionFormat.Pieces);
-        OptionAssignOnlyToCrewmate = BooleanOptionItem.Create(Id + 14, "SnitchCanBeWorkhorse", false, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workhorse]);
+        OptionSnitchCanBeWorkhorse = BooleanOptionItem.Create(Id + 14, "SnitchCanBeWorkhorse", false, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workhorse]);
     }
     public static void Init()
     {
