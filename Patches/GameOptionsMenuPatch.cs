@@ -31,6 +31,9 @@ public static class GameOptionsMenuPatch
         {
             switch (ob.Title)
             {
+                case StringNames.GameVotingTime:
+                    ob.Cast<NumberOption>().ValidRange = new FloatRange(0, 600);
+                    break;
                 case StringNames.GameShortTasks:
                 case StringNames.GameLongTasks:
                 case StringNames.GameCommonTasks:
@@ -51,7 +54,7 @@ public static class GameOptionsMenuPatch
 
         var gameSettings = GameObject.Find("Game Settings");
         if (gameSettings == null) return;
-        gameSettings.transform.FindChild("GameGroup").GetComponent<Scroller>().ScrollWheelSpeed = 1f;
+        gameSettings.transform.FindChild("GameGroup").GetComponent<Scroller>().ScrollWheelSpeed = 1.3f;
 
         var gameSettingMenu = Object.FindObjectsOfType<GameSettingMenu>().FirstOrDefault();
         if (gameSettingMenu == null) return;
