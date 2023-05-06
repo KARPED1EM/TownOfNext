@@ -262,8 +262,11 @@ class CheckMurderPatch
                     Main.Provoked.TryAdd(killer.PlayerId, target.PlayerId);
                     return false;
                 case CustomRoles.Totocalcio:
-                    if (!Totocalcio.OnCheckMurder(killer, target)) return false;
-                    break;
+                    Totocalcio.OnCheckMurder(killer, target);
+                    return false;
+                case CustomRoles.Succubus:
+                    Succubus.OnCheckMurder(killer, target);
+                    return false;
 
                 //==========船员职业==========//
                 case CustomRoles.Sheriff:
@@ -1406,6 +1409,7 @@ class FixedUpdatePatch
                 else if (__instance.Is(CustomRoles.Madmate) && PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) RoleText.enabled = true;
                 else if (__instance.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool()) RoleText.enabled = true;
                 else if (Totocalcio.KnowRole(PlayerControl.LocalPlayer, __instance)) RoleText.enabled = true;
+                else if (Succubus.KnowRole(PlayerControl.LocalPlayer, __instance)) RoleText.enabled = true;
                 else if (PlayerControl.LocalPlayer.Is(CustomRoles.God)) RoleText.enabled = true;
                 else if (PlayerControl.LocalPlayer.Is(CustomRoles.GM)) RoleText.enabled = true;
                 else if (Main.GodMode.Value) RoleText.enabled = true;

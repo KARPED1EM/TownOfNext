@@ -289,17 +289,22 @@ public static class Utils
         var mainRole = Main.PlayerStates[playerId].MainRole;
         var SubRoles = Main.PlayerStates[playerId].SubRoles;
         RoleText = GetRoleName(mainRole);
-        RoleColor = SubRoles.Contains(CustomRoles.Madmate) ? GetRoleColor(CustomRoles.Madmate) : GetRoleColor(mainRole);
+        RoleColor = GetRoleColor(mainRole);
+
+        if (SubRoles.Contains(CustomRoles.Madmate)) RoleColor = GetRoleColor(CustomRoles.Madmate);
+        if (SubRoles.Contains(CustomRoles.Charmed)) RoleColor = GetRoleColor(CustomRoles.Charmed);
 
         if (LastImpostor.currentId == playerId)
             RoleText = GetRoleString("Last-") + RoleText;
 
         if (Options.NameDisplayAddons.GetBool() && !pure)
-            foreach (var subRole in SubRoles.Where(x => x is not CustomRoles.LastImpostor and not CustomRoles.Madmate and not CustomRoles.Lovers))
+            foreach (var subRole in SubRoles.Where(x => x is not CustomRoles.LastImpostor and not CustomRoles.Madmate and not CustomRoles.Charmed and not CustomRoles.Lovers))
                 RoleText = ColorString(GetRoleColor(subRole), GetString("Prefix." + subRole.ToString())) + RoleText;
 
         if (SubRoles.Contains(CustomRoles.Madmate))
             RoleText = GetRoleString("Mad-") + RoleText;
+        if (SubRoles.Contains(CustomRoles.Charmed))
+            RoleText = GetRoleString("Charmed-") + RoleText;
 
         return (RoleText, RoleColor);
     }
@@ -362,6 +367,7 @@ public static class Utils
             case CustomRoles.BloodKnight:
             case CustomRoles.Concealer:
             case CustomRoles.Totocalcio:
+            case CustomRoles.Succubus:
                 hasTasks = false;
                 break;
             case CustomRoles.Workaholic:
@@ -385,6 +391,7 @@ public static class Utils
             switch (subRole)
             {
                 case CustomRoles.Madmate:
+                case CustomRoles.Charmed:
                 case CustomRoles.Lovers:
                     //ラバーズはタスクを勝利用にカウントしない
                     hasTasks &= !ForRecompute;
@@ -404,8 +411,7 @@ public static class Utils
             (pc.Is(CustomRoles.Judge) && !Options.JudgeCanBeMadmate.GetBool()) ||
             pc.Is(CustomRoles.Needy) ||
             pc.Is(CustomRoles.CyberStar) ||
-            pc.Is(CustomRoles.Egoist) ||
-            pc.Is(CustomRoles.DualPersonality)
+            pc.Is(CustomRoles.Egoist)
             );
     }
     public static string GetProgressText(PlayerControl pc)
@@ -487,12 +493,15 @@ public static class Utils
             case CustomRoles.Totocalcio:
                 ProgressText.Append(Totocalcio.GetProgressText(playerId));
                 break;
+            case CustomRoles.Succubus:
+                ProgressText.Append(Succubus.GetCharmLimit());
+                break;
             default:
                 //タスクテキスト
                 var taskState = Main.PlayerStates?[playerId].GetTaskState();
                 if (taskState.hasTasks)
                 {
-                    Color TextColor = Color.yellow;
+                    Color TextColor;
                     var info = GetPlayerInfoById(playerId);
                     var TaskCompleteColor = HasTasks(info) ? Color.green : GetRoleColor(role).ShadeColor(0.5f); //タスク完了後の色
                     var NonCompleteColor = HasTasks(info) ? Color.yellow : Color.white; //カウントされない人外は白色
@@ -501,6 +510,8 @@ public static class Utils
                         NonCompleteColor = Workhorse.RoleColor;
 
                     var NormalColor = taskState.IsTaskFinished ? TaskCompleteColor : NonCompleteColor;
+                    if (Main.PlayerStates.TryGetValue(playerId, out var ps) && ps.MainRole == CustomRoles.Crewpostor)
+                        NormalColor = Color.red;
 
                     TextColor = comms ? Color.gray : NormalColor;
                     string Completed = comms ? "?" : $"{taskState.CompletedTasksCount}";
@@ -747,7 +758,7 @@ public static class Utils
         {
             if (role is CustomRoles.NotAssigned or
                         CustomRoles.LastImpostor) continue;
-            if (summary && role is CustomRoles.Madmate) continue;
+            if (summary && role is CustomRoles.Madmate or CustomRoles.Charmed) continue;
 
             var RoleText = disableColor ? GetRoleName(role) : ColorString(GetRoleColor(role), GetRoleName(role));
             sb.Append($"{ColorString(Color.white, " + ")}{RoleText}");
@@ -1142,6 +1153,7 @@ public static class Utils
                     (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) ||
                     (target.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool()) ||
                     (Totocalcio.KnowRole(seer, target)) ||
+                    (Succubus.KnowRole(seer, target)) ||
                     (seer.Is(CustomRoles.God)) ||
                     (target.Is(CustomRoles.GM))
                     ? $"<size={fontSize}>{target.GetDisplayRoleName(seer.PlayerId != target.PlayerId && !seer.Data.IsDead)}{GetProgressText(target)}</size>\r\n" : "";

@@ -64,6 +64,18 @@ public class PlayerState
 
         if (!SubRoles.Contains(role))
             SubRoles.Add(role);
+
+        if (role == CustomRoles.Madmate)
+        {
+            countTypes = CountTypes.Impostor;
+            SubRoles.Remove(CustomRoles.Charmed);
+        }
+        if (role == CustomRoles.Charmed)
+        {
+            countTypes = CountTypes.Charmed;
+            SubRoles.Remove(CustomRoles.Madmate);
+        }
+
     }
     public void RemoveSubRole(CustomRoles role)
     {

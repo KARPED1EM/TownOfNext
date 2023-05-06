@@ -199,6 +199,7 @@ internal class ChangeRoleSettings
             Swooper.Init();
             BloodKnight.Init();
             Totocalcio.Init();
+            Succubus.Init();
 
             SoloKombatManager.Init();
             CustomWinnerHolder.Reset();
@@ -528,6 +529,9 @@ internal class SelectRolesPatch
                         break;
                     case CustomRoles.Totocalcio:
                         Totocalcio.Add(pc.PlayerId);
+                        break;
+                    case CustomRoles.Succubus:
+                        Succubus.Add(pc.PlayerId);
                         break;
                 }
                 foreach (var subRole in pc.GetCustomSubRoles())

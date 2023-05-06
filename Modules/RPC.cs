@@ -76,6 +76,7 @@ enum CustomRPC
     SetSwooperTimer,
     SetBKTimer,
     SyncTotocalcioTargetAndTimes,
+    SetSuccubusCharmLimit,
 
     //SoloKombat
     SyncKBPlayer,
@@ -421,6 +422,9 @@ internal class RPCHandlerPatch
             case CustomRPC.SyncTotocalcioTargetAndTimes:
                 Totocalcio.ReceiveRPC(reader);
                 break;
+            case CustomRPC.SetSuccubusCharmLimit:
+                Succubus.ReceiveRPC(reader);
+                break;
         }
     }
 }
@@ -720,6 +724,9 @@ internal static class RPC
                 break;
             case CustomRoles.Totocalcio:
                 Totocalcio.Add(targetId);
+                break;
+            case CustomRoles.Succubus:
+                Succubus.Add(targetId);
                 break;
         }
         HudManager.Instance.SetHudActive(true);

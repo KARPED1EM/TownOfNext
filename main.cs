@@ -313,6 +313,7 @@ public class Main : BasePlugin
                 {CustomRoles.Sunnyboy, "#ff9902"},
                 {CustomRoles.BloodKnight, "#630000"},
                 {CustomRoles.Totocalcio, "#ff9409"},
+                {CustomRoles.Succubus, "#cf6acd"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
@@ -337,6 +338,7 @@ public class Main : BasePlugin
                 {CustomRoles.DualPersonality, "#3a648f"},
                 {CustomRoles.Mimic, "#ff1919"},
                 {CustomRoles.Reach, "#74ba43"},
+                {CustomRoles.Charmed, "#cf6acd"},
                 //SoloKombat
                 {CustomRoles.KB_Normal, "#f55252"}
             };
@@ -486,6 +488,7 @@ public enum CustomRoles
     Sunnyboy,
     BloodKnight,
     Totocalcio,
+    Succubus,
 
     //SoloKombat
     KB_Normal,
@@ -515,6 +518,7 @@ public enum CustomRoles
     DualPersonality,
     Mimic,
     Reach,
+    Charmed,
 }
 //WinData
 public enum CustomWinner
@@ -543,6 +547,7 @@ public enum CustomWinner
     Workaholic = CustomRoles.Workaholic,
     Collector = CustomRoles.Collector,
     BloodKnight = CustomRoles.BloodKnight,
+    Succubus = CustomRoles.Succubus,
 }
 public enum AdditionalWinners
 {

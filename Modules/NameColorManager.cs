@@ -11,8 +11,8 @@ public static class NameColorManager
 
         if (!TryGetData(seer, target, out var colorCode))
         {
-            if (KnowTargetRoleColor(seer, target, isMeeting))
-                colorCode = target.GetRoleColorCode();
+            if (KnowTargetRoleColor(seer, target, isMeeting, out var color))
+                colorCode = color == "" ? target.GetRoleColorCode() : color;
         }
         string openTag = "", closeTag = "";
         if (colorCode != "")
@@ -24,17 +24,28 @@ public static class NameColorManager
         }
         return openTag + name + closeTag;
     }
-    private static bool KnowTargetRoleColor(PlayerControl seer, PlayerControl target, bool isMeeting)
+    private static bool KnowTargetRoleColor(PlayerControl seer, PlayerControl target, bool isMeeting, out string color)
     {
-        return seer == target
+        color = "";
+
+        // ÄÚ¹íÅÑÍ½»¥ÈÏ
+        if (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoleTypes.Impostor)) color = Main.roleColors[CustomRoles.Impostor];
+        if (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor) && Options.MadmateKnowWhosImp.GetBool()) color = Main.roleColors[CustomRoles.Impostor];
+        if (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Madmate) && Options.ImpKnowWhosMadmate.GetBool()) color = Main.roleColors[CustomRoles.Madmate];
+        if (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) color = Main.roleColors[CustomRoles.Madmate];
+        if (seer.Is(CustomRoles.Gangster) && target.Is(CustomRoles.Madmate)) color = Main.roleColors[CustomRoles.Madmate];
+
+        //÷ÈÄ§Ð¡µÜ»¥ÈÏ
+        if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Succubus)) color = Main.roleColors[CustomRoles.Succubus];
+        if (seer.Is(CustomRoles.Succubus) && target.Is(CustomRoles.Charmed)) color = Main.roleColors[CustomRoles.Charmed];
+
+        if (color != "") return true;
+        else return seer == target
             || (Main.GodMode.Value && seer.AmOwner)
             || target.Is(CustomRoles.GM)
             || seer.Is(CustomRoles.GM)
             || seer.Is(CustomRoles.God)
-            || (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoleTypes.Impostor))
-            || (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor) && Options.MadmateKnowWhosImp.GetBool())
-            || (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Madmate) && Options.ImpKnowWhosMadmate.GetBool())
-            || (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool())
+
             || (target.Is(CustomRoles.SuperStar) && Options.EveryOneKnowSuperStar.GetBool())
             || (target.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
             || Mare.KnowTargetRoleColor(target, isMeeting);

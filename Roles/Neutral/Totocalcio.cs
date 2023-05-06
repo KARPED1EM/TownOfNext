@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static TOHE.Options;
+using static TOHE.Translator;
 
 namespace TOHE.Roles.Neutral;
 
@@ -89,11 +90,10 @@ public static class Totocalcio
         if (!KnowTargetRole.GetBool()) return false;
         return player.Is(CustomRoles.Totocalcio) && BetPlayer.TryGetValue(player.PlayerId, out var tar) && tar == target.PlayerId;
     }
-    public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
+    public static void OnCheckMurder(PlayerControl killer, PlayerControl target)
     {
-        if (killer.PlayerId == target.PlayerId) return true;
-        if (BetPlayer.TryGetValue(killer.PlayerId, out var tar) && tar == target.PlayerId) return false;
-        if (!BetTimes.TryGetValue(killer.PlayerId, out var times) || times < 1) return false;
+        if (BetPlayer.TryGetValue(killer.PlayerId, out var tar) && tar == target.PlayerId) return;
+        if (!BetTimes.TryGetValue(killer.PlayerId, out var times) || times < 1) return;
 
         BetTimes[killer.PlayerId]--;
         if (BetPlayer.TryGetValue(killer.PlayerId, out var originalTarget) && Utils.GetPlayerById(originalTarget) != null)
@@ -105,12 +105,12 @@ public static class Totocalcio
         killer.ResetKillCooldown();
         killer.SetKillCooldown();
 
-        killer.Notify(Translator.GetString("TotocalcioBetPlayer"));
+        killer.Notify(GetString("TotocalcioBetPlayer"));
         if (BetTargetKnowTotocalcio.GetBool())
-            target.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), Translator.GetString("TotocalcioBetOnYou")));
+            target.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), GetString("TotocalcioBetOnYou")));
 
         Logger.Info($"赌徒下注：{killer.GetNameWithRole()} => {target.GetNameWithRole()}", "Totocalcio");
-        return false;
+        return;
     }
     public static string TargetMark(PlayerControl seer, PlayerControl target)
     {

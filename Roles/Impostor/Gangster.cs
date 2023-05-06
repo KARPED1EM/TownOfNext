@@ -12,13 +12,13 @@ public static class Gangster
 
     private static OptionItem RecruitLimitOpt;
     public static OptionItem KillCooldown;
-
     public static OptionItem SheriffCanBeMadmate;
     public static OptionItem MayorCanBeMadmate;
     public static OptionItem NGuesserCanBeMadmate;
     public static OptionItem JudgeCanBeMadmate;
 
     public static Dictionary<byte, int> RecruitLimit = new();
+
     public static void SetupCustomOption()
     {
         Options.SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.Gangster);
@@ -77,13 +77,17 @@ public static class Gangster
             RecruitLimit[killer.PlayerId]--;
             SendRPC(killer.PlayerId);
             target.RpcSetCustomRole(CustomRoles.Madmate);
-            NameColorManager.Add(killer.PlayerId, target.PlayerId, "#ff1919");
+
             killer.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Gangster), GetString("GangsterSuccessfullyRecruited")));
             target.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Gangster), GetString("BeRecruitedByGangster")));
+            Utils.NotifyRoles();
+
+            killer.ResetKillCooldown();
+            killer.SetKillCooldown();
             killer.RpcGuardAndKill(target);
             target.RpcGuardAndKill(killer);
             target.RpcGuardAndKill(target);
-            SetKillCooldown(killer.PlayerId);
+
             Logger.Info("设置职业:" + target?.Data?.PlayerName + " = " + target.GetCustomRole().ToString() + " + " + CustomRoles.Madmate.ToString(), "Assign " + CustomRoles.Madmate.ToString());
             if (RecruitLimit[killer.PlayerId] < 0)
                 HudManager.Instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
@@ -109,8 +113,7 @@ public static class Gangster
             pc.Is(CustomRoles.Snitch) ||
             pc.Is(CustomRoles.Needy) ||
             pc.Is(CustomRoles.CyberStar) ||
-            pc.Is(CustomRoles.Egoist) ||
-            pc.Is(CustomRoles.DualPersonality)
+            pc.Is(CustomRoles.Egoist)
             );
     }
 }

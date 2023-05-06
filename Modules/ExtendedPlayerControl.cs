@@ -440,6 +440,7 @@ static class ExtendedPlayerControl
             CustomRoles.BloodKnight => pc.IsAlive(),
             CustomRoles.Crewpostor => false,
             CustomRoles.Totocalcio => Totocalcio.CanUseKillButton(pc),
+            CustomRoles.Succubus => Succubus.CanUseKillButton(pc),
             _ => pc.Is(CustomRoleTypes.Impostor),
         };
     }
@@ -457,7 +458,8 @@ static class ExtendedPlayerControl
             CustomRoles.Medicaler or
             CustomRoles.DarkHide or
             CustomRoles.Provocateur or
-            CustomRoles.Totocalcio
+            CustomRoles.Totocalcio or
+            CustomRoles.Succubus
             => false,
 
             CustomRoles.Jackal => Jackal.CanVent.GetBool(),
@@ -604,6 +606,12 @@ static class ExtendedPlayerControl
                 break;
             case CustomRoles.Totocalcio:
                 Totocalcio.SetKillCooldown(player.PlayerId);
+                break;
+            case CustomRoles.Gangster:
+                Gangster.SetKillCooldown(player.PlayerId);
+                break;
+            case CustomRoles.Succubus:
+                Succubus.SetKillCooldown(player.PlayerId);
                 break;
         }
         if (player.PlayerId == LastImpostor.currentId)
