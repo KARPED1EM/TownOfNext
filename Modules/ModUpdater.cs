@@ -320,8 +320,10 @@ public class ModUpdater
             var savePath = "BepInEx/plugins/TOHE.dll.temp";
             File.Delete(savePath);
 
-            var downloadCallBack = DownloadCallBack;
+#nullable enable
             HttpResponseMessage? response = null;
+#nullable disable
+            var downloadCallBack = DownloadCallBack;
             using (HttpClient client = new HttpClient())
                 response = await client.GetAsync(url);
             if (response == null)
