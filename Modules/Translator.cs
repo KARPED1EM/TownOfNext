@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TOHE;
 
@@ -84,7 +85,7 @@ public static class Translator
         var res = $"<INVALID:{str}>";
         try
         {
-            if (translateMaps.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "" || (langId != SupportedLangs.SChinese && res == GetString(str, SupportedLangs.SChinese)))) //strに該当する&無効なlangIdかresが空
+            if (translateMaps.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "" || (langId != SupportedLangs.SChinese && res == GetString(str, SupportedLangs.SChinese) && Regex.IsMatch(res, @"[\u4e00-\u9fa5]")))) //strに該当する&無効なlangIdかresが空
             {
                 if (langId == SupportedLangs.SChinese || langId == SupportedLangs.English) res = $"*{str}";
                 else res = GetString(str, SupportedLangs.English);
