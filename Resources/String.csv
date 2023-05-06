@@ -761,6 +761,7 @@
 "BodyguardProtectRadius","保护范围","Protect Radius","Радиус Защиты","保護範圍","保护范围"
 "ImpCanBeEgoist","<color=#ff1919>内鬼</color>可以成为利己主义者","An <color=#ff1919>Impostor</color> can become Egoist","<color=#ff1919>Предатель</color> может стать Эгоистом","<color=#ff1919>偽裝者</color>可以成為利己主義者","<color=#ff1919>内鬼</color>可以成为利己主义者"
 "CrewCanBeEgoist","<color=#8cffff>船员</color>可以成为利己主义者","A <color=#8cffff>Crewmate</color> can become Egoist","<color=#8cffff>Член Экипажа</color> может стать Эгоистом","<color=#8cffff>船員</color>可以成為利己主義者","<color=#8cffff>船员</color>可以成为利己主义者"
+"ImpEgoistVisibalToAllies","<color=#8cffff>内鬼</color>可以看到其他利己主义者<color=#8cffff>内鬼</color>","","","","",""
 "ImpCanBeSeer","<color=#ff1919>内鬼</color>可以成为灵媒","<color=#ff1919>Impostors</color> can become <color=#61b26c>Seer</color>","<color=#ff1919>Предатель</color> может стать Провидцем","<color=#ff1919>偽裝者</color>可以成為靈媒",""
 "CrewCanBeSeer","<color=#8cffff>船员</color>可以成为灵媒","<color=#8cffff>Crewmates</color> can become <color=#61b26c>Seer</color>","<color=#8cffff>Член Экипажа</color> может стать Провидцем","<color=#8cffff>船員</color>可以成為靈媒",""
 "NeutralCanBeSeer","<color=#ffab1b>中立</color>可以成为灵媒","<color=#ffab1b>Neutrals</color> can become <color=#61b26c>Seer</color>","<color=#ffab1b>Нейтралы</color> могут стать провидцем","<color=#ffab1b>中立</color>可以成為靈媒",""

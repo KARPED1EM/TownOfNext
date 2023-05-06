@@ -372,6 +372,7 @@ public static class Options
     public static OptionItem LoverKnowRoles;
     public static OptionItem LoverSuicide;
     public static OptionItem ImpCanBeEgoist;
+    public static OptionItem ImpEgoistVisibalToAllies;
     public static OptionItem CrewCanBeEgoist;
     public static OptionItem TicketsPerKill;
     public static OptionItem ImpCanBeDualPersonality;
@@ -788,8 +789,9 @@ public static class Options
             .SetValueFormat(OptionFormat.Multiplier);
         SetupAdtRoleOptions(6050480, CustomRoles.Youtuber, canSetNum: true, tab: TabGroup.OtherRoles);
         SetupAdtRoleOptions(6050490, CustomRoles.Egoist, canSetNum: true, tab: TabGroup.OtherRoles);
-        ImpCanBeEgoist = BooleanOptionItem.Create(6050495, "ImpCanBeEgoist", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
         CrewCanBeEgoist = BooleanOptionItem.Create(6050497, "CrewCanBeEgoist", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
+        ImpCanBeEgoist = BooleanOptionItem.Create(6050495, "ImpCanBeEgoist", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
+        ImpEgoistVisibalToAllies = BooleanOptionItem.Create(6050496, "ImpEgoistVisibalToAllies", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
 
         #endregion
 
