@@ -384,7 +384,6 @@ class GameEndChecker
             {
                 reason = GameOverReason.ImpostorByKill;
                 CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Succubus);
-                CustomWinnerHolder.WinnerRoles.Add(CustomRoles.Succubus);
             }
             else if (Jackal == 0 && Pel == 0 && Imp == 0 && BK == 0 && Gam == 0 && CM == 0) //船员胜利
             {
