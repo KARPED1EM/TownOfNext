@@ -98,6 +98,7 @@ public class Main : BasePlugin
     public static Dictionary<byte, Vent> LastEnteredVent = new();
     public static Dictionary<byte, Vector2> LastEnteredVentLocation = new();
     public static List<byte> CyberStarDead = new();
+    public static List<byte> WorkaholicAlive = new();
     public static List<byte> BoobyTrapBody = new();
     public static Dictionary<byte, byte> KillerOfBoobyTrapBody = new();
     public static Dictionary<byte, string> DetectiveNotify = new();
