@@ -207,8 +207,8 @@ public static class GuessManager
         return true;
     }
 
-    public static TMPro.TextMeshPro nameText(this PlayerControl p) => p.cosmetics.nameText;
-    public static TMPro.TextMeshPro NameText(this PoolablePlayer p) => p.cosmetics.nameText;
+    public static TextMeshPro nameText(this PlayerControl p) => p.cosmetics.nameText;
+    public static TextMeshPro NameText(this PoolablePlayer p) => p.cosmetics.nameText;
     public static void RpcGuesserMurderPlayer(this PlayerControl pc, float delay = 0f) //ゲッサー用の殺し方
     {
         // DEATH STUFF //
