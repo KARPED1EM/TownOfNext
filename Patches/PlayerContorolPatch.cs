@@ -527,8 +527,13 @@ class MurderPlayerPatch
             {
                 killer.RPCPlayCustomSound("Congrats");
                 target.RPCPlayCustomSound("Congrats");
+                float delay;
+                if (Options.BaitDelayMax.GetFloat() < Options.BaitDelayMin.GetFloat()) delay = 0f;
+                else delay = IRandom.Instance.Next((int)Options.BaitDelayMin.GetFloat(), (int)Options.BaitDelayMax.GetFloat() + 1);
+                delay = Math.Max(delay, 0.15f);
+                if (delay > 0.15f && Options.BaitDelayNotify.GetBool()) killer.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Bait), string.Format(GetString("KillBaitNotify"), (int)delay)), delay);
                 Logger.Info($"{killer.GetNameWithRole()} 击杀诱饵 => {target.GetNameWithRole()}", "MurderPlayer");
-                new LateTask(() => killer.CmdReportDeadBody(target.Data), 0.15f, "Bait Self Report");
+                new LateTask(() => { if (GameStates.IsInTask) killer.CmdReportDeadBody(target.Data); }, delay, "Bait Self Report");
             }
         }
 

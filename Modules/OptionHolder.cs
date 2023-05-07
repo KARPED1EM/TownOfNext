@@ -207,6 +207,9 @@ public static class Options
     public static OptionItem ImpCanBeBait;
     public static OptionItem CrewCanBeBait;
     public static OptionItem NeutralCanBeBait;
+    public static OptionItem BaitDelayMin;
+    public static OptionItem BaitDelayMax;
+    public static OptionItem BaitDelayNotify;
     public static OptionItem ImpCanBeTrapper;
     public static OptionItem CrewCanBeTrapper;
     public static OptionItem NeutralCanBeTrapper;
@@ -718,6 +721,12 @@ public static class Options
         ImpCanBeBait = BooleanOptionItem.Create(20003, "ImpCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
         CrewCanBeBait = BooleanOptionItem.Create(20004, "CrewCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
         NeutralCanBeBait = BooleanOptionItem.Create(20005, "NeutralCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+        BaitDelayMin = FloatOptionItem.Create(20006, "BaitDelayMin", new(0f, 5f, 1f), 0f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait])
+            .SetValueFormat(OptionFormat.Seconds);
+        BaitDelayMax = FloatOptionItem.Create(20007, "BaitDelayMax", new(0f, 10f, 1f), 0f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait])
+            .SetValueFormat(OptionFormat.Seconds);
+        BaitDelayNotify = BooleanOptionItem.Create(20008, "BaitDelayNotify", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+
         SetupAdtRoleOptions(20800, CustomRoles.Trapper, canSetNum: true);
         ImpCanBeTrapper = BooleanOptionItem.Create(20803, "ImpCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);
         CrewCanBeTrapper = BooleanOptionItem.Create(20804, "CrewCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);

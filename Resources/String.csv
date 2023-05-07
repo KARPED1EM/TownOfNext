@@ -773,6 +773,9 @@
 "ImpCanBeBait","<color=#ff1919>内鬼</color>可以成为诱饵","<color=#ff1919>Impostors</color> can become Bait","<color=#ff1919>内鬼</color>可以成为诱饵","<color=#ff1919>内鬼</color>可以成为诱饵",""
 "CrewCanBeBait","<color=#8cffff>船员</color>可以成为诱饵","<color=#8cffff>Crewmates</color> can become Bait","<color=#8cffff>船员</color>可以成为诱饵","<color=#8cffff>船员</color>可以成为诱饵",""
 "NeutralCanBeBait","<color=#ffab1b>中立</color>可以成为诱饵","<color=#ffab1b>Neutrals</color> can become Bait","<color=#ffab1b>中立</color>可以成为诱饵","<color=#ffab1b>中立</color>可以成为诱饵",""
+"BaitDelayMin","报告延迟下限","","","",""
+"BaitDelayMax","报告延迟上限","","","",""
+"BaitDelayNotify","警告凶手即将报告","","","",""
 "CounterfeiterSkillCooldown","贩卖赝品冷却","Ability cooldown","Откат навыка","販賣贗品冷卻","贩卖赝品冷却"
 "CounterfeiterSkillLimitTimes","贩卖赝品次数上限","Max number of uses","Количество навыков","販賣贗品的次數上限","贩卖赝品次数上限"
 "GrenadierSkillCooldown","使用闪光弹冷却时间","Grenade Cooldown","Откат навыка","使用閃光彈的冷卻時間","使用闪光弹冷却时间"
@@ -1023,6 +1026,7 @@
 "SuccubusCharmedPlayer","您魅惑了一位玩家","You successfully charmed a player","Вы зачаровали игрока","您魅惑了一名玩家",""
 "CharmedBySuccubus","您已被魅魔魅惑","You have been charmed by the Succubus","Вы были зачарованы Суккубом","您已被魅魔魅惑",""
 "SuccubusInvalidTarget","目标无法被魅惑","Target cannot be charmed","Цель не может быть зачарована","目標無法被魅惑",""
+"KillBaitNotify","目标为诱饵，将在{0}秒后报告","","","",""
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","訊息傳送冷卻時間設為【{0}】秒","信息发送冷却时间为【{0}】秒"
