@@ -79,7 +79,6 @@ public static class Divinator
 
                 CustomRoles.Miner or
                 CustomRoles.Scavenger or
-                CustomRoles.Bait or
                 CustomRoles.Luckey or
                 CustomRoles.Needy or
                 CustomRoles.SabotageMaster or

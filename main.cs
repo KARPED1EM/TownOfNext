@@ -263,7 +263,6 @@ public class Main : BasePlugin
                 {CustomRoles.Scientist, "#8cffff"},
                 {CustomRoles.GuardianAngel, "#ffffff"},
                 //特殊クルー役職
-                {CustomRoles.Bait, "#00f7ff"},
                 {CustomRoles.Luckey, "#b8d7a3" },
                 {CustomRoles.Needy, "#a4dffe"},
                 {CustomRoles.SabotageMaster, "#3333ff"},
@@ -342,6 +341,7 @@ public class Main : BasePlugin
                 {CustomRoles.Mimic, "#ff1919"},
                 {CustomRoles.Reach, "#74ba43"},
                 {CustomRoles.Charmed, "#cf6acd"},
+                {CustomRoles.Bait, "#00f7ff"},
                 //SoloKombat
                 {CustomRoles.KB_Normal, "#f55252"}
             };
@@ -438,7 +438,6 @@ public enum CustomRoles
     GuardianAngel,
     Scientist,
     //Crewmate
-    Bait,
     Luckey,
     Needy,
     SuperStar,
@@ -522,6 +521,7 @@ public enum CustomRoles
     Mimic,
     Reach,
     Charmed,
+    Bait,
 }
 //WinData
 public enum CustomWinner

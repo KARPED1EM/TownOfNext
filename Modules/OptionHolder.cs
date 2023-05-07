@@ -204,6 +204,9 @@ public static class Options
     public static OptionItem ImpCanBeSeer;
     public static OptionItem CrewCanBeSeer;
     public static OptionItem NeutralCanBeSeer;
+    public static OptionItem ImpCanBeBait;
+    public static OptionItem CrewCanBeBait;
+    public static OptionItem NeutralCanBeBait;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -593,7 +596,6 @@ public static class Options
         GGCanGuessAdt = BooleanOptionItem.Create(102263, "GGCanGuessAdt", false, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.NiceGuesser]);
         GGTryHideMsg = BooleanOptionItem.Create(102261, "GuesserTryHideMsg", true, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.NiceGuesser])
             .SetColor(Color.green);
-        SetupRoleOptions(20000, TabGroup.CrewmateRoles, CustomRoles.Bait);
         SetupRoleOptions(1020195, TabGroup.CrewmateRoles, CustomRoles.Luckey);
         LuckeyProbability = IntegerOptionItem.Create(1020197, "LuckeyProbability", new(0, 100, 5), 50, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Luckey])
             .SetValueFormat(OptionFormat.Percent);
@@ -712,6 +714,10 @@ public static class Options
         ImpCanBeDualPersonality = BooleanOptionItem.Create(6052338, "ImpCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
         CrewCanBeDualPersonality = BooleanOptionItem.Create(6052340, "CrewCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
         SetupAdtRoleOptions(6052490, CustomRoles.Reach, canSetNum: true);
+        SetupAdtRoleOptions(20000, CustomRoles.Bait, canSetNum: true);
+        ImpCanBeBait = BooleanOptionItem.Create(6050353, "ImpCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+        CrewCanBeBait = BooleanOptionItem.Create(6050354, "CrewCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+        NeutralCanBeBait = BooleanOptionItem.Create(6050355, "NeutralCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
 
         SetupAdtRoleOptions(6050390, CustomRoles.Madmate, canSetNum: true, canSetChance: false);
         MadmateSpawnMode = StringOptionItem.Create(6060444, "MadmateSpawnMode", madmateSpawnMode, 0, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Madmate]);

@@ -521,41 +521,20 @@ class MurderPlayerPatch
         if (Main.FirstDied == byte.MaxValue)
             Main.FirstDied = target.PlayerId;
 
+        //When Bait is killed
+        if (target.Is(CustomRoles.Bait))
+        {
+            if (killer.PlayerId != target.PlayerId || target.GetRealKiller()?.GetCustomRole() is CustomRoles.Swooper)
+            {
+                killer.RPCPlayCustomSound("Congrats");
+                target.RPCPlayCustomSound("Congrats");
+                Logger.Info($"{killer.GetNameWithRole()} 击杀诱饵 => {target.GetNameWithRole()}", "MurderPlayer");
+                new LateTask(() => killer.CmdReportDeadBody(target.Data), 0.15f, "Bait Self Report");
+            }
+        }
+
         switch (target.GetCustomRole())
         {
-            //When Bait is killed
-            case CustomRoles.Bait:
-                if (killer.PlayerId != target.PlayerId || target.GetRealKiller()?.GetCustomRole() is CustomRoles.Swooper)
-                {
-                    killer.RPCPlayCustomSound("Congrats");
-                    target.RPCPlayCustomSound("Congrats");
-                    if (target.Is(CustomRoles.Madmate)) //背叛诱饵
-                    {
-                        List<PlayerControl> playerList = new();
-                        foreach (PlayerControl pc in Main.AllAlivePlayerControls)
-                            if (!(pc.GetCustomRole() is CustomRoles.Needy or CustomRoles.GM) && pc.PlayerId != target.PlayerId)
-                                playerList.Add(pc);
-                        if (playerList.Count < 1)
-                        {
-                            Logger.Info(target?.Data?.PlayerName + "是背叛诱饵，但找不到替罪羊", "MurderPlayer");
-                            new LateTask(() => killer.CmdReportDeadBody(target.Data), 0.15f, "Bait Self Report");
-                        }
-                        else
-                        {
-                            var rd = IRandom.Instance;
-                            int hackinPlayer = rd.Next(0, playerList.Count);
-                            if (playerList[hackinPlayer] == null) hackinPlayer = 0;
-                            Logger.Info(target?.Data?.PlayerName + "是背叛诱饵，随机报告者：" + playerList[hackinPlayer]?.Data?.PlayerName, "MurderPlayer");
-                            new LateTask(() => playerList[hackinPlayer].CmdReportDeadBody(target.Data), 0.15f, "Bait of MadmateJ Random Report");
-                        }
-                    }
-                    else //船员诱饵
-                    {
-                        Logger.Info(target?.Data?.PlayerName + "はBaitだった", "MurderPlayer");
-                        new LateTask(() => killer.CmdReportDeadBody(target.Data), 0.15f, "Bait Self Report");
-                    }
-                }
-                break;
             case CustomRoles.Trapper:
                 if (killer != target)
                     killer.TrapperKilled(target);
@@ -837,7 +816,7 @@ class ReportDeadBodyPatch
             //以下、检查是否允许本次会议
             //=============================================
 
-            var killer = __instance.GetRealKiller();
+            var killer = target?.Object?.GetRealKiller();
             var killerRole = killer?.GetCustomRole();
 
             //杀戮机器无法报告或拍灯
@@ -873,11 +852,7 @@ class ReportDeadBodyPatch
                 if (Main.CleanerBodies.Contains(target.PlayerId)) return false;
 
                 // 胆小鬼不敢报告
-                if (__instance.Is(CustomRoles.Oblivious))
-                {
-                    if (killerRole != CustomRoles.Hacker && target.GetCustomRole() != CustomRoles.Bait)
-                        return false;
-                }
+                if (__instance.Is(CustomRoles.Oblivious) && (target?.Object == null || !target.Object.Is(CustomRoles.Bait))) return false;
 
                 // 报告了诡雷尸体
                 if (Main.BoobyTrapBody.Contains(target.PlayerId) && __instance.IsAlive())

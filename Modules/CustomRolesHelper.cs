@@ -13,7 +13,6 @@ internal static class CustomRolesHelper
             {
                 CustomRoles.Sniper => CustomRoles.Shapeshifter,
                 CustomRoles.Jester => CustomRoles.Crewmate,
-                CustomRoles.Bait => CustomRoles.Crewmate,
                 CustomRoles.Mayor => Options.MayorHasPortableButton.GetBool() ? CustomRoles.Engineer : CustomRoles.Crewmate,
                 CustomRoles.Opportunist => CustomRoles.Crewmate,
                 CustomRoles.Snitch => CustomRoles.Crewmate,
@@ -139,7 +138,8 @@ internal static class CustomRolesHelper
             CustomRoles.DualPersonality or
             CustomRoles.Mimic or
             CustomRoles.Reach or
-            CustomRoles.Charmed;
+            CustomRoles.Charmed or
+            CustomRoles.Bait;
     }
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
@@ -275,6 +275,7 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeDualPersonality.GetBool()) return false;
         if (role is CustomRoles.DualPersonality && pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeDualPersonality.GetBool()) return false;
         if (role is CustomRoles.Seer && ((pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeSeer.GetBool()) || (pc.GetCustomRole().IsNeutral() && !Options.NeutralCanBeSeer.GetBool()) || (pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeSeer.GetBool()))) return false;
+        if (role is CustomRoles.Bait && ((pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeBait.GetBool()) || (pc.GetCustomRole().IsNeutral() && !Options.NeutralCanBeBait.GetBool()) || (pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeBait.GetBool()))) return false;
         if (role is CustomRoles.Reach && !pc.CanUseKillButton()) return false;
         return true;
     }
