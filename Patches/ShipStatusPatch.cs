@@ -68,8 +68,12 @@ class RepairSystemPatch
             }
         }
 
-        if ((!player.Is(CustomRoleTypes.Impostor) && !(player.Is(CustomRoles.Jackal) && Jackal.CanUseSabotage.GetBool())) || player.Is(CustomRoles.Minimalism))
-            if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) return false; //シェリフにサボタージュをさせない ただしフリープレイは例外
+        if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+        {
+            if (player.Is(CustomRoleTypes.Impostor) && !player.Is(CustomRoles.Minimalism)) return true;
+            if (player.Is(CustomRoles.Jackal) && Jackal.CanUseSabotage.GetBool()) return true;
+            return false;
+        }
 
         return true;
     }
