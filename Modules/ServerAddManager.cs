@@ -13,13 +13,15 @@ public static class ServerAddManager
     private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
     public static void Init()
     {
+        if (serverManager.AvailableRegions.Count == 7) return;
+
         serverManager.AvailableRegions = ServerManager.DefaultRegions;
         List<IRegionInfo> regionInfos = new();
 
         if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
         {
             regionInfos.Add(CreateHttp("au-sh.pafyx.top", "梦服上海 (新)", 22000, false));
-            regionInfos.Add(CreateHttp("120.78.171.61", "霸总广州", 22000, false));
+            //regionInfos.Add(CreateHttp("120.78.171.61", "霸总广州", 22000, false));
         }
         regionInfos.Add(CreateHttp("au-as.duikbo.at", "Modded Asia (MAS)", 443, true));
         regionInfos.Add(CreateHttp("aumods.one", "Modded NA (MNA)", 443, true));
