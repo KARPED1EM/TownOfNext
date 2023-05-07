@@ -668,6 +668,7 @@
 "SheriffShotLimit","执法次数上限","Max number of Kills","Количество выстрелов","執法次數上限","执法次数上限"
 "SheriffCanKillAllAlive","全员存活时可以执法","Can Kill when everyone is Alive","Может убить всех живых","全員存活時可以執法","全员存活时可以执法"
 "SheriffCanKillMadmate","可以执法<color=#ff1919>叛徒</color>","Can Kill <color=#ff1919>Madmates</color>","Может убить <color=#ff1919>Безумцев</color>","可以執法<color=#ff1919>叛徒</color>","可以执法<color=#ff1919>叛徒</color>"
+"SheriffCanKillCharmed","可以执法<color=cf6acd>魅惑</color>玩家","","","","",""
 "SheriffSetMadCanKill","单独设定<color=#ff1919>背叛的警长</color>可执法的目标（默认全开）","Specifically set teams that the <color=#ff1919>Mad-Sheriff</color> can kill","Настроить кого <color=#ff1919>Безумный Шериф</color> может убивать","單獨設定<color=#ff1919>背叛的警長</color>可以執法的目標(預設全開)","单独设定<color=#ff1919>背叛的警长</color>可执法的目标（默认全开）"
 "SheriffMadCanKillImp","背叛后可以执法<color=#ff1919>内鬼阵营</color>","Can kill <color=#ff1919>Impostors</color>","Может убивать <color=#ff1919>Предателей</color>","背叛後可以執法<color=#ff1919>偽裝者陣營</color>","背叛后可以执法<color=#ff1919>内鬼阵营</color>"
 "SheriffMadCanKillNeutral","背叛后可以执法<color=#ffab1b>中立阵营</color>","Can kill <color=#ffab1b>Neutrals</color>","Может убивать <color=#ffab1b>Нейтралов</color>","背叛後可以執法<color=#ffab1b>中立陣營</color>","背叛后可以执法<color=#ffab1b>中立阵营</color>"

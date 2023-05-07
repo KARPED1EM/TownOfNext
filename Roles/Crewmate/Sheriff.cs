@@ -18,6 +18,7 @@ public static class Sheriff
     public static OptionItem CanKillNeutrals;
     public static OptionItem CanKillNeutralsMode;
     public static OptionItem CanKillMadmate;
+    public static OptionItem CanKillCharmed;
     public static OptionItem SetMadCanKill;
     public static OptionItem MadCanKillCrew;
     public static OptionItem MadCanKillImp;
@@ -39,6 +40,7 @@ public static class Sheriff
             .SetValueFormat(OptionFormat.Times);
         CanKillAllAlive = BooleanOptionItem.Create(Id + 15, "SheriffCanKillAllAlive", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         CanKillMadmate = BooleanOptionItem.Create(Id + 17, "SheriffCanKillMadmate", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
+        CanKillCharmed = BooleanOptionItem.Create(Id + 22, "SheriffCanKillCharmed", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         CanKillNeutrals = BooleanOptionItem.Create(Id + 16, "SheriffCanKillNeutrals", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
         CanKillNeutralsMode = StringOptionItem.Create(Id + 14, "SheriffCanKillNeutralsMode", KillOption, 0, TabGroup.CrewmateRoles, false).SetParent(CanKillNeutrals);
         SetUpNeutralOptions(Id + 30);
@@ -129,18 +131,20 @@ public static class Sheriff
     {
         var cRole = player.GetCustomRole();
         var subRole = player.GetCustomSubRoles();
-        bool IsMadmate = false;
+        bool CanKill = false;
         foreach (var role in subRole)
         {
             if (role == CustomRoles.Madmate)
-                IsMadmate = CanKillMadmate.GetBool();
+                CanKill = CanKillMadmate.GetBool();
+            if (role == CustomRoles.Charmed)
+                CanKill = CanKillCharmed.GetBool();
         }
 
         return cRole.GetCustomRoleTypes() switch
         {
             CustomRoleTypes.Impostor => true,
             CustomRoleTypes.Neutral => CanKillNeutrals.GetBool() && (CanKillNeutralsMode.GetValue() == 0 || (!KillTargetOptions.TryGetValue(cRole, out var option) || option.GetBool())),
-            _ => IsMadmate,//それでもない場合マッドが切れるand重複マッドか調べる
+            _ => CanKill,
         };
     }
 }
