@@ -840,6 +840,7 @@
 "JudgeTryHideMsg","尝试混淆法官指令（试验性）","Try to hide Judge's commands","Спрятать приказ судьи","尝试混淆法官指令（试验性）","尝试混淆法官指令（试验性）"
 "TrialLimitPerMeeting","每次会议审判次数上限","Max Trials per Meeting","Количество судов за собрание","每次会议审判次数上限","每次会议审判次数上限"
 "JudgeCanTrialMadmate","可以审判<color=#ff1919>叛徒</color>","Can trial <color=#ff1919>Madmates</color>","Может судить <color=#ff1919>Безумцев</color>","可以审判<color=#ff1919>叛徒</color>","可以审判<color=#ff1919>叛徒</color>"
+"JudgeCanTrialCharmed","可以审判<color=#cf6acd>魅惑</color>玩家","","","","",""
 "JudgeCanTrialnCrewKilling","可以审判带刀<color=#8cffff>船员</color>","Can trial <color=#8cffff>Crewmate Killings</color>","Может судить <color=#8cffff>Убийц Экипажа</color>","可以审判带刀<color=#8cffff>船员</color>","可以审判带刀<color=#8cffff>船员</color>"
 "JudgeCanTrialNeutralB","可以审判无刀<color=#ffab1b>中立</color>","Can trial <color=#ffab1b>Neutral Benigns</color>","Может судить <color=#ffab1b>Добрых Нейтралов</color>","可以审判无刀<color=#ffab1b>中立</color>","可以审判无刀<color=#ffab1b>中立</color>"
 "JudgeCanTrialNeutralK","可以审判带刀<color=#ffab1b>中立</color>","Can trial <color=#ffab1b>Neutral Killings</color>","Может судить <color=#ffab1b>Злых Нейтралов</color>","可以审判带刀<color=#ffab1b>中立</color>","可以审判带刀<color=#ffab1b>中立</color>"
