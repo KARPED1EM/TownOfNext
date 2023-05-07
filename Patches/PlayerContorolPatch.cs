@@ -521,7 +521,6 @@ class MurderPlayerPatch
         if (Main.FirstDied == byte.MaxValue)
             Main.FirstDied = target.PlayerId;
 
-        //When Bait is killed
         if (target.Is(CustomRoles.Bait))
         {
             if (killer.PlayerId != target.PlayerId || target.GetRealKiller()?.GetCustomRole() is CustomRoles.Swooper)
@@ -533,12 +532,11 @@ class MurderPlayerPatch
             }
         }
 
+        if (target.Is(CustomRoles.Trapper) && killer != target)
+            killer.TrapperKilled(target);
+        
         switch (target.GetCustomRole())
         {
-            case CustomRoles.Trapper:
-                if (killer != target)
-                    killer.TrapperKilled(target);
-                break;
             case CustomRoles.BallLightning:
                 if (killer != target)
                     BallLightning.MurderPlayer(killer, target);

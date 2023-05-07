@@ -115,7 +115,6 @@ public static class Divinator
                 CustomRoles.Bomber or
                 CustomRoles.Capitalism or
                 CustomRoles.NiceGuesser or
-                CustomRoles.Trapper or
                 CustomRoles.Grenadier or
                 CustomRoles.Terrorist or
                 CustomRoles.Revolutionist or

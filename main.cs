@@ -275,7 +275,6 @@ public class Main : BasePlugin
                 {CustomRoles.CyberStar, "#ee4a55" },
                 {CustomRoles.SpeedBooster, "#00ffff"},
                 {CustomRoles.Doctor, "#80ffdd"},
-                {CustomRoles.Trapper, "#5a8fd0"},
                 {CustomRoles.Dictator, "#df9b00"},
                 {CustomRoles.Detective, "#7160e8" },
                 {CustomRoles.SwordsMan, "#f0e68c"},
@@ -342,6 +341,7 @@ public class Main : BasePlugin
                 {CustomRoles.Reach, "#74ba43"},
                 {CustomRoles.Charmed, "#cf6acd"},
                 {CustomRoles.Bait, "#00f7ff"},
+                {CustomRoles.Trapper, "#5a8fd0"},
                 //SoloKombat
                 {CustomRoles.KB_Normal, "#f55252"}
             };
@@ -449,7 +449,6 @@ public enum CustomRoles
     Sheriff,
     Snitch,
     SpeedBooster,
-    Trapper,
     Dictator,
     Doctor,
     Detective,
@@ -522,6 +521,7 @@ public enum CustomRoles
     Reach,
     Charmed,
     Bait,
+    Trapper,
 }
 //WinData
 public enum CustomWinner

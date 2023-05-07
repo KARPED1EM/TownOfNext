@@ -112,7 +112,6 @@
 "Snitch","告密者","Snitch","Стукач","告密者","告密者"
 "SpeedBooster","增速者","Speed Booster","Ускоритель","增速師","增速者"
 "Doctor","法医","Doctor","Доктор","法醫","法医"
-"Trapper","陷阱师","Beartrap","Капкан","設陷者","陷阱师"
 "Dictator","独裁者","Dictator","Диктатор","獨裁主義者","独裁者"
 "Detective","侦探","Detective","Детектив","偵探","侦探"
 "NiceGuesser","正义赌怪","Nice Guesser","Добрый Угадыватель","正義賭怪","正义赌怪"
@@ -176,6 +175,7 @@
 "Reach","持枪","Reach","Длиннолап","長槍",""
 "Charmed","魅魔小弟","Charmed","Зачарован","魅魔小弟",""
 "Bait","诱饵","Bait","Байт","誘餌","Bait"
+"Trapper","陷阱师","Beartrap","Капкан","設陷者","陷阱师"
 
 "## 附加职业作为前缀时 / Prefixes for Add-ons"
 
@@ -196,7 +196,8 @@
 "Prefix.DualPersonality","双重人格","Schizophrenic ","Шизофренический ","雙重人格","双重人格"
 "Prefix.Mimic","宝箱怪","Mimic ","Мимикующий ","保險箱","宝箱怪"
 "Prefix.Reach","持枪","Reach ","Длиннолап ","長槍",""
-"Prefix.Bait","诱饵","Bait","Байт","誘餌","Bait"
+"Prefix.Bait","诱饵","Bait ","Байт ","誘餌",""
+"Prefix.Trapper","陷阱","Beartrap ","Капкан ","設陷",""
 
 "## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen"
 
@@ -256,7 +257,6 @@
 "SnitchInfo","总之就是难逃一死","Finish your tasks to find the Impostors","Заверши свои задания, чтобы узнать кто предатели","完成你的任務來找出<color=#FF1919>偽裝者</color>","总之就是难逃一死"
 "SpeedBoosterInfo","随风奔跑自由是方向","Boost your speed","Ускоряйтесь","我要跑越過傷悲一種接近光的感覺","随风奔跑自由是方向"
 "DoctorInfo","信我，学医救不了太空人~","Know how each player died","Вы знаете причины смерти игроков","查看他們的死因","信我，学医救不了太空人~"
-"TrapperInfo","大奖小奖，能记住就是好奖","Freeze your killer for a few seconds","Замораживаете своего убийцу на несколько секунд","誘捕你的敵人","大奖小奖，能记住就是好奖"
 "DictatorInfo","请您不要随意自杀","Vote Someone to Instantly Eject them","Твой голос автоматически выбросит игрока","讓所有人臣服於你","请您不要随意自杀"
 "DetectiveInfo","我福尔摩斯来辣！","Report Bodies to get Info","Репорть трупы, чтобы получать информацию","調查被害者的職業","我福尔摩斯来辣！"
 "UndercoverInfo","碟中谍了属于是","Impostors see you as their partner","Предатели считают вас как за своего","混入狼群中","碟中谍了属于是"
@@ -321,6 +321,7 @@
 "MimicInfo","噔↗噔↗当→当↘当→当↗","Reveal killed players' roles to imps upon death","Раскрывайте роли убитых игроков предателям, после смерти","人家是存錢，我是存資料","噔↗噔↗当→当↘当→当↗"
 "ReachInfo","大人，时代变啦！","You have a longer kill range","У вас самая большая дальность убийства","你有更長的殺人距離",""
 "BaitInfo","好消息，杀了我可以吃席","Your Killer self-reports your body","Убийца моментально саморепнет ваше тело","犧牲小我，完成大我","好消息，杀了我可以吃席"
+"TrapperInfo","大奖小奖，能记住就是好奖","Freeze your killer for a few seconds","Замораживаете своего убийцу на несколько секунд","誘捕你的敵人","大奖小奖，能记住就是好奖"
 
 "# 其它 / Other descriptions"
 "GMInfo","开局死的冤魂隔岸观火","Spectate the Chaos!","Вы Мастер Игры, наслаждайтесь хаосом!","當吃瓜群眾在一旁看戲吧","开局死的冤魂隔岸观火"
@@ -386,7 +387,6 @@
 "SnitchInfoLong","(船员阵营):\n告密者完成所有任务后，将可以看到以红色昵称表示的所有内鬼。当告密者仅剩一个任务的时候，内鬼将会看到自己以及告密者的昵称旁边有「★」作为提示。告密者成为叛徒时，「★」标记变为红色。","(Crewmates):\nAfter the Snitch completes all their tasks, the Imposters names will be highlighted in red at the next meeting. When the Snitch has only one task left, the Imposters will see a「★」mark next to the name of themselves and the Snitch. When a Snitch becomes a Madmate, the「★」mark turns red.","(Член Экипажа):\nКак только Стукач выполнит все задания, то никнейм у всех Предателей будет отображаться \nкрасным цветом, и наоборот, если количество ваших заданий будет близка к завершению, \nто рядом с никнеймом Стукача появится звёздочка★, которая будет видна Предателям.","(船員陣營):\n當告密者完成所有任務後，告密者將可以看到偽裝者名字顯示為紅色(根據房主設定，告密者或許也可以跟帶刀中立互認)，當告密者只剩下一個任務時，偽裝者將會看到自己和告密者的名字旁有「★」符號作為提示，如果告密者成為叛徒，那麼「★」符號將轉為紅色。","(船员阵营):\n告密者完成所有任务后，将可以看到以红色昵称表示的所有内鬼。当告密者仅剩一个任务的时候，内鬼将会看到自己以及告密者的昵称旁边有「★」作为提示。告密者成为叛徒时，「★」标记变为红色。"
 "SpeedBoosterInfoLong","(船员阵营):\n增速者每次完成任务都会增加自己的移动速度。请注意：由于技术限制，增速者在其他人眼中为正常速度，所以会以闪现的方式移动。","(Crewmates):\nSpeed Booster increase their movement speed every time they complete a task. Note: due to technical limitations, the Speed Booster appears to be at a normal speed to others, so they look like glitch.","(Член Экипажа):\nУскоритель будет увеличивать свою скорость передвижения каждый раз, когда он выполняет задание. Пожалуйста, обратите внимание: Из-за технических ограничений у других игроков его скорость будет прежней, поэтому он иногда будет пинговать.","(船員陣營):\n增速師每次完成任務後都會增加自己的移動速度。\n請注意: 由於技術限制，增速者在其他人眼裡為正常速度，所以會以閃現的方式移動。","(船员阵营):\n增速者每次完成任务都会增加自己的移动速度。请注意：由于技术限制，增速者在其他人眼中为正常速度，所以会以闪现的方式移动。"
 "DoctorInfoLong","(船员阵营):\n法医可以查看生命监测装置并确认死亡玩家的死因。查看的时间长短与设备的充能数挂钩。","(Crewmates):\nDoctor can see the cause of death for all players. In addition, Doctor can access vitals wherever you are while he still have battery.","(Член Экипажа):\nДоктор может узнать причину смерти игрока. \nКроме того, он имеет портативные пульсы как у учёного, которые он может использовать в любом месте, пока у него не закончится зарядка.","(船員陣營):\n法醫可以在會議上看到玩家的死因，此外，如果法醫的心電圖還有電量，那麼它將可以隨時隨地觀看心電圖。","(船员阵营):\n法医可以查看生命监测装置并确认死亡玩家的死因。查看的时间长短与设备的充能数挂钩。"
-"TrapperInfoLong","(船员阵营):\n陷阱师被击杀时，凶手一段时间内将不能移动。","(Crewmates):\nWhen Beartrap is killed, Beartrap immobilize killer for a configurable amount of time.","(Член Экипажа):\nПосле того как Капкан убьют, то его убийца будет обездвижен на несколько секунд. (время зависит от настроек)","(船員陣營):\n當設陷者被殺時，那麼殺他的兇手將會一段時間內無法移動。","(船员阵营):\n陷阱师被击杀时，凶手一段时间内将不能移动。"
 "DictatorInfoLong","(船员阵营):\n当独裁者在会议阶段投票给玩家后，会议会被强制结束并放逐其投票对象。该技能发动的代价是独裁者会自杀。说白了就是一换一。","(Crewmates):\nWhen the Dictator votes someone, the meeting will end on the spot and the player they voted will be ejected. The moment the Dictator vote someone out, Dictator will also die.","(Член Экипажа):\nЕсли Диктатор проголосует за любого игрока во время собрания, он сможет принудительно завершить собрание и кикнуть игрока за которого он отдал голос \nТак же Диктатор умрёт после собрания когда он отдаст голос.","(船員陣營):\n當獨裁者在會議上投票給某人時，會議將被強制結束並強制丟出獨裁者投票給的目標，但代價就是獨裁者在投票後會立刻死亡。","(船员阵营):\n当独裁者在会议阶段投票给玩家后，会议会被强制结束并放逐其投票对象。该技能发动的代价是独裁者会自杀。说白了就是一换一。"
 "DetectiveInfoLong","(船员阵营):\n侦探报告尸体后，会收到一条线索消息，该消息会告诉侦探被害者的职业是什么，根据房主设定，侦探可能知道凶手的职业是什么。请注意：侦探不会成为胆小鬼。","(Crewmate):\nAfter the Detective reports the body, he will receive a clue message, which will tell the Detective what the victim's role is. According to the host's settings, the Detective may know what the murderer's role is. Note: Detective won't be Oblivious.","(Член Экипажа):\nПосле того, как Детектив зарепортит труп, он получит сообщение с подсказкой, которое сообщит Детективу, какая была роль у трупа. В зависимости от настроек Детектив может даже знать, какая роль у убийцы жертвы","(船員陣營):\n偵探在報告屍體後，會在會議上收到一條線索，該消息會告訴被害者的職業是什麼，根據房主設定，偵探可能可以知道兇手的職業是什麼。\n請注意: 偵探不會成為膽小鬼。","(船员阵营):\n侦探报告尸体后，会收到一条线索消息，该消息会告诉侦探被害者的职业是什么，根据房主设定，侦探可能知道凶手的职业是什么。请注意：侦探不会成为胆小鬼。"
 "UndercoverInfoLong","(船员阵营):\n内鬼会将卧底认作自己的队友，但卧底并不知道内鬼是谁。","(Crewmates):\nThe Impostors knows who Undercover is and sees him as a teammate, but Undercover himself does not know who the Impostors are.","(Член Экипажа):\nПредатели знают кто является Агентом и видят его как своего товарища по команде, но сам Агент не знает, кто является Предателем.","(船員陣營):\n偽裝者會將間諜當作自己的隊友，但實際上間諜並不知道誰是偽裝者。","(船员阵营):\n内鬼会将卧底认作自己的队友，但卧底并不知道内鬼是谁。"
@@ -450,6 +450,7 @@
 "MimicInfoLong","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。","(Add-ons):\nOnly Impostor can become Mimic. When the Mimic is dead, other Impostors will receive a message once a meeting is called, this message will include information on roles who were killed by the Mimic.","(Атрибут):\nТолько Предатели могут стать Мимиком. После того как Мимик умрёт, призраки получат сообщение на собрании. Сообщение содержит роли всех кого убил Мимик пока он был жив.","(附加職業):\n保險箱死後他的隊友會在會議上收到訊息，內容包括保險箱生前殺死的所有人的職業。請注意: 黑手黨不會成為保險箱。","(附加职业)\n只有除黑手党以外的内鬼会成为宝箱怪。宝箱怪死后，其他内鬼可以在会议上收到信息。信息包含了宝箱怪生前击杀的所有人的职业。"
 "ReachInfoLong","(附加职业)\n只有拥有击杀键的玩家能持枪。持枪的玩家的击杀键交互距离比一般人长。","(Add-on)\nOnly roles with a kill button can get this add-on. You have the longest kill range possible in the game, unlike everyone else.","(Атрибут):\nДлиннолап имеет самую большую дальность убийства в игре, в отличие от всех остальных убийц.\nПримечание: Только роли с кнопкой убийства могут получить этот Атрибут.","(附加職業):\n只有擁有殺人鍵的玩家能具有長槍效果。具有長槍效果的玩家殺人距離會比一般人長。",""
 "BaitInfoLong","(附加职业):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。","(Add-on):\nWhen a Bait is killed, the murderer who killed the Bait will be forced to report the Bait's body. However, the skill will be invalid when the Bait is killed by a Scavenger or Cleaner.","(Атрибут):\nКогда Байта убивают, он заставляет убившего игрока \nмоментально зарепортить ваш труп.","(附加職業):\n當誘餌被殺時，殺死誘餌的兇手將會立刻自行報告誘餌的屍體，但是當清道夫殺死誘餌時，誘餌不會觸發技能。","(附加职业):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。"
+"TrapperInfoLong","(附加职业):\n陷阱师被击杀时，凶手一段时间内将不能移动。","(Crewmates):\nWhen Beartrap is killed, Beartrap immobilize killer for a configurable amount of time.","(Член Экипажа):\nПосле того как Капкан убьют, то его убийца будет обездвижен на несколько секунд. (время зависит от настроек)","(船員陣營):\n當設陷者被殺時，那麼殺他的兇手將會一段時間內無法移動。","(船员阵营):\n陷阱师被击杀时，凶手一段时间内将不能移动。"
 
 "# 其它 / Other long description"
 "GMInfoLong","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры.","(房主):\n看我幹嘛，我只是開始遊戲時就在冥界吃瓜而已。","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。"
@@ -708,6 +709,9 @@
 "NumberOfLovers","恋人对数","Number of Lover Pairs (x2 members)","Количество Любовников (x2 участника)","戀人數量","恋人对数"
 "LoverKnowRoles","恋人知道对方的职业","Lovers know the roles of each other","Любовники знают роли друг-друга","戀人可以知道對方的職業","恋人知道对方的职业"
 "TrapperBlockMoveTime","封锁凶手移动时长","Freeze time","Время заморозки","兇手無法移動的時間","封锁凶手移动时长"
+"ImpCanBeTrapper","<color=#ff1919>内鬼</color>可以成为陷阱师","","","",""
+"CrewCanBeTrapper","<color=#8cffff>船员</color>可以成为陷阱师","","","",""
+"NeutralCanBeTrapper","<color=#ffab1b>中立</color>可以成为陷阱师","","","",""
 "TimeThiefDecreaseMeetingTime","每次击杀缩短的会议时间","Lower Meeting Time by","Уменьшить длительность обсуждения на","每次殺人縮短的會議時間","每次击杀缩短的会议时间"
 "TimeThiefLowerLimitVotingTime","存活时会议时间下限","Minimum Voting Time","Уменьшить длительность голосования на","存活會議時間下限","存活时会议时间下限"
 "TimeThiefReturnStolenTimeUponDeath","死亡后会议时间重置","Return Stolen Time Upon Death","Вернуть украденное время после его смерти","死亡後會議時間恢復","死亡后会议时间重置"
