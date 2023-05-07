@@ -134,7 +134,7 @@ public static class MafiaRevengeManager
             GameObject template = pva.Buttons.transform.Find("CancelButton").gameObject;
             GameObject targetBox = UnityEngine.Object.Instantiate(template, pva.transform);
             targetBox.name = "ShootButton";
-            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -100f);
+            targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.31f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
