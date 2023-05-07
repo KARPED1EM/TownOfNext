@@ -771,6 +771,7 @@ class MeetingHudStartPatch
             //会議画面ではインポスター自身の名前にSnitchマークはつけません。
 
             pva.NameText.text += sb.ToString();
+            pva.ColorBlindName.transform.localPosition -= new Vector3(1.35f, 0f, 0f);
         }
     }
 }
