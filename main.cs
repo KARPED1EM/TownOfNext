@@ -240,6 +240,7 @@ public class Main : BasePlugin
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
         CustomWinnerHolder.Reset();
+        ServerAddManager.Init();
         Translator.Init();
         BanManager.Init();
         TemplateManager.Init();

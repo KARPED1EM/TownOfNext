@@ -71,7 +71,7 @@ internal class RunLoginPatch
     public static void Prefix(ref bool canOnline)
     {
 #if DEBUG
-        if (CultureInfo.CurrentCulture.Name == "zh-CN" && ClickCount < 10) canOnline = false;
+        if (ClickCount < 10) canOnline = false;
         if (ClickCount >= 10) ModUpdater.forceUpdate = false;
 #endif
     }
