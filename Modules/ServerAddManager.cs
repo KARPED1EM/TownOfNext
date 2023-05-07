@@ -13,7 +13,8 @@ public static class ServerAddManager
     private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
     public static void Init()
     {
-        if (serverManager.AvailableRegions.Count == 7) return;
+        if (CultureInfo.CurrentCulture.Name.StartsWith("zh") && serverManager.AvailableRegions.Count == 7) return;
+        if (!CultureInfo.CurrentCulture.Name.StartsWith("zh") && serverManager.AvailableRegions.Count == 6) return;
 
         serverManager.AvailableRegions = ServerManager.DefaultRegions;
         List<IRegionInfo> regionInfos = new();
