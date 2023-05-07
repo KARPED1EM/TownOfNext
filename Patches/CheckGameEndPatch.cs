@@ -335,7 +335,7 @@ class GameEndChecker
             int Crew = Utils.AlivePlayersCount(CountTypes.Crew);
             int Gam = Utils.AlivePlayersCount(CountTypes.Gamer);
             int BK = Utils.AlivePlayersCount(CountTypes.BloodKnight);
-            int CM = Utils.AlivePlayersCount(CountTypes.Charmed);
+            int CM = Utils.AlivePlayersCount(CountTypes.Succubus);
 
             Imp += Main.AllAlivePlayerControls.Count(x => x.GetCustomRole().IsImpostor() && x.Is(CustomRoles.DualPersonality));
             Crew += Main.AllAlivePlayerControls.Count(x => x.GetCustomRole().IsCrewmate() && x.Is(CustomRoles.DualPersonality));

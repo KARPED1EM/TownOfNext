@@ -16,6 +16,14 @@ public static class Succubus
     public static OptionItem CharmMax;
     public static OptionItem KnowTargetRole;
     public static OptionItem TargetKnowOtherTarget;
+    public static OptionItem CharmedCountMode;
+
+    public static readonly string[] charmedCountMode =
+    {
+        "CharmedCountMode.None",
+        "CharmedCountMode.Succubus",
+        "CharmedCountMode.Original",
+    };
 
     private static int CharmLimit = new();
 
@@ -30,6 +38,7 @@ public static class Succubus
             .SetValueFormat(OptionFormat.Times);
         KnowTargetRole = BooleanOptionItem.Create(Id + 13, "SuccubusKnowTargetRole", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Succubus]);
         TargetKnowOtherTarget = BooleanOptionItem.Create(Id + 14, "SuccubusTargetKnowOtherTarget", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Succubus]);
+        CharmedCountMode = StringOptionItem.Create(Id + 15, "CharmedCountMode", charmedCountMode, 0, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Succubus]);
     }
     public static void Init()
     {

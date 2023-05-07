@@ -363,7 +363,7 @@ internal static class CustomRolesHelper
            CustomRoles.Pelican => CountTypes.Pelican,
            CustomRoles.Gamer => CountTypes.Gamer,
            CustomRoles.BloodKnight => CountTypes.BloodKnight,
-           CustomRoles.Charmed or CustomRoles.Succubus => CountTypes.Charmed,
+           CustomRoles.Succubus => CountTypes.Succubus,
            _ => role.IsImpostorTeam() ? CountTypes.Impostor : CountTypes.Crew,
        };
 
@@ -386,5 +386,5 @@ public enum CountTypes
     Pelican,
     Gamer,
     BloodKnight,
-    Charmed,
+    Succubus,
 }

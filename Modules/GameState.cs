@@ -78,7 +78,13 @@ public class PlayerState
         }
         if (role == CustomRoles.Charmed)
         {
-            countTypes = CountTypes.Charmed;
+            countTypes = Succubus.CharmedCountMode.GetInt() switch
+            {
+                0 => CountTypes.OutOfGame,
+                1 => CountTypes.Succubus,
+                2 => countTypes,
+                _ => throw new NotImplementedException()
+            };
             SubRoles.Remove(CustomRoles.Madmate);
         }
 
