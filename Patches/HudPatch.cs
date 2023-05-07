@@ -3,8 +3,6 @@ using Il2CppSystem.Text;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -445,7 +443,7 @@ class TaskPanelBehaviourPatch
                 foreach (var eachLine in lines)
                 {
                     var line = eachLine.Trim();
-                    if (line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>")) continue;
+                    if (line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>") && sb.Length < 1) continue;
                     sb.Append(line + "\r\n");
                 }
                 if (sb.Length > 1 && !player.Data.IsDead)
