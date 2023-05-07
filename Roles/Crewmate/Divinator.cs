@@ -8,7 +8,7 @@ public static class Divinator
 {
     private static readonly int Id = 8022560;
     private static List<byte> playerIdList = new();
-    
+
     private static OptionItem CheckLimitOpt;
     private static OptionItem AccurateCheckMode;
     public static OptionItem HideVote;

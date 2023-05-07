@@ -392,7 +392,7 @@ class SetHudActivePatch
 }
 [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
 class VentButtonDoClickPatch
-{ 
+{
     public static bool Prefix(VentButton __instance)
     {
         var pc = PlayerControl.LocalPlayer;

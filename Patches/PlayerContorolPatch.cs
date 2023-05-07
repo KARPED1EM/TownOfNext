@@ -534,7 +534,7 @@ class MurderPlayerPatch
 
         if (target.Is(CustomRoles.Trapper) && killer != target)
             killer.TrapperKilled(target);
-        
+
         switch (target.GetCustomRole())
         {
             case CustomRoles.BallLightning:

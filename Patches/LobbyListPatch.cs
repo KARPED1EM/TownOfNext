@@ -59,7 +59,7 @@ public static class FindAGameManagerHandleListPatch
             int id = Math.Min(Math.Max(int.Parse(str.Substring(str.Length - 2, 2)), 1) * nameList.Count / 100, nameList.Count);
 
             game.HostName = $"<size=80%><color={color}>{nameList[id]}</color></size>";
-            game.HostName += $"<size=30%> ({Math.Max(0 , 100 - game.Age / 100)}%)</size>";
+            game.HostName += $"<size=30%> ({Math.Max(0, 100 - game.Age / 100)}%)</size>";
 
             newList.Add(game);
         }
