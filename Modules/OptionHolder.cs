@@ -715,13 +715,13 @@ public static class Options
         CrewCanBeDualPersonality = BooleanOptionItem.Create(6052340, "CrewCanBeDualPersonality", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.DualPersonality]);
         SetupAdtRoleOptions(6052490, CustomRoles.Reach, canSetNum: true);
         SetupAdtRoleOptions(20000, CustomRoles.Bait, canSetNum: true);
-        ImpCanBeBait = BooleanOptionItem.Create(20001, "ImpCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
-        CrewCanBeBait = BooleanOptionItem.Create(20002, "CrewCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
-        NeutralCanBeBait = BooleanOptionItem.Create(20003, "NeutralCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+        ImpCanBeBait = BooleanOptionItem.Create(20003, "ImpCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+        CrewCanBeBait = BooleanOptionItem.Create(20004, "CrewCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+        NeutralCanBeBait = BooleanOptionItem.Create(20005, "NeutralCanBeBait", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
         SetupAdtRoleOptions(20800, CustomRoles.Trapper, canSetNum: true);
-        ImpCanBeTrapper = BooleanOptionItem.Create(20801, "ImpCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);
-        CrewCanBeTrapper = BooleanOptionItem.Create(20802, "CrewCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);
-        NeutralCanBeTrapper = BooleanOptionItem.Create(20803, "NeutralCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);
+        ImpCanBeTrapper = BooleanOptionItem.Create(20803, "ImpCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);
+        CrewCanBeTrapper = BooleanOptionItem.Create(20804, "CrewCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);
+        NeutralCanBeTrapper = BooleanOptionItem.Create(20805, "NeutralCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);
         TrapperBlockMoveTime = FloatOptionItem.Create(20810, "TrapperBlockMoveTime", new(1f, 180f, 1f), 5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper])
             .SetValueFormat(OptionFormat.Seconds);
 
