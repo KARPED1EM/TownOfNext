@@ -1436,7 +1436,7 @@ class FixedUpdatePatch
 
                 //名前色変更処理
                 //自分自身の名前の色を変更
-                if (target.AmOwner && AmongUsClient.Instance.IsGameStarted)
+                if (target.AmOwner && GameStates.IsInTask)
                 { //targetが自分自身
                     if (target.Is(CustomRoles.Arsonist) && target.IsDouseDone())
                         RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Arsonist), GetString("EnterVentToWin"));

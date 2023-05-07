@@ -664,7 +664,7 @@ public static class Options
         SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);
         ArsonistDouseTime = FloatOptionItem.Create(50510, "ArsonistDouseTime", new(0f, 10f, 1f), 3f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Arsonist])
             .SetValueFormat(OptionFormat.Seconds);
-        ArsonistCooldown = FloatOptionItem.Create(50511, "Cooldown", new(5f, 100f, 1f), 10f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Arsonist])
+        ArsonistCooldown = FloatOptionItem.Create(50511, "Cooldown", new(0f, 990f, 1f), 10f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Arsonist])
             .SetValueFormat(OptionFormat.Seconds);
         SetupRoleOptions(50000, TabGroup.NeutralRoles, CustomRoles.Jester);
         JesterCanUseButton = BooleanOptionItem.Create(6050007, "JesterCanUseButton", false, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jester]);

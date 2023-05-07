@@ -1063,6 +1063,7 @@ public static class Utils
             string SelfRoleName = $"<size={fontSize}>{seer.GetDisplayRoleName()}{SelfTaskText}</size>";
             string SelfDeathReason = seer.KnowDeathReason(seer) ? $"({ColorString(GetRoleColor(CustomRoles.Doctor), GetVitalText(seer.PlayerId))})" : "";
             string SelfName = $"{ColorString(seer.GetRoleColor(), SeerRealName)}{SelfDeathReason}{SelfMark}";
+
             if (seer.Is(CustomRoles.Arsonist) && seer.IsDouseDone())
                 SelfName = $"</size>\r\n{ColorString(seer.GetRoleColor(), GetString("EnterVentToWin"))}";
             if (seer.Is(CustomRoles.Revolutionist) && seer.IsDrawDone())
@@ -1071,6 +1072,7 @@ public static class Utils
                 SelfName = $"</size>\r\n{ColorString(GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"))}";
             if (NameNotifyManager.GetNameNotify(seer, ref SelfName))
                 SelfName = $"<size={fontSize}>{SelfTaskText}</size>\r\n{SelfName}";
+
             if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
             {
                 SoloKombatManager.GetNameNotify(seer, ref SelfName);
