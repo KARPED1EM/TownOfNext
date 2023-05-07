@@ -9,7 +9,10 @@ internal static class Eraser
 {
     private static readonly int Id = 905553;
     public static List<byte> playerIdList = new();
+
     private static OptionItem EraseLimitOpt;
+    public static OptionItem HideVote;
+
     private static List<byte> didVote = new();
     private static Dictionary<byte, int> EraseLimit = new();
     private static List<byte> PlayerToErase = new();
@@ -19,6 +22,7 @@ internal static class Eraser
         Options.SetupRoleOptions(Id, TabGroup.OtherRoles, CustomRoles.Eraser);
         EraseLimitOpt = IntegerOptionItem.Create(Id + 10, "EraseLimit", new(1, 15, 1), 2, TabGroup.OtherRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Eraser])
             .SetValueFormat(OptionFormat.Times);
+        HideVote = BooleanOptionItem.Create(Id + 11, "EraserHideVote", false, TabGroup.OtherRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Eraser]);
     }
     public static void Init()
     {

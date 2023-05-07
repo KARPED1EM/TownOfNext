@@ -825,6 +825,7 @@
 "ConcealerSkillCooldown","隐蔽冷却时间","Ability Cooldown","Откат навыка","隱蔽冷卻時間","隐蔽冷却时间"
 "ConcealerSkillDuration","隐蔽持续时间","Ability duration","Длительность навыка","隱蔽持續時間","隐蔽持续时间"
 "EraseLimit","抹除次数上限","Max Erases","Лимит Стираний","抹除次數上限","抹除次数上限"
+"EraserHideVote","隐藏抹除者的投票","Hide Eraser Votes","","",""
 "AssassinMarkCooldown","标记冷却时间","Mark Cooldown","Откат метки","標記冷卻時間","标记冷却时间"
 "AssassinAssassinateCooldown","刺杀冷却时间","Assassinate Cooldown","Откат Ассасированния","刺殺冷卻時間","刺杀冷却时间"
 "AssassinCanKillAfterAssassinate","可以在刺杀后进行常规击杀","Can kill after Assassinating","Может убивать после Ассасирования","可以在刺殺後進行正常殺人","可以在刺杀后进行常规击杀"
