@@ -53,6 +53,7 @@ class EndGamePatch
             winner.AddRange(Main.AllPlayerControls.Where(p => p.Is(team) && !winner.Contains(p)));
         }
 
+        Main.winnerNameList = new();
         Main.winnerList = new();
         foreach (var pc in winner)
         {
@@ -60,6 +61,7 @@ class EndGamePatch
 
             TempData.winners.Add(new WinningPlayerData(pc.Data));
             Main.winnerList.Add(pc.PlayerId);
+            Main.winnerNameList.Add(pc.GetRealName());
         }
 
         BountyHunter.ChangeTimer = new();

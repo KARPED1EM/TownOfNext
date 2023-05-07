@@ -65,7 +65,8 @@ internal class ChatCommands
                 case "/win":
                 case "/winner":
                     canceled = true;
-                    Utils.SendMessage("Winner: " + string.Join(",", Main.winnerList.Select(b => Main.AllPlayerNames[b])));
+                    if (Main.winnerNameList.Count < 1) Utils.SendMessage(GetString("NoInfoExists"));
+                    else Utils.SendMessage("Winner: " + string.Join(",", Main.winnerNameList));
                     break;
 
                 case "/l":

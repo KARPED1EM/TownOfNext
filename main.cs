@@ -88,6 +88,7 @@ public class Main : BasePlugin
     public static string LastVotedPlayer;
     public static List<byte> ResetCamPlayerList = new();
     public static List<byte> winnerList = new();
+    public static List<string> winnerNameList = new();
     public static List<int> clientIdList = new();
     public static List<(string, byte, string)> MessagesToSend = new();
     public static bool isChatCommand = false;
