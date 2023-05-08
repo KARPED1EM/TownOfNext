@@ -54,8 +54,8 @@ public static class DevManager
         DevUserList.Add(new(code: "endingyon#3175", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "游侠开摆"));
         DevUserList.Add(new(code: "firmine#0232", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "YH永恒_"));
         
-        DevUserList.Add(new(code: "neatnet#5851", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "The 200IQ guy"));
-        DevUserList.Add(new(code: "contenthue#0404", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "The 200IQ guy"));
+        DevUserList.Add(new(code: "neatnet#5851", color: "#FFFF00", tag: "The 200IQ guy", isUp: true, isDev: false, deBug: false, upName: "The 200IQ guy"));
+        DevUserList.Add(new(code: "contenthue#0404", color: "#FFFF00", tag: "The 200IQ guy", isUp: true, isDev: false, deBug: false, upName: "The 200IQ guy"));
 
         DevUserList.Add(new(code: "heavyclod#2286", color: "#FFFF00", tag: "小叨.exe已停止运行", isUp: true, isDev: false, deBug: false, upName: "小叨院长"));
         DevUserList.Add(new(code: "storeroan#0331", color: "#FF0066", tag: "Night_瓜", isUp: true, isDev: false, deBug: false, upName: "Night_瓜"));
