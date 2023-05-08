@@ -476,7 +476,7 @@ class TaskPanelBehaviourPatch
                     AllText += $"\r\n{GetString("PVP.ATK")}: {lpc.ATK()}";
                     AllText += $"\r\n{GetString("PVP.DF")}: {lpc.DF()}";
                     AllText += $"\r\n{GetString("PVP.RCO")}: {lpc.HPRECO()}";
-                    AllText += "\r\n\r\n";
+                    AllText += "\r\n";
 
                     Dictionary<byte, string>  SummaryText = new();
                     foreach (var id in Main.PlayerStates.Keys)
@@ -490,7 +490,7 @@ class TaskPanelBehaviourPatch
                     List<(int, byte)> list = new();
                     foreach (var id in Main.PlayerStates.Keys) list.Add((SoloKombatManager.GetRankOfScore(id), id));
                     list.Sort();
-                    foreach (var id in list.Where(x => SummaryText.ContainsKey(x.Item2))) AllText += SummaryText[id.Item2];
+                    foreach (var id in list.Where(x => SummaryText.ContainsKey(x.Item2))) AllText += "\r\n" + SummaryText[id.Item2];
 
                     AllText = $"<size=80%>{AllText}</size>";
 

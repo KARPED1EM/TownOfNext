@@ -67,7 +67,7 @@ internal static class SoloKombatManager
             .SetGameMode(CustomGameMode.SoloKombat)
             .SetColor(new Color32(245, 82, 82, byte.MaxValue))
             .SetValueFormat(OptionFormat.Seconds);
-        KB_ResurrectionWaitingTime = IntegerOptionItem.Create(66_233_006, "KB_ResurrectionWaitingTime", new(3, 990, 1), 15, TabGroup.GameSettings, false)
+        KB_ResurrectionWaitingTime = IntegerOptionItem.Create(66_233_006, "KB_ResurrectionWaitingTime", new(5, 990, 1), 15, TabGroup.GameSettings, false)
             .SetGameMode(CustomGameMode.SoloKombat)
             .SetColor(new Color32(245, 82, 82, byte.MaxValue))
             .SetValueFormat(OptionFormat.Seconds);
@@ -75,7 +75,7 @@ internal static class SoloKombatManager
             .SetGameMode(CustomGameMode.SoloKombat)
             .SetColor(new Color32(245, 82, 82, byte.MaxValue))
             .SetValueFormat(OptionFormat.Multiplier);
-        KB_BootVentWhenDead = BooleanOptionItem.Create(66_233_009, "KB_BootVentWhenDead", false, TabGroup.GameSettings, false)
+        KB_BootVentWhenDead = BooleanOptionItem.Create(66_233_009, "KB_BootVentWhenDead", true, TabGroup.GameSettings, false)
             .SetGameMode(CustomGameMode.SoloKombat)
             .SetColor(new Color32(245, 82, 82, byte.MaxValue));
     }
@@ -327,6 +327,32 @@ internal static class SoloKombatManager
         Utils.NotifyRoles(pc);
     }
 
+    [HarmonyPriority(0)]
+    [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoEnterVent))]
+    class CoEnterVentPatch
+    {
+        public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
+        {
+            if (!AmongUsClient.Instance.AmHost) return true;
+            if (!__instance.myPlayer.SoloAlive() && KB_BootVentWhenDead.GetBool())
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
+                writer.WritePacked(127);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+                new LateTask(() =>
+                {
+                    int clientId = __instance.myPlayer.GetClientId();
+                    MessageWriter writer2 = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, clientId);
+                    writer2.Write(id);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer2);
+                    __instance.BootFromVent(id);
+                }, 0.5f, "Fix DesyncImpostor Stuck");
+                return false;
+            }
+            return true;
+        }
+    }
+
     private static Dictionary<byte, int> BackCountdown = new();
     private static Dictionary<byte, long> LastHurt = new();
 
@@ -340,16 +366,12 @@ internal static class SoloKombatManager
 
             if (AmongUsClient.Instance.AmHost)
             {
-                foreach (var pc in Main.AllPlayerControls)
+                foreach (var pc in Main.AllPlayerControls.Where(x => !x.SoloAlive()))
                 {
                     // 锁定死亡玩家在小黑屋
-                    if (!pc.SoloAlive())
-                    {
-                        if (pc.inVent && KB_BootVentWhenDead.GetBool()) pc.MyPhysics.RpcExitVent(2);
-                        var pos = Pelican.GetBlackRoomPS();
-                        var dis = Vector2.Distance(pos, pc.GetTruePosition());
-                        if (dis > 1f) Utils.TP(pc.NetTransform, pos);
-                    }
+                    var pos = Pelican.GetBlackRoomPS();
+                    var dis = Vector2.Distance(pos, pc.GetTruePosition());
+                    if (dis > 1f) Utils.TP(pc.NetTransform, pos);
                 }
 
                 if (LastFixedUpdate == Utils.GetTimeStamp()) return;
@@ -372,11 +394,11 @@ internal static class SoloKombatManager
                         notifyRoles = true;
                     }
                     // 复活玩家随机复活（二次确认）
-                    if (pc.SoloAlive() && !pc.inVent)
+                    if (pc.SoloAlive())
                     {
                         var pos = Pelican.GetBlackRoomPS();
                         var dis = Vector2.Distance(pos, pc.GetTruePosition());
-                        if (dis < 1.1f) PlayerRandomSpwan(pc);
+                        if (dis < 1.2f) PlayerRandomSpwan(pc);
                     }
                     // 复活倒计时
                     if (BackCountdown.ContainsKey(pc.PlayerId))
