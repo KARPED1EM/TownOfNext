@@ -56,7 +56,8 @@ public static class CredentialsPatch
             TransData += $"\nSolarFlare - <size=75%>{GetString("TranEN")}</size>";
             TransData += $"\nchill_ultimated - <size=75%>{GetString("TranRU")}</size>";
 
-            BoosterData += $"Namra";
+            BoosterData += $"bunny";
+            BoosterData += $"\nNamra";
             BoosterData += $"\nKNIGHT";
             BoosterData += $"\nSolarFlare";
             BoosterData += $"\nBluéfôx.";
