@@ -1,5 +1,7 @@
 using HarmonyLib;
 using Il2CppSystem.Text;
+using System.Collections.Generic;
+using System.Linq;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
@@ -435,32 +437,64 @@ class TaskPanelBehaviourPatch
 
             var AllText = Utils.ColorString(player.GetRoleColor(), RoleWithInfo);
 
-            var taskText = __instance.taskText.text;
-            if (taskText != "None")
+            switch (Options.CurrentGameMode)
             {
-                var lines = taskText.Split("\r\n</color>\n")[0].Split("\r\n\n")[0].Split("\r\n");
-                StringBuilder sb = new();
-                foreach (var eachLine in lines)
-                {
-                    var line = eachLine.Trim();
-                    if (line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>") && sb.Length < 1) continue;
-                    sb.Append(line + "\r\n");
-                }
-                if (sb.Length > 1 && !player.Data.IsDead)
-                {
-                    var text = sb.ToString().TrimEnd('\n').TrimEnd('\r');
-                    if (!Utils.HasTasks(player.Data, false))
-                        text = $"{Utils.ColorString(new Color32(255, 20, 147, byte.MaxValue), GetString("FakeTask"))}\r\n{text}";
-                    AllText += $"\r\n\r\n<size=85%>{text}</size>";
-                }
-            }
+                case CustomGameMode.Standard:
+                    var taskText = __instance.taskText.text;
+                    if (taskText != "None")
+                    {
+                        var lines = taskText.Split("\r\n</color>\n")[0].Split("\r\n\n")[0].Split("\r\n");
+                        StringBuilder sb = new();
+                        foreach (var eachLine in lines)
+                        {
+                            var line = eachLine.Trim();
+                            if (line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>") && sb.Length < 1) continue;
+                            sb.Append(line + "\r\n");
+                        }
+                        if (sb.Length > 1 && !player.Data.IsDead)
+                        {
+                            var text = sb.ToString().TrimEnd('\n').TrimEnd('\r');
+                            if (!Utils.HasTasks(player.Data, false))
+                                text = $"{Utils.ColorString(new Color32(255, 20, 147, byte.MaxValue), GetString("FakeTask"))}\r\n{text}";
+                            AllText += $"\r\n\r\n<size=85%>{text}</size>";
+                        }
+                    }
 
-            if (MeetingStates.FirstMeeting)
-            {
-                AllText += $"\r\n\r\n</color><size=70%>{GetString("PressF1ShowMainRoleDes")}";
-                if (Main.PlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
-                    AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
-                AllText += "</size>";
+                    if (MeetingStates.FirstMeeting)
+                    {
+                        AllText += $"\r\n\r\n</color><size=70%>{GetString("PressF1ShowMainRoleDes")}";
+                        if (Main.PlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
+                            AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
+                        AllText += "</size>";
+                    }
+                    break;
+
+                case CustomGameMode.SoloKombat:
+                    var lpc = PlayerControl.LocalPlayer;
+
+                    AllText += "\r\n";
+                    AllText += $"\r\n{GetString("PVP.ATK")}: {lpc.ATK()}";
+                    AllText += $"\r\n{GetString("PVP.DF")}: {lpc.DF()}";
+                    AllText += $"\r\n{GetString("PVP.RCO")}: {lpc.HPRECO()}";
+                    AllText += "\r\n\r\n";
+
+                    Dictionary<byte, string>  SummaryText = new();
+                    foreach (var id in Main.PlayerStates.Keys)
+                    {
+                        string name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
+                        string summary = $"{Utils.GetProgressText(id)}  {Utils.ColorString(Main.PlayerColors[id], name)}";
+                        if (Utils.GetProgressText(id).Trim() == "") continue;
+                        SummaryText[id] = summary;
+                    }
+
+                    List<(int, byte)> list = new();
+                    foreach (var id in Main.PlayerStates.Keys) list.Add((SoloKombatManager.GetRankOfScore(id), id));
+                    list.Sort();
+                    foreach (var id in list.Where(x => SummaryText.ContainsKey(x.Item2))) AllText += SummaryText[id.Item2];
+
+                    AllText = $"<size=80%>{AllText}</size>";
+
+                    break;
             }
 
             __instance.taskText.text = AllText;

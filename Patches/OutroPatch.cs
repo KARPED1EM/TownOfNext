@@ -200,7 +200,7 @@ class SetEverythingUpPatch
             List<(int, byte)> list = new();
             foreach (var id in cloneRoles) list.Add((SoloKombatManager.GetRankOfScore(id), id));
             list.Sort();
-            foreach (var id in list)
+            foreach (var id in list.Where(x => EndGamePatch.SummaryText.ContainsKey(x.Item2)))
                 sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id.Item2]);
         }
         else

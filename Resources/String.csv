@@ -1314,6 +1314,9 @@
 "PressF1ShowMainRoleDes","按F1查看您的主职业介绍","Press F1 to get a description of your current role","Нажмите F1, чтобы получить описание вашей роли","按F1查看您的主職業介紹",""
 "PressF2ShowAddRoleDes","按F2查看您的附加职业介绍","Press F2 to get a description of what your add-ons do","Нажмите F2, чтобы получить описание вашего Атрибута","按F2查看您的附加職業介紹",""
 "FakeTask","假任务：","Fake Tasks:","Фальшивые задания:","假任務:",""
+"PVP.ATK","攻击力","","","",""
+"PVP.DF","防御力","","","",""
+"PVP.RCO","恢复力","","","",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.HighLevel","警告：EAC正在抵御炸房外挂","Warning: EAC detected High Level of cheats.","Предупреждение: EAC обнаружил высокий уровень читов.","警告: EAC正在抵禦炸房外掛","警告：EAC正在抵御炸房外挂"
