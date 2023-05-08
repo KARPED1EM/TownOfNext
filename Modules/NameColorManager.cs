@@ -1,5 +1,6 @@
 using Hazel;
 using TOHE.Roles.Impostor;
+using TOHE.Roles.Neutral;
 
 namespace TOHE;
 
@@ -38,6 +39,7 @@ public static class NameColorManager
         //÷ÈÄ§Ð¡µÜ»¥ÈÏ
         if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Succubus)) color = Main.roleColors[CustomRoles.Succubus];
         if (seer.Is(CustomRoles.Succubus) && target.Is(CustomRoles.Charmed)) color = Main.roleColors[CustomRoles.Charmed];
+        if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Charmed) && Succubus.TargetKnowOtherTarget.GetBool()) color = Main.roleColors[CustomRoles.Charmed];
 
         if (color != "") return true;
         else return seer == target

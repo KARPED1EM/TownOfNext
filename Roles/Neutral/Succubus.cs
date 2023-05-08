@@ -98,8 +98,9 @@ public static class Succubus
     public static bool KnowRole(PlayerControl player, PlayerControl target)
     {
         if (player.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Succubus)) return true;
-        if (!KnowTargetRole.GetBool()) return false;
-        return player.Is(CustomRoles.Succubus) && target.Is(CustomRoles.Charmed);
+        if (KnowTargetRole.GetBool() && player.Is(CustomRoles.Succubus) && target.Is(CustomRoles.Charmed)) return true;
+        if (TargetKnowOtherTarget.GetBool() && player.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Charmed)) return true;
+        return false;
     }
     public static string GetCharmLimit() => Utils.ColorString(CharmLimit >= 1 ? Utils.GetRoleColor(CustomRoles.Succubus) : Color.gray, $"({CharmLimit})");
     public static bool CanBeCharmed(this PlayerControl pc)
