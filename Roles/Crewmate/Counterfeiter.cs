@@ -56,7 +56,7 @@ public static class Counterfeiter
     }
     public static bool CanUseKillButton(byte playerId)
         => !Main.PlayerStates[playerId].IsDead
-        && SeelLimit[playerId] >= 1;
+        && SeelLimit.TryGetValue(playerId, out var x) && x >= 1;
     public static string GetSeelLimit(byte playerId) => Utils.ColorString(CanUseKillButton(playerId) ? Utils.GetRoleColor(CustomRoles.Counterfeiter) : Color.gray, SeelLimit.TryGetValue(playerId, out var x) ? $"({x})" : "Invalid");
     public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = CanUseKillButton(id) ? CounterfeiterSkillCooldown.GetFloat() : 0f;
     public static bool IsClient(byte playerId)
