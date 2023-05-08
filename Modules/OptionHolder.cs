@@ -889,8 +889,7 @@ public static class Options
 
         DebugModeManager.SetupCustomOption();
 
-        EnableUpMode = BooleanOptionItem.Create(6090665, "EnableUpMode", false, TabGroup.SystemSettings, false)
-            .SetHidden(CultureInfo.CurrentCulture.Name != "zh-CN")
+        EnableUpMode = BooleanOptionItem.Create(6090665, "EnableYTPlan", false, TabGroup.SystemSettings, false)
             .SetColor(Color.cyan)
             .SetHeader(true);
 

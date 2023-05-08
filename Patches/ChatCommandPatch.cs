@@ -166,7 +166,7 @@ internal class ChatCommands
                     if (!PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsUp) break;
                     if (!Options.EnableUpMode.GetBool())
                     {
-                        Utils.SendMessage($"请在设置启用【{GetString("EnableUpMode")}】");
+                        Utils.SendMessage(string.Format(GetString("Message.YTPlanDisabled"), GetString("EnableYTPlan")));
                         break;
                     }
                     if (!GameStates.IsLobby)
@@ -585,8 +585,8 @@ internal class ChatCommands
                     if (rl.GetCount() < 1 || rl.GetMode() == 0) devMark = "";
                     if (isUp)
                     {
-                        if (devMark == "▲") Utils.SendMessage("您下一局将被分配为【" + roleName + "】", playerId);
-                        else Utils.SendMessage("无法将您分配为【" + roleName + "】\n可能是因为您没有启用该职业或该职业不支持被指定", playerId);
+                        if (devMark == "▲") Utils.SendMessage(string.Format(GetString("Message.YTPlanSelected"), roleName), playerId);
+                        else Utils.SendMessage(string.Format(GetString("Message.YTPlanSelectFailed"), roleName), playerId);
                     }
                     if (devMark == "▲")
                     {
@@ -608,7 +608,7 @@ internal class ChatCommands
                 return;
             }
         }
-        if (isUp) Utils.SendMessage("请正确拼写您要指定的职业哦~\n查看所有职业请直接输入/r", playerId);
+        if (isUp) Utils.SendMessage(GetString("Message.YTPlanCanNotFindRoleThePlayerEnter"), playerId);
         else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
         return;
     }
