@@ -687,7 +687,7 @@ public static class Options
         Gamer.SetupCustomOption();
         DarkHide.SetupCustomOption(); //TOH_Y
         SetupRoleOptions(60100, TabGroup.NeutralRoles, CustomRoles.Workaholic); //TOH_Y
-        WorkaholicCannotWinAtDeath = BooleanOptionItem.Create(60113, "WorkaholicCannotWinAtDeath", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workaholic]);
+        WorkaholicCannotWinAtDeath = BooleanOptionItem.Create(60113, "WorkaholicCannotWinAtDeath", false, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workaholic]);
         WorkaholicVentCooldown = FloatOptionItem.Create(60112, "VentCooldown", new(0f, 180f, 2.5f), 0f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workaholic])
             .SetValueFormat(OptionFormat.Seconds);
         WorkaholicVisibleToEveryone = BooleanOptionItem.Create(60114, "WorkaholicVisibleToEveryone", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Workaholic]);
