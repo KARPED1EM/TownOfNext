@@ -1424,7 +1424,8 @@ class FixedUpdatePatch
                         RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"));
                     if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
                         SoloKombatManager.GetNameNotify(target, ref RealName);
-                    NameNotifyManager.GetNameNotify(target, ref RealName);
+                    if (NameNotifyManager.GetNameNotify(target, out var name))
+                        RealName = name;
                 }
 
                 //NameColorManager準拠の処理

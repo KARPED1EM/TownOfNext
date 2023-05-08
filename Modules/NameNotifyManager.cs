@@ -32,8 +32,9 @@ public static class NameNotifyManager
             Utils.NotifyRoles(player);
         }
     }
-    public static bool GetNameNotify(PlayerControl player, ref string name)
+    public static bool GetNameNotify(PlayerControl player, out string name)
     {
+        name = "";
         if (!Notice.ContainsKey(player.PlayerId)) return false;
         name = Notice[player.PlayerId].Item1;
         return true;
