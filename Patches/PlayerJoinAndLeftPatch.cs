@@ -263,7 +263,7 @@ class CreatePlayerPatch
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
                         Main.isChatCommand = true;
-                        Utils.SendMessage($"提示：该房间启用了【创作者素材保护计划】，房主可以指定自己的职业。\n该功能仅允许创作者用于获取视频素材，如遇滥用情况，请退出游戏或举报。\n当前创作者认证：{PlayerControl.LocalPlayer.FriendCode.GetDevUser().UpName}", client.Character.PlayerId);
+                        Utils.SendMessage($"{GetString("")}{PlayerControl.LocalPlayer.FriendCode.GetDevUser().UpName}", client.Character.PlayerId);
                     }
                 }, 3.3f, "DisplayUpWarnning");
             }
