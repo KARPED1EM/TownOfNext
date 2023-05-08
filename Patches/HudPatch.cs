@@ -429,6 +429,9 @@ class TaskPanelBehaviourPatch
         if (!GameStates.IsModHost) return;
         PlayerControl player = PlayerControl.LocalPlayer;
 
+        var taskText = __instance.taskText.text;
+        if (taskText == "None") return;
+
         // 役職説明表示
         if (!player.GetCustomRole().IsVanilla())
         {
@@ -436,28 +439,25 @@ class TaskPanelBehaviourPatch
             RoleWithInfo += player.GetRoleInfo();
 
             var AllText = Utils.ColorString(player.GetRoleColor(), RoleWithInfo);
-
+            
             switch (Options.CurrentGameMode)
             {
                 case CustomGameMode.Standard:
-                    var taskText = __instance.taskText.text;
-                    if (taskText != "None")
+
+                    var lines = taskText.Split("\r\n</color>\n")[0].Split("\r\n\n")[0].Split("\r\n");
+                    StringBuilder sb = new();
+                    foreach (var eachLine in lines)
                     {
-                        var lines = taskText.Split("\r\n</color>\n")[0].Split("\r\n\n")[0].Split("\r\n");
-                        StringBuilder sb = new();
-                        foreach (var eachLine in lines)
-                        {
-                            var line = eachLine.Trim();
-                            if (line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>") && sb.Length < 1) continue;
-                            sb.Append(line + "\r\n");
-                        }
-                        if (sb.Length > 1 && !player.Data.IsDead)
-                        {
-                            var text = sb.ToString().TrimEnd('\n').TrimEnd('\r');
-                            if (!Utils.HasTasks(player.Data, false))
-                                text = $"{Utils.ColorString(new Color32(255, 20, 147, byte.MaxValue), GetString("FakeTask"))}\r\n{text}";
-                            AllText += $"\r\n\r\n<size=85%>{text}</size>";
-                        }
+                        var line = eachLine.Trim();
+                        if (line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>") && sb.Length < 1) continue;
+                        sb.Append(line + "\r\n");
+                    }
+                    if (sb.Length > 1 && !player.Data.IsDead)
+                    {
+                        var text = sb.ToString().TrimEnd('\n').TrimEnd('\r');
+                        if (!Utils.HasTasks(player.Data, false))
+                            text = $"{Utils.ColorString(new Color32(255, 20, 147, byte.MaxValue), GetString("FakeTask"))}\r\n{text}";
+                        AllText += $"\r\n\r\n<size=85%>{text}</size>";
                     }
 
                     if (MeetingStates.FirstMeeting)
@@ -467,9 +467,11 @@ class TaskPanelBehaviourPatch
                             AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
                         AllText += "</size>";
                     }
+
                     break;
 
                 case CustomGameMode.SoloKombat:
+
                     var lpc = PlayerControl.LocalPlayer;
 
                     AllText += "\r\n";
@@ -478,7 +480,7 @@ class TaskPanelBehaviourPatch
                     AllText += $"\r\n{GetString("PVP.RCO")}: {lpc.HPRECO()}";
                     AllText += "\r\n";
 
-                    Dictionary<byte, string>  SummaryText = new();
+                    Dictionary<byte, string> SummaryText = new();
                     foreach (var id in Main.PlayerStates.Keys)
                     {
                         string name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
