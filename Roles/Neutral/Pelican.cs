@@ -137,7 +137,7 @@ public static class Pelican
                 target.SetRealKiller(killer);
                 Main.PlayerStates[tar].deathReason = PlayerState.DeathReason.Eaten;
                 Main.PlayerStates[tar].SetDead();
-                Utils.AfterPlayerDeathTasks(target);
+                Utils.AfterPlayerDeathTasks(target, true);
                 Logger.Info($"{killer.GetRealName()} 消化了 {target.GetRealName()}", "Pelican");
             }
         }

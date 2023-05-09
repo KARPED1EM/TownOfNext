@@ -195,7 +195,7 @@ public static class GuessManager
                     RpcGuesserMurderPlayer(dp);
 
                     //死者检查
-                    Utils.AfterPlayerDeathTasks(dp);
+                    Utils.AfterPlayerDeathTasks(dp, true);
 
                     Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 

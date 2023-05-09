@@ -1265,7 +1265,7 @@ public static class Utils
         if (Options.AirShipVariableElectrical.GetBool())
             AirShipElectricalDoors.Initialize();
     }
-    public static void AfterPlayerDeathTasks(PlayerControl target)
+    public static void AfterPlayerDeathTasks(PlayerControl target, bool onMeeting = false)
     {
         switch (target.GetCustomRole())
         {
@@ -1305,7 +1305,7 @@ public static class Utils
         if (Executioner.Target.ContainsValue(target.PlayerId))
             Executioner.ChangeRoleByTarget(target);
 
-        FixedUpdatePatch.LoversSuicide(target.PlayerId);
+        FixedUpdatePatch.LoversSuicide(target.PlayerId, onMeeting);
 
     }
     public static void ChangeInt(ref int ChangeTo, int input, int max)
