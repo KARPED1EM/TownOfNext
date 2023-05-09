@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using TOHE.Modules;
 using TOHE.Roles.Neutral;
@@ -17,11 +18,11 @@ public static class AntiBlackout
     ///<summary>
     ///インポスターが一人しか存在しない設定かどうか
     ///</summary>
-    public static bool IsSingleImpostor => Main.RealOptionsData != null ? Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) == 1 : Main.NormalOptions.NumImpostors == 1;
+    public static bool IsSingleImpostor => (Main.RealOptionsData != null ? Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) : Main.NormalOptions.NumImpostors) - Main.AllPlayerControls.Count(x => GameStates.IsInGame && x.Is(CustomRoles.Crewpostor)) <= 1;
     ///<summary>
     ///AntiBlackout内の処理が必要であるかどうか
     ///</summary>
-    public static bool IsRequired => Options.NoGameEnd.GetBool() || Jackal.IsEnable || Pelican.IsEnable || Gamer.IsEnable || BloodKnight.IsEnable || CustomRoles.Crewpostor.RoleExist(true);
+    public static bool IsRequired => Options.NoGameEnd.GetBool() || Jackal.IsEnable || Pelican.IsEnable || Gamer.IsEnable || BloodKnight.IsEnable || Succubus.IsEnable;
     ///<summary>
     ///インポスター以外の人数とインポスターの人数の差
     ///</summary>
