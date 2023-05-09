@@ -176,6 +176,9 @@ public static class Divinator
                 CustomRoles.Swooper
                 => "Glitch",
 
+                CustomRoles.Succubus
+                => "Love",
+
                 _ => "None",
             };
             msg = string.Format(GetString("DivinatorCheck." + text), target.GetRealName());
