@@ -808,7 +808,7 @@ class MeetingHudUpdatePatch
         }
 
         //投票结束时销毁全部技能按钮
-        if (!GameStates.IsVoting && __instance.lastSecond < 0)
+        if (!GameStates.IsVoting && __instance.lastSecond < 1)
         {
             if (GameObject.Find("ShootButton") != null) ClearShootButton(__instance, true);
             return;
