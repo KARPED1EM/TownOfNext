@@ -64,6 +64,7 @@ public static class CredentialsPatch
             BoosterData += $"\nLoonie";
 
             SponsersData += $"罗寄";
+            SponsersData += $"\n鬼";
             SponsersData += $"\n喜";
             SponsersData += $"\n小叨院长";
             SponsersData += $"\n波奇酱";
@@ -74,7 +75,6 @@ public static class CredentialsPatch
             SponsersData += $"\n撒币";
             SponsersData += $"\n斯卡蒂Skadi";
             SponsersData += $"\nltemten";
-            SponsersData += $"\nNight_瓜";
             SponsersData += $"\n\n<size=60%>({GetString("OnlyShowPart")})</size>";
 
         }
