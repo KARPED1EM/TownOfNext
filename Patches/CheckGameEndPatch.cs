@@ -46,6 +46,14 @@ class GameEndChecker
             //カモフラージュ強制解除
             Main.AllPlayerControls.Do(pc => Camouflage.RpcSetSkin(pc, ForceRevert: true, RevertToDefault: true));
 
+            if (reason == GameOverReason.ImpostorBySabotage && Jackal.CanWinBySabotageWhenNoImpAlive.GetBool()  && !Main.AllAlivePlayerControls.Any(x => x.GetCustomRole().IsImpostorTeam()))
+            {
+                reason = GameOverReason.ImpostorByKill;
+                CustomWinnerHolder.WinnerIds.Clear();
+                CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Jackal);
+                CustomWinnerHolder.WinnerRoles.Add(CustomRoles.Jackal);
+            }
+
             switch (CustomWinnerHolder.WinnerTeam)
             {
                 case CustomWinner.Crewmate:

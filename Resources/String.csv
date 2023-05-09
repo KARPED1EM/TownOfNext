@@ -878,6 +878,7 @@
 "CharmedCountMode.None","不计人数","Nothing","Никто","不計人數",""
 "CharmedCountMode.Succubus","<color=#cf6acd>魅魔阵营</color>","<color=#cf6acd>Succubus</color>","<color=#cf6acd>Суккубом</color>","<color=#cf6acd>魅魔陣營</color>",""
 "CharmedCountMode.Original","原本阵营","Original Team","Первоначальной командой","原本陣營",""
+"JackalCanWinBySabotageWhenNoImpAlive","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被殺","被杀"
