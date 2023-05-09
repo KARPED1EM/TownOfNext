@@ -439,7 +439,7 @@ class TaskPanelBehaviourPatch
             RoleWithInfo += player.GetRoleInfo();
 
             var AllText = Utils.ColorString(player.GetRoleColor(), RoleWithInfo);
-            
+
             switch (Options.CurrentGameMode)
             {
                 case CustomGameMode.Standard:

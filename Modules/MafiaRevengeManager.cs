@@ -1,7 +1,6 @@
 ﻿using HarmonyLib;
 using Hazel;
 using System;
-using System.Runtime.Intrinsics.Arm;
 using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Translator;
@@ -77,7 +76,7 @@ public static class MafiaRevengeManager
         Logger.Info($"{pc.GetNameWithRole()} 复仇了 {target.GetNameWithRole()}", "Mafia");
 
         string Name = target.GetRealName();
-        
+
         Main.MafiaRevenged[pc.PlayerId]++;
 
         CustomSoundsManager.RPCPlayCustomSoundAll("AWP");
@@ -86,11 +85,11 @@ public static class MafiaRevengeManager
         {
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
             target.SetRealKiller(pc);
-            
+
             if (GameStates.IsMeeting)
             {
                 GuessManager.RpcGuesserMurderPlayer(target);
-                
+
                 //死者检查
                 Utils.AfterPlayerDeathTasks(target, true);
 

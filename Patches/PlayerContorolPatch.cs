@@ -1109,7 +1109,7 @@ class FixedUpdatePatch
                     }
                     else
                     {
-                        
+
                         float range = NormalGameOptionsV07.KillDistances[Mathf.Clamp(player.Is(CustomRoles.Reach) ? 2 : Main.NormalOptions.KillDistance, 0, 2)] + 0.5f;
                         float dis = Vector2.Distance(player.transform.position, ar_target.transform.position);//距離を出す
                         if (dis <= range)//一定の距離にターゲットがいるならば時間をカウント
@@ -1259,15 +1259,11 @@ class FixedUpdatePatch
                 }
 
                 //检查马里奥是否完成
-                if (GameStates.IsInTask && player.Is(CustomRoles.Mario))
+                if (GameStates.IsInTask && player.Is(CustomRoles.Mario) && Main.MarioVentCount[player.PlayerId] > Options.MarioVentNumWin.GetInt())
                 {
-                    if (Main.MarioVentCount[player.PlayerId] > Options.MarioVentNumWin.GetInt())
-                    {
-
-                        Main.MarioVentCount[player.PlayerId] = Options.MarioVentNumWin.GetInt();
-                        CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
-                        CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
-                    }
+                    Main.MarioVentCount[player.PlayerId] = Options.MarioVentNumWin.GetInt();
+                    CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Mario); //马里奥这个多动症赢了
+                    CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
                 }
 
                 Pelican.OnFixedUpdate();

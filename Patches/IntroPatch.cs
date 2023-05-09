@@ -16,33 +16,33 @@ class SetUpRoleTextPatch
         if (!GameStates.IsModHost) return;
         new LateTask(() =>
         {
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-        {
-            var color = ColorUtility.TryParseHtmlString("#f55252", out var c) ? c : new(255, 255, 255, 255);
-            CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
-            __instance.YouAreText.color = color;
-            __instance.RoleText.text = Utils.GetRoleName(role);
-            __instance.RoleText.color = Utils.GetRoleColor(role);
-            __instance.RoleBlurbText.color = color;
-            __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
-        }
-        else
-        {
-            CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
-            if (!role.IsVanilla())
+            if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
             {
-                __instance.YouAreText.color = Utils.GetRoleColor(role);
+                var color = ColorUtility.TryParseHtmlString("#f55252", out var c) ? c : new(255, 255, 255, 255);
+                CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
+                __instance.YouAreText.color = color;
                 __instance.RoleText.text = Utils.GetRoleName(role);
                 __instance.RoleText.color = Utils.GetRoleColor(role);
-                __instance.RoleBlurbText.color = Utils.GetRoleColor(role);
+                __instance.RoleBlurbText.color = color;
                 __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
             }
-            foreach (var subRole in Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SubRoles)
-                __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(subRole), GetString($"{subRole}Info"));
-            if (!PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && !PlayerControl.LocalPlayer.Is(CustomRoles.Ntr) && CustomRolesHelper.RoleExist(CustomRoles.Ntr))
-                __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), GetString($"{CustomRoles.Lovers}Info"));
-            __instance.RoleText.text += Utils.GetSubRolesText(PlayerControl.LocalPlayer.PlayerId, false, true);
-        }
+            else
+            {
+                CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
+                if (!role.IsVanilla())
+                {
+                    __instance.YouAreText.color = Utils.GetRoleColor(role);
+                    __instance.RoleText.text = Utils.GetRoleName(role);
+                    __instance.RoleText.color = Utils.GetRoleColor(role);
+                    __instance.RoleBlurbText.color = Utils.GetRoleColor(role);
+                    __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
+                }
+                foreach (var subRole in Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SubRoles)
+                    __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(subRole), GetString($"{subRole}Info"));
+                if (!PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && !PlayerControl.LocalPlayer.Is(CustomRoles.Ntr) && CustomRolesHelper.RoleExist(CustomRoles.Ntr))
+                    __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), GetString($"{CustomRoles.Lovers}Info"));
+                __instance.RoleText.text += Utils.GetSubRolesText(PlayerControl.LocalPlayer.PlayerId, false, true);
+            }
         }, 0.01f, "Override Role Text");
     }
 }
