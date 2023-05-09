@@ -1109,9 +1109,10 @@ class FixedUpdatePatch
                     }
                     else
                     {
-                        float dis;
-                        dis = Vector2.Distance(player.transform.position, ar_target.transform.position);//距離を出す
-                        if (dis <= 1.75f)//一定の距離にターゲットがいるならば時間をカウント
+                        
+                        float range = NormalGameOptionsV07.KillDistances[Mathf.Clamp(player.Is(CustomRoles.Reach) ? 2 : Main.NormalOptions.KillDistance, 0, 2)] + 0.5f;
+                        float dis = Vector2.Distance(player.transform.position, ar_target.transform.position);//距離を出す
+                        if (dis <= range)//一定の距離にターゲットがいるならば時間をカウント
                         {
                             Main.ArsonistTimer[player.PlayerId] = (ar_target, ar_time + Time.fixedDeltaTime);
                         }
@@ -1164,9 +1165,9 @@ class FixedUpdatePatch
                     }
                     else
                     {
-                        float dis;
-                        dis = Vector2.Distance(player.transform.position, rv_target.transform.position);//超出距离
-                        if (dis <= 1.75f)//在一定距离内则计算时间
+                        float range = NormalGameOptionsV07.KillDistances[Mathf.Clamp(player.Is(CustomRoles.Reach) ? 2 : Main.NormalOptions.KillDistance, 0, 2)] + 0.5f;
+                        float dis = Vector2.Distance(player.transform.position, rv_target.transform.position);//超出距离
+                        if (dis <= range)//在一定距离内则计算时间
                         {
                             Main.RevolutionistTimer[player.PlayerId] = (rv_target, rv_time + Time.fixedDeltaTime);
                         }
