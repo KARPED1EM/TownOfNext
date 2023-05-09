@@ -637,7 +637,10 @@ class MeetingHudStartPatch
         }
         if (AntiBlackout.OverrideExiledPlayer)
         {
-            Utils.SendMessage(Translator.GetString("Warning.OverrideExiledPlayer"));
+            new LateTask(() =>
+            {
+                Utils.SendMessage(GetString("Warning.OverrideExiledPlayer"));
+            }, 8f, "Warning OverrideExiledPlayer");
         }
         if (MeetingStates.FirstMeeting) TemplateManager.SendTemplate("OnFirstMeeting", noErr: true);
         TemplateManager.SendTemplate("OnMeeting", noErr: true);
