@@ -582,9 +582,6 @@ class MeetingHudStartPatch
         GameStates.AlreadyDied |= !Utils.IsAllAlive;
         Main.AllPlayerControls.Do(x => ReportDeadBodyPatch.WaitReport[x.PlayerId].Clear());
         MeetingStates.MeetingCalled = true;
-
-        if (AmongUsClient.Instance.AmHost)
-            NotifyRoleSkillOnMeetingStart();
     }
     public static void Postfix(MeetingHud __instance)
     {
@@ -639,11 +636,14 @@ class MeetingHudStartPatch
         {
             new LateTask(() =>
             {
-                Utils.SendMessage(GetString("Warning.OverrideExiledPlayer"));
-            }, 8f, "Warning OverrideExiledPlayer");
+                Utils.SendMessage(GetString("Warning.OverrideExiledPlayer"), 255, Utils.ColorString(Color.red, GetString("DefaultSystemMessageTitle")));
+            }, 5f, "Warning OverrideExiledPlayer");
         }
         if (MeetingStates.FirstMeeting) TemplateManager.SendTemplate("OnFirstMeeting", noErr: true);
         TemplateManager.SendTemplate("OnMeeting", noErr: true);
+
+        if (AmongUsClient.Instance.AmHost)
+            NotifyRoleSkillOnMeetingStart();
 
         if (AmongUsClient.Instance.AmHost)
         {
