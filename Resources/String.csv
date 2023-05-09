@@ -878,7 +878,7 @@
 "CharmedCountMode.None","不计人数","Nothing","Никто","不計人數",""
 "CharmedCountMode.Succubus","<color=#cf6acd>魅魔阵营</color>","<color=#cf6acd>Succubus</color>","<color=#cf6acd>Суккубом</color>","<color=#cf6acd>魅魔陣營</color>",""
 "CharmedCountMode.Original","原本阵营","Original Team","Первоначальной командой","原本陣營",""
-"JackalCanWinBySabotageWhenNoImpAlive","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利","When all <color=#ff1919>impostors</color> are dead, the <color=#00b4eb>Jackal</color> wins by sabotage instead.","Саботаж <color=#ff1919>Предателя</color> считается победой Шакала если все <color=#ff1919>Предатели</color> мертвы","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利",""
+"JackalCanWinBySabotageWhenNoImpAlive","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利","When all <color=#ff1919>Impostors</color> are dead, the <color=#00b4eb>Jackal</color> wins by sabotage instead","Саботаж <color=#ff1919>Предателя</color> считается победой Шакала если все <color=#ff1919>Предатели</color> мертвы","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利",""
 "ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻重置击杀冷却","Reset kill cooldown when someone is killed","Сбрасывать откат убийства когда кто-то умирает","当有人被击杀时立刻重置击杀冷却",""
 
 "## 死因 / Death Reasons"
@@ -913,7 +913,7 @@
 
 "## 反应时间控制 / Sabotages"
 "SabotageTimeControl","更改修理时限","Sabotage Duration Control","Изменить время Саботажа","更改修理時限","更改修理时限"
-"PolusReactorTimeLimit","波鲁斯抗震稳定器修理时限","Polus Reactor Time Limit","Polus время саботажа Реактора",""Polus抗震穩定器修理時限","波鲁斯抗震稳定器修理时限"
+"PolusReactorTimeLimit","波鲁斯抗震稳定器修理时限","Polus Reactor Time Limit","Polus время саботажа Реактора","Polus抗震穩定器修理時限","波鲁斯抗震稳定器修理时限"
 "AirshipReactorTimeLimit","飞艇坠毁路线修理时限","Airship Reactor Time Limit","Airship время саботажа Реактора","The Airship避開墜毀路線修理時限","飞艇坠毁路线修理时限"
 
 "## 指令帮助 / Commands"
