@@ -127,6 +127,7 @@ public static class Options
     public static OptionItem NeutralWinTogether;
 
     public static OptionItem DefaultShapeshiftCooldown;
+    public static OptionItem DeadImpCantSabotage;
     public static OptionItem ImpKnowAlliesRole;
     public static OptionItem ImpKnowWhosMadmate;
     public static OptionItem MadmateKnowWhosImp;
@@ -508,6 +509,8 @@ public static class Options
             .SetGameMode(CustomGameMode.Standard)
             .SetHeader(true)
             .SetValueFormat(OptionFormat.Seconds);
+        DeadImpCantSabotage = BooleanOptionItem.Create(900051, "DeadImpCantSabotage", false, TabGroup.ImpostorRoles, false)
+            .SetGameMode(CustomGameMode.Standard);
 
         NeutralRolesMinPlayer = IntegerOptionItem.Create(505007, "NeutralRolesMinPlayer", new(0, 15, 1), 0, TabGroup.NeutralRoles, false)
             .SetGameMode(CustomGameMode.Standard)

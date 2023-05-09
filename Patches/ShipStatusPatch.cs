@@ -70,7 +70,7 @@ class RepairSystemPatch
 
         if (systemType == SystemTypes.Sabotage && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
         {
-            if (player.Is(CustomRoleTypes.Impostor) && !player.Is(CustomRoles.Minimalism)) return true;
+            if (player.Is(CustomRoleTypes.Impostor) && !player.Is(CustomRoles.Minimalism) && (player.IsAlive() || !Options.DeadImpCantSabotage.GetBool())) return true;
             if (player.Is(CustomRoles.Jackal) && Jackal.CanUseSabotage.GetBool()) return true;
             return false;
         }

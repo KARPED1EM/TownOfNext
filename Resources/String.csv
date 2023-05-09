@@ -650,6 +650,7 @@
 "DefaultShapeshiftCooldown","默认变形冷却时间","Default Shapeshift Cooldown","Обычная перезарядка Оборотня","預設變形冷卻時間","默认变形冷却时间"
 "ShapeshiftDuration","变形持续时间","Shapeshift duration","Продолжительность морфа","變形持續時間","变形持续时间"
 "ShapeshiftCooldown","变形冷却时间","Shapeshift cooldown","Откат морфа","變形冷卻時間","变形冷却时间"
+"DeadImpCantSabotage","<color=#ff1919>内鬼</color>死后不能破坏","","","",""
 "VampireKillDelay","吸血目标延迟死亡时间","Kill Delay (S)","Длительность укуса(Секунды)","吸血目標延遲死亡時間","吸血目标延迟死亡时间"
 "MareAddSpeedInLightsOut","熄灯时的额外速度","Additional Speed During Lights Out","Скорость Ночного при Саботаже Света","關燈時的額外速度","熄灯时的额外速度"
 "MareKillCooldownInLightsOut","熄灯时的击杀冷却时间","Kill Cooldown During Lights Out","Откат убийства Ночного при Саботаже Света","關燈時的殺人冷卻時間","熄灯时的击杀冷却时间"
