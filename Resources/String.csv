@@ -650,7 +650,7 @@
 "DefaultShapeshiftCooldown","默认变形冷却时间","Default Shapeshift Cooldown","Обычная перезарядка Оборотня","預設變形冷卻時間","默认变形冷却时间"
 "ShapeshiftDuration","变形持续时间","Shapeshift duration","Продолжительность морфа","變形持續時間","变形持续时间"
 "ShapeshiftCooldown","变形冷却时间","Shapeshift cooldown","Откат морфа","變形冷卻時間","变形冷却时间"
-"DeadImpCantSabotage","<color=#ff1919>内鬼</color>死后不能破坏","","","",""
+"DeadImpCantSabotage","<color=#ff1919>内鬼</color>死后不能破坏","<color=#ff1919>Impostors</color> can't sabotage after they died","Мертвые <color=#ff1919>Предатели</color> не могут саботажить","<color=#ff1919>内鬼</color>死后不能破坏",""
 "VampireKillDelay","吸血目标延迟死亡时间","Kill Delay (S)","Длительность укуса(Секунды)","吸血目標延遲死亡時間","吸血目标延迟死亡时间"
 "MareAddSpeedInLightsOut","熄灯时的额外速度","Additional Speed During Lights Out","Скорость Ночного при Саботаже Света","關燈時的額外速度","熄灯时的额外速度"
 "MareKillCooldownInLightsOut","熄灯时的击杀冷却时间","Kill Cooldown During Lights Out","Откат убийства Ночного при Саботаже Света","關燈時的殺人冷卻時間","熄灯时的击杀冷却时间"
@@ -878,8 +878,8 @@
 "CharmedCountMode.None","不计人数","Nothing","Никто","不計人數",""
 "CharmedCountMode.Succubus","<color=#cf6acd>魅魔阵营</color>","<color=#cf6acd>Succubus</color>","<color=#cf6acd>Суккубом</color>","<color=#cf6acd>魅魔陣營</color>",""
 "CharmedCountMode.Original","原本阵营","Original Team","Первоначальной командой","原本陣營",""
-"JackalCanWinBySabotageWhenNoImpAlive","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利","","","",""
-"ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻重置击杀冷却","","","",""
+"JackalCanWinBySabotageWhenNoImpAlive","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利","When all <color=#ff1919>impostors</color> are dead, the <color=#00b4eb>Jackal</color> wins by sabotage instead.","Саботаж <color=#ff1919>Предателя</color> считается победой Шакала если все <color=#ff1919>Предатели</color> мертвы","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利",""
+"ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻重置击杀冷却","Reset kill cooldown when someone is killed","Сбрасывать откат убийства когда кто-то умирает","当有人被击杀时立刻重置击杀冷却",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被殺","被杀"
@@ -1078,7 +1078,7 @@
 "Message.YTPlanNotice","提示：该房间启用了【创作者素材保护计划】，房主可以指定自己的职业。\n该功能仅允许创作者用于获取视频素材，如遇滥用情况，请退出游戏或举报。\n当前创作者认证：","Note: The [YouTuber Plan] is enabled in this lobby, which means the Host can specify their role in the next game to make it easier to get content. In case the Host abuses this feature, please exit the game or report it.\nCurrent Creator Credentials:","Внимание: в этой комнате включен [режим Ютуб Ролика], владелец может поставить отдельные роли игрокам.\n Эта функция может использоваться только для создания видео роликов, если создатель комнаты нарушает это правило, выйдите или сообщите о нём.\n Текущие настройки:","提示：该房间启用了【创作者素材保护计划】，房主可以指定自己的职业。\n该功能仅允许创作者用于获取视频素材，如遇滥用情况，请退出游戏或举报。\n当前创作者认证：",""
 
 "## 警告 / Warnings"
-"Warning.OverrideExiledPlayer","警告：由于设置内鬼数量为1（船鬼计算为船员），为了避免黑屏错误，将会将驱逐动画显示为平票或跳过（只会影响视觉，不会影响投票结果）。请设置更多的内鬼人数或禁用船鬼以避免该问题。","警告：由于设置内鬼数量为1（船鬼计算为船员），为了避免黑屏错误，将会将驱逐动画显示为平票或跳过（只会影响视觉，不会影响投票结果）。请设置更多的内鬼人数或禁用船鬼以避免该问题。","警告：由于设置内鬼数量为1（船鬼计算为船员），为了避免黑屏错误，将会将驱逐动画显示为平票或跳过（只会影响视觉，不会影响投票结果）。请设置更多的内鬼人数或禁用船鬼以避免该问题。","警告：由于设置内鬼数量为1（船鬼计算为船员），为了避免黑屏错误，将会将驱逐动画显示为平票或跳过（只会影响视觉，不会影响投票结果）。请设置更多的内鬼人数或禁用船鬼以避免该问题。","设置内鬼人数为一个时，放逐动画会显示为平票"
+"Warning.OverrideExiledPlayer","警告：由于设置内鬼数量为1（船鬼计算为船员），为了避免黑屏错误，将会将驱逐动画显示为平票或跳过（只会影响视觉，不会影响投票结果）。请设置更多的内鬼人数或禁用船鬼以避免该问题。","Warning: Since the number of Impostors is set to 1 (CrewPostor are counted as crew members), in order to avoid black screen, the voteing screen will always show as a tied vote or a skip vote (only affects the visual, not the voting results). Please set more number of Impostors or disable CrewPostor to avoid this problem.","Предупреждение: Поскольку Предатель остался один (Предатель считается как Член Экипажа), во избежание черного экрана, анимация выбрасывания считается как ничьей или пропущено (только визуально, выбрасывание все ещё происходит)\n Пожалуйста, установите больше предателей или отключите Предателей чтобы избежать этой проблемы.","警告：由于设置内鬼数量为1（船鬼计算为船员），为了避免黑屏错误，将会将驱逐动画显示为平票或跳过（只会影响视觉，不会影响投票结果）。请设置更多的内鬼人数或禁用船鬼以避免该问题。","设置内鬼人数为一个时，放逐动画会显示为平票"
 "Warning.InvalidRpc","{0} 被踢出，因其 RPC 无效，请确保没有 TOHE 以外的模组。","Kicked {0} because an invalid RPC was received.\nPlease check that no mods other than TOHE installed.","{0} был кикнут так как получен недопустимый RPC. \nУбедитесь что в системе нет других модов кроме TOHE.","{0} 被踢出，因其 RPC 無效，請確保沒有 TOHE 以外的模組。","{0} 被踢出，因其 RPC 无效，请确保没有 TOHE 以外的模组。"
 "Warning.NoModHost","非TOHE房","Mod TOHE not installed on the host","У Хоста Лобби не установлен TOHE","非TOHE房","非TOHE房"
 "Warning.MismatchedVersion","{0}\n安装了其它版本的 {1}","{0}\nhave a different version of {1}","{0} Версия \nне соответствует версии Хоста лобби {1}","{0}\n安裝了其他版本的 {1}","{0}\n安装了其它版本的 {1}"
@@ -1363,7 +1363,7 @@
 "DivinatorCheck.Disturbed","【{0}】有些令人感到异样且不详","Looks like 【{0}】 is disturbed by something.","Похоже, 【{0}】 что-то беспокоит.","【{0}】有些令人感到異樣且不詳","【{0}】有些令人感到异样且不详"
 "DivinatorCheck.None","【{0}】或许会就这么平凡一辈子","Looks like 【{0}】 has just an ordinary life.","Похоже, 【{0}】 имеет спокойную жизнь.","【{0}】或許會就這麼平凡一輩子","【{0}】或许会就这么平凡一辈子"
 "DivinatorCheck.Glitch","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17"
-"DivinatorCheck.Love","♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡","","","",""
+"DivinatorCheck.Love","♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡","♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡","♡ + ♡ = ♡♡","♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡",""
 "DivinatorCheck.TaskDone","【{0}】的职业是【{1}】","【{0}】Role -【{1}】","【{0}】Роль -【{1}】","【{0}】的職業是 {1}】","【{0}】的职业是【{1}】"
 "DevAndSpnTitle","TOHE大家族","TOHE family","Семья TOHE","TOHE大家族","TOHE大家族"
 
