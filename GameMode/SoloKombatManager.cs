@@ -333,7 +333,7 @@ internal static class SoloKombatManager
     {
         public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
         {
-            if (!AmongUsClient.Instance.AmHost) return true;
+            if (!AmongUsClient.Instance.AmHost || Options.CurrentGameMode != CustomGameMode.SoloKombat) return true;
             if (!__instance.myPlayer.SoloAlive() && KB_BootVentWhenDead.GetBool())
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(__instance.NetId, (byte)RpcCalls.BootFromVent, SendOption.Reliable, -1);
