@@ -1,5 +1,7 @@
 using AmongUs.GameOptions;
+using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 using static TOHE.Options;
 
 namespace TOHE.Roles.Neutral;
@@ -14,6 +16,7 @@ public static class Jackal
     public static OptionItem CanUseSabotage;
     public static OptionItem CanWinBySabotageWhenNoImpAlive;
     private static OptionItem HasImpostorVision;
+    private static OptionItem ResetKillCooldownWhenSbGetKilled;
 
     public static void SetupCustomOption()
     {
@@ -25,6 +28,7 @@ public static class Jackal
         CanUseSabotage = BooleanOptionItem.Create(Id + 12, "CanUseSabotage", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal]);
         CanWinBySabotageWhenNoImpAlive = BooleanOptionItem.Create(Id + 14, "JackalCanWinBySabotageWhenNoImpAlive", true, TabGroup.NeutralRoles, false).SetParent(CanUseSabotage);
         HasImpostorVision = BooleanOptionItem.Create(Id + 13, "ImpostorVision", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal]);
+        ResetKillCooldownWhenSbGetKilled = BooleanOptionItem.Create(Id + 15, "ResetKillCooldownWhenPlayerGetKilled", false, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal]);
     }
     public static void Init()
     {
@@ -50,5 +54,10 @@ public static class Jackal
     public static void SetHudActive(HudManager __instance, bool isActive)
     {
         __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage.GetBool());
+    }
+    public static void AfterPlayerDiedTask()
+    {
+        if (!ResetKillCooldownWhenSbGetKilled.GetBool()) return;
+        Main.AllAlivePlayerControls.Where(x => playerIdList.Contains(x.PlayerId)).Do(x => x.SetKillCooldown(0));
     }
 }
