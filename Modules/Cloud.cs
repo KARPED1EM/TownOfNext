@@ -67,7 +67,7 @@ internal class Cloud
         {
             Utils.SendMessage(Translator.GetString("Message.LobbyShareFailed"), PlayerControl.LocalPlayer.PlayerId);
             Logger.Exception(e, "SentLobbyToQQ");
-            throw e;
+            throw;
         }
         return true;
     }
@@ -96,7 +96,7 @@ internal class Cloud
             {
                 connecting = false;
                 Logger.Exception(e, "EAC Cloud");
-                throw e;
+                throw;
             }
             connecting = false;
         }, 3.5f, "EAC Cloud Connect");

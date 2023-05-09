@@ -56,7 +56,7 @@ public static class MafiaRevengeManager
         PlayerControl target;
         try
         {
-            targetId = int.Parse(msg.Replace("/rv", String.Empty));
+            targetId = int.Parse(msg.Replace("/rv", string.Empty));
             target = Utils.GetPlayerById(targetId);
         }
         catch
