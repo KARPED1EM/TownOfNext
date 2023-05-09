@@ -326,6 +326,15 @@ class CheckMurderPatch
                     target.NetTransform.SnapTo(location);
                     killer.MurderPlayer(target);
 
+                    if (target.Is(CustomRoles.Avanger))
+                    {
+                        var pcList = Main.AllAlivePlayerControls.Where(x => x.PlayerId != target.PlayerId).ToList();
+                        var rp = pcList[IRandom.Instance.Next(0, pcList.Count)];
+                        Main.PlayerStates[rp.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
+                        rp.SetRealKiller(target);
+                        rp.RpcMurderPlayerV3(rp);
+                    }
+
                     MessageWriter messageWriter = AmongUsClient.Instance.StartRpcImmediately(killer.NetId, (byte)RpcCalls.MurderPlayer, SendOption.None, -1);
                     messageWriter.WriteNetObject(target);
                     AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
@@ -573,7 +582,7 @@ class MurderPlayerPatch
 
         if (target.Is(CustomRoles.Avanger))
         {
-            var pcList = Main.AllAlivePlayerControls.Where(x => x.IsAlive() && !Pelican.IsEaten(x.PlayerId) && x.PlayerId != target.PlayerId).ToList();
+            var pcList = Main.AllAlivePlayerControls.Where(x => x.PlayerId != target.PlayerId).ToList();
             var rp = pcList[IRandom.Instance.Next(0, pcList.Count)];
             Main.PlayerStates[rp.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
             rp.SetRealKiller(target);
