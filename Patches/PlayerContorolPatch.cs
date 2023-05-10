@@ -1578,7 +1578,7 @@ class FixedUpdatePatch
         }
     }
     //FIXME: 役職クラス化のタイミングで、このメソッドは移動予定
-    public static void LoversSuicide(byte deathId = 0x7f, bool isExiled = false)
+    public static void LoversSuicide(byte deathId = 0x7f, bool isExiled = false, bool now = false)
     {
         if (Options.LoverSuicide.GetBool() && CustomRoles.Lovers.IsEnable() && Main.isLoversDead == false)
         {
@@ -1599,7 +1599,10 @@ class FixedUpdatePatch
                     {
                         Main.PlayerStates[partnerPlayer.PlayerId].deathReason = PlayerState.DeathReason.FollowingSuicide;
                         if (isExiled)
+                        {
+                            if (now) partnerPlayer?.RpcExileV2();
                             CheckForEndVotingPatch.TryAddAfterMeetingDeathPlayers(PlayerState.DeathReason.FollowingSuicide, partnerPlayer.PlayerId);
+                        }
                         else
                             partnerPlayer.RpcMurderPlayerV3(partnerPlayer);
                     }

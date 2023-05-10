@@ -1305,7 +1305,7 @@ public static class Utils
         if (Executioner.Target.ContainsValue(target.PlayerId))
             Executioner.ChangeRoleByTarget(target);
 
-        FixedUpdatePatch.LoversSuicide(target.PlayerId, onMeeting);
+        FixedUpdatePatch.LoversSuicide(target.PlayerId, onMeeting, true);
 
         Jackal.AfterPlayerDiedTask();
 
