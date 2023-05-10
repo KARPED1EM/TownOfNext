@@ -879,7 +879,7 @@
 "CharmedCountMode.Succubus","<color=#cf6acd>魅魔阵营</color>","<color=#cf6acd>Succubus</color>","<color=#cf6acd>Суккубом</color>","<color=#cf6acd>魅魔陣營</color>",""
 "CharmedCountMode.Original","原本阵营","Original Team","Первоначальной командой","原本陣營",""
 "JackalCanWinBySabotageWhenNoImpAlive","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利","When all <color=#ff1919>Impostors</color> are dead, the <color=#00b4eb>Jackal</color> wins by sabotage instead","Саботаж <color=#ff1919>Предателя</color> считается победой <color=#00b4eb>Шакала</color> если все <color=#ff1919>Предатели</color> мертвы","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利",""
-"ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻重置击杀冷却","Reset kill cooldown when someone is killed","Сбрасывать откат убийства когда кто-то умирает","当有人被击杀时立刻重置击杀冷却",""
+"ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻将击杀冷却恢复至0（不包括自己击杀）","Reset kill cooldown when someone is killed","Сбрасывать откат убийства когда кто-то умирает","当有人被击杀时立刻重置击杀冷却",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被殺","被杀"
