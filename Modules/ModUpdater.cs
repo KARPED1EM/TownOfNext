@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -320,50 +321,13 @@ public class ModUpdater
             var savePath = "BepInEx/plugins/TOHE.dll.temp";
             File.Delete(savePath);
 
-#nullable enable
-            HttpResponseMessage? response = null;
-#nullable disable
-            var downloadCallBack = DownloadCallBack;
-            using (HttpClient client = new HttpClient())
-                response = await client.GetAsync(url);
-            if (response == null)
-                throw new Exception("文件获取失败");
-            var total = response.Content.Headers.ContentLength ?? 0;
-            var stream = await response.Content.ReadAsStreamAsync();
-            var file = new FileInfo(savePath);
-            using (var fileStream = file.Create())
-            using (stream)
-            {
-                if (downloadCallBack == null)
-                {
-                    await stream.CopyToAsync(fileStream);
-                }
-                else
-                {
-                    byte[] buffer = new byte[1024];
-                    long readLength = 0;
-                    int length;
-                    while ((length = await stream.ReadAsync(buffer, 0, buffer.Length)) != 0)
-                    {
-                        // 写入到文件
-                        fileStream.Write(buffer, 0, length);
+#pragma warning disable SYSLIB0014
+            using WebClient client = new();
+#pragma warning restore SYSLIB0014
 
-                        //更新进度
-                        readLength += length;
-                        double? progress = Math.Round((double)readLength / total * 100, 2, MidpointRounding.ToZero);
-                        lock (downloadLock)
-                        {
-                            //下载完毕立刻关闭释放文件流
-                            if (total == readLength && progress == 100)
-                            {
-                                fileStream.Close();
-                                fileStream.Dispose();
-                            }
-                            downloadCallBack?.Invoke(total, readLength, progress ?? 0);
-                        }
-                    }
-                }
-            }
+            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadCallBack);
+            client.DownloadFileAsync(new Uri(url), savePath);
+            while (client.IsBusy) await Task.Delay(1);
 
             if (GetMD5HashFromFile(savePath) != md5)
             {
@@ -387,6 +351,18 @@ public class ModUpdater
             return false;
         }
         return true;
+    }
+    private static void DownloadCallBack(object sender, DownloadProgressChangedEventArgs e)
+    {
+        try
+        {
+            ShowPopup($"{GetString("updateInProgress")}\n{e.BytesReceived}/{e.TotalBytesToReceive}({e.ProgressPercentage}%)", StringNames.Cancel);
+        }
+        catch(Exception ex)
+        {
+            Logger.Exception(ex, "DownloadDLL");
+            throw;
+        }
     }
     public static string GetMD5HashFromFile(string fileName)
     {
