@@ -486,7 +486,7 @@ public static class GuessManager
                 }
                 else
                 {
-                    if (!Options.GGCanGuessCrew.GetBool() && index == 0) continue;
+                    if (!Options.GGCanGuessCrew.GetBool() && !PlayerControl.LocalPlayer.Is(CustomRoles.Madmate) && index == 0) continue;
                     if (!Options.GGCanGuessAdt.GetBool() && index == 3) continue;
                 }
                 Transform TeambuttonParent = new GameObject().transform;
