@@ -519,30 +519,25 @@ internal class ChatCommands
         };
     }
 
-    public static bool GetRoleByName(string name, out CustomRoles role)
+    public static bool GetRoleByName(string input, out CustomRoles role)
     {
         role = new();
-        if (name == "" || name == string.Empty) return false;
+        input = input.ToLower().Trim().Replace("是", string.Empty);
+        if (input == "" || input == string.Empty) return false;
 
-        if ((TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.SChinese) == SupportedLangs.SChinese)
+        if ((TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.SChinese) is SupportedLangs.SChinese or SupportedLangs.TChinese)
         {
             Regex r = new("[\u4e00-\u9fa5]+$");
-            MatchCollection mc = r.Matches(name);
+            MatchCollection mc = r.Matches(input);
             string result = string.Empty;
-            for (int i = 0; i < mc.Count; i++)
-            {
-                if (mc[i].ToString() == "是") continue;
-                result += mc[i]; //匹配结果是完整的数字，此处可以不做拼接的
-            }
-            name = FixRoleNameInput(result.Replace("是", string.Empty).Trim());
+            for (int i = 0; i < mc.Count; i++) result += mc[i];
+            input = result;
         }
-        else name = name.Trim().ToLower();
+        input = FixRoleNameInput(input);
 
         foreach (CustomRoles rl in Enum.GetValues(typeof(CustomRoles)))
         {
-            if (rl.IsVanilla()) continue;
-            var roleName = GetString(rl.ToString()).ToLower().Trim();
-            if (name.Contains(roleName))
+            if (input == GetString(Enum.GetName(typeof(CustomRoles), rl)).ToLower().Trim())
             {
                 role = rl;
                 return true;
@@ -558,23 +553,17 @@ internal class ChatCommands
             return;
         }
 
-        role = role.Trim().ToLower();
-        if (role.StartsWith("/r")) role.Replace("/r", string.Empty);
-        if (role.StartsWith("/up")) role.Replace("/up", string.Empty);
-        if (role.EndsWith("\r\n")) role.Replace("\r\n", string.Empty);
-        if (role.EndsWith("\n")) role.Replace("\n", string.Empty);
-
+        role = FixRoleNameInput(role).ToLower().Trim();
         if (role == "" || role == string.Empty)
         {
             Utils.ShowActiveRoles(playerId);
             return;
         }
-        role = FixRoleNameInput(role).ToLower().Trim().Replace(" ", string.Empty);
 
         foreach (CustomRoles rl in Enum.GetValues(typeof(CustomRoles)))
         {
             if (rl.IsVanilla()) continue;
-            var roleName = GetString(rl.ToString());
+            var roleName = GetString(Enum.GetName(typeof(CustomRoles), rl));
             if (role == roleName.ToLower().Trim().TrimStart('*').Replace(" ", string.Empty))
             {
                 string devMark = "";
