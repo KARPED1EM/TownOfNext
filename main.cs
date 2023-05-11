@@ -240,17 +240,6 @@ public class Main : BasePlugin
         LastKillCooldown = Config.Bind("Other", "LastKillCooldown", (float)30);
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
-        CustomWinnerHolder.Reset();
-        ServerAddManager.Init();
-        Translator.Init();
-        BanManager.Init();
-        TemplateManager.Init();
-        SpamManager.Init();
-        DevManager.Init();
-        Cloud.Init();
-
-        IRandom.SetInstance(new NetRandomWrapper());
-
         hasArgumentException = false;
         ExceptionMessage = "";
         try
@@ -365,6 +354,18 @@ public class Main : BasePlugin
             ExceptionMessage = ex.Message;
             ExceptionMessageIsShown = false;
         }
+
+        CustomWinnerHolder.Reset();
+        ServerAddManager.Init();
+        Translator.Init();
+        BanManager.Init();
+        TemplateManager.Init();
+        SpamManager.Init();
+        DevManager.Init();
+        Cloud.Init();
+
+        IRandom.SetInstance(new NetRandomWrapper());
+
         TOHE.Logger.Info($"{Application.version}", "AmongUs Version");
 
         var handler = TOHE.Logger.Handler("GitVersion");

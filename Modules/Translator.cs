@@ -73,9 +73,7 @@ public static class Translator
         string str = GetString(s, langId);
         if (replacementDic != null)
             foreach (var rd in replacementDic)
-            {
                 str = str.Replace(rd.Key, rd.Value);
-            }
         return str;
     }
 
