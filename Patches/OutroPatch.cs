@@ -160,6 +160,13 @@ class SetEverythingUpPatch
                 WinnerText.text = GetString("EveryoneDied");
                 WinnerText.color = Color.gray;
                 break;
+            case CustomWinner.Error:
+                __instance.WinText.text = GetString("ErrorEndText");
+                __instance.WinText.color = Color.red;
+                __instance.BackgroundBar.material.color = Color.red;
+                WinnerText.text = GetString("ErrorEndTextDescription");
+                WinnerText.color = Color.white;
+                break;
         }
 
         foreach (var additionalWinners in CustomWinnerHolder.AdditionalWinnerTeams)
@@ -167,10 +174,10 @@ class SetEverythingUpPatch
             var addWinnerRole = (CustomRoles)additionalWinners;
             AdditionalWinnerText += "＆" + Utils.ColorString(Utils.GetRoleColor(addWinnerRole), GetWinnerRoleName(addWinnerRole));
         }
-        if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Draw and not CustomWinner.None)
+        if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Draw and not CustomWinner.None and not CustomWinner.Error)
         {
             if (AdditionalWinnerText == "") WinnerText.text = $"<color={CustomWinnerColor}>{CustomWinnerText}{GetString("Win")}</color>";
-            else WinnerText.text = $"<color={CustomWinnerColor}></color>{CustomWinnerText}{AdditionalWinnerText}{GetString("Win")}";
+            else WinnerText.text = $"<color={CustomWinnerColor}>{CustomWinnerText}</color>{AdditionalWinnerText}{GetString("Win")}";
         }
 
         static string GetWinnerRoleName(CustomRoles role)
