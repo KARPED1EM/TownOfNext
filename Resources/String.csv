@@ -1083,6 +1083,7 @@
 "Warning.NoModHost","非TOHE房","Mod TOHE not installed on the host","У Хоста Лобби не установлен TOHE","非TOHE房","非TOHE房"
 "Warning.MismatchedVersion","{0}\n安装了其它版本的 {1}","{0}\nhave a different version of {1}","{0} Версия \nне соответствует версии Хоста лобби {1}","{0}\n安裝了其他版本的 {1}","{0}\n安装了其它版本的 {1}"
 "Warning.AutoExitAtMismatchedVersion","您的 {0} 版本与房主不同\n您将在 {1} 秒内被踢出","The host has no or a different version of {0}\nYou will be kicked in {1}","Версия {0} не соответствует Хосту лобби. \nВы будете исключены через {1} секунды","您的 {0} 版本與房主不同\n您將在 {1} 秒後被踢出","您的 {0} 版本与房主不同\n您将在 {1} 秒内被踢出"
+"Warning.CantKickDev","很抱歉，您无法踢出开发者","","","",""
 
 "## 错误 / Error"
 "Error.MeetingException","错误: {0}\n使用 Shift+M+Enter 强制结束会议","Error: {0}\r\nPlease use SHIFT+M+ENTER to end the meeting","Ошибка: {0}\r\nПожалуйста используйте SHIFT+M+ENTER чтобы принудительно завершить собрание","錯誤: {0}\n請使用 Shift+M+Enter 強制結束會議","错误: {0}\n使用 Shift+M+Enter 强制结束会议"

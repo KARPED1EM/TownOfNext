@@ -1,5 +1,6 @@
 using HarmonyLib;
 using InnerNet;
+using System.Linq;
 using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Translator;
@@ -88,22 +89,28 @@ internal class BanMenuSetVisiblePatch
         return false;
     }
 }
-[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNet.InnerNetClient.CanBan))]
+[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.CanBan))]
 internal class InnerNetClientCanBanPatch
 {
-    public static bool Prefix(InnerNet.InnerNetClient __instance, ref bool __result)
+    public static bool Prefix(InnerNetClient __instance, ref bool __result)
     {
         __result = __instance.AmHost;
         return false;
     }
 }
-[HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.KickPlayer))]
+[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.KickPlayer))]
 internal class KickPlayerPatch
 {
-    public static void Prefix(InnerNet.InnerNetClient __instance, int clientId, bool ban)
+    public static bool Prefix(InnerNetClient __instance, int clientId, bool ban)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
+        if (DevManager.DevUserList.Where(x => x.IsDev).Any(x => AmongUsClient.Instance.GetRecentClient(clientId).FriendCode == x.Code))
+        {
+            Logger.SendInGame(GetString("Warning.CantKickDev"));
+            return false;
+        }
+        if (!AmongUsClient.Instance.AmHost) return true;
         if (ban) BanManager.AddBanPlayer(AmongUsClient.Instance.GetRecentClient(clientId));
+        return true;
     }
 }
 [HarmonyPatch(typeof(ResolutionManager), nameof(ResolutionManager.SetResolution))]

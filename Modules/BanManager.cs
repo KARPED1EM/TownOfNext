@@ -41,7 +41,7 @@ public static class BanManager
             while ((line = sr.ReadLine()) != null)
             {
                 if (line == "" || line.StartsWith("#")) continue;
-                if (line.Contains("actorour#0029")) continue;
+                if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
                 EACList.Add(line);
             }
 
@@ -79,7 +79,7 @@ public static class BanManager
             while ((line = sr.ReadLine()) != null)
             {
                 if (line == "") continue;
-                if (line.Contains("actorour#0029")) continue;
+                if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
                 if (Regex.IsMatch(player.PlayerName, line))
                 {
                     AmongUsClient.Instance.KickPlayer(player.Id, false);
@@ -124,7 +124,7 @@ public static class BanManager
             while ((line = sr.ReadLine()) != null)
             {
                 if (line == "") continue;
-                if (line.Contains("actorour#0029")) continue;
+                if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
                 if (line.Contains(code)) return true;
             }
         }
