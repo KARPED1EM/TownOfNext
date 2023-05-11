@@ -57,11 +57,13 @@ public static class CredentialsPatch
             TransData += $"\nchill_ultimated - <size=75%>{GetString("TranRU")}</size>";
 
             BoosterData += $"bunny";
+            BoosterData += $"\nLoonie";
             BoosterData += $"\nNamra";
             BoosterData += $"\nKNIGHT";
             BoosterData += $"\nSolarFlare";
             BoosterData += $"\nBluéfôx.";
-            BoosterData += $"\nLoonie";
+            BoosterData += $"\nshiftyrose";
+            BoosterData += $"\nM ™";
 
             SponsersData += $"罗寄";
             SponsersData += $"\n鬼";
@@ -114,13 +116,13 @@ public static class CredentialsPatch
             var boostertitletext = Object.Instantiate(devtitletext, obj.transform);
             boostertitletext.GetComponent<TextMeshPro>().text = GetString("Booster");
             boostertitletext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Center;
-            boostertitletext.localPosition = new Vector3(-2.4f, -1f, -2f);
-            boostertitletext.localScale = new Vector3(0.8f, 0.8f, 1f);
+            boostertitletext.localPosition = new Vector3(-2.4f, -0.7f, -2f);
+            boostertitletext.localScale = new Vector3(0.8f, 0.7f, 1f);
 
             var boostertext = Object.Instantiate(devtext, obj.transform);
             boostertext.GetComponent<TextMeshPro>().text = BoosterData;
             boostertext.GetComponent<TextMeshPro>().alignment = TextAlignmentOptions.Capline;
-            boostertext.localPosition = new Vector3(-2.4f, -1.38f, -2f);
+            boostertext.localPosition = new Vector3(-2.4f, -0.98f, -2f);
             boostertext.localScale = new Vector3(0.5f, 0.5f, 1f);
 
             var sponsortitletext = Object.Instantiate(devtitletext, obj.transform);
