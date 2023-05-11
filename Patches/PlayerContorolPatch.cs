@@ -959,7 +959,7 @@ class ReportDeadBodyPatch
         Vampire.OnStartMeeting();
         Pelican.OnReportDeadBody();
         Mortician.OnReportDeadBody(player, target);
-        Mediumshiper.OnReportDeadBody(player, target);
+        Mediumshiper.OnReportDeadBody(target);
         Counterfeiter.OnReportDeadBody();
         BallLightning.OnReportDeadBody();
         QuickShooter.OnReportDeadBody();

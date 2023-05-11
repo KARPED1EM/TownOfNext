@@ -880,6 +880,7 @@
 "CharmedCountMode.Original","原本阵营","Original Team","Первоначальной командой","原本陣營",""
 "JackalCanWinBySabotageWhenNoImpAlive","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利","When all <color=#ff1919>Impostors</color> are dead, the <color=#00b4eb>Jackal</color> wins by sabotage instead","Саботаж <color=#ff1919>Предателя</color> считается победой <color=#00b4eb>Шакала</color> если все <color=#ff1919>Предатели</color> мертвы","没有<color=#ff1919>内鬼</color>存活时破坏视作豺狼胜利",""
 "ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻将击杀冷却恢复至0（不包括自己击杀）","Reset kill cooldown when someone is killed","Сбрасывать откат убийства когда кто-то умирает","当有人被击杀时立刻重置击杀冷却",""
+"MediumshiperContactLimit","建立联系次数上限","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被殺","被杀"
@@ -985,7 +986,7 @@
 "MediumshipNo","您似乎在渺茫的精神世界中听到有阵愤愤的嘶吼，在否定着您的提问。","You thought you heard quiet voice from another world denying the answer to your question.","Вам кажется что вы услышали тихий голос из другого мира отрицающий ваш вопрос.","您似乎在渺茫的精神世界中聽到有陣憤憤地嘶吼，在否定著您的提問。","您似乎在渺茫的精神世界中听到有阵愤愤的嘶吼，在否定着您的提问。"
 "MediumshipDone","您成功地向通灵师作出的回应","You successfully responded to the Medium.","Вы успешно ответили Медиуму.","您成功向通靈師做出回應","您成功地向通灵师作出的回应"
 "MediumshipNotifyTarget","通灵师【{0}】与您建立了联系，本次会议结束前，您拥有一次回应其问题的机会。\n确认指令：/ms 是\n否认指令：/ms 否","The Medium ([{0}]) has established contact with you. Before the end of this meeting, you have a chance to respond to their question.\nConfirm: [/ms yes]\nDeny: [/ms no]","Медиум [{0}] установил с вами контакт. До окончания этой встречи у вас есть шанс ответить на его вопрос.\nПодтвердить: [/ms yes]\nОтклонить: [/s no]","通靈師【{0}】與您建立了聯繫，本次會議結束前，您擁有一次回應該問題的機會。\n確認指令:/ms 是\n否認指令:/ms 否","通灵师【{0}】与您建立了联系，本次会议结束前，您拥有一次回应其问题的机会。\n确认指令：/ms 是\n否认指令：/ms 否"
-"MediumshipNotifySelf","您与【{0}】建立了联系，请向其提问并等待其作出回应。","You have established contact with [{0}], please ask them questions and wait for their response (yes or no).","Вы связались с [{0}], пожайлуста спросите его и ждите ответа.","您與【{0}】建立了聯繫，請向其提問並等待他做出回應。","您与【{0}】建立了联系，请向其提问并等待其作出回应。"
+"MediumshipNotifySelf","您与【{0}】建立了联系，请向其提问并等待其作出回应。\n\n剩余技能使用次数：{1}","You have established contact with [{0}], please ask them questions and wait for their response (yes or no).","Вы связались с [{0}], пожайлуста спросите его и ждите ответа.","您與【{0}】建立了聯繫，請向其提問並等待他做出回應。","您与【{0}】建立了联系，请向其提问并等待其作出回应。"
 "ByBard","<color=#ff1919>吟游诗人</color>献","by <color=#ff1919>Bard</color>","с любовью, <color=#ff1919>Бард</color>","<color=#ff1919>吟遊詩人</color>獻","<color=#ff1919>吟游诗人</color>献"
 "ByBardGetFailed","没有灵感，也是一种灵感","oops, I seem to be out of inspiration.","упс, у меня уже нету настроения","沒有靈感，也是一種靈感","没有灵感，也是一种灵感"
 "GangsterSuccessfullyRecruited","您成功招募了一位玩家","You successfully recruited a player","Вы успешно переманили игрока","您成功招募了一位玩家","您成功招募了一位玩家"

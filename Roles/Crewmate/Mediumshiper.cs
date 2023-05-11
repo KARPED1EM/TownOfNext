@@ -8,28 +8,43 @@ public static class Mediumshiper
 {
     private static readonly int Id = 8021812;
     public static List<byte> playerIdList = new();
+
+    private static OptionItem ContactLimitOpt;
+
     public static Dictionary<byte, byte> ContactPlayer = new();
+    public static Dictionary<byte, int> ContactLimit = new();
 
     public static void SetupCustomOption()
     {
         Options.SetupRoleOptions(Id, TabGroup.CrewmateRoles, CustomRoles.Mediumshiper);
+        ContactLimitOpt = IntegerOptionItem.Create(Id + 10, "MediumshiperContactLimit", new(1, 15, 1), 15, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Mediumshiper])
+            .SetValueFormat(OptionFormat.Times);
     }
     public static void Init()
     {
         playerIdList = new();
         ContactPlayer = new();
+        ContactLimit = new();
     }
     public static void Add(byte playerId)
     {
         playerIdList.Add(playerId);
+        ContactLimit.Add(playerId, ContactLimitOpt.GetInt());
     }
     public static bool IsEnable => playerIdList.Count > 0;
-    public static void OnReportDeadBody(PlayerControl pc, GameData.PlayerInfo target)
+    public static void OnReportDeadBody(GameData.PlayerInfo target)
     {
         ContactPlayer = new();
-        if (!pc.Is(CustomRoles.Mediumshiper) || target == null) return;
-        ContactPlayer.TryAdd(target.PlayerId, pc.PlayerId);
-        Logger.Info($"通灵师{pc.GetNameWithRole()}报告了{target.PlayerName}的尸体，已建立联系", "Mediumshiper");
+        if (target == null) return;
+        foreach(var pc in Main.AllAlivePlayerControls.Where(x => playerIdList.Contains(x.PlayerId) && x.PlayerId != target.PlayerId))
+        {
+            if (ContactLimit[pc.PlayerId] >= 1)
+            {
+                ContactLimit[pc.PlayerId]--;
+                ContactPlayer.TryAdd(target.PlayerId, pc.PlayerId);
+                Logger.Info($"通灵师建立联系：{pc.GetNameWithRole()} => {target.PlayerName}", "Mediumshiper");
+            }
+        }
     }
     public static bool MsMsg(PlayerControl pc, string msg)
     {
