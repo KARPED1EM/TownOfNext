@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System.Text;
+using TMPro;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -98,7 +99,7 @@ internal class VersionShowerStartPatch
             SpecialEventText.text = $"{Main.MainMenuText}";
             SpecialEventText.fontSize = 0.9f;
             SpecialEventText.color = Color.white;
-            SpecialEventText.alignment = TMPro.TextAlignmentOptions.TopRight;
+            SpecialEventText.alignment = TextAlignmentOptions.TopRight;
             SpecialEventText.transform.position = new Vector3(4.6f, 2.725f, 0);
         }
 
@@ -133,6 +134,7 @@ internal class TitleLogoPatch
     public static GameObject HowToPlayButton;
     public static GameObject FreePlayButton;
     public static GameObject BottomButtons;
+    public static GameObject LoadingHint;
 
     private static void Postfix(MainMenuManager __instance)
     {
@@ -152,6 +154,13 @@ internal class TitleLogoPatch
 
             return;
         }
+
+        LoadingHint = new GameObject("LoadingHint");
+        LoadingHint.transform.position = Vector3.down;
+        var LoadingHintText = LoadingHint.AddComponent<TextMeshPro>();
+        LoadingHintText.text = GetString("Loading");
+        LoadingHintText.alignment = TextAlignmentOptions.Center;
+        LoadingHintText.fontSize = 3f;
 
         if ((amongUsLogo = GameObject.Find("bannerLogo_AmongUs")) != null)
         {

@@ -26,6 +26,15 @@ public class MainMenuManagerPatch
     public static GameObject discordButton;
     public static GameObject updateButton;
 
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
+    public static void Postfix(MainMenuManager __instance)
+    {
+        TitleLogoPatch.PlayLocalButton?.SetActive(Options.loaded);
+        TitleLogoPatch.PlayOnlineButton?.SetActive(Options.loaded);
+        TitleLogoPatch.HowToPlayButton?.SetActive(Options.loaded);
+        TitleLogoPatch.FreePlayButton?.SetActive(Options.loaded);
+        TitleLogoPatch.LoadingHint?.SetActive(!Options.loaded);
+    }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)
     {
@@ -35,7 +44,7 @@ public class MainMenuManagerPatch
         if (CultureInfo.CurrentCulture.Name == "zh-CN")
         {
             //生成QQ群按钮
-            if (qqButton == null) qqButton = UnityEngine.Object.Instantiate(template, template.transform.parent);
+            if (qqButton == null) qqButton = Object.Instantiate(template, template.transform.parent);
             qqButton.name = "qqButton";
             qqButton.transform.position = Vector3.Reflect(template.transform.position, Vector3.left);
 

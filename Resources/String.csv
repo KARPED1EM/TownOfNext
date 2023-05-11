@@ -1329,6 +1329,7 @@
 "PVP.RCO","恢复力","Recover","Восстановление","恢复力",""
 "ErrorEndText","发生错误","","","",""
 "ErrorEndTextDescription","为避免卡房已强制结束","","","",""
+"Loading","加载中...","","","",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.HighLevel","警告：EAC正在抵御炸房外挂","Warning: EAC detected High Level of cheats.","Предупреждение: EAC обнаружил высокий уровень читов.","警告: EAC正在抵禦炸房外掛","警告：EAC正在抵御炸房外挂"
