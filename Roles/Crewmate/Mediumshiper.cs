@@ -10,6 +10,7 @@ public static class Mediumshiper
     public static List<byte> playerIdList = new();
 
     private static OptionItem ContactLimitOpt;
+    public static OptionItem OnlyReceiveMsgFromCrew;
 
     public static Dictionary<byte, byte> ContactPlayer = new();
     public static Dictionary<byte, int> ContactLimit = new();
@@ -19,6 +20,7 @@ public static class Mediumshiper
         Options.SetupRoleOptions(Id, TabGroup.CrewmateRoles, CustomRoles.Mediumshiper);
         ContactLimitOpt = IntegerOptionItem.Create(Id + 10, "MediumshiperContactLimit", new(1, 15, 1), 15, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Mediumshiper])
             .SetValueFormat(OptionFormat.Times);
+        OnlyReceiveMsgFromCrew = BooleanOptionItem.Create(Id + 11, "MediumshiperOnlyReceiveMsgFromCrew", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Mediumshiper]);
     }
     public static void Init()
     {
@@ -49,6 +51,7 @@ public static class Mediumshiper
         if (!AmongUsClient.Instance.AmHost) return false;
         if (!GameStates.IsMeeting || pc == null) return false;
         if (!ContactPlayer.ContainsKey(pc.PlayerId)) return false;
+        if (OnlyReceiveMsgFromCrew.GetBool() && !pc.GetCustomRole().IsCrewmate()) return false;
         if (pc.IsAlive()) return false;
         msg = msg.ToLower().TrimStart().TrimEnd();
         if (!CheckCommond(ref msg, "通灵|ms|mediumship|medium", false)) return false;
