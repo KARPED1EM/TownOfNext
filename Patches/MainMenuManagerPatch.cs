@@ -29,11 +29,11 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void Postfix(MainMenuManager __instance)
     {
-        TitleLogoPatch.PlayLocalButton?.SetActive(Options.loaded);
-        TitleLogoPatch.PlayOnlineButton?.SetActive(Options.loaded);
-        TitleLogoPatch.HowToPlayButton?.SetActive(Options.loaded);
-        TitleLogoPatch.FreePlayButton?.SetActive(Options.loaded);
-        TitleLogoPatch.LoadingHint?.SetActive(!Options.loaded);
+        TitleLogoPatch.PlayLocalButton?.SetActive(Options.IsLoaded);
+        TitleLogoPatch.PlayOnlineButton?.SetActive(Options.IsLoaded);
+        TitleLogoPatch.HowToPlayButton?.SetActive(Options.IsLoaded);
+        TitleLogoPatch.FreePlayButton?.SetActive(Options.IsLoaded);
+        TitleLogoPatch.LoadingHint?.SetActive(!Options.IsLoaded);
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)

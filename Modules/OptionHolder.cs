@@ -23,15 +23,13 @@ public enum CustomGameMode
 [HarmonyPatch]
 public static class Options
 {
-    public static bool loaded = false;
     private static Task taskOptionsLoad;
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize)), HarmonyPostfix]
     public static void OptionsLoadStart()
     {
-        loaded = false;
         Logger.Info("Options.Load Start", "Options");
         taskOptionsLoad = Task.Run(Load);
-        Task doneTask = taskOptionsLoad.ContinueWith(t => { loaded = true; Logger.Info("Options.Load End", "Options"); });
+        Task doneTask = taskOptionsLoad.ContinueWith(t => { Logger.Info("Options.Load End", "Options"); });
     }
     // オプションId
     public const int PresetId = 0;
