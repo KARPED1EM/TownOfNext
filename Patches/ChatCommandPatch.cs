@@ -10,6 +10,7 @@ using System.Text.RegularExpressions;
 using TOHE.Modules;
 using TOHE.Roles.Crewmate;
 using UnityEngine;
+using static Il2CppSystem.Globalization.TimeSpanFormat;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -523,12 +524,13 @@ internal class ChatCommands
     public static bool GetRoleByInputName(string input, out CustomRoles output, bool includeVanilla = false)
     {
         output = new();
+        input = Regex.Replace(input, @"[0-9]+", string.Empty);
         input = input.ToLower().Trim().Replace("是", string.Empty);
         if (input == "" || input == string.Empty) return false;
         input = FixRoleNameInput(input).ToLower();
         foreach (CustomRoles role in Enum.GetValues(typeof(CustomRoles)))
         {
-            if (!includeVanilla && role.IsVanilla()) continue;
+            if (!includeVanilla && role.IsVanilla() && role != CustomRoles.GuardianAngel) continue;
             if (input == GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim())
             {
                 output = role;
@@ -572,7 +574,7 @@ internal class ChatCommands
         if ((isDev || isUp) && GameStates.IsLobby)
         {
             canSpecify = true;
-            if (CustomRolesHelper.IsAdditionRole(role) || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
+            if (role.IsAdditionRole() || role.IsVanilla() || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
             if (role.GetCount() < 1 || role.GetMode() == 0) canSpecify = false;
             if (canSpecify)
             {

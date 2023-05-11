@@ -586,7 +586,7 @@ public static class GuessManager
             {
                 if (!Options.GGCanGuessVanilla.GetBool() && PlayerControl.LocalPlayer.Is(CustomRoles.NiceGuesser) && role.IsVanilla()) continue;
                 if (!Options.EGCanGuessVanilla.GetBool() && PlayerControl.LocalPlayer.Is(CustomRoles.EvilGuesser) && role.IsVanilla()) continue;
-                if (role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal or CustomRoles.SuperStar) continue;
+                if (role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal or CustomRoles.SuperStar or CustomRoles.GuardianAngel) continue;
                 CreateRole(role);
             }
             void CreateRole(CustomRoles role)
