@@ -525,17 +525,7 @@ internal class ChatCommands
         output = new();
         input = input.ToLower().Trim().Replace("是", string.Empty);
         if (input == "" || input == string.Empty) return false;
-
-        if ((TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.SChinese) is SupportedLangs.SChinese or SupportedLangs.TChinese)
-        {
-            Regex r = new("[\u4e00-\u9fa5]+$");
-            MatchCollection mc = r.Matches(input);
-            string result = string.Empty;
-            for (int i = 0; i < mc.Count; i++) result += mc[i];
-            input = result;
-        }
-        input = FixRoleNameInput(input);
-
+        input = FixRoleNameInput(input).ToLower();
         foreach (CustomRoles role in Enum.GetValues(typeof(CustomRoles)))
         {
             if (!includeVanilla && role.IsVanilla()) continue;
@@ -552,6 +542,12 @@ internal class ChatCommands
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             Utils.SendMessage(GetString("ModeDescribe.SoloKombat"), playerId);
+            return;
+        }
+
+        if (input.Trim() == "" || input.Trim() == string.Empty)
+        {
+            Utils.ShowActiveRoles(playerId);
             return;
         }
 
@@ -576,7 +572,7 @@ internal class ChatCommands
         if ((isDev || isUp) && GameStates.IsLobby)
         {
             canSpecify = true;
-            if (CustomRolesHelper.IsAdditionRole(role) || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal) canSpecify = false;
+            if (CustomRolesHelper.IsAdditionRole(role) || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
             if (role.GetCount() < 1 || role.GetMode() == 0) canSpecify = false;
             if (canSpecify)
             {
@@ -592,7 +588,7 @@ internal class ChatCommands
             }
         }
 
-        Utils.SendMessage(canSpecify ? "▲" : "" + sb.ToString(), playerId);
+        Utils.SendMessage((canSpecify ? "▲" : "") + sb.ToString(), playerId);
         return;
     }
     public static void OnReceiveChat(PlayerControl player, string text, out bool canceled)

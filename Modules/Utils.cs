@@ -264,6 +264,7 @@ public static class Utils
             1 => GetString("RoleRateNoColor"),
             _ => GetString("RoleOnNoColor")
         };
+        if (!Options.CustomRoleSpawnChances.ContainsKey(role)) mode = GetString("HidenRole");
         return parentheses ? $"({mode})" : mode;
     }
     public static string GetDeathReason(PlayerState.DeathReason status)
