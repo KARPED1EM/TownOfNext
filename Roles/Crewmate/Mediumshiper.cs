@@ -38,12 +38,10 @@ public static class Mediumshiper
         if (target == null) return;
         foreach(var pc in Main.AllAlivePlayerControls.Where(x => playerIdList.Contains(x.PlayerId) && x.PlayerId != target.PlayerId))
         {
-            if (ContactLimit[pc.PlayerId] >= 1)
-            {
-                ContactLimit[pc.PlayerId]--;
-                ContactPlayer.TryAdd(target.PlayerId, pc.PlayerId);
-                Logger.Info($"通灵师建立联系：{pc.GetNameWithRole()} => {target.PlayerName}", "Mediumshiper");
-            }
+            if (ContactLimit[pc.PlayerId] < 1) continue;
+            ContactLimit[pc.PlayerId]--;
+            ContactPlayer.TryAdd(target.PlayerId, pc.PlayerId);
+            Logger.Info($"通灵师建立联系：{pc.GetNameWithRole()} => {target.PlayerName}", "Mediumshiper");
         }
     }
     public static bool MsMsg(PlayerControl pc, string msg)

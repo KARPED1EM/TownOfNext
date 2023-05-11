@@ -924,10 +924,10 @@ class ReportDeadBodyPatch
         else
         {
             var tpc = Utils.GetPlayerById(target.PlayerId);
-            if (tpc != null)
+            if (tpc != null && !tpc.IsAlive())
             {
                 // 侦探报告
-                if (player.Is(CustomRoles.Detective))
+                if (player.Is(CustomRoles.Detective) && player.PlayerId != target.PlayerId)
                 {
                     string msg;
                     msg = string.Format(GetString("DetectiveNoticeVictim"), tpc.GetRealName(), tpc.GetDisplayRoleName());
@@ -942,9 +942,9 @@ class ReportDeadBodyPatch
             }
         }
 
+        Main.LastVotedPlayerInfo = null;
         Main.ArsonistTimer.Clear();
         Main.PuppeteerList.Clear();
-        Main.LastVotedPlayerInfo = null;
         Main.GuesserGuessed.Clear();
         Main.VeteranInProtect.Clear();
         Main.GrenadierBlinding.Clear();
@@ -958,8 +958,6 @@ class ReportDeadBodyPatch
         Sniper.OnReportDeadBody();
         Vampire.OnStartMeeting();
         Pelican.OnReportDeadBody();
-        Mortician.OnReportDeadBody(player, target);
-        Mediumshiper.OnReportDeadBody(target);
         Counterfeiter.OnReportDeadBody();
         BallLightning.OnReportDeadBody();
         QuickShooter.OnReportDeadBody();
@@ -968,6 +966,10 @@ class ReportDeadBodyPatch
         Judge.OnReportDeadBody();
         Greedier.OnReportDeadBody();
 
+        Mortician.OnReportDeadBody(player, target);
+        Mediumshiper.OnReportDeadBody(target);
+
+        #region 革命家失败处理
         foreach (var x in Main.RevolutionistStart)
         {
             var tar = Utils.GetPlayerById(x.Key);
@@ -981,6 +983,7 @@ class ReportDeadBodyPatch
         Main.RevolutionistTimer.Clear();
         Main.RevolutionistStart.Clear();
         Main.RevolutionistLastTime.Clear();
+        #endregion
 
         Main.AllPlayerControls
             .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
