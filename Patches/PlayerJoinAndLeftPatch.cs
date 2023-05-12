@@ -196,11 +196,9 @@ class CreatePlayerPatch
         else
         {
             name = name.RemoveHtmlTags().Replace(@"\", string.Empty).Replace("/", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty);
-            name = Regex.Replace(name, @"[\x01-\x1F,\x7F]", string.Empty);
-            if (Options.DisableEmojiName.GetBool())
-                name = Regex.Replace(name, @"\p{Cs}", string.Empty);
             if (name.Length > 10) name = name[..10];
-            if (name.Length < 1) name = Main.Get_TName_Snacks;
+            if (Options.DisableEmojiName.GetBool()) name = Regex.Replace(name, @"\p{Cs}", string.Empty);
+            if (Regex.Replace(Regex.Replace(name, @"\s", string.Empty), @"[\x01-\x1F,\x7F]", string.Empty).Length < 1) name = Main.Get_TName_Snacks;
         }
         Main.AllPlayerNames.Remove(client.Character.PlayerId);
         Main.AllPlayerNames.TryAdd(client.Character.PlayerId, name);
