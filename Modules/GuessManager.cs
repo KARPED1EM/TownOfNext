@@ -138,7 +138,7 @@ public static class GuessManager
                     else pc.ShowPopUp(GetString("EGGuessMax"));
                     return true;
                 }
-                if (role == CustomRoles.SuperStar && target.Is(CustomRoles.SuperStar))
+                if (role == CustomRoles.SuperStar || target.Is(CustomRoles.SuperStar))
                 {
                     Utils.SendMessage(GetString("GuessSuperStar"), pc.PlayerId);
                     return true;
@@ -166,6 +166,16 @@ public static class GuessManager
                     }
                 }
                 if (role.IsVanilla())
+                {
+                    if (
+                        (pc.Is(CustomRoles.NiceGuesser) && !Options.GGCanGuessVanilla.GetBool()) ||
+                        (pc.Is(CustomRoles.EvilGuesser) && !Options.EGCanGuessVanilla.GetBool())
+                        )
+                    {
+                        Utils.SendMessage(GetString("GuessVanillaRole"), pc.PlayerId);
+                        return true;
+                    }
+                }
                 if (pc.PlayerId == target.PlayerId)
                 {
                     if (!isUI) Utils.SendMessage(GetString("LaughToWhoGuessSelf"), pc.PlayerId, Utils.ColorString(Color.cyan, GetString("MessageFromKPD")));
