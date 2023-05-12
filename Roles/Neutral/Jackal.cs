@@ -59,6 +59,6 @@ public static class Jackal
     {
         var killer = target.GetRealKiller();
         if (!ResetKillCooldownWhenSbGetKilled.GetBool() || killer == null) return;
-        Main.AllAlivePlayerControls.Where(x => x.PlayerId != killer.PlayerId &&  playerIdList.Contains(x.PlayerId)).Do(x => x.SetKillCooldown(0));
+        Main.AllAlivePlayerControls.Where(x => x.PlayerId != killer.PlayerId && playerIdList.Contains(x.PlayerId)).Do(x => x.SetKillCooldown(0));
     }
 }

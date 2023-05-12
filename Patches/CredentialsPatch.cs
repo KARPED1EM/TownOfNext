@@ -45,8 +45,8 @@ internal class PingTrackerUpdatePatch
 internal class VersionShowerStartPatch
 {
     public static GameObject OVersionShower;
-    private static TMPro.TextMeshPro SpecialEventText;
-    private static TMPro.TextMeshPro VisitText;
+    private static TextMeshPro SpecialEventText;
+    private static TextMeshPro VisitText;
 
     private static void Postfix(VersionShower __instance)
     {
@@ -84,7 +84,7 @@ internal class VersionShowerStartPatch
             SpecialEventText.text = "";
             SpecialEventText.color = Color.white;
             SpecialEventText.fontSize += 2.5f;
-            SpecialEventText.alignment = TMPro.TextAlignmentOptions.Top;
+            SpecialEventText.alignment = TextAlignmentOptions.Top;
             SpecialEventText.transform.position = new Vector3(0, 0.5f, 0);
         }
         SpecialEventText.enabled = TitleLogoPatch.amongUsLogo != null;

@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TOHE.Modules;
 using UnityEngine;
 using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
@@ -125,6 +126,9 @@ public class MainMenuManagerPatch
         passiveHorseButton.OnClick.AddListener((Action)(() =>
         {
             RunLoginPatch.ClickCount++;
+            if (RunLoginPatch.ClickCount == 10) PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload", true);
+            if (RunLoginPatch.ClickCount == 20) PlayerControl.LocalPlayer.RPCPlayCustomSound("AWP", true);
+
             spriteHorseButton.transform.localScale *= -1;
             HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode;
             var particles = Object.FindObjectOfType<PlayerParticles>();

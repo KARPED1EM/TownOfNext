@@ -8,10 +8,10 @@ namespace TOHE.Modules;
 
 public static class CustomSoundsManager
 {
-    public static void RPCPlayCustomSound(this PlayerControl pc, string sound)
+    public static void RPCPlayCustomSound(this PlayerControl pc, string sound, bool force = false)
     {
-        if (!AmongUsClient.Instance.AmHost || !pc.IsModClient()) return;
-        if (PlayerControl.LocalPlayer.PlayerId == pc.PlayerId)
+        if (!force) if (!AmongUsClient.Instance.AmHost || !pc.IsModClient()) return;
+        if (pc == null || PlayerControl.LocalPlayer.PlayerId == pc.PlayerId)
         {
             Play(sound);
             return;

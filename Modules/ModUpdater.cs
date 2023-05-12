@@ -358,7 +358,7 @@ public class ModUpdater
         {
             ShowPopup($"{GetString("updateInProgress")}\n{e.BytesReceived}/{e.TotalBytesToReceive}({e.ProgressPercentage}%)", StringNames.Cancel);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Logger.Exception(ex, "DownloadDLL");
             throw;

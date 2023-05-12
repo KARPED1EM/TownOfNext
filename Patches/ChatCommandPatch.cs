@@ -1,4 +1,3 @@
-using AmongUs.GameOptions;
 using Assets.CoreScripts;
 using HarmonyLib;
 using Hazel;
@@ -10,7 +9,6 @@ using System.Text.RegularExpressions;
 using TOHE.Modules;
 using TOHE.Roles.Crewmate;
 using UnityEngine;
-using static Il2CppSystem.Globalization.TimeSpanFormat;
 using static TOHE.Translator;
 
 namespace TOHE;

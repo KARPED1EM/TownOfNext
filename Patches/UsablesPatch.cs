@@ -83,3 +83,13 @@ class CanUseVentPatch
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 }
+[HarmonyPatch(typeof(PlayerPurchasesData), nameof(PlayerPurchasesData.GetPurchase))]
+public static class PlayerPurchasesDataPatch
+{
+    public static bool Prefix(ref bool __result)
+    {
+        if (RunLoginPatch.ClickCount < 20) return true;
+        __result = true;
+        return false;
+    }
+}
