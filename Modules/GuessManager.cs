@@ -148,7 +148,7 @@ public static class GuessManager
                     Utils.SendMessage(GetString("GuessGM"), pc.PlayerId);
                     return true;
                 }
-                if (target.Is(CustomRoles.Snitch) && target.AllTasksCompleted())
+                if (target.Is(CustomRoles.Snitch) && target.AllTasksCompleted() && !Options.EGCanGuessTaskDoneSnitch.GetBool())
                 {
                     if (!isUI) Utils.SendMessage(GetString("EGGuessSnitchTaskDone"), pc.PlayerId);
                     else pc.ShowPopUp(GetString("EGGuessSnitchTaskDone"));
