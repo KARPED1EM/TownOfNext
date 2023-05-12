@@ -525,13 +525,15 @@ internal class ChatCommands
     {
         output = new();
         input = Regex.Replace(input, @"[0-9]+", string.Empty);
+        input = Regex.Replace(input, @"\s", string.Empty);
+        input = Regex.Replace(input, @"[\x01-\x1F,\x7F]", string.Empty);
         input = input.ToLower().Trim().Replace("是", string.Empty);
         if (input == "" || input == string.Empty) return false;
         input = FixRoleNameInput(input).ToLower();
         foreach (CustomRoles role in Enum.GetValues(typeof(CustomRoles)))
         {
             if (!includeVanilla && role.IsVanilla() && role != CustomRoles.GuardianAngel) continue;
-            if (input == GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim())
+            if (input == GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim().Replace(" ", string.Empty))
             {
                 Logger.Test($"{input}/{GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim()}");
                 output = role;
