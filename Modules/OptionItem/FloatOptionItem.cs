@@ -25,7 +25,7 @@ public class FloatOptionItem : OptionItem
     public override float GetFloat() => Rule.GetValueByIndex(CurrentValue);
     public override string GetString()
     {
-        return ApplyFormat(Rule.GetValueByIndex(CurrentValue).ToString());
+        return ApplyFormat(((float)((int)(Rule.GetValueByIndex(CurrentValue) * 100) * 1.0) / 100).ToString());
     }
     public override int GetValue()
         => Rule.RepeatIndex(base.GetValue());
