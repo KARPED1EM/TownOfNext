@@ -219,11 +219,11 @@ public static class Witch
         var str = new StringBuilder();
         if (hud)
         {
-            str.Append(GetString("WitchCurrentMode"));
+            str.Append($"{GetString("WitchCurrentMode")}: ");
         }
         else
         {
-            str.Append($"{GetString("Mode")}:");
+            str.Append($"{GetString("Mode")}: ");
         }
         if (NowSwitchTrigger == SwitchTrigger.DoubleTrigger)
         {

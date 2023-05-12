@@ -188,7 +188,7 @@ public static class BountyHunter
     {
         if (GameStates.IsMeeting) return "";
         var targetId = GetTarget(bounty);
-        return targetId != 0xff ? $"{(hud ? GetString("BountyCurrentTarget") : GetString("Target"))}:{Main.AllPlayerNames[targetId].RemoveHtmlTags().Replace("\r\n", string.Empty)}" : "";
+        return targetId != 0xff ? $"{(hud ? GetString("BountyCurrentTarget") : GetString("Target"))}: {Main.AllPlayerNames[targetId].RemoveHtmlTags().Replace("\r\n", string.Empty)}" : "";
     }
     public static string GetTargetArrow(PlayerControl seer, PlayerControl target = null)
     {
