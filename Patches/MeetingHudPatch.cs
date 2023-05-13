@@ -465,6 +465,8 @@ static class ExtendedMeetingHud
                     if (CheckForEndVotingPatch.CheckRole(ps.TargetPlayerId, CustomRoles.Brakar))
                         if (!Main.BrakarVoteFor.Contains(target.PlayerId))
                             Main.BrakarVoteFor.Add(target.PlayerId);
+                    // 投给贱人的票变为114514
+                    if (target.Is(CustomRoles.Bitch)) VoteNum = 114514;
                     // 集票者记录数据
                     Collector.CollectorVotes(target, ps);
                 }

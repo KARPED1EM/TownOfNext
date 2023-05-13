@@ -213,6 +213,9 @@ public static class Options
     public static OptionItem ImpCanBeTrapper;
     public static OptionItem CrewCanBeTrapper;
     public static OptionItem NeutralCanBeTrapper;
+    public static OptionItem DovesOfNeaceCooldown;
+    public static OptionItem DovesOfNeaceMaxOfUseage;
+    public static OptionItem RamblerSpeed;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -663,6 +666,11 @@ public static class Options
         Mortician.SetupCustomOption();
         Mediumshiper.SetupCustomOption();
         SetupRoleOptions(8021618, TabGroup.CrewmateRoles, CustomRoles.Observer);
+        SetupRoleOptions(8948971, TabGroup.CrewmateRoles, CustomRoles.DovesOfNeace);
+        DovesOfNeaceCooldown = FloatOptionItem.Create(165647, "DovesOfNeaceCooldown", new(1f, 180f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.DovesOfNeace])
+             .SetValueFormat(OptionFormat.Seconds);
+        DovesOfNeaceMaxOfUseage = IntegerOptionItem.Create(151574, "DovesOfNeaceMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.DovesOfNeace])
+         .SetValueFormat(OptionFormat.Times);
 
         // Neutral
         SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);
@@ -725,6 +733,10 @@ public static class Options
         BaitDelayMax = FloatOptionItem.Create(20007, "BaitDelayMax", new(0f, 10f, 1f), 0f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait])
             .SetValueFormat(OptionFormat.Seconds);
         BaitDelayNotify = BooleanOptionItem.Create(20008, "BaitDelayNotify", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
+        SetupAdtRoleOptions(6052146, CustomRoles.Bitch, canSetNum: true);
+        SetupAdtRoleOptions(6052954, CustomRoles.Rambler, canSetNum: true);
+        RamblerSpeed = FloatOptionItem.Create(60504874, "RamblerSpeed", new(0.1f, 1f, 0.1f), 2.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Rambler]);
+        SetupAdtRoleOptions(15151651, CustomRoles.Destroyers, canSetNum: true);
 
         SetupAdtRoleOptions(20800, CustomRoles.Trapper, canSetNum: true);
         ImpCanBeTrapper = BooleanOptionItem.Create(20803, "ImpCanBeTrapper", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper]);

@@ -5,6 +5,7 @@ using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TOHE.Modules;
@@ -342,6 +343,48 @@ class CheckMurderPatch
                 Utils.TP(killer.NetTransform, ops);
             }, 0.05f, "OverKiller Murder");
         }
+        //毁尸者毁尸
+        if (killer.Is(CustomRoles.Destroyers))
+        {
+            var rd = IRandom.Instance;
+            int rndNum = rd.Next(0, 100);
+            if (rndNum >= 10 && rndNum < 20)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Suicide;
+            }
+            if (rndNum >= 20 && rndNum < 30)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Misfire;
+            }
+            if (rndNum >= 30 && rndNum < 40)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Revenge;
+            }
+            if (rndNum >= 40 && rndNum < 50)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.FollowingSuicide;
+            }
+            if (rndNum >= 50 && rndNum < 60)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Torched;
+            }
+            if (rndNum >= 60 && rndNum < 70)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Bombed;
+            }
+            if (rndNum >= 70 && rndNum < 80)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Quantization;
+            }
+            if (rndNum >= 80 && rndNum < 90)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.PissedOff;
+            }
+            if (rndNum >= 90 && rndNum < 100)
+            {
+                Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Trialed;
+            }
+        }
 
         //==キル処理==
         __instance.RpcMurderPlayerV3(target);
@@ -422,6 +465,56 @@ class CheckMurderPatch
                     target.Notify(GetString("BKOffsetKill"));
                     return false;
                 }
+                break;
+            //击杀失落的船员
+            case CustomRoles.LostCrew:
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 5f, ("LOST!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 8f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 12f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 14f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 15f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    target.RpcMurderPlayerV3(killer);
+                    Utils.NotifyRoles();
+                }, 17f, ("KILLER!!!!!!!!"));
                 break;
         }
 
@@ -1729,6 +1822,21 @@ class EnterVentPatch
             pc.RpcGuardAndKill(pc);
             pc.Notify(GetString("GrenadierSkillInUse"), Options.GrenadierSkillDuration.GetFloat());
             Utils.MarkEveryoneDirtySettings();
+        }
+        if (pc.Is(CustomRoles.DovesOfNeace))
+        {
+            if (Main.DovesOfNeaceNumOfUsed[pc.PlayerId] < 1)
+            {
+                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
+                pc.Notify(GetString("DovesOfNeaceMaxUsage"));
+            }
+            else
+            {
+                Main.DovesOfNeaceNumOfUsed[pc.PlayerId]--;
+                pc.RpcGuardAndKill(pc);
+                Main.AllPlayerControls.Do(x => x.ResetKillCooldown());
+                Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldown(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
+            }
         }
     }
 }
