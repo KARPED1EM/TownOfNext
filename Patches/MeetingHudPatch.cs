@@ -381,7 +381,7 @@ class CheckForEndVotingPatch
         }, 3.0f, "Change Exiled Player Name");
         new LateTask(() =>
         {
-            if (GameStates.IsInGame)
+            if (GameStates.IsInGame && !player.Data.Disconnected)
             {
                 player.RpcSetName(realName);
                 Main.DoBlockNameChange = false;
