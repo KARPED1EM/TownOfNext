@@ -62,6 +62,12 @@ internal static class Eraser
 
         if (EraseLimit[player.PlayerId] < 1) return;
 
+        if (target.PlayerId == player.PlayerId)
+        {
+            Utils.SendMessage(GetString("EraserEraseSelf"), player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+            return;
+        }
+
         if (target.GetCustomRole().IsNeutral())
         {
             Utils.SendMessage(string.Format(GetString("EraserEraseNeutralNotice"), target.GetRealName()), player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
