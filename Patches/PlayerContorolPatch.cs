@@ -1836,6 +1836,7 @@ class EnterVentPatch
                 pc.RpcGuardAndKill(pc);
                 Main.AllPlayerControls.Do(x => x.ResetKillCooldown());
                 Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldown(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
+                    pc.Notify(string.Format(GetString("DovesOfNeaceOnGuard"), Main.DovesOfNeaceNumOfUsed[pc.PlayerId]));
             }
         }
     }

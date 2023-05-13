@@ -900,6 +900,7 @@
 "ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻重置击杀冷却","Reset kill cooldown when someone is killed","Сбрасывать откат убийства когда кто-то умирает","当有人被击杀时立刻重置击杀冷却",""
 "DovesOfNeaceCooldown","和平技能冷却时间"
 "DovesOfNeaceMaxOfUseage","和平技能使用最大数"
+"RamblerSpeed","漫步者移动速度"
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被殺","被杀"
@@ -1050,6 +1051,7 @@
 "CharmedBySuccubus","您已被魅魔魅惑","You have been charmed by the Succubus","Вы были зачарованы Суккубом","您已被魅魔魅惑",""
 "SuccubusInvalidTarget","目标无法被魅惑","Target cannot be charmed","Цель не может быть зачарована","目標無法被魅惑",""
 "KillBaitNotify","目标为诱饵，将在{0}秒后报告","You'll self-report in {0}s","Вы зарепортите труп через {0} с.","目標為誘餌，將在{0}秒後報告",""
+"DovesOfNeaceOnGuard","和平技能已生效，剩余{0}次"
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","訊息傳送冷卻時間設為【{0}】秒","信息发送冷却时间为【{0}】秒"
