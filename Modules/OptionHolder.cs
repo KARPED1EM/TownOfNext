@@ -700,7 +700,7 @@ public static class Options
         SetupLoversRoleOptionsToggle(50300);
         SetupAdtRoleOptions(6050320, CustomRoles.Watcher, canSetNum: true);
         SetupAdtRoleOptions(6050340, CustomRoles.Lighter, canSetNum: true);
-        LighterVision = FloatOptionItem.Create(6050383, "LighterVision", new(0.5f, 5f, 0.25f), 1.25f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Lighter])
+        LighterVision = FloatOptionItem.Create(6050345, "LighterVision", new(0.5f, 5f, 0.25f), 1.25f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Lighter])
             .SetValueFormat(OptionFormat.Multiplier);
         SetupAdtRoleOptions(6050350, CustomRoles.Seer, canSetNum: true);
         ImpCanBeSeer = BooleanOptionItem.Create(6050353, "ImpCanBeSeer", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Seer]);
