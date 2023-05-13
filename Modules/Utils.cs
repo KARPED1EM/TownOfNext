@@ -221,10 +221,15 @@ public static class Utils
 
         //実行
         Main.PlayerStates[player.PlayerId].IsBlackOut = true; //ブラックアウト
-        if (player.PlayerId == 0)
+        if (player.AmOwner)
         {
-            FlashColor(new(1f, 0f, 0f, 0.5f));
+            FlashColor(new(1f, 0f, 0f, 0.3f));
             if (Constants.ShouldPlaySfx()) RPC.PlaySound(player.PlayerId, Sounds.KillSound);
+        }
+        else if (player.IsModClient())
+        {
+            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.KillFlash, SendOption.Reliable, player.GetClientId());
+            AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
         else if (!ReactorCheck) player.ReactorFlash(0f); //リアクターフラッシュ
         player.MarkDirtySettings();
@@ -1443,13 +1448,13 @@ public static class Utils
         var obj = hud.transform.FindChild("FlashColor_FullScreen")?.gameObject;
         if (obj == null)
         {
-            obj = GameObject.Instantiate(hud.FullScreen.gameObject, hud.transform);
+            obj = UnityEngine.Object.Instantiate(hud.FullScreen.gameObject, hud.transform);
             obj.name = "FlashColor_FullScreen";
         }
         hud.StartCoroutine(Effects.Lerp(duration, new Action<float>((t) =>
         {
             obj.SetActive(t != 1f);
-            obj.GetComponent<SpriteRenderer>().color = new(color.r, color.g, color.b, Mathf.Clamp01((-2f * Mathf.Abs(t - 0.5f) + 1) * color.a)); //アルファ値を0→目標→0に変化させる
+            obj.GetComponent<SpriteRenderer>().color = new(color.r, color.g, color.b, Mathf.Clamp01((-2f * Mathf.Abs(t - 0.5f) + 1) * color.a / 2)); //アルファ値を0→目標→0に変化させる
         })));
     }
 

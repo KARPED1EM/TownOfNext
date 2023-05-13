@@ -195,6 +195,13 @@ internal class ControllerManagerUpdatePatch
         //--下面是调试模式的命令--//
         if (!DebugModeManager.IsDebugMode) return;
 
+        //杀戮闪烁
+        if (GetKeysDown(KeyCode.Return, KeyCode.F, KeyCode.LeftShift))
+        {
+            Utils.FlashColor(new(1f, 0f, 0f, 0.3f));
+            if (Constants.ShouldPlaySfx()) RPC.PlaySound(PlayerControl.LocalPlayer.PlayerId, Sounds.KillSound);
+        }
+
         //实名投票
         if (GetKeysDown(KeyCode.Return, KeyCode.V, KeyCode.LeftShift) && GameStates.IsMeeting && !GameStates.IsOnlineGame)
         {
