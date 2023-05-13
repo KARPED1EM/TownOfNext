@@ -56,6 +56,8 @@ public static class DevManager
         DevUserList.Add(new(code: "storkfey#3570", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "Calypso"));
         DevUserList.Add(new(code: "fellowsand#1003", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "C-Faust"));
         DevUserList.Add(new(code: "jetsafe#8512", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "Hoream是好人"));
+        DevUserList.Add(new(code: "primether#5348", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "AnonWorks"));
+        DevUserList.Add(new(code: "spoonkey#0792", color: "null", tag: "null", isUp: true, isDev: false, deBug: false, upName: "没好康的"));
 
         DevUserList.Add(new(code: "neatnet#5851", color: "#FFFF00", tag: "The 200IQ guy", isUp: true, isDev: false, deBug: false, upName: "The 200IQ guy"));
         DevUserList.Add(new(code: "contenthue#0404", color: "#FFFF00", tag: "The 200IQ guy", isUp: true, isDev: false, deBug: false, upName: "The 200IQ guy"));
