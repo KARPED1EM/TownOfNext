@@ -53,7 +53,7 @@ public static class Mediumshiper
         if (!ContactPlayer.ContainsKey(pc.PlayerId)) return false;
         if (OnlyReceiveMsgFromCrew.GetBool() && !pc.GetCustomRole().IsCrewmate()) return false;
         if (pc.IsAlive()) return false;
-        msg = msg.ToLower().TrimStart().TrimEnd();
+        msg = msg.ToLower().Trim();
         if (!CheckCommond(ref msg, "通灵|ms|mediumship|medium", false)) return false;
 
         bool ans;
