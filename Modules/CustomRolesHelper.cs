@@ -279,6 +279,7 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.Bait && ((pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeBait.GetBool()) || (pc.GetCustomRole().IsNeutral() && !Options.NeutralCanBeBait.GetBool()) || (pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeBait.GetBool()))) return false;
         if (role is CustomRoles.Trapper && ((pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeTrapper.GetBool()) || (pc.GetCustomRole().IsNeutral() && !Options.NeutralCanBeTrapper.GetBool()) || (pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeTrapper.GetBool()))) return false;
         if (role is CustomRoles.Reach && !pc.CanUseKillButton()) return false;
+        if (role is CustomRoles.Flashman && pc.Is(CustomRoles.Swooper)) return false;
         return true;
     }
     public static RoleTypes GetRoleTypes(this CustomRoles role)
