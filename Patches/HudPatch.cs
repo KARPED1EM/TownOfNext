@@ -449,13 +449,13 @@ class TaskPanelBehaviourPatch
                     foreach (var eachLine in lines)
                     {
                         var line = eachLine.Trim();
-                        if (line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>") && sb.Length < 1) continue;
+                        if ((line.StartsWith("<color=#FF1919FF>") || line.StartsWith("<color=#FF0000FF>")) && sb.Length < 1 && !line.Contains('(')) continue;
                         sb.Append(line + "\r\n");
                     }
-                    if (sb.Length > 1 && !player.Data.IsDead)
+                    if (sb.Length > 1)
                     {
                         var text = sb.ToString().TrimEnd('\n').TrimEnd('\r');
-                        if (!Utils.HasTasks(player.Data, false))
+                        if (!Utils.HasTasks(player.Data, false) && sb.ToString().Count(s => (s == '\n')) >= 2)
                             text = $"{Utils.ColorString(new Color32(255, 20, 147, byte.MaxValue), GetString("FakeTask"))}\r\n{text}";
                         AllText += $"\r\n\r\n<size=85%>{text}</size>";
                     }
