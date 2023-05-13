@@ -47,10 +47,8 @@ internal static class QuickShooter
     {
         byte QuickShooterId = reader.ReadByte();
         int Limit = reader.ReadInt32();
-        if (ShotLimit.ContainsKey(QuickShooterId))
-            ShotLimit[QuickShooterId] = Limit;
-        else
-            ShotLimit.Add(QuickShooterId, 0);
+        ShotLimit.TryAdd(QuickShooterId, Limit);
+        ShotLimit[QuickShooterId] = Limit;
     }
     public static void OnShapeshift(PlayerControl pc, bool shapeshifting)
     {
@@ -68,10 +66,7 @@ internal static class QuickShooter
     private static bool Storaging;
     public static void SetKillCooldown(byte id)
     {
-        if (Storaging || ShotLimit[id] < 1)
-            Main.AllPlayerKillCooldown[id] = KillCooldown.GetFloat();
-        else
-            Main.AllPlayerKillCooldown[id] = 0.01f;
+        Main.AllPlayerKillCooldown[id] = (Storaging || ShotLimit[id] < 1) ? KillCooldown.GetFloat() : 0.01f;
         Storaging = false;
     }
     public static void OnReportDeadBody()
@@ -87,10 +82,9 @@ internal static class QuickShooter
     }
     public static void QuickShooterKill(PlayerControl killer)
     {
-        if (ShotLimit.ContainsKey(killer.PlayerId))
-            ShotLimit[killer.PlayerId]--;
-        else
-            ShotLimit.TryAdd(killer.PlayerId, 0);
+        ShotLimit.TryAdd(killer.PlayerId, 0);
+        ShotLimit[killer.PlayerId]--;
+        ShotLimit[killer.PlayerId] = Math.Max(ShotLimit[killer.PlayerId], 0);
         SendRPC(killer.PlayerId);
     }
     public static string GetShotLimit(byte playerId) => Utils.ColorString(ShotLimit[playerId] > 0 ? Utils.GetRoleColor(CustomRoles.QuickShooter) : Color.gray, ShotLimit.TryGetValue(playerId, out var shotLimit) ? $"({shotLimit})" : "Invalid");
