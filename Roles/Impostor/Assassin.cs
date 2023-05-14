@@ -84,7 +84,7 @@ internal static class Assassin
         if (!pc.IsAlive() || Pelican.IsEaten(pc.PlayerId)) return;
         if (!shapeshifting)
         {
-            pc.SetKillCooldown();
+            pc.SetKillCooldownV2();
             return;
         }
         if (MarkedPlayer.ContainsKey(pc.PlayerId))
