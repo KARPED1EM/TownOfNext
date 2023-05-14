@@ -149,7 +149,10 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 Jackal.ApplyGameOptions(opt);
                 break;
             case CustomRoles.Veteran:
-                AURoleOptions.EngineerCooldown = Options.VeteranSkillCooldown.GetFloat();
+                AURoleOptions.EngineerCooldown =
+                    Main.VeteranNumOfUsed.TryGetValue(player.PlayerId, out var count3) && count3 < Options.VeteranSkillMaxOfUseage.GetInt()
+                    ? Options.VeteranSkillCooldown.GetFloat()
+                    : 300f;
                 AURoleOptions.EngineerInVentMaxTime = 1;
                 break;
             case CustomRoles.Grenadier:
@@ -197,7 +200,10 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 BloodKnight.ApplyGameOptions(opt);
                 break;
             case CustomRoles.DovesOfNeace:
-                AURoleOptions.EngineerCooldown = Options.DovesOfNeaceCooldown.GetFloat();
+                AURoleOptions.EngineerCooldown =
+                    Main.DovesOfNeaceNumOfUsed.TryGetValue(player.PlayerId, out var count4) && count4 < Options.DovesOfNeaceMaxOfUseage.GetInt()
+                    ? Options.DovesOfNeaceCooldown.GetFloat()
+                    : 300f;
                 AURoleOptions.EngineerInVentMaxTime = 1;
                 break;
         }
