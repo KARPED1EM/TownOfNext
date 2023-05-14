@@ -11,6 +11,7 @@ using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
+using UnityEngine;
 using static TOHE.Translator;
 namespace TOHE;
 
@@ -382,7 +383,9 @@ internal class RPCHandlerPatch
                 Psychic.ReceiveRPC(reader);
                 break;
             case CustomRPC.SetKillTimer:
-                PlayerControl.LocalPlayer.SetKillTimer(reader.ReadSingle());
+                float time = reader.ReadSingle();
+                Logger.Test($"收到RPC设置冷却：{time}");
+                PlayerControl.LocalPlayer.SetKillTimer(time);
                 break;
             case CustomRPC.SyncKBPlayer:
                 SoloKombatManager.ReceiveRPCSyncKBPlayer(reader);

@@ -1751,17 +1751,18 @@ class EnterVentPatch
             {
                 Main.DovesOfNeaceNumOfUsed[pc.PlayerId]--;
                 pc.RpcGuardAndKill(pc);
-                Main.AllAlivePlayerControls.Where(pc => 
+                Main.AllAlivePlayerControls.Where(x => 
                 pc.Is(CustomRoles.Madmate) ?
-                (pc.CanUseKillButton() && pc.GetCustomRole().IsCrewmate()) :
-                (pc.CanUseKillButton())
-                ).Do(pc =>
+                (x.CanUseKillButton() && x.GetCustomRole().IsCrewmate()) :
+                (x.CanUseKillButton())
+                ).Do(x =>
                 {
-                    pc.RPCPlayCustomSound("Dove");
-                    pc.ResetKillCooldown();
-                    pc.SetKillCooldown();
-                    pc.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.DovesOfNeace), GetString("DovesOfNeaceSkillNotify")));
+                    x.RPCPlayCustomSound("Dove");
+                    x.ResetKillCooldown();
+                    x.SetKillCooldownV2();
+                    x.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.DovesOfNeace), GetString("DovesOfNeaceSkillNotify")));
                 });
+                pc.RPCPlayCustomSound("Dove");
                 pc.Notify(string.Format(GetString("DovesOfNeaceOnGuard"), Main.DovesOfNeaceNumOfUsed[pc.PlayerId]));
             }
         }
