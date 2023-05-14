@@ -2,6 +2,7 @@
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Modules;
 using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
@@ -92,8 +93,9 @@ public static class Medicaler
         SendRPC(killer.PlayerId);
         ProtectList.Add(target.PlayerId);
         SendRPCForProtectList();
-        killer.RpcGuardAndKill(target);
-        killer.SetKillCooldown();
+        killer.SetKillCooldownV2(target: target);
+        killer.RPCPlayCustomSound("Shield");
+        target.RPCPlayCustomSound("Shield");
 
         Utils.NotifyRoles(killer);
         Utils.NotifyRoles(target);
@@ -107,10 +109,10 @@ public static class Medicaler
 
         ProtectList.Remove(target.PlayerId);
         SendRPCForProtectList();
+        killer.SetKillCooldownV2(target: target, forceAnime: true);
         killer.RpcGuardAndKill(target);
         if (TargetCanSeeProtect.GetBool())
             target.RpcGuardAndKill(target);
-        killer.SetKillCooldown();
         Utils.NotifyRoles(target);
         if (KnowTargetShieldBroken.GetBool())
             Main.AllPlayerControls.Where(x => playerIdList.Contains(x.PlayerId)).Do(x => x.Notify(Translator.GetString("MedicalerTargetShieldBroken")));

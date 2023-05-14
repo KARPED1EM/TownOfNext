@@ -223,7 +223,7 @@ class BeginCrewmatePatch
             StartFadeIntro(__instance, Color.magenta, Color.magenta);
         }
     }
-    private static AudioClip GetIntroSound(RoleTypes roleType)
+    public static AudioClip GetIntroSound(RoleTypes roleType)
     {
         return RoleManager.Instance.AllRoles.Where((role) => role.Role == roleType).FirstOrDefault().IntroSound;
     }
