@@ -98,8 +98,7 @@ internal static class Assassin
                 {
                     Utils.TP(pc.NetTransform, target.GetTruePosition());
                     pc.ResetKillCooldown();
-                    if (pc.RpcCheckAndMurder(target))
-                        pc.RPCPlayCustomSound("Assassinate");
+                    pc.RpcCheckAndMurder(target);
                 }
             }, 1.5f, "Assassin Assassinate");
         }
