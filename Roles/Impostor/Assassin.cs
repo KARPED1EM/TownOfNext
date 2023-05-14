@@ -1,5 +1,6 @@
 ﻿using Hazel;
 using System.Collections.Generic;
+using TOHE.Modules;
 using TOHE.Roles.Neutral;
 using static TOHE.Options;
 using static TOHE.Translator;
@@ -73,8 +74,8 @@ internal static class Assassin
             MarkedPlayer.Add(killer.PlayerId, target.PlayerId);
             SendRPC(killer.PlayerId);
             killer.ResetKillCooldown();
-            killer.SetKillCooldown();
-            killer.SyncSettings();
+            killer.SetKillCooldownV2();
+            killer.RPCPlayCustomSound("Clothe");
             return false;
         }
     }
@@ -97,7 +98,8 @@ internal static class Assassin
                 {
                     Utils.TP(pc.NetTransform, target.GetTruePosition());
                     pc.ResetKillCooldown();
-                    pc.RpcCheckAndMurder(target);
+                    if (pc.RpcCheckAndMurder(target))
+                        pc.RPCPlayCustomSound("Assassinate");
                 }
             }, 1.5f, "Assassin Assassinate");
         }
