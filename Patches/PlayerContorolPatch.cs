@@ -296,12 +296,13 @@ class CheckMurderPatch
         // 清道夫清理尸体
         if (killer.Is(CustomRoles.Scavenger))
         {
+            Utils.TP(killer.NetTransform, target.GetTruePosition());
+            RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
             Utils.TP(target.NetTransform, Pelican.GetBlackRoomPS());
             target.SetRealKiller(killer);
             Main.PlayerStates[target.PlayerId].SetDead();
             target.RpcMurderPlayerV3(target);
-            killer.SetKillCooldown();
-            RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
+            killer.SetKillCooldownV2();
             NameNotifyManager.Notify(target, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Scavenger), GetString("KilledByScavenger")));
             return false;
         }
@@ -376,7 +377,6 @@ class CheckMurderPatch
                 var rd = IRandom.Instance;
                 if (rd.Next(0, 100) < Options.LuckeyProbability.GetInt())
                 {
-                    killer.ResetKillCooldown();
                     killer.SetKillCooldownV2(target: target, forceAnime: true);
                     return false;
                 }
