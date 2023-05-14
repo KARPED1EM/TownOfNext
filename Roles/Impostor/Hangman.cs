@@ -41,13 +41,15 @@ public static class Hangman
 
         if (Main.CheckShapeshift.TryGetValue(killer.PlayerId, out var s) && s)
         {
+            Utils.TP(killer.NetTransform, target.GetTruePosition());
             target.Data.IsDead = true;
             target.SetRealKiller(killer);
             Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.LossOfHead;
             target.RpcExileV2();
             Main.PlayerStates[target.PlayerId].SetDead();
             target.SetRealKiller(killer);
-            killer.SetKillCooldown();
+            killer.SetKillCooldownV2();
+            RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
             return false;
         }
         return true;
