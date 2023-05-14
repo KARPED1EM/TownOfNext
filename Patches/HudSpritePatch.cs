@@ -40,7 +40,7 @@ public static class HudSpritePatch
     public static void Postfix(HudManager __instance)
     {
         var player = PlayerControl.LocalPlayer;
-        if (player == null || !GameStates.IsModHost) return;
+        if (player == null || !GameStates.IsModHost || !Main.EnableCustomButton.Value) return;
         if (!SetHudActivePatch.IsActive || !player.IsAlive()) return;
         if (!AmongUsClient.Instance.IsGameStarted)
         {
@@ -59,9 +59,6 @@ public static class HudSpritePatch
         Sprite newKillButton = Kill;
         Sprite newAbilityButton = Ability;
         Sprite newVentButton = Vent;
-
-        if (!Main.EnableCustomButton.Value)
-            goto EndOfChooseButton;
 
         switch (player.GetCustomRole())
         {
@@ -126,8 +123,6 @@ public static class HudSpritePatch
                 newKillButton = CustomButton.Vulture;
                 break;
         }
-
-    EndOfChooseButton:
 
         __instance.KillButton.graphic.sprite = newKillButton;
         __instance.AbilityButton.graphic.sprite = newAbilityButton;

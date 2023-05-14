@@ -1476,7 +1476,7 @@ public static class Utils
         }
         return null;
     }
-    public static unsafe Texture2D LoadTextureFromResources(string path)
+    public static Texture2D LoadTextureFromResources(string path)
     {
         try
         {
