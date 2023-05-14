@@ -118,7 +118,6 @@ public static class Gamer
         GamerHealth[target.PlayerId] -= SelfDamage.GetInt();
         SendRPC(target.PlayerId);
         RPC.PlaySoundRPC(target.PlayerId, Sounds.KillSound);
-        Utils.TP(killer.NetTransform, target.GetTruePosition());
         killer.SetKillCooldownV2(target: target, forceAnime: true);
         Utils.NotifyRoles(target);
 
