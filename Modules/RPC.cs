@@ -733,6 +733,9 @@ internal static class RPC
             case CustomRoles.Succubus:
                 Succubus.Add(targetId);
                 break;
+            case CustomRoles.DovesOfNeace:
+                Main.DovesOfNeaceNumOfUsed.Add(targetId, Options.DovesOfNeaceMaxOfUseage.GetInt());
+                break;
         }
         HudManager.Instance.SetHudActive(true);
         if (PlayerControl.LocalPlayer.PlayerId == targetId) RemoveDisableDevicesPatch.UpdateDisableDevices();
