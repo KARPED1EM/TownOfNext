@@ -195,7 +195,6 @@ static class ExtendedPlayerControl
         if (player == null) return;
         if (!player.CanUseKillButton()) return;
         if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time;
-        Logger.Test($"设置冷却V1：{time}");
         player.SyncSettings();
         player.RpcGuardAndKill();
         player.ResetKillCooldown();
@@ -207,7 +206,6 @@ static class ExtendedPlayerControl
         if (target == null) target = player;
         if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time;
         time = Main.AllPlayerKillCooldown[player.PlayerId];
-        Logger.Test($"设置冷却V2：{time}");
         player.SyncSettings();
         if (player.AmOwner)
             PlayerControl.LocalPlayer.SetKillTimer(time);

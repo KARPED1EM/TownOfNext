@@ -534,7 +534,6 @@ internal class ChatCommands
             if (!includeVanilla && role.IsVanilla() && role != CustomRoles.GuardianAngel) continue;
             if (input == GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim().Replace(" ", string.Empty))
             {
-                Logger.Test($"{input}/{GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim()}");
                 output = role;
                 return true;
             }

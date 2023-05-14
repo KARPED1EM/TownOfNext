@@ -384,7 +384,6 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.SetKillTimer:
                 float time = reader.ReadSingle();
-                Logger.Test($"收到RPC设置冷却：{time}");
                 PlayerControl.LocalPlayer.SetKillTimer(time);
                 break;
             case CustomRPC.SyncKBPlayer:
