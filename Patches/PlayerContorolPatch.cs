@@ -145,7 +145,8 @@ class CheckMurderPatch
                     { //Warlockが変身時以外にキルしたら、呪われる処理
                         if (target.Is(CustomRoles.Needy)) return false;
                         Main.isCursed = true;
-                        killer.SetKillCooldown();
+                        killer.SetKillCooldownV2();
+                        RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
                         Main.CursedPlayers[killer.PlayerId] = target;
                         Main.WarlockTimer.Add(killer.PlayerId, 0f);
                         Main.isCurseAndKill[killer.PlayerId] = true;
