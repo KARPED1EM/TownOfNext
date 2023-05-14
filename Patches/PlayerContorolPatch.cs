@@ -146,7 +146,7 @@ class CheckMurderPatch
                         if (target.Is(CustomRoles.Needy)) return false;
                         Main.isCursed = true;
                         killer.SetKillCooldownV2();
-                        RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
+                        killer.RPCPlayCustomSound("Line");
                         Main.CursedPlayers[killer.PlayerId] = target;
                         Main.WarlockTimer.Add(killer.PlayerId, 0f);
                         Main.isCurseAndKill[killer.PlayerId] = true;
