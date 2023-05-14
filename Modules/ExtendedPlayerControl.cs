@@ -205,6 +205,7 @@ static class ExtendedPlayerControl
         if (!player.CanUseKillButton()) return;
         if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time * 2;
         else Main.AllPlayerKillCooldown[player.PlayerId] *= 2;
+        time = Main.AllPlayerKillCooldown[player.PlayerId];
         player.SyncSettings();
         if (player.AmOwner)
             PlayerControl.LocalPlayer.SetKillTimer(time);
