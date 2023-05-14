@@ -42,6 +42,7 @@ public static class CredentialsPatch
 
             DevsData += $"<color={Main.ModColor}>♡咔皮呆</color> - <size=75%>{GetString("MainDev")}</size>";
             DevsData += $"\n<color={Main.ModColor}>♡IRIDESCENT</color> - <size=75%>{GetString("Art")}</size>";
+            DevsData += $"\nEndrmen40409 - <size=75%>{GetString("Art")}</size>";
             DevsData += $"\nNCSIMON - <size=75%>{GetString("RoleDev")}</size>";
             DevsData += $"\n天寸梦初 - <size=75%>{GetString("RoleDev")}&{GetString("TechSup")}</size>";
             DevsData += $"\nCommandf1 - <size=75%>{GetString("RoleDev")}&{GetString("FeatureDev")}</size>";
