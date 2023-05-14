@@ -2,6 +2,7 @@
 using Il2CppSystem;
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Options;
 using static TOHE.Translator;
@@ -103,7 +104,8 @@ public static class Totocalcio
         SendRPC(killer.PlayerId);
 
         killer.ResetKillCooldown();
-        killer.SetKillCooldown();
+        killer.SetKillCooldownV2();
+        killer.RPCPlayCustomSound("Bet");
 
         killer.Notify(GetString("TotocalcioBetPlayer"));
         if (BetTargetKnowTotocalcio.GetBool())
