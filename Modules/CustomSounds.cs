@@ -34,7 +34,7 @@ public static class CustomSoundsManager
     private static readonly string SOUNDS_PATH = @$"{Environment.CurrentDirectory.Replace(@"\", "/")}/BepInEx/resources/";
     public static void Play(string sound)
     {
-        if (!Constants.ShouldPlaySfx()) return;
+        if (!Constants.ShouldPlaySfx() || !Main.EnableCustomSoundEffect.Value) return;
         var path = SOUNDS_PATH + sound + ".wav";
         if (!Directory.Exists(SOUNDS_PATH)) Directory.CreateDirectory(SOUNDS_PATH);
         DirectoryInfo folder = new(SOUNDS_PATH);
