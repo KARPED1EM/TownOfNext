@@ -86,7 +86,7 @@ public static class Gamer
     public static bool CheckGamerMurder(PlayerControl killer, PlayerControl target)
     {
         if (killer == null || target == null || !killer.Is(CustomRoles.Gamer) || target.Is(CustomRoles.Gamer) || !PlayerHealth.ContainsKey(target.PlayerId)) return false;
-        killer.SetKillCooldown();
+        killer.SetKillCooldownV2();
 
         if (PlayerHealth[target.PlayerId] - Damage.GetInt() < 1)
         {
