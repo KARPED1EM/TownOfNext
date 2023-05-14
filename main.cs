@@ -53,15 +53,16 @@ public class Main : BasePlugin
     //Client Options
     public static ConfigEntry<string> HideName { get; private set; }
     public static ConfigEntry<string> HideColor { get; private set; }
+    public static ConfigEntry<int> MessageWait { get; private set; }
     public static ConfigEntry<bool> UnlockFPS { get; private set; }
     public static ConfigEntry<bool> AutoStart { get; private set; }
     public static ConfigEntry<bool> ForceOwnLanguage { get; private set; }
     public static ConfigEntry<bool> ForceOwnLanguageRoleName { get; private set; }
-    public static ConfigEntry<bool> SwitchVanilla { get; private set; }
     public static ConfigEntry<bool> EnableCustomButton { get; private set; }
+    public static ConfigEntry<bool> EnableCustomSoundEffect { get; private set; }
+    public static ConfigEntry<bool> SwitchVanilla { get; private set; }
     public static ConfigEntry<bool> VersionCheat { get; private set; }
     public static ConfigEntry<bool> GodMode { get; private set; }
-    public static ConfigEntry<int> MessageWait { get; private set; }
 
     public static Dictionary<byte, PlayerVersion> playerVersion = new();
     //Preset Name Options
@@ -187,15 +188,16 @@ public class Main : BasePlugin
         //Client Options
         HideName = Config.Bind("Client Options", "Hide Game Code Name", "TOHE");
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
-        AutoStart = Config.Bind("Client Options", "AutoStart", false);
+        DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
         UnlockFPS = Config.Bind("Client Options", "UnlockFPS", false);
-        SwitchVanilla = Config.Bind("Client Options", "SwitchVanilla", false);
-        EnableCustomButton = Config.Bind("Client Options", "EnableCustomButton", true);
-        VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
-        GodMode = Config.Bind("Client Options", "GodMode", false);
+        AutoStart = Config.Bind("Client Options", "AutoStart", false);
         ForceOwnLanguage = Config.Bind("Client Options", "ForceOwnLanguage", false);
         ForceOwnLanguageRoleName = Config.Bind("Client Options", "ForceOwnLanguageRoleName", false);
-        DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
+        EnableCustomButton = Config.Bind("Client Options", "EnableCustomButton", true);
+        EnableCustomSoundEffect = Config.Bind("Client Options", "EnableCustomSoundEffect", true);
+        SwitchVanilla = Config.Bind("Client Options", "SwitchVanilla", false);
+        VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
+        GodMode = Config.Bind("Client Options", "GodMode", false);
 
         Logger = BepInEx.Logging.Logger.CreateLogSource("TOHE");
         TOHE.Logger.Enable();
