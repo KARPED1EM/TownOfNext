@@ -5,6 +5,7 @@ using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using TOHE.Modules;
@@ -1729,6 +1730,22 @@ class EnterVentPatch
             pc.RpcGuardAndKill(pc);
             pc.Notify(GetString("GrenadierSkillInUse"), Options.GrenadierSkillDuration.GetFloat());
             Utils.MarkEveryoneDirtySettings();
+        }
+        if (pc.Is(CustomRoles.DovesOfNeace))
+        {
+            if (Main.DovesOfNeaceNumOfUsed[pc.PlayerId] < 1)
+            {
+                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
+                pc.Notify(GetString("DovesOfNeaceMaxUsage"));
+            }
+            else
+            {
+                Main.DovesOfNeaceNumOfUsed[pc.PlayerId]--;
+                pc.RpcGuardAndKill(pc);
+                Main.AllPlayerControls.Do(x => x.ResetKillCooldown());
+                Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldown(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
+                pc.Notify(string.Format(GetString("DovesOfNeaceOnGuard"), Main.DovesOfNeaceNumOfUsed[pc.PlayerId]));
+            }
         }
     }
 }

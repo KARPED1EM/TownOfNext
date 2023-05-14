@@ -213,6 +213,8 @@ public static class Options
     public static OptionItem ImpCanBeTrapper;
     public static OptionItem CrewCanBeTrapper;
     public static OptionItem NeutralCanBeTrapper;
+    public static OptionItem DovesOfNeaceCooldown;
+    public static OptionItem DovesOfNeaceMaxOfUseage;
 
     // タスク無効化
     public static OptionItem DisableTasks;
@@ -664,6 +666,11 @@ public static class Options
         Mortician.SetupCustomOption();
         Mediumshiper.SetupCustomOption();
         SetupRoleOptions(8021618, TabGroup.CrewmateRoles, CustomRoles.Observer);
+        SetupRoleOptions(8948971, TabGroup.CrewmateRoles, CustomRoles.DovesOfNeace);
+        DovesOfNeaceCooldown = FloatOptionItem.Create(165647, "DovesOfNeaceCooldown", new(1f, 180f, 1f), 20f, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.DovesOfNeace])
+             .SetValueFormat(OptionFormat.Seconds);
+        DovesOfNeaceMaxOfUseage = IntegerOptionItem.Create(151574, "DovesOfNeaceMaxOfUseage", new(1, 999, 1), 10, TabGroup.CrewmateRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.DovesOfNeace])
+         .SetValueFormat(OptionFormat.Times);
 
         // Neutral
         SetupRoleOptions(50500, TabGroup.NeutralRoles, CustomRoles.Arsonist);
