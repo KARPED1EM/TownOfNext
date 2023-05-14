@@ -115,12 +115,11 @@ public static class Gamer
             return true;
         }
 
-        killer.SetKillCooldown();
-
         GamerHealth[target.PlayerId] -= SelfDamage.GetInt();
         SendRPC(target.PlayerId);
         RPC.PlaySoundRPC(target.PlayerId, Sounds.KillSound);
-        killer.RpcGuardAndKill(target);
+        Utils.TP(killer.NetTransform, target.GetTruePosition());
+        killer.SetKillCooldownV2(target: target, forceAnime: true);
         Utils.NotifyRoles(target);
 
         Logger.Info($"{killer.GetNameWithRole()} 对玩家 {target.GetNameWithRole()} 造成了 {SelfDamage.GetInt()} 点伤害", "Gamer");
