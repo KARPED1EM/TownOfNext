@@ -578,7 +578,7 @@ class MurderPlayerPatch
         }
 
         if (killer.Is(CustomRoles.TicketsStealer) && killer.PlayerId != target.PlayerId)
-            killer.Notify(string.Format(GetString("TicketsStealerGetTicket"), (Main.AllPlayerControls.Where(x => x.GetRealKiller()?.PlayerId == killer.PlayerId).Count() * Options.TicketsPerKill.GetFloat()).ToString("0.0#####")));
+            killer.Notify(string.Format(GetString("TicketsStealerGetTicket"), ((Main.AllPlayerControls.Count(x => x.GetRealKiller()?.PlayerId == killer.PlayerId) + 1) * Options.TicketsPerKill.GetFloat()).ToString("0.0#####")));
 
         if (target.Is(CustomRoles.Avanger))
         {

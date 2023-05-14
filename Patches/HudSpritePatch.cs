@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TOHE.Roles.Impostor;
 using UnityEngine;
 
@@ -11,10 +9,19 @@ namespace TOHE;
 
 public static class CustomButton
 {
-    public static Sprite Target = Utils.LoadSprite("TOHE.Resources.Images.Skills.Target.png", 115f);
-    public static Sprite Judge = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
-    public static Sprite Assassinate = Utils.LoadSprite("TOHE.Resources.Images.Skills.Assassinate.png", 115f);
-    public static Sprite Mark = Utils.LoadSprite("TOHE.Resources.Images.Skills.Mark.png", 115f);
+    public static void Init()
+    {
+        Target = Utils.LoadSprite("TOHE.Resources.Images.Skills.Target.png", 115f);
+        Judge = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
+        Assassinate = Utils.LoadSprite("TOHE.Resources.Images.Skills.Assassinate.png", 115f);
+        Mark = Utils.LoadSprite("TOHE.Resources.Images.Skills.Mark.png", 115f);
+    }
+
+    public static Sprite Target;
+    public static Sprite Judge;
+    public static Sprite Assassinate;
+    public static Sprite Mark;
+
 }
 
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

@@ -362,6 +362,7 @@ public class Main : BasePlugin
         TemplateManager.Init();
         SpamManager.Init();
         DevManager.Init();
+        CustomButton.Init();
         Cloud.Init();
 
         IRandom.SetInstance(new NetRandomWrapper());
