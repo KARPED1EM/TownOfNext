@@ -1045,7 +1045,7 @@
 "CharmedBySuccubus","您已被魅魔魅惑","You have been charmed by the Succubus","Вы были зачарованы Суккубом","您已被魅魔魅惑",""
 "SuccubusInvalidTarget","目标无法被魅惑","Target cannot be charmed","Цель не может быть зачарована","目標無法被魅惑",""
 "KillBaitNotify","目标为诱饵，将在{0}秒后报告","<color=#ffff00>You'll self-report in <color=#ffab1b>{0}</color>s</color>","Вы зарепортите труп через {0} с.","目標為誘餌，將在{0}秒後報告",""
-"DovesOfNeaceOnGuard","和平技能已生效，剩余{0}次","Ability used, {0} uses remain","Навык активирован, осталось ещё {0} ","和平技能已生效，剩餘{0}次",""
+"DovesOfNeaceOnGuard","技能已生效，剩余{0}次","Ability used, {0} uses remain","Навык активирован, осталось ещё {0} ","和平技能已生效，剩餘{0}次",""
 "DovesOfNeaceMaxUsage","已达到技能使用次数上限","Ability use limit reached","Вы использовали все свои способности","已達到技能使用次數上限",""
 "DovesOfNeaceSkillNotify","和平之鸽重置了您的击杀/技能冷却","Dove of Peace Reset your kill CD","Пацифист сбросил ваш откат убийства / способности","和平之鴿重置了您的殺人/技能冷卻",""
 
