@@ -239,7 +239,7 @@ class HudManagerPatch
                 }
                 LowerInfoText.enabled = LowerInfoText.text != "";
 
-                if (!AmongUsClient.Instance.IsGameStarted && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay)
+                if ((!AmongUsClient.Instance.IsGameStarted && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) || GameStates.IsMeeting)
                 {
                     LowerInfoText.enabled = false;
                 }
