@@ -1458,9 +1458,10 @@ public static class Utils
         })));
     }
 
+    public static Dictionary<string, Sprite> CachedSprites = new();
     public static Sprite LoadSprite(string path, float pixelsPerUnit = 1f)
     {
-        Sprite sprite = null;
+        if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
         try
         {
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
@@ -1474,7 +1475,7 @@ public static class Utils
         {
             Logger.Error($"\"{path}\"の読み込みに失敗しました。", "LoadImage");
         }
-        return sprite;
+        return CachedSprites[path + pixelsPerUnit] = sprite;
     }
     public static string ColorString(Color32 color, string str) => $"<color=#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}>{str}</color>";
     /// <summary>
