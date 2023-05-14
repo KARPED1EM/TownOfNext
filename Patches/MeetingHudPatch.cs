@@ -807,9 +807,6 @@ class MeetingHudUpdatePatch
             });
         }
 
-        //若某玩家死亡则修复会议该玩家状态
-        __instance.playerStates.Where(x => (!Main.PlayerStates.TryGetValue(x.TargetPlayerId, out var ps) || ps.IsDead) && !x.AmDead).Do(x => x.SetDead(x.DidReport, true));
-
         //投票结束时销毁全部技能按钮
         if (!GameStates.IsVoting && __instance.lastSecond < 1)
         {
@@ -823,6 +820,9 @@ class MeetingHudUpdatePatch
         {
             bufferTime = 10;
             var myRole = PlayerControl.LocalPlayer.GetCustomRole();
+
+            //若某玩家死亡则修复会议该玩家状态
+            __instance.playerStates.Where(x => (!Main.PlayerStates.TryGetValue(x.TargetPlayerId, out var ps) || ps.IsDead) && !x.AmDead).Do(x => x.SetDead(x.DidReport, true));
 
             //若玩家死亡则销毁技能按钮
             if (myRole is CustomRoles.NiceGuesser or CustomRoles.EvilGuesser or CustomRoles.Judge && !PlayerControl.LocalPlayer.IsAlive())
