@@ -2,6 +2,7 @@ using Hazel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TOHE.Modules;
 using static TOHE.Options;
 using static TOHE.Translator;
 
@@ -143,7 +144,8 @@ public static class Witch
             SpelledPlayer[killer.PlayerId].Add(target.PlayerId);
             SendRPC(true, killer.PlayerId, target.PlayerId);
             //キルクールの適正化
-            killer.SetKillCooldown();
+            killer.SetKillCooldownV2();
+            killer.RPCPlayCustomSound("Curse");
         }
     }
     public static void RemoveSpelledPlayer()
