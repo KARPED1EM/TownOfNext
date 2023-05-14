@@ -175,7 +175,9 @@ public static class Swooper
     public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
     {
         if (!IsInvis(killer.PlayerId)) return true;
-        killer.SetKillCooldown();
+        Utils.TP(killer.NetTransform, target.GetTruePosition());
+        killer.SetKillCooldownV2();
+        RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
         target.RpcCheckAndMurder(target);
         target.SetRealKiller(killer);
         return false;
