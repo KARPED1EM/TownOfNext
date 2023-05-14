@@ -35,7 +35,6 @@ public class Main : BasePlugin
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.3.4";
     public const int PluginCreate = 5;
-    public const bool Canary = false;
 
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";

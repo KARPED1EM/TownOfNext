@@ -54,15 +54,15 @@ internal class VersionShowerStartPatch
         Main.credentialsText = $"\r\n<color={Main.ModColor}>{Main.ModName}</color> v{Main.PluginVersion}";
         if (Main.IsAprilFools) Main.credentialsText = $"\r\n<color=#00bfff>Town Of Host</color> v11.45.14";
 
-#pragma warning disable CS0162
-        if (Main.Canary) Main.credentialsText += $"\r\n<color=#fffe1e>Canary({ThisAssembly.Git.Commit})</color>";
-#pragma warning restore CS0162
+#if CANARY
+        Main.credentialsText += $"\r\n<color=#fffe1e>Canary({ThisAssembly.Git.Commit})</color>";
+#endif
 
 #if DEBUG
         Main.credentialsText += $"\r\n<color={Main.ModColor}>{ThisAssembly.Git.Branch}({ThisAssembly.Git.Commit})</color>";
 #endif
 
-#if RELEASE
+#if RELEASE || CANARY
         string additionalCredentials = GetString("TextBelowVersionText");
         if (additionalCredentials != null && additionalCredentials != "*TextBelowVersionText")
         {
