@@ -199,7 +199,7 @@ static class ExtendedPlayerControl
         player.RpcGuardAndKill();
         player.ResetKillCooldown();
     }
-    public static void SetKillCooldownV2(this PlayerControl player, float time = -1f, PlayerControl target = null)
+    public static void SetKillCooldownV2(this PlayerControl player, float time = -1f, PlayerControl target = null, bool forceAnime = false)
     {
         if (player == null) return;
         if (!player.CanUseKillButton()) return;
@@ -215,6 +215,7 @@ static class ExtendedPlayerControl
             AmongUsClient.Instance.FinishRpcImmediately(writer);
         }
         else player.RpcGuardAndKill(target, 11);
+        if ((player.AmOwner || player.IsModClient()) && forceAnime) player.RpcGuardAndKill(target, 11);
         player.ResetKillCooldown();
     }
     public static void RpcSpecificMurderPlayer(this PlayerControl killer, PlayerControl target = null)
