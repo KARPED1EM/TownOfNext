@@ -59,7 +59,7 @@ public static class DarkHide
     public static void DRpcSetKillCount(this PlayerControl player)
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetDarkHiderKillCount, Hazel.SendOption.Reliable, -1);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetDarkHiderKillCount, SendOption.Reliable, -1);
         writer.Write(player.PlayerId);
         writer.Write(IsWinKill[player.PlayerId]);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
