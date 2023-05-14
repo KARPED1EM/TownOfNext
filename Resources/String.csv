@@ -1363,9 +1363,9 @@
 "NeutralRemain","剩余 {0} 个邪恶中立","{0} Evil Neutrals remaining","<color=#ffab1b>Злых Нейтралов</color> осталось: {0}","剩下 {0} 個邪惡中立","剩余 {0} 个邪恶中立"
 "IsGood","{0} 是个好人","{0} was a <color=#8cffff>good guy</color>","{0} был хорошим парнем","{0} 是個好人","{0} 是个好人"
 "BelongTo","{0} 属于 {1}","{0} belongs to {1}","{0} принадлежит {1}","{0} 屬於 {1}","{0} 属于 {1}"
-"GameOverReason.HumansByTask","船员完成了任务","The Crewmates completed all tasks","Члены Экипажа выполнили задания","船員完成了任務","船员完成了任务"
 
 "## 游戏结束原因 / Game Overs"
+"GameOverReason.HumansByTask","船员完成了任务","The Crewmates completed all tasks","Члены Экипажа выполнили задания","船員完成了任務","船员完成了任务"
 "GameOverReason.HumansByVote","内鬼被驱逐","All Impostors and Neutral Killers were ejected or killed","Предатели были изгнаны","偽裝者被逐出","内鬼被驱逐"
 "GameOverReason.HumansDisconnect","船员断线","Crewmates disconnected","Члены Экипажа вышли из игры","船員斷線","船员断线"
 "GameOverReason.ImpostorByKill","内鬼人数占优","The Impostors killed everyone","Предатели убили всех","偽裝者人數占優","内鬼人数占优"
@@ -1387,9 +1387,9 @@
 "DivinatorCheck.Glitch","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17","TV2gPZ4wUJWYr{0}05gA6T5PKzBG17"
 "DivinatorCheck.Love","♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡","♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡","♡ + ♡ = ♡♡","♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡",""
 "DivinatorCheck.TaskDone","【{0}】的职业是【{1}】","【{0}】Role -【{1}】","【{0}】Роль -【{1}】","【{0}】的職業是 {1}】","【{0}】的职业是【{1}】"
-"DevAndSpnTitle","TOHE大家族","TOHE family","Семья TOHE","TOHE大家族","TOHE大家族"
 
 "## 模组信息 / Mod Info"
+"DevAndSpnTitle","TOHE大家族","TOHE family","Семья TOHE","TOHE大家族","TOHE大家族"
 "Developer","开发者","Developer","Разработчики","開發者","开发者"
 "Sponsor","金主爹爹","Sponsor","Спонсоры","乾爹","金主爹爹"
 "Booster","DC服助力","Server Booster","Бустеры в Discord","DC服加成",""
@@ -1403,9 +1403,9 @@
 "TranRU","俄语","Russian","Русский Переводчик","俄語","俄语"
 "TranCHT","繁体中文","Chinese Traditional","Традиционный Китайский","繁體中文",""
 "OnlyShowPart","仅显示部分","Shown only part","Показана только часть","僅顯示部分","仅显示部分"
-"DCNotify.Hacking","您被树懒的反作弊系统踢了\r\n（树懒还在持续发疯）","You have been kicked out by the anti-cheat.\r\n (module use may be mistaken for cheats)","Вас выгнала из официальная система борьбы с хакерством Among Us\r\n (использование модуля может быть ошибочно принято за читы)","您被Innersloth的反作弊系統踢出了\r\n(Innersloth還在持續發瘋)","您被树懒的反作弊系统踢了\r\n（树懒还在持续发疯）"
 
 "## 断连提示 / Disconect reasons"
+"DCNotify.Hacking","您被树懒的反作弊系统踢了\r\n（树懒还在持续发疯）","You have been kicked out by the anti-cheat.\r\n (module use may be mistaken for cheats)","Вас выгнала из официальная система борьбы с хакерством Among Us\r\n (использование модуля может быть ошибочно принято за читы)","您被Innersloth的反作弊系統踢出了\r\n(Innersloth還在持續發瘋)","您被树懒的反作弊系统踢了\r\n（树懒还在持续发疯）"
 "DCNotify.Banned","您被该房间封禁","You are not allowed to enter this room","Вам запрещено входить в эту комнату","您被該房間封禁","您被该房间封禁"
 "DCNotify.Kicked","您被该房间踢出","You were kicked out of the room","Вас кикнули из комнаты","您被該房間踢出","您被该房间踢出"
 "DCNotify.DCFromServer","您与服务器的连接已中断\r\n这可能是因为您的网络不稳定\r\n也可能是因为服务器不稳定或拒绝了您的访问","You disconnected from the server.\r\nThis may be due to instability in your network.\r\nThis may also be due to server instability.","Ваше соединение с сервером было разорвано\r\n Это может быть связано с нестабильностью вашей сети\r\n Это также может быть связано с нестабильностью сервера","您與伺服器的連接已中斷\r\n這可能是因為您的網路不穩定\r\n也可能是因為伺服器不穩定或拒絕了您的存取","您与服务器的连接已中断\r\n这可能是因为您的网络不稳定\r\n也可能是因为服务器不稳定或拒绝了您的访问"
@@ -1413,7 +1413,6 @@
 "DCNotify.GameStarted","该房间正在游戏中，请等待游戏结束后加入","The game has already started, please wait until it ends","Комната в игре, пожалуйста, дождитесь окончания игры","該房間正在遊戲中，請等待遊戲結束後加入","该房间正在游戏中，请等待游戏结束后加入"
 "DCNotify.GameFull","该房间已满人，请稍后重试","The room is full, please try again later","Комната переполнена, пожалуйста, попробуйте еще раз позже","該房間已滿人，請稍後重試","该房间已满人，请稍后重试"
 "DCNotify.IncorrectVersion","您的AmongUs版本与该房间不同","Your version of Among Us is different from this room","Ваша версия Among Us отличается от этой комнаты","您的Among Us版本與該房間不同","您的AmongUs版本与该房间不同"
-"ModeDescribe.SoloKombat","本房间模式为【个人竞技模式】\n没有职业分配，所有人拥有血量，可以使用击杀键对其他人造成伤害。游戏结束时击杀数量最多的玩家获胜。","Current mode is [Solo PVP]\nNo role assignment. Everyone has HP and can use the kill button to cause damage to other players. The player with the highest number of kills wins at the end of the game.","Текущий режим - [ПВП]. У каждого есть здоровье, и может использовать кнопку 'Убить', чтобы нанести урон другим игрокам. Игрок, совершивший наибольшее количество убийств, выигрывает в конце игры.","本房間模式為【個人競技模式】\n沒有職業分配，所有人擁有血量，可以使用殺人鍵對其他人造成傷害。遊戲結束時殺人數量最多的玩家獲勝。","本房间模式为【个人竞技模式】\n没有职业分配，所有人拥有血量，可以使用击杀键对其他人造成伤害。游戏结束时击杀数量最多的玩家获胜。"
 
 "## 胜利界面职业名 / Role name for end screen"
 "WinnerRoleText.Impostor","内鬼","Impostors","Предатели","偽裝者",""
@@ -1442,3 +1441,6 @@
 "WinnerRoleText.Provocateur","自爆卡车","Provocateurs","Провокаторы","神風特攻隊",""
 "WinnerRoleText.Sunnyboy","阳光开朗大男孩","Sunny Boys","Солнечные Мальчики","陽光開朗大男孩",""
 "WinnerRoleText.Totocalcio","赌徒","Followers","Последователи","追隨者",""
+
+"## 模式介绍 / Mode descriptions"
+"ModeDescribe.SoloKombat","本房间模式为【个人竞技模式】\n没有职业分配，所有人拥有血量，可以使用击杀键对其他人造成伤害。游戏结束时击杀数量最多的玩家获胜。","Current mode is [Solo PVP]\nNo role assignment. Everyone has HP and can use the kill button to cause damage to other players. The player with the highest number of kills wins at the end of the game.","Текущий режим - [ПВП]. У каждого есть здоровье, и может использовать кнопку 'Убить', чтобы нанести урон другим игрокам. Игрок, совершивший наибольшее количество убийств, выигрывает в конце игры.","本房間模式為【個人競技模式】\n沒有職業分配，所有人擁有血量，可以使用殺人鍵對其他人造成傷害。遊戲結束時殺人數量最多的玩家獲勝。","本房间模式为【个人竞技模式】\n没有职业分配，所有人拥有血量，可以使用击杀键对其他人造成伤害。游戏结束时击杀数量最多的玩家获胜。"
