@@ -15,7 +15,7 @@ internal static class Assassin
     private static OptionItem AssassinateCooldown;
     private static OptionItem CanKillAfterAssassinate;
 
-    private static Dictionary<byte, byte> MarkedPlayer = new();
+    public static Dictionary<byte, byte> MarkedPlayer = new();
     public static void SetupCustomOption()
     {
         SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.Assassin);

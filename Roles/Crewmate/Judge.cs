@@ -236,7 +236,7 @@ public static class Judge
             targetBox.name = "ShootButton";
             targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.31f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-            renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
+            renderer.sprite = CustomButton.Judge;
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
             button.OnClick.AddListener((Action)(() => JudgeOnClick(pva.TargetPlayerId, __instance)));

@@ -148,7 +148,7 @@ public static class MafiaRevengeManager
             targetBox.name = "ShootButton";
             targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.31f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-            renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.Skills.TargetIcon.png", 115f);
+            renderer.sprite = CustomButton.Target;
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
             button.OnClick.AddListener((Action)(() => MafiaOnClick(pva.TargetPlayerId, __instance)));
