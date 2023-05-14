@@ -190,7 +190,7 @@ public class Main : BasePlugin
         AutoStart = Config.Bind("Client Options", "AutoStart", false);
         UnlockFPS = Config.Bind("Client Options", "UnlockFPS", false);
         SwitchVanilla = Config.Bind("Client Options", "SwitchVanilla", false);
-        EnableCustomButton = Config.Bind("Client Options", "EnableCustomButton", false);
+        EnableCustomButton = Config.Bind("Client Options", "EnableCustomButton", true);
         VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
         GodMode = Config.Bind("Client Options", "GodMode", false);
         ForceOwnLanguage = Config.Bind("Client Options", "ForceOwnLanguage", false);
