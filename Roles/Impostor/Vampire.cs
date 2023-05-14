@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -53,7 +54,8 @@ public static class Vampire
         if (!IsThisRole(killer.PlayerId)) return true;
         if (target.Is(CustomRoles.Bait)) return true;
 
-        killer.SetKillCooldown();
+        killer.SetKillCooldownV2();
+        killer.RPCPlayCustomSound("Bite");
 
         //誰かに噛まれていなければ登録
         if (!BittenPlayers.ContainsKey(target.PlayerId))
