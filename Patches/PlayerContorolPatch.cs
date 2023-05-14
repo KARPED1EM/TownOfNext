@@ -232,9 +232,11 @@ class CheckMurderPatch
                 case CustomRoles.Pelican:
                     if (Pelican.CanEat(killer, target.PlayerId))
                     {
+                        Utils.TP(killer.NetTransform, target.GetTruePosition());
                         Pelican.EatPlayer(killer, target);
-                        killer.RpcGuardAndKill(killer);
-                        killer.SetKillCooldown();
+                        killer.SetKillCooldownV2();
+                        killer.RPCPlayCustomSound("Eat");
+                        target.RPCPlayCustomSound("Eat");
                     }
                     return false;
                 case CustomRoles.FFF:
