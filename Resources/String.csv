@@ -1006,7 +1006,7 @@
 "GangsterRecruitmentFailure","目标无法被招募","Target cannot be recruited","Цель не может быть переманена","目標無法被招募","目标无法被招募"
 "BeRecruitedByGangster","您已被教父招募","You have been recruited by the Gangster","Ты был переманен Ганстером","您已被教父招募","您已被教父招募"
 "VeteranOnGuard","已进入警戒状态","Ability in use","Способность действует","已進入警戒狀態","已进入警戒状态"
-"VeteranOffGuard","警戒状态已失效，剩余{0}次使用次数","The use of the ability is over, and {0} uses remain","Способность окончена, осталось {0}","警戒狀態已失效，剩餘{0}次使用次數","警戒状态已失效，剩余{0}次使用次数"
+"VeteranOffGuard","警戒状态已失效，剩余{0}次","The use of the ability is over, and {0} uses remain","Способность окончена, осталось {0}","警戒狀態已失效，剩餘{0}次使用次數","警戒状态已失效，剩余{0}次使用次数"
 "VeteranMaxUsage","已达到技能使用次数上限","The skill use limit has been reached","Вы использовали все свои способности","已達到技能使用次數上限","已达到技能使用次数上限"
 "GrenadierSkillInUse","闪光弹生效中","Ability in use","Способность использована","閃光彈生效中","闪光弹生效中"
 "GrenadierSkillStop","闪光弹已失效","The use of the ability is over","Способность окончена","閃光彈已失效","闪光弹已失效"
