@@ -83,6 +83,7 @@ internal class ChangeRoleSettings
             Main.FirstDied = byte.MaxValue;
             Main.MadmateNum = 0;
             Main.BardCreations = 0;
+            Main.DovesOfNeaceNumOfUsed = new();
 
             ReportDeadBodyPatch.CanReport = new();
 
@@ -532,6 +533,9 @@ internal class SelectRolesPatch
                         break;
                     case CustomRoles.Succubus:
                         Succubus.Add(pc.PlayerId);
+                        break;
+                    case CustomRoles.DovesOfNeace:
+                        Main.DovesOfNeaceNumOfUsed.Add(pc.PlayerId, Options.DovesOfNeaceMaxOfUseage.GetInt());
                         break;
                 }
                 foreach (var subRole in pc.GetCustomSubRoles())

@@ -74,7 +74,8 @@ public static class Divinator
                 CustomRoles.Counterfeiter or
                 CustomRoles.God or
                 CustomRoles.Judge or
-                CustomRoles.Observer
+                CustomRoles.Observer or
+                CustomRoles.DovesOfNeace
                 => "HideMsg",
 
                 CustomRoles.Miner or
