@@ -225,20 +225,6 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.GrenadierCauseVision.GetFloat());
             }
         }
-        // 为漫步者的凶手
-        if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Rambler) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId).Count() > 0)
-        {
-            Main.AllPlayerSpeed[player.PlayerId] = Options.RamblerSpeed.GetFloat();
-        }
-        // 为失落的船员的凶手
-        if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.LostCrew) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId).Count() > 0)
-        {
-            new LateTask(() =>
-            {
-                player.SetName("I am SUS!!!");
-                Utils.NotifyRoles();
-            }, 5f, ("LOST!!!!!"));
-        }
 
         foreach (var subRole in Main.PlayerStates[player.PlayerId].SubRoles)
         {
@@ -261,9 +247,6 @@ public class PlayerGameOptionsSender : GameOptionsSender
                     break;
                 case CustomRoles.Reach:
                     opt.SetInt(Int32OptionNames.KillDistance, 2);
-                    break;
-                case CustomRoles.Rambler:
-                    Main.AllPlayerSpeed[player.PlayerId] = Options.RamblerSpeed.GetFloat();
                     break;
             }
         }

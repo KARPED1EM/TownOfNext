@@ -141,10 +141,7 @@ internal static class CustomRolesHelper
             CustomRoles.Reach or
             CustomRoles.Charmed or
             CustomRoles.Bait or
-            CustomRoles.Trapper or
-            CustomRoles.Bitch or
-            CustomRoles.Rambler or
-            CustomRoles.Destroyers;
+            CustomRoles.Trapper;
     }
     public static bool IsNK(this CustomRoles role) // 是否带刀中立
     {
@@ -283,10 +280,6 @@ internal static class CustomRolesHelper
         if (role is CustomRoles.Bait && ((pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeBait.GetBool()) || (pc.GetCustomRole().IsNeutral() && !Options.NeutralCanBeBait.GetBool()) || (pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeBait.GetBool()))) return false;
         if (role is CustomRoles.Trapper && ((pc.GetCustomRole().IsCrewmate() && !Options.CrewCanBeTrapper.GetBool()) || (pc.GetCustomRole().IsNeutral() && !Options.NeutralCanBeTrapper.GetBool()) || (pc.GetCustomRole().IsImpostor() && !Options.ImpCanBeTrapper.GetBool()))) return false;
         if (role is CustomRoles.Reach && !pc.CanUseKillButton()) return false;
-        if (role is CustomRoles.Bitch && pc.Is(CustomRoles.Jester)) return false;
-        if (role is CustomRoles.Rambler && (pc.Is(CustomRoles.Flashman) || pc.Is(CustomRoles.SpeedBooster))) return false;
-        if (role is CustomRoles.Destroyers or CustomRoles.Mimic && !pc.GetCustomRole().IsImpostor()) return false;
-        if (role is CustomRoles.Destroyers && (pc.Is(CustomRoles.Bomber) || pc.Is(CustomRoles.BoobyTrap))) return false;
         return true;
     }
     public static RoleTypes GetRoleTypes(this CustomRoles role)

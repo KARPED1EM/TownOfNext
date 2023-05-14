@@ -345,9 +345,6 @@ public class Main : BasePlugin
                 {CustomRoles.Charmed, "#cf6acd"},
                 {CustomRoles.Bait, "#00f7ff"},
                 {CustomRoles.Trapper, "#5a8fd0"},
-                {CustomRoles.Bitch, "#333333"},
-                {CustomRoles.Rambler, "#99CCFF"},
-                 {CustomRoles.Destroyers, "#ff1919"},
                 //SoloKombat
                 {CustomRoles.KB_Normal, "#f55252"}
             };
@@ -530,9 +527,6 @@ public enum CustomRoles
     Charmed,
     Bait,
     Trapper,
-    Bitch,
-    Rambler,
-    Destroyers,
 }
 //WinData
 public enum CustomWinner

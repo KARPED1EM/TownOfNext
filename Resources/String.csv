@@ -178,9 +178,6 @@
 "Charmed","魅魔小弟","Charmed","Зачарован","魅魔小弟",""
 "Bait","诱饵","Bait","Байт","誘餌","Bait"
 "Trapper","陷阱师","Beartrap","Капкан","設陷者","陷阱师"
-"Bitch","贱人"
-"Rambler","漫步者"
-"Destroyers","毁尸者"
 
 "## 附加职业作为前缀时 / Prefixes for Add-ons"
 
@@ -203,9 +200,6 @@
 "Prefix.Reach","持枪","Reach ","Длиннолап ","長槍",""
 "Prefix.Bait","诱饵","Bait ","Байт ","誘餌",""
 "Prefix.Trapper","陷阱","Beartrap ","Капкан ","設陷",""
-"Prefix.Bitch","贱人"
-"Prefix.Rambler","漫步"
-"Prefix.Destroyers","毁尸"
 
 "## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen"
 
@@ -331,9 +325,6 @@
 "ReachInfo","大人，时代变啦！","You have a longer kill range","У вас самая большая дальность убийства","你有更長的殺人距離",""
 "BaitInfo","好消息，杀了我可以吃席","Your Killer self-reports your body","Убийца моментально саморепнет ваше тело","犧牲小我，完成大我","好消息，杀了我可以吃席"
 "TrapperInfo","大奖小奖，能记住就是好奖","Freeze your killer for a few seconds","Замораживаете своего убийцу на несколько секунд","誘捕你的敵人","大奖小奖，能记住就是好奖"
-"BitchInfo","哦你啊个头啊哦有完没完"
-"RamblerInfo","啊欸嘿我就走的慢"
-"DestroyersInfo","这分明是艺术品！"
 
 "# 其它 / Other descriptions"
 "GMInfo","开局死的冤魂隔岸观火","Spectate the Chaos!","Вы Мастер Игры, наслаждайтесь хаосом!","當吃瓜群眾在一旁看戲吧","开局死的冤魂隔岸观火"
@@ -465,9 +456,6 @@
 "ReachInfoLong","(附加职业)\n只有拥有击杀键的玩家能持枪。持枪的玩家的击杀键交互距离比一般人长。","(Add-on)\nOnly roles with a kill button can get this add-on. You have the longest kill range possible in the game, unlike everyone else.","(Атрибут):\nДлиннолап имеет самую большую дальность убийства в игре, в отличие от всех остальных убийц.\nПримечание: Только роли с кнопкой убийства могут получить этот Атрибут.","(附加職業):\n只有擁有殺人鍵的玩家能具有長槍效果。具有長槍效果的玩家殺人距離會比一般人長。",""
 "BaitInfoLong","(附加职业):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。","(Add-ons):\nWhen the Bait is killed, the murderer who killed the Bait will be forced to self-report the Bait's body. However, this won't happen when the Bait is killed by a Scavenger or a Cleaner. The report may have a delay according to Host's settings.","(Атрибут):\nКогда Байта убивают, он заставляет убившего игрока \nмоментально зарепортить ваш труп.","(附加職業):\n當誘餌被殺時，殺死誘餌的兇手將會立刻自行報告誘餌的屍體，但是當清道夫殺死誘餌時，誘餌不會觸發技能。","(附加职业):\n诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。"
 "TrapperInfoLong","(附加职业):\n陷阱师被击杀时，凶手一段时间内将不能移动。","(Add-ons):\nWhen the Beartrap is killed, the Beartrap freezes their killer in place for a configurable amount of time.","(Атрибут):\nПосле того как Капкан убьют, то его убийца будет обездвижен на несколько секунд. (время зависит от настроек)","(附加職業):\n當設陷者被殺時，那麼殺他的兇手將會一段時間內無法移動。","(船员阵营):\n陷阱师被击杀时，凶手一段时间内将不能移动。"
-"BitchInfoLong","(附加职业)\n投给贱人的票数变为114514，因为很贱:)\n小丑不会成为贱人。"
-"RamblerInfoLong","(附加职业)\n漫步者的移动速度很慢，但是击杀漫步者的人移动速度也会变得很慢。\n涉及增加移动速度一类的都不会成为漫步者。"
-"DestroyersInfoLong","(附加职业)\n只有除自爆兵和诡雷以外的内鬼会成为毁尸者。毁尸者每一次击杀都会让被击杀者的死因随机化。"
 
 "# 其它 / Other long description"
 "GMInfoLong","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。","(None):\nThe GM (Game Master) is an observer role.\nTheir presence has no effect on the game, and all players know who the GM is. The GM role will be assigned to the host, who will automatically become a ghost at the start of the game.","(Никто):\nGM (Мастер Игры) — это роль, которая наблюдает за игрой в роле призрака. \nОн не влияет на игру, и все игроки всегда знают кто Мастер Игры. Всегда назначается только хосту лобби и становится призраком в самом начале игры.","(房主):\n看我幹嘛，我只是開始遊戲時就在冥界吃瓜而已。","(房主):\n看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。"
@@ -900,7 +888,6 @@
 "ResetKillCooldownWhenPlayerGetKilled","当有人被击杀时立刻重置击杀冷却","Reset kill cooldown when someone is killed","Сбрасывать откат убийства когда кто-то умирает","当有人被击杀时立刻重置击杀冷却",""
 "DovesOfNeaceCooldown","和平技能冷却时间"
 "DovesOfNeaceMaxOfUseage","和平技能使用最大数"
-"RamblerSpeed","漫步者移动速度"
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被殺","被杀"
