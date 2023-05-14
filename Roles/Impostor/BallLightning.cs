@@ -1,6 +1,7 @@
 ﻿using Hazel;
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Modules;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 using static TOHE.Options;
@@ -73,7 +74,8 @@ public static class BallLightning
     {
         if (killer == null || target == null || !killer.Is(CustomRoles.BallLightning)) return false;
         if (IsGhost(target)) return false;
-        killer.SetKillCooldown();
+        killer.SetKillCooldownV2();
+        killer.RPCPlayCustomSound("Shield");
         StartConvertCountDown(killer, target);
         return true;
     }
