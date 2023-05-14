@@ -1,5 +1,6 @@
 ﻿using Hazel;
 using System.Collections.Generic;
+using TOHE.Modules;
 using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
@@ -77,7 +78,8 @@ public static class Counterfeiter
         clientList[pc.PlayerId].Add(target.PlayerId);
         pc.RpcGuardAndKill(pc);
         notActiveList.Add(pc.PlayerId);
-        pc.SetKillCooldown();
+        pc.SetKillCooldownV2();
+        pc.RPCPlayCustomSound("Bet");
         Utils.NotifyRoles(pc);
         Logger.Info($"赝品商 {pc.GetRealName()} 将赝品卖给了 {target.GetRealName()}", "Counterfeiter");
     }
