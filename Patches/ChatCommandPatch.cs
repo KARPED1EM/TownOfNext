@@ -515,7 +515,7 @@ internal class ChatCommands
             "嗜血騎士" or "血骑" or "骑士" => GetString("BloodKnight"),
             "賭徒" => GetString("Totocalcio"),
             "持槍" or "持械" or "手长" => GetString("Reach"),
-            "和平之鸽" or "和平之鴿" or "和平的鸽子" or "和平" => GetString("DovesOfNeace"),
+            "和平之鸽" or "和平之鴿" or "和平的鸽子" or "和平" or "鸽子" => GetString("DovesOfNeace"),
             _ => text,
         };
     }
