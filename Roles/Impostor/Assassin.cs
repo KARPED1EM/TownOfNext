@@ -106,13 +106,13 @@ internal static class Assassin
     public static void SetKillButtonText(byte playerId)
     {
         if (!playerId.Shapeshifting())
-            HudManager.Instance.KillButton.OverrideText($"{GetString("AssassinMarkButtonText")}");
+            HudManager.Instance.KillButton.OverrideText(GetString("AssassinMarkButtonText"));
         else
-            HudManager.Instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
+            HudManager.Instance.KillButton.OverrideText(GetString("KillButtonText"));
     }
     public static void GetAbilityButtonText(HudManager __instance, byte playerId)
     {
         if (MarkedPlayer.ContainsKey(playerId) && !playerId.Shapeshifting())
-            __instance.AbilityButton.OverrideText($"{GetString("AssassinShapeshiftText")}");
+            __instance.AbilityButton.OverrideText(GetString("AssassinShapeshiftText"));
     }
 }

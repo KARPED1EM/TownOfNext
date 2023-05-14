@@ -80,7 +80,7 @@ public static class SerialKiller
     public static void GetAbilityButtonText(HudManager __instance, PlayerControl pc)
     {
         __instance.AbilityButton.ToggleVisible(pc.IsAlive() && HasKilled(pc));
-        __instance.AbilityButton.OverrideText($"{GetString("SerialKillerSuicideButtonText")}");
+        __instance.AbilityButton.OverrideText(GetString("SerialKillerSuicideButtonText"));
     }
     public static void AfterMeetingTasks()
     {

@@ -172,7 +172,7 @@ public static class BountyHunter
         SendRPC(player.PlayerId, targetId);
         return targetId;
     }
-    public static void SetAbilityButtonText(HudManager __instance) => __instance.AbilityButton.OverrideText($"{GetString("BountyHunterChangeButtonText")}");
+    public static void SetAbilityButtonText(HudManager __instance) => __instance.AbilityButton.OverrideText(GetString("BountyHunterChangeButtonText"));
     public static void AfterMeetingTasks()
     {
         foreach (var id in playerIdList)

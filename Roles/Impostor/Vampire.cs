@@ -125,6 +125,6 @@ public static class Vampire
     }
     public static void SetKillButtonText()
     {
-        HudManager.Instance.KillButton.OverrideText($"{GetString("VampireBiteButtonText")}");
+        HudManager.Instance.KillButton.OverrideText(GetString("VampireBiteButtonText"));
     }
 }

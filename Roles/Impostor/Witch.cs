@@ -241,11 +241,11 @@ public static class Witch
     {
         if (IsSpellMode(PlayerControl.LocalPlayer.PlayerId) && NowSwitchTrigger != SwitchTrigger.DoubleTrigger)
         {
-            hud.KillButton.OverrideText($"{GetString("WitchSpellButtonText")}");
+            hud.KillButton.OverrideText(GetString("WitchSpellButtonText"));
         }
         else
         {
-            hud.KillButton.OverrideText($"{GetString("KillButtonText")}");
+            hud.KillButton.OverrideText(GetString("KillButtonText"));
         }
     }
 

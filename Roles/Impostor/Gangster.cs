@@ -63,9 +63,9 @@ public static class Gangster
     public static void SetKillButtonText(byte plaeryId)
     {
         if (CanRecruit(plaeryId))
-            HudManager.Instance.KillButton.OverrideText($"{GetString("GangsterButtonText")}");
+            HudManager.Instance.KillButton.OverrideText(GetString("GangsterButtonText"));
         else
-            HudManager.Instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
+            HudManager.Instance.KillButton.OverrideText(GetString("KillButtonText"));
     }
     public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
     {
@@ -88,12 +88,12 @@ public static class Gangster
 
             Logger.Info("设置职业:" + target?.Data?.PlayerName + " = " + target.GetCustomRole().ToString() + " + " + CustomRoles.Madmate.ToString(), "Assign " + CustomRoles.Madmate.ToString());
             if (RecruitLimit[killer.PlayerId] < 0)
-                HudManager.Instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
+                HudManager.Instance.KillButton.OverrideText(GetString("KillButtonText"));
             Logger.Info($"{killer.GetNameWithRole()} : 剩余{RecruitLimit[killer.PlayerId]}次招募机会", "Gangster");
             return true;
         }
         if (RecruitLimit[killer.PlayerId] < 0)
-            HudManager.Instance.KillButton.OverrideText($"{GetString("KillButtonText")}");
+            HudManager.Instance.KillButton.OverrideText(GetString("KillButtonText"));
         killer.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Gangster), GetString("GangsterRecruitmentFailure")));
         Logger.Info($"{killer.GetNameWithRole()} : 剩余{RecruitLimit[killer.PlayerId]}次招募机会", "Gangster");
         return false;

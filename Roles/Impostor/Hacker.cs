@@ -62,7 +62,7 @@ public static class Hacker
     {
         if (HackLimit.TryGetValue(playerId, out var x) && x >= 1)
         {
-            __instance.AbilityButton.OverrideText($"{GetString("HackerShapeshiftText")}");
+            __instance.AbilityButton.OverrideText(GetString("HackerShapeshiftText"));
             __instance.AbilityButton.SetUsesRemaining(x);
         }
     }
