@@ -1753,7 +1753,7 @@ class EnterVentPatch
             {
                 Main.DovesOfNeaceNumOfUsed[pc.PlayerId]--;
                 pc.RpcGuardAndKill(pc);
-                Main.AllAlivePlayerControls.Where(x => 
+                Main.AllAlivePlayerControls.Where(x =>
                 pc.Is(CustomRoles.Madmate) ?
                 (x.CanUseKillButton() && x.GetCustomRole().IsCrewmate()) :
                 (x.CanUseKillButton())
