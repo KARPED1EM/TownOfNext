@@ -294,7 +294,6 @@ public class Main : BasePlugin
                 {CustomRoles.Mediumshiper, "#a200ff"},
                 {CustomRoles.Observer, "#a8e0fa"},
                 {CustomRoles.DovesOfNeace, "#FFFFFF" },
-                 {CustomRoles.LostCrew, "#666666"},
                 //第三陣営役職
                 {CustomRoles.Arsonist, "#ff6633"},
                 {CustomRoles.Jester, "#ec62a5"},
@@ -470,7 +469,6 @@ public enum CustomRoles
     Mortician,
     Mediumshiper,
     Observer,
-    LostCrew,
     DovesOfNeace,
     //Neutral
     Arsonist,

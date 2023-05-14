@@ -516,7 +516,6 @@ internal class ChatCommands
             "賭徒" => GetString("Totocalcio"),
             "持槍" or "持械" or "手长" => GetString("Reach"),
             "和平之鸽" or "和平之鴿" or "和平的鸽子" or "和平" => GetString("DovesOfNeace"),
-            "失落的船员" or "失落的船員" or "失落船员" => GetString("LostCrew"),
             _ => text,
         };
     }

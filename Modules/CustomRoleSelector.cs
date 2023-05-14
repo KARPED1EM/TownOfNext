@@ -153,7 +153,6 @@ internal class CustomRoleSelector
         {
             if (rd.Next(0, 100) < 3 && rolesToAssign.Remove(CustomRoles.Jester)) rolesToAssign.Add(CustomRoles.Sunnyboy);
             if (rd.Next(0, 100) < 5 && rolesToAssign.Remove(CustomRoles.Sans)) rolesToAssign.Add(CustomRoles.Bard);
-            if (rd.Next(0, 100) < 10 && rolesToAssign.Remove(CustomRoles.CyberStar)) rolesToAssign.Add(CustomRoles.LostCrew);
         }
 
         // EAC封禁名单玩家开房将被分配为小丑
