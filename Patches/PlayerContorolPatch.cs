@@ -1757,6 +1757,7 @@ class EnterVentPatch
                 (pc.CanUseKillButton())
                 ).Do(pc =>
                 {
+                    pc.RPCPlayCustomSound("Dove");
                     pc.ResetKillCooldown();
                     pc.SetKillCooldown();
                     pc.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.DovesOfNeace), GetString("DovesOfNeaceSkillNotify")));
