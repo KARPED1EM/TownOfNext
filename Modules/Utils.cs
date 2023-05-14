@@ -2,6 +2,7 @@ using AmongUs.Data;
 using AmongUs.GameOptions;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes;
+using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using InnerNet;
 using System;
 using System.Collections.Generic;
@@ -1461,21 +1462,36 @@ public static class Utils
     public static Dictionary<string, Sprite> CachedSprites = new();
     public static Sprite LoadSprite(string path, float pixelsPerUnit = 1f)
     {
-        if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
+        try
+        {
+            if (CachedSprites.TryGetValue(path + pixelsPerUnit, out var sprite)) return sprite;
+            Texture2D texture = LoadTextureFromResources(path);
+            sprite = Sprite.Create(texture, new(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), pixelsPerUnit);
+            sprite.hideFlags |= HideFlags.HideAndDontSave | HideFlags.DontSaveInEditor;
+            return CachedSprites[path + pixelsPerUnit] = sprite;
+        }
+        catch
+        {
+            Logger.Error($"读入Texture失败：{path}", "LoadImage");
+        }
+        return null;
+    }
+    public static unsafe Texture2D LoadTextureFromResources(string path)
+    {
         try
         {
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
             var texture = new Texture2D(1, 1, TextureFormat.ARGB32, false);
             using MemoryStream ms = new();
             stream.CopyTo(ms);
-            ImageConversion.LoadImage(texture, ms.ToArray());
-            sprite = Sprite.Create(texture, new(0, 0, texture.width, texture.height), new(0.5f, 0.5f), pixelsPerUnit);
+            ImageConversion.LoadImage(texture, ms.ToArray(), false);
+            return texture;
         }
         catch
         {
-            Logger.Error($"\"{path}\"の読み込みに失敗しました。", "LoadImage");
+            Logger.Error($"读入Texture失败：{path}", "LoadImage");
         }
-        return CachedSprites[path + pixelsPerUnit] = sprite;
+        return null;
     }
     public static string ColorString(Color32 color, string str) => $"<color=#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}>{str}</color>";
     /// <summary>

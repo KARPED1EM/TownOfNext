@@ -7,6 +7,7 @@
     <Description>Town Of Host Edited</Description>
     <Authors>KARPED1EM</Authors>
     <langVersion>latest</langVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>

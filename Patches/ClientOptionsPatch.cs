@@ -10,6 +10,7 @@ public static class OptionsMenuBehaviourStartPatch
     private static ClientOptionItem UnlockFPS;
     private static ClientOptionItem AutoStart;
     private static ClientOptionItem SwitchVanilla;
+    private static ClientOptionItem EnableCustomButton;
     private static ClientOptionItem ForceOwnLanguage;
     private static ClientOptionItem ForceOwnLanguageRoleName;
     private static ClientOptionItem VersionCheat;
@@ -56,6 +57,10 @@ public static class OptionsMenuBehaviourStartPatch
                 Harmony.UnpatchAll();
                 Main.Instance.Unload();
             }
+        }
+        if (EnableCustomButton == null || EnableCustomButton.ToggleButton == null)
+        {
+            EnableCustomButton = ClientOptionItem.Create("EnableCustomButton", Main.EnableCustomButton, __instance);
         }
         if (ForceOwnLanguage == null || ForceOwnLanguage.ToggleButton == null)
         {
