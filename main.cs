@@ -308,7 +308,7 @@ public class Main : BasePlugin
                 {CustomRoles.Sunnyboy, "#ff9902"},
                 {CustomRoles.BloodKnight, "#630000"},
                 {CustomRoles.Totocalcio, "#ff9409"},
-                {CustomRoles.Succubus, "#cf6acd"},
+                {CustomRoles.Succubus, "#ff00ff"},
                 // GM
                 {CustomRoles.GM, "#ff5b70"},
                 //サブ役職
@@ -333,7 +333,7 @@ public class Main : BasePlugin
                 {CustomRoles.DualPersonality, "#3a648f"},
                 {CustomRoles.Mimic, "#ff1919"},
                 {CustomRoles.Reach, "#74ba43"},
-                {CustomRoles.Charmed, "#cf6acd"},
+                {CustomRoles.Charmed, "#ff00ff"},
                 {CustomRoles.Bait, "#00f7ff"},
                 {CustomRoles.Trapper, "#5a8fd0"},
                 //SoloKombat
