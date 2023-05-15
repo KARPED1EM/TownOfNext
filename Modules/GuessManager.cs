@@ -402,7 +402,7 @@ public static class GuessManager
             targetBox.name = "ShootButton";
             targetBox.transform.localPosition = new Vector3(-0.95f, 0.03f, -1.31f);
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
-            renderer.sprite = CustomButton.Target;
+            renderer.sprite = CustomButton.Get("Target");
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
             button.OnClick.AddListener((Action)(() => GuesserOnClick(pva.TargetPlayerId, __instance)));

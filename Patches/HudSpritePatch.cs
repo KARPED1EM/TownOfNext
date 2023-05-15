@@ -7,28 +7,7 @@ namespace TOHE;
 
 public static class CustomButton
 {
-    public static readonly Sprite Target = Utils.LoadSprite("TOHE.Resources.Images.Skills.Target.png", 115f);
-    public static readonly Sprite Judge = Utils.LoadSprite("TOHE.Resources.Images.Skills.Judge.png", 115f);
-    public static readonly Sprite Assassinate = Utils.LoadSprite("TOHE.Resources.Images.Skills.Assassinate.png", 115f);
-    public static readonly Sprite Mark = Utils.LoadSprite("TOHE.Resources.Images.Skills.Mark.png", 115f);
-    public static readonly Sprite Bomb = Utils.LoadSprite("TOHE.Resources.Images.Skills.Bomb.png", 115f);
-    public static readonly Sprite Camo = Utils.LoadSprite("TOHE.Resources.Images.Skills.Camo.png", 115f);
-    public static readonly Sprite Douse = Utils.LoadSprite("TOHE.Resources.Images.Skills.Douse.png", 115f);
-    public static readonly Sprite Ignite = Utils.LoadSprite("TOHE.Resources.Images.Skills.Ignite.png", 115f);
-    public static readonly Sprite FireworkD = Utils.LoadSprite("TOHE.Resources.Images.Skills.FireworkD.png", 115f);
-    public static readonly Sprite FireworkP = Utils.LoadSprite("TOHE.Resources.Images.Skills.FireworkP.png", 115f);
-    public static readonly Sprite Hack = Utils.LoadSprite("TOHE.Resources.Images.Skills.Hack.png", 115f);
-    public static readonly Sprite Hangman = Utils.LoadSprite("TOHE.Resources.Images.Skills.Hangman.png", 115f);
-    public static readonly Sprite Paranoid = Utils.LoadSprite("TOHE.Resources.Images.Skills.Paranoid.png", 115f);
-    public static readonly Sprite Puttpuer = Utils.LoadSprite("TOHE.Resources.Images.Skills.Puttpuer.png", 115f);
-    public static readonly Sprite Shield = Utils.LoadSprite("TOHE.Resources.Images.Skills.Shield.png", 115f);
-    public static readonly Sprite Sidekick = Utils.LoadSprite("TOHE.Resources.Images.Skills.Sidekick.png", 115f);
-    public static readonly Sprite Subbus = Utils.LoadSprite("TOHE.Resources.Images.Skills.Subbus.png", 115f);
-    public static readonly Sprite Suidce = Utils.LoadSprite("TOHE.Resources.Images.Skills.Suidce.png", 115f);
-    public static readonly Sprite Track = Utils.LoadSprite("TOHE.Resources.Images.Skills.Track.png", 115f);
-    public static readonly Sprite Bite = Utils.LoadSprite("TOHE.Resources.Images.Skills.Bite.png", 115f);
-    public static readonly Sprite Veteran = Utils.LoadSprite("TOHE.Resources.Images.Skills.Veteran.png", 115f);
-    public static readonly Sprite Vulture = Utils.LoadSprite("TOHE.Resources.Images.Skills.Vulture.png", 115f);
+    public static Sprite Get(string name) => Utils.LoadSprite($"TOHE.Resources.Images.Skills.{name}.png", 115f);
 }
 
 [HarmonyPriority(520)]
@@ -68,62 +47,62 @@ public static class HudSpritePatch
             case CustomRoles.Assassin:
                 if (!shapeshifting)
                 {
-                    newKillButton = CustomButton.Mark;
+                    newKillButton = CustomButton.Get("Mark");
                     if (Assassin.MarkedPlayer.ContainsKey(player.PlayerId))
-                        newAbilityButton = CustomButton.Assassinate;
+                        newAbilityButton = CustomButton.Get("Assassinate");
                 }
                 break;
             case CustomRoles.Bomber:
-                newAbilityButton = CustomButton.Bomb;
+                newAbilityButton = CustomButton.Get("Bomb");
                 break;
             case CustomRoles.Concealer:
-                newAbilityButton = CustomButton.Camo;
+                newAbilityButton = CustomButton.Get("Camo");
                 break;
             case CustomRoles.Arsonist:
-                newKillButton = CustomButton.Douse;
-                if (player.IsDouseDone()) newVentButton = CustomButton.Ignite;
+                newKillButton = CustomButton.Get("Douse");
+                if (player.IsDouseDone()) newVentButton = CustomButton.Get("Ignite");
                 break;
             case CustomRoles.FireWorks:
                 if (FireWorks.nowFireWorksCount[player.PlayerId] == 0)
-                    newAbilityButton = CustomButton.FireworkD;
+                    newAbilityButton = CustomButton.Get("FireworkD");
                 else
-                    newAbilityButton = CustomButton.FireworkP;
+                    newAbilityButton = CustomButton.Get("FireworkP");
                 break;
             case CustomRoles.Hacker:
-                newAbilityButton = CustomButton.Hack;
+                newAbilityButton = CustomButton.Get("Hack");
                 break;
             case CustomRoles.Hangman:
-                if (shapeshifting) newAbilityButton = CustomButton.Hangman;
+                if (shapeshifting) newAbilityButton = CustomButton.Get("Hangman");
                 break;
             case CustomRoles.Paranoia:
-                newAbilityButton = CustomButton.Paranoid;
+                newAbilityButton = CustomButton.Get("Paranoid");
                 break;
             case CustomRoles.Puppeteer:
-                newKillButton = CustomButton.Puttpuer;
+                newKillButton = CustomButton.Get("Puttpuer");
                 break;
             case CustomRoles.Medicaler:
-                newKillButton = CustomButton.Shield;
+                newKillButton = CustomButton.Get("Shield");
                 break;
             case CustomRoles.Gangster:
-                if (Gangster.CanRecruit(player.PlayerId)) newKillButton = CustomButton.Sidekick;
+                if (Gangster.CanRecruit(player.PlayerId)) newKillButton = CustomButton.Get("Sidekick");
                 break;
             case CustomRoles.Succubus:
-                newKillButton = CustomButton.Subbus;
+                newKillButton = CustomButton.Get("Subbus");
                 break;
             case CustomRoles.Innocent:
-                newKillButton = CustomButton.Suidce;
+                newKillButton = CustomButton.Get("Suidce");
                 break;
             case CustomRoles.EvilTracker:
-                newAbilityButton = CustomButton.Track;
+                newAbilityButton = CustomButton.Get("Track");
                 break;
             case CustomRoles.Vampire:
-                newKillButton = CustomButton.Bite;
+                newKillButton = CustomButton.Get("Bite");
                 break;
             case CustomRoles.Veteran:
-                newAbilityButton = CustomButton.Veteran;
+                newAbilityButton = CustomButton.Get("Veteran");
                 break;
             case CustomRoles.Pelican:
-                newKillButton = CustomButton.Vulture;
+                newKillButton = CustomButton.Get("Vulture");
                 break;
         }
 
