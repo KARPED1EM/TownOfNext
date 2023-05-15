@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using TOHE.Modules;
 using TOHE.Roles.Impostor;
 using UnityEngine;
 
@@ -40,7 +41,7 @@ public static class HudSpritePatch
     public static void Postfix(HudManager __instance)
     {
         var player = PlayerControl.LocalPlayer;
-        if (player == null || !GameStates.IsModHost || !Main.EnableCustomButton.Value) return;
+        if (player == null || !GameStates.IsModHost) return;
         if (!SetHudActivePatch.IsActive || !player.IsAlive()) return;
         if (!AmongUsClient.Instance.IsGameStarted || !Main.introDestroyed)
         {
@@ -59,6 +60,8 @@ public static class HudSpritePatch
         Sprite newKillButton = Kill;
         Sprite newAbilityButton = Ability;
         Sprite newVentButton = Vent;
+
+        if (!Main.EnableCustomButton.Value) goto EndOfSelectImg;
 
         switch (player.GetCustomRole())
         {
@@ -123,6 +126,8 @@ public static class HudSpritePatch
                 newKillButton = CustomButton.Vulture;
                 break;
         }
+
+    EndOfSelectImg:
 
         __instance.KillButton.graphic.sprite = newKillButton;
         __instance.AbilityButton.graphic.sprite = newAbilityButton;
