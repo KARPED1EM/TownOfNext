@@ -206,20 +206,23 @@ static class ExtendedPlayerControl
         if (target == null) target = player;
         if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time * 2;
         else Main.AllPlayerKillCooldown[player.PlayerId] *= 2;
-        time = Main.AllPlayerKillCooldown[player.PlayerId];
-        player.SyncSettings();
-        if (player.AmOwner)
-            PlayerControl.LocalPlayer.SetKillTimer(time / 2);
-        else if (player.IsModClient())
+        if (forceAnime || !player.IsModClient())
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetKillTimer, SendOption.Reliable, player.GetClientId());
-            writer.Write(time / 2);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            player.SyncSettings();
+            player.RpcGuardAndKill(target, 11);
         }
-        else player.RpcGuardAndKill(target, 11);
-        if ((player.AmOwner || player.IsModClient()) && forceAnime) player.RpcGuardAndKill(target, 11);
-        if (player.AmOwner || player.IsModClient()) Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Observer) && target.PlayerId != x.PlayerId).Do(x => x.RpcGuardAndKill(target, 11, true));
-        
+        else
+        {
+            time = Main.AllPlayerKillCooldown[player.PlayerId] / 2;
+            if (player.AmOwner) PlayerControl.LocalPlayer.SetKillTimer(time);
+            else
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetKillTimer, SendOption.Reliable, player.GetClientId());
+                writer.Write(time);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+            }
+            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Observer) && target.PlayerId != x.PlayerId).Do(x => x.RpcGuardAndKill(target, 11, true));
+        }
         player.ResetKillCooldown();
     }
     public static void RpcSpecificMurderPlayer(this PlayerControl killer, PlayerControl target = null)
