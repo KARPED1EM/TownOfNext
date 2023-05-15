@@ -532,7 +532,7 @@ internal class ChatCommands
         foreach (CustomRoles role in Enum.GetValues(typeof(CustomRoles)))
         {
             if (!includeVanilla && role.IsVanilla() && role != CustomRoles.GuardianAngel) continue;
-            if (input == GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim().Replace(" ", string.Empty))
+            if (input == GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim().Replace(" ", string.Empty).RemoveHtmlTags())
             {
                 output = role;
                 return true;
