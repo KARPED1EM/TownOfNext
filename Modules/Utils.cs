@@ -333,15 +333,15 @@ public static class Utils
         if (count < 1) return "";
         return ColorString(new Color32(255, 69, 0, byte.MaxValue), string.Format(GetString("KillCount"), count));
     }
-    public static string GetVitalText(byte playerId, bool RealKillerColor = false)
+    public static string GetVitalText(byte playerId, bool RealKillerColor = false, bool summary = false)
     {
         var state = Main.PlayerStates[playerId];
-        string deathReason = state.IsDead ? GetString("DeathReason." + state.deathReason) : GetString("Alive");
+        string deathReason = state.IsDead ? GetString("DeathReason." + state.deathReason) : (summary ? "" : GetString("Alive"));
         if (RealKillerColor)
         {
             var KillerId = state.GetRealKiller();
             Color color = KillerId != byte.MaxValue ? Main.PlayerColors[KillerId] : GetRoleColor(CustomRoles.Doctor);
-            if (state.deathReason == PlayerState.DeathReason.Disconnected) color = new Color(255, 255, 255, 50);
+            if (state.deathReason is PlayerState.DeathReason.Disconnected or PlayerState.DeathReason.Vote) color = new Color(255, 255, 255, 50);
             deathReason = ColorString(color, deathReason);
         }
         return deathReason;
@@ -1415,7 +1415,7 @@ public static class Utils
         var name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
         if (id == PlayerControl.LocalPlayer.PlayerId) name = DataManager.player.Customization.Name;
         else name = GetPlayerById(id)?.Data.PlayerName ?? name;
-        string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=24%>{GetProgressText(id)}</pos><pos=32%> {GetKillCountText(id)}</pos><pos={32 + KillsPos}%> {GetVitalText(id, true)}</pos><pos={RolePos + KillsPos}%> {GetDisplayRoleName(id, true)}{GetSubRolesText(id, summary: true)}</pos>";
+        string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=24%>{GetProgressText(id)}</pos><pos=32%> {GetKillCountText(id)}</pos><pos={32 + KillsPos}%> {GetVitalText(id, true, true)}</pos><pos={RolePos + KillsPos}%> {GetDisplayRoleName(id, true)}{GetSubRolesText(id, summary: true)}</pos>";
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             if (TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese)
