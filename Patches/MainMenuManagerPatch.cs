@@ -30,11 +30,10 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void Postfix(MainMenuManager __instance)
     {
-        var y = Options.IsLoaded ? 0f : 521f;
-        TitleLogoPatch.PlayLocalButton?.transform?.SetLocalZ(y);
-        TitleLogoPatch.PlayOnlineButton?.transform?.SetLocalZ(y);
-        TitleLogoPatch.HowToPlayButton?.transform?.SetLocalZ(y);
-        TitleLogoPatch.FreePlayButton?.transform?.SetLocalZ(y);
+        TitleLogoPatch.PlayLocalButton?.transform?.SetLocalY(Options.IsLoaded ? -2.1f : 100f);
+        TitleLogoPatch.PlayOnlineButton?.transform?.SetLocalY(Options.IsLoaded ? -2.1f : 100f);
+        TitleLogoPatch.HowToPlayButton?.transform?.SetLocalY(Options.IsLoaded ? -2.175f : 100f);
+        TitleLogoPatch.FreePlayButton?.transform?.SetLocalY(Options.IsLoaded ? -2.175f : 100f);
         TitleLogoPatch.LoadingHint?.SetActive(!Options.IsLoaded);
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
