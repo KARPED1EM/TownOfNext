@@ -54,6 +54,8 @@ class HudManagerPatch
 
         Utils.CountAlivePlayers();
 
+        bool shapeshifting = Main.CheckShapeshift.TryGetValue(player.PlayerId, out bool ss) && ss;
+
         if (SetHudActivePatch.IsActive)
         {
             if (player.IsAlive())
@@ -74,10 +76,13 @@ class HudManagerPatch
                         SerialKiller.GetAbilityButtonText(__instance, player);
                         break;
                     case CustomRoles.Warlock:
-                        if (!(Main.CheckShapeshift.TryGetValue(player.PlayerId, out bool shapeshiftingw) && shapeshiftingw) && !(Main.isCurseAndKill.TryGetValue(player.PlayerId, out bool curse) && curse))
+                        bool curse = Main.isCurseAndKill.TryGetValue(player.PlayerId, out bool wcs) && wcs;
+                        if (!shapeshifting && !curse)
                             __instance.KillButton.OverrideText(GetString("WarlockCurseButtonText"));
                         else
                             __instance.KillButton.OverrideText(GetString("KillButtonText"));
+                        if (!shapeshifting && curse)
+                            __instance.AbilityButton.OverrideText(GetString("WarlockShapeshiftButtonText"));
                         break;
                     case CustomRoles.Miner:
                         __instance.AbilityButton.OverrideText(GetString("MinerTeleButtonText"));

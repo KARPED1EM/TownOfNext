@@ -79,6 +79,7 @@ enum CustomRPC
     SyncTotocalcioTargetAndTimes,
     SetSuccubusCharmLimit,
     SyncPuppeteerList,
+    SyncCurseAndKill,
 
     //SoloKombat
     SyncKBPlayer,
@@ -437,6 +438,12 @@ internal class RPCHandlerPatch
                 Main.PuppeteerList = new();
                 for (int i = 0; i < pcount; i++)
                     Main.PuppeteerList.Add(reader.ReadByte(), reader.ReadByte());
+                break;
+            case CustomRPC.SyncCurseAndKill:
+                int ccount = reader.ReadInt32();
+                Main.isCurseAndKill = new();
+                for (int i = 0; i < ccount; i++)
+                    Main.isCurseAndKill.Add(reader.ReadByte(), reader.ReadBoolean());
                 break;
         }
     }
@@ -828,6 +835,13 @@ internal static class RPC
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncPuppeteerList, SendOption.Reliable, -1);
         writer.Write(Main.PuppeteerList.Count);
         Main.PuppeteerList.Do(p => { writer.Write(p.Key); writer.Write(p.Value); });
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static void RpcSyncCurseAndKill()
+    {
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncPuppeteerList, SendOption.Reliable, -1);
+        writer.Write(Main.isCurseAndKill.Count);
+        Main.isCurseAndKill.Do(p => { writer.Write(p.Key); writer.Write(p.Value); });
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void ResetCurrentDousingTarget(byte arsonistId) => SetCurrentDousingTarget(arsonistId, 255);

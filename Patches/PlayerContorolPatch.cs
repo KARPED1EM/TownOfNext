@@ -143,13 +143,18 @@ class CheckMurderPatch
                 case CustomRoles.Warlock:
                     if (!Main.CheckShapeshift[killer.PlayerId] && !Main.isCurseAndKill[killer.PlayerId])
                     { //Warlockが変身時以外にキルしたら、呪われる処理
-                        if (target.Is(CustomRoles.Needy)) return false;
+                        if (target.Is(CustomRoles.Needy))
+                        {
+                            killer.RpcGuardAndKill(target);
+                            return false;
+                        }
                         Main.isCursed = true;
                         killer.SetKillCooldownV2();
                         killer.RPCPlayCustomSound("Line");
                         Main.CursedPlayers[killer.PlayerId] = target;
                         Main.WarlockTimer.Add(killer.PlayerId, 0f);
                         Main.isCurseAndKill[killer.PlayerId] = true;
+                        RPC.RpcSyncCurseAndKill();
                         return false;
                     }
                     if (Main.CheckShapeshift[killer.PlayerId])
@@ -157,7 +162,6 @@ class CheckMurderPatch
                         killer.RpcCheckAndMurder(target);
                         return false;
                     }
-                    if (Main.isCurseAndKill[killer.PlayerId]) killer.RpcGuardAndKill(target);
                     return false;
                 case CustomRoles.Assassin:
                     if (!Assassin.OnCheckMurder(killer, target)) return false;
@@ -693,6 +697,7 @@ class ShapeshiftPatch
                             shapeshifter.Notify(GetString("WarlockNoTarget"));
                         }
                         Main.isCurseAndKill[shapeshifter.PlayerId] = false;
+                        RPC.RpcSyncCurseAndKill();
                     }
                     Main.CursedPlayers[shapeshifter.PlayerId] = null;
                 }
