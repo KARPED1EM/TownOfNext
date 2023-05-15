@@ -449,7 +449,8 @@ static class ExtendedPlayerControl
             CustomRoles.DarkHide or
             CustomRoles.Provocateur or
             CustomRoles.Totocalcio or
-            CustomRoles.Succubus
+            CustomRoles.Succubus or
+            CustomRoles.Crewpostor
             => false,
 
             CustomRoles.Jackal => Jackal.CanVent.GetBool(),

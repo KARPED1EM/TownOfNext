@@ -839,7 +839,7 @@ internal static class RPC
     }
     public static void RpcSyncCurseAndKill()
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncPuppeteerList, SendOption.Reliable, -1);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncCurseAndKill, SendOption.Reliable, -1);
         writer.Write(Main.isCurseAndKill.Count);
         Main.isCurseAndKill.Do(p => { writer.Write(p.Key); writer.Write(p.Value); });
         AmongUsClient.Instance.FinishRpcImmediately(writer);
