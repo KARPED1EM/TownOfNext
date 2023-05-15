@@ -1370,9 +1370,11 @@ public static class Utils
         if (!Directory.Exists(f)) Directory.CreateDirectory(f);
         FileInfo file = new(@$"{Environment.CurrentDirectory}/BepInEx/LogOutput.log");
         file.CopyTo(@filename);
-        System.Diagnostics.Process.Start(@f);
         if (PlayerControl.LocalPlayer != null)
             HudManager.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
+        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe")
+        { Arguments = "/e,/select," + @filename.Replace("/", "\\") };
+        System.Diagnostics.Process.Start(psi);
     }
     public static (int, int) GetDousedPlayerCount(byte playerId)
     {
