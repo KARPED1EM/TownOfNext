@@ -115,7 +115,7 @@ public class GameStartManagerPatch
                 if (!canStartGame)
                 {
                     __instance.StartButton.gameObject.SetActive(false);
-                    warningMessage = Utils.ColorString(Color.red, string.Format(GetString("Warning.MismatchedVersion"), String.Join(" ", mismatchedPlayerNameList), $"<color={Main.ModColor}>{Main.ModName}</color>"));
+                    warningMessage = Utils.ColorString(Color.red, string.Format(GetString("Warning.MismatchedVersion"), string.Join(" ", mismatchedPlayerNameList), $"<color={Main.ModColor}>{Main.ModName}</color>"));
                 }
             }
             else
@@ -143,8 +143,6 @@ public class GameStartManagerPatch
             else
             {
                 __instance.GameStartText.transform.localPosition = __instance.StartButton.transform.localPosition;
-                if (!GameStates.IsCountDown)
-                    __instance.GameStartText.text = "";
             }
 
             // Lobby timer
