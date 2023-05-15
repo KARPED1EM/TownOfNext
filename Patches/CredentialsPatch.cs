@@ -13,7 +13,7 @@ internal class PingTrackerUpdatePatch
 
     private static void Postfix(PingTracker __instance)
     {
-        __instance.text.alignment = TMPro.TextAlignmentOptions.TopRight;
+        __instance.text.alignment = TextAlignmentOptions.TopRight;
 
         sb.Clear();
 
