@@ -520,6 +520,7 @@
 "ModeOptions","模组设置","Mode Options","Настройка Режима","模組設定","模组设置"
 "AutoStart","人满自动开始","Auto start at full lobby","Авто. запуск игры при полном лобби","人滿自動開始","人满自动开始"
 "SwitchVanilla","切换为原版","Switch Vanilla","Отключить мод","切換為原版","切换为原版"
+"FastBoot","快速启动模式","Fast Boot","Быстрый старт","切換為原版","切换为原版"
 "EnableCustomButton","使用模组按钮样式","Enable Custom Button Images","Использовать кастомные кнопки","使用模組按鈕樣式",""
 "EnableCustomSoundEffect","开启模组技能音效","Enable Custom Sound Effects","Использовать кастомные звуки","開啟模組技能音效",""
 "UnlockFPS","解锁帧数限制","Unlock FPS","Убрать ограничение FPS","解鎖FPS限制","解锁帧数限制"
