@@ -30,6 +30,7 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void Postfix(MainMenuManager __instance)
     {
+        if (!Main.FastBoot.Value) return;
         TitleLogoPatch.PlayLocalButton?.transform?.SetLocalY(Options.IsLoaded ? -2.1f : 100f);
         TitleLogoPatch.PlayOnlineButton?.transform?.SetLocalY(Options.IsLoaded ? -2.1f : 100f);
         TitleLogoPatch.HowToPlayButton?.transform?.SetLocalY(Options.IsLoaded ? -2.175f : 100f);

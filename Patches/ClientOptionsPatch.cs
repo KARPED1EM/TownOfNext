@@ -14,6 +14,7 @@ public static class OptionsMenuBehaviourStartPatch
     private static ClientOptionItem EnableCustomButton;
     private static ClientOptionItem EnableCustomSoundEffect;
     private static ClientOptionItem SwitchVanilla;
+    private static ClientOptionItem FastBoot;
     private static ClientOptionItem VersionCheat;
     private static ClientOptionItem GodMode;
 
@@ -74,6 +75,10 @@ public static class OptionsMenuBehaviourStartPatch
                 Harmony.UnpatchAll();
                 Main.Instance.Unload();
             }
+        }
+        if (FastBoot == null || FastBoot.ToggleButton == null)
+        {
+            FastBoot = ClientOptionItem.Create("FastBoot", Main.FastBoot, __instance);
         }
         if ((VersionCheat == null || VersionCheat.ToggleButton == null) && DebugModeManager.AmDebugger)
         {
