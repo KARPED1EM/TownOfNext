@@ -433,6 +433,56 @@ class CheckMurderPatch
                     return false;
                 }
                 break;
+            //击杀失落的船员
+            case CustomRoles.LostCrew:
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    NameNotifyManager.Notify(target, Utils.ColorString(Utils.GetRoleColor(CustomRoles.LostCrew), GetString("IAMSUS!!!")));
+                    Utils.NotifyRoles();
+                }, 5f, ("LOST!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 8f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 12f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 14f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    Utils.NotifyRoles();
+                }, 15f, ("SUS!!!!"));
+                new LateTask(() =>
+                {
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    killer.KillFlash();
+                    target.RpcMurderPlayerV3(killer);
+                    Utils.NotifyRoles();
+                }, 17f, ("KILLER!!!!!!!!"));
+                break;
         }
 
         //保镖保护

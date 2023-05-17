@@ -48,6 +48,7 @@
 "# 隐藏 / Hidden"
 "Sunnyboy","阳光开朗大男孩","Sunnyboy","Солнечный Мальчик","陽光開朗大男孩","Chico Soleado"
 "Bard","吟游诗人","Bard","Бард","吟遊詩人","Bard"
+"LostCrew","失落的船员"
 
 "# 原版职业 / Vanilla"
 "Crewmate","船员","Crewmate","Член Экипажа","船員","Tripulante"
@@ -332,6 +333,7 @@
 "# 隐藏 / Hidden descriptions"
 "SunnyboyInfo","这个角色的建立究竟有什么意义","Shine, Shine my sunshine!","Свети, свети солнышко моё!","這個角色的建立到底有甚麼用","这个角色的建立究竟有什么意义"
 "BardInfo","请让我赋诗一首","Poem's grace, murder's trace, a rhythmic dance in dark embrace.","Поэма для вас, умрите сейчас!","請讓我賦詩一首","请让我赋诗一首"
+"LostCrewInfo","我 是 可 疑 的！！！！"
 
 "## 以下是职业描述（使用/m或/r指令后得到的文本）"
 
@@ -461,6 +463,7 @@
 "# 隐藏 / Hidden long descriptions"
 "SunnyboyInfoLong","(中立阵营):\n阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。","(Neutrals):\nThe Sunnyboy can check the life status of others through the life panel. When the Sunnyboy is alive, the game will not end due to a numerical advantage (for example, the number of imporstors is greater than the crew or there are no survivors). If the Sunnyboy dies at the end of the game, the Sunnyboy will win with the winning team.","(Добрый - Нейтрал):\n Солнечний мальчик может просматривать жизненный статус других людей через планшет. Когда присутствует Солнечний Мальчик, игра не заканчивается из-за преимущества в количестве людей (например, количество Предателей больше, чем Членов Экипажа, или Предателей в живых нет). Если Солнечний мальчик умрет в конце игры, Солнечний мальчик выиграет с выжившей коммандой.","(中立陣營):\n陽光開朗大男孩可以通過心電圖來查看他人的生命徵象。陽光開朗大男孩在場時遊戲不會因人數優勢而結束(例如偽裝者人數大於船員人數或沒有剩餘的存活偽裝者)，遊戲結束時如果陽光開朗大男孩死亡，則陽光開朗大男孩隨著勝利陣營一同獲勝。","(中立阵营):\n阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。"
 "BardInfoLong","(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。","(Impostor):\nWhen a bard is alive, the exile confirmation will display a sentence composed by the bard. Whenever the bard completes a creation, the bard's kill cooldown is permanently halved.","(Предатель):\nКогда Бард жив, в подтверждении изгнания будет отображаться предложение, составленное бардом. Всякий раз, когда бард завершает создание предложений, время восстановления после убийства барда постоянно уменьшается вдвое.","(偽裝者陣營):\n吟遊詩人在場時，逐出確認將會顯示為吟遊詩人創作的句子。每當吟遊詩人完成一次創作，則吟遊詩人的殺人冷卻永久減半。","(内鬼阵营):\n吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。"
+"LostCrewInfoLong","(船员阵营):\n当击杀失落的船员时，凶手会被提示“我 是 可 疑 的！！！”然后凶手的屏幕每过一段时间就会闪光，在最后一次闪光后凶手就会被失落的船员杀死"
 
 "## 模式选项 / Settings"
 "DisableMeeting","禁用会议与报告尸体","Disable Meetings","Отключить Собрания","禁用緊急會議以及報告屍體","禁用会议与报告尸体"
@@ -1049,6 +1052,7 @@
 "DovesOfNeaceOnGuard","技能已生效，剩余{0}次","Ability used, {0} uses remain","Навык активирован, осталось ещё {0} ","和平技能已生效，剩餘{0}次",""
 "DovesOfNeaceMaxUsage","已达到技能使用次数上限","Ability use limit reached","Вы использовали все свои способности","已達到技能使用次數上限",""
 "DovesOfNeaceSkillNotify","和平之鸽重置了您的击杀/技能冷却","Dove of Peace Reset your kill CD","Пацифист сбросил ваш откат убийства / способности","和平之鴿重置了您的殺人/技能冷卻",""
+"IAMSUS!!!","我 是 可 疑 的！！！"
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","訊息傳送冷卻時間設為【{0}】秒","信息发送冷却时间为【{0}】秒"
