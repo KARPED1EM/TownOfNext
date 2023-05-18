@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TOHE.Roles.Crewmate;
+using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 
@@ -79,7 +80,23 @@ class RepairSystemPatch
     }
     public static void Postfix(ShipStatus __instance)
     {
-        Camouflage.CheckCamouflage();
+        if (Concealer.IsHidding)
+        {
+            if (!GameStates.IsMeeting)
+            { Utils.NotifyRoles(ForceLoop: true); }
+            Camouflage.CheckCamouflage(); 
+        }
+
+        else
+        {
+            new LateTask(
+            () =>
+            {
+                Camouflage.CheckCamouflage();
+                if (!GameStates.IsMeeting)
+                { Utils.NotifyRoles(ForceLoop: true); }
+            }, 0.1f, "ShipStatus.RepairSystem");
+        }
     }
     public static void CheckAndOpenDoorsRange(ShipStatus __instance, int amount, int min, int max)
     {

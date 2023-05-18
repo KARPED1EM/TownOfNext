@@ -57,5 +57,6 @@ public static class Concealer
     {
         HiddenCount = 0;
         SendRPC();
+        Camouflage.CheckCamouflage();
     }
 }

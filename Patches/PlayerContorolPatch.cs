@@ -961,7 +961,6 @@ class ReportDeadBodyPatch
         Main.MadGrenadierBlinding.Clear();
         Divinator.didVote.Clear();
 
-        Concealer.OnReportDeadBody();
         Psychic.OnReportDeadBody();
         BountyHunter.OnReportDeadBody();
         SerialKiller.OnReportDeadBody();
@@ -995,6 +994,8 @@ class ReportDeadBodyPatch
         Main.RevolutionistLastTime.Clear();
         #endregion
 
+        Concealer.OnReportDeadBody();
+
         Main.AllPlayerControls
             .Where(pc => Main.CheckShapeshift.ContainsKey(pc.PlayerId))
             .Do(pc => Camouflage.RpcSetSkin(pc, RevertToDefault: true));
@@ -1004,6 +1005,9 @@ class ReportDeadBodyPatch
         Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
         Utils.SyncAllSettings();
+
+        if ((Utils.IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding)
+            { Utils.NotifyRoles(CamouflageisForMeeting: true, CamouflageIsActive: true); }
     }
     public static async void ChangeLocalNameAndRevert(string name, int time)
     {
