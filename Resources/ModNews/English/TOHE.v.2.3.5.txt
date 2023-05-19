@@ -40,6 +40,7 @@ I hope this is the last version before the TOH update
 - Fixed the bug that the game start countdown timer cannot be seen on the non-host mod
 - Fixed the bug that The file location will not pop up after outputting the log
 - Fixed the bug that Quick Shooter and Bomber's skill cooldowns were not being reset after a meeting
+- Fixed the bug that there was no prompt when the Veteran reached the upper limit of skill usage
 
 ## Changing
 - End screen tweaks and fix some grammatical issue

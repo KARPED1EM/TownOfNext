@@ -29,7 +29,14 @@ public static class Options
     {
         Logger.Info("Options.Load Start", "Options");
         taskOptionsLoad = Task.Run(Load);
-        Task doneTask = taskOptionsLoad.ContinueWith(t => { Logger.Info("Options.Load End", "Options"); });
+        if (Main.FastBoot.Value) taskOptionsLoad.ContinueWith(t => { Logger.Msg("模组选项加载线程结束", "Load Options"); });
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
+    public static void WaitOptionsLoad()
+    {
+        if (Main.FastBoot.Value) return;
+        taskOptionsLoad.Wait();
+        Logger.Msg("模组选项加载线程结束", "Load Options");
     }
     // オプションId
     public const int PresetId = 0;
@@ -483,6 +490,8 @@ public static class Options
         GameMode = StringOptionItem.Create(1, "GameMode", gameModes, 0, TabGroup.GameSettings, false)
             .SetHeader(true);
 
+        Logger.Msg("开始加载职业设置", "Load Options");
+
         #region 职业详细设置
         CustomRoleCounts = new();
         CustomRoleSpawnChances = new();
@@ -832,6 +841,8 @@ public static class Options
 
         #endregion
 
+        Logger.Msg("开始加载系统设置", "Load Options");
+
         #region 系统设置
 
         KickLowLevelPlayer = IntegerOptionItem.Create(6090074, "KickLowLevelPlayer", new(0, 100, 1), 0, TabGroup.SystemSettings, false)
@@ -903,6 +914,8 @@ public static class Options
             .SetHeader(true);
 
         #endregion 
+
+        Logger.Msg("开始加载游戏设置", "Load Options");
 
         #region 游戏设置
 
@@ -1172,6 +1185,7 @@ public static class Options
 
         #endregion 
 
+        Logger.Msg("模组选项加载完毕", "Load Options");
         IsLoaded = true;
     }
 

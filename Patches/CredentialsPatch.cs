@@ -155,12 +155,15 @@ internal class TitleLogoPatch
             return;
         }
 
-        LoadingHint = new GameObject("LoadingHint");
-        LoadingHint.transform.position = Vector3.down;
-        var LoadingHintText = LoadingHint.AddComponent<TextMeshPro>();
-        LoadingHintText.text = GetString("Loading");
-        LoadingHintText.alignment = TextAlignmentOptions.Center;
-        LoadingHintText.fontSize = 3f;
+        if (Main.FastBoot.Value)
+        {
+            LoadingHint = new GameObject("LoadingHint");
+            LoadingHint.transform.position = Vector3.down;
+            var LoadingHintText = LoadingHint.AddComponent<TextMeshPro>();
+            LoadingHintText.text = GetString("Loading");
+            LoadingHintText.alignment = TextAlignmentOptions.Center;
+            LoadingHintText.fontSize = 3f;
+        }
 
         if ((amongUsLogo = GameObject.Find("bannerLogo_AmongUs")) != null)
         {
