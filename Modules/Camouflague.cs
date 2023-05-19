@@ -56,21 +56,9 @@ public static class Camouflage
 
         if (oldIsCamouflage != IsCamouflage)
         {
-            if (Concealer.IsHidding)
-            {
-                Main.AllPlayerControls.Do(pc => RpcSetSkin(pc));
-                Utils.NotifyRoles(ForceLoop: true);
-            }
-            else
-            {
-                new LateTask(
-                () =>
-                {
-                    Main.AllPlayerControls.Do(pc => RpcSetSkin(pc));
-                    if (GameStates.IsMeeting)
-                    { Utils.NotifyRoles(ForceLoop: true); }
-                }, 0.1f, "Camouflage");
-            }
+            Main.AllPlayerControls.Do(pc => RpcSetSkin(pc));
+                if (GameStates.IsMeeting)
+                { Utils.NotifyRoles(ForceLoop: true); }
         }
     }
     public static void RpcSetSkin(PlayerControl target, bool ForceRevert = false, bool RevertToDefault = false)
