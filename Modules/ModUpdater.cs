@@ -52,7 +52,7 @@ public class ModUpdater
                 done = CheckReleaseFromGithub(Main.BetaBuildURL.Value != "").GetAwaiter().GetResult();
                 done = CheckRelease(done).GetAwaiter().GetResult();
             }
-            Logger.Warn("检查更新结果: " + done, "CheckRelease");
+            Logger.Msg("检查更新结果: " + done, "CheckRelease");
             Logger.Info("hasupdate: " + hasUpdate, "CheckRelease");
             Logger.Info("forceupdate: " + forceUpdate, "CheckRelease");
             Logger.Info("downloadUrl: " + downloadUrl, "CheckRelease");
@@ -94,7 +94,7 @@ public class ModUpdater
 
     public static Task<bool> CheckRelease(bool onlyInfo = false)
     {
-        Logger.Warn("开始从2018k检查更新", "CheckRelease");
+        Logger.Msg("开始从2018k检查更新", "CheckRelease");
         string url = UrlSetId(UrlSetCheck(URL_2018k)) + "&version=" + Main.PluginVersion;
         try
         {
@@ -184,7 +184,7 @@ public class ModUpdater
     }
     public static async Task<bool> CheckReleaseFromGithub(bool beta = false)
     {
-        Logger.Warn("开始从Github检查更新", "CheckRelease");
+        Logger.Msg("开始从Github检查更新", "CheckRelease");
         string url = beta ? Main.BetaBuildURL.Value : URL_Github + "/releases/latest";
         try
         {

@@ -193,7 +193,8 @@ static class ExtendedPlayerControl
     {
         if (player == null) return;
         if (!player.CanUseKillButton()) return;
-        if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time;
+        if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time * 2;
+        else Main.AllPlayerKillCooldown[player.PlayerId] *= 2;
         player.SyncSettings();
         player.RpcGuardAndKill();
         player.ResetKillCooldown();
@@ -203,20 +204,25 @@ static class ExtendedPlayerControl
         if (player == null) return;
         if (!player.CanUseKillButton()) return;
         if (target == null) target = player;
-        if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time;
-        time = Main.AllPlayerKillCooldown[player.PlayerId];
-        player.SyncSettings();
-        if (player.AmOwner)
-            PlayerControl.LocalPlayer.SetKillTimer(time);
-        else if (player.IsModClient())
+        if (time >= 0f) Main.AllPlayerKillCooldown[player.PlayerId] = time * 2;
+        else Main.AllPlayerKillCooldown[player.PlayerId] *= 2;
+        if (forceAnime || !player.IsModClient())
         {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetKillTimer, SendOption.Reliable, player.GetClientId());
-            writer.Write(time);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
+            player.SyncSettings();
+            player.RpcGuardAndKill(target, 11);
         }
-        else player.RpcGuardAndKill(target, 11);
-        if ((player.AmOwner || player.IsModClient()) && forceAnime) player.RpcGuardAndKill(target, 11);
-        if (player.AmOwner || player.IsModClient()) Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Observer) && target.PlayerId != x.PlayerId).Do(x => x.RpcGuardAndKill(target, 11, true));
+        else
+        {
+            time = Main.AllPlayerKillCooldown[player.PlayerId] / 2;
+            if (player.AmOwner) PlayerControl.LocalPlayer.SetKillTimer(time);
+            else
+            {
+                MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetKillTimer, SendOption.Reliable, player.GetClientId());
+                writer.Write(time);
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+            }
+            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Observer) && target.PlayerId != x.PlayerId).Do(x => x.RpcGuardAndKill(target, 11, true));
+        }
         player.ResetKillCooldown();
     }
     public static void RpcSpecificMurderPlayer(this PlayerControl killer, PlayerControl target = null)

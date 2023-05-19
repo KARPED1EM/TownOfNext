@@ -1716,20 +1716,12 @@ class EnterVentPatch
 
         if (pc.Is(CustomRoles.Veteran))
         {
-            if (Main.VeteranNumOfUsed[pc.PlayerId] < 1)
-            {
-                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
-                pc.Notify(GetString("VeteranMaxUsage"));
-            }
-            else
-            {
-                Main.VeteranInProtect.Remove(pc.PlayerId);
-                Main.VeteranInProtect.Add(pc.PlayerId, Utils.GetTimeStamp());
-                Main.VeteranNumOfUsed[pc.PlayerId]--;
-                if (!pc.IsModClient()) pc.RpcGuardAndKill(pc);
-                pc.RPCPlayCustomSound("Gunload");
-                pc.Notify(GetString("VeteranOnGuard"), Options.VeteranSkillDuration.GetFloat());
-            }
+            Main.VeteranInProtect.Remove(pc.PlayerId);
+            Main.VeteranInProtect.Add(pc.PlayerId, Utils.GetTimeStamp());
+            Main.VeteranNumOfUsed[pc.PlayerId]--;
+            if (!pc.IsModClient()) pc.RpcGuardAndKill(pc);
+            pc.RPCPlayCustomSound("Gunload");
+            pc.Notify(GetString("VeteranOnGuard"), Options.VeteranSkillDuration.GetFloat());
         }
         if (pc.Is(CustomRoles.Grenadier))
         {
@@ -1752,29 +1744,21 @@ class EnterVentPatch
         }
         if (pc.Is(CustomRoles.DovesOfNeace))
         {
-            if (Main.DovesOfNeaceNumOfUsed[pc.PlayerId] < 1)
+            Main.DovesOfNeaceNumOfUsed[pc.PlayerId]--;
+            pc.RpcGuardAndKill(pc);
+            Main.AllAlivePlayerControls.Where(x =>
+            pc.Is(CustomRoles.Madmate) ?
+            (x.CanUseKillButton() && x.GetCustomRole().IsCrewmate()) :
+            (x.CanUseKillButton())
+            ).Do(x =>
             {
-                pc?.MyPhysics?.RpcBootFromVent(__instance.Id);
-                pc.Notify(GetString("DovesOfNeaceMaxUsage"));
-            }
-            else
-            {
-                Main.DovesOfNeaceNumOfUsed[pc.PlayerId]--;
-                pc.RpcGuardAndKill(pc);
-                Main.AllAlivePlayerControls.Where(x =>
-                pc.Is(CustomRoles.Madmate) ?
-                (x.CanUseKillButton() && x.GetCustomRole().IsCrewmate()) :
-                (x.CanUseKillButton())
-                ).Do(x =>
-                {
-                    x.RPCPlayCustomSound("Dove");
-                    x.ResetKillCooldown();
-                    x.SetKillCooldownV2();
-                    x.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.DovesOfNeace), GetString("DovesOfNeaceSkillNotify")));
-                });
-                pc.RPCPlayCustomSound("Dove");
-                pc.Notify(string.Format(GetString("DovesOfNeaceOnGuard"), Main.DovesOfNeaceNumOfUsed[pc.PlayerId]));
-            }
+                x.RPCPlayCustomSound("Dove");
+                x.ResetKillCooldown();
+                x.SetKillCooldownV2();
+                x.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.DovesOfNeace), GetString("DovesOfNeaceSkillNotify")));
+            });
+            pc.RPCPlayCustomSound("Dove");
+            pc.Notify(string.Format(GetString("DovesOfNeaceOnGuard"), Main.DovesOfNeaceNumOfUsed[pc.PlayerId]));
         }
     }
 }
@@ -1836,6 +1820,10 @@ class CoEnterVentPatch
                 writer2.Write(id);
                 AmongUsClient.Instance.FinishRpcImmediately(writer2);
             }, 0.5f, "Fix DesyncImpostor Stuck");
+
+            if (__instance.myPlayer.Is(CustomRoles.DovesOfNeace)) __instance.myPlayer.Notify(GetString("DovesOfNeaceMaxUsage"));
+            if (__instance.myPlayer.Is(CustomRoles.Veteran)) __instance.myPlayer.Notify(GetString("VeteranMaxUsage"));
+
             return false;
         }
 
