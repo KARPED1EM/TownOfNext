@@ -1,5 +1,4 @@
 using HarmonyLib;
-using TOHE.Roles.Impostor;
 
 namespace TOHE;
 
