@@ -22,6 +22,11 @@
 
 ---
 
+**TOHE has stopped support and service after v2.3.6 .**
+**For more infomation, Please check our [website](https://en.tohe.cc).**
+
+---
+
 **This is a project for me to learn C#.**
 
 **So many thanks to these mods for their codes and helps:**
