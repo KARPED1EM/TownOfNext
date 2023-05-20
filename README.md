@@ -22,8 +22,9 @@
 
 ---
 
-**TOHE has stopped support and service after v2.3.6 .**
-**For more infomation, Please checkout our [website](https://en.tohe.cc).**
+**TOHE has stopped support and service after v2.3.6.**
+
+**For more infomation, Please checkout our [website](https://tohe.cc).**
 
 ---
 
