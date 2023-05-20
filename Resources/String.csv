@@ -951,7 +951,7 @@
 "Command.idlist","→ 显示玩家编号列表","→ Display a list of player IDs","→ Отобразить список идентификаторов игроков","→ 顯示玩家ID列表","→ 显示玩家编号列表"
 "Command.qq","→ 让车队姬在群里发房号","→ Lobby will be posted on QQ website (China only)","→ Лобби будет размещено на сайт QQ (Только для Китая)","→ 讓車隊姬在群裡發房號","→ 让车队姬在群里发房号"
 "Command.dump","→ 将游戏运行日志输出到桌面","→ Output Log to Desktop","→ Вывод журнала на Рабочий Стол","→ 將遊戲運行紀錄輸出到桌面","→ 将游戏运行日志输出到桌面"
-"Command.up","→ 指定您下局的职业","-> Specify your role in the next game ","→ 指定您下局的职业","→指定您下局的職業",""
+"Command.up","[职业] → 指定您下局的职业","[Role] → Specify your role in the next game ","[职业] → 指定您下局的职业","[職業] → 指定您下局的職業",""
 
 "# 给玩家的技能提示信息 / Skills in Meeting"
 "SkillUsedLeft","您发动技能召开了会议。\n您的技能剩余使用次数：","You have activated your skill to call a meeting. \nRemaining amount of uses left:","Вы активировали навык для проведения собрания. \nОставшееся количество использование вашего навыка:","您發動了技能召開了會議。\n您的技能剩餘使用次數:","您发动技能召开了会议。\n您的技能剩余使用次数："
