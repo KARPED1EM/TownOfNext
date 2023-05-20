@@ -358,7 +358,7 @@ public static class Options
     public static OptionItem RoleAssigningAlgorithm;
     public static OptionItem EndWhenPlayerBug;
 
-    public static OptionItem EnableUpMode;
+    //public static OptionItem EnableUpMode;
     public static OptionItem AutoKickStart;
     public static OptionItem AutoKickStartAsBan;
     public static OptionItem AutoKickStartTimes;
@@ -909,9 +909,9 @@ public static class Options
 
         DebugModeManager.SetupCustomOption();
 
-        EnableUpMode = BooleanOptionItem.Create(6090665, "EnableYTPlan", false, TabGroup.SystemSettings, false)
-            .SetColor(Color.cyan)
-            .SetHeader(true);
+        //EnableUpMode = BooleanOptionItem.Create(6090665, "EnableYTPlan", false, TabGroup.SystemSettings, false)
+        //    .SetColor(Color.cyan)
+        //    .SetHeader(true);
 
         #endregion 
 
