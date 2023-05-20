@@ -31,7 +31,7 @@ public class Main : BasePlugin
     public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
-    public static readonly string MainMenuText = "哟这不TOHE吗，几天不见Bug又多了？";
+    public static readonly string MainMenuText = "用爱发电不会有好下场的";
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.3.5";
     public const int PluginCreate = 7;

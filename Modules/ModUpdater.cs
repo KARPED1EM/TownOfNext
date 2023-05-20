@@ -35,37 +35,37 @@ public class ModUpdater
     [HarmonyPriority(2)]
     public static void Start_Prefix(MainMenuManager __instance)
     {
-        NewVersionCheck();
-        DeleteOldFiles();
-        InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
-        InfoPopup.name = "InfoPopup";
-        InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
-        if (!isChecked)
-        {
-            var done = false;
-            if (CultureInfo.CurrentCulture.Name == "zh-CN")
-            {
-                done = CheckRelease().GetAwaiter().GetResult();
-            }
-            else
-            {
-                done = CheckReleaseFromGithub(Main.BetaBuildURL.Value != "").GetAwaiter().GetResult();
-                done = CheckRelease(done).GetAwaiter().GetResult();
-            }
-            Logger.Msg("检查更新结果: " + done, "CheckRelease");
-            Logger.Info("hasupdate: " + hasUpdate, "CheckRelease");
-            Logger.Info("forceupdate: " + forceUpdate, "CheckRelease");
-            Logger.Info("downloadUrl: " + downloadUrl, "CheckRelease");
-            Logger.Info("latestVersionl: " + latestVersion, "CheckRelease");
-        }
-        MainMenuManagerPatch.updateButton.SetActive(hasUpdate);
-        MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.template.transform.position + new Vector3(0.25f, 0.75f);
-        __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) =>
-        {
-            MainMenuManagerPatch.updateButton.transform
-                .GetChild(0).GetComponent<TMPro.TMP_Text>()
-                .SetText($"{GetString("updateButton")}\n{latestTitle}");
-        })));
+        //NewVersionCheck();
+        //DeleteOldFiles();
+        //InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
+        //InfoPopup.name = "InfoPopup";
+        //InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
+        //if (!isChecked)
+        //{
+        //    var done = false;
+        //    if (CultureInfo.CurrentCulture.Name == "zh-CN")
+        //    {
+        //        done = CheckRelease().GetAwaiter().GetResult();
+        //    }
+        //    else
+        //    {
+        //        done = CheckReleaseFromGithub(Main.BetaBuildURL.Value != "").GetAwaiter().GetResult();
+        //        done = CheckRelease(done).GetAwaiter().GetResult();
+        //    }
+        //    Logger.Msg("检查更新结果: " + done, "CheckRelease");
+        //    Logger.Info("hasupdate: " + hasUpdate, "CheckRelease");
+        //    Logger.Info("forceupdate: " + forceUpdate, "CheckRelease");
+        //    Logger.Info("downloadUrl: " + downloadUrl, "CheckRelease");
+        //    Logger.Info("latestVersionl: " + latestVersion, "CheckRelease");
+        //}
+        //MainMenuManagerPatch.updateButton.SetActive(hasUpdate);
+        //MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.template.transform.position + new Vector3(0.25f, 0.75f);
+        //__instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) =>
+        //{
+        //    MainMenuManagerPatch.updateButton.transform
+        //        .GetChild(0).GetComponent<TMPro.TMP_Text>()
+        //        .SetText($"{GetString("updateButton")}\n{latestTitle}");
+        //})));
     }
 
     public static string UrlSetId(string url) => url + "?id=6C5A46D1420E476ABD560271FC8040D7";
