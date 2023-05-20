@@ -32,9 +32,7 @@ static class PlayerOutfitExtension
 }
 public static class Camouflage
 {
-    static GameData.PlayerOutfit CamouflageOutfit = Options.KPDCamouflageMode.GetBool() ?
-        new GameData.PlayerOutfit().Set("", 13, "hat_pk05_Plant", "", "visor_BubbleBumVisor", "") :
-        new GameData.PlayerOutfit().Set("", 15, "", "", "", "");
+    static GameData.PlayerOutfit CamouflageOutfit = new GameData.PlayerOutfit().Set("", 15, "", "", "", "");
 
     public static bool IsCamouflage;
     public static Dictionary<byte, GameData.PlayerOutfit> PlayerSkins = new();
@@ -48,14 +46,19 @@ public static class Camouflage
     {
         if (!(AmongUsClient.Instance.AmHost && (Options.CommsCamouflage.GetBool() || Concealer.IsEnable))) return;
 
+        CamouflageOutfit = Options.KPDCamouflageMode.GetBool() ?
+            new GameData.PlayerOutfit().Set("", 13, "hat_pk05_Plant", "", "visor_BubbleBumVisor", "") :
+            new GameData.PlayerOutfit().Set("", 15, "", "", "", "");
+
         var oldIsCamouflage = IsCamouflage;
 
-        IsCamouflage = Utils.IsActive(SystemTypes.Comms) || Concealer.IsHidding;
+        IsCamouflage = (Utils.IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding;
 
         if (oldIsCamouflage != IsCamouflage)
         {
             Main.AllPlayerControls.Do(pc => RpcSetSkin(pc));
-            Utils.NotifyRoles();
+                if (GameStates.IsMeeting)
+                { Utils.NotifyRoles(ForceLoop: true); }
         }
     }
     public static void RpcSetSkin(PlayerControl target, bool ForceRevert = false, bool RevertToDefault = false)
@@ -64,6 +67,8 @@ public static class Camouflage
         if (target == null) return;
 
         var id = target.PlayerId;
+
+        Utils.NotifyRoles(ForceLoop: true);
 
         if (IsCamouflage)
         {

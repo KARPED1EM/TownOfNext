@@ -40,7 +40,7 @@ public static class ElectricTaskInitializePatch
     {
         Utils.MarkEveryoneDirtySettings();
         if (!GameStates.IsMeeting)
-            Utils.NotifyRoles(ForceLoop: true);
+            Utils.NotifyRoles();
     }
 }
 [HarmonyPatch(typeof(ElectricTask), nameof(ElectricTask.Complete))]
@@ -50,6 +50,6 @@ public static class ElectricTaskCompletePatch
     {
         Utils.MarkEveryoneDirtySettings();
         if (!GameStates.IsMeeting)
-            Utils.NotifyRoles(ForceLoop: true);
+            Utils.NotifyRoles();
     }
 }

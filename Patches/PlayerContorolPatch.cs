@@ -1004,6 +1004,12 @@ class ReportDeadBodyPatch
         Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
         Utils.SyncAllSettings();
+
+        if(Concealer.IsHidding && !(Utils.IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()))
+            Main.AllPlayerControls.Do(pc => Camouflage.RpcSetSkin(pc, ForceRevert: true, RevertToDefault: true));
+
+        if (Utils.IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool())
+            { Utils.NotifyRoles(CamouflageisForMeeting: true, CamouflageIsActive: true); }
     }
     public static async void ChangeLocalNameAndRevert(string name, int time)
     {
