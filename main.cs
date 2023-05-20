@@ -33,8 +33,8 @@ public class Main : BasePlugin
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public static readonly string MainMenuText = "为什么有人会觉得别人该为自己付出呢？";
     public const string PluginGuid = "com.karped1em.townofhostedited";
-    public const string PluginVersion = "2.3.5";
-    public const int PluginCreate = 7;
+    public const string PluginVersion = "2.3.6";
+    public const int PluginCreate = 8;
 
     public static readonly bool ShowQQButton = false;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
