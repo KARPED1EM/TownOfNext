@@ -79,7 +79,23 @@ class RepairSystemPatch
     }
     public static void Postfix(ShipStatus __instance)
     {
-        Camouflage.CheckCamouflage();
+        if (Utils.IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool())
+        {
+            new LateTask(
+            () =>
+            {
+                Camouflage.CheckCamouflage();
+                if (!GameStates.IsMeeting)
+                { Utils.NotifyRoles(ForceLoop: true); }
+
+            }, 0.1f, "ShipStatus.RepairSystem");
+        }
+        else
+        {
+            Camouflage.CheckCamouflage();
+            if (!GameStates.IsMeeting)
+            { Utils.NotifyRoles(ForceLoop: true); }
+        }
     }
     public static void CheckAndOpenDoorsRange(ShipStatus __instance, int amount, int min, int max)
     {

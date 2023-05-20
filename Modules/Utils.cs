@@ -954,7 +954,7 @@ public static class Utils
     private static StringBuilder SelfMark = new(20);
     private static StringBuilder TargetSuffix = new();
     private static StringBuilder TargetMark = new(20);
-    public static void NotifyRoles(bool isForMeeting = false, PlayerControl SpecifySeer = null, bool NoCache = false, bool ForceLoop = false)
+    public static void NotifyRoles(bool isForMeeting = false, PlayerControl SpecifySeer = null, bool NoCache = false, bool ForceLoop = false, bool CamouflageisForMeeting = false, bool CamouflageIsActive = false)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (Main.AllPlayerControls == null) return;
@@ -1086,8 +1086,17 @@ public static class Utils
             }
             else SelfName = SelfRoleName + "\r\n" + SelfName;
             SelfName += SelfSuffix.ToString() == "" ? "" : "\r\n " + SelfSuffix.ToString();
-            if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && !isForMeeting)
-                SelfName = SelfRoleName;
+
+            string SelfNameCC = SelfName;
+
+            //The player's own nickname disappears during camouflage
+            if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && CamouflageisForMeeting && CamouflageIsActive)
+            { SelfName = SelfNameCC; }
+
+            //The player's own nickname is returned during the meeting when the camouflage is active
+            else if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && !GameStates.IsMeeting && !CamouflageIsActive)
+            { SelfName = SelfRoleName; }
+
             if (!isForMeeting) SelfName += "\r\n";
 
             //適用
@@ -1215,6 +1224,7 @@ public static class Utils
 
                 //ターゲットのプレイヤー名の色を書き換えます。
                 TargetPlayerName = TargetPlayerName.ApplyNameColorData(seer, target, isForMeeting);
+                string TargetPlayerNameCC = TargetPlayerName;
 
                 if (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Snitch) && target.Is(CustomRoles.Madmate) && target.GetPlayerTaskState().IsTaskFinished)
                     TargetMark.Append(ColorString(GetRoleColor(CustomRoles.Impostor), "★"));
@@ -1237,8 +1247,17 @@ public static class Utils
                 if (seer.KnowDeathReason(target))
                     TargetDeathReason = $"({ColorString(GetRoleColor(CustomRoles.Doctor), GetVitalText(target.PlayerId))})";
 
-                if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && !isForMeeting)
-                    TargetPlayerName = $"<size=0%>{TargetPlayerName}</size>";
+                //During Сamouflage nicknames disappears
+                if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && ForceLoop && !GameStates.IsMeeting)
+                { TargetPlayerName = $"<size=0%>{TargetPlayerName}</size> "; }
+                if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && !ForceLoop && GameStates.IsMeeting)
+                { TargetPlayerName = $"<size=0%>{TargetPlayerName}</size> "; }
+                if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && !ForceLoop)
+                { TargetPlayerName = $"<size=0%>{TargetPlayerName}</size> "; }
+
+                //When the meeting starts during Camouflage, nicknames are returned to their place
+                if (((IsActive(SystemTypes.Comms) && Options.CommsCamouflage.GetBool()) || Concealer.IsHidding) && CamouflageisForMeeting && CamouflageIsActive)
+                { TargetPlayerName = TargetPlayerNameCC; }
 
                 //全てのテキストを合成します。
                 string TargetName = $"{TargetRoleText}{TargetPlayerName}{TargetDeathReason}{TargetMark}";
