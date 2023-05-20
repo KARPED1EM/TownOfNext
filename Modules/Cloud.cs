@@ -108,25 +108,25 @@ internal class Cloud
     }
     public static void SendData(string msg)
     {
-        StartConnect();
-        if (EacClientSocket == null || !EacClientSocket.Connected)
-        {
-            Logger.Warn("未连接至TOHE服务器，报告被取消", "EAC Cloud");
-            return;
-        }
-        EacClientSocket.Send(Encoding.Default.GetBytes(msg));
+        //StartConnect();
+        //if (EacClientSocket == null || !EacClientSocket.Connected)
+        //{
+        //    Logger.Warn("未连接至TOHE服务器，报告被取消", "EAC Cloud");
+        //    return;
+        //}
+        //EacClientSocket.Send(Encoding.Default.GetBytes(msg));
     }
-    [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
-    class EACConnectTimeOut
-    {
-        public static void Postfix()
-        {
-            if (LastRepotTimeStamp != 0 && LastRepotTimeStamp + 8 < Utils.GetTimeStamp())
-            {
-                LastRepotTimeStamp = 0;
-                StopConnect();
-                Logger.Warn("超时自动断开与TOHE服务器的连接", "EAC Cloud");
-            }
-        }
-    }
+    //[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
+    //class EACConnectTimeOut
+    //{
+    //    public static void Postfix()
+    //    {
+    //        if (LastRepotTimeStamp != 0 && LastRepotTimeStamp + 8 < Utils.GetTimeStamp())
+    //        {
+    //            LastRepotTimeStamp = 0;
+    //            StopConnect();
+    //            Logger.Warn("超时自动断开与TOHE服务器的连接", "EAC Cloud");
+    //        }
+    //    }
+    //}
 }
