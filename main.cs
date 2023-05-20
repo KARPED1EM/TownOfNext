@@ -31,14 +31,14 @@ public class Main : BasePlugin
     public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
-    public static readonly string MainMenuText = "用爱发电不会有好下场的";
+    public static readonly string MainMenuText = "为什么有人会觉得别人该为自己付出呢？";
     public const string PluginGuid = "com.karped1em.townofhostedited";
     public const string PluginVersion = "2.3.5";
     public const int PluginCreate = 7;
 
-    public static readonly bool ShowQQButton = true;
+    public static readonly bool ShowQQButton = false;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
-    public static readonly bool ShowDiscordButton = true;
+    public static readonly bool ShowDiscordButton = false;
     public static readonly string DiscordInviteUrl = "https://discord.gg/hkk2p9ggv4";
 
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
