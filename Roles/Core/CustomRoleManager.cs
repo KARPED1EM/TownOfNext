@@ -435,7 +435,7 @@ public enum CustomRoles
     GuardianAngel,
     Scientist,
     //Crewmate
-    Luckey, //TODO
+    Luckey,
     Needy, //TODO
     SuperStar, //TODO
     CyberStar, //TODO
@@ -449,7 +449,7 @@ public enum CustomRoles
     Dictator,
     Doctor,
     Detective, //TODO
-    SwordsMan, //TODO
+    SwordsMan,
     NiceGuesser,
     Transporter, //TODO
     TimeManager,
@@ -458,10 +458,10 @@ public enum CustomRoles
     Counterfeiter, //TODO
     Grenadier, //TODO
     Medicaler, //TODO
-    Divinator, //TODO
+    Divinator,
     Glitch, //TODO
-    Judge, //TODO
-    Mortician, //TODO
+    Judge,
+    Mortician,
     Mediumshiper, //TODO
     Observer, //TODO
     DovesOfNeace, //TODO
