@@ -58,7 +58,7 @@ public sealed class NiceGuesser : RoleBase, IMeetingButton
     {
         if (Player.IsAlive() && seen.IsAlive() && isForMeeting)
         {
-            nameText = Utils.ColorString(Utils.GetRoleColor(CustomRoles.NiceGuesser), seen.PlayerId.ToString()) + " " + nameText;
+            nameText = Utils.ColorString(RoleInfo.RoleColor, seen.PlayerId.ToString()) + " " + nameText;
         }
     }
     public string ButtonName { get; private set; } = "Target";

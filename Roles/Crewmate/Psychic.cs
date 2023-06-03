@@ -70,7 +70,7 @@ public sealed class Psychic : RoleBase
         List<PlayerControl> BadListPc = Main.AllAlivePlayerControls.Where(x =>
         x.Is(CustomRoleTypes.Impostor) || x.Is(CustomRoles.Madmate) ||
         (x.IsCrewKiller() && OptionCkshowEvil.GetBool()) ||
-        (x.IsNeutralKiller() && OptionNEshowEvil.GetBool()) ||
+        (x.IsNeutralEvil() && OptionNEshowEvil.GetBool()) ||
         (x.IsNeutralBenign() && OptionNBshowEvil.GetBool())
         ).ToList();
 
