@@ -190,7 +190,7 @@ public static class Utils
     {
         PlayerControl killer = info.AppearanceKiller, target = info.AttemptTarget;
 
-        if (!target.Data.IsDead || GameStates.IsMeeting) return;
+        if (!target.Data.IsDead || GameStates.IsMeeting || !AmongUsClient.Instance.AmHost) return;
         foreach (var seer in Main.AllPlayerControls)
         {
             if (KillFlashCheck(info, seer))
@@ -1126,6 +1126,7 @@ public static class Utils
     }
     public static void AfterPlayerDeathTasks(PlayerControl target, bool onMeeting = false)
     {
+        if (!AmongUsClient.Instance.AmHost) return;
         CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnPlayerDeath(target, PlayerState.GetByPlayerId(target.PlayerId).DeathReason, onMeeting));
         FixedUpdatePatch.LoversSuicide(target.PlayerId, onMeeting, true);
     }
