@@ -448,7 +448,7 @@ public enum CustomRoles
     SpeedBooster,
     Dictator,
     Doctor,
-    Detective, //TODO
+    Detective,
     SwordsMan,
     NiceGuesser,
     Transporter,
