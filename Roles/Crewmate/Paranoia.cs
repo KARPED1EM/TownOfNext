@@ -17,7 +17,7 @@ public sealed class Paranoia : RoleBase
             "pa",
             "#c993f5"
         );
-    public Mayor(PlayerControl player)
+    public Paranoia(PlayerControl player)
     : base(
         RoleInfo,
         player
@@ -35,7 +35,7 @@ public sealed class Paranoia : RoleBase
     private int SkillLimit;
     private static void SetupOptionItem()
     {
-        OptionSkillNums = IntegerOptionItem.Create(RoleInfo, 10, OptionName.ParanoiaNumOfUseButton, new(1, 15, 1), 3, false)
+        OptionSkillNums = IntegerOptionItem.Create(RoleInfo, 10, OptionName.ParanoiaNumOfUseButton, new(1, 99, 1), 3, false)
             .SetValueFormat(OptionFormat.Times);
         OptionSkillCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.ParanoiaVentCooldown, new(2.5f, 180f, 2.5f), 10f, false)
             .SetValueFormat(OptionFormat.Seconds);

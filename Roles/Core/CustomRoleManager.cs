@@ -440,7 +440,7 @@ public enum CustomRoles
     SuperStar,
     CyberStar, //TODO
     Mayor,
-    Paranoia, //TODO
+    Paranoia,
     Psychic,
     SabotageMaster,
     Sheriff,
