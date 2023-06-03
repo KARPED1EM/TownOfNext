@@ -437,12 +437,12 @@ public enum CustomRoles
     //Crewmate
     Luckey,
     Needy, //TODO
-    SuperStar, //TODO
+    SuperStar,
     CyberStar, //TODO
     Mayor,
     Paranoia, //TODO
-    Psychic, //TODO
-    SabotageMaster, //TODO
+    Psychic,
+    SabotageMaster,
     Sheriff,
     Snitch,
     SpeedBooster,

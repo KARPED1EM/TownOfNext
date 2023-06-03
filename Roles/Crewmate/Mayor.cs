@@ -15,8 +15,7 @@ public sealed class Mayor : RoleBase
             20200,
             SetupOptionItem,
             "my",
-            "#204d42",
-            introSound: () => GetIntroSound(RoleTypes.Crewmate)
+            "#204d42"
         );
     public Mayor(PlayerControl player)
     : base(
@@ -75,7 +74,6 @@ public sealed class Mayor : RoleBase
             user?.ReportDeadBody(null);
             LeftButtonCount--;
         }
-
         return false;
     }
     public override bool OnVotingEnd(ref List<MeetingHud.VoterState> statesList, ref PlayerVoteArea pva)

@@ -90,7 +90,7 @@ public sealed class Mortician : RoleBase
     {
         if (MsgToSend != (null, null, null)) msgToSend.Add(MsgToSend);
     }
-    public override string GetMark(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
+    public override string GetSuffix(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
         seen ??= seer;
         if (!Is(seer) || !(seen) || isForMeeting) return "";
