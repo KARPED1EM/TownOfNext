@@ -1,118 +1,124 @@
-﻿using Hazel;
-using System.Collections.Generic;
+﻿using AmongUs.GameOptions;
+using Hazel;
+
 using TOHE.Modules;
-using TOHE.Roles.Neutral;
-using static TOHE.Options;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Impostor;
-
-internal static class Assassin
+public sealed class Assassin : RoleBase, IImpostor
 {
-    private static readonly int Id = 901455;
-    public static List<byte> playerIdList = new();
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Assassin),
+            player => new Assassin(player),
+            CustomRoles.Assassin,
+            () => RoleTypes.Shapeshifter,
+            CustomRoleTypes.Impostor,
+            901455,
+            SetupOptionItem,
+            "as"
+        );
+    public Assassin(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
+    { }
 
-    private static OptionItem MarkCooldown;
-    private static OptionItem AssassinateCooldown;
-    private static OptionItem CanKillAfterAssassinate;
-
-    public static Dictionary<byte, byte> MarkedPlayer = new();
-    public static void SetupCustomOption()
+    static OptionItem MarkCooldown;
+    static OptionItem AssassinateCooldown;
+    static OptionItem CanKillAfterAssassinate;
+    enum OptionName
     {
-        SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.Assassin);
-        MarkCooldown = FloatOptionItem.Create(Id + 10, "AssassinMarkCooldown", new(0f, 180f, 2.5f), 20f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Assassin])
+        AssassinMarkCooldown,
+        AssassinAssassinateCooldown,
+        AssassinCanKillAfterAssassinate,
+    }
+
+    public byte MarkedPlayer = new();
+    private static void SetupOptionItem()
+    {
+        MarkCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.AssassinMarkCooldown, new(2.5f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        AssassinateCooldown = FloatOptionItem.Create(Id + 11, "AssassinAssassinateCooldown", new(0f, 180f, 2.5f), 10f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Assassin])
+        AssassinateCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.AssassinAssassinateCooldown, new(2.5f, 180f, 2.5f),10f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        CanKillAfterAssassinate = BooleanOptionItem.Create(Id + 12, "AssassinCanKillAfterAssassinate", true, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Assassin]);
+        CanKillAfterAssassinate = BooleanOptionItem.Create(RoleInfo, 12, OptionName.AssassinCanKillAfterAssassinate, true, false);
     }
-    public static void Init()
+    public override void Add()
     {
-        playerIdList = new();
-        MarkedPlayer = new();
+        MarkedPlayer = byte.MaxValue;
+        Shapeshifting = false;
     }
-    public static void Add(byte playerId)
+    private void SendRPC()
     {
-        playerIdList.Add(playerId);
+        using var sender = CreateSender(CustomRPC.SetMarkedPlayer);
+        sender.Writer.Write(MarkedPlayer);
     }
-    public static bool IsEnable => playerIdList.Count > 0;
-    private static void SendRPC(byte playerId)
+    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetMarkedPlayer, SendOption.Reliable, -1);
-        writer.Write(playerId);
-        writer.Write(MarkedPlayer.ContainsKey(playerId) ? MarkedPlayer[playerId] : byte.MaxValue);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        if (rpcType != CustomRPC.SetMarkedPlayer) return;
+        MarkedPlayer = reader.ReadByte();
     }
-    public static void ReceiveRPC(MessageReader reader)
+    public bool CanUseKillButton()
     {
-        byte playerId = reader.ReadByte();
-        byte targetId = reader.ReadByte();
-
-        MarkedPlayer.Remove(playerId);
-        if (targetId != byte.MaxValue)
-            MarkedPlayer.Add(playerId, targetId);
-    }
-    private static bool Shapeshifting(this PlayerControl pc) => pc.PlayerId.Shapeshifting();
-    private static bool Shapeshifting(this byte id) => Main.CheckShapeshift.TryGetValue(id, out bool shapeshifting) && shapeshifting;
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = id.Shapeshifting() ? DefaultKillCooldown : MarkCooldown.GetFloat();
-    public static void ApplyGameOptions() => AURoleOptions.ShapeshifterCooldown = AssassinateCooldown.GetFloat();
-    public static bool CanUseKillButton(PlayerControl pc)
-    {
-        if (pc == null || !pc.IsAlive()) return false;
-        if (!CanKillAfterAssassinate.GetBool() && pc.shapeshifting) return false;
+        if (!Player.IsAlive()) return false;
+        if (!CanKillAfterAssassinate.GetBool() && Shapeshifting) return false;
         return true;
     }
-    public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
+    public float CalculateKillCooldown() => Shapeshifting ? Options.DefaultKillCooldown : MarkCooldown.GetFloat();
+    public override void ApplyGameOptions(IGameOptions opt) => AURoleOptions.ShapeshifterCooldown = AssassinateCooldown.GetFloat();
+    public bool OnCheckMurderAsKiller(MurderInfo info)
     {
-        if (killer.Shapeshifting())
-        {
-            return CanUseKillButton(killer);
-        }
+        if (info.IsSuicide) return true;
+        var (killer, target) = info.AttemptTuple;
+        if (Shapeshifting) return true;
         else
         {
-            MarkedPlayer.Remove(killer.PlayerId);
-            MarkedPlayer.Add(killer.PlayerId, target.PlayerId);
-            SendRPC(killer.PlayerId);
+            MarkedPlayer = target.PlayerId;
+            SendRPC();
             killer.ResetKillCooldown();
             killer.SetKillCooldownV2();
             killer.RPCPlayCustomSound("Clothe");
             return false;
         }
     }
-    public static void OnShapeshift(PlayerControl pc, bool shapeshifting)
+    private bool Shapeshifting;
+    public override void OnShapeshift(PlayerControl target)
     {
-        if (!pc.IsAlive() || Pelican.IsEaten(pc.PlayerId)) return;
-        if (!shapeshifting)
+        Shapeshifting = !Is(target);
+
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        if (!Shapeshifting)
         {
-            pc.SetKillCooldownV2();
+            Player.SetKillCooldownV2();
             return;
         }
-        if (MarkedPlayer.ContainsKey(pc.PlayerId))
+        if (MarkedPlayer != byte.MaxValue)
         {
-            var target = Utils.GetPlayerById(MarkedPlayer[pc.PlayerId]);
-            MarkedPlayer.Remove(pc.PlayerId);
-            SendRPC(pc.PlayerId);
+            target = Utils.GetPlayerById(MarkedPlayer);
+            MarkedPlayer = byte.MaxValue;
+            SendRPC();
             new LateTask(() =>
             {
-                if (!(target == null || !target.IsAlive() || Pelican.IsEaten(target.PlayerId) || target.inVent || !GameStates.IsInTask))
+                if (!(target == null || !target.IsAlive() || target.IsEaten() || target.inVent || !GameStates.IsInTask))
                 {
-                    Utils.TP(pc.NetTransform, target.GetTruePosition());
-                    pc.ResetKillCooldown();
-                    pc.RpcCheckAndMurder(target);
+                    Utils.TP(Player.NetTransform, target.GetTruePosition());
+                    CustomRoleManager.OnCheckMurder(Player, target);
                 }
             }, 1.5f, "Assassin Assassinate");
         }
     }
-    public static void SetKillButtonText(byte playerId)
+    public bool OverrideKillButtonText(out string text)
     {
-        if (!playerId.Shapeshifting())
-            HudManager.Instance.KillButton.OverrideText(GetString("AssassinMarkButtonText"));
-        else
-            HudManager.Instance.KillButton.OverrideText(GetString("KillButtonText"));
+        text = GetString("AssassinMarkButtonText");
+        return !Shapeshifting;
     }
-    public static void GetAbilityButtonText(HudManager __instance, byte playerId)
+    public override bool OverrideAbilityButtonText(out string text)
     {
-        if (MarkedPlayer.ContainsKey(playerId) && !playerId.Shapeshifting())
-            __instance.AbilityButton.OverrideText(GetString("AssassinShapeshiftText"));
+        text = GetString("AssassinShapeshiftText");
+        return MarkedPlayer != byte.MaxValue && !Shapeshifting;
     }
 }

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using TOHE.Modules;
-using TOHE.Roles.Crewmate;
-using UnityEngine;
+using TOHE.Roles.Core;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -17,6 +17,7 @@ namespace TOHE;
 internal class ChatCommands
 {
     public static List<string> ChatHistory = new();
+    //private static Dictionary<CustomRoles, string> roleCommands;
 
     public static bool Prefix(ChatController __instance)
     {
@@ -33,10 +34,7 @@ internal class ChatCommands
         Logger.Info(text, "SendChat");
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
         if (text.Length >= 4) if (text[..3] == "/up") args[0] = "/up";
-        if (GuessManager.GuesserMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
-        if (Judge.TrialMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
-        if (Mediumshiper.MsMsg(PlayerControl.LocalPlayer, text)) goto Canceled;
-        if (MafiaRevengeManager.MafiaMsgCheck(PlayerControl.LocalPlayer, text)) goto Canceled;
+        if (CustomRoleManager.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId)?.OnReceiveMessage(text) ?? false) goto Canceled;
         switch (args[0])
         {
             case "/dump":
@@ -90,10 +88,7 @@ internal class ChatCommands
                 case "/hidename":
                     canceled = true;
                     Main.HideName.Value = args.Length > 1 ? args.Skip(1).Join(delimiter: " ") : Main.HideName.DefaultValue.ToString();
-                    GameStartManagerPatch.GameStartManagerStartPatch.HideName.text =
-                        ColorUtility.TryParseHtmlString(Main.HideColor.Value, out _)
-                            ? $"<color={Main.HideColor.Value}>{Main.HideName.Value}</color>"
-                            : $"<color={Main.ModColor}>{Main.HideName.Value}</color>";
+                    GameStartManagerPatch.HideName.text = Main.HideName.Value;
                     break;
 
                 case "/level":
@@ -191,15 +186,15 @@ internal class ChatCommands
                     {
                         var lp = PlayerControl.LocalPlayer;
                         var sb = new StringBuilder();
-                        sb.Append(GetString(role.ToString()) + Utils.GetRoleMode(role) + lp.GetRoleInfo(true));
+                        sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + lp.GetRoleInfo(true));
                         if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
                             Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
                         var txt = sb.ToString();
                         sb.Clear().Append(txt.RemoveHtmlTags());
-                        foreach (var subRole in Main.PlayerStates[lp.PlayerId].SubRoles)
-                            sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleMode(subRole) + GetString($"{subRole}InfoLong"));
-                        if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                            sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
+                        foreach (var subRole in PlayerState.AllPlayerStates[lp.PlayerId].SubRoles)
+                            sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
+                        if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                            sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
                         Utils.SendMessage(sb.ToString(), lp.PlayerId);
                     }
                     else
@@ -243,9 +238,10 @@ internal class ChatCommands
                     if (player != null)
                     {
                         player.Data.IsDead = true;
-                        Main.PlayerStates[player.PlayerId].deathReason = PlayerState.DeathReason.etc;
+                        var state = PlayerState.GetByPlayerId(player.PlayerId);
+                        state.DeathReason = CustomDeathReason.etc;
                         player.RpcExileV2();
-                        Main.PlayerStates[player.PlayerId].SetDead();
+                        state.SetDead();
                         if (player.AmOwner) Utils.SendMessage(GetString("HostKillSelfByCommand"), title: $"<color=#ff0000>{GetString("DefaultSystemMessageTitle")}</color>");
                         else Utils.SendMessage(string.Format(GetString("Message.Executed"), player.Data.PlayerName));
                     }
@@ -262,7 +258,7 @@ internal class ChatCommands
                     var target = Utils.GetPlayerById(id2);
                     if (target != null)
                     {
-                        target.RpcMurderPlayerV3(target);
+                        target.RpcMurderPlayer(target);
                         if (target.AmOwner) Utils.SendMessage(GetString("HostKillSelfByCommand"), title: $"<color=#ff0000>{GetString("DefaultSystemMessageTitle")}</color>");
                         else Utils.SendMessage(string.Format(GetString("Message.Executed"), target.Data.PlayerName));
                     }
@@ -563,7 +559,7 @@ internal class ChatCommands
 
         var sb = new StringBuilder();
         string roleName = GetString(Enum.GetName(typeof(CustomRoles), role));
-        sb.Append(roleName + Utils.GetRoleMode(role) + GetString($"{role}InfoLong"));
+        sb.Append(roleName + Utils.GetRoleDisplaySpawnMode(role) + GetString($"{role}InfoLong"));
         if (Options.CustomRoleSpawnChances.ContainsKey(role))
         {
             Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
@@ -575,8 +571,7 @@ internal class ChatCommands
         if ((isDev || isUp) && GameStates.IsLobby)
         {
             canSpecify = true;
-            if (role.IsAdditionRole() || role.IsVanilla() || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
-            if (role.GetCount() < 1 || role.GetMode() == 0) canSpecify = false;
+            if (!role.IsEnable() || role.IsAddon() || role.IsVanilla() || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
             if (canSpecify)
             {
                 byte pid = playerId == byte.MaxValue ? byte.MinValue : playerId;
@@ -604,10 +599,11 @@ internal class ChatCommands
         string[] args = text.Split(' ');
         string subArgs = "";
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
-        if (GuessManager.GuesserMsg(player, text)) { canceled = true; return; }
-        if (Judge.TrialMsg(player, text)) { canceled = true; return; }
-        if (Mediumshiper.MsMsg(player, text)) return;
-        if (MafiaRevengeManager.MafiaMsgCheck(player, text)) return;
+        if (CustomRoleManager.GetByPlayerId(player.PlayerId)?.OnReceiveMessage(text) ?? false)
+        {
+            canceled = true;
+            return;
+        }
         switch (args[0])
         {
             case "/l":
@@ -652,15 +648,15 @@ internal class ChatCommands
                 if (GameStates.IsInGame)
                 {
                     var sb = new StringBuilder();
-                    sb.Append(GetString(role.ToString()) + Utils.GetRoleMode(role) + player.GetRoleInfo(true));
+                    sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + player.GetRoleInfo(true));
                     if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
                         Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
                     var txt = sb.ToString();
                     sb.Clear().Append(txt.RemoveHtmlTags());
-                    foreach (var subRole in Main.PlayerStates[player.PlayerId].SubRoles)
-                        sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleMode(subRole) + GetString($"{subRole}InfoLong"));
-                    if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                        sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
+                    foreach (var subRole in PlayerState.AllPlayerStates[player.PlayerId].SubRoles)
+                        sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
+                    if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                        sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
                     Utils.SendMessage(sb.ToString(), player.PlayerId);
                 }
                 else

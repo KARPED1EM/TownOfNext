@@ -1,45 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using static TOHE.Options;
+﻿using AmongUs.GameOptions;
+using System;
 
-namespace TOHE;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
-public static class Sans
+namespace TOHE.Roles.Impostor;
+public sealed class Sans : RoleBase, IImpostor
 {
-    private static readonly int Id = 902055;
-    public static List<byte> playerIdList = new();
 
-    private static OptionItem DefaultKillCooldown;
-    private static OptionItem ReduceKillCooldown;
-    private static OptionItem MinKillCooldown;
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Sans),
+            player => new Sans(player),
+            CustomRoles.Sans,
+            () => RoleTypes.Impostor,
+            CustomRoleTypes.Impostor,
+            902055,
+            SetupOptionItem,
+            "ag"
+        );
+    public Sans(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
+    { }
 
-    private static Dictionary<byte, float> NowCooldown;
-
-    public static void SetupCustomOption()
+    static OptionItem DefaultKillCooldown;
+    static OptionItem ReduceKillCooldown;
+    static OptionItem MinKillCooldown;
+    enum OptionName
     {
-        SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.Sans);
-        DefaultKillCooldown = FloatOptionItem.Create(Id + 10, "SansDefaultKillCooldown", new(0f, 180f, 2.5f), 65f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Sans])
+        SansDefaultKillCooldown,
+        SansReduceKillCooldown,
+        SansMinKillCooldown,
+    }
+    private float KillCooldown;
+    private static void SetupOptionItem()
+    {
+        DefaultKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.SansDefaultKillCooldown, new(2.5f, 180f, 2.5f), 65f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        ReduceKillCooldown = FloatOptionItem.Create(Id + 11, "SansReduceKillCooldown", new(0f, 180f, 2.5f), 15f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Sans])
+        ReduceKillCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.SansReduceKillCooldown, new(2.5f, 180f, 2.5f), 15f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        MinKillCooldown = FloatOptionItem.Create(Id + 12, "SansMinKillCooldown", new(0f, 180f, 2.5f), 2.5f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Sans])
+        MinKillCooldown = FloatOptionItem.Create(RoleInfo, 12, OptionName.SansMinKillCooldown, new(2.5f, 180f, 2.5f), 2.5f, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
-    public static void Init()
+    public override void Add()
     {
-        playerIdList = new();
-        NowCooldown = new();
+        KillCooldown = DefaultKillCooldown.GetFloat();
     }
-    public static void Add(byte playerId)
+    public float CalculateKillCooldown() => KillCooldown;
+
+    public void BeforeMurderPlayerAsKiller(MurderInfo info)
     {
-        playerIdList.Add(playerId);
-        NowCooldown.TryAdd(playerId, DefaultKillCooldown.GetFloat());
-    }
-    public static bool IsEnable() => playerIdList.Count > 0;
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = NowCooldown[id];
-    public static void OnCheckMurder(PlayerControl killer)
-    {
-        NowCooldown[killer.PlayerId] = Math.Clamp(NowCooldown[killer.PlayerId] - ReduceKillCooldown.GetFloat(), MinKillCooldown.GetFloat(), DefaultKillCooldown.GetFloat());
+        if (info.IsSuicide) return;
+        var killer = info.AttemptKiller;
+        KillCooldown = Math.Clamp(KillCooldown - ReduceKillCooldown.GetFloat(), MinKillCooldown.GetFloat(), DefaultKillCooldown.GetFloat());
         killer.ResetKillCooldown();
         killer.SyncSettings();
     }

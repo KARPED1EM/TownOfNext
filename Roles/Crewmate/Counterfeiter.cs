@@ -1,126 +1,142 @@
-﻿using Hazel;
+﻿using AmongUs.GameOptions;
 using System.Collections.Generic;
+using System.Linq;
+using Hazel;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 using TOHE.Modules;
+using HarmonyLib;
 using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
-
-public static class Counterfeiter
+public sealed class Counterfeiter : RoleBase, IKiller
 {
-    private static readonly int Id = 8035600;
-    private static List<byte> playerIdList = new();
-    private static Dictionary<byte, List<byte>> clientList = new();
-    private static List<byte> notActiveList = new();
-    public static Dictionary<byte, int> SeelLimit = new();
-    public static OptionItem CounterfeiterSkillCooldown;
-    public static OptionItem CounterfeiterSkillLimitTimes;
-    public static void SetupCustomOption()
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Counterfeiter),
+            player => new Counterfeiter(player),
+            CustomRoles.Counterfeiter,
+            () => RoleTypes.Impostor,
+            CustomRoleTypes.Crewmate,
+            8035600,
+            SetupOptionItem,
+            "de",
+            "#e0e0e0",
+            true
+        );
+    public Counterfeiter(PlayerControl player)
+    : base(
+        RoleInfo,
+        player,
+        () => HasTask.False
+    )
     {
-        Options.SetupRoleOptions(Id, TabGroup.CrewmateRoles, CustomRoles.Counterfeiter);
-        CounterfeiterSkillCooldown = FloatOptionItem.Create(Id + 10, "CounterfeiterSkillCooldown", new(2.5f, 900f, 2.5f), 20f, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Counterfeiter])
+        Customers = new();
+
+        CustomRoleManager.OnCheckMurderPlayerOthers_Before.Add(OnCheckMurderPlayerOthers_Before);
+    }
+
+    static OptionItem OptionSellCooldown;
+    static OptionItem OptionSellNums;
+    enum OptionName
+    {
+        CounterfeiterSkillCooldown,
+        CounterfeiterSkillLimitTimes,
+    }
+
+    private int SellLimit;
+    private Dictionary<byte, bool> Customers;
+    public bool IsKiller { get; private set; } = false;
+    private static void SetupOptionItem()
+    {
+        OptionSellCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.CounterfeiterSkillCooldown, new(2.5f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        CounterfeiterSkillLimitTimes = IntegerOptionItem.Create(Id + 11, "CounterfeiterSkillLimitTimes", new(1, 99, 1), 2, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Counterfeiter])
+        OptionSellNums = IntegerOptionItem.Create(RoleInfo, 11, OptionName.CounterfeiterSkillLimitTimes, new(1, 15, 1), 2, false)
             .SetValueFormat(OptionFormat.Times);
     }
-    public static void Init()
+    public override void Add()
     {
-        playerIdList = new();
-        clientList = new();
-        notActiveList = new();
-        SeelLimit = new();
-    }
-    public static void Add(byte playerId)
-    {
-        playerIdList.Add(playerId);
-        SeelLimit.Add(playerId, CounterfeiterSkillLimitTimes.GetInt());
+        var playerId = Player.PlayerId;
+        SellLimit = OptionSellNums.GetInt();
 
-        if (!AmongUsClient.Instance.AmHost) return;
         if (!Main.ResetCamPlayerList.Contains(playerId))
             Main.ResetCamPlayerList.Add(playerId);
     }
-    public static bool IsEnable => playerIdList.Count > 0;
-    private static void SendRPC(byte playerId)
+    private void SendRPC()
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCounterfeiterSellLimit, SendOption.Reliable, -1);
-        writer.Write(playerId);
-        writer.Write(SeelLimit[playerId]);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        using var sender = CreateSender(CustomRPC.SetCounterfeiterSellLimit);
+        sender.Writer.Write(SellLimit);
     }
-    public static void ReceiveRPC(MessageReader reader)
+    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        byte PlayerId = reader.ReadByte();
-        int Limit = reader.ReadInt32();
-        if (SeelLimit.ContainsKey(PlayerId))
-            SeelLimit[PlayerId] = Limit;
-        else
-            SeelLimit.Add(PlayerId, CounterfeiterSkillLimitTimes.GetInt());
+        if (rpcType != CustomRPC.SetCounterfeiterSellLimit) return;
+        SellLimit = reader.ReadInt32();
     }
-    public static bool CanUseKillButton(byte playerId)
-        => !Main.PlayerStates[playerId].IsDead
-        && SeelLimit.TryGetValue(playerId, out var x) && x >= 1;
-    public static string GetSeelLimit(byte playerId) => Utils.ColorString(CanUseKillButton(playerId) ? Utils.GetRoleColor(CustomRoles.Counterfeiter) : Color.gray, SeelLimit.TryGetValue(playerId, out var x) ? $"({x})" : "Invalid");
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = CanUseKillButton(id) ? CounterfeiterSkillCooldown.GetFloat() : 0f;
-    public static bool IsClient(byte playerId)
+    public float CalculateKillCooldown() => CanUseKillButton() ? OptionSellCooldown.GetFloat() : 255f;
+    public bool CanUseKillButton() => Player.IsAlive() && SellLimit >= 1;
+    public override bool CanSabotage(SystemTypes systemType) => false;
+    public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
+    public bool OverrideKillButtonText(out string text)
     {
-        foreach (var pc in clientList)
-            if (pc.Value.Contains(playerId)) return true;
-        return false;
-    }
-    public static bool IsClient(byte pc, byte tar) => clientList.TryGetValue(pc, out var x) && x.Contains(tar);
-    public static bool CanBeClient(PlayerControl pc) => pc != null && pc.IsAlive() && !GameStates.IsMeeting && !IsClient(pc.PlayerId);
-    public static bool CanSeel(byte playerId) => playerIdList.Contains(playerId) && SeelLimit.TryGetValue(playerId, out int x) && x > 0;
-    public static void SeelToClient(PlayerControl pc, PlayerControl target)
-    {
-        if (pc == null || target == null || !pc.Is(CustomRoles.Counterfeiter)) return;
-        SeelLimit[pc.PlayerId]--;
-        SendRPC(pc.PlayerId);
-        if (!clientList.ContainsKey(pc.PlayerId)) clientList.Add(pc.PlayerId, new());
-        clientList[pc.PlayerId].Add(target.PlayerId);
-        pc.RpcGuardAndKill(pc);
-        notActiveList.Add(pc.PlayerId);
-        pc.SetKillCooldownV2();
-        pc.RPCPlayCustomSound("Bet");
-        Utils.NotifyRoles(pc);
-        Logger.Info($"赝品商 {pc.GetRealName()} 将赝品卖给了 {target.GetRealName()}", "Counterfeiter");
-    }
-    public static bool OnClientMurder(PlayerControl pc)
-    {
-        if (!IsClient(pc.PlayerId) || notActiveList.Contains(pc.PlayerId)) return false;
-        byte cfId = byte.MaxValue;
-        foreach (var cf in clientList)
-            if (cf.Value.Contains(pc.PlayerId)) cfId = cf.Key;
-        if (cfId == byte.MaxValue) return false;
-        var killer = Utils.GetPlayerById(cfId);
-        var target = pc;
-        if (killer == null) return false;
-        target.SetRealKiller(killer);
-        target.Data.IsDead = true;
-        Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.Misfire;
-        target.RpcMurderPlayerV3(target);
-        Main.PlayerStates[target.PlayerId].SetDead();
-        Logger.Info($"赝品商 {pc.GetRealName()} 的客户 {target.GetRealName()} 因使用赝品走火自杀", "Counterfeiter");
+        text = Translator.GetString("CounterfeiterButtonText");
         return true;
     }
-    public static void OnReportDeadBody()
+    public bool OnCheckMurderAsKiller(MurderInfo info)
     {
-        notActiveList.Clear();
-        foreach (var cl in clientList)
-            foreach (var pc in cl.Value)
-            {
-                var target = Utils.GetPlayerById(pc);
-                if (target == null || !target.IsAlive()) continue;
-                var role = target.GetCustomRole();
-                if (
-                    (role.IsCrewmate() && !role.IsCK()) ||
-                    (role.IsNeutral() && !role.IsNK())
-                    )
-                {
-                    var killer = Utils.GetPlayerById(cl.Key);
-                    if (killer == null) continue;
-                    CheckForEndVotingPatch.TryAddAfterMeetingDeathPlayers(PlayerState.DeathReason.Misfire, target.PlayerId);
-                    target.SetRealKiller(Utils.GetPlayerById(pc));
-                    Logger.Info($"赝品商 {killer.GetRealName()} 的客户 {target.GetRealName()} 因不带刀自杀", "Counterfeiter");
-                }
-            }
+        if (SellLimit < 1) return false;
+        var (killer, target) = info.AttemptTuple;
+        
+        if (Customers.ContainsKey(target.PlayerId))
+        {
+            killer.Notify(Translator.GetString("CounterfeiterRepeatSell"));
+            return false;
+        }
+
+        SellLimit--;
+        SendRPC();
+
+        killer.ResetKillCooldown();
+        killer.SetKillCooldownV2();
+        killer.RPCPlayCustomSound("Bet");
+
+        Customers.Add(target.PlayerId, false);
+
+        Logger.Info($"{killer.GetNameWithRole()}：将赝品售卖给 => {target.GetNameWithRole()}", "Counterfeiter.OnCheckMurderAsKille");
+        Logger.Info($"{killer.GetNameWithRole()}：剩余{SellLimit}个赝品", "Counterfeiter.OnCheckMurderAsKille");
+        return false;
     }
+    private static bool OnCheckMurderPlayerOthers_Before(MurderInfo info)
+    {
+        var (killer, target) = info.AttemptTuple;
+
+        foreach(var deceiver in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Counterfeiter)))
+        {
+            if (deceiver.GetRoleClass() is not Counterfeiter roleClass) continue;
+            if (roleClass.Customers.TryGetValue(killer.PlayerId, out var x) && x)
+            {
+                killer.SetRealKiller(deceiver);
+                killer.SetDeathReason(CustomDeathReason.Misfire);
+                killer.RpcMurderPlayerV2(killer);
+                Logger.Info($"{deceiver.GetNameWithRole()} 的客户：{killer.GetNameWithRole()} 因使用赝品走火自杀", "Counterfeiter.OnCheckMurderPlayerOthers_Before");
+                return false;
+            }
+        }
+        return true;
+    }
+    public override void OnStartMeeting()
+    {
+        var keys = Customers.Keys;
+        keys.Do(x => Customers[x] = true);
+       foreach (var pcId in Customers.Keys)
+        {
+            var target = Utils.GetPlayerById(pcId);
+            if (target == null || !target.IsAlive()) continue;
+            if (target.GetRoleClass() is IKiller x && x.IsKiller && x.CanKill) continue;
+            CheckForEndVotingPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Misfire, target.PlayerId);
+            target.SetRealKiller(Player);
+            Logger.Info($"赝品商 {Player.GetRealName()} 的客户 {target.GetRealName()} 因不带刀将在会议结束后自杀", "Counterfeiter.OnStartMeeting");
+        }
+    }
+    public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? RoleInfo.RoleColor : Color.gray, $"({SellLimit})");
 }

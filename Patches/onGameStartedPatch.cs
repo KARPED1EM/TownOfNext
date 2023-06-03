@@ -1,17 +1,17 @@
-using AmongUs.GameOptions;
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AmongUs.GameOptions;
+using HarmonyLib;
+using Hazel;
+
 using TOHE.Modules;
-using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.Core;
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.AddOns.Impostor;
-using TOHE.Roles.Crewmate;
-using TOHE.Roles.Impostor;
-using TOHE.Roles.Neutral;
-using static TOHE.Modules.CustomRoleSelector;
+using TOHE.Roles.AddOns.Crewmate;
 using static TOHE.Translator;
+using static TOHE.Modules.CustomRoleSelector;
 
 namespace TOHE;
 
@@ -20,7 +20,6 @@ internal class ChangeRoleSettings
 {
     public static void Postfix(AmongUsClient __instance)
     {
-        Main.OverrideWelcomeMsg = "";
         try
         {
             //注:この時点では役職は設定されていません。
@@ -32,58 +31,25 @@ internal class ChangeRoleSettings
                 Main.NormalOptions.roleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
             }
 
-            Main.PlayerStates = new();
+            PlayerState.Clear();
 
+            Main.OverrideWelcomeMsg = "";
             Main.AllPlayerKillCooldown = new();
             Main.AllPlayerSpeed = new();
-            Main.WarlockTimer = new();
-            Main.AssassinTimer = new();
-            Main.isDoused = new();
-            Main.isDraw = new();
-            Main.ArsonistTimer = new();
-            Main.RevolutionistTimer = new();
-            Main.RevolutionistStart = new();
-            Main.RevolutionistLastTime = new();
-            Main.RevolutionistCountdown = new();
-            Main.CursedPlayers = new();
-            Main.MafiaRevenged = new();
-            Main.isCurseAndKill = new();
-            Main.isCursed = false;
-            Main.PuppeteerList = new();
-            Main.DetectiveNotify = new();
-            Main.CyberStarDead = new();
-            Main.BoobyTrapBody = new();
-            Main.KillerOfBoobyTrapBody = new();
-            Main.CleanerBodies = new();
 
             Main.LastEnteredVent = new();
             Main.LastEnteredVentLocation = new();
-            Main.EscapeeLocation = new();
 
             Main.AfterMeetingDeathPlayers = new();
             Main.ResetCamPlayerList = new();
             Main.clientIdList = new();
 
-            Main.CapitalismAddTask = new();
-            Main.CapitalismAssignTask = new();
             Main.CheckShapeshift = new();
             Main.ShapeshiftTarget = new();
-            Main.SpeedBoostTarget = new();
-            Main.MayorUsedButtonCount = new();
-            Main.ParaUsedButtonCount = new();
-            Main.MarioVentCount = new();
-            Main.VeteranInProtect = new();
-            Main.VeteranNumOfUsed = new();
-            Main.GrenadierBlinding = new();
-            Main.MadGrenadierBlinding = new();
-            Main.CursedWolfSpellCount = new();
-            Main.OverDeadPlayerList = new();
-            Main.Provoked = new();
+
             Main.ShieldPlayer = Options.ShieldPersonDiedFirst.GetBool() ? Main.FirstDied : byte.MaxValue;
             Main.FirstDied = byte.MaxValue;
             Main.MadmateNum = 0;
-            Main.BardCreations = 0;
-            Main.DovesOfNeaceNumOfUsed = new();
 
             ReportDeadBodyPatch.CanReport = new();
 
@@ -102,12 +68,8 @@ internal class ChangeRoleSettings
 
             Main.LastNotifyNames = new();
 
-            Main.currentDousingTarget = byte.MaxValue;
-            Main.currentDrawTarget = byte.MaxValue;
             Main.PlayerColors = new();
-
             //名前の記録
-            //Main.AllPlayerNames = new();
             RPC.SyncAllPlayerNames();
 
             Camouflage.Init();
@@ -116,7 +78,6 @@ internal class ChangeRoleSettings
             {
                 var msg = GetString("Error.InvalidColor");
                 Logger.SendInGame(msg);
-                msg += "\n" + string.Join(",", invalidColor.Select(p => $"{p.name}"));
                 Utils.SendMessage(msg);
                 Logger.Error(msg, "CoStartGame");
             }
@@ -133,9 +94,8 @@ internal class ChangeRoleSettings
             {
                 var colorId = pc.Data.DefaultOutfit.ColorId;
                 if (AmongUsClient.Instance.AmHost && Options.FormatNameMode.GetInt() == 1) pc.RpcSetName(Palette.GetColorName(colorId));
-                Main.PlayerStates[pc.PlayerId] = new(pc.PlayerId);
+                PlayerState.Create(pc.PlayerId);
                 //Main.AllPlayerNames[pc.PlayerId] = pc?.Data?.PlayerName;
-
                 Main.PlayerColors[pc.PlayerId] = Palette.PlayerColors[colorId];
                 Main.AllPlayerSpeed[pc.PlayerId] = Main.RealOptionsData.GetFloat(FloatOptionNames.PlayerSpeedMod); //移動速度をデフォルトの移動速度に変更
                 ReportDeadBodyPatch.CanReport[pc.PlayerId] = true;
@@ -151,61 +111,22 @@ internal class ChangeRoleSettings
             if (__instance.AmHost)
             {
                 RPC.SyncCustomSettingsRPC();
-                Main.RefixCooldownDelay = 0;
             }
+            CustomRoleManager.Initialize();
             FallFromLadder.Reset();
-            BountyHunter.Init();
-            SerialKiller.Init();
-            FireWorks.Init();
-            Sniper.Init();
-            TimeThief.Init();
-            Mare.Init();
-            Witch.Init();
-            SabotageMaster.Init();
-            Executioner.Init();
-            Jackal.Init();
-            Sheriff.Init();
-            SwordsMan.Init();
-            EvilTracker.Init();
-            Snitch.Init();
-            Vampire.Init();
-            AntiAdminer.Init();
-            TimeManager.Init();
             LastImpostor.Init();
             TargetArrow.Init();
             LocateArrow.Init();
             DoubleTrigger.Init();
-            Workhorse.Init();
-            Pelican.Init();
-            Counterfeiter.Init();
-            Gangster.Init();
-            Medicaler.Init();
-            Gamer.Init();
-            BallLightning.Init();
-            DarkHide.Init();
-            Greedier.Init();
-            Collector.Init();
-            QuickShooter.Init();
-            Concealer.Init();
-            Divinator.Init();
-            Eraser.Init();
-            Assassin.Init();
-            Sans.Init();
-            Hacker.Init();
-            Psychic.Init();
-            Hangman.Init();
-            Judge.Init();
-            Mortician.Init();
-            Mediumshiper.Init();
-            Swooper.Init();
-            BloodKnight.Init();
-            Totocalcio.Init();
-            Succubus.Init();
-
-            SoloKombatManager.Init();
             CustomWinnerHolder.Reset();
-            AntiBlackout.Reset();
             NameNotifyManager.Reset();
+            AntiBlackout.Reset();
+            SoloKombatManager.Init();
+
+            // 附加职业的初始化
+            Watcher.Init();
+            Workhorse.Init();
+
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
 
             MeetingStates.MeetingCalled = false;
@@ -242,7 +163,7 @@ internal class SelectRolesPatch
                 PlayerControl.LocalPlayer.RpcSetCustomRole(CustomRoles.GM);
                 PlayerControl.LocalPlayer.RpcSetRole(RoleTypes.Crewmate);
                 PlayerControl.LocalPlayer.Data.IsDead = true;
-                Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SetDead();
+                PlayerState.AllPlayerStates[PlayerControl.LocalPlayer.PlayerId].SetDead();
             }
 
             SelectCustomRoles();
@@ -250,19 +171,19 @@ internal class SelectRolesPatch
             CalculateVanillaRoleCount();
 
             //指定原版特殊职业数量
-            var roleOpt = Main.NormalOptions.roleOptions;
-            int ScientistNum = Options.DisableVanillaRoles.GetBool() ? 0 : roleOpt.GetNumPerGame(RoleTypes.Scientist);
-            roleOpt.SetRoleRate(RoleTypes.Scientist, ScientistNum + addScientistNum, addScientistNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Scientist));
-            int EngineerNum = Options.DisableVanillaRoles.GetBool() ? 0 : roleOpt.GetNumPerGame(RoleTypes.Engineer);
-            roleOpt.SetRoleRate(RoleTypes.Engineer, EngineerNum + addEngineerNum, addEngineerNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Engineer));
-            int ShapeshifterNum = Options.DisableVanillaRoles.GetBool() ? 0 : roleOpt.GetNumPerGame(RoleTypes.Shapeshifter);
-            roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum + addShapeshifterNum, addShapeshifterNum > 0 ? 100 : roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
+            RoleTypes[] RoleTypesList = { RoleTypes.Scientist, RoleTypes.Engineer, RoleTypes.Shapeshifter };
+            foreach (var roleTypes in RoleTypesList)
+            {
+                var roleOpt = Main.NormalOptions.roleOptions;
+                int numRoleTypes = GetRoleTypesCount(roleTypes);
+                roleOpt.SetRoleRate(roleTypes, numRoleTypes, numRoleTypes > 0 ? 100 : 0);
+            }
 
             Dictionary<(byte, byte), RoleTypes> rolesMap = new();
 
             // 注册反职业
             foreach (var kv in RoleResult.Where(x => x.Value.IsDesyncRole()))
-                AssignDesyncRole(kv.Value, kv.Key, senders, rolesMap, BaseRole: kv.Value.GetDYRole());
+                AssignDesyncRole(kv.Value, kv.Key, senders, rolesMap, BaseRole: kv.Value.GetRoleInfo().BaseRoleType.Invoke());
 
             foreach (var cp in RoleResult.Where(x => x.Value == CustomRoles.Crewpostor))
                 AssignDesyncRole(cp.Value, cp.Key, senders, rolesMap, BaseRole: RoleTypes.Crewmate, hostBaseRole: RoleTypes.Impostor);
@@ -315,7 +236,7 @@ internal class SelectRolesPatch
             foreach (var pc in Main.AllPlayerControls)
             {
                 pc.Data.IsDead = false; //プレイヤーの死を解除する
-                if (Main.PlayerStates[pc.PlayerId].MainRole != CustomRoles.NotAssigned) continue; //既にカスタム役職が割り当てられていればスキップ
+                if (PlayerState.AllPlayerStates[pc.PlayerId].MainRole != CustomRoles.NotAssigned) continue; //既にカスタム役職が割り当てられていればスキップ
                 var role = CustomRoles.NotAssigned;
                 switch (pc.Data.Role.Role)
                 {
@@ -341,13 +262,13 @@ internal class SelectRolesPatch
                         Logger.SendInGame(string.Format(GetString("Error.InvalidRoleAssignment"), pc?.Data?.PlayerName));
                         break;
                 }
-                Main.PlayerStates[pc.PlayerId].SetMainRole(role);
+                PlayerState.GetByPlayerId(pc.PlayerId).SetMainRole(role);
             }
 
             // 个人竞技模式用
             if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
             {
-                foreach (var pair in Main.PlayerStates)
+                foreach (var pair in PlayerState.AllPlayerStates)
                     ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
                 goto EndOfSelectRolePatch;
             }
@@ -360,15 +281,12 @@ internal class SelectRolesPatch
                 AssignCustomRole(kv.Value, kv.Key);
             }
 
-            if (CustomRoles.Lovers.IsEnable() && (CustomRoles.FFF.IsEnable() ? -1 : rd.Next(1, 100)) <= Options.LoverSpawnChances.GetInt()) AssignLoversRolesFromList();
-            foreach (var role in AddonRolesList)
-            {
-                if (rd.Next(1, 100) <= (Options.CustomAdtRoleSpawnRate.TryGetValue(role, out var sc) ? sc.GetFloat() : 0))
-                    if (role.IsEnable()) AssignSubRoles(role);
-            }
+            if (CustomRoles.Lovers.IsEnable() && CustomRoles.FFF.IsEnable()) AssignLoversRoles();
+            else if (CustomRoles.Lovers.IsEnable() && rd.Next(0,100) < Options.GetRoleChance(CustomRoles.Lovers)) AssignLoversRoles();
+            if (CustomRoles.Madmate.IsEnable() && Options.MadmateSpawnMode.GetInt() == 0) AssignMadmateRoles();
+            AddOnsAssignData.AssignAddOnsFromList();
 
-            //RPCによる同期
-            foreach (var pair in Main.PlayerStates)
+            foreach (var pair in PlayerState.AllPlayerStates)
             {
                 ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
 
@@ -376,197 +294,21 @@ internal class SelectRolesPatch
                     ExtendedPlayerControl.RpcSetCustomRole(pair.Key, subRole);
             }
 
-            foreach (var pc in Main.AllPlayerControls)
-            {
-                if (pc.Data.Role.Role == RoleTypes.Shapeshifter) Main.CheckShapeshift.Add(pc.PlayerId, false);
-                switch (pc.GetCustomRole())
-                {
-                    case CustomRoles.BountyHunter:
-                        BountyHunter.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.SerialKiller:
-                        SerialKiller.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Witch:
-                        Witch.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Warlock:
-                        Main.CursedPlayers.Add(pc.PlayerId, null);
-                        Main.isCurseAndKill.Add(pc.PlayerId, false);
-                        break;
-                    case CustomRoles.FireWorks:
-                        FireWorks.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.TimeThief:
-                        TimeThief.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Sniper:
-                        Sniper.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Mare:
-                        Mare.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Vampire:
-                        Vampire.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.SwordsMan:
-                        SwordsMan.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Arsonist:
-                        foreach (var ar in Main.AllPlayerControls)
-                            Main.isDoused.Add((pc.PlayerId, ar.PlayerId), false);
-                        break;
-                    case CustomRoles.Revolutionist:
-                        foreach (var ar in Main.AllPlayerControls)
-                            Main.isDraw.Add((pc.PlayerId, ar.PlayerId), false);
-                        break;
-                    case CustomRoles.Executioner:
-                        Executioner.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Jackal:
-                        Jackal.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Sheriff:
-                        Sheriff.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.QuickShooter:
-                        QuickShooter.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Mayor:
-                        Main.MayorUsedButtonCount[pc.PlayerId] = 0;
-                        break;
-                    case CustomRoles.Paranoia:
-                        Main.ParaUsedButtonCount[pc.PlayerId] = 0;
-                        break;
-                    case CustomRoles.SabotageMaster:
-                        SabotageMaster.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.EvilTracker:
-                        EvilTracker.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Snitch:
-                        Snitch.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.AntiAdminer:
-                        AntiAdminer.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Mario:
-                        Main.MarioVentCount[pc.PlayerId] = 0;
-                        break;
-                    case CustomRoles.TimeManager:
-                        TimeManager.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Pelican:
-                        Pelican.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Counterfeiter:
-                        Counterfeiter.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Gangster:
-                        Gangster.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Medicaler:
-                        Medicaler.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Divinator:
-                        Divinator.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Gamer:
-                        Gamer.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.BallLightning:
-                        BallLightning.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.DarkHide:
-                        DarkHide.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Greedier:
-                        Greedier.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Collector:
-                        Collector.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.CursedWolf:
-                        Main.CursedWolfSpellCount[pc.PlayerId] = Options.GuardSpellTimes.GetInt();
-                        break;
-                    case CustomRoles.Concealer:
-                        Concealer.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Eraser:
-                        Eraser.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Assassin:
-                        Assassin.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Sans:
-                        Sans.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Hacker:
-                        Hacker.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Psychic:
-                        Psychic.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Hangman:
-                        Hangman.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Judge:
-                        Judge.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Mortician:
-                        Mortician.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Mediumshiper:
-                        Mediumshiper.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Veteran:
-                        Main.VeteranNumOfUsed.Add(pc.PlayerId, Options.VeteranSkillMaxOfUseage.GetInt());
-                        break;
-                    case CustomRoles.Swooper:
-                        Swooper.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.BloodKnight:
-                        BloodKnight.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Totocalcio:
-                        Totocalcio.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.Succubus:
-                        Succubus.Add(pc.PlayerId);
-                        break;
-                    case CustomRoles.DovesOfNeace:
-                        Main.DovesOfNeaceNumOfUsed.Add(pc.PlayerId, Options.DovesOfNeaceMaxOfUseage.GetInt());
-                        break;
-                }
-                foreach (var subRole in pc.GetCustomSubRoles())
-                {
-                    switch (subRole)
-                    {
-                        // ここに属性のAddを追加
-                        default:
-                            break;
-                    }
-                }
-            }
-
         EndOfSelectRolePatch:
 
-            HudManager.Instance.SetHudActive(true);
-
+            CustomRoleManager.CreateInstance();
             foreach (var pc in Main.AllPlayerControls)
+            {
+                HudManager.Instance.SetHudActive(true);
                 pc.ResetKillCooldown();
+            }
 
-            //役職の人数を戻す
-            var roleOpt = Main.NormalOptions.roleOptions;
-            int ScientistNum = Options.DisableVanillaRoles.GetBool() ? 0 : roleOpt.GetNumPerGame(RoleTypes.Scientist);
-            ScientistNum -= addScientistNum;
-            roleOpt.SetRoleRate(RoleTypes.Scientist, ScientistNum, roleOpt.GetChancePerGame(RoleTypes.Scientist));
-            int EngineerNum = Options.DisableVanillaRoles.GetBool() ? 0 : roleOpt.GetNumPerGame(RoleTypes.Engineer);
-            EngineerNum -= addEngineerNum;
-            roleOpt.SetRoleRate(RoleTypes.Engineer, EngineerNum, roleOpt.GetChancePerGame(RoleTypes.Engineer));
-            int ShapeshifterNum = Options.DisableVanillaRoles.GetBool() ? 0 : roleOpt.GetNumPerGame(RoleTypes.Shapeshifter);
-            ShapeshifterNum -= addShapeshifterNum;
-            roleOpt.SetRoleRate(RoleTypes.Shapeshifter, ShapeshifterNum, roleOpt.GetChancePerGame(RoleTypes.Shapeshifter));
+            RoleTypes[] RoleTypesList = { RoleTypes.Scientist, RoleTypes.Engineer, RoleTypes.Shapeshifter };
+            foreach (var roleTypes in RoleTypesList)
+            {
+                var roleOpt = Main.NormalOptions.roleOptions;
+                roleOpt.SetRoleRate(roleTypes, 0, 0);
+            }
 
             switch (Options.CurrentGameMode)
             {
@@ -586,8 +328,16 @@ internal class SelectRolesPatch
                 );
             }
 
-            // ResetCamが必要なプレイヤーのリストにクラス化が済んでいない役職のプレイヤーを追加
-            Main.ResetCamPlayerList.AddRange(Main.AllPlayerControls.Where(p => p.GetCustomRole() is CustomRoles.Arsonist or CustomRoles.Revolutionist or CustomRoles.Crewpostor or CustomRoles.KB_Normal).Select(p => p.PlayerId));
+            /*
+            //インポスターのゴーストロールがクルーになるバグ対策
+            foreach (var pc in PlayerControl.AllPlayerControls)
+            {
+                if (pc.Data.Role.IsImpostor || Main.ResetCamPlayerList.Contains(pc.PlayerId))
+                {
+                    pc.Data.Role.DefaultGhostRole = RoleTypes.ImpostorGhost;
+                }
+            }
+            */
             Utils.CountAlivePlayers(true);
             Utils.SyncAllSettings();
             SetColorPatch.IsAntiGlitchDisabled = false;
@@ -600,11 +350,11 @@ internal class SelectRolesPatch
     }
     private static void AssignDesyncRole(CustomRoles role, PlayerControl player, Dictionary<byte, CustomRpcSender> senders, Dictionary<(byte, byte), RoleTypes> rolesMap, RoleTypes BaseRole, RoleTypes hostBaseRole = RoleTypes.Crewmate)
     {
-        if (player == null) return;
+        if (!role.Exist(true)) return;
 
         var hostId = PlayerControl.LocalPlayer.PlayerId;
 
-        Main.PlayerStates[player.PlayerId].SetMainRole(role);
+        PlayerState.GetByPlayerId(player.PlayerId).SetMainRole(role);
 
         var selfRole = player.PlayerId == hostId ? hostBaseRole : BaseRole;
         var othersRole = player.PlayerId == hostId ? RoleTypes.Crewmate : RoleTypes.Scientist;
@@ -622,7 +372,7 @@ internal class SelectRolesPatch
         player.SetRole(othersRole);
         player.Data.IsDead = true;
 
-        Logger.Info($"注册模组职业：{player?.Data?.PlayerName} => {role}", "AssignRoles");
+        Logger.Info($"注册模组职业：{player?.Data?.PlayerName} => {role}", "AssignCustomSubRoles");
     }
     public static void MakeDesyncSender(Dictionary<byte, CustomRpcSender> senders, Dictionary<(byte, byte), RoleTypes> rolesMap)
     {
@@ -644,60 +394,51 @@ internal class SelectRolesPatch
         if (player == null) return;
         SetColorPatch.IsAntiGlitchDisabled = true;
 
-        Main.PlayerStates[player.PlayerId].SetMainRole(role);
-        Logger.Info($"注册模组职业：{player?.Data?.PlayerName} => {role}", "AssignRoles");
+        PlayerState.GetByPlayerId(player.PlayerId).SetMainRole(role);
+        Logger.Info($"注册模组职业：{player?.Data?.PlayerName} => {role}", "AssignCustomRoles");
 
         SetColorPatch.IsAntiGlitchDisabled = false;
     }
-
-    private static void AssignLoversRolesFromList()
-    {
-        if (CustomRoles.Lovers.IsEnable())
-        {
-            //Loversを初期化
-            Main.LoversPlayers.Clear();
-            Main.isLoversDead = false;
-            //ランダムに2人選出
-            AssignLoversRoles(2);
-        }
-    }
     private static void AssignLoversRoles(int RawCount = -1)
     {
+        //Loversを初期化
+        Main.LoversPlayers.Clear();
+        Main.isLoversDead = false;
         var allPlayers = new List<PlayerControl>();
         foreach (var pc in Main.AllPlayerControls)
         {
-            if (pc.Is(CustomRoles.GM) || (pc.HasSubRole() && !Options.NoLimitAddonsNum.GetBool()) || pc.Is(CustomRoles.Needy) || pc.Is(CustomRoles.Ntr) || pc.Is(CustomRoles.God) || pc.Is(CustomRoles.FFF)) continue;
+            if (pc.Is(CustomRoles.GM) || (PlayerState.GetByPlayerId(pc.PlayerId).SubRoles.Count > 0 && !Options.NoLimitAddonsNum.GetBool())
+                || pc.Is(CustomRoles.Needy) || pc.Is(CustomRoles.Ntr) || pc.Is(CustomRoles.God) || pc.Is(CustomRoles.FFF)) continue;
             allPlayers.Add(pc);
         }
-        var role = CustomRoles.Lovers;
+        var loversRole = CustomRoles.Lovers;
         var rd = IRandom.Instance;
         var count = Math.Clamp(RawCount, 0, allPlayers.Count);
-        if (RawCount == -1) count = Math.Clamp(role.GetCount(), 0, allPlayers.Count);
+        if (RawCount == -1) count = Math.Clamp(loversRole.GetCount(), 0, allPlayers.Count);
         if (count <= 0) return;
         for (var i = 0; i < count; i++)
         {
             var player = allPlayers[rd.Next(0, allPlayers.Count)];
             Main.LoversPlayers.Add(player);
             allPlayers.Remove(player);
-            Main.PlayerStates[player.PlayerId].SetSubRole(role);
-            Logger.Info("注册恋人:" + player?.Data?.PlayerName + " = " + player.GetCustomRole().ToString() + " + " + role.ToString(), "AssignLovers");
+            PlayerState.GetByPlayerId(player.PlayerId).SetSubRole(loversRole);
+            Logger.Info($"注册附加职业：{player?.Data?.PlayerName}（{player.GetCustomRole()}）=> {loversRole}", "AssignCustomSubRoles");
         }
         RPC.SyncLoversPlayers();
     }
-    private static void AssignSubRoles(CustomRoles role, int RawCount = -1)
+    private static void AssignMadmateRoles()
     {
-        var allPlayers = Main.AllAlivePlayerControls.Where(x => CustomRolesHelper.CheckAddonConfilct(role, x)).ToList();
-        var count = Math.Clamp(RawCount, 0, allPlayers.Count);
-        if (RawCount == -1) count = Math.Clamp(role.GetCount(), 0, allPlayers.Count);
+        var allPlayers = Main.AllPlayerControls.Where(x => x.CanBeMadmate()).ToList();
+        var count = Math.Clamp(CustomRoles.Madmate.GetCount(), 0, allPlayers.Count);
         if (count <= 0) return;
         for (var i = 0; i < count; i++)
         {
             var player = allPlayers[IRandom.Instance.Next(0, allPlayers.Count)];
-            Main.PlayerStates[player.PlayerId].SetSubRole(role);
-            Logger.Info("注册附加职业:" + player?.Data?.PlayerName + " = " + player.GetCustomRole().ToString() + " + " + role.ToString(), "Assign " + role.ToString());
+            allPlayers.Remove(player);
+            PlayerState.GetByPlayerId(player.PlayerId).SetSubRole(CustomRoles.Madmate);
+            Logger.Info($"注册附加职业：{player?.Data?.PlayerName}（{player.GetCustomRole()}）=> {CustomRoles.Madmate}", "AssignCustomSubRoles");
         }
     }
-
     [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
     private class RpcSetRoleReplacer
     {

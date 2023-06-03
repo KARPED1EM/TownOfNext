@@ -1,83 +1,57 @@
-﻿using Hazel;
-using System.Collections.Generic;
-using System.Linq;
+﻿using AmongUs.GameOptions;
+using Hazel;
 
-namespace TOHE;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
 // 来源：https://github.com/Yumenopai/TownOfHost_Y
-public static class Greedier
+namespace TOHE.Roles.Impostor;
+public sealed class Greedier : RoleBase, IImpostor
 {
-    private static readonly int Id = 3300;
-    public static List<byte> playerIdList = new();
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Greedier),
+            player => new Greedier(player),
+            CustomRoles.Greedier,
+            () => RoleTypes.Impostor,
+            CustomRoleTypes.Impostor,
+            3300,
+            SetupOptionItem,
+            "gr"
+        );
+    public Greedier(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
+    { }
 
-    private static OptionItem OddKillCooldown;
-    private static OptionItem EvenKillCooldown;
-
-    public static Dictionary<byte, bool> IsOdd = new();
-
-    public static void SetupCustomOption()
+    static OptionItem OptionOddKillCooldown;
+    static OptionItem OptionEvenKillCooldown;
+    enum OptionName
     {
-        Options.SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.Greedier);
-        OddKillCooldown = FloatOptionItem.Create(Id + 10, "OddKillCooldown", new(0f, 180f, 2.5f), 25f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Greedier])
+        OddKillCooldown,
+        EvenKillCooldown,
+    }
+
+    private int KillCount;
+    private bool IsOdd => KillCount % 2 == 0;
+    private static void SetupOptionItem()
+    {
+        OptionOddKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.OddKillCooldown, new(2.5f, 180f, 2.5f), 25f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        EvenKillCooldown = FloatOptionItem.Create(Id + 11, "EvenKillCooldown", new(0f, 180f, 2.5f), 5f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Greedier])
+        OptionEvenKillCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.EvenKillCooldown, new(2.5f, 180f, 2.5f), 5f, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
-    public static void Init()
+    public override void Add() => KillCount = 0;
+    public float CalculateKillCooldown() => IsOdd ? OptionOddKillCooldown.GetFloat() : OptionEvenKillCooldown.GetFloat();
+    public override void OnStartMeeting() => KillCount = 0;
+    public void BeforeMurderPlayerAsKiller(MurderInfo info)
     {
-        playerIdList = new();
-        IsOdd = new();
+        KillCount++;
+        Player.ResetKillCooldown();
+        Player.SyncSettings();
     }
-    public static void Add(byte playerId)
-    {
-        playerIdList.Add(playerId);
-        IsOdd.Add(playerId, true);
-    }
-    public static bool IsEnable() => playerIdList.Count > 0;
-
-    private static void SendRPC(byte playerId)
-    {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetGreedierOE, SendOption.Reliable, -1);
-        writer.Write(playerId);
-        writer.Write(IsOdd[playerId]);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-    }
-
-    public static void ReceiveRPC(MessageReader reader)
-    {
-        byte playerId = reader.ReadByte();
-        IsOdd[playerId] = reader.ReadBoolean();
-    }
-
-    public static void SetKillCooldown(byte id)
-    {
-        Main.AllPlayerKillCooldown[id] = OddKillCooldown.GetFloat();
-    }
-    public static void OnReportDeadBody()
-    {
-        foreach (var pc in Main.AllAlivePlayerControls.Where(x => playerIdList.Contains(x.PlayerId)))
-        {
-            IsOdd[pc.PlayerId] = true;
-            SendRPC(pc.PlayerId);
-            Main.AllPlayerKillCooldown[pc.PlayerId] = OddKillCooldown.GetFloat();
-        }
-    }
-    public static void OnCheckMurder(PlayerControl killer)
-    {
-        switch (IsOdd[killer.PlayerId])
-        {
-            case true:
-                Logger.Info($"{killer?.Data?.PlayerName}:奇数击杀冷却", "Greedier");
-                Main.AllPlayerKillCooldown[killer.PlayerId] = EvenKillCooldown.GetFloat();
-                break;
-            case false:
-                Logger.Info($"{killer?.Data?.PlayerName}:偶数击杀冷却", "Greedier");
-                Main.AllPlayerKillCooldown[killer.PlayerId] = OddKillCooldown.GetFloat();
-                break;
-        }
-        IsOdd[killer.PlayerId] = !IsOdd[killer.PlayerId];
-        //RPCによる同期
-        SendRPC(killer.PlayerId);
-        killer.SyncSettings();//キルクール処理を同期
-    }
+    public override void OnExileWrapUp(GameData.PlayerInfo exiled, ref bool DecidedWinner)
+        => Player.RpcResetAbilityCooldown();
 }

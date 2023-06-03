@@ -1,53 +1,83 @@
-﻿using System;
-using System.Collections.Generic;
-using TOHE.Roles.Neutral;
+﻿using AmongUs.GameOptions;
+using HarmonyLib;
+using System;
+using System.Linq;
 using UnityEngine;
 
-namespace TOHE.Roles.Impostor;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
+using static TOHE.Translator;
 
 // 参考 : https://github.com/ykundesu/SuperNewRoles/blob/master/SuperNewRoles/Mode/SuperHostRoles/BlockTool.cs
 // 贡献：https://github.com/Yumenopai/TownOfHost_Y/tree/AntiAdminer
-internal class AntiAdminer
+namespace TOHE.Roles.Impostor;
+public sealed class AntiAdminer : RoleBase, IImpostor
 {
-    private static readonly int Id = 3100;
-    private static List<byte> playerIdList = new();
-
-    private static OptionItem CanCheckCamera;
-    public static bool IsAdminWatch;
-    public static bool IsVitalWatch;
-    public static bool IsDoorLogWatch;
-    public static bool IsCameraWatch;
-
-    public static void SetupCustomOption()
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(AntiAdminer),
+            player => new AntiAdminer(player),
+            CustomRoles.AntiAdminer,
+            () => RoleTypes.Impostor,
+            CustomRoleTypes.Impostor,
+            3100,
+            SetupOptionItem,
+            "aa"
+        );
+    public AntiAdminer(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
     {
-        Options.SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.AntiAdminer);
-        CanCheckCamera = BooleanOptionItem.Create(Id + 10, "CanCheckCamera", true, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.AntiAdminer]);
-    }
-    public static void Init()
-    {
-        playerIdList = new();
         IsAdminWatch = false;
         IsVitalWatch = false;
         IsDoorLogWatch = false;
         IsCameraWatch = false;
     }
-    public static void Add(byte playerId)
+
+    static OptionItem OptionCanCheckCamera;
+    enum OptionName
     {
-        playerIdList.Add(playerId);
+        CanCheckCamera
     }
-    public static bool IsEnable() => playerIdList.Count > 0;
 
-    private static int Count = 0;
-    public static void FixedUpdate()
+    public static bool IsAdminWatch;
+    public static bool IsVitalWatch;
+    public static bool IsDoorLogWatch;
+    public static bool IsCameraWatch;
+
+    private static void SetupOptionItem()
     {
-        if (!IsEnable()) return;
+        OptionCanCheckCamera = BooleanOptionItem.Create(RoleInfo, 10, OptionName.CanCheckCamera, true, false);
+    }
 
-        Count--; if (Count > 0) return; Count = 5;
+    public override string GetSuffix(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
+    {
+        seen ??= seer;
+        if (!GameStates.IsInTask || isForMeeting || !Is(seer) || !Is(seen)) return "";
+
+        OnFixedUpdate(Player);
+
+        string suffix = "";
+        if (IsAdminWatch) suffix += "★" + GetString("AntiAdminerAD");
+        if (IsVitalWatch) suffix += "★" + GetString("AntiAdminerVI");
+        if (IsDoorLogWatch) suffix += "★" + GetString("AntiAdminerDL");
+        if (IsCameraWatch) suffix += "★" + GetString("AntiAdminerCA");
+
+        return suffix;
+    }
+    private static int Count;
+    public override void OnFixedUpdate(PlayerControl player)
+    {
+        if (!AmongUsClient.Instance.AmHost && !PlayerControl.LocalPlayer.Is(CustomRoles.AntiAdminer)) return;
+        Count = Count > 5 ? 0 : ++Count;
+        if (Count != 0) return;
 
         bool Admin = false, Camera = false, DoorLog = false, Vital = false;
         foreach (PlayerControl pc in Main.AllAlivePlayerControls)
         {
-            if (Pelican.IsEaten(pc.PlayerId) || pc.inVent || pc.GetCustomRole().IsImpostor()) continue;
+            if (pc.IsEaten() || pc.inVent || pc.Is(CustomRoleTypes.Impostor) || pc.Is(CustomRoles.Madmate)) continue;
             try
             {
                 Vector2 PlayerPos = pc.GetTruePosition();
@@ -91,7 +121,7 @@ internal class AntiAdminer
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.ToString(), "AntiAdmin");
+                Logger.Error(ex.ToString(), "AntiAdmin.OnFixedUpdate");
             }
         }
 
@@ -103,7 +133,7 @@ internal class AntiAdminer
         IsVitalWatch = Vital;
         isChange |= IsDoorLogWatch != DoorLog;
         IsDoorLogWatch = DoorLog;
-        if (CanCheckCamera.GetBool())
+        if (OptionCanCheckCamera.GetBool())
         {
             isChange |= IsCameraWatch != Camera;
             IsCameraWatch = Camera;
@@ -111,9 +141,7 @@ internal class AntiAdminer
 
         if (isChange)
         {
-            Utils.NotifyRoles();
-            foreach (PlayerControl pc in Main.AllPlayerControls)
-                FixedUpdatePatch.Postfix(pc);
+            Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.AntiAdminer)).Do(x => Utils.NotifyRoles(x));
         }
     }
 }

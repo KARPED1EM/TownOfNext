@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+
+using TOHE.Roles.Core;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -37,9 +39,9 @@ class SetUpRoleTextPatch
                     __instance.RoleBlurbText.color = Utils.GetRoleColor(role);
                     __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
                 }
-                foreach (var subRole in Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SubRoles)
+                foreach (var subRole in PlayerState.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId).SubRoles)
                     __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(subRole), GetString($"{subRole}Info"));
-                if (!PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && !PlayerControl.LocalPlayer.Is(CustomRoles.Ntr) && CustomRolesHelper.RoleExist(CustomRoles.Ntr))
+                if (!PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && !PlayerControl.LocalPlayer.Is(CustomRoles.Ntr) && CustomRoles.Ntr.Exist())
                     __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), GetString($"{CustomRoles.Lovers}Info"));
                 __instance.RoleText.text += Utils.GetSubRolesText(PlayerControl.LocalPlayer.PlayerId, false, true);
             }
@@ -89,7 +91,7 @@ class CoBeginPatch
                 logger.Info($"{(o.Parent == null ? o.GetName(true, true).RemoveHtmlTags().PadRightV2(40) : $"┗ {o.GetName(true, true).RemoveHtmlTags()}".PadRightV2(41))}:{o.GetString().RemoveHtmlTags()}");
         logger.Info("-------------其它信息-------------");
         logger.Info($"玩家人数: {Main.AllPlayerControls.Count()}");
-        Main.AllPlayerControls.Do(x => Main.PlayerStates[x.PlayerId].InitTask(x));
+        Main.AllPlayerControls.Do(x => PlayerState.GetByPlayerId(x.PlayerId).InitTask(x));
         GameData.Instance.RecomputeTaskCounts();
         TaskState.InitialTotalTasks = GameData.Instance.TotalTasks;
 
@@ -153,39 +155,17 @@ class BeginCrewmatePatch
         }
         switch (role)
         {
-            case CustomRoles.Terrorist:
-                var sound = ShipStatus.Instance.CommonTasks.Where(task => task.TaskType == TaskTypes.FixWiring).FirstOrDefault()
-                .MinigamePrefab.OpenSound;
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = sound;
-                break;
-
-            case CustomRoles.Workaholic:
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = DestroyableSingleton<HudManager>.Instance.TaskCompleteSound;
-                break;
-
-            case CustomRoles.Opportunist:
-            case CustomRoles.FFF:
-            case CustomRoles.Revolutionist:
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Crewmate);
-                break;
-
-            case CustomRoles.SabotageMaster:
-            case CustomRoles.Provocateur:
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = ShipStatus.Instance.SabotageSound;
-                break;
-
-            case CustomRoles.Doctor:
-            case CustomRoles.Medicaler:
-                PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Scientist);
-                break;
-
             case CustomRoles.GM:
                 __instance.TeamTitle.text = Utils.GetRoleName(role);
                 __instance.TeamTitle.color = Utils.GetRoleColor(role);
                 __instance.BackgroundBar.material.color = Utils.GetRoleColor(role);
-                __instance.ImpostorText.gameObject.SetActive(false);
                 PlayerControl.LocalPlayer.Data.Role.IntroSound = DestroyableSingleton<HudManager>.Instance.TaskCompleteSound;
                 break;
+        }
+
+        if (role.GetRoleInfo()?.IntroSound is AudioClip introSound)
+        {
+            PlayerControl.LocalPlayer.Data.Role.IntroSound = introSound;
         }
 
         if (PlayerControl.LocalPlayer.Is(CustomRoles.Madmate))
@@ -267,7 +247,7 @@ class BeginImpostorPatch
             __instance.overlayHandle.color = Palette.ImpostorRed;
             return true;
         }
-        else if (role is CustomRoles.Sheriff or CustomRoles.SwordsMan or CustomRoles.Medicaler)
+        else if (role.IsCrewmate() && role.IsDesyncRole())
         {
             yourTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             yourTeam.Add(PlayerControl.LocalPlayer);
@@ -302,12 +282,16 @@ class IntroCutsceneDestroyPatch
                         Main.AllPlayerControls.Do(x => x.ResetKillCooldown());
                         Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldownV2(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
                     }, 2f, "FixKillCooldownTask");
+                new LateTask(() =>
+                {
+                    CustomRoleManager.AllActiveRoles.Values.Do(x => x?.OnGameStart());
+                }, 0.1f, "RoleClassOnGameStartTask");
             }
             new LateTask(() => Main.AllPlayerControls.Do(pc => pc.RpcSetRoleDesync(RoleTypes.Shapeshifter, -3)), 2f, "SetImpostorForServer");
             if (PlayerControl.LocalPlayer.Is(CustomRoles.GM))
             {
                 PlayerControl.LocalPlayer.RpcExile();
-                Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SetDead();
+                PlayerState.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId).SetDead();
             }
             if (Options.RandomSpawn.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat)
             {
@@ -323,6 +307,14 @@ class IntroCutsceneDestroyPatch
                         Main.AllPlayerControls.Do(map.RandomTeleport);
                         break;
                 }
+            }
+
+            // そのままだとホストのみDesyncImpostorの暗室内での視界がクルー仕様になってしまう
+            var roleInfo = PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo();
+            var amDesyncImpostor = roleInfo?.RequireResetCam == true || Main.ResetCamPlayerList.Contains(PlayerControl.LocalPlayer.PlayerId);
+            if (amDesyncImpostor)
+            {
+                PlayerControl.LocalPlayer.Data.Role.AffectedByLightAffectors = false;
             }
         }
         Logger.Info("OnDestroy", "IntroCutscene");

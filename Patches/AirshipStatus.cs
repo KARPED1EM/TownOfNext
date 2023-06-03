@@ -1,5 +1,7 @@
 using HarmonyLib;
 
+using TOHE.Roles.Core;
+
 namespace TOHE;
 
 //参考元:https://github.com/yukieiji/ExtremeRoles/blob/master/ExtremeRoles/Patches/AirShipStatusPatch.cs

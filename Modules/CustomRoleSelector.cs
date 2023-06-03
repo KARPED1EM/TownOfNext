@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using TOHE.Roles.Core;
+
 namespace TOHE.Modules;
 
 internal class CustomRoleSelector
@@ -46,26 +48,26 @@ internal class CustomRoleSelector
         foreach (var cr in Enum.GetValues(typeof(CustomRoles)))
         {
             CustomRoles role = (CustomRoles)Enum.Parse(typeof(CustomRoles), cr.ToString());
-            if (role.IsVanilla() || role.IsAdditionRole()) continue;
+            if (role.IsVanilla() || role.IsAddon() || !Options.CustomRoleSpawnChances.TryGetValue(role, out var option) || option.Selections.Length != 3) continue;
             if (role is CustomRoles.GM or CustomRoles.NotAssigned) continue;
             for (int i = 0; i < role.GetCount(); i++)
                 roleList.Add(role);
         }
 
         // 职业设置为：优先
-        foreach (var role in roleList) if (role.GetMode() == 2)
-            {
-                if (role.IsImpostor()) ImpOnList.Add(role);
-                else if (role.IsNeutral()) NeutralOnList.Add(role);
-                else roleOnList.Add(role);
-            }
+        foreach (var role in roleList.Where(x => Options.GetRoleChance(x) == 2))
+        {
+            if (role.IsImpostor()) ImpOnList.Add(role);
+            else if (role.IsNeutral()) NeutralOnList.Add(role);
+            else roleOnList.Add(role);
+        }
         // 职业设置为：启用
-        foreach (var role in roleList) if (role.GetMode() == 1)
-            {
-                if (role.IsImpostor()) ImpRateList.Add(role);
-                else if (role.IsNeutral()) NeutralRateList.Add(role);
-                else roleRateList.Add(role);
-            }
+        foreach (var role in roleList.Where(x => Options.GetRoleChance(x) == 1))
+        {
+            if (role.IsImpostor()) ImpRateList.Add(role);
+            else if (role.IsNeutral()) NeutralRateList.Add(role);
+            else roleRateList.Add(role);
+        }
 
         // 抽取优先职业（内鬼）
         while (ImpOnList.Count > 0)
@@ -178,7 +180,7 @@ internal class CustomRoleSelector
             for (int i = 0; i < rolesToAssign.Count; i++)
             {
                 var role = rolesToAssign[i];
-                if (dr.Value.GetMode() != role.GetMode()) continue;
+                if (Options.GetRoleChance(dr.Value) != Options.GetRoleChance(role)) continue;
                 if (
                     (dr.Value.IsImpostor() && role.IsImpostor()) ||
                     (dr.Value.IsNeutral() && role.IsNeutral()) ||
@@ -243,13 +245,23 @@ internal class CustomRoleSelector
         addShapeshifterNum = 0;
         foreach (var role in AllRoles)
         {
-            switch (CustomRolesHelper.GetVNRole(role))
+            switch (role.GetRoleInfo()?.BaseRoleType.Invoke())
             {
-                case CustomRoles.Scientist: addScientistNum++; break;
-                case CustomRoles.Engineer: addEngineerNum++; break;
-                case CustomRoles.Shapeshifter: addShapeshifterNum++; break;
+                case RoleTypes.Scientist: addScientistNum++; break;
+                case RoleTypes.Engineer: addEngineerNum++; break;
+                case RoleTypes.Shapeshifter: addShapeshifterNum++; break;
             }
         }
+    }
+    public static int GetRoleTypesCount(RoleTypes type)
+    {
+        return type switch
+        {
+            RoleTypes.Engineer => addEngineerNum,
+            RoleTypes.Scientist => addScientistNum,
+            RoleTypes.Shapeshifter => addShapeshifterNum,
+            _ => 0
+        };
     }
 
     public static List<CustomRoles> AddonRolesList = new();
@@ -261,8 +273,8 @@ internal class CustomRoleSelector
         foreach (var cr in Enum.GetValues(typeof(CustomRoles)))
         {
             CustomRoles role = (CustomRoles)Enum.Parse(typeof(CustomRoles), cr.ToString());
-            if (!role.IsAdditionRole()) continue;
-            if (role is CustomRoles.Madmate && Options.MadmateSpawnMode.GetInt() != 0) continue;
+            if (!role.IsAddon()) continue;
+            //if (role is CustomRoles.Madmate && Options.MadmateSpawnMode.GetInt() != 0) continue;
             if (role is CustomRoles.Lovers or CustomRoles.LastImpostor or CustomRoles.Workhorse) continue;
             AddonRolesList.Add(role);
         }

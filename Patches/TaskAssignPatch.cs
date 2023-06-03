@@ -1,7 +1,10 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using System.Collections.Generic;
+
+using TOHE.Roles.Core;
 using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.Impostor;
 
 namespace TOHE;
 
@@ -68,13 +71,13 @@ class RpcSetTasksPatch
                                                          // ロングとショートは常時再割り当てが行われる。
         }
 
-        //背叛告密的任务覆盖
-        if (pc.Is(CustomRoles.Snitch) && pc.Is(CustomRoles.Madmate))
-        {
-            hasCommonTasks = false;
-            NumLongTasks = 0;
-            NumShortTasks = Options.MadSnitchTasks.GetInt();
-        }
+        //背叛告密的任务覆盖 //TODO
+        //if (pc.Is(CustomRoles.Snitch) && pc.Is(CustomRoles.Madmate))
+        //{
+        //    hasCommonTasks = false;
+        //    NumLongTasks = 0;
+        //    NumShortTasks = Options.MadSnitchTasks.GetInt();
+        //}
 
         //管理员和摆烂人没有任务
         if (pc.Is(CustomRoles.GM) || pc.Is(CustomRoles.Needy) || Options.CurrentGameMode == CustomGameMode.SoloKombat)
@@ -89,11 +92,7 @@ class RpcSetTasksPatch
             (hasCommonTasks, NumLongTasks, NumShortTasks) = Workhorse.TaskData;
 
         //资本主义要祸害人咯~
-        if (Main.CapitalismAssignTask.ContainsKey(playerId))
-        {
-            NumShortTasks += Main.CapitalismAssignTask[playerId];
-            Main.CapitalismAssignTask.Remove(playerId);
-        }
+        NumShortTasks = Capitalism.GetShortTasks(pc.PlayerId, NumShortTasks);
 
         if (taskTypeIds.Count == 0) hasCommonTasks = false; //タスク再配布時はコモンを0に
         if (!hasCommonTasks && NumLongTasks == 0 && NumShortTasks == 0) NumShortTasks = 1; //タスク0対策

@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System.Collections.Generic;
+using TOHE.Roles.Core;
 using TOHE.Roles.Impostor;
 
 namespace TOHE;
@@ -46,7 +47,7 @@ public static class Camouflage
     }
     public static void CheckCamouflage()
     {
-        if (!(AmongUsClient.Instance.AmHost && (Options.CommsCamouflage.GetBool() || Concealer.IsEnable))) return;
+        if (!(AmongUsClient.Instance.AmHost && (Options.CommsCamouflage.GetBool() || CustomRoles.Concealer.Exist(true)))) return;
 
         var oldIsCamouflage = IsCamouflage;
 
@@ -55,12 +56,12 @@ public static class Camouflage
         if (oldIsCamouflage != IsCamouflage)
         {
             Main.AllPlayerControls.Do(pc => RpcSetSkin(pc));
-            Utils.NotifyRoles();
+            Utils.NotifyRoles(NoCache: true);
         }
     }
     public static void RpcSetSkin(PlayerControl target, bool ForceRevert = false, bool RevertToDefault = false)
     {
-        if (!(AmongUsClient.Instance.AmHost && (Options.CommsCamouflage.GetBool() || CustomRoles.Concealer.IsEnable()))) return;
+        if (!(AmongUsClient.Instance.AmHost && (Options.CommsCamouflage.GetBool() || CustomRoles.Concealer.Exist(true)))) return;
         if (target == null) return;
 
         var id = target.PlayerId;
@@ -70,7 +71,7 @@ public static class Camouflage
             //コミュサボ中
 
             //死んでいたら処理しない
-            if (Main.PlayerStates[id].IsDead) return;
+            if (PlayerState.GetByPlayerId(id).IsDead) return;
         }
 
         var newOutfit = CamouflageOutfit;

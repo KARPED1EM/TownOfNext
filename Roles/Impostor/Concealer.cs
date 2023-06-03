@@ -1,61 +1,55 @@
-﻿using Hazel;
-using System.Collections.Generic;
+﻿using AmongUs.GameOptions;
+using System.Linq;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Impostor;
-
-public static class Concealer
+public sealed class Concealer : RoleBase, IImpostor
 {
-    private static readonly int Id = 903534;
-    public static List<byte> playerIdList = new();
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Concealer),
+            player => new Concealer(player),
+            CustomRoles.Concealer,
+            () => RoleTypes.Shapeshifter,
+            CustomRoleTypes.Impostor,
+            903534,
+            SetupOptionItem,
+            "co",
+            experimental: true
+        );
+    public Concealer(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
+    { }
 
-    private static OptionItem ShapeshiftCooldown;
-    private static OptionItem ShapeshiftDuration;
+    static OptionItem OptionShapeshiftCooldown;
+    static OptionItem OptionShapeshiftDuration;
 
-    public static int HiddenCount;
-
-    public static void SetupCustomOption()
+    private static void SetupOptionItem()
     {
-        Options.SetupRoleOptions(Id, TabGroup.OtherRoles, CustomRoles.Concealer);
-        ShapeshiftCooldown = FloatOptionItem.Create(Id + 2, "ShapeshiftCooldown", new(1f, 999f, 1f), 25f, TabGroup.OtherRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Concealer])
+        OptionShapeshiftCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.ShapeshiftCooldown, new(2.5f, 180f, 2.5f), 25f,  false)
             .SetValueFormat(OptionFormat.Seconds);
-        ShapeshiftDuration = FloatOptionItem.Create(Id + 4, "ShapeshiftDuration", new(1f, 999f, 1f), 10f, TabGroup.OtherRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Concealer])
+        OptionShapeshiftDuration = FloatOptionItem.Create(RoleInfo, 11, GeneralOption.ShapeshiftDuration, new(2.5f, 180f, 2.5f), 10f, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
-    public static void Init()
+    public override void ApplyGameOptions(IGameOptions opt)
     {
-        playerIdList = new();
-        HiddenCount = 0;
+        AURoleOptions.ShapeshifterCooldown = OptionShapeshiftCooldown.GetFloat();
+        AURoleOptions.ShapeshifterDuration = OptionShapeshiftDuration.GetFloat();
     }
-    public static void Add(byte playerId)
+    private bool Shapeshifting = false;
+    public override void OnShapeshift(PlayerControl target)
     {
-        playerIdList.Add(playerId);
-    }
-    public static bool IsEnable => playerIdList.Count > 0;
-    public static void ApplyGameOptions()
-    {
-        AURoleOptions.ShapeshifterCooldown = ShapeshiftCooldown.GetFloat();
-        AURoleOptions.ShapeshifterDuration = ShapeshiftDuration.GetFloat();
-    }
-    private static void SendRPC()
-    {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetConcealerTimer, SendOption.Reliable, -1);
-        writer.Write(HiddenCount);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-    }
-    public static void ReceiveRPC(MessageReader reader)
-    {
-        HiddenCount = reader.ReadInt32();
-    }
-    public static bool IsHidding => HiddenCount >= 1 && !GameStates.IsMeeting;
-    public static void OnShapeshift(bool shapeshifting)
-    {
-        HiddenCount += shapeshifting ? 1 : -1;
-        SendRPC();
+        Shapeshifting = !Is(target);
+
+        if (!AmongUsClient.Instance.AmHost) return;
+
         Camouflage.CheckCamouflage();
     }
-    public static void OnReportDeadBody()
-    {
-        HiddenCount = 0;
-        SendRPC();
-    }
+    public static bool IsHidding
+        => Main.AllAlivePlayerControls.Any(x => (x.GetRoleClass() is Concealer roleClass) && roleClass.Shapeshifting) && GameStates.IsInTask;
 }

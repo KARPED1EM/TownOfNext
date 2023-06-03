@@ -1,8 +1,7 @@
 using AmongUs.Data;
 using HarmonyLib;
-using System.Linq;
-using TOHE.Roles.Impostor;
-using TOHE.Roles.Neutral;
+
+using TOHE.Roles.Core;
 
 namespace TOHE;
 
@@ -50,74 +49,28 @@ class ExileControllerWrapUpPatch
         bool DecidedWinner = false;
         if (!AmongUsClient.Instance.AmHost) return; //ホスト以外はこれ以降の処理を実行しません
         AntiBlackout.RestoreIsDead(doSend: false);
-        if (!Collector.CollectorWin(false) && exiled != null) //判断集票者胜利
+        if (exiled != null)
         {
+            var role = exiled.GetCustomRole();
+            var info = role.GetRoleInfo();
             //霊界用暗転バグ対処
-            if (!AntiBlackout.OverrideExiledPlayer && Main.ResetCamPlayerList.Contains(exiled.PlayerId))
+            if (!AntiBlackout.OverrideExiledPlayer && (Main.ResetCamPlayerList.Contains(exiled.PlayerId) || (info?.RequireResetCam ?? false)))
                 exiled.Object?.ResetPlayerCam(1f);
 
             exiled.IsDead = true;
-            Main.PlayerStates[exiled.PlayerId].deathReason = PlayerState.DeathReason.Vote;
-            var role = exiled.GetCustomRole();
+            PlayerState.GetByPlayerId(exiled.PlayerId).DeathReason = CustomDeathReason.Vote;
 
-            //判断冤罪师胜利
-            if (Main.AllPlayerControls.Any(x => x.Is(CustomRoles.Innocent) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == exiled.PlayerId))
+            foreach (var roleClass in CustomRoleManager.AllActiveRoles.Values)
             {
-                if (!Options.InnocentCanWinByImp.GetBool() && role.IsImpostor())
-                {
-                    Logger.Info("冤罪的目标是内鬼，非常可惜啊", "Exeiled Winner Check");
-                }
-                else
-                {
-                    if (DecidedWinner) CustomWinnerHolder.ShiftWinnerAndSetWinner(CustomWinner.Innocent);
-                    else CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Innocent);
-                    Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Innocent) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == exiled.PlayerId)
-                        .Do(x => CustomWinnerHolder.WinnerIds.Add(x.PlayerId));
-                    DecidedWinner = true;
-                }
+                roleClass.OnExileWrapUp(exiled, ref DecidedWinner);
             }
 
-            //判断小丑胜利 (EAC封禁名单成为小丑达成胜利条件无法胜利)
-            if (role == CustomRoles.Jester)
-            {
-                if (DecidedWinner) CustomWinnerHolder.ShiftWinnerAndSetWinner(CustomWinner.Jester);
-                else CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Jester);
-                CustomWinnerHolder.WinnerIds.Add(exiled.PlayerId);
-                DecidedWinner = true;
-            }
-
-            //判断处刑人胜利
-            if (Executioner.CheckExileTarget(exiled, DecidedWinner)) DecidedWinner = true;
-
-            //判断恐怖分子胜利
-            if (role == CustomRoles.Terrorist) Utils.CheckTerroristWin(exiled);
-
-            if (CustomWinnerHolder.WinnerTeam != CustomWinner.Terrorist) Main.PlayerStates[exiled.PlayerId].SetDead();
+            if (CustomWinnerHolder.WinnerTeam != CustomWinner.Terrorist) PlayerState.GetByPlayerId(exiled.PlayerId).SetDead();
         }
-        if (AmongUsClient.Instance.AmHost && Main.IsFixedCooldown)
-            Main.RefixCooldownDelay = Options.DefaultKillCooldown - 3f;
-
-        Witch.RemoveSpelledPlayer();
 
         foreach (var pc in Main.AllPlayerControls)
         {
             pc.ResetKillCooldown();
-            if (Options.MayorHasPortableButton.GetBool() && pc.Is(CustomRoles.Mayor))
-                pc.RpcResetAbilityCooldown();
-            if (pc.Is(CustomRoles.Warlock))
-            {
-                Main.CursedPlayers[pc.PlayerId] = null;
-                Main.isCurseAndKill[pc.PlayerId] = false;
-                RPC.RpcSyncCurseAndKill();
-            }
-            if (pc.GetCustomRole() is
-                CustomRoles.Paranoia or
-                CustomRoles.Veteran or
-                CustomRoles.Greedier or
-                CustomRoles.DovesOfNeace or
-                CustomRoles.QuickShooter or
-                CustomRoles.Bomber
-                ) pc.RpcResetAbilityCooldown();
         }
         if (Options.RandomSpawn.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
@@ -166,13 +119,16 @@ class ExileControllerWrapUpPatch
                 Main.AfterMeetingDeathPlayers.Do(x =>
                 {
                     var player = Utils.GetPlayerById(x.Key);
+                    var roleClass = CustomRoleManager.GetByPlayerId(x.Key);
+                    var requireResetCam = player?.GetCustomRole().GetRoleInfo()?.RequireResetCam;
+                    var state = PlayerState.GetByPlayerId(x.Key);
                     Logger.Info($"{player.GetNameWithRole()}を{x.Value}で死亡させました", "AfterMeetingDeath");
-                    Main.PlayerStates[x.Key].deathReason = x.Value;
-                    Main.PlayerStates[x.Key].SetDead();
+                    state.DeathReason = x.Value;
+                    state.SetDead();
                     player?.RpcExileV2();
-                    if (x.Value == PlayerState.DeathReason.Suicide)
+                    if (x.Value == CustomDeathReason.Suicide)
                         player?.SetRealKiller(player, true);
-                    if (Main.ResetCamPlayerList.Contains(x.Key))
+                    if (Main.ResetCamPlayerList.Contains(x.Key) || (requireResetCam.HasValue && requireResetCam.Value))
                         player?.ResetPlayerCam(1f);
                     Utils.AfterPlayerDeathTasks(player);
                 });

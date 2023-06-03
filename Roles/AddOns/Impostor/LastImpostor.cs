@@ -1,5 +1,8 @@
-namespace TOHE.Roles.AddOns.Impostor;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
+using static TOHE.Options;
 
+namespace TOHE.Roles.AddOns.Impostor;
 public static class LastImpostor
 {
     private static readonly int Id = 80000;
@@ -7,8 +10,8 @@ public static class LastImpostor
     public static OptionItem KillCooldown;
     public static void SetupCustomOption()
     {
-        Options.SetupSingleRoleOptions(Id, TabGroup.Addons, CustomRoles.LastImpostor, 1);
-        KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 180f, 1f), 8f, TabGroup.Addons, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.LastImpostor])
+        SetupSingleRoleOptions(Id, TabGroup.Addons, CustomRoles.LastImpostor, 1);
+        KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 180f, 1f), 15f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.LastImpostor])
             .SetValueFormat(OptionFormat.Seconds);
     }
     public static void Init() => currentId = byte.MaxValue;
@@ -20,12 +23,22 @@ public static class LastImpostor
         Main.AllPlayerKillCooldown[currentId] = KillCooldown.GetFloat();
     }
     public static bool CanBeLastImpostor(PlayerControl pc)
-        => pc.IsAlive() && !pc.Is(CustomRoles.LastImpostor) && pc.Is(CustomRoleTypes.Impostor);
+    {
+        if (!pc.IsAlive() || pc.Is(CustomRoles.LastImpostor) || !pc.Is(CustomRoleTypes.Impostor))
+        {
+            return false;
+        }
+        if (pc.GetRoleClass() is IImpostor impostor)
+        {
+            return impostor.CanBeLastImpostor;
+        }
+        return true;
+    }
     public static void SetSubRole()
     {
         //ラストインポスターがすでにいれば処理不要
-        if (currentId != byte.MaxValue || !AmongUsClient.Instance.AmHost) return;
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat
+        if (currentId != byte.MaxValue) return;
+        if (CurrentGameMode != CustomGameMode.Standard
         || !CustomRoles.LastImpostor.IsEnable() || Main.AliveImpostorCount != 1)
             return;
         foreach (var pc in Main.AllAlivePlayerControls)

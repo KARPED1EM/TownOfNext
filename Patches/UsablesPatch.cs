@@ -2,6 +2,9 @@ using AmongUs.GameOptions;
 using HarmonyLib;
 using UnityEngine;
 
+using TOHE.Roles.Core;
+using TOHE.Roles.Neutral;
+
 namespace TOHE;
 
 [HarmonyPatch(typeof(Console), nameof(Console.CanUse))]
@@ -49,14 +52,15 @@ class CanUseVentPatch
         canUse = couldUse = pc.Object.CanUseImpostorVentButton();
         switch (pc.GetCustomRole())
         {
+            //TODO: FIXME
             case CustomRoles.Arsonist:
-                if (pc.Object.IsDouseDone())
+                if (Arsonist.IsDouseDone(pc.Object))
                     VentForTrigger = true;
                 break;
-            case CustomRoles.Revolutionist://跳管解锁
-                if (pc.Object.IsDrawDone())
-                    VentForTrigger = true;
-                break;
+            //case CustomRoles.Revolutionist://跳管解锁
+            //    if (pc.Object.IsDrawDone())
+            //        VentForTrigger = true;
+            //    break;
             default:
                 if (pc.Role.Role == RoleTypes.Engineer) // インポスター陣営ベースの役職とエンジニアベースの役職は常にtrue
                     canUse = couldUse = true;

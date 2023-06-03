@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TOHE.Roles.Core;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -46,7 +47,7 @@ internal class ControllerManagerUpdatePatch
                 var role = PlayerControl.LocalPlayer.GetCustomRole();
                 var lp = PlayerControl.LocalPlayer;
                 var sb = new StringBuilder();
-                sb.Append(GetString(role.ToString()) + Utils.GetRoleMode(role) + lp.GetRoleInfo(true));
+                sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + lp.GetRoleInfo(true));
                 if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
                     Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
                 HudManager.Instance.ShowPopUp(sb.ToString());
@@ -64,13 +65,13 @@ internal class ControllerManagerUpdatePatch
             {
                 var role = PlayerControl.LocalPlayer.GetCustomRole();
                 var lp = PlayerControl.LocalPlayer;
-                if (Main.PlayerStates[lp.PlayerId].SubRoles.Count < 1) return;
+                if (PlayerState.GetByPlayerId(lp.PlayerId).SubRoles.Count < 1) return;
 
                 addDes = new();
-                foreach (var subRole in Main.PlayerStates[lp.PlayerId].SubRoles.Where(x => x is not CustomRoles.Charmed))
-                    addDes.Add(GetString($"{subRole}") + Utils.GetRoleMode(subRole) + GetString($"{subRole}InfoLong"));
-                if (CustomRolesHelper.RoleExist(CustomRoles.Ntr) && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                    addDes.Add(GetString($"Lovers") + Utils.GetRoleMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
+                foreach (var subRole in PlayerState.GetByPlayerId(lp.PlayerId).SubRoles.Where(x => x is not CustomRoles.Charmed))
+                    addDes.Add(GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
+                if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                    addDes.Add(GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
 
                 addonIndex++;
                 if (addonIndex >= addDes.Count) addonIndex = 0;
@@ -179,11 +180,12 @@ internal class ControllerManagerUpdatePatch
         //放逐自己
         if (GetKeysDown(KeyCode.Return, KeyCode.E, KeyCode.LeftShift) && GameStates.IsInGame)
         {
+            var state = PlayerState.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId);
             PlayerControl.LocalPlayer.Data.IsDead = true;
-            Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].deathReason = PlayerState.DeathReason.etc;
+            state.DeathReason = CustomDeathReason.etc;
             PlayerControl.LocalPlayer.RpcExileV2();
-            Main.PlayerStates[PlayerControl.LocalPlayer.PlayerId].SetDead();
-            Utils.SendMessage(Translator.GetString("HostKillSelfByCommand"), title: $"<color=#ff0000>{Translator.GetString("DefaultSystemMessageTitle")}</color>");
+            state.SetDead();
+            Utils.SendMessage(GetString("HostKillSelfByCommand"), title: $"<color=#ff0000>{GetString("DefaultSystemMessageTitle")}</color>");
         }
         //切换日志是否也在游戏中输出
         if (GetKeysDown(KeyCode.F2, KeyCode.LeftControl))

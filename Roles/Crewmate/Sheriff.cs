@@ -1,133 +1,170 @@
-using Hazel;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Hazel;
 using UnityEngine;
+using AmongUs.GameOptions;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Crewmate;
-
-public static class Sheriff
+public sealed class Sheriff : RoleBase, IKiller
 {
-    private static readonly int Id = 20400;
-    public static List<byte> playerIdList = new();
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Sheriff),
+            player => new Sheriff(player),
+            CustomRoles.Sheriff,
+            () => RoleTypes.Impostor,
+            CustomRoleTypes.Crewmate,
+            20400,
+            SetupOptionItem,
+            "sh",
+            "#f8cd46",
+            true
+        );
+    public Sheriff(PlayerControl player)
+    : base(
+        RoleInfo,
+        player,
+        () => HasTask.False
+    )
+    {
+        ShotLimit = ShotLimitOpt.GetInt();
+        CurrentKillCooldown = KillCooldown.GetFloat();
+    }
 
     private static OptionItem KillCooldown;
     private static OptionItem MisfireKillsTarget;
     private static OptionItem ShotLimitOpt;
     private static OptionItem CanKillAllAlive;
-    public static OptionItem CanKillNeutrals;
+    private static OptionItem CanKillNeutrals;
     public static OptionItem CanKillNeutralsMode;
-    public static OptionItem CanKillMadmate;
-    public static OptionItem CanKillCharmed;
-    public static OptionItem SetMadCanKill;
-    public static OptionItem MadCanKillCrew;
-    public static OptionItem MadCanKillImp;
-    public static OptionItem MadCanKillNeutral;
+    private static OptionItem CanKillMadmate;
+    private static OptionItem CanKillCharmed;
+    private static OptionItem SetMadCanKill;
+    private static OptionItem MadCanKillCrew;
+    private static OptionItem MadCanKillImp;
+    private static OptionItem MadCanKillNeutral;
+    enum OptionName
+    {
+        SheriffMisfireKillsTarget,
+        SheriffShotLimit,
+        SheriffCanKillAllAlive,
+        SheriffCanKillNeutrals,
+        SheriffCanKillNeutralsMode,
+        SheriffCanKill,
+        SheriffCanKillMadmate,
+        SheriffCanKillCharmed,
+        SheriffSetMadCanKill,
+        SheriffMadCanKillImp,
+        SheriffMadCanKillNeutral,
+        SheriffMadCanKillCrew
+    }
     public static Dictionary<CustomRoles, OptionItem> KillTargetOptions = new();
-    public static Dictionary<byte, int> ShotLimit = new();
-    public static Dictionary<byte, float> CurrentKillCooldown = new();
+    public int ShotLimit = 0;
+    public float CurrentKillCooldown = 30;
     public static readonly string[] KillOption =
     {
-        "SheriffCanKillAll", "SheriffCanKillSeparately"
+            "SheriffCanKillAll", "SheriffCanKillSeparately"
     };
-    public static void SetupCustomOption()
+    private static void SetupOptionItem()
     {
-        Options.SetupRoleOptions(Id, TabGroup.CrewmateRoles, CustomRoles.Sheriff);
-        KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 999f, 1f), 15f, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff])
+        KillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 15f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        MisfireKillsTarget = BooleanOptionItem.Create(Id + 11, "SheriffMisfireKillsTarget", false, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
-        ShotLimitOpt = IntegerOptionItem.Create(Id + 12, "SheriffShotLimit", new(1, 15, 1), 6, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff])
+        MisfireKillsTarget = BooleanOptionItem.Create(RoleInfo, 11, OptionName.SheriffMisfireKillsTarget, false, false);
+        ShotLimitOpt = IntegerOptionItem.Create(RoleInfo, 12, OptionName.SheriffShotLimit, new(1, 15, 1), 15, false)
             .SetValueFormat(OptionFormat.Times);
-        CanKillAllAlive = BooleanOptionItem.Create(Id + 15, "SheriffCanKillAllAlive", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
-        CanKillMadmate = BooleanOptionItem.Create(Id + 17, "SheriffCanKillMadmate", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
-        CanKillCharmed = BooleanOptionItem.Create(Id + 22, "SheriffCanKillCharmed", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
-        CanKillNeutrals = BooleanOptionItem.Create(Id + 16, "SheriffCanKillNeutrals", true, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
-        CanKillNeutralsMode = StringOptionItem.Create(Id + 14, "SheriffCanKillNeutralsMode", KillOption, 0, TabGroup.CrewmateRoles, false).SetParent(CanKillNeutrals);
-        SetUpNeutralOptions(Id + 30);
-        SetMadCanKill = BooleanOptionItem.Create(Id + 18, "SheriffSetMadCanKill", false, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Sheriff]);
-        MadCanKillImp = BooleanOptionItem.Create(Id + 19, "SheriffMadCanKillImp", true, TabGroup.CrewmateRoles, false).SetParent(SetMadCanKill);
-        MadCanKillNeutral = BooleanOptionItem.Create(Id + 20, "SheriffMadCanKillNeutral", true, TabGroup.CrewmateRoles, false).SetParent(SetMadCanKill);
-        MadCanKillCrew = BooleanOptionItem.Create(Id + 21, "SheriffMadCanKillCrew", true, TabGroup.CrewmateRoles, false).SetParent(SetMadCanKill);
+        CanKillAllAlive = BooleanOptionItem.Create(RoleInfo, 15, OptionName.SheriffCanKillAllAlive, true, false);
+        CanKillMadmate = BooleanOptionItem.Create(RoleInfo, 17, OptionName.SheriffCanKillMadmate, true, false);
+        CanKillCharmed = BooleanOptionItem.Create(RoleInfo, 22, OptionName.SheriffCanKillCharmed, true, false);
+        CanKillNeutrals = BooleanOptionItem.Create(RoleInfo, 16, OptionName.SheriffCanKillNeutrals, true, false);
+        CanKillNeutralsMode = StringOptionItem.Create(RoleInfo, 14, OptionName.SheriffCanKillNeutralsMode, KillOption, 0, false, CanKillNeutrals);
+        SetUpNeutralOptions(30);
+        SetMadCanKill = BooleanOptionItem.Create(RoleInfo, 18, OptionName.SheriffSetMadCanKill, false, false);
+        MadCanKillImp = BooleanOptionItem.Create(RoleInfo, 19, OptionName.SheriffMadCanKillImp, true, false).SetParent(SetMadCanKill);
+        MadCanKillNeutral = BooleanOptionItem.Create(RoleInfo, 20, OptionName.SheriffMadCanKillNeutral, true, false).SetParent(SetMadCanKill);
+        MadCanKillCrew = BooleanOptionItem.Create(RoleInfo, 21, OptionName.SheriffMadCanKillCrew, true, false).SetParent(SetMadCanKill);
     }
-    public static void SetUpNeutralOptions(int Id)
+    public static void SetUpNeutralOptions(int idOffset)
     {
-        foreach (var neutral in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x.IsNeutral() && x is not CustomRoles.KB_Normal))
+        foreach (var neutral in CustomRolesHelper.AllRoles.Where(x => x.IsNeutral()).ToArray())
         {
-            SetUpKillTargetOption(neutral, Id, true, CanKillNeutralsMode);
-            Id++;
+            if (neutral is CustomRoles.KB_Normal) continue;
+            SetUpKillTargetOption(neutral, idOffset, true, CanKillNeutrals);
+            idOffset++;
         }
     }
-    public static void SetUpKillTargetOption(CustomRoles role, int Id, bool defaultValue = true, OptionItem parent = null)
+    public static void SetUpKillTargetOption(CustomRoles role, int idOffset, bool defaultValue = true, OptionItem parent = null)
     {
-        parent ??= Options.CustomRoleSpawnChances[CustomRoles.Sheriff];
+        var id = RoleInfo.ConfigId + idOffset;
+        parent ??= RoleInfo.RoleOption;
         var roleName = Utils.GetRoleName(role);
         Dictionary<string, string> replacementDic = new() { { "%role%", Utils.ColorString(Utils.GetRoleColor(role), roleName) } };
-        KillTargetOptions[role] = BooleanOptionItem.Create(Id, "SheriffCanKill%role%", defaultValue, TabGroup.CrewmateRoles, false).SetParent(parent);
+        KillTargetOptions[role] = BooleanOptionItem.Create(id, OptionName.SheriffCanKill + "%role%", defaultValue, RoleInfo.Tab, false).SetParent(parent);
         KillTargetOptions[role].ReplacementDictionary = replacementDic;
     }
-    public static void Init()
+    public override void Add()
     {
-        playerIdList = new();
-        ShotLimit = new();
-        CurrentKillCooldown = new();
-    }
-    public static void Add(byte playerId)
-    {
-        playerIdList.Add(playerId);
-        CurrentKillCooldown.Add(playerId, KillCooldown.GetFloat());
+        var playerId = Player.PlayerId;
+        CurrentKillCooldown = KillCooldown.GetFloat();
 
-        ShotLimit.TryAdd(playerId, ShotLimitOpt.GetInt());
-        Logger.Info($"{Utils.GetPlayerById(playerId)?.GetNameWithRole()} : 残り{ShotLimit[playerId]}発", "Sheriff");
-
-        if (!AmongUsClient.Instance.AmHost) return;
         if (!Main.ResetCamPlayerList.Contains(playerId))
             Main.ResetCamPlayerList.Add(playerId);
-    }
-    public static bool IsEnable => playerIdList.Count > 0;
-    private static void SendRPC(byte playerId)
-    {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetSheriffShotLimit, SendOption.Reliable, -1);
-        writer.Write(playerId);
-        writer.Write(ShotLimit[playerId]);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
-    }
-    public static void ReceiveRPC(MessageReader reader)
-    {
-        byte SheriffId = reader.ReadByte();
-        int Limit = reader.ReadInt32();
-        if (ShotLimit.ContainsKey(SheriffId))
-            ShotLimit[SheriffId] = Limit;
-        else
-            ShotLimit.Add(SheriffId, ShotLimitOpt.GetInt());
-    }
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = CanUseKillButton(id) ? CurrentKillCooldown[id] : 0f;
-    public static bool CanUseKillButton(byte playerId)
-        => !Main.PlayerStates[playerId].IsDead
-        && (CanKillAllAlive.GetBool() || GameStates.AlreadyDied)
-        && (!ShotLimit.TryGetValue(playerId, out var x) || x > 0);
 
-    public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
-    {
-        ShotLimit[killer.PlayerId]--;
-        Logger.Info($"{killer.GetNameWithRole()} : 残り{ShotLimit[killer.PlayerId]}発", "Sheriff");
-        SendRPC(killer.PlayerId);
-        if (!killer.Is(CustomRoles.Madmate) ?
-            target.CanBeKilledBySheriff() :
-            (!SetMadCanKill.GetBool() ||
-            (target.GetCustomRole().IsCrewmate() && MadCanKillCrew.GetBool()) ||
-            (target.GetCustomRole().IsNeutral() && MadCanKillNeutral.GetBool()) ||
-            (target.GetCustomRole().IsImpostor() && MadCanKillImp.GetBool())
-            ))
-        {
-            SetKillCooldown(killer.PlayerId);
-            return true;
-        }
-        Main.PlayerStates[killer.PlayerId].deathReason = PlayerState.DeathReason.Misfire;
-        killer.RpcMurderPlayerV3(killer);
-        return MisfireKillsTarget.GetBool();
+        ShotLimit = ShotLimitOpt.GetInt();
+        Logger.Info($"{Utils.GetPlayerById(playerId)?.GetNameWithRole()} : 残り{ShotLimit}発", "Sheriff");
     }
-    public static string GetShotLimit(byte playerId) => Utils.ColorString(CanUseKillButton(playerId) ? Color.yellow : Color.gray, ShotLimit.TryGetValue(playerId, out var shotLimit) ? $"({shotLimit})" : "Invalid");
-    public static bool CanBeKilledBySheriff(this PlayerControl player)
+    private void SendRPC()
+    {
+        using var sender = CreateSender(CustomRPC.SetSheriffShotLimit);
+        sender.Writer.Write(ShotLimit);
+    }
+    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
+    {
+        if (rpcType != CustomRPC.SetSheriffShotLimit) return;
+
+        ShotLimit = reader.ReadInt32();
+    }
+    public float CalculateKillCooldown() => CanUseKillButton() ? CurrentKillCooldown : 255f;
+    public bool CanUseKillButton()
+        => Player.IsAlive()
+        && (CanKillAllAlive.GetBool() || GameStates.AlreadyDied)
+        && ShotLimit > 0;
+    public override bool CanSabotage(SystemTypes systemType) => false;
+    public override void ApplyGameOptions(IGameOptions opt)
+    {
+        opt.SetVision(false);
+    }
+    public bool OnCheckMurderAsKiller(MurderInfo info)
+    {
+        if (Is(info.AttemptKiller) && !info.IsSuicide)
+        {
+            (var killer, var target) = info.AttemptTuple;
+
+            Logger.Info($"{killer.GetNameWithRole()} : 残り{ShotLimit}発", "Sheriff");
+            if (ShotLimit <= 0) return false;
+            ShotLimit--;
+            SendRPC();
+            if (!killer.Is(CustomRoles.Madmate) ?
+                CanBeKilledBy(target) :
+                (!SetMadCanKill.GetBool() ||
+                (target.GetCustomRole().IsCrewmate() && MadCanKillCrew.GetBool()) ||
+                (target.GetCustomRole().IsNeutral() && MadCanKillNeutral.GetBool()) ||
+                (target.GetCustomRole().IsImpostor() && MadCanKillImp.GetBool())
+                ))
+            {
+                killer.ResetKillCooldown();
+                return true;
+            }
+            killer.RpcMurderPlayer(killer);
+            PlayerState.GetByPlayerId(killer.PlayerId).DeathReason = CustomDeathReason.Misfire;
+            if (!MisfireKillsTarget.GetBool()) return false;
+        }
+        return true;
+    }
+    public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Color.yellow : Color.gray, $"({ShotLimit})");
+    public static bool CanBeKilledBy(PlayerControl player)
     {
         var cRole = player.GetCustomRole();
         var subRole = player.GetCustomSubRoles();

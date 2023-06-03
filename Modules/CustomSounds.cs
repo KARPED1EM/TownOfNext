@@ -10,12 +10,12 @@ public static class CustomSoundsManager
 {
     public static void RPCPlayCustomSound(this PlayerControl pc, string sound, bool force = false)
     {
-        if (!force) if (!AmongUsClient.Instance.AmHost || !pc.IsModClient()) return;
-        if (pc == null || PlayerControl.LocalPlayer.PlayerId == pc.PlayerId)
+        if (pc == null || pc.AmOwner)
         {
             Play(sound);
             return;
         }
+        if (!force) if (!AmongUsClient.Instance.AmHost || !pc.IsModClient()) return;
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.PlayCustomSound, SendOption.Reliable, pc.GetClientId());
         writer.Write(sound);
         AmongUsClient.Instance.FinishRpcImmediately(writer);

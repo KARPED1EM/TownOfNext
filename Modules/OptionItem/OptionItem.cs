@@ -2,6 +2,7 @@ using BepInEx.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Roles.Core;
 using UnityEngine;
 
 namespace TOHE;
@@ -56,7 +57,6 @@ public abstract class OptionItem
     private ConfigEntry<int>[] AllConfigEntries;
     private ConfigEntry<int> singleEntry;
 
-
     public OptionBehaviour OptionBehaviour;
 
     // イベント
@@ -107,7 +107,7 @@ public abstract class OptionItem
 
         if (AllOptions.Any(op => op.Id == id))
         {
-            Logger.Error($"重复出现选项ID:{id}", "OptionItem");
+            Logger.Error($"重复出现选项ID:{id} => {name}", "OptionItem");
         }
         _allOptions.Add(this);
     }
@@ -234,7 +234,6 @@ public abstract class OptionItem
 
         RPC.SyncCustomSettingsRPC(targetId);
     }
-
 
     // EventArgs
     private void CallUpdateValueEvent(int beforeValue, int currentValue)

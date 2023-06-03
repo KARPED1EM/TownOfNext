@@ -7,6 +7,8 @@ using TOHE.Modules;
 using TOHE.Roles.Neutral;
 using UnityEngine;
 
+using TOHE.Roles.Core;
+
 namespace TOHE;
 
 public class PlayerState
@@ -16,7 +18,7 @@ public class PlayerState
     public List<CustomRoles> SubRoles;
     public CountTypes countTypes;
     public bool IsDead { get; set; }
-    public DeathReason deathReason { get; set; }
+    public CustomDeathReason DeathReason { get; set; }
     public TaskState taskState;
     public bool IsBlackOut { get; set; }
     public (DateTime, byte) RealKiller;
@@ -29,7 +31,7 @@ public class PlayerState
         countTypes = CountTypes.OutOfGame;
         PlayerId = playerId;
         IsDead = false;
-        deathReason = DeathReason.etc;
+        DeathReason = CustomDeathReason.etc;
         taskState = new();
         IsBlackOut = false;
         RealKiller = (DateTime.MinValue, byte.MaxValue);
@@ -55,7 +57,16 @@ public class PlayerState
     public void SetMainRole(CustomRoles role)
     {
         MainRole = role;
-        countTypes = role.GetCountTypes();
+
+        // 役職クラスのコンストラクタでセット済なら不要
+        if (CustomRoleManager.GetByPlayerId(PlayerId) == null)
+        {
+            countTypes = role switch
+            {
+                CustomRoles.GM => CountTypes.OutOfGame,
+                _ => role.IsImpostor() ? CountTypes.Impostor : CountTypes.Crew,
+            };
+        }
     }
     public void SetSubRole(CustomRoles role, bool AllReplace = false)
     {
@@ -78,13 +89,14 @@ public class PlayerState
         }
         if (role == CustomRoles.Charmed)
         {
-            countTypes = Succubus.CharmedCountMode.GetInt() switch
-            {
-                0 => CountTypes.OutOfGame,
-                1 => CountTypes.Succubus,
-                2 => countTypes,
-                _ => throw new NotImplementedException()
-            };
+            //TODO: FIXME
+            //countTypes = Succubus.CharmedCountMode.GetInt() switch
+            //{
+            //    0 => CountTypes.OutOfGame,
+            //    1 => CountTypes.Succubus,
+            //    2 => countTypes,
+            //    _ => throw new NotImplementedException()
+            //};
             SubRoles.Remove(CustomRoles.Madmate);
         }
 
@@ -100,10 +112,10 @@ public class PlayerState
         IsDead = true;
         if (AmongUsClient.Instance.AmHost)
         {
-            RPC.SendDeathReason(PlayerId, deathReason);
+            RPC.SendDeathReason(PlayerId, DeathReason);
         }
     }
-    public bool IsSuicide() { return deathReason == DeathReason.Suicide; }
+    public bool IsSuicide() { return DeathReason == CustomDeathReason.Suicide; }
     public TaskState GetTaskState() { return taskState; }
     public void InitTask(PlayerControl player)
     {
@@ -113,46 +125,31 @@ public class PlayerState
     {
         taskState.Update(player);
     }
-    public enum DeathReason
-    {
-        Kill,
-        Vote,
-        Suicide,
-        Spell,
-        FollowingSuicide,
-        Bite,
-        Bombed,
-        Misfire,
-        Torched,
-        Sniped,
-        Revenge,
-        Execution,
-        Disconnected,
-        Fall,
-
-        // TOHE
-        Gambled,
-        Eaten,
-        Sacrifice,
-        Quantization,
-        Overtired,
-        Ashamed,
-        PissedOff,
-        Dismembered,
-        LossOfHead,
-        Trialed,
-
-        etc = -1
-    }
+    
     public byte GetRealKiller()
         => IsDead && RealKiller.Item1 != DateTime.MinValue ? RealKiller.Item2 : byte.MaxValue;
     public int GetKillCount(bool ExcludeSelfKill = false)
     {
         int count = 0;
-        foreach (var state in Main.PlayerStates.Values)
+        foreach (var state in AllPlayerStates.Values)
             if (!(ExcludeSelfKill && state.PlayerId == PlayerId) && state.GetRealKiller() == PlayerId)
                 count++;
         return count;
+    }
+
+    private static Dictionary<byte, PlayerState> allPlayerStates = new(15);
+    public static IReadOnlyDictionary<byte, PlayerState> AllPlayerStates => allPlayerStates;
+
+    public static PlayerState GetByPlayerId(byte playerId) => AllPlayerStates.TryGetValue(playerId, out var state) ? state : null;
+    public static void Clear() => allPlayerStates.Clear();
+    public static void Create(byte playerId)
+    {
+        if (allPlayerStates.ContainsKey(playerId))
+        {
+            Logger.Warn($"重複したIDのPlayerStateが作成されました: {playerId}", nameof(PlayerState));
+            return;
+        }
+        allPlayerStates[playerId] = new(playerId);
     }
 }
 public class TaskState
@@ -188,124 +185,13 @@ public class TaskState
     {
         Logger.Info($"{player.GetNameWithRole()}: UpdateTask", "TaskState.Update");
         GameData.Instance.RecomputeTaskCounts();
-        Logger.Info($"TotalTaskCounts = {GameData.Instance.CompletedTasks}/{GameData.Instance.TotalTasks}", "TaskState.Update");
+        //PlayerControl.CompleteTask Prefixから呼ばれるのでGameDataとは1ずれている
+        Logger.Info($"TotalTaskCounts = {GameData.Instance.CompletedTasks + 1}/{GameData.Instance.TotalTasks}", "TaskState.Update");
 
         //初期化出来ていなかったら初期化
         if (AllTasksCount == -1) Init(player);
 
         if (!hasTasks) return;
-
-        if (AmongUsClient.Instance.AmHost)
-        {
-            //FIXME:SpeedBooster class transplant
-            if (player.IsAlive()
-            && player.Is(CustomRoles.SpeedBooster)
-            && ((CompletedTasksCount + 1) <= Options.SpeedBoosterTimes.GetInt()))
-            {
-                Logger.Info("增速者触发加速:" + player.GetNameWithRole(), "SpeedBooster");
-                Main.AllPlayerSpeed[player.PlayerId] += Options.SpeedBoosterUpSpeed.GetFloat();
-                if (Main.AllPlayerSpeed[player.PlayerId] > 3) player.Notify(Translator.GetString("SpeedBoosterSpeedLimit"));
-                else player.Notify(string.Format(Translator.GetString("SpeedBoosterTaskDone"), Main.AllPlayerSpeed[player.PlayerId].ToString("0.0#####")));
-            }
-
-            /*
-            //叛徒修理搞破坏
-            if (player.IsAlive()
-            && player.Is(CustomRoles.SabotageMaster)
-            && player.Is(CustomRoles.Madmate))
-            {
-                List<SystemTypes> SysList = new();
-                foreach (SystemTypes sys in Enum.GetValues(typeof(SystemTypes)))
-                    if (Utils.IsActive(sys)) SysList.Add(sys);
-
-                if (SysList.Count > 0)
-                {
-                    var SbSys = SysList[IRandom.Instance.Next(0, SysList.Count)];
-
-                    MessageWriter SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, player.GetClientId());
-                    SabotageFixWriter.Write((byte)SbSys);
-                    MessageExtensions.WriteNetObject(SabotageFixWriter, player);
-                    AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
-
-                    foreach (var target in Main.AllPlayerControls)
-                    {
-                        if (target == player || target.Data.Disconnected) continue;
-                        SabotageFixWriter = AmongUsClient.Instance.StartRpcImmediately(ShipStatus.Instance.NetId, (byte)RpcCalls.RepairSystem, SendOption.Reliable, target.GetClientId());
-                        SabotageFixWriter.Write((byte)SbSys);
-                        MessageExtensions.WriteNetObject(SabotageFixWriter, target);
-                        AmongUsClient.Instance.FinishRpcImmediately(SabotageFixWriter);
-                    }
-                    Logger.Info("叛徒修理工造成破坏:" + player.cosmetics.nameText.text, "SabotageMaster");
-                }
-            }
-            */
-
-            //传送师完成任务
-            if (player.IsAlive()
-            && player.Is(CustomRoles.Transporter)
-            && ((CompletedTasksCount + 1) <= Options.TransporterTeleportMax.GetInt()))
-            {
-                Logger.Info("传送师触发传送:" + player.GetNameWithRole(), "Transporter");
-                var rd = IRandom.Instance;
-                List<PlayerControl> AllAlivePlayer = new();
-                foreach (var pc in Main.AllAlivePlayerControls.Where(x => !Pelican.IsEaten(x.PlayerId) && !x.inVent)) AllAlivePlayer.Add(pc);
-                if (AllAlivePlayer.Count >= 2)
-                {
-                    var tar1 = AllAlivePlayer[rd.Next(0, AllAlivePlayer.Count)];
-                    AllAlivePlayer.Remove(tar1);
-                    var tar2 = AllAlivePlayer[rd.Next(0, AllAlivePlayer.Count)];
-                    var pos = tar1.GetTruePosition();
-                    Utils.TP(tar1.NetTransform, tar2.GetTruePosition());
-                    Utils.TP(tar2.NetTransform, pos);
-                    tar1.RPCPlayCustomSound("Teleport");
-                    tar2.RPCPlayCustomSound("Teleport");
-                    tar1.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Transporter), string.Format(Translator.GetString("TeleportedByTransporter"), tar2.GetRealName())));
-                    tar2.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Transporter), string.Format(Translator.GetString("TeleportedByTransporter"), tar1.GetRealName())));
-                }
-            }
-
-            //工作狂做完了
-            if (player.Is(CustomRoles.Workaholic) && (CompletedTasksCount + 1) >= AllTasksCount
-                    && !(Options.WorkaholicCannotWinAtDeath.GetBool() && !player.IsAlive()))
-            {
-                Logger.Info("工作狂任务做完了", "Workaholic");
-                RPC.PlaySoundRPC(player.PlayerId, Sounds.KillSound);
-                foreach (var pc in Main.AllAlivePlayerControls)
-                {
-                    if (pc.PlayerId != player.PlayerId)
-                    {
-                        Main.PlayerStates[pc.PlayerId].deathReason = pc.PlayerId == player.PlayerId ?
-                            PlayerState.DeathReason.Overtired : PlayerState.DeathReason.Ashamed;
-                        pc.RpcMurderPlayerV3(pc);
-                        Main.PlayerStates[pc.PlayerId].SetDead();
-                        pc.SetRealKiller(player);
-                    }
-                }
-                CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Workaholic); //爆破で勝利した人も勝利させる
-                CustomWinnerHolder.WinnerIds.Add(player.PlayerId);
-            }
-
-            //船鬼要抽奖啦
-            if (player.Is(CustomRoles.Crewpostor))
-            {
-
-                List<PlayerControl> list = Main.AllAlivePlayerControls.Where(x => x.PlayerId != player.PlayerId && (Options.CrewpostorCanKillAllies.GetBool() || !x.GetCustomRole().IsImpostorTeam())).ToList();
-                if (list.Count < 1)
-                {
-                    Logger.Info($"船鬼没有可击杀目标", "Crewpostor");
-                }
-                else
-                {
-                    list = list.OrderBy(x => Vector2.Distance(player.GetTruePosition(), x.GetTruePosition())).ToList();
-                    var target = list[0];
-                    target.SetRealKiller(player);
-                    target.RpcCheckAndMurder(target);
-                    player.RpcGuardAndKill();
-                    Logger.Info($"船鬼完成任务击杀：{player.GetNameWithRole()} => {target.GetNameWithRole()}", "Crewpostor");
-                }
-            }
-
-        }
 
         //クリアしてたらカウントしない
         if (CompletedTasksCount >= AllTasksCount) return;
@@ -315,7 +201,6 @@ public class TaskState
         //調整後のタスク量までしか表示しない
         CompletedTasksCount = Math.Min(AllTasksCount, CompletedTasksCount);
         Logger.Info($"{player.GetNameWithRole()}: TaskCounts = {CompletedTasksCount}/{AllTasksCount}", "TaskState.Update");
-
     }
 }
 public class PlayerVersion

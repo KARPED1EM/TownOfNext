@@ -8,8 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using TOHE.Roles.Neutral;
 using UnityEngine;
+
+using TOHE.Roles.Core;
 
 [assembly: AssemblyFileVersion(TOHE.Main.PluginVersion)]
 [assembly: AssemblyInformationalVersion(TOHE.Main.PluginVersion)]
@@ -32,7 +33,7 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public static readonly string MainMenuText = "哟这不TOHE吗，几天不见Bug又多了？";
-    public const string PluginGuid = "com.karped1em.townofhostedited";
+    public const string PluginGuid = "com.karped1em.tohe";
     public const string PluginVersion = "2.4.0";
     public const int PluginCreate = 9;
 
@@ -60,8 +61,6 @@ public class Main : BasePlugin
     public static ConfigEntry<bool> ForceOwnLanguageRoleName { get; private set; }
     public static ConfigEntry<bool> EnableCustomButton { get; private set; }
     public static ConfigEntry<bool> EnableCustomSoundEffect { get; private set; }
-    public static ConfigEntry<bool> SwitchVanilla { get; private set; }
-    public static ConfigEntry<bool> FastBoot { get; private set; }
     public static ConfigEntry<bool> VersionCheat { get; private set; }
     public static ConfigEntry<bool> GodMode { get; private set; }
 
@@ -78,14 +77,11 @@ public class Main : BasePlugin
     public static ConfigEntry<float> LastKillCooldown { get; private set; }
     public static ConfigEntry<float> LastShapeshifterCooldown { get; private set; }
     public static OptionBackupData RealOptionsData;
-    public static Dictionary<byte, PlayerState> PlayerStates = new();
     public static Dictionary<byte, string> AllPlayerNames = new();
     public static Dictionary<(byte, byte), string> LastNotifyNames;
     public static Dictionary<byte, Color32> PlayerColors = new();
-    public static Dictionary<byte, PlayerState.DeathReason> AfterMeetingDeathPlayers = new();
+    public static Dictionary<byte, CustomDeathReason> AfterMeetingDeathPlayers = new();
     public static Dictionary<CustomRoles, string> roleColors;
-    public static bool IsFixedCooldown => CustomRoles.Vampire.IsEnable();
-    public static float RefixCooldownDelay = 0f;
     public static GameData.PlayerInfo LastVotedPlayerInfo;
     public static string LastVotedPlayer;
     public static List<byte> ResetCamPlayerList = new();
@@ -99,75 +95,33 @@ public class Main : BasePlugin
     public static Dictionary<byte, float> AllPlayerKillCooldown = new();
     public static Dictionary<byte, Vent> LastEnteredVent = new();
     public static Dictionary<byte, Vector2> LastEnteredVentLocation = new();
-    public static List<byte> CyberStarDead = new();
-    public static List<byte> BoobyTrapBody = new();
-    public static Dictionary<byte, byte> KillerOfBoobyTrapBody = new();
-    public static Dictionary<byte, string> DetectiveNotify = new();
-    public static List<byte> OverDeadPlayerList = new();
     public static bool DoBlockNameChange = false;
-    public static int updateTime;
     public static bool newLobby = false;
     public static Dictionary<int, int> SayStartTimes = new();
     public static Dictionary<int, int> SayBanwordsTimes = new();
     public static Dictionary<byte, float> AllPlayerSpeed = new();
     public const float MinSpeed = 0.0001f;
-    public static List<byte> CleanerBodies = new();
-    public static List<byte> BrakarVoteFor = new();
-    public static Dictionary<byte, (byte, float)> BitPlayers = new();
-    public static Dictionary<byte, float> WarlockTimer = new();
-    public static Dictionary<byte, float> AssassinTimer = new();
-    public static Dictionary<byte, PlayerControl> CursedPlayers = new();
-    public static Dictionary<byte, bool> isCurseAndKill = new();
-    public static Dictionary<byte, int> MafiaRevenged = new();
-    public static Dictionary<byte, int> GuesserGuessed = new();
-    public static Dictionary<byte, int> CapitalismAddTask = new();
-    public static Dictionary<byte, int> CapitalismAssignTask = new();
-    public static Dictionary<(byte, byte), bool> isDoused = new();
-    public static Dictionary<(byte, byte), bool> isDraw = new();
-    public static Dictionary<byte, (PlayerControl, float)> ArsonistTimer = new();
-    public static Dictionary<byte, (PlayerControl, float)> RevolutionistTimer = new();
-    public static Dictionary<byte, long> RevolutionistStart = new();
-    public static Dictionary<byte, long> RevolutionistLastTime = new();
-    public static Dictionary<byte, int> RevolutionistCountdown = new();
-    public static Dictionary<byte, byte> PuppeteerList = new();
-    public static Dictionary<byte, byte> SpeedBoostTarget = new();
-    public static Dictionary<byte, int> MayorUsedButtonCount = new();
-    public static Dictionary<byte, int> ParaUsedButtonCount = new();
-    public static Dictionary<byte, int> MarioVentCount = new();
-    public static Dictionary<byte, long> VeteranInProtect = new();
-    public static Dictionary<byte, int> VeteranNumOfUsed = new();
-    public static Dictionary<byte, long> GrenadierBlinding = new();
-    public static Dictionary<byte, long> MadGrenadierBlinding = new();
-    public static Dictionary<byte, int> CursedWolfSpellCount = new();
     public static int AliveImpostorCount;
-    public static bool isCursed;
     public static Dictionary<byte, bool> CheckShapeshift = new();
     public static Dictionary<byte, byte> ShapeshiftTarget = new();
-    public static Dictionary<(byte, byte), string> targetArrows = new();
-    public static Dictionary<byte, Vector2> EscapeeLocation = new();
     public static bool VisibleTasksCount = false;
     public static string nickName = "";
     public static bool introDestroyed = false;
     public static int DiscussionTime;
     public static int VotingTime;
-    public static byte currentDousingTarget = byte.MaxValue;
-    public static byte currentDrawTarget = byte.MaxValue;
     public static float DefaultCrewmateVision;
     public static float DefaultImpostorVision;
     public static bool IsInitialRelease = DateTime.Now.Month == 1 && DateTime.Now.Day is 17;
     public static bool IsAprilFools = DateTime.Now.Month == 4 && DateTime.Now.Day is 1;
-    public static bool ResetOptions = true;
+    public const float RoleTextSize = 2f;
     public static byte FirstDied = byte.MaxValue;
     public static byte ShieldPlayer = byte.MaxValue;
     public static int MadmateNum = 0;
-    public static int BardCreations = 0;
-    public static Dictionary<byte, byte> Provoked = new();
-    public static Dictionary<byte, int> DovesOfNeaceNumOfUsed = new();
 
     public static Dictionary<byte, CustomRoles> DevRole = new();
 
     public static IEnumerable<PlayerControl> AllPlayerControls => PlayerControl.AllPlayerControls.ToArray().Where(p => p != null);
-    public static IEnumerable<PlayerControl> AllAlivePlayerControls => PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && p.IsAlive() && !p.Data.Disconnected && !Pelican.IsEaten(p.PlayerId));
+    public static IEnumerable<PlayerControl> AllAlivePlayerControls => PlayerControl.AllPlayerControls.ToArray().Where(p => p != null && p.IsAlive() && !p.Data.Disconnected && !p.IsEaten());
 
     public static Main Instance;
 
@@ -196,8 +150,6 @@ public class Main : BasePlugin
         ForceOwnLanguageRoleName = Config.Bind("Client Options", "ForceOwnLanguageRoleName", false);
         EnableCustomButton = Config.Bind("Client Options", "EnableCustomButton", true);
         EnableCustomSoundEffect = Config.Bind("Client Options", "EnableCustomSoundEffect", true);
-        SwitchVanilla = Config.Bind("Client Options", "SwitchVanilla", false);
-        FastBoot = Config.Bind("Client Options", "FastBoot", false);
         VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
         GodMode = Config.Bind("Client Options", "GodMode", false);
 
@@ -206,6 +158,7 @@ public class Main : BasePlugin
         TOHE.Logger.Disable("NotifyRoles");
         TOHE.Logger.Disable("SwitchSystem");
         TOHE.Logger.Disable("ModNews");
+        TOHE.Logger.Disable("CustomRpcSender");
         if (!DebugModeManager.AmDebugger)
         {
             TOHE.Logger.Disable("2018k");
@@ -252,68 +205,19 @@ public class Main : BasePlugin
         {
             roleColors = new Dictionary<CustomRoles, string>()
             {
-                //バニラ役職
+                //原版职业
                 {CustomRoles.Crewmate, "#ffffff"},
                 {CustomRoles.Engineer, "#8cffff"},
                 {CustomRoles.Scientist, "#8cffff"},
                 {CustomRoles.GuardianAngel, "#ffffff"},
-                //特殊クルー役職
-                {CustomRoles.Luckey, "#b8d7a3" },
-                {CustomRoles.Needy, "#a4dffe"},
-                {CustomRoles.SabotageMaster, "#3333ff"},
-                {CustomRoles.Snitch, "#b8fb4f"},
-                {CustomRoles.Mayor, "#204d42"},
-                {CustomRoles.Paranoia, "#c993f5"},
-                {CustomRoles.Psychic, "#6F698C"},
-                {CustomRoles.Sheriff, "#f8cd46"},
-                {CustomRoles.SuperStar, "#f6f657"},
-                {CustomRoles.CyberStar, "#ee4a55" },
-                {CustomRoles.SpeedBooster, "#00ffff"},
-                {CustomRoles.Doctor, "#80ffdd"},
-                {CustomRoles.Dictator, "#df9b00"},
-                {CustomRoles.Detective, "#7160e8" },
-                {CustomRoles.SwordsMan, "#f0e68c"},
-                {CustomRoles.NiceGuesser, "#eede26"},
-                {CustomRoles.Transporter, "#42D1FF"},
-                {CustomRoles.TimeManager, "#6495ed"},
-                {CustomRoles.Veteran, "#a77738"},
-                {CustomRoles.Bodyguard, "#185abd"},
-                {CustomRoles.Counterfeiter, "#e0e0e0"},
-                {CustomRoles.Grenadier, "#3c4a16"},
-                {CustomRoles.Medicaler, "#00a4ff"},
-                {CustomRoles.Divinator, "#882c83"},
-                {CustomRoles.Glitch, "#dcdcdc"},
-                {CustomRoles.Judge, "#f8d85a"},
-                {CustomRoles.Mortician, "#333c49"},
-                {CustomRoles.Mediumshiper, "#a200ff"},
-                {CustomRoles.Observer, "#a8e0fa"},
-                {CustomRoles.DovesOfNeace, "#FFFFFF" },
-                //第三陣営役職
-                {CustomRoles.Arsonist, "#ff6633"},
-                {CustomRoles.Jester, "#ec62a5"},
-                {CustomRoles.Terrorist, "#00e600"},
-                {CustomRoles.Executioner, "#611c3a"},
-                {CustomRoles.God, "#f96464"},
-                {CustomRoles.Opportunist, "#4dff4d"},
-                {CustomRoles.Mario, "#ff6201"},
-                {CustomRoles.Jackal, "#00b4eb"},
-                {CustomRoles.Innocent, "#8f815e"},
-                {CustomRoles.Pelican, "#34c84b"},
-                {CustomRoles.Revolutionist, "#ba4d06"},
-                {CustomRoles.FFF, "#414b66"},
-                {CustomRoles.Konan, "#4d4dff"},
-                {CustomRoles.Gamer, "#68bc71"},
-                {CustomRoles.DarkHide, "#483d8b"},
-                {CustomRoles.Workaholic, "#008b8b"},
-                {CustomRoles.Collector, "#9d8892"},
-                {CustomRoles.Provocateur, "#74ba43"},
-                {CustomRoles.Sunnyboy, "#ff9902"},
-                {CustomRoles.BloodKnight, "#630000"},
-                {CustomRoles.Totocalcio, "#ff9409"},
-                {CustomRoles.Succubus, "#ff00ff"},
-                // GM
+
+                //SoloKombat
+                {CustomRoles.KB_Normal, "#f55252"},
+
+                //GM
                 {CustomRoles.GM, "#ff5b70"},
-                //サブ役職
+
+                //附加职业
                 {CustomRoles.NotAssigned, "#ffffff"},
                 {CustomRoles.LastImpostor, "#ff1919"},
                 {CustomRoles.Lovers, "#ff9ace"},
@@ -338,8 +242,6 @@ public class Main : BasePlugin
                 {CustomRoles.Charmed, "#ff00ff"},
                 {CustomRoles.Bait, "#00f7ff"},
                 {CustomRoles.Trapper, "#5a8fd0"},
-                //SoloKombat
-                {CustomRoles.KB_Normal, "#f55252"}
             };
             foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
             {
@@ -352,6 +254,14 @@ public class Main : BasePlugin
                         break;
                 }
             }
+            var type = typeof(RoleBase);
+            var roleClassArray =
+            CustomRoleManager.AllRolesClassType = Assembly.GetAssembly(type)
+                .GetTypes()
+                .Where(x => x.IsSubclassOf(type)).ToArray();
+
+            foreach (var roleClassType in roleClassArray)
+                roleClassType.GetField("RoleInfo")?.GetValue(type);
         }
         catch (ArgumentException ex)
         {
@@ -393,144 +303,36 @@ public class Main : BasePlugin
         TOHE.Logger.Msg("========= TOHE loaded! =========", "Plugin Load");
     }
 }
-public enum CustomRoles
+public enum CustomDeathReason
 {
-    //Default
-    Crewmate = 0,
-    //Impostor(Vanilla)
-    Impostor,
-    Shapeshifter,
-    //Impostor
-    BountyHunter,
-    FireWorks,
-    Mafia,
-    SerialKiller,
-    ShapeMaster,
-    EvilGuesser,
-    Minimalism,
-    Zombie,
-    Sniper,
-    Vampire,
-    Witch,
-    Warlock,
-    Assassin,
-    Hacker,
-    Miner,
-    Escapee,
-    Mare,
-    Puppeteer,
-    TimeThief,
-    EvilTracker,
-    AntiAdminer,
-    Sans,
-    Bomber,
-    BoobyTrap,
-    Scavenger,
-    Capitalism,
-    Gangster,
-    Cleaner,
-    BallLightning,
-    Greedier,
-    CursedWolf,
-    ImperiusCurse,
-    QuickShooter,
-    Concealer,
-    Eraser,
-    OverKiller,
-    Hangman,
-    Bard,
-    Swooper,
-    Crewpostor,
-    //Crewmate(Vanilla)
-    Engineer,
-    GuardianAngel,
-    Scientist,
-    //Crewmate
-    Luckey,
-    Needy,
-    SuperStar,
-    CyberStar,
-    Mayor,
-    Paranoia,
-    Psychic,
-    SabotageMaster,
-    Sheriff,
-    Snitch,
-    SpeedBooster,
-    Dictator,
-    Doctor,
-    Detective,
-    SwordsMan,
-    NiceGuesser,
-    Transporter,
-    TimeManager,
-    Veteran,
-    Bodyguard,
-    Counterfeiter,
-    Grenadier,
-    Medicaler,
-    Divinator,
-    Glitch,
-    Judge,
-    Mortician,
-    Mediumshiper,
-    Observer,
-    DovesOfNeace,
-    //Neutral
-    Arsonist,
-    Jester,
-    God,
-    Opportunist,
-    Mario,
-    Terrorist,
-    Executioner,
-    Jackal,
-    Innocent,
-    Pelican,
-    Revolutionist,
-    FFF,
-    Konan,
-    Gamer,
-    DarkHide,
-    Workaholic,
-    Collector,
-    Provocateur,
-    Sunnyboy,
-    BloodKnight,
-    Totocalcio,
-    Succubus,
+    Kill,
+    Vote,
+    Suicide,
+    Spell,
+    FollowingSuicide,
+    Bite,
+    Bombed,
+    Misfire,
+    Torched,
+    Sniped,
+    Revenge,
+    Execution,
+    Disconnected,
+    Fall,
 
-    //SoloKombat
-    KB_Normal,
+    // TOHE
+    Gambled,
+    Eaten,
+    Sacrifice,
+    Quantization,
+    Overtired,
+    Ashamed,
+    PissedOff,
+    Dismembered,
+    LossOfHead,
+    Trialed,
 
-    //GM
-    GM,
-
-    // Sub-role after 500
-    NotAssigned = 500,
-    LastImpostor,
-    Lovers,
-    Ntr,
-    Madmate,
-    Watcher,
-    Flashman,
-    Lighter,
-    Seer,
-    Brakar,
-    Oblivious,
-    Bewilder,
-    Workhorse,
-    Fool,
-    Avanger,
-    Youtuber,
-    Egoist,
-    TicketsStealer,
-    DualPersonality,
-    Mimic,
-    Reach,
-    Charmed,
-    Bait,
-    Trapper,
+    etc = -1
 }
 //WinData
 public enum CustomWinner

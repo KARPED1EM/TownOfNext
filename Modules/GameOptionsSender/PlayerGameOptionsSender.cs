@@ -3,9 +3,10 @@ using Hazel;
 using Il2CppSystem.Linq;
 using InnerNet;
 using System.Linq;
-using TOHE.Roles.Impostor;
-using TOHE.Roles.Neutral;
 using Mathf = UnityEngine.Mathf;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Neutral;
 
 namespace TOHE.Modules;
 
@@ -67,14 +68,11 @@ public class PlayerGameOptionsSender : GameOptionsSender
     }
     public override IGameOptions BuildGameOptions()
     {
-        if (Main.RealOptionsData == null)
-        {
-            Main.RealOptionsData = new OptionBackupData(GameOptionsManager.Instance.CurrentGameOptions);
-        }
+        Main.RealOptionsData ??= new OptionBackupData(GameOptionsManager.Instance.CurrentGameOptions);
 
         var opt = BasedGameOptions;
         AURoleOptions.SetOpt(opt);
-        var state = Main.PlayerStates[player.PlayerId];
+        var state = PlayerState.GetByPlayerId(player.PlayerId);
         opt.BlackOut(state.IsBlackOut);
 
         CustomRoles role = player.GetCustomRole();
@@ -85,129 +83,35 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 break;
         }
 
-        switch (role)
+        var roleClass = player.GetRoleClass();
+        roleClass?.ApplyGameOptions(opt);
+        foreach (var subRole in player.GetCustomSubRoles())
         {
-            case CustomRoles.Terrorist:
-            case CustomRoles.SabotageMaster:
-            case CustomRoles.Mario:
-                AURoleOptions.EngineerCooldown = 0f;
-                AURoleOptions.EngineerInVentMaxTime = 0f;
-                break;
-            case CustomRoles.ShapeMaster:
-                AURoleOptions.ShapeshifterCooldown = 0f;
-                AURoleOptions.ShapeshifterLeaveSkin = false;
-                AURoleOptions.ShapeshifterDuration = Options.ShapeMasterShapeshiftDuration.GetFloat();
-                break;
-            case CustomRoles.Warlock:
-                AURoleOptions.ShapeshifterCooldown = Main.isCursed ? 1f : Options.DefaultKillCooldown;
-                break;
-            case CustomRoles.SerialKiller:
-                SerialKiller.ApplyGameOptions(player);
-                break;
-            case CustomRoles.BountyHunter:
-                BountyHunter.ApplyGameOptions();
-                break;
-            case CustomRoles.Sheriff:
-            case CustomRoles.SwordsMan:
-            case CustomRoles.Arsonist:
-            case CustomRoles.Minimalism:
-            case CustomRoles.Innocent:
-            case CustomRoles.Pelican:
-            case CustomRoles.Revolutionist:
-            case CustomRoles.Medicaler:
-            case CustomRoles.Provocateur:
-                opt.SetVision(false);
-                break;
-            case CustomRoles.Zombie:
-                opt.SetFloat(FloatOptionNames.ImpostorLightMod, 0.2f);
-                break;
-            case CustomRoles.Doctor:
-                AURoleOptions.ScientistCooldown = 0f;
-                AURoleOptions.ScientistBatteryCharge = Options.DoctorTaskCompletedBatteryCharge.GetFloat();
-                break;
-            case CustomRoles.Mayor:
-                AURoleOptions.EngineerCooldown =
-                    !Main.MayorUsedButtonCount.TryGetValue(player.PlayerId, out var count) || count < Options.MayorNumOfUseButton.GetInt()
-                    ? opt.GetInt(Int32OptionNames.EmergencyCooldown)
-                    : 300f;
-                AURoleOptions.EngineerInVentMaxTime = 1;
-                break;
-            case CustomRoles.Paranoia:
-                AURoleOptions.EngineerCooldown =
-                    !Main.ParaUsedButtonCount.TryGetValue(player.PlayerId, out var count2) || count2 < Options.ParanoiaNumOfUseButton.GetInt()
-                    ? Options.ParanoiaVentCooldown.GetFloat()
-                    : 300f;
-                AURoleOptions.EngineerInVentMaxTime = 1;
-                break;
-            case CustomRoles.Mare:
-                Mare.ApplyGameOptions(player.PlayerId);
-                break;
-            case CustomRoles.EvilTracker:
-                EvilTracker.ApplyGameOptions(player.PlayerId);
-                break;
-            case CustomRoles.Jackal:
-                Jackal.ApplyGameOptions(opt);
-                break;
-            case CustomRoles.Veteran:
-                AURoleOptions.EngineerCooldown =
-                    !Main.VeteranNumOfUsed.TryGetValue(player.PlayerId, out var count3) || count3 > 0
-                    ? Options.VeteranSkillCooldown.GetFloat()
-                    : 300f;
-                AURoleOptions.EngineerInVentMaxTime = 1;
-                break;
-            case CustomRoles.Grenadier:
-                AURoleOptions.EngineerCooldown = Options.GrenadierSkillCooldown.GetFloat();
-                AURoleOptions.EngineerInVentMaxTime = 1;
-                break;
-            case CustomRoles.FFF:
-                opt.SetVision(true);
-                break;
-            case CustomRoles.Gamer:
-                Gamer.ApplyGameOptions(opt);
-                break;
-            case CustomRoles.DarkHide:
-                DarkHide.ApplyGameOptions(opt);
-                break;
-            case CustomRoles.Workaholic:
-                AURoleOptions.EngineerCooldown = Options.WorkaholicVentCooldown.GetFloat();
-                AURoleOptions.EngineerInVentMaxTime = 0f;
-                break;
-            case CustomRoles.ImperiusCurse:
-                AURoleOptions.ShapeshifterCooldown = Options.ImperiusCurseShapeshiftCooldown.GetFloat();
-                AURoleOptions.ShapeshifterLeaveSkin = false;
-                AURoleOptions.ShapeshifterDuration = Options.ShapeImperiusCurseShapeshiftDuration.GetFloat();
-                break;
-            case CustomRoles.QuickShooter:
-                AURoleOptions.ShapeshifterCooldown = QuickShooter.ShapeshiftCooldown.GetFloat();
-                break;
-            case CustomRoles.Concealer:
-                Concealer.ApplyGameOptions();
-                break;
-            case CustomRoles.Assassin:
-                Assassin.ApplyGameOptions();
-                break;
-            case CustomRoles.Hacker:
-                Hacker.ApplyGameOptions();
-                break;
-            case CustomRoles.Hangman:
-                Hangman.ApplyGameOptions();
-                break;
-            case CustomRoles.Sunnyboy:
-                AURoleOptions.ScientistCooldown = 0f;
-                AURoleOptions.ScientistBatteryCharge = 60f;
-                break;
-            case CustomRoles.BloodKnight:
-                BloodKnight.ApplyGameOptions(opt);
-                break;
-            case CustomRoles.DovesOfNeace:
-                AURoleOptions.EngineerCooldown =
-                    !Main.DovesOfNeaceNumOfUsed.TryGetValue(player.PlayerId, out var count4) || count4 > 0
-                    ? Options.DovesOfNeaceCooldown.GetFloat()
-                    : 300f;
-                AURoleOptions.EngineerInVentMaxTime = 1;
-                break;
+            switch (subRole)
+            {
+                case CustomRoles.Watcher:
+                    opt.SetBool(BoolOptionNames.AnonymousVotes, false);
+                    break;
+                    //TODO
+                //case CustomRoles.Flashman:
+                //    Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
+                //    break;
+                //case CustomRoles.Lighter:
+                //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
+                //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
+                //    break;
+                //case CustomRoles.Bewilder:
+                //    opt.SetVision(false);
+                //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
+                //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
+                //    break;
+                //case CustomRoles.Reach:
+                //    opt.SetInt(Int32OptionNames.KillDistance, 2);
+                //    break;
+            }
         }
 
+        /* TODO: FIXME
         // 为迷惑者的凶手
         if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Bewilder) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId && !x.Is(CustomRoles.Hangman)).Count() > 0)
         {
@@ -231,33 +135,8 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.GrenadierCauseVision.GetFloat());
             }
         }
+        */
 
-        foreach (var subRole in Main.PlayerStates[player.PlayerId].SubRoles)
-        {
-            switch (subRole)
-            {
-                case CustomRoles.Watcher:
-                    opt.SetBool(BoolOptionNames.AnonymousVotes, false);
-                    break;
-                case CustomRoles.Flashman:
-                    Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
-                    break;
-                case CustomRoles.Lighter:
-                    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
-                    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
-                    break;
-                case CustomRoles.Bewilder:
-                    opt.SetVision(false);
-                    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
-                    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
-                    break;
-                case CustomRoles.Reach:
-                    opt.SetInt(Int32OptionNames.KillDistance, 2);
-                    break;
-            }
-        }
-
-        // 当工程跳管冷却为0时无法正常显示图标
         AURoleOptions.EngineerCooldown = Mathf.Max(0.01f, AURoleOptions.EngineerCooldown);
 
         if (Main.AllPlayerKillCooldown.TryGetValue(player.PlayerId, out var killCooldown))

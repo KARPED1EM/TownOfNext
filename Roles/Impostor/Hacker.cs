@@ -1,82 +1,95 @@
-﻿using Hazel;
-using System.Collections.Generic;
+﻿using AmongUs.GameOptions;
 using UnityEngine;
-using static TOHE.Options;
+using System.Collections.Generic;
+using Hazel;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Impostor;
-
-public static class Hacker
+public sealed class Hacker : RoleBase, IImpostor
 {
-    private static readonly int Id = 901585;
-    private static List<byte> playerIdList = new();
-
-    private static OptionItem HackLimitOpt;
-    private static OptionItem KillCooldown;
-
-    private static Dictionary<byte, int> HackLimit = new();
-    private static List<byte> DeadBodyList = new();
-
-    public static void SetupCustomOption()
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Hacker),
+            player => new Hacker(player),
+            CustomRoles.Hacker,
+            () => RoleTypes.Shapeshifter,
+            CustomRoleTypes.Impostor,
+            902585,
+            SetupOptionItem,
+            "ha"
+        );
+    public Hacker(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
     {
-        SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.Hacker);
-        KillCooldown = FloatOptionItem.Create(Id + 2, "KillCooldown", new(0f, 180f, 2.5f), 30f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Hacker])
-            .SetValueFormat(OptionFormat.Seconds);
-        HackLimitOpt = IntegerOptionItem.Create(Id + 4, "HackLimit", new(1, 15, 1), 3, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Hacker])
-            .SetValueFormat(OptionFormat.Times);
-    }
-    public static void Init()
-    {
-        playerIdList = new();
-        HackLimit = new();
         DeadBodyList = new();
     }
-    public static void Add(byte playerId)
+
+    static OptionItem OptionHackLimit;
+    static OptionItem OptionKillCooldown;
+    enum OptionName
     {
-        playerIdList.Add(playerId);
-        HackLimit.TryAdd(playerId, HackLimitOpt.GetInt());
+        HackLimit,
     }
-    public static bool IsEnable => playerIdList.Count > 0;
-    private static void SendRPC(byte playerId)
+
+    private int HackLimit = new();
+    private static List<byte> DeadBodyList = new();
+    private static void SetupOptionItem()
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetHackerHackLimit, SendOption.Reliable, -1);
-        writer.Write(playerId);
-        writer.Write(HackLimit[playerId]);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 30f, false)
+            .SetValueFormat(OptionFormat.Seconds);
+        OptionHackLimit = IntegerOptionItem.Create(RoleInfo, 11, OptionName.HackLimit, new(1, 99, 1), 3, false)
+            .SetValueFormat(OptionFormat.Times);
     }
-    public static void ReceiveRPC(MessageReader reader)
+    public override void Add()
     {
-        byte PlayerId = reader.ReadByte();
-        int Limit = reader.ReadInt32();
-        HackLimit.TryAdd(PlayerId, HackLimitOpt.GetInt());
-        HackLimit[PlayerId] = Limit;
+        HackLimit = OptionHackLimit.GetInt();
     }
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = KillCooldown.GetFloat();
-    public static void ApplyGameOptions()
+    private void SendRPC()
+    {
+        using var sender = CreateSender(CustomRPC.SetHackerHackLimit);
+        sender.Writer.Write(HackLimit);
+    }
+    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
+    {
+        if (rpcType != CustomRPC.SetHackerHackLimit) return;
+        HackLimit = reader.ReadInt32();
+    }
+    public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
+    public override void ApplyGameOptions(IGameOptions opt)
     {
         AURoleOptions.ShapeshifterCooldown = 1f;
         AURoleOptions.ShapeshifterDuration = 1f;
     }
-    public static string GetHackLimit(byte playerId) => Utils.ColorString((HackLimit.TryGetValue(playerId, out var x) && x >= 1) ? Color.red : Color.gray, HackLimit.TryGetValue(playerId, out var hackLimit) ? $"({hackLimit})" : "Invalid");
-    public static void GetAbilityButtonText(HudManager __instance, byte playerId)
+    public override string GetProgressText(bool comms = false) => Utils.ColorString(HackLimit >= 1 ? Color.red : Color.gray, $"({HackLimit})");
+    public override void ChangeHudManager(HudManager __instance) => __instance.AbilityButton.SetUsesRemaining(HackLimit);
+    public override bool OverrideAbilityButtonText(out string text)
     {
-        if (HackLimit.TryGetValue(playerId, out var x) && x >= 1)
-        {
-            __instance.AbilityButton.OverrideText(GetString("HackerShapeshiftText"));
-            __instance.AbilityButton.SetUsesRemaining(x);
-        }
+        text = GetString("HackerShapeshiftText");
+        return HackLimit >= 1;
     }
-    public static void OnReportDeadBody() => DeadBodyList = new();
-    public static void AddDeadBody(PlayerControl target)
+    public override void OnStartMeeting() => DeadBodyList = new();
+    public override void OnPlayerDeath(PlayerControl player, CustomDeathReason deathReason, bool isOnMeeting = false)
     {
-        if (target != null && !DeadBodyList.Contains(target.PlayerId))
-            DeadBodyList.Add(target.PlayerId);
+        if (!isOnMeeting && player != null && !DeadBodyList.Contains(player.PlayerId))
+            DeadBodyList.Add(player.PlayerId);
     }
-    public static void OnShapeshift(PlayerControl pc, bool shapeshifting, PlayerControl ssTarget)
+    private bool Shapeshifting;
+    public override void OnShapeshift(PlayerControl target)
     {
-        if (!shapeshifting || !HackLimit.TryGetValue(pc.PlayerId, out var x) || x < 1 || ssTarget == null || ssTarget.Is(CustomRoles.Needy)) return;
-        HackLimit[pc.PlayerId]--;
-        SendRPC(pc.PlayerId);
+        Shapeshifting = !Is(target);
+
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        if (!Shapeshifting || HackLimit < 1 || target == null || target.Is(CustomRoles.Needy)) return;
+
+        HackLimit--;
+        SendRPC();
 
         var targetId = byte.MaxValue;
 
@@ -85,7 +98,7 @@ public static class Hacker
         {
             var dp = Utils.GetPlayerById(db);
             if (dp == null || dp.GetRealKiller() == null) continue;
-            if (dp.GetRealKiller().PlayerId == pc.PlayerId) targetId = db;
+            if (dp.GetRealKiller().PlayerId == Player.PlayerId) targetId = db;
         }
 
         // 未找到骇客击杀的尸体，寻找其他尸体
@@ -93,8 +106,8 @@ public static class Hacker
             targetId = DeadBodyList[IRandom.Instance.Next(0, DeadBodyList.Count)];
 
         if (targetId == byte.MaxValue)
-            new LateTask(() => ssTarget?.NoCheckStartMeeting(ssTarget?.Data), 0.15f, "Hacker Hacking Report Self");
+            new LateTask(() =>target?.NoCheckStartMeeting(target?.Data), 0.15f, "Hacker Hacking Report Self");
         else
-            new LateTask(() => ssTarget?.NoCheckStartMeeting(Utils.GetPlayerById(targetId)?.Data), 0.15f, "Hacker Hacking Report");
+            new LateTask(() => target?.NoCheckStartMeeting(Utils.GetPlayerById(targetId)?.Data), 0.15f, "Hacker Hacking Report");
     }
 }

@@ -33,11 +33,11 @@ internal class MakePublicPatch
     }
 }
 [HarmonyPatch(typeof(MMOnlineManager), nameof(MMOnlineManager.Start))]
-internal class MMOnlineManagerStartPatch
+class MMOnlineManagerStartPatch
 {
     public static void Postfix(MMOnlineManager __instance)
     {
-        if (!((ModUpdater.hasUpdate && ModUpdater.forceUpdate) || ModUpdater.isBroken)) return;
+        if (!(ModUpdater.hasUpdate || ModUpdater.isBroken)) return;
         var obj = GameObject.Find("FindGameButton");
         if (obj)
         {
@@ -46,9 +46,10 @@ internal class MMOnlineManagerStartPatch
             var textObj = Object.Instantiate(obj.transform.FindChild("Text_TMP").GetComponent<TMPro.TextMeshPro>());
             textObj.transform.position = new Vector3(1f, -0.3f, 0);
             textObj.name = "CanNotJoinPublic";
+            textObj.DestroyTranslator();
             var message = ModUpdater.isBroken ? $"<size=2>{Utils.ColorString(Color.red, GetString("ModBrokenMessage"))}</size>"
                 : $"<size=2>{Utils.ColorString(Color.red, GetString("CanNotJoinPublicRoomNoLatest"))}</size>";
-            new LateTask(() => { textObj.text = message; }, 0.01f, "CanNotJoinPublic");
+            textObj.text = message;
         }
     }
 }
@@ -57,7 +58,7 @@ internal class SplashLogoAnimatorPatch
 {
     public static void Prefix(SplashManager __instance)
     {
-        if (DebugModeManager.AmDebugger || Main.FastBoot.Value)
+        if (DebugModeManager.AmDebugger)
         {
             __instance.sceneChanger.AllowFinishLoadingScene();
             __instance.startedSceneLoad = true;

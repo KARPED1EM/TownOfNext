@@ -1,5 +1,7 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
+
+using TOHE.Roles.Core;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -9,7 +11,6 @@ class ChanceChangePatch
 {
     public static void Postfix(RoleOptionSetting __instance)
     {
-        bool forced = true;
         string DisableText = $" ({GetString("Disabled")})";
         if (__instance.Role.Role == RoleTypes.Scientist)
         {
@@ -37,11 +38,6 @@ class ChanceChangePatch
         if (__instance.Role.Role == RoleTypes.Shapeshifter)
         {
             __instance.TitleText.color = Utils.GetRoleColor(CustomRoles.Shapeshifter);
-        }
-
-        if (forced)
-        {
-            __instance.ChanceText.text = DisableText;
         }
     }
 }

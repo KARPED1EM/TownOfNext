@@ -1,58 +1,67 @@
-﻿using Hazel;
-using System.Collections.Generic;
+﻿using AmongUs.GameOptions;
+using Hazel;
 using UnityEngine;
 
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
+
 namespace TOHE.Roles.Crewmate;
-
-public static class SwordsMan
+public sealed class SwordsMan : RoleBase, IKiller
 {
-    private static readonly int Id = 8021075;
-    public static List<byte> playerIdList = new();
-    //public static bool isKilled = false;
-    public static List<byte> killed = new();
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(SwordsMan),
+            player => new SwordsMan(player),
+            CustomRoles.SwordsMan,
+            () => RoleTypes.Impostor,
+            CustomRoleTypes.Crewmate,
+            8021075,
+            null,
+            "vi",
+            "#f0e68c",
+            true
+        );
+    public SwordsMan(PlayerControl player)
+    : base(
+        RoleInfo,
+        player,
+        () => HasTask.False
+    )
+    { }
 
-    public static void SetupCustomOption()
+    private bool IsKilled;
+    public override void Add()
     {
-        Options.SetupRoleOptions(Id, TabGroup.CrewmateRoles, CustomRoles.SwordsMan);
-    }
-    public static void Init()
-    {
-        killed = new();
-        playerIdList = new();
-    }
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = IsKilled(id) ? 300f : 1f;
-    public static string GetKillLimit(byte id) => Utils.ColorString(!IsKilled(id) ? Color.yellow : Color.gray, !IsKilled(id) ? "(1)" : "(0)");
-    public static bool CanUseKillButton(byte playerId)
-        => !Main.PlayerStates[playerId].IsDead
-        && !IsKilled(playerId);
-    public static bool IsKilled(byte playerId) => killed.Contains(playerId);
-    public static void Add(byte playerId)
-    {
-        playerIdList.Add(playerId);
+        var playerId = Player.PlayerId;
+        IsKilled = false;
 
-        if (!AmongUsClient.Instance.AmHost) return;
         if (!Main.ResetCamPlayerList.Contains(playerId))
             Main.ResetCamPlayerList.Add(playerId);
     }
-    private static void SendRPC(byte playerId)
+    private void SendRPC()
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SwordsManKill, SendOption.Reliable, -1);
-        writer.Write(playerId);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        using var sender = CreateSender(CustomRPC.SwordsManKill);
+        sender.Writer.Write(IsKilled);
     }
-    public static void ReceiveRPC(MessageReader reader)
+    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        byte SwordsManId = reader.ReadByte();
-        if (!killed.Contains(SwordsManId))
-            killed.Add(SwordsManId);
+        if (rpcType != CustomRPC.SwordsManKill) return;
+        IsKilled = reader.ReadBoolean();
     }
-    public static bool OnCheckMurder(PlayerControl killer) => CanUseKillButton(killer.PlayerId);
-    public static void OnMurder(PlayerControl killer)
+    public float CalculateKillCooldown() => CanUseKillButton() ? 0f : 255f;
+    public bool CanUseKillButton() => Player.IsAlive() && !IsKilled;
+    public override bool CanSabotage(SystemTypes systemType) => false;
+    public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
+    public bool OnCheckMurderAsKiller(MurderInfo info)
     {
-        SendRPC(killer.PlayerId);
-        killed.Add(killer.PlayerId);
-        Logger.Info($"{killer.GetNameWithRole()} : " + (IsKilled(killer.PlayerId) ? "已使用击杀机会" : "未使用击杀机会"), "SwordsMan");
-        SetKillCooldown(killer.PlayerId);
-        Utils.NotifyRoles(SpecifySeer: killer);
+        if (Is(info.AttemptKiller) && !info.IsSuicide)
+        {
+            if (IsKilled) return false;
+            IsKilled = true;
+            SendRPC();
+            Player.ResetKillCooldown();
+        }
+        return true;
     }
+    public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Color.yellow : Color.gray, $"({(CanUseKillButton() ? 1 : 0)})");
 }

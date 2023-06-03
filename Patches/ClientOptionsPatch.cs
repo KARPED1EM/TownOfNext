@@ -1,4 +1,5 @@
 using HarmonyLib;
+using TOHE.Modules.ClientOptions;
 using UnityEngine;
 
 namespace TOHE;
@@ -13,19 +14,19 @@ public static class OptionsMenuBehaviourStartPatch
     private static ClientOptionItem ForceOwnLanguageRoleName;
     private static ClientOptionItem EnableCustomButton;
     private static ClientOptionItem EnableCustomSoundEffect;
-    private static ClientOptionItem SwitchVanilla;
-    private static ClientOptionItem FastBoot;
+    private static ClientActionItem UnloadMod;
+    private static ClientActionItem DumpLog;
     private static ClientOptionItem VersionCheat;
     private static ClientOptionItem GodMode;
 
+    private static bool reseted = false;
     public static void Postfix(OptionsMenuBehaviour __instance)
     {
         if (__instance.DisableMouseMovement == null) return;
 
-        Main.SwitchVanilla.Value = false;
-        if (Main.ResetOptions || !DebugModeManager.AmDebugger)
+        if (!reseted || !DebugModeManager.AmDebugger)
         {
-            Main.ResetOptions = false;
+            reseted = true;
             Main.VersionCheat.Value = false;
             Main.GodMode.Value = false;
         }
@@ -67,18 +68,13 @@ public static class OptionsMenuBehaviourStartPatch
         {
             EnableCustomSoundEffect = ClientOptionItem.Create("EnableCustomSoundEffect", Main.EnableCustomSoundEffect, __instance);
         }
-        if (SwitchVanilla == null || SwitchVanilla.ToggleButton == null)
+        if (UnloadMod == null || UnloadMod.ToggleButton == null)
         {
-            SwitchVanilla = ClientOptionItem.Create("SwitchVanilla", Main.SwitchVanilla, __instance, SwitchVanillaButtonToggle);
-            static void SwitchVanillaButtonToggle()
-            {
-                Harmony.UnpatchAll();
-                Main.Instance.Unload();
-            }
+            UnloadMod = ClientActionItem.Create("UnloadMod", ModUnloaderScreen.Show, __instance);
         }
-        if (FastBoot == null || FastBoot.ToggleButton == null)
+        if (DumpLog == null || DumpLog.ToggleButton == null)
         {
-            FastBoot = ClientOptionItem.Create("FastBoot", Main.FastBoot, __instance);
+            DumpLog = ClientActionItem.Create("DumpLog", Utils.DumpLog, __instance);
         }
         if ((VersionCheat == null || VersionCheat.ToggleButton == null) && DebugModeManager.AmDebugger)
         {
@@ -88,6 +84,11 @@ public static class OptionsMenuBehaviourStartPatch
         {
             GodMode = ClientOptionItem.Create("GodMode", Main.GodMode, __instance);
         }
+
+        if (ModUnloaderScreen.Popup == null)
+        {
+            ModUnloaderScreen.Init(__instance);
+        }
     }
 }
 
@@ -96,9 +97,10 @@ public static class OptionsMenuBehaviourClosePatch
 {
     public static void Postfix()
     {
-        if (ClientOptionItem.CustomBackground != null)
+        if (ClientActionItem.CustomBackground != null)
         {
-            ClientOptionItem.CustomBackground.gameObject.SetActive(false);
+            ClientActionItem.CustomBackground.gameObject.SetActive(false);
         }
+        ModUnloaderScreen.Hide();
     }
 }

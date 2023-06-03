@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using TOHE.Modules;
+using TOHE.Roles.Core;
 using TOHE.Roles.Neutral;
 
 namespace TOHE;
@@ -22,7 +23,7 @@ public static class AntiBlackout
     ///<summary>
     ///AntiBlackout内の処理が必要であるかどうか
     ///</summary>
-    public static bool IsRequired => Options.NoGameEnd.GetBool() || Jackal.IsEnable || Pelican.IsEnable || Gamer.IsEnable || BloodKnight.IsEnable || Succubus.IsEnable;
+    public static bool IsRequired => Options.NoGameEnd.GetBool() || CustomRoles.Jackal.Exist(true) || CustomRoles.Pelican.Exist(true) || CustomRoles.Gamer.Exist(true) || CustomRoles.BloodKnight.Exist(true) || CustomRoles.Succubus.Exist(true);
     ///<summary>
     ///インポスター以外の人数とインポスターの人数の差
     ///</summary>

@@ -1,11 +1,13 @@
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using AmongUs.Data;
 using AmongUs.GameOptions;
 using HarmonyLib;
-using Hazel;
 using InnerNet;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
+
 using TOHE.Modules;
+using TOHE.Roles;
+using TOHE.Roles.Core;
 using TOHE.Roles.Neutral;
 using static TOHE.Translator;
 
@@ -54,11 +56,18 @@ class DisconnectInternalPatch
     {
         ShowDisconnectPopupPatch.Reason = reason;
         ShowDisconnectPopupPatch.StringReason = stringReason;
+
         Logger.Info($"断开连接(理由:{reason}:{stringReason}，Ping:{__instance.Ping})", "Session");
+
         ErrorText.Instance.CheatDetected = false;
         ErrorText.Instance.SBDetected = false;
         ErrorText.Instance.Clear();
         Cloud.StopConnect();
+
+        if (AmongUsClient.Instance.AmHost && GameStates.InGame)
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+
+        CustomRoleManager.Dispose();
     }
 }
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
@@ -100,6 +109,11 @@ class OnPlayerJoinedPatch
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
 class OnPlayerLeftPatch
 {
+    static void Prefix([HarmonyArgument(0)] ClientData data)
+    {
+        if (!GameStates.IsInGame) return;
+        CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnPlayerDeath(data.Character, PlayerState.GetByPlayerId(data.Character.PlayerId).DeathReason, GameStates.IsMeeting));
+    }
     public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData data, [HarmonyArgument(1)] DisconnectReasons reason)
     {
         //            Logger.info($"RealNames[{data.Character.PlayerId}]を削除");
@@ -111,55 +125,16 @@ class OnPlayerLeftPatch
                 {
                     Main.isLoversDead = true;
                     Main.LoversPlayers.Remove(lovers);
-                    Main.PlayerStates[lovers.PlayerId].RemoveSubRole(CustomRoles.Lovers);
+                    PlayerState.GetByPlayerId(lovers.PlayerId).RemoveSubRole(CustomRoles.Lovers);
                 }
-            if (data.Character.Is(CustomRoles.Executioner) && Executioner.Target.ContainsKey(data.Character.PlayerId))
-                Executioner.ChangeRole(data.Character);
-            if (Executioner.Target.ContainsValue(data.Character.PlayerId))
-                Executioner.ChangeRoleByTarget(data.Character);
-            if (data.Character.Is(CustomRoles.Pelican))
-                Pelican.OnPelicanDied(data.Character.PlayerId);
-            if (Main.PlayerStates[data.Character.PlayerId].deathReason == PlayerState.DeathReason.etc) //死因が設定されていなかったら
+            var state = PlayerState.GetByPlayerId(data.Character.PlayerId);
+            if (state.DeathReason == CustomDeathReason.etc) //死因が設定されていなかったら
             {
-                Main.PlayerStates[data.Character.PlayerId].deathReason = PlayerState.DeathReason.Disconnected;
-                Main.PlayerStates[data.Character.PlayerId].SetDead();
+                state.DeathReason = CustomDeathReason.Disconnected;
+                state.SetDead();
             }
             AntiBlackout.OnDisconnect(data.Character.Data);
             PlayerGameOptionsSender.RemoveSender(data.Character);
-        }
-
-        if (Main.HostClientId == __instance.ClientId)
-        {
-            var clientId = -1;
-            var player = PlayerControl.LocalPlayer;
-            var title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
-            var name = player?.Data?.PlayerName;
-            var msg = "";
-            if (GameStates.IsInGame)
-            {
-                Utils.ErrorEnd("房主退出游戏");
-                msg = GetString("Message.HostLeftGameInGame");
-            }
-            else if (GameStates.IsLobby)
-                msg = GetString("Message.HostLeftGameInLobby");
-
-            player.SetName(title);
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
-            player.SetName(name);
-
-            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-            writer.StartMessage(clientId);
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                .Write(title)
-                .EndRpc();
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-                .Write(msg)
-                .EndRpc();
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                .Write(player.Data.PlayerName)
-                .EndRpc();
-            writer.EndMessage();
-            writer.SendMessage();
         }
 
         // 附加描述掉线原因
@@ -220,9 +195,9 @@ class CreatePlayerPatch
             if (Main.OverrideWelcomeMsg != "") Utils.SendMessage(Main.OverrideWelcomeMsg, client.Character.PlayerId);
             else TemplateManager.SendTemplate("welcome", client.Character.PlayerId, true);
         }, 3f, "Welcome Message");
-        if (Main.OverrideWelcomeMsg == "" && Main.PlayerStates.Count != 0 && Main.clientIdList.Contains(client.Id))
+        if (Main.OverrideWelcomeMsg == "" && PlayerState.AllPlayerStates.Count != 0 && Main.clientIdList.Contains(client.Id))
         {
-            if (Options.AutoDisplayKillLog.GetBool() && Main.PlayerStates.Count != 0 && Main.clientIdList.Contains(client.Id))
+            if (Options.AutoDisplayKillLog.GetBool() && PlayerState.AllPlayerStates.Count != 0 && Main.clientIdList.Contains(client.Id))
             {
                 new LateTask(() =>
                 {

@@ -1,44 +1,60 @@
-using System.Collections.Generic;
+using AmongUs.GameOptions;
+using System;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Crewmate;
-
-public static class TimeManager
+public sealed class TimeManager : RoleBase, IMeetingTimeAlterable
 {
-    private static readonly int Id = 21500;
-    private static List<byte> playerIdList = new();
-    public static OptionItem IncreaseMeetingTime;
-    public static OptionItem MeetingTimeLimit;
-    public static void SetupCustomOption()
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(TimeManager),
+            player => new TimeManager(player),
+            CustomRoles.TimeManager,
+            () => RoleTypes.Crewmate,
+            CustomRoleTypes.Crewmate,
+            21500,
+            SetupOptionItem,
+            "tm",
+            "#6495ed"
+        );
+    public TimeManager(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
     {
-        Options.SetupRoleOptions(Id, TabGroup.CrewmateRoles, CustomRoles.TimeManager);
-        IncreaseMeetingTime = IntegerOptionItem.Create(Id + 10, "TimeManagerIncreaseMeetingTime", new(5, 30, 1), 15, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.TimeManager])
+        IncreaseMeetingTime = OptionIncreaseMeetingTime.GetInt();
+        MeetingTimeLimit = OptionMeetingTimeLimit.GetInt();
+    }
+    private static OptionItem OptionIncreaseMeetingTime;
+    private static OptionItem OptionMeetingTimeLimit;
+    enum OptionName
+    {
+        TimeManagerIncreaseMeetingTime,
+        TimeManagerLimitMeetingTime
+    }
+    public static int IncreaseMeetingTime;
+    public static int MeetingTimeLimit;
+
+    public bool RevertOnDie => true;
+
+    private static void SetupOptionItem()
+    {
+        OptionIncreaseMeetingTime = IntegerOptionItem.Create(RoleInfo, 10, OptionName.TimeManagerIncreaseMeetingTime, new(5, 30, 1), 15, false)
             .SetValueFormat(OptionFormat.Seconds);
-        MeetingTimeLimit = IntegerOptionItem.Create(Id + 11, "TimeManagerLimitMeetingTime", new(200, 900, 10), 300, TabGroup.CrewmateRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.TimeManager])
+        OptionMeetingTimeLimit = IntegerOptionItem.Create(RoleInfo, 11, OptionName.TimeManagerLimitMeetingTime, new(200, 900, 10), 300, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
-    public static void Init()
+
+    public int CalculateMeetingTimeDelta()
     {
-        playerIdList = new();
+        var sec = IncreaseMeetingTime * MyTaskState.CompletedTasksCount;
+        return sec * (Player.Is(CustomRoles.Madmate) ? -1 : 1);
     }
-    public static void Add(byte playerId)
+    public override string GetProgressText(bool comms = false)
     {
-        playerIdList.Add(playerId);
-    }
-    public static bool IsEnable => playerIdList.Count > 0;
-    private static int AdditionalTime(byte id)
-    {
-        var pc = Utils.GetPlayerById(id);
-        return playerIdList.Contains(id) && pc.IsAlive() ? IncreaseMeetingTime.GetInt() * pc.GetPlayerTaskState().CompletedTasksCount : 0;
-    }
-    public static int TotalIncreasedMeetingTime()
-    {
-        int sec = 0;
-        foreach (var playerId in playerIdList)
-        {
-            if (Utils.GetPlayerById(playerId).Is(CustomRoles.Madmate)) sec -= AdditionalTime(playerId);
-            else sec += AdditionalTime(playerId);
-        }
-        Logger.Info($"{sec}second", "TimeManager.TotalIncreasedMeetingTime");
-        return sec;
+        var time = CalculateMeetingTimeDelta();
+        return time > 0 ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.TimeManager).ShadeColor(0.5f), $"{(Player.Is(CustomRoles.Madmate) ? '-' : '+')}{Math.Abs(time)}s") : "";
     }
 }

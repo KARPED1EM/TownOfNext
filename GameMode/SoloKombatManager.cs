@@ -3,13 +3,15 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TOHE.Roles.Neutral;
 using UnityEngine;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Neutral;
 using static TOHE.RandomSpawn;
 
 namespace TOHE;
 
-internal static class SoloKombatManager
+public static class SoloKombatManager
 {
     private static Dictionary<byte, float> PlayerHPMax = new();
     private static Dictionary<byte, float> PlayerHP = new();
@@ -281,7 +283,7 @@ internal static class SoloKombatManager
         originalSpeed.Remove(target.PlayerId);
         originalSpeed.Add(target.PlayerId, Main.AllPlayerSpeed[target.PlayerId]);
 
-        Utils.TP(target.NetTransform, Pelican.GetBlackRoomPS());
+        //Utils.TP(target.NetTransform, Pelican.GetBlackRoomPS());
         Main.AllPlayerSpeed[target.PlayerId] = 0.3f;
         target.MarkDirtySettings();
 
@@ -369,9 +371,9 @@ internal static class SoloKombatManager
                 foreach (var pc in Main.AllPlayerControls.Where(x => !x.SoloAlive()))
                 {
                     // 锁定死亡玩家在小黑屋
-                    var pos = Pelican.GetBlackRoomPS();
-                    var dis = Vector2.Distance(pos, pc.GetTruePosition());
-                    if (dis > 1f) Utils.TP(pc.NetTransform, pos);
+                    //var pos = Pelican.GetBlackRoomPS();
+                    //var dis = Vector2.Distance(pos, pc.GetTruePosition());
+                    //if (dis > 1f) Utils.TP(pc.NetTransform, pos);
                 }
 
                 if (LastFixedUpdate == Utils.GetTimeStamp()) return;
@@ -396,9 +398,9 @@ internal static class SoloKombatManager
                     // 复活玩家随机复活（二次确认）
                     if (pc.SoloAlive())
                     {
-                        var pos = Pelican.GetBlackRoomPS();
-                        var dis = Vector2.Distance(pos, pc.GetTruePosition());
-                        if (dis < 1.2f) PlayerRandomSpwan(pc);
+                        //var pos = Pelican.GetBlackRoomPS();
+                        //var dis = Vector2.Distance(pos, pc.GetTruePosition());
+                        //if (dis < 1.2f) PlayerRandomSpwan(pc);
                     }
                     // 复活倒计时
                     if (BackCountdown.ContainsKey(pc.PlayerId))

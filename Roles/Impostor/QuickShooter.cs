@@ -1,91 +1,110 @@
-﻿using Hazel;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Hazel;
 using UnityEngine;
+using AmongUs.GameOptions;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
+using static TOHE.Translator;
 
 namespace TOHE.Roles.Impostor;
-
-internal static class QuickShooter
+public sealed class QuickShooter : RoleBase, IImpostor
 {
-    private static readonly int Id = 902522;
-    public static List<byte> playerIdList = new();
-    private static OptionItem KillCooldown;
-    private static OptionItem MeetingReserved;
-    public static OptionItem ShapeshiftCooldown;
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(QuickShooter),
+            player => new QuickShooter(player),
+            CustomRoles.QuickShooter,
+            () => RoleTypes.Shapeshifter,
+            CustomRoleTypes.Impostor,
+            902522,
+            SetupOptionItem,
+            "qs"
+        );
+    public QuickShooter(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
+    { }
 
-    public static Dictionary<byte, int> ShotLimit = new();
-
-    public static void SetupCustomOption()
+    static OptionItem OptionKillCooldown;
+    static OptionItem OptionMeetingReserved;
+    static OptionItem OptionShapeshiftCooldown;
+    enum OptionName
     {
-        Options.SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.QuickShooter);
-        KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 180f, 2.5f), 35f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.QuickShooter])
+        KillCooldown,
+        QuickShooterShapeshiftCooldown,
+        MeetingReserved,
+    }
+
+    private int ShotLimit;
+    private bool Storaging;
+    private static void SetupOptionItem()
+    {
+        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.KillCooldown, new(2.5f, 180f, 2.5f), 35f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        ShapeshiftCooldown = FloatOptionItem.Create(Id + 12, "QuickShooterShapeshiftCooldown", new(0f, 180f, 2.5f), 15f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.QuickShooter])
+        OptionShapeshiftCooldown = FloatOptionItem.Create(RoleInfo,12, OptionName.QuickShooterShapeshiftCooldown, new(2.5f, 180f, 2.5f), 15f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        MeetingReserved = IntegerOptionItem.Create(Id + 14, "MeetingReserved", new(0, 15, 1), 2, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.QuickShooter])
+        OptionMeetingReserved = IntegerOptionItem.Create(RoleInfo, 14, OptionName.MeetingReserved, new(0, 15, 1), 2, false)
             .SetValueFormat(OptionFormat.Pieces);
     }
-    public static void Init()
+    public override void Add()
     {
-        playerIdList = new();
-        ShotLimit = new();
+        ShotLimit = 0;
     }
-    public static void Add(byte playerId)
+    private void SendRPC()
     {
-        playerIdList.Add(playerId);
-        ShotLimit.TryAdd(playerId, 0);
+        using var sender = CreateSender(CustomRPC.SetQuickShooterShotLimit);
+        sender.Writer.Write(ShotLimit);
     }
-    public static bool IsEnable => playerIdList.Count > 0;
-    private static void SendRPC(byte playerId)
+    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetQuickShooterShotLimit, SendOption.Reliable, -1);
-        writer.Write(playerId);
-        writer.Write(ShotLimit[playerId]);
-        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        if (rpcType != CustomRPC.SetQuickShooterShotLimit) return;
+        ShotLimit = reader.ReadInt32();
     }
-    public static void ReceiveRPC(MessageReader reader)
+    public override string GetProgressText(bool comms = false) => Utils.ColorString(ShotLimit >= 1 ? Color.red : Color.gray, $"({ShotLimit})");
+    public override bool OverrideAbilityButtonText(out string text)
     {
-        byte QuickShooterId = reader.ReadByte();
-        int Limit = reader.ReadInt32();
-        ShotLimit.TryAdd(QuickShooterId, Limit);
-        ShotLimit[QuickShooterId] = Limit;
+        text = GetString("QuickShooterShapeshiftText");
+        return true;
     }
-    public static void OnShapeshift(PlayerControl pc, bool shapeshifting)
+    public override void ChangeHudManager(HudManager __instance) => __instance.AbilityButton.SetUsesRemaining(ShotLimit);
+    public override void OnShapeshift(PlayerControl target)
     {
-        if (pc.killTimer == 0 && shapeshifting)
+        var shapeshifting = !Is(target);
+
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        if (Player.killTimer < 1 && shapeshifting)
         {
-            ShotLimit[pc.PlayerId]++;
-            SendRPC(pc.PlayerId);
+            ShotLimit++;
+            SendRPC();
             Storaging = true;
-            pc.ResetKillCooldown();
-            pc.SetKillCooldownV2();
-            pc.Notify(Translator.GetString("QuickShooterStoraging"));
-            Logger.Info($"{Utils.GetPlayerById(pc.PlayerId)?.GetNameWithRole()} : 残り{ShotLimit[pc.PlayerId]}発", "QuickShooter");
+            Player.ResetKillCooldown();
+            Player.SetKillCooldownV2();
+            Player.Notify(GetString("QuickShooterStoraging"));
+            Logger.Info($"{Utils.GetPlayerById(Player.PlayerId)?.GetNameWithRole()} : 剩余子弹{ShotLimit}发", "QuickShooter.OnShapeshift");
         }
     }
-    private static bool Storaging;
-    public static void SetKillCooldown(byte id)
+    public float CalculateKillCooldown()
     {
-        Main.AllPlayerKillCooldown[id] = (Storaging || ShotLimit[id] < 1) ? KillCooldown.GetFloat() : 0.01f;
+        float cooldown = (Storaging || ShotLimit < 1) ? OptionKillCooldown.GetFloat() : 0.01f;
         Storaging = false;
+        return cooldown;
     }
-    public static void OnReportDeadBody()
+    public override void OnStartMeeting()
     {
-        Dictionary<byte, int> NewSL = new();
-        foreach (var sl in ShotLimit)
-            NewSL.Add(sl.Key, Math.Clamp(sl.Value, 0, MeetingReserved.GetInt()));
-        foreach (var sl in NewSL)
-        {
-            ShotLimit[sl.Key] = sl.Value;
-            SendRPC(sl.Key);
-        }
+        int before = ShotLimit;
+        ShotLimit = Mathf.Clamp(ShotLimit, 0, OptionMeetingReserved.GetInt());
+        if(ShotLimit != before) SendRPC();
     }
-    public static void QuickShooterKill(PlayerControl killer)
+    public void BeforeMurderPlayerAsKiller(MurderInfo info)
     {
-        ShotLimit.TryAdd(killer.PlayerId, 0);
-        ShotLimit[killer.PlayerId]--;
-        ShotLimit[killer.PlayerId] = Math.Max(ShotLimit[killer.PlayerId], 0);
-        SendRPC(killer.PlayerId);
+        int before = ShotLimit;
+        ShotLimit--;
+        ShotLimit = Mathf.Max(ShotLimit, 0);
+        if (ShotLimit != before) SendRPC();
     }
-    public static string GetShotLimit(byte playerId) => Utils.ColorString(ShotLimit[playerId] > 0 ? Utils.GetRoleColor(CustomRoles.QuickShooter) : Color.gray, ShotLimit.TryGetValue(playerId, out var shotLimit) ? $"({shotLimit})" : "Invalid");
 }

@@ -3,9 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using TOHE.Modules;
-using TOHE.Roles.Impostor;
 using UnityEngine;
+
+using TOHE.Modules;
+using TOHE.Roles.Core;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -23,22 +24,22 @@ class EndGamePatch
         Logger.Info("-----------游戏结束-----------", "Phase");
         if (!GameStates.IsModHost) return;
         SummaryText = new();
-        foreach (var id in Main.PlayerStates.Keys)
+        foreach (var id in PlayerState.AllPlayerStates.Keys)
             SummaryText[id] = Utils.SummaryTexts(id, disableColor: false);
 
         var sb = new StringBuilder(GetString("KillLog") + ":");
-        foreach (var kvp in Main.PlayerStates.OrderBy(x => x.Value.RealKiller.Item1.Ticks))
+        foreach (var kvp in PlayerState.AllPlayerStates.OrderBy(x => x.Value.RealKiller.Item1.Ticks))
         {
             var date = kvp.Value.RealKiller.Item1;
             if (date == DateTime.MinValue) continue;
             var killerId = kvp.Value.GetRealKiller();
             var targetId = kvp.Key;
-            sb.Append($"\n{date:T} {Main.AllPlayerNames[targetId]}({Utils.GetDisplayRoleName(targetId, true)}{Utils.GetSubRolesText(targetId, summary: true)}) [{Utils.GetVitalText(kvp.Key)}]");
+            sb.Append($"\n{date:T} {Main.AllPlayerNames[targetId]}({Utils.GetTrueRoleName(targetId, false)}{Utils.GetSubRolesText(targetId, summary: true)}) [{Utils.GetVitalText(kvp.Key)}]");
             if (killerId != byte.MaxValue && killerId != targetId)
-                sb.Append($"\n\t⇐ {Main.AllPlayerNames[killerId]}({Utils.GetDisplayRoleName(killerId, true)}{Utils.GetSubRolesText(killerId, summary: true)})");
+                sb.Append($"\n\t⇐ {Main.AllPlayerNames[killerId]}({Utils.GetTrueRoleName(targetId, false)}{Utils.GetSubRolesText(killerId, summary: true)})");
         }
         KillLog = sb.ToString();
-        if (!KillLog.Contains("\n")) KillLog = "";
+        if (!KillLog.Contains('\n')) KillLog = "";
 
         Main.NormalOptions.KillCooldown = Options.DefaultKillCooldown;
         //winnerListリセット
@@ -64,10 +65,6 @@ class EndGamePatch
             Main.winnerNameList.Add(pc.GetRealName());
         }
 
-        BountyHunter.ChangeTimer = new();
-        Main.isDoused = new Dictionary<(byte, byte), bool>();
-        Main.isDraw = new Dictionary<(byte, byte), bool>();
-
         Main.VisibleTasksCount = false;
         if (AmongUsClient.Instance.AmHost)
         {
@@ -76,6 +73,8 @@ class EndGamePatch
             GameOptionsSender.AllSenders.Add(new NormalGameOptionsSender());
             /* Send SyncSettings RPC */
         }
+        //オブジェクト破棄
+        CustomRoleManager.Dispose();
     }
 }
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.SetEverythingUp))]
@@ -125,7 +124,7 @@ class SetEverythingUpPatch
                 __instance.BackgroundBar.material.color = Utils.GetRoleColor(winnerRole);
             }
         }
-        if (AmongUsClient.Instance.AmHost && Main.PlayerStates[0].MainRole == CustomRoles.GM)
+        if (AmongUsClient.Instance.AmHost && PlayerState.GetByPlayerId(0).MainRole == CustomRoles.GM)
         {
             __instance.WinText.text = GetString("GameOver");
             __instance.WinText.color = Utils.GetRoleColor(CustomRoles.GM);
@@ -203,7 +202,7 @@ class SetEverythingUpPatch
         RoleSummaryObject.transform.localScale = new Vector3(1f, 1f, 1f);
 
         StringBuilder sb = new($"{GetString("RoleSummaryText")}");
-        List<byte> cloneRoles = new(Main.PlayerStates.Keys);
+        List<byte> cloneRoles = new(PlayerState.AllPlayerStates.Keys);
         foreach (var id in Main.winnerList)
         {
             if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;

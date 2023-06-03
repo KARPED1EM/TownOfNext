@@ -1,6 +1,8 @@
 using Hazel;
 using System.Collections.Generic;
 
+using TOHE.Roles.Core;
+
 namespace TOHE;
 
 public static class CustomWinnerHolder

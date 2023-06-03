@@ -27,16 +27,6 @@ public class MainMenuManagerPatch
     public static GameObject discordButton;
     public static GameObject updateButton;
 
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
-    public static void Postfix(MainMenuManager __instance)
-    {
-        if (!Main.FastBoot.Value) return;
-        TitleLogoPatch.PlayLocalButton?.transform?.SetLocalY(Options.IsLoaded ? -2.1f : 100f);
-        TitleLogoPatch.PlayOnlineButton?.transform?.SetLocalY(Options.IsLoaded ? -2.1f : 100f);
-        TitleLogoPatch.HowToPlayButton?.transform?.SetLocalY(Options.IsLoaded ? -2.175f : 100f);
-        TitleLogoPatch.FreePlayButton?.transform?.SetLocalY(Options.IsLoaded ? -2.175f : 100f);
-        TitleLogoPatch.LoadingHint?.SetActive(!Options.IsLoaded);
-    }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)
     {
@@ -57,7 +47,8 @@ public class MainMenuManagerPatch
             qqPassiveButton.OnClick = new();
             qqPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(Main.QQInviteUrl)));
             qqPassiveButton.OnMouseOut.AddListener((Action)(() => qqButtonSprite.color = qqText.color = qqColor));
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => qqText.SetText("QQ群"))));
+            qqText.DestroyTranslator();
+            qqText.SetText("QQ群");
             qqButtonSprite.color = qqText.color = qqColor;
             qqButton.gameObject.SetActive(Main.ShowQQButton && !Main.IsAprilFools);
         }
@@ -75,7 +66,8 @@ public class MainMenuManagerPatch
             discordPassiveButton.OnClick = new();
             discordPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(Main.DiscordInviteUrl)));
             discordPassiveButton.OnMouseOut.AddListener((Action)(() => discordButtonSprite.color = discordText.color = discordColor));
-            __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => discordText.SetText("Discord"))));
+            discordText.DestroyTranslator();
+            discordText.SetText("Discord");
             discordButtonSprite.color = discordText.color = discordColor;
             discordButton.gameObject.SetActive(Main.ShowDiscordButton && !Main.IsAprilFools);
         }
@@ -96,6 +88,7 @@ public class MainMenuManagerPatch
             updateButton.SetActive(false);
             ModUpdater.StartUpdate(ModUpdater.downloadUrl);
         }));
+        updateText.DestroyTranslator();
         updatePassiveButton.OnMouseOut.AddListener((Action)(() => updateButtonSprite.color = updateText.color = updateColor));
         updateButtonSprite.color = updateText.color = updateColor;
         updateButtonSprite.size *= 1.5f;
@@ -106,9 +99,11 @@ public class MainMenuManagerPatch
             var freeplayButton = GameObject.Find("/MainUI/FreePlayButton");
             if (freeplayButton != null)
             {
+                var freeplayText = freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 freeplayButton.GetComponent<PassiveButton>().OnClick = new();
                 freeplayButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Application.OpenURL("https://tohe.cc")));
-                __instance.StartCoroutine(Effects.Lerp(0.01f, new Action<float>((p) => freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText(Translator.GetString("Website")))));
+                freeplayText.DestroyTranslator();
+                freeplayText.SetText(Translator.GetString("Website"));
             }
 #endif
 

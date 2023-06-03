@@ -1,4 +1,6 @@
 using Hazel;
+
+using TOHE.Roles.Core;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 
@@ -29,8 +31,10 @@ public static class NameColorManager
     {
         color = "";
 
+        //TODO: FIXME
+
         // ÄÚ¹íÅÑÍ½»¥ÈÏ
-        if (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoleTypes.Impostor)) color = (target.Is(CustomRoles.Egoist) && Options.ImpEgoistVisibalToAllies.GetBool() && seer != target) ? Main.roleColors[CustomRoles.Egoist] : Main.roleColors[CustomRoles.Impostor];
+        //if (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoleTypes.Impostor)) color = (target.Is(CustomRoles.Egoist) && Options.ImpEgoistVisibalToAllies.GetBool() && seer != target) ? Main.roleColors[CustomRoles.Egoist] : Main.roleColors[CustomRoles.Impostor];
         if (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoleTypes.Impostor) && Options.MadmateKnowWhosImp.GetBool()) color = Main.roleColors[CustomRoles.Impostor];
         if (seer.Is(CustomRoleTypes.Impostor) && target.Is(CustomRoles.Madmate) && Options.ImpKnowWhosMadmate.GetBool()) color = Main.roleColors[CustomRoles.Madmate];
         if (seer.Is(CustomRoles.Madmate) && target.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool()) color = Main.roleColors[CustomRoles.Madmate];
@@ -39,7 +43,7 @@ public static class NameColorManager
         //÷ÈÄ§Ð¡µÜ»¥ÈÏ
         if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Succubus)) color = Main.roleColors[CustomRoles.Succubus];
         if (seer.Is(CustomRoles.Succubus) && target.Is(CustomRoles.Charmed)) color = Main.roleColors[CustomRoles.Charmed];
-        if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Charmed) && Succubus.TargetKnowOtherTarget.GetBool()) color = Main.roleColors[CustomRoles.Charmed];
+        //if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Charmed) && Succubus.TargetKnowOtherTarget.GetBool()) color = Main.roleColors[CustomRoles.Charmed];
 
         if (color != "") return true;
         else return seer == target
@@ -48,14 +52,14 @@ public static class NameColorManager
             || seer.Is(CustomRoles.GM)
             || seer.Is(CustomRoles.God)
 
-            || (target.Is(CustomRoles.SuperStar) && Options.EveryOneKnowSuperStar.GetBool())
-            || (target.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
+            //|| (target.Is(CustomRoles.SuperStar) && Options.EveryOneKnowSuperStar.GetBool())
+            //|| (target.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
             || Mare.KnowTargetRoleColor(target, isMeeting);
     }
     public static bool TryGetData(PlayerControl seer, PlayerControl target, out string colorCode)
     {
         colorCode = "";
-        var state = Main.PlayerStates[seer.PlayerId];
+        var state = PlayerState.GetByPlayerId(seer.PlayerId);
         if (!state.TargetColorData.TryGetValue(target.PlayerId, out var value)) return false;
         colorCode = value;
         return true;
@@ -70,7 +74,7 @@ public static class NameColorManager
             colorCode = target.GetRoleColorCode();
         }
 
-        var state = Main.PlayerStates[seerId];
+        var state = PlayerState.GetByPlayerId(seerId);
         if (state.TargetColorData.TryGetValue(targetId, out var value) && colorCode == value) return;
         state.TargetColorData.Add(targetId, colorCode);
 
@@ -78,7 +82,7 @@ public static class NameColorManager
     }
     public static void Remove(byte seerId, byte targetId)
     {
-        var state = Main.PlayerStates[seerId];
+        var state = PlayerState.GetByPlayerId(seerId);
         if (!state.TargetColorData.ContainsKey(targetId)) return;
         state.TargetColorData.Remove(targetId);
 
@@ -86,7 +90,7 @@ public static class NameColorManager
     }
     public static void RemoveAll(byte seerId)
     {
-        Main.PlayerStates[seerId].TargetColorData.Clear();
+        PlayerState.GetByPlayerId(seerId).TargetColorData.Clear();
 
         SendRPC(seerId);
     }

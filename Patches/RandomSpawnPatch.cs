@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+using TOHE.Roles.Core;
+
 namespace TOHE;
 
 class RandomSpawn

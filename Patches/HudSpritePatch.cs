@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using TOHE.Modules;
+using TOHE.Roles.Core;
 using TOHE.Roles.Impostor;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public static class CustomButton
 {
     public static Sprite Get(string name) => Utils.LoadSprite($"TOHE.Resources.Images.Skills.{name}.png", 115f);
 }
-
+/*
 [HarmonyPriority(520)]
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class HudSpritePatch
@@ -113,6 +114,7 @@ public static class HudSpritePatch
                 }
                 break;
         }
+        
 
     EndOfSelectImg:
 
@@ -122,3 +124,4 @@ public static class HudSpritePatch
 
     }
 }
+*/

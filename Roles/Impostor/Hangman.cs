@@ -1,55 +1,62 @@
-﻿using System.Collections.Generic;
-using static TOHE.Options;
+﻿using AmongUs.GameOptions;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Impostor;
-
-public static class Hangman
+public sealed class Hangman : RoleBase, IImpostor
 {
-    private static readonly int Id = 905367;
-    private static List<byte> playerIdList = new();
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Hangman),
+            player => new Hangman(player),
+            CustomRoles.Hangman,
+            () => RoleTypes.Shapeshifter,
+            CustomRoleTypes.Impostor,
+            905367,
+            SetupOptionItem,
+            "ha"
+        );
+    public Hangman(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
+    { }
 
-    private static OptionItem ShapeshiftCooldown;
-    private static OptionItem ShapeshiftDuration;
+    static OptionItem OptionShapeshiftCooldown;
+    static OptionItem OptionShapeshiftDuration;
 
-    public static void SetupCustomOption()
+    public bool IsKiller { get; private set; } = false;
+    private static void SetupOptionItem()
     {
-        SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.Hangman);
-        ShapeshiftCooldown = FloatOptionItem.Create(Id + 2, "ShapeshiftCooldown", new(1f, 999f, 1f), 25f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Hangman])
+        OptionShapeshiftCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.ShapeshiftCooldown, new(2.5f, 180f, 2.5f), 25f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        ShapeshiftDuration = FloatOptionItem.Create(Id + 4, "ShapeshiftDuration", new(1f, 999f, 1f), 10f, TabGroup.ImpostorRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Hangman])
+        OptionShapeshiftDuration = FloatOptionItem.Create(RoleInfo, 11, GeneralOption.ShapeshiftDuration, new(2.5f, 180f, 2.5f), 15f, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
-    public static void Init()
+    public override void ApplyGameOptions(IGameOptions opt)
     {
-        playerIdList = new();
+        AURoleOptions.ShapeshifterCooldown = OptionShapeshiftCooldown.GetFloat();
+        AURoleOptions.ShapeshifterDuration = OptionShapeshiftDuration.GetFloat();
     }
-    public static void Add(byte playerId)
+    public bool OnCheckMurderAsKiller(MurderInfo info)
     {
-        playerIdList.Add(playerId);
-    }
-    public static bool IsEnable => playerIdList.Count > 0;
-    public static void ApplyGameOptions()
-    {
-        AURoleOptions.ShapeshifterCooldown = ShapeshiftCooldown.GetFloat();
-        AURoleOptions.ShapeshifterDuration = ShapeshiftDuration.GetFloat();
-    }
-    public static bool OnCheckMurder(PlayerControl killer, PlayerControl target)
-    {
-        //禁止内鬼刀叛徒
-        if (target.Is(CustomRoles.Madmate) && !ImpCanKillMadmate.GetBool())
-            return false;
-
+        var (killer, target) = info.AttemptTuple;
         if (Main.CheckShapeshift.TryGetValue(killer.PlayerId, out var s) && s)
         {
+
             Utils.TP(killer.NetTransform, target.GetTruePosition());
+
             target.Data.IsDead = true;
             target.SetRealKiller(killer);
-            Main.PlayerStates[target.PlayerId].deathReason = PlayerState.DeathReason.LossOfHead;
+            target.SetDeathReason(CustomDeathReason.LossOfHead);
             target.RpcExileV2();
-            Main.PlayerStates[target.PlayerId].SetDead();
-            target.SetRealKiller(killer);
+            PlayerState.GetByPlayerId(target.PlayerId)?.SetDead();
+
             killer.SetKillCooldownV2();
             RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
+
             return false;
         }
         return true;

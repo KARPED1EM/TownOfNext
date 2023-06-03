@@ -1,64 +1,84 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
-using System.Collections.Generic;
 using System.Linq;
-using static TOHE.Options;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Neutral;
-
-public static class Jackal
+public sealed class Jackal : RoleBase, IKiller
 {
-    private static readonly int Id = 50900;
-    public static List<byte> playerIdList = new();
-
-    private static OptionItem KillCooldown;
-    public static OptionItem CanVent;
-    public static OptionItem CanUseSabotage;
-    public static OptionItem CanWinBySabotageWhenNoImpAlive;
-    private static OptionItem HasImpostorVision;
-    private static OptionItem ResetKillCooldownWhenSbGetKilled;
-
-    public static void SetupCustomOption()
+    public static readonly SimpleRoleInfo RoleInfo =
+        new(
+            typeof(Jackal),
+            player => new Jackal(player),
+            CustomRoles.Jackal,
+            () => RoleTypes.Impostor,
+            CustomRoleTypes.Neutral,
+            50900,
+            SetupOptionItem,
+            "jac",
+            "#00b4eb"
+        );
+    public Jackal(PlayerControl player)
+    : base(
+        RoleInfo,
+        player,
+        () => HasTask.False,
+        CountTypes.Jackal
+    )
     {
-        //Jackalは1人固定
-        SetupSingleRoleOptions(Id, TabGroup.NeutralRoles, CustomRoles.Jackal, 1, zeroOne: false);
-        KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 180f, 2.5f), 20f, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal])
+        KillCooldown = OptionKillCooldown.GetFloat();
+        CanVent = OptionCanVent.GetBool();
+        CanUseSabotage = OptionCanUseSabotage.GetBool();
+        WinBySabotage = OptionCanWinBySabotageWhenNoImpAlive.GetBool();
+        HasImpostorVision = OptionHasImpostorVision.GetBool();
+        ResetKillCooldown = OptionResetKillCooldownWhenSbGetKilled.GetBool();
+
+        CustomRoleManager.OnMurderPlayerOthers.Add(OnMurderPlayerOthers);
+    }
+
+    private static OptionItem OptionKillCooldown;
+    public static OptionItem OptionCanVent;
+    public static OptionItem OptionCanUseSabotage;
+    public static OptionItem OptionCanWinBySabotageWhenNoImpAlive;
+    private static OptionItem OptionHasImpostorVision;
+    private static OptionItem OptionResetKillCooldownWhenSbGetKilled;
+    enum OptionName
+    {
+        JackalCanWinBySabotageWhenNoImpAlive,
+        ResetKillCooldownWhenPlayerGetKilled,
+    }
+    private static float KillCooldown;
+    public static bool CanVent;
+    public static bool CanUseSabotage;
+    public static bool WinBySabotage;
+    private static bool HasImpostorVision;
+    private static bool ResetKillCooldown;
+    private static void SetupOptionItem()
+    {
+        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 30f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        CanVent = BooleanOptionItem.Create(Id + 11, "CanVent", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal]);
-        CanUseSabotage = BooleanOptionItem.Create(Id + 12, "CanUseSabotage", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal]);
-        CanWinBySabotageWhenNoImpAlive = BooleanOptionItem.Create(Id + 14, "JackalCanWinBySabotageWhenNoImpAlive", true, TabGroup.NeutralRoles, false).SetParent(CanUseSabotage);
-        HasImpostorVision = BooleanOptionItem.Create(Id + 13, "ImpostorVision", true, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal]);
-        ResetKillCooldownWhenSbGetKilled = BooleanOptionItem.Create(Id + 15, "ResetKillCooldownWhenPlayerGetKilled", false, TabGroup.NeutralRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Jackal]);
+        OptionCanVent = BooleanOptionItem.Create(RoleInfo, 11, GeneralOption.CanVent, true, false);
+        OptionCanUseSabotage = BooleanOptionItem.Create(RoleInfo, 12, GeneralOption.CanUseSabotage, false, false);
+        OptionCanWinBySabotageWhenNoImpAlive = BooleanOptionItem.Create(RoleInfo, 14, OptionName.JackalCanWinBySabotageWhenNoImpAlive, true, false, OptionCanUseSabotage);
+        OptionHasImpostorVision = BooleanOptionItem.Create(RoleInfo, 13, GeneralOption.ImpostorVision, true, false);
+        OptionResetKillCooldownWhenSbGetKilled = BooleanOptionItem.Create(RoleInfo, 15, OptionName.ResetKillCooldownWhenPlayerGetKilled, true, false);
     }
-    public static void Init()
-    {
-        playerIdList = new();
-    }
-    public static void Add(byte playerId)
-    {
-        playerIdList.Add(playerId);
-
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (!Main.ResetCamPlayerList.Contains(playerId))
-            Main.ResetCamPlayerList.Add(playerId);
-    }
-    public static bool IsEnable => playerIdList.Count > 0;
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = KillCooldown.GetFloat();
-    public static void ApplyGameOptions(IGameOptions opt) => opt.SetVision(HasImpostorVision.GetBool());
-    public static void CanUseVent(PlayerControl player)
-    {
-        bool jackal_canUse = CanVent.GetBool();
-        DestroyableSingleton<HudManager>.Instance.ImpostorVentButton.ToggleVisible(jackal_canUse && !player.Data.IsDead);
-        player.Data.Role.CanVent = jackal_canUse;
-    }
+    public float CalculateKillCooldown() => KillCooldown;
+    public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(HasImpostorVision);
     public static void SetHudActive(HudManager __instance, bool isActive)
     {
-        __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage.GetBool());
+        __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage);
     }
-    public static void AfterPlayerDiedTask(PlayerControl target)
+    public override bool CanSabotage(SystemTypes systemType) => CanUseSabotage;
+    public static void OnMurderPlayerOthers(MurderInfo info)
     {
-        var killer = target.GetRealKiller();
-        if (!ResetKillCooldownWhenSbGetKilled.GetBool() || killer == null) return;
-        Main.AllAlivePlayerControls.Where(x => x.PlayerId != killer.PlayerId && playerIdList.Contains(x.PlayerId)).Do(x => x.SetKillCooldown(0));
+        if (!ResetKillCooldown || info.IsSuicide || info.IsAccident) return;
+        foreach( var pc in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Jackal) && x.PlayerId != info.AttemptKiller.PlayerId))
+        {
+            pc.SetKillCooldownV2(0);
+            RPC.PlaySoundRPC(pc.PlayerId, Sounds.ImpTransform);
+            pc.Notify(Translator.GetString("JackalResetKillCooldown"));
+        }
     }
 }

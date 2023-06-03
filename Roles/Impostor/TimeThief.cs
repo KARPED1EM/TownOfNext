@@ -1,50 +1,71 @@
-using System.Collections.Generic;
+using AmongUs.GameOptions;
 
-namespace TOHE.Roles.Impostor;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
-public static class TimeThief
+namespace TOHE.Roles.Impostor
 {
-    private static readonly int Id = 2400;
-    private static List<byte> playerIdList = new();
-    public static OptionItem KillCooldown;
-    public static OptionItem DecreaseMeetingTime;
-    public static OptionItem LowerLimitVotingTime;
-    public static OptionItem ReturnStolenTimeUponDeath;
-    public static void SetupCustomOption()
+    public sealed class TimeThief : RoleBase, IMeetingTimeAlterable, IImpostor
     {
-        Options.SetupRoleOptions(Id, TabGroup.ImpostorRoles, CustomRoles.TimeThief);
-        KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 180f, 2.5f), 30f, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.TimeThief])
-            .SetValueFormat(OptionFormat.Seconds);
-        DecreaseMeetingTime = IntegerOptionItem.Create(Id + 11, "TimeThiefDecreaseMeetingTime", new(0, 100, 1), 25, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.TimeThief])
-            .SetValueFormat(OptionFormat.Seconds);
-        LowerLimitVotingTime = IntegerOptionItem.Create(Id + 12, "TimeThiefLowerLimitVotingTime", new(1, 300, 1), 10, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.TimeThief])
-            .SetValueFormat(OptionFormat.Seconds);
-        ReturnStolenTimeUponDeath = BooleanOptionItem.Create(Id + 13, "TimeThiefReturnStolenTimeUponDeath", true, TabGroup.ImpostorRoles, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.TimeThief]);
+        public static readonly SimpleRoleInfo RoleInfo =
+            new(
+                typeof(TimeThief),
+                player => new TimeThief(player),
+                CustomRoles.TimeThief,
+                () => RoleTypes.Impostor,
+                CustomRoleTypes.Impostor,
+                2400,
+                SetupOptionItem,
+                "tt"
+            );
+        public TimeThief(PlayerControl player)
+        : base(
+            RoleInfo,
+            player
+        )
+        {
+            KillCooldown = OptionKillCooldown.GetFloat();
+            DecreaseMeetingTime = OptionDecreaseMeetingTime.GetInt();
+            LowerLimitVotingTime = OptionLowerLimitVotingTime.GetInt();
+            ReturnStolenTimeUponDeath = OptionReturnStolenTimeUponDeath.GetBool();
+        }
+        private static OptionItem OptionKillCooldown;
+        private static OptionItem OptionDecreaseMeetingTime;
+        private static OptionItem OptionLowerLimitVotingTime;
+        private static OptionItem OptionReturnStolenTimeUponDeath;
+        enum OptionName
+        {
+            TimeThiefDecreaseMeetingTime,
+            TimeThiefLowerLimitVotingTime,
+            TimeThiefReturnStolenTimeUponDeath
+        }
+        public static float KillCooldown;
+        public static int DecreaseMeetingTime;
+        public static int LowerLimitVotingTime;
+        public static bool ReturnStolenTimeUponDeath;
+
+        public bool RevertOnDie => ReturnStolenTimeUponDeath;
+
+        private static void SetupOptionItem()
+        {
+            OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 30f, false)
+                .SetValueFormat(OptionFormat.Seconds);
+            OptionDecreaseMeetingTime = IntegerOptionItem.Create(RoleInfo, 11, OptionName.TimeThiefDecreaseMeetingTime, new(0, 100, 1), 25, false)
+                .SetValueFormat(OptionFormat.Seconds);
+            OptionLowerLimitVotingTime = IntegerOptionItem.Create(RoleInfo, 12, OptionName.TimeThiefLowerLimitVotingTime, new(1, 300, 1), 10, false)
+                .SetValueFormat(OptionFormat.Seconds);
+            OptionReturnStolenTimeUponDeath = BooleanOptionItem.Create(RoleInfo, 13, OptionName.TimeThiefReturnStolenTimeUponDeath, true, false);
+        }
+        public float CalculateKillCooldown() => KillCooldown;
+        public int CalculateMeetingTimeDelta()
+        {
+            var sec = -(DecreaseMeetingTime * MyState.GetKillCount(true));
+            return sec;
+        }
+        public override string GetProgressText(bool comms = false)
+        {
+            var time = CalculateMeetingTimeDelta();
+            return time < 0 ? Utils.ColorString(Palette.ImpostorRed.ShadeColor(0.5f), $"{time}s") : "";
+        }
     }
-    public static void Init()
-    {
-        playerIdList = new();
-    }
-    public static void Add(byte playerId)
-    {
-        playerIdList.Add(playerId);
-    }
-    public static bool IsEnable => playerIdList.Count > 0;
-    public static void SetKillCooldown(byte id) => Main.AllPlayerKillCooldown[id] = KillCooldown.GetFloat();
-    private static int StolenTime(byte id)
-    {
-        return playerIdList.Contains(id) && (Utils.GetPlayerById(id).IsAlive() || !ReturnStolenTimeUponDeath.GetBool())
-            ? DecreaseMeetingTime.GetInt() * Main.PlayerStates[id].GetKillCount(true)
-            : 0;
-    }
-    public static int TotalDecreasedMeetingTime()
-    {
-        int sec = 0;
-        foreach (var playerId in playerIdList)
-            sec -= StolenTime(playerId);
-        Logger.Info($"{sec}second", "TimeThief.TotalDecreasedMeetingTime");
-        return sec;
-    }
-    public static string GetProgressText(byte playerId)
-        => StolenTime(playerId) > 0 ? Utils.ColorString(Palette.ImpostorRed.ShadeColor(0.5f), $"{-StolenTime(playerId)}s") : "";
 }

@@ -4,6 +4,9 @@ using Hazel;
 using System.Collections.Generic;
 using System.Linq;
 using TOHE.Roles.Neutral;
+
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -46,7 +49,7 @@ class GameEndChecker
             //カモフラージュ強制解除
             Main.AllPlayerControls.Do(pc => Camouflage.RpcSetSkin(pc, ForceRevert: true, RevertToDefault: true));
 
-            if (reason == GameOverReason.ImpostorBySabotage && CustomRoles.Jackal.RoleExist() && Jackal.CanWinBySabotageWhenNoImpAlive.GetBool() && !Main.AllAlivePlayerControls.Any(x => x.GetCustomRole().IsImpostorTeam()))
+            if (reason == GameOverReason.ImpostorBySabotage && CustomRoles.Jackal.Exist() && Jackal.WinBySabotage && !Main.AllAlivePlayerControls.Any(x => x.GetCustomRole().IsImpostorTeam()))
             {
                 reason = GameOverReason.ImpostorByKill;
                 CustomWinnerHolder.WinnerIds.Clear();
@@ -74,52 +77,8 @@ class GameEndChecker
             }
             if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Draw and not CustomWinner.None and not CustomWinner.Error)
             {
-
-                //潜藏者抢夺胜利
-                foreach (var pc in Main.AllPlayerControls)
-                {
-                    if (pc.Is(CustomRoles.DarkHide) && !pc.Data.IsDead
-                        && ((CustomWinnerHolder.WinnerTeam == CustomWinner.Impostor && !reason.Equals(GameOverReason.ImpostorBySabotage)) || CustomWinnerHolder.WinnerTeam == CustomWinner.DarkHide
-                        || (CustomWinnerHolder.WinnerTeam == CustomWinner.Crewmate && !reason.Equals(GameOverReason.HumansByTask) && DarkHide.IsWinKill[pc.PlayerId] == true)))
-                    {
-                        CustomWinnerHolder.ResetAndSetWinner(CustomWinner.DarkHide);
-                        CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                    }
-                }
-
-                //利己主义者抢夺胜利（船员）
-                if (CustomWinnerHolder.WinnerTeam == CustomWinner.Crewmate)
-                {
-                    foreach (var pc in Main.AllAlivePlayerControls.Where(x => x.GetCustomRole().IsCrewmate()))
-                        if (pc.Is(CustomRoles.Egoist))
-                        {
-                            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Egoist);
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                        }
-                }
-
-                //利己主义者抢夺胜利（内鬼）
-                if (CustomWinnerHolder.WinnerTeam == CustomWinner.Impostor)
-                {
-                    foreach (var pc in Main.AllAlivePlayerControls.Where(x => x.GetCustomRole().IsImpostor()))
-                        if (pc.Is(CustomRoles.Egoist))
-                        {
-                            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Egoist);
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                        }
-                }
-
-                //神抢夺胜利
-                if (CustomRolesHelper.RoleExist(CustomRoles.God))
-                {
-                    CustomWinnerHolder.ResetAndSetWinner(CustomWinner.God);
-                    Main.AllPlayerControls
-                        .Where(p => p.Is(CustomRoles.God) && p.IsAlive())
-                        .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
-                }
-
                 //恋人抢夺胜利
-                else if (CustomRolesHelper.RoleExist(CustomRoles.Lovers) && !reason.Equals(GameOverReason.HumansByTask))
+                if (CustomRoles.Lovers.Exist() && !reason.Equals(GameOverReason.HumansByTask))
                 {
                     if (!(!Main.LoversPlayers.ToArray().All(p => p.IsAlive()) && Options.LoverSuicide.GetBool()))
                     {
@@ -136,25 +95,12 @@ class GameEndChecker
                 //追加胜利
                 foreach (var pc in Main.AllPlayerControls)
                 {
-                    //Opportunist
-                    if (pc.Is(CustomRoles.Opportunist) && pc.IsAlive())
+                    if (pc.GetRoleClass() is IAdditionalWinner additionalWinner)
                     {
-                        CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                        CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Opportunist);
-                    }
-                    //Sunnyboy
-                    if (pc.Is(CustomRoles.Sunnyboy) && !pc.IsAlive())
-                    {
-                        CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                        CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Sunnyboy);
-                    }
-                    //自爆卡车来咯
-                    if (pc.Is(CustomRoles.Provocateur) && Main.Provoked.TryGetValue(pc.PlayerId, out var tar))
-                    {
-                        if (!CustomWinnerHolder.WinnerIds.Contains(tar))
+                        if (additionalWinner.CheckWin(out var winnerType))
                         {
                             CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                            CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Provocateur);
+                            CustomWinnerHolder.AdditionalWinnerTeams.Add(winnerType);
                         }
                     }
                 }
@@ -169,32 +115,6 @@ class GameEndChecker
                             CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
                             CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Lovers);
                         }
-                    }
-                }
-
-                //FFF
-                if (CustomWinnerHolder.WinnerTeam != CustomWinner.Lovers && !CustomWinnerHolder.AdditionalWinnerTeams.Contains(AdditionalWinners.Lovers) && !CustomRolesHelper.RoleExist(CustomRoles.Lovers) && !CustomRolesHelper.RoleExist(CustomRoles.Ntr))
-                {
-                    foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.FFF)))
-                    {
-                        if (Main.AllPlayerControls.Where(x => (x.Is(CustomRoles.Lovers) || x.Is(CustomRoles.Ntr)) && x.GetRealKiller()?.PlayerId == pc.PlayerId).Count() > 0)
-                        {
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                            CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.FFF);
-                        }
-                    }
-                }
-
-                //赌徒
-                foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Totocalcio)))
-                {
-                    if (Totocalcio.BetPlayer.TryGetValue(pc.PlayerId, out var betTarget) && (
-                        CustomWinnerHolder.WinnerIds.Contains(betTarget) ||
-                        (Main.PlayerStates.TryGetValue(betTarget, out var ps) && CustomWinnerHolder.WinnerRoles.Contains(ps.MainRole)
-                        )))
-                    {
-                        CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                        CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Totocalcio);
                     }
                 }
 
@@ -335,7 +255,7 @@ class GameEndChecker
         {
             reason = GameOverReason.ImpostorByKill;
 
-            if (CustomRolesHelper.RoleExist(CustomRoles.Sunnyboy) && Main.AllAlivePlayerControls.Count() > 1) return false;
+            if (CustomRoles.Sunnyboy.Exist() && Main.AllAlivePlayerControls.Count() > 1) return false;
 
             int Imp = Utils.AlivePlayersCount(CountTypes.Impostor);
             int Jackal = Utils.AlivePlayersCount(CountTypes.Jackal);
