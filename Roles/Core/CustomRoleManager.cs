@@ -436,7 +436,7 @@ public enum CustomRoles
     Scientist,
     //Crewmate
     Luckey,
-    Needy, //TODO
+    Needy,
     SuperStar,
     CyberStar, //TODO
     Mayor,
