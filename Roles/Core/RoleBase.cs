@@ -240,7 +240,7 @@ public abstract class RoleBase : IDisposable
     /// </summary>
     /// <param name="statesList">储存全部投票信息的列表</param>
     /// <param name="pva">玩家</param>
-    /// <returns>false：无条件继续会议</returns>
+    /// <returns>false：不继续向下执行原版的会议结束判断</returns>
     public virtual bool OnCheckForEndVoting(ref List<MeetingHud.VoterState> statesList, PlayerVoteArea pva) => true;
 
     /// <summary>
