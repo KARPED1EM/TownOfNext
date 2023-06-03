@@ -451,7 +451,7 @@ public enum CustomRoles
     Detective, //TODO
     SwordsMan,
     NiceGuesser,
-    Transporter, //TODO
+    Transporter,
     TimeManager,
     Veteran, //TODO
     Bodyguard, //TODO

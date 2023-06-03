@@ -79,7 +79,7 @@ public sealed class Mortician : RoleBase
     }
     public override void OnReportDeadBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
-        if (!reporter.Is(CustomRoles.Mortician) || target == null || reporter.PlayerId == target.PlayerId) return;
+        if (!Is(reporter) || target == null || reporter.PlayerId == target.PlayerId) return;
         MsgToSend = (
             LastPlayerName.TryGetValue(target.PlayerId, out var name)
             ? string.Format(GetString("MorticianGetInfo"), target.PlayerName, name)
@@ -89,6 +89,7 @@ public sealed class Mortician : RoleBase
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)
     {
         if (MsgToSend != (null, null, null)) msgToSend.Add(MsgToSend);
+        MsgToSend = new();
     }
     public override string GetSuffix(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
