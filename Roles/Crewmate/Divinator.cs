@@ -16,7 +16,7 @@ public sealed class Divinator : RoleBase
             CustomRoleTypes.Crewmate,
             8022560,
             SetupOptionItem,
-            "de",
+            "ft",
             "#882c83"
         );
     public Divinator(PlayerControl player)
