@@ -459,11 +459,11 @@ public enum CustomRoles
     Grenadier, //TODO
     Medicaler, //TODO
     Divinator,
-    Glitch, //TODO
+    Glitch,
     Judge,
     Mortician,
     Mediumshiper, //TODO
-    Observer, //TODO
+    Observer,
     DovesOfNeace, //TODO
     //Neutral
     Arsonist,
