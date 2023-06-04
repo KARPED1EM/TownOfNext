@@ -1194,13 +1194,24 @@ public static class Utils
     }
     public static string SummaryTexts(byte id, bool disableColor = true)
     {
-        var RolePos = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian ? 47 : 37;
-        var KillsPos = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian ? 13 : 9;
         var name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
         if (id == PlayerControl.LocalPlayer.PlayerId) name = DataManager.player.Customization.Name;
         else name = GetPlayerById(id)?.Data.PlayerName ?? name;
-        string summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=24%>{GetProgressText(id)}</pos><pos=32%> {GetKillCountText(id)}</pos><pos={32 + KillsPos}%> {GetVitalText(id, true, true)}</pos><pos={RolePos + KillsPos}%> {GetTrueRoleName(id, false)}{GetSubRolesText(id, summary: true)}</pos>";
+
+        bool wide = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian;
+        var NamePos = wide ? 24 : 24;
+        var ProgressPos = wide ? 9 : 9;
+        var KillCountPos = wide ? 13 : 10;
+        var VitalPos = wide ? 17 : 10;
         
+        var sb = new StringBuilder();
+        sb.Append(ColorString(Main.PlayerColors[id], name));
+        sb.Append($"<pos={NamePos}%> {GetProgressText(id)}</pos>");
+        sb.Append($"<pos={NamePos + ProgressPos}%> {GetKillCountText(id)}</pos>");
+        sb.Append($"<pos={NamePos + ProgressPos + KillCountPos}%> {GetVitalText(id, true, true)}</pos>");
+        sb.Append($"<pos={NamePos + ProgressPos + KillCountPos + VitalPos}%> {GetTrueRoleName(id, false)}{GetSubRolesText(id, summary: true)}</pos>");
+        var summary = sb.ToString();
+
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             if (TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese)
