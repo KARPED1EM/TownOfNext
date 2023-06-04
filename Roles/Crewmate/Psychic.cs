@@ -27,7 +27,7 @@ public sealed class Psychic : RoleBase
         player
     )
     {
-        RedNames = new();
+        RedNameInited = false;
     }
 
     static OptionItem OptionRedNameNum;
@@ -44,7 +44,7 @@ public sealed class Psychic : RoleBase
         NEareRed,
     }
 
-    private List<byte> RedNames;
+    private bool RedNameInited;
     private static void SetupOptionItem()
     {
         OptionRedNameNum = IntegerOptionItem.Create(RoleInfo, 10, OptionName.PsychicCanSeeNum, new(1, 15, 1), 3, false)
@@ -56,14 +56,7 @@ public sealed class Psychic : RoleBase
     }
     public override void OnStartMeeting()
     {
-        if (OptionFreshEachMeeting.GetBool()) GetRedNames();
-    }
-    public override void OverrideNameAsSeer(PlayerControl seen, ref string nameText, bool isForMeeting = false)
-    {
-        if (seen == null || Is(seen) || !isForMeeting || !Player.IsAlive()) return;
-        if (RedNames == null || RedNames.Count < 1) GetRedNames();
-        if (RedNames.Contains(seen.PlayerId))
-            Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), nameText);
+        if (OptionFreshEachMeeting.GetBool() || !RedNameInited) GetRedNames();
     }
     private void GetRedNames()
     {
@@ -86,9 +79,9 @@ public sealed class Psychic : RoleBase
         ENum = Math.Min(ENum, BadList.Count);
         BNum = Math.Min(BNum, AllList.Count);
 
+        List<byte> RedNames = new();
         if (ENum < 1) goto EndOfSelect;
 
-        RedNames = new();
         for (int i = 0; i < ENum && BadList.Count >= 1; i++)
         {
             RedNames.Add(BadList[IRandom.Instance.Next(0, BadList.Count)]);
@@ -106,5 +99,9 @@ public sealed class Psychic : RoleBase
 
         Logger.Info($"需要{OptionRedNameNum.GetInt()}个红名，其中需要{ENum}个邪恶。计算后显示红名{RedNames.Count}个", "Psychic");
         RedNames.Do(x => Logger.Info($"红名：{x}: {Main.AllPlayerNames[x]}", "Psychic"));
+
+        NameColorManager.RemoveAll(Player.PlayerId);
+        RedNames.Do(id => NameColorManager.Add(Player.PlayerId, id, "#ff1919"));
+        
     }
 }
