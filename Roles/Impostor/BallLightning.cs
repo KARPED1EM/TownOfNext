@@ -164,4 +164,9 @@ public sealed class BallLightning : RoleBase, IImpostor
         Ghosts = new();
         SendRPC();
     }
+    public bool OverrideKillButtonText(out string text)
+    {
+        text = Translator.GetString("BallLightningButtonText");
+        return true;
+    }
 }
