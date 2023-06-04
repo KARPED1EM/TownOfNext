@@ -41,8 +41,8 @@ public sealed class CyberStar : RoleBase
     private static void SetupOptionItem()
     {
         OptionImpKnow = BooleanOptionItem.Create(RoleInfo, 10, OptionName.ImpKnowCyberStarDead, false, false);
-        OptionNeutralKillerKnow = BooleanOptionItem.Create(RoleInfo, 10, OptionName.NeutralKillerKnowCyberStarDead, false, false);
-        OptionNeutralNonKillerKnow = BooleanOptionItem.Create(RoleInfo, 10, OptionName.NeutralNonKillerKnowCyberStarDead, false, false);
+        OptionNeutralKillerKnow = BooleanOptionItem.Create(RoleInfo, 11, OptionName.NeutralKillerKnowCyberStarDead, false, false);
+        OptionNeutralNonKillerKnow = BooleanOptionItem.Create(RoleInfo, 12, OptionName.NeutralNonKillerKnowCyberStarDead, false, false);
     }
     public static bool CanSeeKillFlash(PlayerControl player)
     {
@@ -55,7 +55,7 @@ public sealed class CyberStar : RoleBase
     {
         if (!Is(player)) return;
 
-        foreach (var pc in Main.AllPlayerControls.Where(x => CanSeeKillFlash(x)))
+        foreach (var pc in Main.AllPlayerControls.Where(CanSeeKillFlash))
         {
             if (isOnMeeting)
             {
