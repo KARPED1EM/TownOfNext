@@ -23,7 +23,9 @@ public sealed class SuperStar : RoleBase
         RoleInfo,
         player
     )
-    { }
+    {
+        CustomRoleManager.MarkOthers.Add(MarkOthers);
+    }
 
     public static OptionItem OptionEveryoneKnowSuperStar;
     enum OptionName
@@ -35,7 +37,7 @@ public sealed class SuperStar : RoleBase
     {
         OptionEveryoneKnowSuperStar = BooleanOptionItem.Create(RoleInfo, 10, OptionName.EveryOneKnowSuperStar, true, false);
     }
-    public override string GetMark(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
+    public static string MarkOthers(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
         seen ??= seer;
         return (seen.Is(CustomRoles.SuperStar) && OptionEveryoneKnowSuperStar.GetBool()) ? Utils.ColorString(RoleInfo.RoleColor, "★") : "";
