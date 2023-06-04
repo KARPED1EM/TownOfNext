@@ -1,6 +1,7 @@
 using Hazel;
 
 using TOHE.Roles.Core;
+using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
 
@@ -52,7 +53,7 @@ public static class NameColorManager
             || seer.Is(CustomRoles.GM)
             || seer.Is(CustomRoles.God)
 
-            //|| (target.Is(CustomRoles.SuperStar) && Options.EveryOneKnowSuperStar.GetBool())
+            || (target.Is(CustomRoles.SuperStar) && SuperStar.OptionEveryoneKnowSuperStar.GetBool())
             //|| (target.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
             || Mare.KnowTargetRoleColor(target, isMeeting);
     }

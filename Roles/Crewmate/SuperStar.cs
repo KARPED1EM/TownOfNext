@@ -1,6 +1,7 @@
 ﻿using AmongUs.GameOptions;
-
+using System.Linq;
 using TOHE.Roles.Core;
+using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
 public sealed class SuperStar : RoleBase
@@ -24,7 +25,7 @@ public sealed class SuperStar : RoleBase
     )
     { }
 
-    static OptionItem OptionEveryoneKnowSuperStar;
+    public static OptionItem OptionEveryoneKnowSuperStar;
     enum OptionName
     {
         EveryOneKnowSuperStar,
@@ -38,5 +39,15 @@ public sealed class SuperStar : RoleBase
     {
         seen ??= seer;
         return (Is(seen) && OptionEveryoneKnowSuperStar.GetBool()) ? Utils.ColorString(RoleInfo.RoleColor, "★") : "";
+    }
+    public override bool OnCheckMurderAsTarget(MurderInfo info)
+    {
+        var (killer, target) = info.AttemptTuple;
+        if (info.IsSuicide) return true;
+        return !Main.AllAlivePlayerControls.Any(pc =>
+            !Is(pc) &&
+            pc != killer &&
+            Vector2.Distance(pc.GetTruePosition(), target.GetTruePosition()) < 2f
+            );
     }
 }

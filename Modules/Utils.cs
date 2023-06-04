@@ -12,17 +12,17 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using HarmonyLib;
 
 using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
-using TOHE.Roles.AddOns.Common;
+using TOHE.Roles.Crewmate;
 using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.AddOns.Crewmate;
 using static TOHE.Translator;
-using HarmonyLib;
 
 namespace TOHE;
 
@@ -214,6 +214,8 @@ public static class Utils
         {
             return killFlashSeeable.CheckKillFlash(info);
         }
+
+        if (target.Is(CustomRoles.CyberStar) && CyberStar.CanSeeKillFlash(seer)) return true;
 
         return false;
     }
