@@ -41,7 +41,7 @@ public sealed class Capitalism : RoleBase, IImpostor
     public bool IsKiller { get; private set; } = false;
     private static void SetupOptionItem()
     {
-        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.CapitalismSkillCooldown, new(2.5f, 180f, 2.5f), 12f, false)
+        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.CapitalismSkillCooldown, new(2.5f, 180f, 2.5f), 12.5f, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
     public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
