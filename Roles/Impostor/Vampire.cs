@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using AmongUs.GameOptions;
 
+using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using static TOHE.Translator;
@@ -59,7 +60,8 @@ public sealed class Vampire : RoleBase, IImpostor
         //誰かに噛まれていなければ登録
         if (!BittenPlayers.ContainsKey(target.PlayerId))
         {
-            killer.SetKillCooldown();
+            killer.SetKillCooldownV2();
+            killer.RPCPlayCustomSound("Bite");
             BittenPlayers.Add(target.PlayerId, 0f);
         }
         return false;
