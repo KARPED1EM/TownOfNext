@@ -38,7 +38,7 @@ public sealed class SuperStar : RoleBase
     public override string GetMark(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
         seen ??= seer;
-        return (Is(seen) && OptionEveryoneKnowSuperStar.GetBool()) ? Utils.ColorString(RoleInfo.RoleColor, "★") : "";
+        return (seen.Is(CustomRoles.SuperStar) && OptionEveryoneKnowSuperStar.GetBool()) ? Utils.ColorString(RoleInfo.RoleColor, "★") : "";
     }
     public override bool OnCheckMurderAsTarget(MurderInfo info)
     {
