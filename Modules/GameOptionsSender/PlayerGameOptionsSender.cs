@@ -7,6 +7,7 @@ using Mathf = UnityEngine.Mathf;
 
 using TOHE.Roles.Core;
 using TOHE.Roles.Neutral;
+using TOHE.Roles.Crewmate;
 
 namespace TOHE.Modules;
 
@@ -119,23 +120,15 @@ public class PlayerGameOptionsSender : GameOptionsSender
             opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
             opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
         }
+        */
 
         // Í¶ÖÀÉµ¹Ïµ°À²£¡£¡£¡£¡£¡
-        if (
-            (Main.GrenadierBlinding.Count >= 1 &&
-            (player.GetCustomRole().IsImpostor() ||
-            (player.GetCustomRole().IsNeutral() && Options.GrenadierCanAffectNeutral.GetBool()))
-            ) || (
-            Main.MadGrenadierBlinding.Count >= 1 && !player.GetCustomRole().IsImpostorTeam() && !player.Is(CustomRoles.Madmate))
-            )
+        if (Grenadier.IsBlinding(player))
         {
-            {
-                opt.SetVision(false);
-                opt.SetFloat(FloatOptionNames.CrewLightMod, Options.GrenadierCauseVision.GetFloat());
-                opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.GrenadierCauseVision.GetFloat());
-            }
+            opt.SetVision(false);
+            opt.SetFloat(FloatOptionNames.CrewLightMod, Grenadier.OptionCauseVision.GetFloat());
+            opt.SetFloat(FloatOptionNames.ImpostorLightMod, Grenadier.OptionCauseVision.GetFloat());
         }
-        */
 
         AURoleOptions.EngineerCooldown = Mathf.Max(0.01f, AURoleOptions.EngineerCooldown);
 

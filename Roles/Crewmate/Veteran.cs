@@ -42,7 +42,7 @@ public sealed class Veteran : RoleBase
     {
         OptionSkillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.VeteranSkillCooldown, new(2.5f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionSkillDuration = FloatOptionItem.Create(RoleInfo, 10, OptionName.VeteranSkillDuration, new(2.5f, 180f, 2.5f), 20f, false)
+        OptionSkillDuration = FloatOptionItem.Create(RoleInfo, 11, OptionName.VeteranSkillDuration, new(2.5f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
         OptionSkillNums = IntegerOptionItem.Create(RoleInfo, 12, OptionName.VeteranSkillMaxOfUseage, new(1, 99, 1), 5, false)
             .SetValueFormat(OptionFormat.Times);

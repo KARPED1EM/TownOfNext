@@ -453,10 +453,10 @@ public enum CustomRoles
     NiceGuesser,
     Transporter,
     TimeManager,
-    Veteran, //TODO
+    Veteran,
     Bodyguard,
     Counterfeiter, //TODO
-    Grenadier, //TODO
+    Grenadier,
     Medicaler, //TODO
     Divinator,
     Glitch,
