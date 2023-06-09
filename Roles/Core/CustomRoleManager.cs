@@ -455,7 +455,7 @@ public enum CustomRoles
     TimeManager,
     Veteran,
     Bodyguard,
-    Counterfeiter, //TODO
+    Counterfeiter,
     Grenadier,
     Medicaler, //TODO
     Divinator,

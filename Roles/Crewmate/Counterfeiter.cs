@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Hazel;
-
-using TOHE.Roles.Core;
-using TOHE.Roles.Core.Interfaces;
-using TOHE.Modules;
 using HarmonyLib;
 using UnityEngine;
+
+using TOHE.Modules;
+using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Crewmate;
 public sealed class Counterfeiter : RoleBase, IKiller
