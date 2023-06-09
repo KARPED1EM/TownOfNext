@@ -438,7 +438,7 @@ public enum CustomRoles
     Luckey,
     Needy,
     SuperStar,
-    CyberStar, //TODO
+    CyberStar,
     Mayor,
     Paranoia,
     Psychic,
@@ -454,7 +454,7 @@ public enum CustomRoles
     Transporter,
     TimeManager,
     Veteran, //TODO
-    Bodyguard, //TODO
+    Bodyguard,
     Counterfeiter, //TODO
     Grenadier, //TODO
     Medicaler, //TODO
