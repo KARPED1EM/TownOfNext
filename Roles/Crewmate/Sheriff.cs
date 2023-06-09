@@ -132,10 +132,7 @@ public sealed class Sheriff : RoleBase, IKiller
         && (CanKillAllAlive.GetBool() || GameStates.AlreadyDied)
         && ShotLimit > 0;
     public override bool CanSabotage(SystemTypes systemType) => false;
-    public override void ApplyGameOptions(IGameOptions opt)
-    {
-        opt.SetVision(false);
-    }
+    public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         if (Is(info.AttemptKiller) && !info.IsSuicide)

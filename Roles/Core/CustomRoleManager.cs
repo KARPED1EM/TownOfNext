@@ -457,7 +457,7 @@ public enum CustomRoles
     Bodyguard,
     Counterfeiter,
     Grenadier,
-    Medicaler, //TODO
+    Medicaler,
     Divinator,
     Glitch,
     Judge,
