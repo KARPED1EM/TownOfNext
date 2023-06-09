@@ -92,7 +92,7 @@ public sealed class Divinator : RoleBase
                     CustomRoles.God or
                     CustomRoles.Judge or
                     CustomRoles.Observer or
-                    CustomRoles.DovesOfNeace
+                    CustomRoles.DoveOfPeace
                     => "HideMsg",
 
                     CustomRoles.Miner or

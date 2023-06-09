@@ -464,7 +464,7 @@ public enum CustomRoles
     Mortician,
     Mediumshiper, //TODO
     Observer,
-    DovesOfNeace, //TODO
+    DoveOfPeace,
     //Neutral
     Arsonist,
     Jester,
