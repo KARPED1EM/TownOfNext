@@ -79,7 +79,7 @@ public sealed class Mortician : RoleBase
     }
     public override void OnReportDeadBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
-        if (!Is(reporter) || target == null || reporter.PlayerId == target.PlayerId) return;
+        if (reporter == null || !Is(reporter) || target == null || reporter.PlayerId == target.PlayerId) return;
         MsgToSend = LastPlayerName.TryGetValue(target.PlayerId, out var name)
             ? string.Format(GetString("MorticianGetInfo"), target.PlayerName, name)
             : string.Format(GetString("MorticianGetNoInfo"), target.PlayerName);
