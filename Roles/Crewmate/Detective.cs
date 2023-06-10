@@ -25,7 +25,7 @@ public sealed class Detective : RoleBase
         player
     )
     {
-        MsgToSend = new();
+        MsgToSend = null;
     }
 
     static OptionItem OptionKnowKiller;
@@ -34,7 +34,7 @@ public sealed class Detective : RoleBase
         DetectiveCanknowKiller,
     }
 
-    private (string, byte, string) MsgToSend;
+    private string MsgToSend;
     private static void SetupOptionItem()
     {
         OptionKnowKiller = BooleanOptionItem.Create(RoleInfo, 10, OptionName.DetectiveCanknowKiller, true, false);
@@ -52,12 +52,13 @@ public sealed class Detective : RoleBase
                 if (realKiller == null) msg += "；" + GetString("DetectiveNoticeKillerNotFound");
                 else msg += "；" + string.Format(GetString("DetectiveNoticeKiller"), realKiller.GetTrueRoleName());
             }
-            MsgToSend = (msg, Player.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("DetectiveNoticeTitle")));
+            MsgToSend = (msg, );
         }
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)
     {
-        if (MsgToSend != (null, null, null)) msgToSend.Add(MsgToSend);
-        MsgToSend = new();
+        if (MsgToSend != null)
+            msgToSend.Add((MsgToSend, Player.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("DetectiveNoticeTitle"))));
+        MsgToSend = null;
     }
 }

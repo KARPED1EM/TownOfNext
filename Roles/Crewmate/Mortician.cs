@@ -28,11 +28,11 @@ public sealed class Mortician : RoleBase
     )
     {
         LastPlayerName = new();
-        MsgToSend = new();
+        MsgToSend = null;
     }
 
     private static Dictionary<byte, string> LastPlayerName;
-    private (string, byte, string) MsgToSend;
+    private string MsgToSend;
     private void SendRPC(bool add, Vector3 loc = new())
     {
         using var sender = CreateSender(CustomRPC.SetMorticianArrow);
@@ -80,16 +80,15 @@ public sealed class Mortician : RoleBase
     public override void OnReportDeadBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
         if (!Is(reporter) || target == null || reporter.PlayerId == target.PlayerId) return;
-        MsgToSend = (
-            LastPlayerName.TryGetValue(target.PlayerId, out var name)
+        MsgToSend = LastPlayerName.TryGetValue(target.PlayerId, out var name)
             ? string.Format(GetString("MorticianGetInfo"), target.PlayerName, name)
-            : string.Format(GetString("MorticianGetNoInfo"), target.PlayerName)
-            , Player.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("MorticianCheckTitle")));
+            : string.Format(GetString("MorticianGetNoInfo"), target.PlayerName);
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)
     {
-        if (MsgToSend != (null, null, null)) msgToSend.Add(MsgToSend);
-        MsgToSend = new();
+        if (MsgToSend !=null)
+            msgToSend.Add((MsgToSend, Player.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("MorticianCheckTitle"))));
+        MsgToSend = null;
     }
     public override string GetSuffix(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {

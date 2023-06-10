@@ -70,7 +70,7 @@ public sealed class CyberStar : RoleBase
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)
     {
-        if (MsgToSend != null)
+        if (MsgToSend != null && MsgToSend.Count >= 1)
             foreach (var msg in MsgToSend) msgToSend.Add(msg);
         MsgToSend = new();
     }
