@@ -148,8 +148,10 @@ public sealed class Medicaler : RoleBase, IKiller
         if (OptionTargetCanSeeProtect.GetBool())
             target.RpcGuardAndKill(target);
 
+        Utils.NotifyRoles(target);
+
         if (OptionKnowTargetShieldBroken.GetBool())
-            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Medicaler)).Do(x => x.Notify(Translator.GetString("MedicalerTargetShieldBroken")));
+            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Medicaler) && x.PlayerId != target.PlayerId).Do(x => x.Notify(Translator.GetString("MedicalerTargetShieldBroken")));
         else
             Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Medicaler)).Do(x => Utils.NotifyRoles(x));
 
