@@ -98,8 +98,8 @@ public sealed class Medicaler : RoleBase, IKiller
                 ProtectList.Add(reader.ReadByte());
         }
     }
-    public override bool OverrideAbilityButtonText(out string text)
-    {
+    public bool OverrideKillButtonText(out string text)
+    { 
         text = Translator.GetString("MedicalerButtonText");
         return true;
     }
