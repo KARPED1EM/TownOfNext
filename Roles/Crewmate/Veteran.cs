@@ -97,8 +97,7 @@ public sealed class Veteran : RoleBase
         if (info.IsSuicide) return true;
         if (ProtectStartTime != 0 && ProtectStartTime + OptionSkillDuration.GetFloat() >= Utils.GetTimeStamp())
         {
-            var (killer, target) = info.AppearanceTuple;
-            killer.SetRealKiller(target);
+            var (killer, target) = info.AttemptTuple;
             target.RpcMurderPlayerV2(killer);
             Logger.Info($"{target.GetRealName()} 老兵反弹击杀：{killer.GetRealName()}", "Veteran.OnCheckMurderAsTarget");
             return false;
