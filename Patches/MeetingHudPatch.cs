@@ -422,15 +422,12 @@ class MeetingHudStartPatch
         if (msgToSend.Count >= 1)
         {
             var msgTemp = msgToSend.ToList();
-            new LateTask(() => { msgTemp.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3)); }, 3f, "NotifyOnMeetingStart");
+            new LateTask(() => { msgTemp.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3 ?? "")); }, 3f, "NotifyOnMeetingStart");
         }
+
         msgToSend = new();
-
         CustomRoleManager.AllActiveRoles.Values.Do(x => x.NotifyOnMeetingStart(ref msgToSend));
-
         msgToSend.Do(x => Logger.Info($"To:{x.Item2} {x.Item3 ?? ""} => {x.Item1}", "NotifyOnMeetingStart"));
-
-        //总体延迟发送
         new LateTask(() => { msgToSend.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3 ?? "")); }, 3f, "NotifyOnMeetingStart");
     }
     public static void Prefix(MeetingHud __instance)
@@ -483,7 +480,7 @@ class MeetingHudStartPatch
             Utils.SendMessage(string.Format(GetString("Message.SyncButtonLeft"), Options.SyncedButtonCount.GetFloat() - Options.UsedButtonCount));
             Logger.Info("紧急会议剩余 " + (Options.SyncedButtonCount.GetFloat() - Options.UsedButtonCount) + " 次使用次数", "SyncButtonMode");
         }
-        if (AntiBlackout.OverrideExiledPlayer)
+        if (AntiBlackout.OverrideExiledPlayer && !Options.NoGameEnd.GetBool())
         {
             new LateTask(() =>
             {
