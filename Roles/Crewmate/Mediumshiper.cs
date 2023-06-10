@@ -79,7 +79,7 @@ public sealed class Mediumshiper : RoleBase
     }
     private static bool OnReceiveMessage(PlayerControl player, string msg)
     {
-        if (player.IsAlive()) return false;
+        if (player.IsAlive()) return true;
         foreach (var medium in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Mediumshiper)))
         {
             var roleClass = medium.GetRoleClass() as Mediumshiper;
@@ -87,7 +87,7 @@ public sealed class Mediumshiper : RoleBase
             if (OptionOnlyReceiveMsgFromCrew.GetBool() && !player.IsCrew()) continue;
 
             msg = msg.ToLower().Trim();
-            if (!CheckCommond(ref msg, "通灵|ms|mediumship|medium", false)) return false;
+            if (!CheckCommond(ref msg, "通灵|ms|mediumship|medium", false)) return true;
 
             bool ans;
             if (msg.Contains('n') || msg.Contains(GetString("No")) || msg.Contains('错') || msg.Contains("不是")) ans = false;
@@ -95,16 +95,16 @@ public sealed class Mediumshiper : RoleBase
             else
             {
                 Utils.SendMessage(GetString("MediumshipHelp"), player.PlayerId);
-                return true;
+                return false;
             }
 
             Utils.SendMessage(GetString("Mediumship" + (ans ? "Yes" : "No")), medium.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("MediumshipTitle")));
             Utils.SendMessage(GetString("MediumshipDone"), player.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("MediumshipTitle")));
 
             roleClass.ContactPlayer = byte.MaxValue;
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
     public static bool CheckCommond(ref string msg, string command, bool exact = true)
     {
