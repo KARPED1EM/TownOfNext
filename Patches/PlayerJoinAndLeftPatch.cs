@@ -6,9 +6,7 @@ using HarmonyLib;
 using InnerNet;
 
 using TOHE.Modules;
-using TOHE.Roles;
 using TOHE.Roles.Core;
-using TOHE.Roles.Neutral;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -78,20 +76,20 @@ class OnPlayerJoinedPatch
         Logger.Info($"{client.PlayerName}(ClientID:{client.Id}/FriendCode:{client.FriendCode}) 加入房间", "Session");
         if (AmongUsClient.Instance.AmHost && client.FriendCode == "" && Options.KickPlayerFriendCodeNotExist.GetBool())
         {
-            AmongUsClient.Instance.KickPlayer(client.Id, false);
-            Logger.SendInGame(string.Format(GetString("Message.KickedByNoFriendCode"), client.PlayerName));
+            Utils.KickPlayer(client.Id, false);
+            RPC.NotificationPop(string.Format(GetString("Message.KickedByNoFriendCode"), client.PlayerName));
             Logger.Info($"フレンドコードがないプレイヤーを{client?.PlayerName}をキックしました。", "Kick");
         }
         if (AmongUsClient.Instance.AmHost && client.PlatformData.Platform == Platforms.Android && Options.KickAndroidPlayer.GetBool())
         {
-            AmongUsClient.Instance.KickPlayer(client.Id, false);
+            Utils.KickPlayer(client.Id, false);
             string msg = string.Format(GetString("KickAndriodPlayer"), client?.PlayerName);
-            Logger.SendInGame(msg);
+            RPC.NotificationPop(msg);
             Logger.Info(msg, "Android Kick");
         }
         if (DestroyableSingleton<FriendsListManager>.Instance.IsPlayerBlockedUsername(client.FriendCode) && AmongUsClient.Instance.AmHost)
         {
-            AmongUsClient.Instance.KickPlayer(client.Id, true);
+            Utils.KickPlayer(client.Id, true);
             Logger.Info($"ブロック済みのプレイヤー{client?.PlayerName}({client.FriendCode})をBANしました。", "BAN");
         }
         BanManager.CheckBanPlayer(client);
@@ -113,6 +111,12 @@ class OnPlayerLeftPatch
     {
         if (!GameStates.IsInGame || !AmongUsClient.Instance.AmHost) return;
         CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnPlayerDeath(data.Character, PlayerState.GetByPlayerId(data.Character.PlayerId).DeathReason, GameStates.IsMeeting));
+    }
+    public static List<int> ClientsProcessed = new();
+    public static void Add(int id)
+    {
+        ClientsProcessed.Remove(id);
+        ClientsProcessed.Add(id);
     }
     public static void Postfix(AmongUsClient __instance, [HarmonyArgument(0)] ClientData data, [HarmonyArgument(1)] DisconnectReasons reason)
     {
@@ -137,14 +141,6 @@ class OnPlayerLeftPatch
             PlayerGameOptionsSender.RemoveSender(data.Character);
         }
 
-        // 附加描述掉线原因
-        switch (reason)
-        {
-            case DisconnectReasons.Hacking:
-                Logger.SendInGame(string.Format(GetString("PlayerLeftByAU-Anticheat"), data?.PlayerName));
-                break;
-        }
-
         Logger.Info($"{data?.PlayerName}(ClientID:{data?.Id}/FriendCode:{data?.FriendCode})断开连接(理由:{reason}，Ping:{AmongUsClient.Instance.Ping})", "Session");
 
         if (AmongUsClient.Instance.AmHost)
@@ -152,6 +148,25 @@ class OnPlayerLeftPatch
             Main.SayStartTimes.Remove(__instance.ClientId);
             Main.SayBanwordsTimes.Remove(__instance.ClientId);
             Main.playerVersion.Remove(data?.Character?.PlayerId ?? byte.MaxValue);
+
+            // 附加描述掉线原因
+            switch (reason)
+            {
+                case DisconnectReasons.Hacking:
+                    RPC.NotificationPop(string.Format(GetString("PlayerLeftByAU-Anticheat"), data?.PlayerName));
+                    break;
+                case DisconnectReasons.Error:
+                    RPC.NotificationPop(string.Format(GetString("PlayerLeftCuzError"), data?.PlayerName));
+                    break;
+                case DisconnectReasons.Kicked:
+                case DisconnectReasons.Banned:
+                    break;
+                default:
+                    if (!ClientsProcessed.Contains(data?.Id ?? 0))
+                        RPC.NotificationPop(string.Format(GetString("PlayerLeft"), data?.PlayerName));
+                    ClientsProcessed.Remove(data?.Id ?? 0);
+                    break;
+            }
         }
     }
 }

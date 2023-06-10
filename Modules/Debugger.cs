@@ -45,7 +45,7 @@ class Logger
     public static void SendInGame(string text, bool isAlways = false)
     {
         if (!isEnable) return;
-        if (DestroyableSingleton<HudManager>._instance) DestroyableSingleton<HudManager>.Instance.Notifier.AddItem(text);
+        RPC.NotificationPop(text);
     }
     private static void SendToFile(string text, LogLevel level = LogLevel.Info, string tag = "", bool escapeCRLF = true, int lineNumber = 0, string fileName = "")
     {

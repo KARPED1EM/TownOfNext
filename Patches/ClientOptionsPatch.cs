@@ -48,7 +48,6 @@ public static class OptionsMenuBehaviourStartPatch
                 if (Main.AutoStart.Value == false && GameStates.IsCountDown)
                 {
                     GameStartManager.Instance.ResetStartState();
-                    Logger.SendInGame(Translator.GetString("CancelStartCountDown"));
                 }
             }
         }

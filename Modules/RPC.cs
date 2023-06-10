@@ -11,7 +11,6 @@ using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using TOHE.Roles.Crewmate;
 using static TOHE.Translator;
-
 namespace TOHE;
 
 public enum CustomRPC
@@ -45,6 +44,7 @@ public enum CustomRPC
     SyncNameNotify,
     ShowPopUp,
     KillFlash,
+    NotificationPop,
 
     //Roles
     SetDrawPlayer,
@@ -134,9 +134,9 @@ internal class RPCHandlerPatch
             if (AmongUsClient.Instance.AmHost)
             {
                 if (!EAC.ReceiveInvalidRpc(__instance, callId)) return false;
-                AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
+                Utils.KickPlayer(__instance.GetClientId(), false);
                 Logger.Warn($"收到来自 {__instance?.Data?.PlayerName} 的不受信用的RPC，因此将其踢出。", "Kick");
-                Logger.SendInGame(string.Format(GetString("Warning.InvalidRpc"), __instance?.Data?.PlayerName));
+                RPC.NotificationPop(string.Format(GetString("Warning.InvalidRpc"), __instance?.Data?.PlayerName));
             }
             return false;
         }
@@ -199,8 +199,8 @@ internal class RPCHandlerPatch
                                 {
                                     var msg = string.Format(GetString("KickBecauseDiffrentVersionOrMod"), __instance?.Data?.PlayerName);
                                     Logger.Warn(msg, "Version Kick");
-                                    Logger.SendInGame(msg);
-                                    AmongUsClient.Instance.KickPlayer(__instance.GetClientId(), false);
+                                    RPC.NotificationPop(msg);
+                                    Utils.KickPlayer(__instance.GetClientId(), false);
                                 }
                             }, 5f, "Kick");
                     }
@@ -311,6 +311,9 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.SetMedicalerProtectList:
                 Medicaler.ReceiveRPC_SyncList(reader);
+                break;
+            case CustomRPC.NotificationPop:
+                NotificationPopperPatch.AddItem(reader.ReadString());
                 break;
             default:
                 CustomRoleManager.DispatchRpc(reader, rpcType);
@@ -536,6 +539,14 @@ internal static class RPC
         writer.Write(targetId);
         writer.Write(killerId);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
+    }
+    public static void NotificationPop(string text)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.NotificationPop, Hazel.SendOption.Reliable, -1);
+        writer.Write(text);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        NotificationPopperPatch.AddItem(text);
     }
 }
 [HarmonyPatch(typeof(InnerNet.InnerNetClient), nameof(InnerNet.InnerNetClient.StartRpc))]

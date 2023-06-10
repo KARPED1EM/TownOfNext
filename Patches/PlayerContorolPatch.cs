@@ -330,9 +330,9 @@ class FixedUpdatePatch
                 if (LevelKickBufferTime <= 0)
                 {
                     LevelKickBufferTime = 20;
-                    AmongUsClient.Instance.KickPlayer(player.GetClientId(), false);
+                    Utils.KickPlayer(player.GetClientId(), false);
                     string msg = string.Format(GetString("KickBecauseLowLevel"), player.GetRealName().RemoveHtmlTags());
-                    Logger.SendInGame(msg);
+                    RPC.NotificationPop(msg);
                     Logger.Info(msg, "LowLevel Kick");
                 }
             }

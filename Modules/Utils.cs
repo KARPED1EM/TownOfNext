@@ -1170,6 +1170,11 @@ public static class Utils
         if (num == 255) name = "Dead";
         return name;
     }
+    public static void KickPlayer(int playerId, bool ban)
+    {
+        OnPlayerLeftPatch.Add(playerId);
+        AmongUsClient.Instance.KickPlayer(playerId, ban);
+    }
     public static string PadRightV2(this object text, int num)
     {
         int bc = 0;

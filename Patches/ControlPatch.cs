@@ -151,7 +151,6 @@ internal class ControllerManagerUpdatePatch
         {
             Logger.Info("重置倒计时", "KeyCommand");
             GameStartManager.Instance.ResetStartState();
-            Logger.SendInGame(Translator.GetString("CancelStartCountDown"));
         }
         //显示当前有效设置的说明
         if (GetKeysDown(KeyCode.N, KeyCode.LeftShift, KeyCode.LeftControl))
@@ -169,7 +168,7 @@ internal class ControllerManagerUpdatePatch
         if (GetKeysDown(KeyCode.Delete, KeyCode.LeftControl))
         {
             OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValueNoRpc(x.DefaultValue));
-            Logger.SendInGame(Translator.GetString("RestTOHESetting"));
+            Logger.SendInGame(GetString("RestTOHESetting"));
             if (!(!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)))
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RestTOHESetting, SendOption.Reliable, -1);
@@ -236,7 +235,7 @@ internal class ControllerManagerUpdatePatch
         if (Input.GetKeyDown(KeyCode.Y))
         {
             RPC.SyncCustomSettingsRPC();
-            Logger.SendInGame(Translator.GetString("SyncCustomSettingsRPC"));
+            Logger.SendInGame(GetString("SyncCustomSettingsRPC"));
         }
 
         //入门测试

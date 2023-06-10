@@ -252,16 +252,16 @@ internal class EAC
         switch (Options.CheatResponses.GetInt())
         {
             case 0:
-                AmongUsClient.Instance.KickPlayer(pc.GetClientId(), true);
+                Utils.KickPlayer(pc.GetClientId(), true);
                 string msg0 = string.Format(GetString("Message.KickedByEAC"), pc?.Data?.PlayerName, text);
                 Logger.Warn(msg0, "EAC");
-                Logger.SendInGame(msg0);
+                RPC.NotificationPop(msg0);
                 break;
             case 1:
-                AmongUsClient.Instance.KickPlayer(pc.GetClientId(), false);
+                Utils.KickPlayer(pc.GetClientId(), false);
                 string msg1 = string.Format(GetString("Message.BanedByEAC"), pc?.Data?.PlayerName, text);
                 Logger.Warn(msg1, "EAC");
-                Logger.SendInGame(msg1);
+                RPC.NotificationPop(msg1);
                 break;
             case 2:
                 Utils.SendMessage(string.Format(GetString("Message.NoticeByEAC"), pc?.Data?.PlayerName, text), PlayerControl.LocalPlayer.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), GetString("MessageFromEAC")));

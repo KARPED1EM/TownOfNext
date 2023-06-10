@@ -715,7 +715,7 @@ internal class ChatCommands
                 {
                     string name = player.GetRealName();
                     Utils.SendMessage(string.Format(GetString("Message.PlayerQuitForever"), name));
-                    AmongUsClient.Instance.KickPlayer(player.GetClientId(), true);
+                    Utils.KickPlayer(player.GetClientId(), true);
                 }
                 else
                 {

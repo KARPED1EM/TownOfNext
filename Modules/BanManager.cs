@@ -82,8 +82,8 @@ public static class BanManager
                 if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
                 if (Regex.IsMatch(player.PlayerName, line))
                 {
-                    AmongUsClient.Instance.KickPlayer(player.Id, false);
-                    Logger.SendInGame(string.Format(GetString("Message.KickedByDenyName"), player.PlayerName, line));
+                    Utils.KickPlayer(player.Id, false);
+                    RPC.NotificationPop(string.Format(GetString("Message.KickedByDenyName"), player.PlayerName, line));
                     Logger.Info($"{player.PlayerName}は名前が「{line}」に一致したためキックされました。", "Kick");
                     return;
                 }
@@ -99,15 +99,15 @@ public static class BanManager
         if (!AmongUsClient.Instance.AmHost || !Options.ApplyBanList.GetBool()) return;
         if (CheckBanList(player?.FriendCode))
         {
-            AmongUsClient.Instance.KickPlayer(player.Id, true);
-            Logger.SendInGame(string.Format(GetString("Message.BanedByBanList"), player.PlayerName));
+            Utils.KickPlayer(player.Id, true);
+            RPC.NotificationPop(string.Format(GetString("Message.BanedByBanList"), player.PlayerName));
             Logger.Info($"{player.PlayerName}は過去にBAN済みのためBANされました。", "BAN");
             return;
         }
         if (CheckEACList(player?.FriendCode))
         {
-            AmongUsClient.Instance.KickPlayer(player.Id, true);
-            Logger.SendInGame(string.Format(GetString("Message.BanedByEACList"), player.PlayerName));
+            Utils.KickPlayer(player.Id, true);
+            RPC.NotificationPop(string.Format(GetString("Message.BanedByEACList"), player.PlayerName));
             Logger.Info($"{player.PlayerName}存在于EAC封禁名单", "BAN");
             return;
         }

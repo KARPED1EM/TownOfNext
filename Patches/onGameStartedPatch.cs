@@ -73,14 +73,14 @@ internal class ChangeRoleSettings
             RPC.SyncAllPlayerNames();
 
             Camouflage.Init();
-            var invalidColor = Main.AllPlayerControls.Where(p => p.Data.DefaultOutfit.ColorId < 0 || Palette.PlayerColors.Length <= p.Data.DefaultOutfit.ColorId);
-            if (invalidColor.Count() != 0)
-            {
-                var msg = GetString("Error.InvalidColor");
-                Logger.SendInGame(msg);
-                Utils.SendMessage(msg);
-                Logger.Error(msg, "CoStartGame");
-            }
+            //var invalidColor = Main.AllPlayerControls.Where(p => p.Data.DefaultOutfit.ColorId < 0 || Palette.PlayerColors.Length <= p.Data.DefaultOutfit.ColorId);
+            //if (invalidColor.Count() != 0)
+            //{
+            //    var msg = GetString("Error.InvalidColor");
+            //    Logger.SendInGame(msg);
+            //    Utils.SendMessage(msg);
+            //    Logger.Error(msg, "CoStartGame");
+            //}
 
             foreach (var target in Main.AllPlayerControls)
             {
