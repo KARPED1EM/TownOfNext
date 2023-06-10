@@ -49,6 +49,11 @@ public sealed class Paranoia : RoleBase
             : OptionSkillCooldown.GetFloat();
         AURoleOptions.EngineerInVentMaxTime = 1;
     }
+    public override bool OverrideAbilityButtonText(out string text)
+    {
+        text = Translator.GetString("ParanoiaVetnButtonText");
+        return true;
+    }
     public override bool OnEnterVent(PlayerPhysics physics, int ventId)
     {
         if (SkillLimit >= 1)
@@ -64,4 +69,5 @@ public sealed class Paranoia : RoleBase
     {
         msgToSend.Add((Translator.GetString("SkillUsedLeft") + SkillLimit.ToString(), Player.PlayerId, null));
     }
+    public override void OnExileWrapUp(GameData.PlayerInfo exiled, ref bool DecidedWinner) => Player.RpcResetAbilityCooldown();
 }
