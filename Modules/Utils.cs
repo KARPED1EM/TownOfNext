@@ -215,7 +215,7 @@ public static class Utils
             return killFlashSeeable.CheckKillFlash(info);
         }
 
-        if (target.Is(CustomRoles.CyberStar) && CyberStar.CanSeeKillFlash(seer)) return true;
+        if (target.Is(CustomRoles.CyberStar) && (CyberStar.CanSeeKillFlash(seer) || target.Is(CustomRoles.Madmate))) return true;
 
         return false;
     }
@@ -495,7 +495,7 @@ public static class Utils
     }
     public static bool CanBeMadmate(this PlayerControl pc)
     {
-        return pc != null && pc.GetCustomRole().IsCrewmate() && !pc.Is(CustomRoles.Madmate)
+        return pc != null && (pc.GetRoleClass()?.CanBeMadmate ?? false) && !pc.Is(CustomRoles.Madmate)
         && !(
             (pc.Is(CustomRoles.Sheriff) && !Options.SheriffCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Mayor) && !Options.MayorCanBeMadmate.GetBool()) ||
@@ -503,7 +503,6 @@ public static class Utils
             (pc.Is(CustomRoles.Snitch) && !Options.SnitchCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Judge) && !Options.JudgeCanBeMadmate.GetBool()) ||
             pc.Is(CustomRoles.Needy) ||
-            pc.Is(CustomRoles.CyberStar) ||
             pc.Is(CustomRoles.Egoist)
             );
     }

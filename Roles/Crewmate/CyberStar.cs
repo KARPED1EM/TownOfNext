@@ -47,6 +47,7 @@ public sealed class CyberStar : RoleBase
     public static bool CanSeeKillFlash(PlayerControl player)
     {
         return !player.IsAlive()
+            || player.IsCrew()
             || player.IsImp() && OptionImpKnow.GetBool()
             || player.IsNeutralKiller() && OptionNeutralKillerKnow.GetBool()
             || player.IsNeutralNonKiller() && OptionNeutralNonKillerKnow.GetBool();
@@ -55,7 +56,7 @@ public sealed class CyberStar : RoleBase
     {
         if (!Is(player)) return;
 
-        foreach (var pc in Main.AllPlayerControls.Where(CanSeeKillFlash))
+        foreach (var pc in Main.AllPlayerControls.Where(x => CanSeeKillFlash(x) || player.Is(CustomRoles.Madmate)))
         {
             if (isOnMeeting)
             {
