@@ -710,7 +710,7 @@
 "SniperBulletCount","最大子弹数量","Ammo","Количество пуль","子彈最大數量","最大子弹数量"
 "SniperPrecisionShooting","精准射击模式","Precise Shooting","Точный выстрел","子彈可以穿墻","精准射击模式"
 "SniperAimAssist","狙击范围内有玩家时提醒狙击手","Aim Assist","Помощь в прицеливании","狙擊範圍有玩家時提醒狙擊手","狙击范围内有玩家时提醒狙击手"
-"SniperAimAssistOneshot","闪烁提示而不是一直显示","One shot Assist","Помощь только с одним выстрелом","閃爍提示而不是一直顯示","闪烁提示而不是一直显示"
+"SniperAimAssistOneshot","只在射击时提示","One shot Assist","Помощь только с одним выстрелом","閃爍提示而不是一直顯示","闪烁提示而不是一直显示"
 "NameDisplayAddons","显示职业同时显示<color=#ff9ace>附加职业</color>","Dispay Add-Ons next to the role name","Показывать Атрибуты","顯示職業時同時顯示附加職業","显示职业同时显示附加职业"
 "NoLimitAddonsNum","不限制每位玩家的<color=#ff9ace>附加职业</color>上限","Players can have multiple Add-Ons","Количество Атрибутов для одного игрока не ограничено ","不限制每位玩家的附加職業上限","不限制每位玩家的附加职业上限"
 "AdditionRolesSpawnRate","出现概率","Spawn Chance","Шанс появления","出現機率","出现概率"
