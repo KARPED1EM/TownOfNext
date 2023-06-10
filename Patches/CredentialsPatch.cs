@@ -55,7 +55,7 @@ internal class VersionShowerStartPatch
 
         Main.credentialsText = $"\r\n<color={Main.ModColor}>{Main.ModName}</color> v{Main.PluginVersion}";
         if (Main.IsAprilFools) Main.credentialsText = $"\r\n<color=#00bfff>Town Of Host</color> v11.45.14";
-        Main.credentialsText += $"\r\n<size=70%>{GetString("MainDev")}：<color={Main.ModColor}>KARPED1EM</color></size>";
+        //Main.credentialsText += $"\r\n<size=70%>{GetString("MainDev")}：<color={Main.ModColor}>KARPED1EM</color></size>";
 
 #if CANARY
         Main.credentialsText += $"\r\n<color=#fffe1e>Canary({ThisAssembly.Git.Commit})</color>";
