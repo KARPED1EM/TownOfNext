@@ -55,6 +55,6 @@ public sealed class TimeManager : RoleBase, IMeetingTimeAlterable
     public override string GetProgressText(bool comms = false)
     {
         var time = CalculateMeetingTimeDelta();
-        return time > 0 ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.TimeManager).ShadeColor(0.5f), $"{(Player.Is(CustomRoles.Madmate) ? '-' : '+')}{Math.Abs(time)}s") : "";
+        return time > 0 ? Utils.ColorString(RoleInfo.RoleColor.ShadeColor(0.5f), $"{(Player.Is(CustomRoles.Madmate) ? '-' : '+')}{Math.Abs(time)}s") : "";
     }
 }
