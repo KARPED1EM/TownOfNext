@@ -53,6 +53,7 @@ public static class CustomRoleManager
         var targetRole = attemptTarget.GetRoleClass();
 
         // 其他职业类对击杀事件的事先检查
+        if (killerRole is not IKiller killerCheck || killerCheck.IsKiller)
         foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
         {
             if (!onCheckMurderPlayer(info)) return;
