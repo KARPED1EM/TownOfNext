@@ -12,7 +12,7 @@ public sealed class Observer : RoleBase
             CustomRoles.Observer,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8021618,
+            22600,
             null,
             "ob",
             "#a8e0fa"

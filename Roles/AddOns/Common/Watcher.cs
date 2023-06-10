@@ -6,7 +6,7 @@ using static TOHE.Options;
 namespace TOHE.Roles.AddOns.Common;
 public static class Watcher
 {
-    private static readonly int Id = 80200;
+    private static readonly int Id = 80300;
     private static Color RoleColor = Utils.GetRoleColor(CustomRoles.Watcher);
     public static string SubRoleMark = Utils.ColorString(RoleColor, "Ｗ");
     private static List<byte> playerIdList = new();

@@ -13,7 +13,7 @@ public sealed class Glitch : RoleBase
             CustomRoles.Glitch,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8023489,
+            23000,
             SetupOptionItem,
             "gl",
             "#dcdcdc"

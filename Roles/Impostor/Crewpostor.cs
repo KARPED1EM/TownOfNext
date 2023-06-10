@@ -16,7 +16,7 @@ public sealed class Crewpostor : RoleBase, IImpostor
             CustomRoles.Crewpostor,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Impostor,
-            907090,
+            4800,
             SetupOptionItem,
             "ca",
             requireResetCam: true,

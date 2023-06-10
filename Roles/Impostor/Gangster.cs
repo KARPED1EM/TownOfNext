@@ -16,7 +16,7 @@ public sealed class Gangster : RoleBase, IImpostor
             CustomRoles.Gangster,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            5054525,
+            3200,
             SetupOptionItem,
             "ga"
         );

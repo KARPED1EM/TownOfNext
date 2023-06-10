@@ -16,7 +16,7 @@ public sealed class Swooper : RoleBase, IImpostor
             CustomRoles.Swooper,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            904444,
+            3900,
             SetupOptionItem,
             "sw"
         );

@@ -7,7 +7,7 @@ using static TOHE.Options;
 namespace TOHE.Roles.AddOns.Crewmate;
 public static class Workhorse
 {
-    private static readonly int Id = 80100;
+    private static readonly int Id = 80400;
     public static Color RoleColor = Utils.GetRoleColor(CustomRoles.Workhorse);
     public static List<byte> playerIdList = new();
     private static OptionItem OptionAssignOnlyToCrewmate;

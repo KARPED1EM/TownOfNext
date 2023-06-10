@@ -13,7 +13,7 @@ public sealed class TimeManager : RoleBase, IMeetingTimeAlterable
             CustomRoles.TimeManager,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            21500,
+            21600,
             SetupOptionItem,
             "tm",
             "#6495ed"

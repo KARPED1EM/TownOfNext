@@ -14,7 +14,7 @@ public sealed class Veteran : RoleBase
             CustomRoles.Veteran,
             () => RoleTypes.Engineer,
             CustomRoleTypes.Crewmate,
-            8021315,
+            21800,
             SetupOptionItem,
             "ve",
             "#a77738"

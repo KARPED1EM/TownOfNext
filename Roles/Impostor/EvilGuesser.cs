@@ -14,7 +14,7 @@ public sealed class EvilGuesser : RoleBase, IImpostor, IMeetingButton
             CustomRoles.EvilGuesser,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            901065,
+            1000,
             SetupOptionItem,
             "eg"
         );

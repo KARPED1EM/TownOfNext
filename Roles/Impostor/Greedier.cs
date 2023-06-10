@@ -15,7 +15,7 @@ public sealed class Greedier : RoleBase, IImpostor
             CustomRoles.Greedier,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            3300,
+            3400,
             SetupOptionItem,
             "gr"
         );

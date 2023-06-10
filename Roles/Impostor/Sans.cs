@@ -15,7 +15,7 @@ public sealed class Sans : RoleBase, IImpostor
             CustomRoles.Sans,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            902055,
+            3000,
             SetupOptionItem,
             "ag"
         );

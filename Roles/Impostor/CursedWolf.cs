@@ -16,7 +16,7 @@ public sealed class CursedWolf : RoleBase, IImpostor
             CustomRoles.CursedWolf,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            3200,
+            3500,
             SetupOptionItem,
             "cw"
         );

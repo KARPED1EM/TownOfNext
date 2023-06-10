@@ -14,7 +14,7 @@ public sealed class NiceGuesser : RoleBase, IMeetingButton
             CustomRoles.NiceGuesser,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            102255,
+            20000,
             SetupOptionItem,
             "ng",
             "#eede26"

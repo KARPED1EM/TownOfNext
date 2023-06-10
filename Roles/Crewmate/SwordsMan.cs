@@ -15,7 +15,7 @@ public sealed class SwordsMan : RoleBase, IKiller
             CustomRoles.SwordsMan,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Crewmate,
-            8021075,
+            21400,
             null,
             "vi",
             "#f0e68c",

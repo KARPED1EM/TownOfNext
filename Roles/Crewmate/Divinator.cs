@@ -14,7 +14,7 @@ public sealed class Divinator : RoleBase
             CustomRoles.Divinator,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8022560,
+            22200,
             SetupOptionItem,
             "ft",
             "#882c83"

@@ -16,7 +16,7 @@ public sealed class God : RoleBase, IOverrideWinner
             CustomRoles.God,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Neutral,
-            5050965,
+            50300,
             SetupOptionItem,
             "go",
             "#f96464",

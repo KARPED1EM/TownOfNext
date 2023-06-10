@@ -17,7 +17,7 @@ public sealed class OverKiller : RoleBase, IImpostor
             CustomRoles.OverKiller,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            902622,
+            4700,
             null,
             "bu",
             experimental: true

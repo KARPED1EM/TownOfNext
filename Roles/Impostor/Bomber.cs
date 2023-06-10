@@ -17,7 +17,7 @@ public sealed class Bomber : RoleBase, IImpostor
             CustomRoles.Bomber,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            902135,
+            3100,
             SetupOptionItem,
             "bb"
         );

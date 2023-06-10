@@ -15,7 +15,7 @@ public sealed class Mediumshiper : RoleBase
             CustomRoles.Mediumshiper,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8021812,
+            22500,
             SetupOptionItem,
             "me",
             "#a200ff"

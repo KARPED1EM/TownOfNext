@@ -16,7 +16,7 @@ public sealed class Escapee : RoleBase, IImpostor
             CustomRoles.Escapee,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            901595,
+            2000,
             null,
             "ec"
         );

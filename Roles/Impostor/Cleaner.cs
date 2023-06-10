@@ -14,7 +14,7 @@ public sealed class Cleaner : RoleBase, IImpostor
             CustomRoles.Cleaner,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            902233,
+            3300,
             SetupOptionItem,
             "cl"
         );

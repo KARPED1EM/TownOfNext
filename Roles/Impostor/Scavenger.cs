@@ -15,7 +15,7 @@ public sealed class Scavenger : RoleBase, IImpostor
             CustomRoles.Scavenger,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            905522,
+            1800,
             SetupOptionItem,
             "sc"
         );

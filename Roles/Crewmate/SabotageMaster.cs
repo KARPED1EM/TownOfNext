@@ -12,7 +12,7 @@ public sealed class SabotageMaster : RoleBase
             CustomRoles.SabotageMaster,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            20300,
+            20600,
             SetupOptionItem,
             "sa",
             "#0000ff",

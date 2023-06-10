@@ -13,7 +13,7 @@ public sealed class Bodyguard : RoleBase
             CustomRoles.Bodyguard,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8021525,
+            21900,
             SetupOptionItem,
             "bg",
             "#185abd"

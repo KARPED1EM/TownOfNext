@@ -13,7 +13,7 @@ public sealed class Minimalism : RoleBase, IImpostor
             CustomRoles.Minimalism,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            901635,
+            4000,
             SetupOptionItem,
             "km"
         );

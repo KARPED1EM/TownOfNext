@@ -14,7 +14,7 @@ public sealed class Detective : RoleBase
             CustomRoles.Detective,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8021015,
+            21300,
             SetupOptionItem,
             "de",
             "#7160e8"

@@ -17,7 +17,7 @@ public sealed class Eraser : RoleBase, IImpostor
             CustomRoles.Eraser,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            905553,
+            4600,
             SetupOptionItem,
             "er",
             experimental: true

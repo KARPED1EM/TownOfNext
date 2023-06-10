@@ -13,7 +13,7 @@ public sealed class SuperStar : RoleBase
             CustomRoles.SuperStar,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8020165,
+            20300,
             SetupOptionItem,
             "ss",
             "#f6f657"

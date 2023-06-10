@@ -17,7 +17,7 @@ public sealed class DoveOfPeace : RoleBase
             CustomRoles.DoveOfPeace,
             () => RoleTypes.Engineer,
             CustomRoleTypes.Crewmate,
-            8948971,
+            22800,
             SetupOptionItem,
             "dp",
             "#FFFFFF"

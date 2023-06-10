@@ -19,7 +19,7 @@ public sealed class BallLightning : RoleBase, IImpostor
             CustomRoles.BallLightning,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            901533,
+            4400,
             SetupOptionItem,
             "li",
             experimental: true

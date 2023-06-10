@@ -13,7 +13,7 @@ public sealed class Bard : RoleBase, IImpostor
             CustomRoles.Bard,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            901234,
+            4900,
             null,
             "ba"
         );

@@ -16,7 +16,7 @@ public sealed class Assassin : RoleBase, IImpostor
             CustomRoles.Assassin,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            901455,
+            1600,
             SetupOptionItem,
             "as"
         );

@@ -18,7 +18,7 @@ public sealed class EvilTracker : RoleBase, IImpostor, IKillFlashSeeable
             CustomRoles.EvilTracker,
             () => (TargetMode)OptionTargetMode.GetValue() == TargetMode.Never ? RoleTypes.Impostor : RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            2900,
+            2800,
             SetupOptionItem,
             "et"
         );

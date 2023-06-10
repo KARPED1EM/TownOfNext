@@ -20,7 +20,7 @@ public sealed class AntiAdminer : RoleBase, IImpostor
             CustomRoles.AntiAdminer,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            3100,
+            2900,
             SetupOptionItem,
             "aa"
         );

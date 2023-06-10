@@ -19,7 +19,7 @@ public sealed class Judge : RoleBase, IMeetingButton
             CustomRoles.Judge,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8035678,
+            22300,
             SetupOptionItem,
             "ju",
             "#f8d85a"

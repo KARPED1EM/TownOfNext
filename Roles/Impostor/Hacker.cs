@@ -17,7 +17,7 @@ public sealed class Hacker : RoleBase, IImpostor
             CustomRoles.Hacker,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            902585,
+            1700,
             SetupOptionItem,
             "ha"
         );

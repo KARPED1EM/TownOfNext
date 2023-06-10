@@ -14,7 +14,7 @@ public sealed class BoobyTrap : RoleBase, IImpostor
             CustomRoles.BoobyTrap,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            902265,
+            4200,
             SetupOptionItem,
             "bt"
         );

@@ -14,7 +14,7 @@ namespace TOHE.Roles.Impostor
                 CustomRoles.TimeThief,
                 () => RoleTypes.Impostor,
                 CustomRoleTypes.Impostor,
-                2400,
+                2700,
                 SetupOptionItem,
                 "tt"
             );

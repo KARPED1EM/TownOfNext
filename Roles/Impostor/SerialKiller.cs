@@ -15,7 +15,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
             CustomRoles.SerialKiller,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            1100,
+            1200,
             SetUpOptionItem,
             "sk"
         );

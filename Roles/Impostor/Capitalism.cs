@@ -15,7 +15,7 @@ public sealed class Capitalism : RoleBase, IImpostor
             CustomRoles.Capitalism,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            902555,
+            4300,
             SetupOptionItem,
             "ca",
             experimental: true

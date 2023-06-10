@@ -18,7 +18,7 @@ public sealed class Vampire : RoleBase, IImpostor
             CustomRoles.Vampire,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            1300,
+            1400,
             SetupOptionItem,
             "va",
             introSound: () => GetIntroSound(RoleTypes.Shapeshifter)

@@ -13,7 +13,7 @@ public sealed class Hangman : RoleBase, IImpostor
             CustomRoles.Hangman,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            905367,
+            3800,
             SetupOptionItem,
             "ha"
         );

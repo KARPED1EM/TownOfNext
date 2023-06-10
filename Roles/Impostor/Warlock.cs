@@ -19,7 +19,7 @@ public sealed class Warlock : RoleBase, IImpostor
             CustomRoles.Warlock,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            1400,
+            1500,
             SetupOptionItem,
             "wa"
         );

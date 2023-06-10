@@ -16,7 +16,7 @@ public sealed class Psychic : RoleBase
             CustomRoles.Psychic,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8020450,
+            20900,
             SetupOptionItem,
             "psy",
             "#6F698C"

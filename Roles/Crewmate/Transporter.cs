@@ -14,7 +14,7 @@ public sealed class Transporter : RoleBase
             CustomRoles.Transporter,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8021115,
+            21500,
             SetupOptionItem,
             "tr",
             "#42D1FF"

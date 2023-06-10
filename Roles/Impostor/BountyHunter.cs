@@ -18,7 +18,7 @@ public sealed class BountyHunter : RoleBase, IImpostor
             CustomRoles.BountyHunter,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            1000,
+            1100,
             SetupOptionItem,
             "bo"
         );

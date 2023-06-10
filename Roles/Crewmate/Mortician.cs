@@ -16,7 +16,7 @@ public sealed class Mortician : RoleBase
             CustomRoles.Mortician,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8021150,
+            22400,
             null,
             "mo",
             "#333c49"

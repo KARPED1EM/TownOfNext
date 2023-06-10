@@ -14,7 +14,7 @@ public sealed class Dictator : RoleBase
             CustomRoles.Dictator,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            20900,
+            21200,
             null,
             "dic",
             "#df9b00"

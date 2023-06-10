@@ -18,7 +18,7 @@ public sealed class Witch : RoleBase, IImpostor
             CustomRoles.Witch,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            1500,
+            2100,
             SetupOptionItem,
             "wi"
         );

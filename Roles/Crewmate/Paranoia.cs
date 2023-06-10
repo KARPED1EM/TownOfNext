@@ -13,7 +13,7 @@ public sealed class Paranoia : RoleBase
             CustomRoles.Paranoia,
             () => RoleTypes.Engineer,
             CustomRoleTypes.Crewmate,
-            8020490,
+            20800,
             SetupOptionItem,
             "pa",
             "#c993f5"

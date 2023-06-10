@@ -16,7 +16,7 @@ public sealed class Grenadier : RoleBase
             CustomRoles.Grenadier,
             () => RoleTypes.Engineer,
             CustomRoleTypes.Crewmate,
-            8021615,
+            22000,
             SetupOptionItem,
             "gr",
             "#3c4a16"

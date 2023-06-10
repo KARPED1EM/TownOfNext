@@ -13,7 +13,7 @@ public sealed class Miner : RoleBase, IImpostor
             CustomRoles.Miner,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            904190,
+            1900,
             null,
             "mn"
         );

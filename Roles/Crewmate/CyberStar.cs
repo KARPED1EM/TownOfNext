@@ -13,7 +13,7 @@ public sealed class CyberStar : RoleBase
             CustomRoles.CyberStar,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            8020176,
+            20400,
             SetupOptionItem,
             "se",
             "#ee4a55"

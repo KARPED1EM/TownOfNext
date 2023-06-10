@@ -19,7 +19,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
             CustomRoles.Counterfeiter,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Crewmate,
-            8035600,
+            21700,
             SetupOptionItem,
             "de",
             "#e0e0e0",

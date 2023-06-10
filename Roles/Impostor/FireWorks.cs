@@ -28,7 +28,7 @@ public sealed class FireWorks : RoleBase, IImpostor
             CustomRoles.FireWorks,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            1700,
+            2300,
             SetupCustomOption,
             "fw"
         );

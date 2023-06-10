@@ -14,7 +14,7 @@ public sealed class Mare : RoleBase, IImpostor
             CustomRoles.Mare,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            2300,
+            2600,
             SetupCustomOption,
             "ma"
         );

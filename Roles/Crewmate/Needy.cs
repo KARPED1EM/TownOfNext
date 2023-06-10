@@ -12,7 +12,7 @@ public sealed class Needy : RoleBase
             CustomRoles.Needy,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            1020095,
+            20200,
             null,
             "lg",
             "#a4dffe"

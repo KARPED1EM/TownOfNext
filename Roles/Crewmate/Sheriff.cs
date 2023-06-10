@@ -17,7 +17,7 @@ public sealed class Sheriff : RoleBase, IKiller
             CustomRoles.Sheriff,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Crewmate,
-            20400,
+            20700,
             SetupOptionItem,
             "sh",
             "#f8cd46",

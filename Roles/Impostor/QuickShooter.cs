@@ -18,7 +18,7 @@ public sealed class QuickShooter : RoleBase, IImpostor
             CustomRoles.QuickShooter,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            902522,
+            3700,
             SetupOptionItem,
             "qs"
         );

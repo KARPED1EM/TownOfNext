@@ -11,7 +11,7 @@ public sealed class Luckey : RoleBase
             CustomRoles.Luckey,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
-            1020195,
+            20100,
             SetupOptionItem,
             "lk",
             "#b8d7a3"

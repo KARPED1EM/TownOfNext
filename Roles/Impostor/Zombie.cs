@@ -12,7 +12,7 @@ public sealed class Zombie : RoleBase, IImpostor
             CustomRoles.Zombie,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            901790,
+            4100,
             SetupOptionItem,
             "zb",
             experimental: true

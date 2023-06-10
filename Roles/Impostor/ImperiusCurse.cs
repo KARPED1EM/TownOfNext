@@ -13,7 +13,7 @@ public sealed class ImperiusCurse : RoleBase, IImpostor
             CustomRoles.ImperiusCurse,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            902422,
+            3600,
             SetupOptionItem,
             "st",
             experimental: true

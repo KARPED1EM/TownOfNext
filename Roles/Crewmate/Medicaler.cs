@@ -19,7 +19,7 @@ public sealed class Medicaler : RoleBase, IKiller
             CustomRoles.Medicaler,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Crewmate,
-            8021866,
+            22100,
             SetupOptionItem,
             "me",
             "#00a4ff",

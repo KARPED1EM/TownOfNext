@@ -14,7 +14,7 @@ public sealed class Concealer : RoleBase, IImpostor
             CustomRoles.Concealer,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
-            903534,
+            4500,
             SetupOptionItem,
             "co",
             experimental: true

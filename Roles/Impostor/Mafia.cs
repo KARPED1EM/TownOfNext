@@ -16,7 +16,7 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
             CustomRoles.Mafia,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            1600,
+            2200,
             SetupOptionItem,
             "mf"
         );
