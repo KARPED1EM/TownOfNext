@@ -52,7 +52,7 @@ public sealed class Detective : RoleBase
                 if (realKiller == null) msg += "；" + GetString("DetectiveNoticeKillerNotFound");
                 else msg += "；" + string.Format(GetString("DetectiveNoticeKiller"), realKiller.GetTrueRoleName());
             }
-            MsgToSend = (msg, );
+            MsgToSend = msg;
         }
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)

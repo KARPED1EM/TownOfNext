@@ -66,7 +66,7 @@ public sealed class Paranoia : RoleBase
         }
         else
         {
-            Player.Notify(Translator.GetString("NotifyOnMeetingStart"));
+            Player.Notify(Translator.GetString("SkillMaxUsage"));
         }
         return false;
     }
