@@ -20,7 +20,7 @@ public sealed class DoveOfPeace : RoleBase
             8948971,
             SetupOptionItem,
             "dp",
-            "#a77738"
+            "#FFFFFF"
         );
     public DoveOfPeace(PlayerControl player)
     : base(
@@ -56,7 +56,7 @@ public sealed class DoveOfPeace : RoleBase
     }
     public override bool OverrideAbilityButtonText(out string text)
     {
-        text = GetString("DoveOfPeaceVetnButtonText");
+        text = GetString("DoveOfPeaceVentButtonText");
         return true;
     }
     public override bool OnEnterVent(PlayerPhysics physics, int ventId)
@@ -74,10 +74,10 @@ public sealed class DoveOfPeace : RoleBase
                 x.RPCPlayCustomSound("Dove");
                 x.ResetKillCooldown();
                 x.SetKillCooldownV2();
-                x.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.DoveOfPeace), GetString("DovesOfNeaceSkillNotify")));
+                x.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.DoveOfPeace), GetString("DoveOfPeaceSkillNotify")));
             });
             Player.RPCPlayCustomSound("Dove");
-            Player.Notify(string.Format(GetString("DovesOfNeaceOnGuard"), SkillLimit));
+            Player.Notify(string.Format(GetString("DoveOfPeaceOnGuard"), SkillLimit));
             return true;
         }
         else

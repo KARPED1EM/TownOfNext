@@ -55,9 +55,9 @@ public sealed class Medicaler : RoleBase, IKiller
     public bool IsKiller { get; private set; } = false;
     private static void SetupOptionItem()
     {
-        OptionProtectNums = FloatOptionItem.Create(RoleInfo, 10, OptionName.MedicalerCooldown, new(2.5f, 180f, 2.5f), 5f, false)
+        OptionProtectCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.MedicalerCooldown, new(2.5f, 180f, 2.5f), 5f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionProtectCooldown = IntegerOptionItem.Create(RoleInfo, 11, OptionName.MedicalerSkillLimit, new(1, 99, 1), 3, false)
+        OptionProtectNums = IntegerOptionItem.Create(RoleInfo, 11, OptionName.MedicalerSkillLimit, new(1, 99, 1), 3, false)
             .SetValueFormat(OptionFormat.Times);
         OptionTargetCanSeeProtect = BooleanOptionItem.Create(RoleInfo, 12, OptionName.MedicalerTargetCanSeeProtect, true, false);
         OptionKnowTargetShieldBroken = BooleanOptionItem.Create(RoleInfo, 13, OptionName.MedicalerKnowTargetShieldBroken, true, false);
@@ -162,8 +162,9 @@ public sealed class Medicaler : RoleBase, IKiller
     public static string MarkOthers(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
         seen ??= seer;
+        if (!InProtect(seen.PlayerId)) return "";
         return (seer.Is(CustomRoles.Medicaler)
             || (seer.PlayerId == seen.PlayerId && OptionTargetCanSeeProtect.GetBool())
-            ) && InProtect(seen.PlayerId) ? Utils.ColorString(RoleInfo.RoleColor, "●") : "";
+            ) ? Utils.ColorString(RoleInfo.RoleColor, "●") : "";
     }
 }
