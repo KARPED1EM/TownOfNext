@@ -78,7 +78,7 @@ public sealed class Veteran : RoleBase
         }
         else
         {
-            Player.Notify(GetString("VeteranMaxUsage"));
+            Player.Notify(GetString("SkillMaxUsage"));
             return false;
         }
     }

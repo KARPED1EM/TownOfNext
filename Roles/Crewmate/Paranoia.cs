@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AmongUs.GameOptions;
+using Discord;
 using TOHE.Roles.Core;
 
 namespace TOHE.Roles.Crewmate;
@@ -62,6 +63,10 @@ public sealed class Paranoia : RoleBase
             physics.RpcBootFromVent(ventId);
             user?.NoCheckStartMeeting(user?.Data);
             SkillLimit--;
+        }
+        else
+        {
+            Player.Notify(Translator.GetString("NotifyOnMeetingStart"));
         }
         return false;
     }
