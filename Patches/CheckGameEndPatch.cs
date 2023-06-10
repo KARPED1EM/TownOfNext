@@ -92,6 +92,15 @@ class GameEndChecker
                     }
                 }
 
+                //抢夺胜利
+                foreach (var pc in Main.AllPlayerControls)
+                {
+                    if (pc.GetRoleClass() is IOverrideWinner overrideWinner)
+                    {
+                        overrideWinner.CheckWin(ref CustomWinnerHolder.WinnerTeam, ref CustomWinnerHolder.WinnerIds);
+                    }
+                }
+
                 //追加胜利
                 foreach (var pc in Main.AllPlayerControls)
                 {
