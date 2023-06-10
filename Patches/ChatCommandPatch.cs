@@ -34,7 +34,11 @@ internal class ChatCommands
         Logger.Info(text, "SendChat");
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
         if (text.Length >= 4) if (text[..3] == "/up") args[0] = "/up";
-        if (CustomRoleManager.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId)?.OnReceiveMessage(text) ?? false) goto Canceled;
+        if (CustomRoleManager.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId)?.OnSendMessage(text) ?? false) goto Canceled;
+        foreach (var func in CustomRoleManager.ReceiveMessage)
+        {
+            if (!func(PlayerControl.LocalPlayer, text)) goto Canceled;
+        }
         switch (args[0])
         {
             case "/dump":
@@ -599,10 +603,18 @@ internal class ChatCommands
         string[] args = text.Split(' ');
         string subArgs = "";
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
-        if (CustomRoleManager.GetByPlayerId(player.PlayerId)?.OnReceiveMessage(text) ?? false)
+        if (CustomRoleManager.GetByPlayerId(player.PlayerId)?.OnSendMessage(text) ?? false)
         {
             canceled = true;
             return;
+        }
+        foreach (var func in CustomRoleManager.ReceiveMessage)
+        {
+            if (!func(player, text))
+            {
+                canceled = true;
+                return;
+            }
         }
         switch (args[0])
         {

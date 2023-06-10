@@ -57,7 +57,7 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
 
         return livingImpostorsNum <= 0;
     }
-    public override bool OnReceiveMessage(string msg)
+    public override bool OnSendMessage(string msg)
     {
         var pc = Player;
         if (!AmongUsClient.Instance.AmHost || !GameStates.IsInGame || pc == null || !pc.Is(CustomRoles.Mafia)) return false;

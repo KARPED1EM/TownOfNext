@@ -220,6 +220,7 @@ public static class CustomRoleManager
         MarkOthers.Clear();
         LowerOthers.Clear();
         SuffixOthers.Clear();
+        ReceiveMessage.Clear();
         CheckMurderInfos.Clear();
         OnMurderPlayerOthers.Clear();
         OnCheckMurderPlayerOthers_Before.Clear();
@@ -253,6 +254,7 @@ public static class CustomRoleManager
             switch (subRole)
             {
                 //TODO: FIXME
+
             }
         }
     }
@@ -322,6 +324,16 @@ public static class CustomRoleManager
         }
         return sb.ToString();
     }
+    //ChatMessages
+    public static HashSet<Func<PlayerControl, string, bool>> ReceiveMessage = new();
+    /// <summary>
+    /// 玩家收到消息后调用的函数
+    /// 无论您是否发送者都会调用，因此您可能需要判断该消息是否是您自己发送的
+    /// </summary>
+    /// <param name="msg">收到的消息内容</param>
+    /// <returns>true：阻塞该消息，并不继续向下判断</returns>
+    public static bool OnReceiveMessage(PlayerControl player, string msg) => false;
+
     /// <summary>
     /// 全部对象的销毁事件
     /// </summary>
@@ -331,6 +343,7 @@ public static class CustomRoleManager
         MarkOthers.Clear();
         LowerOthers.Clear();
         SuffixOthers.Clear();
+        ReceiveMessage.Clear();
         CheckMurderInfos.Clear();
         OnMurderPlayerOthers.Clear();
         OnFixedUpdateOthers.Clear();
@@ -462,7 +475,7 @@ public enum CustomRoles
     Glitch,
     Judge,
     Mortician,
-    Mediumshiper, //TODO
+    Mediumshiper,
     Observer,
     DoveOfPeace,
     //Neutral

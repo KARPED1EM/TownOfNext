@@ -73,7 +73,7 @@ public sealed class Judge : RoleBase, IMeetingButton
     public string ButtonName { get; private set; } = "Judge";
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
-    public override bool OnReceiveMessage(string msg) => TrialMsg(Player, msg);
+    public override bool OnSendMessage(string msg) => TrialMsg(Player, msg);
     public void OnClickButton(PlayerControl target)
     {
         if (!Trial(target, out var reason, true))

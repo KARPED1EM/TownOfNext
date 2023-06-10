@@ -276,9 +276,9 @@ public abstract class RoleBase : IDisposable
     /// <summary>
     /// 玩家发送消息后调用的函数
     /// </summary>
-    /// <param name="msg">收到的消息内容</param>
+    /// <param name="msg">发送的消息内容</param>
     /// <returns>true：阻塞该消息，并不继续向下判断</returns>
-    public virtual bool OnReceiveMessage(string msg) => false;
+    public virtual bool OnSendMessage(string msg) => false;
 
     /// <summary>
     /// 每次任务完成时调用的函数
