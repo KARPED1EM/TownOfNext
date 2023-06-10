@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using TOHE.Roles.Crewmate;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -307,6 +308,9 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.Guess:
                 GuesserHelper.ReceiveRPC(reader, __instance);
+                break;
+            case CustomRPC.SetMedicalerProtectList:
+                Medicaler.ReceiveRPC_SyncList(reader);
                 break;
             default:
                 CustomRoleManager.DispatchRpc(reader, rpcType);

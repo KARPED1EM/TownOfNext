@@ -73,9 +73,12 @@ public sealed class Medicaler : RoleBase, IKiller
     private void SendRPC_SyncLimit()
     {
         using var sender = CreateSender(CustomRPC.SetMedicalerProtectLimit);
-        sender.Writer.Write(ProtectList.Count);
-        for (int i = 0; i < ProtectList.Count; i++)
-            sender.Writer.Write(ProtectList[i]);
+        sender.Writer.Write(ProtectLimit);
+    }
+    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
+    {
+        if (rpcType != CustomRPC.SetMedicalerProtectLimit) return;
+        ProtectLimit = reader.ReadInt32();
     }
     private static void SendRPC_SyncList()
     {
@@ -85,18 +88,12 @@ public sealed class Medicaler : RoleBase, IKiller
             writer.Write(ProtectList[i]);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
-    public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
+    public static void ReceiveRPC_SyncList(MessageReader reader)
     {
-        if (rpcType == CustomRPC.SetMedicalerProtectLimit)
-        {
-            ProtectLimit = reader.ReadInt32();
-        }
-        else if (rpcType == CustomRPC.SetMedicalerProtectList)
-        {
-            ProtectList = new();
-            for (int i = 0; i < reader.ReadInt32(); i++)
-                ProtectList.Add(reader.ReadByte());
-        }
+        int count = reader.ReadInt32();
+        ProtectList = new();
+        for (int i = 0; i < count; i++)
+            ProtectList.Add(reader.ReadByte());
     }
     public bool OverrideKillButtonText(out string text)
     { 
@@ -161,12 +158,12 @@ public sealed class Medicaler : RoleBase, IKiller
 
         return false;
     }
-    public static string MarkOthers(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
+    private static string MarkOthers(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
         seen ??= seer;
         if (!InProtect(seen.PlayerId)) return "";
         return (seer.Is(CustomRoles.Medicaler)
-            || (seer.PlayerId == seen.PlayerId && OptionTargetCanSeeProtect.GetBool())
+            || (seer == seen && OptionTargetCanSeeProtect.GetBool())
             ) ? Utils.ColorString(RoleInfo.RoleColor, "●") : "";
     }
 }
