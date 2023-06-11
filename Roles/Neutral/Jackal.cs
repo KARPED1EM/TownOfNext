@@ -1,6 +1,6 @@
 using AmongUs.GameOptions;
-using HarmonyLib;
 using System.Linq;
+
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 
@@ -56,7 +56,7 @@ public sealed class Jackal : RoleBase, IKiller
     private static bool ResetKillCooldown;
     private static void SetupOptionItem()
     {
-        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 30f, false)
+        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
         OptionCanVent = BooleanOptionItem.Create(RoleInfo, 11, GeneralOption.CanVent, true, false);
         OptionCanUseSabotage = BooleanOptionItem.Create(RoleInfo, 12, GeneralOption.CanUseSabotage, false, false);

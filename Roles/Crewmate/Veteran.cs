@@ -84,6 +84,7 @@ public sealed class Veteran : RoleBase
     }
     public override void OnFixedUpdate(PlayerControl player)
     {
+        if (!AmongUsClient.Instance.AmHost) return;
         if (ProtectStartTime == 0) return;
         if (ProtectStartTime + OptionSkillDuration.GetFloat() < Utils.GetTimeStamp())
         {

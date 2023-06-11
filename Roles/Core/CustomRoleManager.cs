@@ -499,7 +499,7 @@ public enum CustomRoles
     Collector, //TODO
     Provocateur, //TODO
     Sunnyboy, //TODO
-    BloodKnight, //TODO
+    BloodKnight,
     Totocalcio, //TODO
     Succubus, //TODO
 

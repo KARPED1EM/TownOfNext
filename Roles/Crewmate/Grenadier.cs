@@ -87,6 +87,7 @@ public sealed class Grenadier : RoleBase
     }
     public override void OnFixedUpdate(PlayerControl player)
     {
+        if (!AmongUsClient.Instance.AmHost) return;
         if (BlindingStartTime != 0 && BlindingStartTime + OptionSkillDuration.GetFloat() < Utils.GetTimeStamp())
         {
             BlindingStartTime = 0;
