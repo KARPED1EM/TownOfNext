@@ -64,6 +64,10 @@ public sealed class QuickShooter : RoleBase, IImpostor
         if (rpcType != CustomRPC.SetQuickShooterShotLimit) return;
         ShotLimit = reader.ReadInt32();
     }
+    public override void ApplyGameOptions(IGameOptions opt)
+    {
+        AURoleOptions.ShapeshifterCooldown = OptionShapeshiftCooldown.GetFloat();
+    }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(ShotLimit >= 1 ? Color.red : Color.gray, $"({ShotLimit})");
     public override bool OverrideAbilityButtonText(out string text)
     {
