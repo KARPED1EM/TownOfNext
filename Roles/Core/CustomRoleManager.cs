@@ -484,7 +484,7 @@ public enum CustomRoles
     Jester,
     God,
     Opportunist,
-    Mario, //TODO
+    Mario,
     Terrorist,
     Executioner,
     Jackal,

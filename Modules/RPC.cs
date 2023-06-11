@@ -78,6 +78,7 @@ public enum CustomRPC
     SyncWarlock,
     SyncEscapee,
     OnClickMeetingButton,
+    SyncMarioVentedTimes,
 
     //SoloKombat
     SyncKBPlayer,
