@@ -34,7 +34,7 @@ public sealed class Medicaler : RoleBase, IKiller
     {
         ProtectList = new();
 
-        CustomRoleManager.MarkOthers.Add(MarkOthers);
+        CustomRoleManager.MarkOthers.Add(GetMarkOthers);
         CustomRoleManager.OnCheckMurderPlayerOthers_Before.Add(OnCheckMurderPlayerOthers_Before);
     }
 
@@ -158,7 +158,7 @@ public sealed class Medicaler : RoleBase, IKiller
 
         return false;
     }
-    private static string MarkOthers(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
+    public static string GetMarkOthers(PlayerControl seer, PlayerControl seen, bool isForMeeting = false)
     {
         seen ??= seer;
         if (!InProtect(seen.PlayerId)) return "";

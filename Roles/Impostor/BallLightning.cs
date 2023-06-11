@@ -33,7 +33,7 @@ public sealed class BallLightning : RoleBase, IImpostor
         Ghosts = new();
 
         CustomRoleManager.OnCheckMurderPlayerOthers_Before.Add(OnCheckMurderPlayerOthers_Before);
-        CustomRoleManager.MarkOthers.Add(MarkOthers);
+        CustomRoleManager.MarkOthers.Add(GetMarkOthers);
     }
 
     static OptionItem OptionKillCooldown;
@@ -70,7 +70,7 @@ public sealed class BallLightning : RoleBase, IImpostor
     }
     public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
     public static bool IsGhost(byte id) => Ghosts.ContainsKey(id);
-    public static string MarkOthers(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
+    public static string GetMarkOthers(PlayerControl seer, PlayerControl seen, bool isForMeeting = false)
     {
         seen ??= seer;
         string mark = Utils.ColorString(Utils.GetRoleColor(CustomRoles.BallLightning), "■");

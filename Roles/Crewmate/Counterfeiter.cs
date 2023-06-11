@@ -138,5 +138,10 @@ public sealed class Counterfeiter : RoleBase, IKiller
             Logger.Info($"赝品商 {Player.GetRealName()} 的客户 {target.GetRealName()} 因不带刀将在会议结束后自杀", "Counterfeiter.OnStartMeeting");
         }
     }
+    public override string GetMark(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
+    {
+        if (seen == null) return "";
+        return Customers.ContainsKey(seen.PlayerId) ? Utils.ColorString(RoleInfo.RoleColor, "▲") : "";
+    }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? RoleInfo.RoleColor : Color.gray, $"({SellLimit})");
 }
