@@ -47,7 +47,6 @@ public sealed class BallLightning : RoleBase, IImpostor
     }
 
     private static Dictionary<byte, byte> Ghosts;
-    public bool IsKiller { get; private set; } = false;
     private static void SetupOptionItem()
     {
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.BallLightningKillCooldown, new(2.5f, 180f, 2.5f), 30f, false)

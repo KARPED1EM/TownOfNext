@@ -34,7 +34,6 @@ public sealed class BoobyTrap : RoleBase, IImpostor
     }
 
     private static Dictionary<byte, byte> Boobytraps;
-    public bool IsKiller { get; private set; } = false;
     private static void SetupOptionItem()
     {
         OptionSuicideDelay = FloatOptionItem.Create(RoleInfo, 10, OptionName.BoobyTrapSuicideDelay, new(0f, 5f, 1f), 1f, false)
