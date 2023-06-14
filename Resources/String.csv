@@ -1350,6 +1350,7 @@
 "HostKillSelfByCommand","房主选择自杀（使用了自杀指令）","The lobby Host decided to commit suicide","Хост лобби решил покончить с собой","房主選擇了自殺(使用了自殺指令)","房主选择自杀（使用了自杀指令）"
 "SyncCustomSettingsRPC","已同步RPC","Synchronized RPC","Синхронизированный RPC","已同步RPC","已同步RPC"
 "TOHEVisitorCount","截至今日，TOHE已经被使用 <color={0}>{1}</color>次 啦~","To date TOHE has been used <color={0}>{1}</color> times~","На сегодняшний день TOHE использовался <color={0}>{1}</color> раз~","截至今日，TOHE已經被使用 <color={0}>{1}</color>次 啦~","截至今日，TOHE已经被使用 <color={0}>{1}</color>次 啦~"
+"ConnectToTOHEServerFailed","无法连接至TOHE服务器","","","",""
 "Mode","模式","Mode","Режим","模式","模式"
 "Target","目标","Target","Цель","目標","目标"
 "PlayerInfo","上局所有玩家信息","Player Info","Информация о игроке","上局所有玩家訊息","上局所有玩家信息"
@@ -1386,6 +1387,7 @@
 "ErrorEndTextDescription","为避免卡房已强制结束","To avoid crashing, the game was forcibly ended.","Во избежание ошибки, комната была закрыта.","為避免卡房已強制結束",""
 "Loading","加载中...","Loading...","Загрузка...","載入中...",""
 "HidenRole","隐藏职业","Hidden Role","Скрытая Роль","隱藏職業",""
+"MainMenuCredential","{0} 献上 © 2023","Created by {0} © 2023","","",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.HighLevel","警告：EAC正在抵御炸房外挂","Warning: EAC detected High Level of cheats.","Предупреждение: EAC обнаружил высокий уровень читов.","警告: EAC正在抵禦炸房外掛","警告：EAC正在抵御炸房外挂"

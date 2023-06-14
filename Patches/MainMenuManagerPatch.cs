@@ -4,6 +4,7 @@ using Assets.InnerNet;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using Rewired.Utils.Classes.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TMPro;
 using TOHE.Modules;
 using UnityEngine;
 using static UnityEngine.UI.Button;
@@ -22,60 +24,54 @@ namespace TOHE;
 [HarmonyPatch]
 public class MainMenuManagerPatch
 {
-    public static GameObject template;
-    public static GameObject qqButton;
-    public static GameObject discordButton;
+    public static GameObject Template;
+    public static GameObject InviteButton;
+    public static GameObject WebsiteButton;
     public static GameObject updateButton;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)
     {
-        if (template == null) template = GameObject.Find("/MainUI/ExitGameButton");
-        if (template == null) return;
+        if (Template == null) Template = GameObject.Find("ExitGameButton");
+        if (Template == null) return;
 
-        if (CultureInfo.CurrentCulture.Name == "zh-CN")
-        {
-            //生成QQ群按钮
-            if (qqButton == null) qqButton = Object.Instantiate(template, template.transform.parent);
-            qqButton.name = "qqButton";
-            qqButton.transform.position = Vector3.Reflect(template.transform.position, Vector3.left);
+        int row = 1; int col = 0;
 
-            var qqText = qqButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-            Color qqColor = new Color32(0, 164, 255, byte.MaxValue);
-            PassiveButton qqPassiveButton = qqButton.GetComponent<PassiveButton>();
-            SpriteRenderer qqButtonSprite = qqButton.GetComponent<SpriteRenderer>();
-            qqPassiveButton.OnClick = new();
-            qqPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(Main.QQInviteUrl)));
-            qqPassiveButton.OnMouseOut.AddListener((Action)(() => qqButtonSprite.color = qqText.color = qqColor));
-            qqText.DestroyTranslator();
-            qqText.SetText("QQ群");
-            qqButtonSprite.color = qqText.color = qqColor;
-            qqButton.gameObject.SetActive(Main.ShowQQButton && !Main.IsAprilFools);
+        GameObject CreatButton(string text, Action action)
+        { 
+            col++; if (col > 2) { col = 1; row++; }
+            var button = Object.Instantiate(Template, Template.transform.parent);
+            button.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
+            var buttonText = button.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
+            buttonText.text = text;
+            PassiveButton passiveButton = button.GetComponent<PassiveButton>();
+            passiveButton.OnClick = new();
+            passiveButton.OnClick.AddListener(action);
+            AspectPosition aspectPosition = button.GetComponent<AspectPosition>();
+            aspectPosition.anchorPoint = new Vector2(col == 1 ? 0.415f : 0.583f, 0.5f - 0.08f * row);
+            return button;
         }
-        else
-        {
-            //Discordボタンを生成
-            if (discordButton == null) discordButton = Object.Instantiate(template, template.transform.parent);
-            discordButton.name = "DiscordButton";
-            discordButton.transform.position = Vector3.Reflect(template.transform.position, Vector3.left);
 
-            var discordText = discordButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-            Color discordColor = new Color32(86, 98, 246, byte.MaxValue);
-            PassiveButton discordPassiveButton = discordButton.GetComponent<PassiveButton>();
-            SpriteRenderer discordButtonSprite = discordButton.GetComponent<SpriteRenderer>();
-            discordPassiveButton.OnClick = new();
-            discordPassiveButton.OnClick.AddListener((Action)(() => Application.OpenURL(Main.DiscordInviteUrl)));
-            discordPassiveButton.OnMouseOut.AddListener((Action)(() => discordButtonSprite.color = discordText.color = discordColor));
-            discordText.DestroyTranslator();
-            discordText.SetText("Discord");
-            discordButtonSprite.color = discordText.color = discordColor;
-            discordButton.gameObject.SetActive(Main.ShowDiscordButton && !Main.IsAprilFools);
-        }
+        bool china = CultureInfo.CurrentCulture.Name == "zh-CN";
+        if (InviteButton == null) InviteButton = CreatButton(china ? "QQ群" : "Discord", () => { Application.OpenURL(china ? Main.QQInviteUrl : Main.DiscordInviteUrl); });
+        InviteButton.gameObject.SetActive(china ? Main.ShowQQButton : Main.ShowDiscordButton);
+        InviteButton.name = "TOHE Invite Button";
+
+        if (WebsiteButton == null) WebsiteButton = CreatButton(Translator.GetString("Website"), () => Application.OpenURL("https://tohe.cc"));
+        WebsiteButton.gameObject.SetActive(Main.ShowWebsiteButton);
+        WebsiteButton.name = "TOHE Website Button";
+
+
+
+
+        Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
+
+        return;
 
         //Updateボタンを生成
-        if (updateButton == null) updateButton = Object.Instantiate(template, template.transform.parent);
+        if (updateButton == null) updateButton = Object.Instantiate(Template, Template.transform.parent);
         updateButton.name = "UpdateButton";
-        updateButton.transform.position = template.transform.position + new Vector3(0.25f, 0.75f);
+        updateButton.transform.position = Template.transform.position + new Vector3(0.25f, 0.75f);
         updateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
 
         var updateText = updateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
@@ -93,19 +89,6 @@ public class MainMenuManagerPatch
         updateButtonSprite.color = updateText.color = updateColor;
         updateButtonSprite.size *= 1.5f;
         updateButton.SetActive(false);
-
-#if RELEASE
-            //フリープレイの無効化
-            var freeplayButton = GameObject.Find("/MainUI/FreePlayButton");
-            if (freeplayButton != null)
-            {
-                var freeplayText = freeplayButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-                freeplayButton.GetComponent<PassiveButton>().OnClick = new();
-                freeplayButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Application.OpenURL("https://tohe.cc")));
-                freeplayText.DestroyTranslator();
-                freeplayText.SetText(Translator.GetString("Website"));
-            }
-#endif
 
         if (Main.IsAprilFools) return;
 
@@ -146,7 +129,7 @@ public class MainMenuManagerPatch
             CredentialsPatch.LogoPatch.CreditsPopup?.SetActive(true);
         }));
 
-        Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
+        
     }
 }
 

@@ -35,14 +35,15 @@ public class ModUpdater
     [HarmonyPriority(2)]
     public static void Start_Prefix(MainMenuManager __instance)
     {
+        return;
         NewVersionCheck();
         DeleteOldFiles();
-        //InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
-        //InfoPopup.name = "InfoPopup";
-        //InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
+        InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
+        InfoPopup.name = "InfoPopup";
+        InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
         if (!isChecked)
         {
-            var done = false;
+            bool done;
             if (CultureInfo.CurrentCulture.Name == "zh-CN")
             {
                 done = CheckRelease().GetAwaiter().GetResult();
@@ -58,8 +59,9 @@ public class ModUpdater
             Logger.Info("downloadUrl: " + downloadUrl, "CheckRelease");
             Logger.Info("latestVersionl: " + latestVersion, "CheckRelease");
         }
+
         MainMenuManagerPatch.updateButton.SetActive(hasUpdate);
-        MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.template.transform.position + new Vector3(0.25f, 0.75f);
+        MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.Template.transform.position + new Vector3(0.25f, 0.75f);
         MainMenuManagerPatch.updateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText($"{GetString("updateButton")}\n{latestTitle}");
     }
 
@@ -329,7 +331,7 @@ public class ModUpdater
                 File.Delete(savePath);
                 ShowPopup(GetString("downloadFailed"), StringNames.Okay, true, false);
                 MainMenuManagerPatch.updateButton.SetActive(true);
-                MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.template.transform.position + new Vector3(0.25f, 0.75f);
+                MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.Template.transform.position + new Vector3(0.25f, 0.75f);
             }
             else
             {

@@ -32,11 +32,11 @@ public class Main : BasePlugin
     public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
-    public static readonly string MainMenuText = "哟这不TOHE吗，几天不见Bug又多了？";
     public const string PluginGuid = "com.karped1em.tohe";
     public const string PluginVersion = "2.4.0";
     public const int PluginCreate = 9;
 
+    public static readonly bool ShowWebsiteButton = true;
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
     public static readonly bool ShowDiscordButton = true;
@@ -49,7 +49,7 @@ public class Main : BasePlugin
     public static string ExceptionMessage;
     public static bool ExceptionMessageIsShown = false;
     public static bool AlreadyShowMsgBox = false;
-    public static string credentialsText;
+    public static string CredentialsText;
     public static NormalGameOptionsV07 NormalOptions => GameOptionsManager.Instance.currentNormalGameOptions;
     //Client Options
     public static ConfigEntry<string> HideName { get; private set; }
