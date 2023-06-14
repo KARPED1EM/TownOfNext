@@ -550,11 +550,11 @@ public static class Options
         PlayerCanSetColor = BooleanOptionItem.Create(2_009_001, "PlayerCanSetColor", false, TabGroup.SystemSettings, false);
         FormatNameMode = StringOptionItem.Create(2_010_001, "FormatNameMode", formatNameModes, 0, TabGroup.SystemSettings, false);
         DisableEmojiName = BooleanOptionItem.Create(2_011_001, "DisableEmojiName", true, TabGroup.SystemSettings, false);
-        ChangeNameToRoleInfo = BooleanOptionItem.Create(2_011_001, "ChangeNameToRoleInfo", false, TabGroup.SystemSettings, false);
-        SendRoleDescriptionFirstMeeting = BooleanOptionItem.Create(2_012_001, "SendRoleDescriptionFirstMeeting", false, TabGroup.SystemSettings, false);
-        NoGameEnd = BooleanOptionItem.Create(2_013_001, "NoGameEnd", false, TabGroup.SystemSettings, false);
-        AllowConsole = BooleanOptionItem.Create(2_014_001, "AllowConsole", false, TabGroup.SystemSettings, false);
-        RoleAssigningAlgorithm = StringOptionItem.Create(2_015_001, "RoleAssigningAlgorithm", roleAssigningAlgorithms, 4, TabGroup.SystemSettings, true)
+        ChangeNameToRoleInfo = BooleanOptionItem.Create(2_012_001, "ChangeNameToRoleInfo", false, TabGroup.SystemSettings, false);
+        SendRoleDescriptionFirstMeeting = BooleanOptionItem.Create(2_013_001, "SendRoleDescriptionFirstMeeting", false, TabGroup.SystemSettings, false);
+        NoGameEnd = BooleanOptionItem.Create(2_014_001, "NoGameEnd", false, TabGroup.SystemSettings, false);
+        AllowConsole = BooleanOptionItem.Create(2_015_001, "AllowConsole", false, TabGroup.SystemSettings, false);
+        RoleAssigningAlgorithm = StringOptionItem.Create(2_016_001, "RoleAssigningAlgorithm", roleAssigningAlgorithms, 4, TabGroup.SystemSettings, true)
            .RegisterUpdateValueEvent(
                 (object obj, OptionItem.UpdateValueEventArgs args) => IRandom.SetInstanceById(args.CurrentValue)
             );
