@@ -61,9 +61,6 @@ public class MainMenuManagerPatch
         WebsiteButton.gameObject.SetActive(Main.ShowWebsiteButton);
         WebsiteButton.name = "TOHE Website Button";
 
-
-
-
         Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
 
         return;
@@ -89,47 +86,6 @@ public class MainMenuManagerPatch
         updateButtonSprite.color = updateText.color = updateColor;
         updateButtonSprite.size *= 1.5f;
         updateButton.SetActive(false);
-
-        if (Main.IsAprilFools) return;
-
-        var bottomTemplate = GameObject.Find("InventoryButton");
-        if (bottomTemplate == null) return;
-
-        var HorseButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
-        var passiveHorseButton = HorseButton.GetComponent<PassiveButton>();
-        var spriteHorseButton = HorseButton.GetComponent<SpriteRenderer>();
-        if (HorseModePatch.isHorseMode) spriteHorseButton.transform.localScale *= -1;
-
-        spriteHorseButton.sprite = Utils.LoadSprite($"TOHE.Resources.Images.HorseButton.png", 75f);
-        passiveHorseButton.OnClick = new ButtonClickedEvent();
-        passiveHorseButton.OnClick.AddListener((Action)(() =>
-        {
-            RunLoginPatch.ClickCount++;
-            if (RunLoginPatch.ClickCount == 10) PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload", true);
-            if (RunLoginPatch.ClickCount == 20) PlayerControl.LocalPlayer.RPCPlayCustomSound("AWP", true);
-
-            spriteHorseButton.transform.localScale *= -1;
-            HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode;
-            var particles = Object.FindObjectOfType<PlayerParticles>();
-            if (particles != null)
-            {
-                particles.pool.ReclaimAll();
-                particles.Start();
-            }
-        }));
-
-        var CreditsButton = Object.Instantiate(bottomTemplate, bottomTemplate.transform.parent);
-        var passiveCreditsButton = CreditsButton.GetComponent<PassiveButton>();
-        var spriteCreditsButton = CreditsButton.GetComponent<SpriteRenderer>();
-
-        spriteCreditsButton.sprite = Utils.LoadSprite($"TOHE.Resources.Images.CreditsButton.png", 75f);
-        passiveCreditsButton.OnClick = new ButtonClickedEvent();
-        passiveCreditsButton.OnClick.AddListener((Action)(() =>
-        {
-            CredentialsPatch.LogoPatch.CreditsPopup?.SetActive(true);
-        }));
-
-        
     }
 }
 

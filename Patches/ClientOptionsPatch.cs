@@ -1,4 +1,5 @@
 using HarmonyLib;
+using TOHE.Modules;
 using TOHE.Modules.ClientOptions;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public static class OptionsMenuBehaviourStartPatch
     private static ClientActionItem DumpLog;
     private static ClientOptionItem VersionCheat;
     private static ClientOptionItem GodMode;
+    private static ClientOptionItem HorseMode;
 
     private static bool reseted = false;
     public static void Postfix(OptionsMenuBehaviour __instance)
@@ -82,6 +84,17 @@ public static class OptionsMenuBehaviourStartPatch
         if ((GodMode == null || GodMode.ToggleButton == null) && DebugModeManager.AmDebugger)
         {
             GodMode = ClientOptionItem.Create("GodMode", Main.GodMode, __instance);
+        }
+        if (HorseMode == null || HorseMode.ToggleButton == null)
+        {
+            HorseMode = ClientOptionItem.Create("HorseMode", Main.HorseMode, __instance, HorseModeButtonToggle);
+            static void HorseModeButtonToggle()
+            {
+                RunLoginPatch.ClickCount++;
+                if (RunLoginPatch.ClickCount == 10) PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload", true);
+                if (RunLoginPatch.ClickCount == 20) PlayerControl.LocalPlayer.RPCPlayCustomSound("AWP", true);
+                HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode;
+            }
         }
 
         if (ModUnloaderScreen.Popup == null)
