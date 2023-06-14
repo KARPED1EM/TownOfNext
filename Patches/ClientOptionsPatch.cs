@@ -73,7 +73,7 @@ public static class OptionsMenuBehaviourStartPatch
         }
         if (DumpLog == null || DumpLog.ToggleButton == null)
         {
-            DumpLog = ClientActionItem.Create("DumpLog", Utils.DumpLog, __instance);
+            DumpLog = ClientActionItem.Create("DumpLog", () => Utils.DumpLog(), __instance);
         }
         if ((VersionCheat == null || VersionCheat.ToggleButton == null) && DebugModeManager.AmDebugger)
         {
