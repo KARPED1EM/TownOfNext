@@ -95,7 +95,7 @@ internal class TitleLogoPatch
 
     private static void Postfix(MainMenuManager __instance)
     {
-        GameObject.Find("BackgroundTexture")?.SetActive(false);
+        GameObject.Find("BackgroundTexture")?.SetActive(!MainMenuManagerPatch.showed);
 
         if ((ModStamp = GameObject.Find("ModStamp")) == null) return;
         ModStamp.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
@@ -117,10 +117,13 @@ internal class TitleLogoPatch
         GameObject.Find("Divider")?.SetActive(false);
 
         if ((RightPanel = GameObject.Find("RightPanel")) == null) return;
+        RightPanel.AddComponent<TransitionOpen>().duration = 0.5f;
+        RightPanel.SetActive(false);
 
         if ((Tint = GameObject.Find("Tint")) == null) return;
-        Tint.transform.localPosition= new Vector3(1.9782f, -0.3284f, 1f);
+        Tint.transform.localPosition = new Vector3(1.9782f, -0.3284f, 1f);
         Tint.transform.localScale = new Vector3(0.8f, 0.83f, 1f);
+        //Tint.transform.parent = RightPanel.transform;
 
         if ((Sizer = GameObject.Find("Sizer")) == null) return;
         if ((AULogo = GameObject.Find("LOGO-AU")) == null) return;

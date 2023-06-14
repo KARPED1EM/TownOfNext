@@ -4,20 +4,16 @@ using Assets.InnerNet;
 using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
-using Rewired.Utils.Classes.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using System.Text;
 using TMPro;
-using TOHE.Modules;
 using UnityEngine;
-using static UnityEngine.UI.Button;
 using Object = UnityEngine.Object;
 
 namespace TOHE;
@@ -33,28 +29,41 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu)), HarmonyPrefix]
     public static void OpenGameModeMenu_Prefix(MainMenuManager __instance)
     {
-        Logger.Test("OpenGameModeMenu");
+        if (!TitleLogoPatch.RightPanel.active) TitleLogoPatch.RightPanel.SetActive(true);
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu)), HarmonyPrefix]
     public static void OpenAccountMenu_Prefix(MainMenuManager __instance)
     {
-        Logger.Test("OpenAccountMenu");
+        if (!TitleLogoPatch.RightPanel.active) TitleLogoPatch.RightPanel.SetActive(true);
     }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenCredits)), HarmonyPrefix]
     public static void OpenCredits_Prefix(MainMenuManager __instance)
     {
-        Logger.Test("OpenCredits");
+        if (!TitleLogoPatch.RightPanel.active) TitleLogoPatch.RightPanel.SetActive(true);
     }
 
+    static bool isOnline = false;
+    public static bool showed = false;
+    [HarmonyPatch(typeof(SignInStatusComponent), nameof(SignInStatusComponent.SetOnline)), HarmonyPostfix]
+    public static void SetOnline_Postfix(SignInStatusComponent __instance) => new LateTask(() => { isOnline = true; }, 1.5f, "Set Online Status");
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
+    public static void MainMenuManager_LateUpdate(SignInStatusComponent __instance)
+    {
+        if (showed || !isOnline) return;
+        var bak = GameObject.Find("BackgroundTexture");
+        if (bak == null || !bak.active) return;
+        var pos = bak.transform.position;
+        Vector3 lerp = Vector3.Lerp(pos, new Vector3(pos.x, 7.1f, pos.z), Time.deltaTime * 1.4f);
+        bak.transform.position = lerp;
+        if (pos.y > 7f) showed = true;
+    }
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)
     {
         if (Template == null) Template = GameObject.Find("ExitGameButton");
         if (Template == null) return;
-
         int row = 1; int col = 0;
-
         GameObject CreatButton(string text, Action action)
         { 
             col++; if (col > 2) { col = 1; row++; }
@@ -90,7 +99,7 @@ public class MainMenuManagerPatch
         updateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
 
         var updateText = updateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-        Color updateColor = new Color32(247, 56, 23, byte.MaxValue);
+        UnityEngine.Color updateColor = new Color32(247, 56, 23, byte.MaxValue);
         PassiveButton updatePassiveButton = updateButton.GetComponent<PassiveButton>();
         SpriteRenderer updateButtonSprite = updateButton.GetComponent<SpriteRenderer>();
         updatePassiveButton.OnClick = new();
