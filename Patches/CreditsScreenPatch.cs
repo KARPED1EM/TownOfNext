@@ -1,15 +1,57 @@
 ﻿using BepInEx.Unity.IL2CPP.Utils;
 using HarmonyLib;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;
 
+/*
+[HarmonyPatch(typeof(CreditsScreenPopUp), nameof(CreditsScreenPopUp.))]
+internal class CreditsScreenPopUpAwakePatch
+{
+    private static List<CreditsScreenPopUp.CreditsBlock> TOHECreditsBlocks;
+    public static void Postfix(CreditsScreenPopUp __instance)
+    {
+        Logger.Test("LoadScene");
+        if (__instance == null || __instance.allCredits == null) return;
+        __instance.allCredits ??= new();
+        if (TOHECreditsBlocks == null) InitCreditsBlocks();
+        TOHECreditsBlocks.Where(x => !__instance.allCredits.Contains(x)).Do(__instance.allCredits.Add);
+        Logger.Test("-------- Added ---------");
+
+        return;
+    }
+    public static void InitCreditsBlocks()
+    {
+        TOHECreditsBlocks = new();
+
+        static CreditsScreenPopUp.CreditsLine NewLine(string line)
+            => new() { Title = line };
+
+        CreditsScreenPopUp.CreditsBlock devs = new()
+        { Header = GetString("Developer"), Lines = new() };
+        
+        devs.Lines.Add(NewLine("KARPED1EM"));
+        devs.Lines.Add(NewLine("IRIDESCENT"));
+        devs.Lines.Add(NewLine("Endrmen40409"));
+        devs.Lines.Add(NewLine("NCSIMON"));
+        devs.Lines.Add(NewLine("天寸梦初"));
+        devs.Lines.Add(NewLine("Commandf1"));
+        devs.Lines.Add(NewLine("喜"));
+        devs.Lines.Add(NewLine("SHAAARKY"));
+        TOHECreditsBlocks.Add(devs);
+
+    }
+}
+*/
+
 //参考：https://github.com/ykundesu/SuperNewRoles/blob/master/SuperNewRoles/Patches/LogoAndStampPatch.cs
 [HarmonyPatch]
-public static class CredentialsPatch
+public static class LogoAndStampPatch
 {
     public static GenericPopup popup;
 

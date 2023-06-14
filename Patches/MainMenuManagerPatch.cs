@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using TMPro;
@@ -28,6 +29,23 @@ public class MainMenuManagerPatch
     public static GameObject InviteButton;
     public static GameObject WebsiteButton;
     public static GameObject updateButton;
+
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu)), HarmonyPrefix]
+    public static void OpenGameModeMenu_Prefix(MainMenuManager __instance)
+    {
+        Logger.Test("OpenGameModeMenu");
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu)), HarmonyPrefix]
+    public static void OpenAccountMenu_Prefix(MainMenuManager __instance)
+    {
+        Logger.Test("OpenAccountMenu");
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenCredits)), HarmonyPrefix]
+    public static void OpenCredits_Prefix(MainMenuManager __instance)
+    {
+        Logger.Test("OpenCredits");
+    }
+
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)

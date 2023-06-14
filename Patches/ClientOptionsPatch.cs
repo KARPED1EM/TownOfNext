@@ -91,8 +91,9 @@ public static class OptionsMenuBehaviourStartPatch
             static void HorseModeButtonToggle()
             {
                 RunLoginPatch.ClickCount++;
-                if (RunLoginPatch.ClickCount == 10) PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload", true);
-                if (RunLoginPatch.ClickCount == 20) PlayerControl.LocalPlayer.RPCPlayCustomSound("AWP", true);
+                if (RunLoginPatch.ClickCount == 9) PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload", true);
+                if (RunLoginPatch.ClickCount == 10) PlayerControl.LocalPlayer.RPCPlayCustomSound("AWP", true);
+                if (RunLoginPatch.ClickCount == 20) PlayerControl.LocalPlayer.RPCPlayCustomSound("Onichian", true);
                 HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode;
             }
         }

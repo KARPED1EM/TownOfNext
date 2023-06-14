@@ -65,7 +65,7 @@ static class CustomRolesHelper
         else if (role.IsCrewmate()) type = CustomRoleTypes.Crewmate;
         else if (role.IsNeutral()) type = CustomRoleTypes.Neutral;
         else if (role.IsAddon()) type = CustomRoleTypes.Addon;
-        else Logger.Fatal($"Found Invalid Role: {role}", "GetCustomRoleTypes");
+        //else Logger.Fatal($"Found Invalid Role: {role}", "GetCustomRoleTypes");
 
         return type;
     }
