@@ -559,13 +559,13 @@ public static class Options
                 (object obj, OptionItem.UpdateValueEventArgs args) => IRandom.SetInstanceById(args.CurrentValue)
             );
 
-        KPDCamouflageMode = BooleanOptionItem.Create(2_016_001, "KPDCamouflageMode", false, TabGroup.SystemSettings, false)
+        KPDCamouflageMode = BooleanOptionItem.Create(2_017_001, "KPDCamouflageMode", false, TabGroup.SystemSettings, false)
             .SetHeader(true)
             .SetColor(new Color32(255, 192, 203, byte.MaxValue));
 
         DebugModeManager.SetupCustomOption();
 
-        EnableUpMode = BooleanOptionItem.Create(2_017_001, "EnableYTPlan", false, TabGroup.SystemSettings, false)
+        EnableUpMode = BooleanOptionItem.Create(2_018_001, "EnableYTPlan", false, TabGroup.SystemSettings, false)
             .SetColor(Color.cyan)
             .SetHeader(true);
 
