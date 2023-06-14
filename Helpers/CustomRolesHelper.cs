@@ -27,7 +27,16 @@ static class CustomRolesHelper
             return roleInfo.CustomRoleType == CustomRoleTypes.Neutral;
         return false;
     }
-    public static bool IsCrewmate(this CustomRoles role) => role.GetRoleInfo()?.CustomRoleType == CustomRoleTypes.Crewmate || (!role.IsImpostorTeam() && !role.IsNeutral());
+    public static bool IsCrewmate(this CustomRoles role)
+    {
+        var roleInfo = role.GetRoleInfo();
+        if (roleInfo != null)
+            return roleInfo.CustomRoleType == CustomRoleTypes.Crewmate;
+        return
+            role is CustomRoles.Crewmate or
+            CustomRoles.Engineer or
+            CustomRoles.Scientist;
+    }
     public static bool IsAddon(this CustomRoles role) => (int)role > 500;
     public static bool IsValid(this CustomRoles role) => role is not CustomRoles.KB_Normal and not CustomRoles.GM and not CustomRoles.NotAssigned;
     public static bool Exist(this CustomRoles role, bool CountDeath = false) => Main.AllPlayerControls.Any(x => x.Is(role) && x.IsAlive() || CountDeath);
@@ -45,6 +54,7 @@ static class CustomRolesHelper
 
     public static CustomRoleTypes GetCustomRoleTypes(this CustomRoles role)
     {
+        if (role is CustomRoles.NotAssigned) return CustomRoleTypes.Crewmate;
         CustomRoleTypes type = CustomRoleTypes.Crewmate;
 
         var roleInfo = role.GetRoleInfo();
@@ -52,7 +62,11 @@ static class CustomRolesHelper
             return roleInfo.CustomRoleType;
 
         if (role.IsImpostor()) type = CustomRoleTypes.Impostor;
-        if (role.IsNeutral()) type = CustomRoleTypes.Neutral;
+        else if (role.IsCrewmate()) type = CustomRoleTypes.Crewmate;
+        else if (role.IsNeutral()) type = CustomRoleTypes.Neutral;
+        else if (role.IsAddon()) type = CustomRoleTypes.Addon;
+        else Logger.Fatal($"Found Invalid Role: {role}", "GetCustomRoleTypes");
+
         return type;
     }
     public static int GetCount(this CustomRoles role)
