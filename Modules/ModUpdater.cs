@@ -37,9 +37,9 @@ public class ModUpdater
     {
         NewVersionCheck();
         DeleteOldFiles();
-        InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
-        InfoPopup.name = "InfoPopup";
-        InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
+        //InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
+        //InfoPopup.name = "InfoPopup";
+        //InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
         if (!isChecked)
         {
             var done = false;
