@@ -34,7 +34,7 @@ public class Main : BasePlugin
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public const string PluginGuid = "com.karped1em.tohe";
     public const string PluginVersion = "2.4.0";
-    public const int PluginCreate = 9;
+    public const int PluginCreate = 1;
 
     public static readonly bool ShowWebsiteButton = true;
     public static readonly bool ShowQQButton = true;
