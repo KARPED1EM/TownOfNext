@@ -14,7 +14,6 @@ using System.Reflection;
 using System.Text;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
 using Object = UnityEngine.Object;
 
 namespace TOHE;
@@ -109,7 +108,8 @@ public class MainMenuManagerPatch
             passiveButton.OnClick.AddListener((Action)(() =>
             {
                 UpdateButton.SetActive(false);
-                ModUpdater.StartUpdate(ModUpdater.downloadUrl);
+                if (!DebugModeManager.AmDebugger || !Input.GetKey(KeyCode.LeftShift))
+                    ModUpdater.StartUpdate(ModUpdater.downloadUrl);
             }));
             UpdateButton.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
         }

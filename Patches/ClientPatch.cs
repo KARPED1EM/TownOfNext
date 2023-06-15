@@ -69,12 +69,10 @@ internal class SplashLogoAnimatorPatch
 [HarmonyPatch(typeof(EOSManager), nameof(EOSManager.IsAllowedOnline))]
 internal class RunLoginPatch
 {
-    public static int ClickCount = 0;
     public static void Prefix(ref bool canOnline)
     {
 #if DEBUG
-        if (ClickCount < 10) canOnline = false;
-        if (ClickCount >= 10) ModUpdater.forceUpdate = false;
+        canOnline = false;
 #endif
     }
 }

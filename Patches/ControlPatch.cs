@@ -231,20 +231,20 @@ internal class ControllerManagerUpdatePatch
                 PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
         }
 
-        //同步设置
+        //同步全部选项
         if (Input.GetKeyDown(KeyCode.Y))
         {
             RPC.SyncCustomSettingsRPC();
             Logger.SendInGame(GetString("SyncCustomSettingsRPC"));
         }
 
-        //入门测试
+        //开场动画测试
         if (Input.GetKeyDown(KeyCode.G))
         {
             HudManager.Instance.StartCoroutine(HudManager.Instance.CoFadeFullScreen(Color.clear, Color.black));
             HudManager.Instance.StartCoroutine(DestroyableSingleton<HudManager>.Instance.CoShowIntro());
         }
-        //任务数显示切换
+        //用任务面板显示设施信息
         if (Input.GetKeyDown(KeyCode.Equals))
         {
             Main.VisibleTasksCount = !Main.VisibleTasksCount;
@@ -291,9 +291,9 @@ internal class ControllerManagerUpdatePatch
 
     private static bool GetKeysDown(params KeyCode[] keys)
     {
-        if (keys.Any(k => Input.GetKeyDown(k)) && keys.All(k => Input.GetKey(k)))
+        if (keys.Any(Input.GetKeyDown) && keys.All(Input.GetKey))
         {
-            Logger.Info($"快捷键：{keys.Where(k => Input.GetKeyDown(k)).First()} in [{string.Join(",", keys)}]", "GetKeysDown");
+            Logger.Info($"快捷键：{keys.Where(Input.GetKeyDown).First()} in [{string.Join(",", keys)}]", "GetKeysDown");
             return true;
         }
         return false;
