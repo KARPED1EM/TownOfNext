@@ -82,6 +82,7 @@ internal class VersionShowerStartPatch
 }
 
 [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
+[HarmonyPriority(Priority.First)]
 internal class TitleLogoPatch
 {
     public static GameObject ModStamp;

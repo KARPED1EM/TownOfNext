@@ -331,6 +331,7 @@ public class ModUpdater
                 File.Delete(savePath);
                 ShowPopup(GetString("downloadFailed"), StringNames.Okay, true, false);
                 MainMenuManagerPatch.UpdateButton.SetActive(true);
+                MainMenuManagerPatch.Template_Main.SetActive(false);
             }
             else
             {

@@ -23,6 +23,7 @@ public class MainMenuManagerPatch
 {
     public static GameObject Template_Left;
     public static GameObject Template_Right;
+    public static GameObject Template_Main;
     public static GameObject InviteButton;
     public static GameObject WebsiteButton;
     public static GameObject UpdateButton;
@@ -35,6 +36,8 @@ public class MainMenuManagerPatch
     public static void OpenCredits_Prefix(MainMenuManager __instance) => ShowingPanel = true;
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Postfix(MainMenuManager __instance) => ShowingPanel = false;
+    [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Open)), HarmonyPrefix]
+    public static void OpenOptionsMenu_Postfix(MainMenuManager __instance) => ShowingPanel = false;
 
     private static bool isOnline = false;
     public static bool ShowedBak = false;
@@ -93,10 +96,10 @@ public class MainMenuManagerPatch
 
         if (UpdateButton == null)
         {
-            var template = GameObject.Find("PlayButton");
-            UpdateButton = Object.Instantiate(template, template.transform.parent);
+            Template_Main = GameObject.Find("PlayButton");
+            UpdateButton = Object.Instantiate(Template_Main, Template_Main.transform.parent);
             UpdateButton.name = "TOHE Update Button";
-            UpdateButton.transform.localPosition = template.transform.localPosition - new Vector3(0f, 0f, 3f);
+            UpdateButton.transform.localPosition = Template_Main.transform.localPosition - new Vector3(0f, 0f, 3f);
             var inactive = UpdateButton.transform.FindChild("Inactive");
             var spriteRenderer = inactive.GetComponent<SpriteRenderer>();
             spriteRenderer.color = new Color32(255, 120, 255, byte.MaxValue);
@@ -107,11 +110,13 @@ public class MainMenuManagerPatch
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener((Action)(() =>
             {
+                Template_Main.SetActive(true);
                 UpdateButton.SetActive(false);
                 if (!DebugModeManager.AmDebugger || !Input.GetKey(KeyCode.LeftShift))
                     ModUpdater.StartUpdate(ModUpdater.downloadUrl);
             }));
             UpdateButton.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
+            Template_Main.SetActive(false);
         }
 
         Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
