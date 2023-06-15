@@ -82,7 +82,7 @@ public static class BanManager
                 if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
                 if (Regex.IsMatch(player.PlayerName, line))
                 {
-                    Utils.KickPlayer(player.Id, false);
+                    Utils.KickPlayer(player.Id, false, "DenyName");
                     RPC.NotificationPop(string.Format(GetString("Message.KickedByDenyName"), player.PlayerName, line));
                     Logger.Info($"{player.PlayerName}は名前が「{line}」に一致したためキックされました。", "Kick");
                     return;
@@ -99,14 +99,14 @@ public static class BanManager
         if (!AmongUsClient.Instance.AmHost || !Options.ApplyBanList.GetBool()) return;
         if (CheckBanList(player?.FriendCode))
         {
-            Utils.KickPlayer(player.Id, true);
+            Utils.KickPlayer(player.Id, true, "BanList");
             RPC.NotificationPop(string.Format(GetString("Message.BanedByBanList"), player.PlayerName));
             Logger.Info($"{player.PlayerName}は過去にBAN済みのためBANされました。", "BAN");
             return;
         }
         if (CheckEACList(player?.FriendCode))
         {
-            Utils.KickPlayer(player.Id, true);
+            Utils.KickPlayer(player.Id, true, "EACList");
             RPC.NotificationPop(string.Format(GetString("Message.BanedByEACList"), player.PlayerName));
             Logger.Info($"{player.PlayerName}存在于EAC封禁名单", "BAN");
             return;

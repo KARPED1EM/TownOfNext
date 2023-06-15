@@ -89,7 +89,11 @@ public static class SpamManager
                     }
                 }
                 if (msg != "") Utils.SendMessage(msg);
-                if (kick) Utils.KickPlayer(player.GetClientId(), Options.AutoKickStartAsBan.GetBool());
+                if (kick)
+                {
+                    RPC.NotificationPop(msg);
+                    Utils.KickPlayer(player.GetClientId(), Options.AutoKickStartAsBan.GetBool(), "SayStart");
+                }
                 return true;
             }
         }
@@ -120,7 +124,11 @@ public static class SpamManager
                     Utils.SendMessage(msg, pc.PlayerId);
             }
         }
-        if (kick) Utils.KickPlayer(player.GetClientId(), Options.AutoKickStopWordsAsBan.GetBool());
+        if (kick)
+        {
+            RPC.NotificationPop(msg);
+            Utils.KickPlayer(player.GetClientId(), Options.AutoKickStopWordsAsBan.GetBool(), "BanWords");
+        }
         return true;
     }
     private static bool ContainsStart(string text)

@@ -1168,10 +1168,17 @@ public static class Utils
         if (num == 255) name = "Dead";
         return name;
     }
-    public static void KickPlayer(int playerId, bool ban)
+    public static void KickPlayer(int playerId, bool ban, string reason)
     {
+        if (!AmongUsClient.Instance.AmHost) return;
         OnPlayerLeftPatch.Add(playerId);
-        AmongUsClient.Instance.KickPlayer(playerId, ban);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetKickReason, SendOption.Reliable, -1);
+        writer.Write(GetString($"DCNotify.{reason}"));
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
+        new LateTask(() =>
+        {
+            AmongUsClient.Instance.KickPlayer(playerId, ban);
+        }, Math.Max(AmongUsClient.Instance.Ping / 500f, 1f), "Kick Player");
     }
     public static string PadRightV2(this object text, int num)
     {

@@ -3,6 +3,7 @@ using InnerNet;
 using System.Linq;
 using TOHE.Modules;
 using UnityEngine;
+using static Il2CppSystem.Globalization.CultureInfo;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -110,15 +111,19 @@ internal class KickPlayerPatch
             return false;
         }
         if (!AmongUsClient.Instance.AmHost) return true;
-        OnPlayerLeftPatch.Add(clientId);
-        if (ban)
+
+        if (!OnPlayerLeftPatch.ClientsProcessed.Contains(clientId))
         {
-            BanManager.AddBanPlayer(AmongUsClient.Instance.GetRecentClient(clientId));
-            RPC.NotificationPop(string.Format(GetString("PlayerBanByHost"), AmongUsClient.Instance.GetRecentClient(clientId).PlayerName ));
-        }
-        else
-        {
-            RPC.NotificationPop(string.Format(GetString("PlayerKickByHost"), AmongUsClient.Instance.GetRecentClient(clientId).PlayerName));
+            OnPlayerLeftPatch.Add(clientId);
+            if (ban)
+            {
+                BanManager.AddBanPlayer(AmongUsClient.Instance.GetRecentClient(clientId));
+                RPC.NotificationPop(string.Format(GetString("PlayerBanByHost"), AmongUsClient.Instance.GetRecentClient(clientId).PlayerName));
+            }
+            else
+            {
+                RPC.NotificationPop(string.Format(GetString("PlayerKickByHost"), AmongUsClient.Instance.GetRecentClient(clientId).PlayerName));
+            }
         }
         return true;
     }

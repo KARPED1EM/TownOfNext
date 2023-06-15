@@ -25,6 +25,7 @@ class OnGameJoinedPatch
         if (GameStates.IsModHost)
             Main.HostClientId = Utils.GetPlayerById(0)?.GetClientId() ?? -1;
 
+        ShowDisconnectPopupPatch.ReasonByHost = string.Empty;
         ChatUpdatePatch.DoBlockChat = false;
         GameStates.InGame = false;
         ErrorText.Instance.Clear();
@@ -76,20 +77,20 @@ class OnPlayerJoinedPatch
         Logger.Info($"{client.PlayerName}(ClientID:{client.Id}/FriendCode:{client.FriendCode}) 加入房间", "Session");
         if (AmongUsClient.Instance.AmHost && client.FriendCode == "" && Options.KickPlayerFriendCodeNotExist.GetBool())
         {
-            Utils.KickPlayer(client.Id, false);
+            Utils.KickPlayer(client.Id, false, "NotLogin");
             RPC.NotificationPop(string.Format(GetString("Message.KickedByNoFriendCode"), client.PlayerName));
             Logger.Info($"フレンドコードがないプレイヤーを{client?.PlayerName}をキックしました。", "Kick");
         }
         if (AmongUsClient.Instance.AmHost && client.PlatformData.Platform == Platforms.Android && Options.KickAndroidPlayer.GetBool())
         {
-            Utils.KickPlayer(client.Id, false);
+            Utils.KickPlayer(client.Id, false, "Andriod");
             string msg = string.Format(GetString("KickAndriodPlayer"), client?.PlayerName);
             RPC.NotificationPop(msg);
             Logger.Info(msg, "Android Kick");
         }
         if (DestroyableSingleton<FriendsListManager>.Instance.IsPlayerBlockedUsername(client.FriendCode) && AmongUsClient.Instance.AmHost)
         {
-            Utils.KickPlayer(client.Id, true);
+            Utils.KickPlayer(client.Id, true, "BanList");
             Logger.Info($"ブロック済みのプレイヤー{client?.PlayerName}({client.FriendCode})をBANしました。", "BAN");
         }
         BanManager.CheckBanPlayer(client);
@@ -164,9 +165,9 @@ class OnPlayerLeftPatch
                 default:
                     if (!ClientsProcessed.Contains(data?.Id ?? 0))
                         RPC.NotificationPop(string.Format(GetString("PlayerLeft"), data?.PlayerName));
-                    ClientsProcessed.Remove(data?.Id ?? 0);
                     break;
             }
+            ClientsProcessed.Remove(data?.Id ?? 0);
         }
     }
 }

@@ -293,7 +293,6 @@ class FixedUpdatePatch
     private static StringBuilder Mark = new(20);
     private static StringBuilder Suffix = new(120);
     private static int LevelKickBufferTime = 10;
-    private static Dictionary<byte, int> BufferTime = new();
     public static void Postfix(PlayerControl __instance)
     {
         var player = __instance;
@@ -329,8 +328,8 @@ class FixedUpdatePatch
                 LevelKickBufferTime--;
                 if (LevelKickBufferTime <= 0)
                 {
-                    LevelKickBufferTime = 20;
-                    Utils.KickPlayer(player.GetClientId(), false);
+                    LevelKickBufferTime = 100;
+                    Utils.KickPlayer(player.GetClientId(), false, "LowLevel");
                     string msg = string.Format(GetString("KickBecauseLowLevel"), player.GetRealName().RemoveHtmlTags());
                     RPC.NotificationPop(msg);
                     Logger.Info(msg, "LowLevel Kick");

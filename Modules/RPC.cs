@@ -45,6 +45,7 @@ public enum CustomRPC
     ShowPopUp,
     KillFlash,
     NotificationPop,
+    SetKickReason,
 
     //Roles
     SetDrawPlayer,
@@ -135,7 +136,7 @@ internal class RPCHandlerPatch
             if (AmongUsClient.Instance.AmHost)
             {
                 if (!EAC.ReceiveInvalidRpc(__instance, callId)) return false;
-                Utils.KickPlayer(__instance.GetClientId(), false);
+                Utils.KickPlayer(__instance.GetClientId(), false, "InvalidRPC");
                 Logger.Warn($"收到来自 {__instance?.Data?.PlayerName} 的不受信用的RPC，因此将其踢出。", "Kick");
                 RPC.NotificationPop(string.Format(GetString("Warning.InvalidRpc"), __instance?.Data?.PlayerName));
             }
@@ -201,7 +202,7 @@ internal class RPCHandlerPatch
                                     var msg = string.Format(GetString("KickBecauseDiffrentVersionOrMod"), __instance?.Data?.PlayerName);
                                     Logger.Warn(msg, "Version Kick");
                                     RPC.NotificationPop(msg);
-                                    Utils.KickPlayer(__instance.GetClientId(), false);
+                                    Utils.KickPlayer(__instance.GetClientId(), false, "ModVersionIncorrect");
                                 }
                             }, 5f, "Kick");
                     }
@@ -315,6 +316,9 @@ internal class RPCHandlerPatch
                 break;
             case CustomRPC.NotificationPop:
                 NotificationPopperPatch.AddItem(reader.ReadString());
+                break;
+            case CustomRPC.SetKickReason:
+                ShowDisconnectPopupPatch.ReasonByHost = reader.ReadString();
                 break;
             default:
                 CustomRoleManager.DispatchRpc(reader, rpcType);
