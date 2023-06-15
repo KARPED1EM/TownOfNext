@@ -93,9 +93,11 @@ internal class TitleLogoPatch
     public static GameObject AULogo;
     public static GameObject BottomButtonBounds;
 
+    public static Vector3 RightPanelOp;
+
     private static void Postfix(MainMenuManager __instance)
     {
-        GameObject.Find("BackgroundTexture")?.SetActive(!MainMenuManagerPatch.showed);
+        GameObject.Find("BackgroundTexture")?.SetActive(!MainMenuManagerPatch.ShowedBak);
 
         if ((ModStamp = GameObject.Find("ModStamp")) == null) return;
         ModStamp.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
@@ -110,20 +112,37 @@ internal class TitleLogoPatch
 
         if ((LeftPanel = GameObject.Find("LeftPanel")) == null) return;
         LeftPanel.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
-        static void ResetParent(GameObject obj) => obj.transform.parent = LeftPanel.transform.parent;
+        static void ResetParent(GameObject obj) => obj.transform.SetParent(LeftPanel.transform.parent);
         LeftPanel.ForEachChild((Il2CppSystem.Action<GameObject>)ResetParent);
         LeftPanel.SetActive(false);
 
         GameObject.Find("Divider")?.SetActive(false);
 
         if ((RightPanel = GameObject.Find("RightPanel")) == null) return;
-        RightPanel.AddComponent<TransitionOpen>().duration = 0.5f;
-        RightPanel.SetActive(false);
+        var rpap = RightPanel.GetComponent<AspectPosition>();
+        if (rpap != null) Object.Destroy(rpap);
+        RightPanelOp = RightPanel.transform.localPosition;
+        RightPanel.transform.localPosition = RightPanelOp + new Vector3(10f, 0f, 0f);
 
         if ((Tint = GameObject.Find("Tint")) == null) return;
-        Tint.transform.localPosition = new Vector3(1.9782f, -0.3284f, 1f);
-        Tint.transform.localScale = new Vector3(0.8f, 0.83f, 1f);
-        //Tint.transform.parent = RightPanel.transform;
+        var ttap = Tint.GetComponent<AspectPosition>();
+        if (ttap != null) Object.Destroy(ttap);
+        Tint.transform.SetParent(RightPanel.transform);
+        Tint.transform.localPosition = new Vector3(-0.0824f, 0.0513f, Tint.transform.localPosition.z);
+        Tint.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        var creditsSizer = GameObject.Find("CreditsSizer");
+        if (creditsSizer != null)
+        {
+            var creditsScreen = creditsSizer.transform.FindChild("CreditsScreen");
+            if (creditsScreen != null)
+            {
+                var csto = creditsScreen.GetComponent<TransitionOpen>();
+                if (csto != null) Object.Destroy(csto);
+                var closeButton = creditsScreen.transform.FindChild("CloseButton");
+                closeButton?.gameObject.SetActive(false);
+            }
+        }
 
         if ((Sizer = GameObject.Find("Sizer")) == null) return;
         if ((AULogo = GameObject.Find("LOGO-AU")) == null) return;

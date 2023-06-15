@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 using Object = UnityEngine.Object;
 
 namespace TOHE;
@@ -27,35 +28,35 @@ public class MainMenuManagerPatch
     public static GameObject updateButton;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu)), HarmonyPrefix]
-    public static void OpenGameModeMenu_Prefix(MainMenuManager __instance)
-    {
-        if (!TitleLogoPatch.RightPanel.active) TitleLogoPatch.RightPanel.SetActive(true);
-    }
+    public static void OpenGameModeMenu_Prefix(MainMenuManager __instance) => ShowingPanel = true;
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu)), HarmonyPrefix]
-    public static void OpenAccountMenu_Prefix(MainMenuManager __instance)
-    {
-        if (!TitleLogoPatch.RightPanel.active) TitleLogoPatch.RightPanel.SetActive(true);
-    }
+    public static void OpenAccountMenu_Prefix(MainMenuManager __instance) => ShowingPanel = true;
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenCredits)), HarmonyPrefix]
-    public static void OpenCredits_Prefix(MainMenuManager __instance)
-    {
-        if (!TitleLogoPatch.RightPanel.active) TitleLogoPatch.RightPanel.SetActive(true);
-    }
+    public static void OpenCredits_Prefix(MainMenuManager __instance) => ShowingPanel = true;
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
+    public static void Start_Postfix(MainMenuManager __instance) => ShowingPanel = false;
 
-    static bool isOnline = false;
-    public static bool showed = false;
+    private static bool isOnline = false;
+    public static bool ShowedBak = false;
+    private static bool ShowingPanel = false;
     [HarmonyPatch(typeof(SignInStatusComponent), nameof(SignInStatusComponent.SetOnline)), HarmonyPostfix]
-    public static void SetOnline_Postfix(SignInStatusComponent __instance) => new LateTask(() => { isOnline = true; }, 1.5f, "Set Online Status");
+    public static void SetOnline_Postfix(SignInStatusComponent __instance) => new LateTask(() => { isOnline = true; }, 0.2f, "Set Online Status");
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void MainMenuManager_LateUpdate(SignInStatusComponent __instance)
     {
-        if (showed || !isOnline) return;
+        if (GameObject.Find("MainUI") == null) ShowingPanel = false;
+
+        var pos1 = TitleLogoPatch.RightPanel.transform.localPosition;
+        Vector3 lerp1 = Vector3.Lerp(pos1, TitleLogoPatch.RightPanelOp + new Vector3((ShowingPanel ? 0f : 10f), 0f, 0f), Time.deltaTime * (ShowingPanel ? 3f : 2f));
+        TitleLogoPatch.RightPanel.transform.localPosition = lerp1;
+
+        if (ShowedBak || !isOnline) return;
         var bak = GameObject.Find("BackgroundTexture");
         if (bak == null || !bak.active) return;
-        var pos = bak.transform.position;
-        Vector3 lerp = Vector3.Lerp(pos, new Vector3(pos.x, 7.1f, pos.z), Time.deltaTime * 1.4f);
-        bak.transform.position = lerp;
-        if (pos.y > 7f) showed = true;
+        var pos2 = bak.transform.position;
+        Vector3 lerp2 = Vector3.Lerp(pos2, new Vector3(pos2.x, 7.1f, pos2.z), Time.deltaTime * 1.4f);
+        bak.transform.position = lerp2;
+        if (pos2.y > 7f) ShowedBak = true;
     }
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
