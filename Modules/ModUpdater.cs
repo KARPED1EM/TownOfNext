@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using static TOHE.Translator;
 
@@ -35,7 +36,6 @@ public class ModUpdater
     [HarmonyPriority(2)]
     public static void Start_Prefix(MainMenuManager __instance)
     {
-        return;
         NewVersionCheck();
         DeleteOldFiles();
         InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
@@ -60,9 +60,9 @@ public class ModUpdater
             Logger.Info("latestVersionl: " + latestVersion, "CheckRelease");
         }
 
-        MainMenuManagerPatch.updateButton.SetActive(hasUpdate);
-        MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.Template.transform.position + new Vector3(0.25f, 0.75f);
-        MainMenuManagerPatch.updateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>().SetText($"{GetString("updateButton")}\n{latestTitle}");
+        MainMenuManagerPatch.UpdateButton.SetActive(hasUpdate);
+        var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
+        buttonText.text = $"{GetString("updateButton")}\n{latestTitle}";
     }
 
     public static string UrlSetId(string url) => url + "?id=6C5A46D1420E476ABD560271FC8040D7";
@@ -330,8 +330,7 @@ public class ModUpdater
             {
                 File.Delete(savePath);
                 ShowPopup(GetString("downloadFailed"), StringNames.Okay, true, false);
-                MainMenuManagerPatch.updateButton.SetActive(true);
-                MainMenuManagerPatch.updateButton.transform.position = MainMenuManagerPatch.Template.transform.position + new Vector3(0.25f, 0.75f);
+                MainMenuManagerPatch.UpdateButton.SetActive(true);
             }
             else
             {

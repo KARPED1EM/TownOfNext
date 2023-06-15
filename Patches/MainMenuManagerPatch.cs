@@ -22,10 +22,11 @@ namespace TOHE;
 [HarmonyPatch]
 public class MainMenuManagerPatch
 {
-    public static GameObject Template;
+    public static GameObject Template_Left;
+    public static GameObject Template_Right;
     public static GameObject InviteButton;
     public static GameObject WebsiteButton;
-    public static GameObject updateButton;
+    public static GameObject UpdateButton;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu)), HarmonyPrefix]
     public static void OpenGameModeMenu_Prefix(MainMenuManager __instance) => ShowingPanel = true;
@@ -62,13 +63,15 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)
     {
-        if (Template == null) Template = GameObject.Find("ExitGameButton");
-        if (Template == null) return;
+        if (Template_Left == null) Template_Left = GameObject.Find("CreditsButton");
+        if (Template_Right == null) Template_Right = GameObject.Find("ExitGameButton");
+        if (Template_Left == null || Template_Right == null) return;
         int row = 1; int col = 0;
         GameObject CreatButton(string text, Action action)
         { 
             col++; if (col > 2) { col = 1; row++; }
-            var button = Object.Instantiate(Template, Template.transform.parent);
+            var template = col == 1 ? Template_Left : Template_Right;
+            var button = Object.Instantiate(template, template.transform.parent);
             button.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
             var buttonText = button.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
             buttonText.text = text;
@@ -89,31 +92,29 @@ public class MainMenuManagerPatch
         WebsiteButton.gameObject.SetActive(Main.ShowWebsiteButton);
         WebsiteButton.name = "TOHE Website Button";
 
-        Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
-
-        return;
-
-        //Updateボタンを生成
-        if (updateButton == null) updateButton = Object.Instantiate(Template, Template.transform.parent);
-        updateButton.name = "UpdateButton";
-        updateButton.transform.position = Template.transform.position + new Vector3(0.25f, 0.75f);
-        updateButton.transform.GetChild(0).GetComponent<RectTransform>().localScale *= 1.5f;
-
-        var updateText = updateButton.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-        UnityEngine.Color updateColor = new Color32(247, 56, 23, byte.MaxValue);
-        PassiveButton updatePassiveButton = updateButton.GetComponent<PassiveButton>();
-        SpriteRenderer updateButtonSprite = updateButton.GetComponent<SpriteRenderer>();
-        updatePassiveButton.OnClick = new();
-        updatePassiveButton.OnClick.AddListener((Action)(() =>
+        if (UpdateButton == null)
         {
-            updateButton.SetActive(false);
-            ModUpdater.StartUpdate(ModUpdater.downloadUrl);
-        }));
-        updateText.DestroyTranslator();
-        updatePassiveButton.OnMouseOut.AddListener((Action)(() => updateButtonSprite.color = updateText.color = updateColor));
-        updateButtonSprite.color = updateText.color = updateColor;
-        updateButtonSprite.size *= 1.5f;
-        updateButton.SetActive(false);
+            var template = GameObject.Find("PlayButton");
+            UpdateButton = Object.Instantiate(template, template.transform.parent);
+            UpdateButton.name = "TOHE Update Button";
+            UpdateButton.transform.localPosition = template.transform.localPosition - new Vector3(0f, 0f, 3f);
+            var inactive = UpdateButton.transform.FindChild("Inactive");
+            var spriteRenderer = inactive.GetComponent<SpriteRenderer>();
+            spriteRenderer.color = new Color32(255, 120, 255, byte.MaxValue);
+            var shine = inactive.FindChild("Shine");
+            var shineSpriteRenderer = shine.GetComponent<SpriteRenderer>();
+            shineSpriteRenderer.color = new Color32(50, 200, 255, byte.MaxValue);
+            var passiveButton = UpdateButton.GetComponent<PassiveButton>();
+            passiveButton.OnClick = new();
+            passiveButton.OnClick.AddListener((Action)(() =>
+            {
+                UpdateButton.SetActive(false);
+                ModUpdater.StartUpdate(ModUpdater.downloadUrl);
+            }));
+            UpdateButton.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
+        }
+
+        Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
     }
 }
 
