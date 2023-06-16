@@ -10,7 +10,9 @@ namespace TOHE;
 public static class OptionsMenuBehaviourStartPatch
 {
     private static ClientOptionItem UnlockFPS;
-    private static ClientOptionItem AutoStart;
+    private static ClientOptionItem HorseMode;
+    private static ClientOptionItem AutoStartGame;
+    private static ClientOptionItem AutoEndGame;
     private static ClientOptionItem ForceOwnLanguage;
     private static ClientOptionItem ForceOwnLanguageRoleName;
     private static ClientOptionItem EnableCustomButton;
@@ -19,7 +21,7 @@ public static class OptionsMenuBehaviourStartPatch
     private static ClientActionItem DumpLog;
     private static ClientOptionItem VersionCheat;
     private static ClientOptionItem GodMode;
-    private static ClientOptionItem HorseMode;
+    
 
     private static bool reseted = false;
     public static void Postfix(OptionsMenuBehaviour __instance)
@@ -42,16 +44,24 @@ public static class OptionsMenuBehaviourStartPatch
                 Logger.SendInGame(string.Format(Translator.GetString("FPSSetTo"), Application.targetFrameRate));
             }
         }
-        if (AutoStart == null || AutoStart.ToggleButton == null)
+        if (HorseMode == null || HorseMode.ToggleButton == null)
         {
-            AutoStart = ClientOptionItem.Create("AutoStart", Main.AutoStart, __instance, AutoStartButtonToggle);
+            HorseMode = ClientOptionItem.Create("HorseMode", Main.HorseMode, __instance, () => HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode);
+        }
+        if (AutoStartGame == null || AutoStartGame.ToggleButton == null)
+        {
+            AutoStartGame = ClientOptionItem.Create("AutoStartGame", Main.AutoStartGame, __instance, AutoStartButtonToggle);
             static void AutoStartButtonToggle()
             {
-                if (Main.AutoStart.Value == false && GameStates.IsCountDown)
+                if (Main.AutoStartGame.Value == false && GameStates.IsCountDown)
                 {
                     GameStartManager.Instance.ResetStartState();
                 }
             }
+        }
+        if (AutoEndGame == null || AutoEndGame.ToggleButton == null)
+        {
+            AutoEndGame = ClientOptionItem.Create("AutoEndGame", Main.AutoEndGame, __instance);
         }
         if (ForceOwnLanguage == null || ForceOwnLanguage.ToggleButton == null)
         {
@@ -84,10 +94,6 @@ public static class OptionsMenuBehaviourStartPatch
         if ((GodMode == null || GodMode.ToggleButton == null) && DebugModeManager.AmDebugger)
         {
             GodMode = ClientOptionItem.Create("GodMode", Main.GodMode, __instance);
-        }
-        if (HorseMode == null || HorseMode.ToggleButton == null)
-        {
-            HorseMode = ClientOptionItem.Create("HorseMode", Main.HorseMode, __instance, () => HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode);
         }
 
         if (ModUnloaderScreen.Popup == null)

@@ -111,7 +111,7 @@ public class GameStartManagerPatch
                 HideName.enabled = false;
             }
 
-            if (Main.AutoStart.Value)
+            if (Main.AutoStartGame.Value)
             {
                 updateTimer++;
                 if (updateTimer >= 50)

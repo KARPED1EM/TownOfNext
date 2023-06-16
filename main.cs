@@ -56,14 +56,16 @@ public class Main : BasePlugin
     public static ConfigEntry<string> HideColor { get; private set; }
     public static ConfigEntry<int> MessageWait { get; private set; }
     public static ConfigEntry<bool> UnlockFPS { get; private set; }
-    public static ConfigEntry<bool> AutoStart { get; private set; }
+    public static ConfigEntry<bool> HorseMode { get; private set; }
+    public static ConfigEntry<bool> AutoStartGame { get; private set; }
+    public static ConfigEntry<bool> AutoEndGame { get; private set; }
     public static ConfigEntry<bool> ForceOwnLanguage { get; private set; }
     public static ConfigEntry<bool> ForceOwnLanguageRoleName { get; private set; }
     public static ConfigEntry<bool> EnableCustomButton { get; private set; }
     public static ConfigEntry<bool> EnableCustomSoundEffect { get; private set; }
     public static ConfigEntry<bool> VersionCheat { get; private set; }
     public static ConfigEntry<bool> GodMode { get; private set; }
-    public static ConfigEntry<bool> HorseMode { get; private set; }
+    
 
     public static Dictionary<byte, PlayerVersion> playerVersion = new();
     //Preset Name Options
@@ -146,14 +148,15 @@ public class Main : BasePlugin
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
         DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
         UnlockFPS = Config.Bind("Client Options", "UnlockFPS", false);
-        AutoStart = Config.Bind("Client Options", "AutoStart", false);
+        HorseMode = Config.Bind("Client Options", "HorseMode", false);
+        AutoStartGame = Config.Bind("Client Options", "AutoStartGame", false);
+        AutoEndGame = Config.Bind("Client Options", "AutoEndGame", false);
         ForceOwnLanguage = Config.Bind("Client Options", "ForceOwnLanguage", false);
         ForceOwnLanguageRoleName = Config.Bind("Client Options", "ForceOwnLanguageRoleName", false);
         EnableCustomButton = Config.Bind("Client Options", "EnableCustomButton", true);
         EnableCustomSoundEffect = Config.Bind("Client Options", "EnableCustomSoundEffect", true);
         VersionCheat = Config.Bind("Client Options", "VersionCheat", false);
         GodMode = Config.Bind("Client Options", "GodMode", false);
-        HorseMode = Config.Bind("Client Options", "HorseMode", false);
 
         Logger = BepInEx.Logging.Logger.CreateLogSource("TOHE");
         TOHE.Logger.Enable();
