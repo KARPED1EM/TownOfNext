@@ -329,8 +329,8 @@ public static class SoloKombatManager
         Utils.NotifyRoles(pc);
     }
 
-    [HarmonyPriority(0)]
     [HarmonyPatch(typeof(PlayerPhysics), nameof(PlayerPhysics.CoEnterVent))]
+    [HarmonyPriority(Priority.First)]
     class CoEnterVentPatch
     {
         public static bool Prefix(PlayerPhysics __instance, [HarmonyArgument(0)] int id)
