@@ -100,12 +100,6 @@ internal class TitleLogoPatch
     {
         GameObject.Find("BackgroundTexture")?.SetActive(!MainMenuManagerPatch.ShowedBak);
 
-        if (!DebugModeManager.AmDebugger)
-        {
-            GameObject.Find("HowToPlayButton")?.SetActive(false);
-            GameObject.Find("FreePlayButton")?.SetActive(false);
-        }
-
         if ((ModStamp = GameObject.Find("ModStamp")) == null) return;
         ModStamp.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
 
@@ -137,6 +131,13 @@ internal class TitleLogoPatch
         Tint.transform.SetParent(RightPanel.transform);
         Tint.transform.localPosition = new Vector3(-0.0824f, 0.0513f, Tint.transform.localPosition.z);
         Tint.transform.localScale = new Vector3(1f, 1f, 1f);
+
+        if (!DebugModeManager.AmDebugger)
+        {
+            var scaler = RightPanel.transform.FindChild("MaskedBlackScreen").FindChild("GameModeButtons").FindChild("AspectSize").FindChild("Scaler");
+            scaler.FindChild("FreePlayButton")?.gameObject.SetActive(false);
+            scaler.FindChild("HowToPlayButton")?.gameObject.SetActive(false);
+        }
 
         var creditsSizer = GameObject.Find("CreditsSizer");
         if (creditsSizer != null)
