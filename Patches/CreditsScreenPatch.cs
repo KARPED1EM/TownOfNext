@@ -17,14 +17,22 @@ public class CreditsScreenPatch
         {
             var devsList = new List<string>()
             {
+                $"<color=#bd262a><size=150%>{GetString("FromChina")}</size></color>",
+
+                "\t",
+
                 $"<color={Main.ModColor}>♡KARPED1EM</color> - {GetString("Creater")}",
                 $"<color={Main.ModColor}>♡IRIDESCENT</color> - {GetString("Art")}",
-                $"SHAAARKY - {GetString("Developer")}",
+                $"SHAAARKY - {GetString("Collaborators")}",
                 $"Endrmen40409 - {GetString("Art")}",
-                $"天寸梦初 - {GetString("Developer")}",
-                $"NCSIMON - {GetString("Developer")}",
-                $"Commandf1 - {GetString("Developer")}",
-                $"喜 - {GetString("Developer")}",
+                $"天寸梦初 - {GetString("PullRequester")}",
+                $"NCSIMON - {GetString("PullRequester")}",
+                $"喜 - {GetString("PullRequester")}",
+                $"Tommy-XL - {GetString("PullRequester")}",
+                $"Commandf1 - {GetString("Contributor")}",
+                $"水木年华 - {GetString("Contributor")}",
+                $"SolarFlare - {GetString("Contributor")}",
+                $"Mousse - {GetString("Contributor")}",
             };
             var translatorsList = new List<string>()
             {
@@ -38,39 +46,51 @@ public class CreditsScreenPatch
             };
             var acList = new List<string>()
             {
-                $"罗寄 - {GetString("Sponsor")}",
-                $"鬼 - {GetString("Sponsor")}",
-                $"喜 - {GetString("Sponsor")}",
-                $"小叨院长 - {GetString("Sponsor")}",
-                $"波奇酱 - {GetString("Sponsor")}",
-                $"法师 - {GetString("Sponsor")}",
-                $"沐煊 - {GetString("Sponsor")}",
-                $"SolarFlare - {GetString("Sponsor")}",
-                $"林林林 - {GetString("Sponsor")}",
-                $"撒币 - {GetString("Sponsor")}",
-                $"斯卡蒂Skadi - {GetString("Sponsor")}",
-                $"ltemten - {GetString("Sponsor")}",
-                $"Night_瓜 - {GetString("Sponsor")}",
-                $"群诱饵 - {GetString("Sponsor")}",
-                $"Slok - {GetString("Sponsor")}",
-                $"辣鸡 - {GetString("Sponsor")}",
-                $"湛蓝色 - {GetString("Sponsor")}",
-                $"小黄117 - {GetString("Sponsor")}",
-                $"chun - {GetString("Sponsor")}",
-                $"Z某 - {GetString("Sponsor")}",
-                $"Shark - {GetString("Sponsor")}",
-                $"清风awa - {GetString("Sponsor")}",
-                $"1 1 1 1 - {GetString("Sponsor")}",
+                //Mods
+                $"{GetString("TownOfHost")}",
+                $"{GetString("TownOfHost_Y")}",
+                $"{GetString("TownOfHost-TheOtherRoles")}",
+                $"{GetString("SuperNewRoles")}",
 
-                $"bunny - {GetString("Booster")}",
-                $"Loonie - {GetString("Booster")}",
-                $"Namra - {GetString("Booster")}",
-                $"KNIGHT - {GetString("Booster")}",
-                $"SolarFlare - {GetString("Booster")}",
-                $"Bluéfôx. - {GetString("Booster")}",
-                $"shiftyrose - {GetString("Booster")}",
-                $"M ™ - {GetString("Booster")}",
-                $"yunfi - {GetString("Booster")}",
+                "\t",
+
+                // Sponsor
+                $"罗寄",
+                $"鬼",
+                $"喜",
+                $"小叨院长",
+                $"波奇酱",
+                $"法师",
+                $"沐煊",
+                $"SolarFlare",
+                $"林林林",
+                $"撒币",
+                $"斯卡蒂Skadi",
+                $"ltemten",
+                $"Night_瓜",
+                $"群诱饵",
+                $"Slok",
+                $"辣鸡",
+                $"湛蓝色",
+                $"小黄117",
+                $"chun",
+                $"Z某",
+                $"Shark",
+                $"清风awa",
+                $"1 1 1 1",
+
+                "\t",
+
+                //Discord Server Booster
+                $"bunny",
+                $"Loonie",
+                $"Namra",
+                $"KNIGHT",
+                $"SolarFlare",
+                $"Bluéfôx.",
+                $"shiftyrose",
+                $"M ™",
+                $"yunfi",
             };
 
             var template = GameObject.Find("logoImage");

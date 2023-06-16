@@ -1,15 +1,9 @@
 "id","13","0","5","14","12"
 
-"### 翻译贡献者 / Translators"
-
-"## TOH"
-"#13 SChinese: fivefirex & ZeMing & OH233 &  2T & MC-AS-Huier & xiaojin & xyjx001& Tanakanira"
-
-"## TOHE"
-"#13 SChinese: KARPED1EM"
-"#00 English: Tommy-XL & Tem & Gurge44 & KARPED1EM & SolarFlare"
-"#05 Russian: Tommy-XL & Tem & chill_ultimated"
-"#14 TChinese: 阿龍 & 法官"
+"### TOH原翻译贡献者 / Translators of TownOfHost"
+"## 该项据要求保留，TOHE的翻译者会显示在游戏内的开发人员表而不是这里，请不要在这添加任何名字"
+"## This item is reserved by request, TOHE's translators will be shown in the in-game credits screen instead of here, please don't add any names here"
+"#SChinese: fivefirex & ZeMing & OH233 &  2T & MC-AS-Huier & xiaojin & xyjx001& Tanakanira"
 
 "### If you want to translate the mod into other languages -"
 "### Visit: https://crowdin.com/project/tohe"
@@ -22,7 +16,7 @@
 "### 或许我们在未来的路上会经历许多坎坷，或许TOHE的昙花一现就此落幕"
 "### 但感谢有您，感谢TOHE短暂的生命中的每一位过客"
 
-"## 作者署名（会显示在右上角，不需要请留空）/ A sign of an author (Please leave blank when not needed)"
+"## 作者署名（不需要请留空）/ A sign of an author (Please leave blank when not needed)"
 "TextBelowVersionText","","","","",""
 
 "# 职业类型 / Role Type"
@@ -1388,7 +1382,7 @@
 "ErrorEndTextDescription","为避免卡房已强制结束","To avoid crashing, the game was forcibly ended.","Во избежание ошибки, комната была закрыта.","為避免卡房已強制結束",""
 "Loading","加载中...","Loading...","Загрузка...","載入中...",""
 "HidenRole","隐藏职业","Hidden Role","Скрытая Роль","隱藏職業",""
-"MainMenuCredential","{0} 献上 © 2023","Created by {0} © 2023","","",""
+"MainMenuCredential","{0} © 2023","{0} © 2023","","",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.HighLevel","警告：EAC正在抵御炸房外挂","Warning: EAC detected High Level of cheats.","Предупреждение: EAC обнаружил высокий уровень читов.","警告: EAC正在抵禦炸房外掛","警告：EAC正在抵御炸房外挂"
@@ -1432,13 +1426,18 @@
 "DivinatorCheck.TaskDone","【{0}】的职业是【{1}】","【{0}】Role -【{1}】","【{0}】Роль -【{1}】","【{0}】的職業是 {1}】","【{0}】的职业是【{1}】"
 
 "## 模组信息 / Mod Info"
+"FromChina","一个来自中国的模组","","","",""
 "Creater","创始人","","","",""
-"Developer","参与开发","","","",""
+"Collaborators","固定开发者","","","",""
+"PullRequester","参与开发","","","",""
 "Translator","翻译支持","","","",""
+"Contributor","提供帮助","","","",""
 "Art","美术","","","",""
 "Acknowledgement","特别致谢","","","",""
-"Booster","DC服助力","Server Booster","Бустеры в Discord","DC服加成",""
-"Sponsor","赞助","","","",""
+"TownOfHost","<color=#00bfff>TownOfHost</color> 及其全体开发者","","","",""
+"TownOfHost-TheOtherRoles","<color=#4FF918>TOH-TOR</color> 及其全体开发者","","","",""
+"TownOfHost_Y","<color=#ffff00>TOH_Y</color> 及其全体开发者","","","",""
+"SuperNewRoles","<color=#ff7f00>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> 及其全体开发者","","","",""
 "TranEN","英语","English","Английский Переводчик","英語","英语"
 "TranRU","俄语","Russian","Русский Переводчик","俄語","俄语"
 "TranCHT","繁体中文","Chinese Traditional","Традиционный Китайский","繁體中文",""
