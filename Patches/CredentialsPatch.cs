@@ -100,6 +100,12 @@ internal class TitleLogoPatch
     {
         GameObject.Find("BackgroundTexture")?.SetActive(!MainMenuManagerPatch.ShowedBak);
 
+        if (!DebugModeManager.AmDebugger)
+        {
+            GameObject.Find("HowToPlayButton")?.SetActive(false);
+            GameObject.Find("FreePlayButton")?.SetActive(false);
+        }
+
         if ((ModStamp = GameObject.Find("ModStamp")) == null) return;
         ModStamp.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
 
