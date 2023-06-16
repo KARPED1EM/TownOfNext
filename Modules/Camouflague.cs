@@ -33,9 +33,8 @@ static class PlayerOutfitExtension
 }
 public static class Camouflage
 {
-    static GameData.PlayerOutfit CamouflageOutfit = Options.KPDCamouflageMode.GetBool() ?
-        new GameData.PlayerOutfit().Set("", 13, "hat_pk05_Plant", "", "visor_BubbleBumVisor", "") :
-        new GameData.PlayerOutfit().Set("", 15, "", "", "", "");
+    static GameData.PlayerOutfit CamouflageOutfit_Default = new GameData.PlayerOutfit().Set("", 15, "", "", "", "");
+    static GameData.PlayerOutfit CamouflageOutfit_KPD = new GameData.PlayerOutfit().Set("", 13, "hat_pk05_Plant", "", "visor_BubbleBumVisor", "");
 
     public static bool IsCamouflage;
     public static Dictionary<byte, GameData.PlayerOutfit> PlayerSkins = new();
@@ -74,7 +73,9 @@ public static class Camouflage
             if (PlayerState.GetByPlayerId(id).IsDead) return;
         }
 
-        var newOutfit = CamouflageOutfit;
+        var newOutfit = Options.KPDCamouflageMode.GetBool()
+            ? CamouflageOutfit_KPD
+            : CamouflageOutfit_Default;
 
         if (!IsCamouflage || ForceRevert)
         {
