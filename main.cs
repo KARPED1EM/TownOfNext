@@ -167,6 +167,7 @@ public class Main : BasePlugin
         if (!DebugModeManager.AmDebugger)
         {
             TOHE.Logger.Disable("2018k");
+            TOHE.Logger.Disable("CheckRelease");
             TOHE.Logger.Disable("Github");
             TOHE.Logger.Disable("CustomRpcSender");
             //TOHE.Logger.Disable("ReceiveRPC");
