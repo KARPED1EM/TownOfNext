@@ -35,7 +35,9 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Postfix(MainMenuManager __instance) => ShowingPanel = false;
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Open)), HarmonyPrefix]
-    public static void OpenOptionsMenu_Postfix(MainMenuManager __instance) => ShowingPanel = false;
+    public static void OpenOptionsMenu_Postfix(OptionsMenuBehaviour __instance) => ShowingPanel = false;
+    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Show)), HarmonyPrefix]
+    public static void AnnouncementPopUp_Postfix(AnnouncementPopUp __instance) => ShowingPanel = false;
 
     private static bool isOnline = false;
     public static bool ShowedBak = false;
