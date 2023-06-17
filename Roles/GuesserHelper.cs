@@ -407,14 +407,7 @@ public static class GuesserHelper
                 RoleSelectButtons.Add((CustomRoleTypes)index, Teambutton.GetComponent<SpriteRenderer>());
                 TeambuttonParent.localPosition = new(-2.75f + tabCount++ * 1.73f, 2.225f, -200);
                 TeambuttonParent.localScale = new(0.53f, 0.53f, 1f);
-                Teamlabel.color = (CustomRoleTypes)index switch
-                {
-                    CustomRoleTypes.Crewmate => new Color32(140, 255, 255, byte.MaxValue),
-                    CustomRoleTypes.Impostor => new Color32(255, 25, 25, byte.MaxValue),
-                    CustomRoleTypes.Neutral => new Color32(255, 171, 27, byte.MaxValue),
-                    CustomRoleTypes.Addon => new Color32(255, 154, 206, byte.MaxValue),
-                    _ => throw new NotImplementedException(),
-                };
+                Teamlabel.color = Utils.GetCustomRoleTypeColor((CustomRoleTypes)index);
                 Logger.Info(Teamlabel.color.ToString(), ((CustomRoleTypes)index).ToString());
                 Teamlabel.text = GetString("Type" + ((CustomRoleTypes)index).ToString());
                 Teamlabel.alignment = TextAlignmentOptions.Center;

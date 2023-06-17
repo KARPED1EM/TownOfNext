@@ -406,6 +406,36 @@ public static class Utils
         if (!Main.roleColors.TryGetValue(role, out var hexColor)) hexColor = role.GetRoleInfo()?.RoleColorCode;
         return hexColor;
     }
+    public static Color GetRoleTeamColor(CustomRoles role)
+        => role.IsValid()
+        ? GetCustomRoleTypeColor(role.GetCustomRoleTypes())
+        : new Color(255,255, 255);
+    public static string GetRoleTeamColorCode(CustomRoles role)
+        => role.IsValid()
+        ? GetCustomRoleTypeColorCode(role.GetCustomRoleTypes())
+        : "#FFFFFF";
+    public static Color GetCustomRoleTypeColor(CustomRoleTypes type)
+    {
+        return type switch
+        {
+            CustomRoleTypes.Crewmate => new Color(140, 255, 255),
+            CustomRoleTypes.Impostor => new Color(255, 25, 25),
+            CustomRoleTypes.Neutral => new Color(255, 171, 27),
+            CustomRoleTypes.Addon => new Color(255, 154, 206),
+            _ => new Color(255, 255, 255)
+        };
+    }
+    public static string GetCustomRoleTypeColorCode(CustomRoleTypes type)
+    {
+        return type switch
+        {
+            CustomRoleTypes.Crewmate => "#8cffff",
+            CustomRoleTypes.Impostor => "#f74631",
+            CustomRoleTypes.Neutral => "#ffab1b",
+            CustomRoleTypes.Addon => "#ff9ace",
+            _ => "#FFFFFF"
+        };
+    }
     public static string GetKillCountText(byte playerId)
     {
         int count = PlayerState.GetByPlayerId(playerId)?.GetKillCount(true) ?? 0;
@@ -878,7 +908,7 @@ public static class Utils
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (title == "") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
-        Main.MessagesToSend.Add((text.RemoveHtmlTags(), sendTo, title));
+        Main.MessagesToSend.Add((text, sendTo, title));
     }
     public static void ApplySuffix(PlayerControl player)
     {

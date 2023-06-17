@@ -161,10 +161,10 @@ public class GameOptionsMenuUpdatePatch
             {
                 TabGroup.SystemSettings => Main.ModColor,
                 TabGroup.GameSettings => "#59ef83",
-                TabGroup.ImpostorRoles => "#f74631",
-                TabGroup.CrewmateRoles => "#8cffff",
-                TabGroup.NeutralRoles => "#ffab1b",
-                TabGroup.Addons => "#ff9ace",
+                TabGroup.ImpostorRoles => Utils.GetCustomRoleTypeColorCode(Roles.Core.CustomRoleTypes.Impostor),
+                TabGroup.CrewmateRoles => Utils.GetCustomRoleTypeColorCode(Roles.Core.CustomRoleTypes.Crewmate),
+                TabGroup.NeutralRoles => Utils.GetCustomRoleTypeColorCode(Roles.Core.CustomRoleTypes.Neutral),
+                TabGroup.Addons => Utils.GetCustomRoleTypeColorCode(Roles.Core.CustomRoleTypes.Addon),
                 TabGroup.OtherRoles => "#76b8e0",
                 _ => "#ffffff",
             };
@@ -180,7 +180,7 @@ public class GameOptionsMenuUpdatePatch
 
             foreach (var option in OptionItem.AllOptions)
             {
-                if ((TabGroup)tab != option.Tab) continue;
+                if (tab != option.Tab) continue;
                 if (option?.OptionBehaviour == null || option.OptionBehaviour.gameObject == null) continue;
 
                 var enabled = true;

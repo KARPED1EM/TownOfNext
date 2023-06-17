@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 using TOHE.Modules;
 using TOHE.Roles.Core;
@@ -563,12 +564,14 @@ internal class ChatCommands
 
         var sb = new StringBuilder();
         string roleName = GetString(Enum.GetName(typeof(CustomRoles), role));
-        sb.Append(roleName + Utils.GetRoleDisplaySpawnMode(role) + GetString($"{role}InfoLong"));
+        string info = GetString($"{role}InfoLong");
+        info = info.Insert(info.IndexOf("\n"), "</color>").Insert(0, $"<color={(Utils.GetRoleTeamColorCode(role))}>");
+        sb.Append(Utils.ColorString(role.GetRoleInfo()?.RoleColor ?? Color.white, roleName) + Utils.GetRoleDisplaySpawnMode(role) + info);
         if (Options.CustomRoleSpawnChances.ContainsKey(role))
         {
             Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
             var txt = sb.ToString();
-            sb.Clear().Append(txt.RemoveHtmlTags());
+            sb.Clear().Append(txt);
         }
 
         bool canSpecify = false;
@@ -662,9 +665,9 @@ internal class ChatCommands
                     var sb = new StringBuilder();
                     sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + player.GetRoleInfo(true));
                     if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                        Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
+                        Utils.ShowChildrenSettings(opt, ref sb, command: true);
                     var txt = sb.ToString();
-                    sb.Clear().Append(txt.RemoveHtmlTags());
+                    sb.Clear().Append(txt);
                     foreach (var subRole in PlayerState.AllPlayerStates[player.PlayerId].SubRoles)
                         sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
                     if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
@@ -756,9 +759,15 @@ internal class ChatCommands
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
 internal class ChatUpdatePatch
 {
+    public static bool Active = false;
     public static bool DoBlockChat = false;
     public static void Postfix(ChatController __instance)
     {
+        Active = __instance.IsOpen;
+
+        __instance.TextArea.AllowPaste = true;
+        __instance.chatBubPool.Prefab.Cast<ChatBubble>().TextArea.overrideColorTags = false;
+
         if (!AmongUsClient.Instance.AmHost || Main.MessagesToSend.Count < 1 || (Main.MessagesToSend[0].Item2 == byte.MaxValue && Main.MessageWait.Value > __instance.TimeSinceLastMessage)) return;
         if (DoBlockChat) return;
         var player = Main.AllAlivePlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault() ?? Main.AllPlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault();
@@ -767,29 +776,67 @@ internal class ChatUpdatePatch
         Main.MessagesToSend.RemoveAt(0);
         int clientId = sendTo == byte.MaxValue ? -1 : Utils.GetPlayerById(sendTo).GetClientId();
         var name = player.Data.PlayerName;
+
         if (clientId == -1)
         {
             player.SetName(title);
             DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
             player.SetName(name);
         }
-        var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-        writer.StartMessage(clientId);
-        writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-            .Write(title)
-            .EndRpc();
-        writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-            .Write(msg)
-            .EndRpc();
-        writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-            .Write(player.Data.PlayerName)
-            .EndRpc();
-        writer.EndMessage();
-        writer.SendMessage();
+
+        if (msg.RemoveHtmlTags() == msg)
+        {
+            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+            writer.StartMessage(clientId);
+            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+                .Write(title)
+                .EndRpc();
+            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
+                .Write(msg)
+                .EndRpc();
+            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+                .Write(player.Data.PlayerName)
+                .EndRpc();
+            writer.EndMessage();
+            writer.SendMessage();
+        }
+        else
+        {
+            Main.AllPlayerControls.DoIf(p => clientId == -1 || p.GetClientId() == clientId, player =>
+            {
+                var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+                writer.StartMessage(clientId);
+                writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+                    .Write(title)
+                    .EndRpc();
+                writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
+                    .Write(player.IsModClient() ? msg : msg.RemoveHtmlTags())
+                    .EndRpc();
+                writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+                    .Write(player.Data.PlayerName)
+                    .EndRpc();
+                writer.EndMessage();
+                writer.SendMessage();
+            });
+        }
         __instance.TimeSinceLastMessage = 0f;
     }
 }
-
+[HarmonyPatch(typeof(ChatController), nameof(ChatController.UpdateCharCount))]
+internal class UpdateCharCountPatch
+{
+    public static void Postfix(ChatController __instance)
+    {
+        int length = __instance.TextArea.text.Length;
+        __instance.CharCount.SetText($"{length}/{__instance.TextArea.characterLimit}");
+        if (length < (AmongUsClient.Instance.AmHost ? 888 : 250))
+            __instance.CharCount.color = Color.black;
+        else if (length < (AmongUsClient.Instance.AmHost ? 999 : 300))
+            __instance.CharCount.color = new Color(1f, 1f, 0f, 1f);
+        else
+            __instance.CharCount.color = Color.red;
+    }
+}
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
 internal class AddChatPatch
 {
