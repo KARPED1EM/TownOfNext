@@ -1170,6 +1170,7 @@
 "MorticianCheckTitle","【 ★ 尸体检查 ★ 】","【★ Corpse Examination ★】","【★ Вскрытие ★】","【 ★ 屍體檢查 ★ 】","【 ★ 尸体检查 ★ 】"
 "MediumshipTitle","【 ★ 冥界之声 ★ 】","【★ Voice of the Underworld ★】","【★ Голос с другого мира ★】","【 ★ 冥界之聲 ★ 】","【 ★ 冥界之声 ★ 】"
 "MafiaRevengeTitle","【 ★ 特供情报 ★ 】","【 ★ NEWS ★ 】","【 ★ НОВОСТИ ★ 】","【 ★ 特供情報 ★ 】",""
+"OnPlayerJoinMsgTitle","【 ★ {0} 您好！★ 】","","","",""
 "TabGroup.SystemSettings","系统设置","System Settings","Системные настройки","系統設定","系统设置"
 "TabGroup.GameSettings","游戏设置","Game Settings","Игровые настройки","遊戲設定","游戏设置"
 "TabGroup.CrewmateRoles","船员阵营职业","Crewmate Roles","Роли Членов Экипажа","船員陣營職業","船员阵营职业"

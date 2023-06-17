@@ -109,7 +109,16 @@ public static class TemplateManager
                 HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.TemplateNotFoundHost"), str, tags.Join(delimiter: ", ")));
             else Utils.SendMessage(string.Format(GetString("Message.TemplateNotFoundClient"), str), playerId);
         }
-        else for (int i = 0; i < sendList.Count; i++) Utils.SendMessage(ApplyReplaceDictionary(sendList[i]), playerId);
+        else for (int i = 0; i < sendList.Count; i++)
+        {
+                if (str == "welcome" && playerId != 0xff)
+                {
+                    var player = Utils.GetPlayerById(playerId);
+                    if (player == null) continue;
+                    Utils.SendMessage(ApplyReplaceDictionary(sendList[i]), playerId, string.Format($"<color=#aaaaff>{GetString("OnPlayerJoinMsgTitle")}</color>", Utils.ColorString(Palette.PlayerColors.Length > player.cosmetics.ColorId ? Palette.PlayerColors[player.cosmetics.ColorId] : UnityEngine.Color.white, player.GetRealName())));
+                }
+                else Utils.SendMessage(ApplyReplaceDictionary(sendList[i]), playerId);
+        }
     }
 
     private static string ApplyReplaceDictionary(string text)
