@@ -1,17 +1,6 @@
-using AmongUs.Data;
-using AmongUs.Data.Player;
-using Assets.InnerNet;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -27,25 +16,25 @@ public class MainMenuManagerPatch
     public static GameObject PlayButton;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu)), HarmonyPrefix]
-    public static void OpenGameModeMenu_Prefix(MainMenuManager __instance) => ShowingPanel = true;
+    public static void OpenGameModeMenu_Prefix() => ShowingPanel = true;
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu)), HarmonyPrefix]
-    public static void OpenAccountMenu_Prefix(MainMenuManager __instance) => ShowingPanel = true;
+    public static void OpenAccountMenu_Prefix() => ShowingPanel = true;
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenCredits)), HarmonyPrefix]
-    public static void OpenCredits_Prefix(MainMenuManager __instance) => ShowingPanel = true;
+    public static void OpenCredits_Prefix() => ShowingPanel = true;
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
-    public static void Start_Postfix(MainMenuManager __instance) => ShowingPanel = false;
+    public static void Start_Postfix() => ShowingPanel = false;
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Open)), HarmonyPrefix]
-    public static void OpenOptionsMenu_Postfix(OptionsMenuBehaviour __instance) => ShowingPanel = false;
+    public static void OpenOptionsMenu_Postfix() => ShowingPanel = false;
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Show)), HarmonyPrefix]
-    public static void AnnouncementPopUp_Postfix(AnnouncementPopUp __instance) => ShowingPanel = false;
+    public static void AnnouncementPopUp_Postfix() => ShowingPanel = false;
 
     private static bool isOnline = false;
     public static bool ShowedBak = false;
     private static bool ShowingPanel = false;
     [HarmonyPatch(typeof(SignInStatusComponent), nameof(SignInStatusComponent.SetOnline)), HarmonyPostfix]
-    public static void SetOnline_Postfix(SignInStatusComponent __instance) => new LateTask(() => { isOnline = true; }, 0.2f, "Set Online Status");
+    public static void SetOnline_Postfix() => new LateTask(() => { isOnline = true; }, 0.2f, "Set Online Status");
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
-    public static void MainMenuManager_LateUpdate(SignInStatusComponent __instance)
+    public static void MainMenuManager_LateUpdate()
     {
         if (GameObject.Find("MainUI") == null) ShowingPanel = false;
 
@@ -117,132 +106,5 @@ public class MainMenuManagerPatch
         }
 
         Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
-    }
-}
-
-// 来源：https://github.com/ykundesu/SuperNewRoles/blob/master/SuperNewRoles/Patches/HorseModePatch.cs
-[HarmonyPatch(typeof(Constants), nameof(Constants.ShouldHorseAround))]
-public static class HorseModePatch
-{
-    public static bool isHorseMode = false;
-    public static bool Prefix(ref bool __result)
-    {
-        __result = isHorseMode;
-        return false;
-    }
-}
-
-// 参考：https://github.com/Yumenopai/TownOfHost_Y
-public class ModNews
-{
-    public int Number;
-    public uint Lang;
-    public int BeforeNumber;
-    public string Title;
-    public string SubTitle;
-    public string ShortTitle;
-    public string Text;
-    public string Date;
-
-    public Announcement ToAnnouncement()
-    {
-        var result = new Announcement
-        {
-            Number = Number,
-            Language = Lang,
-            Title = Title,
-            SubTitle = SubTitle,
-            ShortTitle = ShortTitle,
-            Text = Text,
-            Date = Date,
-            Id = "ModNews"
-        };
-
-        return result;
-    }
-}
-
-[HarmonyPatch]
-public class ModNewsHistory
-{
-    public static List<ModNews> AllModNews = new();
-
-    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Init)), HarmonyPostfix]
-    public static void Initialize(ref Il2CppSystem.Collections.IEnumerator __result)
-    {
-        static IEnumerator GetEnumerator()
-        {
-            while (AnnouncementPopUp.UpdateState == AnnouncementPopUp.AnnounceState.Fetching) yield return null;
-            if (AnnouncementPopUp.UpdateState > AnnouncementPopUp.AnnounceState.Fetching && DataManager.Player.Announcements.AllAnnouncements.Count > 0) yield break;
-
-            AnnouncementPopUp.UpdateState = AnnouncementPopUp.AnnounceState.Fetching;
-            AllModNews.Clear();
-
-            var lang = DataManager.Settings.Language.CurrentLanguage.ToString();
-            if (!Assembly.GetExecutingAssembly().GetManifestResourceNames().Any(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}.")))
-                lang = SupportedLangs.English.ToString();
-
-            var fileNames = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}."));
-            foreach (var file in fileNames)
-                AllModNews.Add(GetContentFromRes(file));
-
-            AnnouncementPopUp.UpdateState = AnnouncementPopUp.AnnounceState.NotStarted;
-        }
-
-        __result = Effects.Sequence(GetEnumerator().WrapToIl2Cpp(), __result);
-    }
-
-    public static ModNews GetContentFromRes(string path)
-    {
-        ModNews mn = new();
-        var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
-        stream.Position = 0;
-        using StreamReader reader = new(stream, Encoding.UTF8);
-        string text = "";
-        uint langId = (uint)DataManager.Settings.Language.CurrentLanguage;
-        //uint langId = (uint)SupportedLangs.SChinese;
-        while (!reader.EndOfStream)
-        {
-            string line = reader.ReadLine();
-            if (line.StartsWith("#Number:")) mn.Number = int.Parse(line.Replace("#Number:", string.Empty));
-            else if (line.StartsWith("#LangId:")) langId = uint.Parse(line.Replace("#LangId:", string.Empty));
-            else if (line.StartsWith("#Title:")) mn.Title = line.Replace("#Title:", string.Empty);
-            else if (line.StartsWith("#SubTitle:")) mn.SubTitle = line.Replace("#SubTitle:", string.Empty);
-            else if (line.StartsWith("#ShortTitle:")) mn.ShortTitle = line.Replace("#ShortTitle:", string.Empty);
-            else if (line.StartsWith("#Date:")) mn.Date = line.Replace("#Date:", string.Empty);
-            else if (line.StartsWith("#---")) continue;
-            else
-            {
-                if (line.StartsWith("## ")) line = line.Replace("## ", "<b>") + "</b>";
-                else if (line.StartsWith("- ")) line = line.Replace("- ", "・");
-                text += $"\n{line}";
-            }
-        }
-        mn.Lang = langId;
-        mn.Text = text;
-        Logger.Info($"Number:{mn.Number}", "ModNews");
-        Logger.Info($"Title:{mn.Title}", "ModNews");
-        Logger.Info($"SubTitle:{mn.SubTitle}", "ModNews");
-        Logger.Info($"ShortTitle:{mn.ShortTitle}", "ModNews");
-        Logger.Info($"Date:{mn.Date}", "ModNews");
-        return mn;
-    }
-
-    [HarmonyPatch(typeof(PlayerAnnouncementData), nameof(PlayerAnnouncementData.SetAnnouncements)), HarmonyPrefix]
-    public static bool SetModAnnouncements(PlayerAnnouncementData __instance, [HarmonyArgument(0)] Il2CppReferenceArray<Announcement> aRange)
-    {
-        List<Announcement> list = new();
-        foreach (var a in aRange) list.Add(a);
-        foreach (var m in AllModNews) list.Add(m.ToAnnouncement());
-        list.Sort((a1, a2) => { return DateTime.Compare(DateTime.Parse(a2.Date), DateTime.Parse(a1.Date)); });
-
-        __instance.allAnnouncements = new Il2CppSystem.Collections.Generic.List<Announcement>();
-        foreach (var a in list) __instance.allAnnouncements.Add(a);
-
-
-        __instance.HandleChange();
-        __instance.OnAddAnnouncement?.Invoke();
-
-        return false;
     }
 }
