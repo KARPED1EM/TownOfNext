@@ -29,8 +29,10 @@ public class ModUpdater
     public static string downloadUrl = null;
     public static string md5 = null;
     public static string notice = null;
-    public static GenericPopup InfoPopup;
     public static int visit = 0;
+    public static GenericPopup InfoPopup;
+    public static GameObject PopupButton;
+    public static Task updateTask;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     [HarmonyPriority(2)]
@@ -41,7 +43,11 @@ public class ModUpdater
         InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
         InfoPopup.name = "TOHE Info Popup";
         InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
-        InfoPopup.gameObject.transform.FindChild("Background").transform.localScale *= 2f;
+        PopupButton = InfoPopup.transform.FindChild("ExitGame").gameObject;
+        PopupButton.name = "Action Button";
+        PopupButton.transform.localPosition -= new Vector3(0f, 0.3f, 0f);
+        PopupButton.transform.localScale *= 0.85f;
+        InfoPopup.gameObject.transform.FindChild("Background").transform.localScale *= 1.4f;
         if (!isChecked)
         {
             bool done;
@@ -249,9 +255,8 @@ public class ModUpdater
     }
     public static void StartUpdate(string url)
     {
-        ShowPopup(GetString("updatePleaseWait"), GetString(StringNames.Cancel));
-        _ = DownloadDLL(url);
-        return;
+        ShowPopup(GetString("updatePleaseWait"));
+        updateTask = DownloadDLL(url);
     }
     public static bool NewVersionCheck()
     {
@@ -311,53 +316,76 @@ public class ModUpdater
     private static readonly object downloadLock = new();
     public static async Task<bool> DownloadDLL(string url)
     {
+        var savePath = "BepInEx/plugins/TOHE.dll.temp";
+        File.Delete(savePath);
+
+        HttpClient client = new HttpClient();
+        HttpResponseMessage response = await client.GetAsync(url);
         try
         {
-            var savePath = "BepInEx/plugins/TOHE.dll.temp";
-            File.Delete(savePath);
-
-#pragma warning disable SYSLIB0014
-            using WebClient client = new();
-#pragma warning restore SYSLIB0014
-
-            client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(DownloadCallBack);
-            client.DownloadFileAsync(new Uri(url), savePath);
-            while (client.IsBusy) await Task.Delay(1);
-
-            if (GetMD5HashFromFile(savePath) != md5)
+            response.EnsureSuccessStatusCode();
+        }
+        catch (HttpRequestException ex)
+        {
+            switch (ex.StatusCode)
             {
-                File.Delete(savePath);
-                ShowPopup(GetString("downloadFailed"), GetString(StringNames.Okay));
-                MainMenuManagerPatch.UpdateButton.SetActive(true);
-                MainMenuManagerPatch.PlayButton.SetActive(false);
+                case HttpStatusCode.NotFound:
+                    ShowPopup(GetString("HttpNotFound"));
+                    break;
+                case HttpStatusCode.Forbidden:
+                    ShowPopup(GetString("HttpForbidden"));
+                    break;
+                default:
+                    ShowPopup(ex.Message);
+                    break;
             }
-            else
+            return false;
+        }
+
+        try
+        {
+            var fileSize = response.Content.Headers.ContentLength.Value;
+            var stream = await response.Content.ReadAsStreamAsync();
+            using (var fileStream = File.Create(savePath))
+            using (stream)
             {
-                var fileName = Assembly.GetExecutingAssembly().Location;
-                File.Move(fileName, fileName + ".bak");
-                File.Move("BepInEx/plugins/TOHE.dll.temp", fileName);
-                ShowPopup(GetString("updateRestart"), "ExitGame", Application.Quit);
+                byte[] buffer = new byte[1024];
+                var readLength = 0;
+                int length;
+                long lastUpdateTime = 0;
+                while ((length = await stream.ReadAsync(buffer)) != 0)
+                {
+                    readLength += length;
+                    int progress = (int)((double)readLength / fileSize * 100);
+                    if (lastUpdateTime != Utils.GetTimeStamp())
+                        ShowPopup($"<size=150%>{GetString("updateInProgress")}\n{readLength}/{fileSize}\n({progress}%)");
+                    lastUpdateTime = Utils.GetTimeStamp();
+                    fileStream.Write(buffer, 0, length);
+                }
             }
         }
         catch (Exception ex)
         {
             Logger.Error($"更新失败\n{ex}", "DownloadDLL", false);
-            ShowPopup(GetString("updateManually"), "ExitGame", Application.Quit);
+            ShowPopup(GetString("updateManually"), GetString(StringNames.ExitGame), Application.Quit);
             return false;
         }
+
+        if (GetMD5HashFromFile(savePath) != md5)
+        {
+            File.Delete(savePath);
+            ShowPopup(GetString("downloadFailed"), GetString(StringNames.Okay));
+            MainMenuManagerPatch.UpdateButton.SetActive(true);
+            MainMenuManagerPatch.PlayButton.SetActive(false);
+        }
+        else
+        {
+            var fileName = Assembly.GetExecutingAssembly().Location;
+            File.Move(fileName, fileName + ".bak");
+            File.Move("BepInEx/plugins/TOHE.dll.temp", fileName);
+            ShowPopup(GetString("updateRestart"), GetString(StringNames.ExitGame), Application.Quit);
+        }
         return true;
-    }
-    private static void DownloadCallBack(object sender, DownloadProgressChangedEventArgs e)
-    {
-        try
-        {
-            ShowPopup($"{GetString("updateInProgress")}\n{e.BytesReceived}/{e.TotalBytesToReceive}({e.ProgressPercentage}%)", GetString("Cancel"));
-        }
-        catch (Exception ex)
-        {
-            Logger.Exception(ex, "DownloadDLL");
-            throw;
-        }
     }
     public static string GetMD5HashFromFile(string fileName)
     {
@@ -369,28 +397,26 @@ public class ModUpdater
             file.Close();
 
             StringBuilder sb = new();
-            for (int i = 0; i < retVal.Length; i++)
-            {
-                sb.Append(retVal[i].ToString("x2"));
-            }
+            for (int i = 0; i < retVal.Length; i++) sb.Append(retVal[i].ToString("x2"));
             return sb.ToString();
         }
         catch (Exception ex)
         {
-            throw new Exception("GetMD5HashFromFile() fail,error:" + ex.Message);
+            Logger.Exception(ex, "GetMD5HashFromFile");
+            return "";
         }
     }
     private static void ShowPopup(string message, string buttonText = null, Action buttonAction = null)
     {
         if (InfoPopup == null) return;
         InfoPopup.Show(message);
-        var button = InfoPopup.transform.FindChild("ExitGame");
-        if (button == null) return;
-        button.gameObject.SetActive(buttonText != null);
-        button.GetChild(0).gameObject.DestroyTranslator();
-        //button.GetChild(0).GetComponent<TMPro>
-        button.GetComponent<PassiveButton>().OnClick = new();
-        button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => 
+        if (PopupButton == null) return;
+        PopupButton.gameObject.SetActive(buttonText != null);
+        PopupButton.transform.GetChild(0).gameObject.DestroyTranslator();
+        var tmp = PopupButton.transform.GetChild(0).GetComponent<TextMeshPro>();
+        tmp.SetText(buttonText);
+        PopupButton.GetComponent<PassiveButton>().OnClick = new();
+        PopupButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => 
         {
             InfoPopup.Close();
             buttonAction?.Invoke(); 
