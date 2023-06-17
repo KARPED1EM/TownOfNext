@@ -17,6 +17,7 @@ public static class TemplateManager
     private static readonly string TEMPLATE_FILE_PATH = "./TOHE_DATA/template.txt";
     private static Dictionary<string, Func<string>> _replaceDictionary = new()
     {
+        ["HostName"] = () => PlayerControl.LocalPlayer.GetRealName(),
         ["RoomCode"] = () => InnerNet.GameCode.IntToGameName(AmongUsClient.Instance.GameId),
         ["PlayerName"] = () => DataManager.Player.Customization.Name,
         ["AmongUsVersion"] = () => UnityEngine.Application.version,
