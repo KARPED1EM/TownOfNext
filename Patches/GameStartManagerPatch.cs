@@ -152,6 +152,7 @@ public class GameStartManagerPatch
                     warningMessage = Utils.ColorString(Color.red, string.Format(GetString("Warning.MismatchedVersion"), string.Join(" ", mismatchedPlayerNameList), $"<color={Main.ModColor}>{Main.ModName}</color>"));
                 }
                 cancelButton.gameObject.SetActive(__instance.startState == GameStartManager.StartingStates.Countdown);
+                __instance.StartButton.gameObject.SetActive(!cancelButton.gameObject.active);
             }
             else
             {
