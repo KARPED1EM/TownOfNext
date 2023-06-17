@@ -33,8 +33,8 @@ static class PlayerOutfitExtension
 }
 public static class Camouflage
 {
-    static GameData.PlayerOutfit CamouflageOutfit_Default = new GameData.PlayerOutfit().Set("", 15, "", "", "", "");
-    static GameData.PlayerOutfit CamouflageOutfit_KPD = new GameData.PlayerOutfit().Set("", 13, "hat_pk05_Plant", "", "visor_BubbleBumVisor", "");
+    public static GameData.PlayerOutfit CamouflageOutfit_Default = new GameData.PlayerOutfit().Set("", 15, "", "", "", "");
+    public static GameData.PlayerOutfit CamouflageOutfit_KPD = new GameData.PlayerOutfit().Set("", 13, "hat_pk05_Plant", "", "visor_BubbleBumVisor", "");
 
     public static bool IsCamouflage;
     public static Dictionary<byte, GameData.PlayerOutfit> PlayerSkins = new();

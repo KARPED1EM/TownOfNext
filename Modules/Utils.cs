@@ -409,7 +409,7 @@ public static class Utils
     public static Color GetRoleTeamColor(CustomRoles role)
         => role.IsValid()
         ? GetCustomRoleTypeColor(role.GetCustomRoleTypes())
-        : new Color(255,255, 255);
+        : new Color32(255,255, 255, byte.MaxValue);
     public static string GetRoleTeamColorCode(CustomRoles role)
         => role.IsValid()
         ? GetCustomRoleTypeColorCode(role.GetCustomRoleTypes())
@@ -418,11 +418,11 @@ public static class Utils
     {
         return type switch
         {
-            CustomRoleTypes.Crewmate => new Color(140, 255, 255),
-            CustomRoleTypes.Impostor => new Color(255, 25, 25),
-            CustomRoleTypes.Neutral => new Color(255, 171, 27),
-            CustomRoleTypes.Addon => new Color(255, 154, 206),
-            _ => new Color(255, 255, 255)
+            CustomRoleTypes.Crewmate => new Color32(140, 255, 255, byte.MaxValue),
+            CustomRoleTypes.Impostor => new Color32(255, 25, 25, byte.MaxValue),
+            CustomRoleTypes.Neutral => new Color32(255, 171, 27, byte.MaxValue),
+            CustomRoleTypes.Addon => new Color32(255, 154, 206, byte.MaxValue),
+            _ => new Color(1, 1, 1)
         };
     }
     public static string GetCustomRoleTypeColorCode(CustomRoleTypes type)
@@ -450,7 +450,7 @@ public static class Utils
         {
             var KillerId = state.GetRealKiller();
             Color color = KillerId != byte.MaxValue ? Main.PlayerColors[KillerId] : GetRoleColor(CustomRoles.Doctor);
-            if (state.DeathReason is CustomDeathReason.Disconnected or CustomDeathReason.Vote) color = new Color(255, 255, 255, 50);
+            if (state.DeathReason is CustomDeathReason.Disconnected or CustomDeathReason.Vote) color = new Color32(255, 255, 255, 60);
             deathReason = ColorString(color, deathReason);
         }
         return deathReason;
