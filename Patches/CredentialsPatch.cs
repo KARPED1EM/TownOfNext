@@ -127,7 +127,7 @@ internal class TitleLogoPatch
         RightPanelOp = RightPanel.transform.localPosition;
         RightPanel.transform.localPosition = RightPanelOp + new Vector3(10f, 0f, 0f);
 
-        if ((Tint = GameObject.Find("Tint")) == null) return;
+        Tint = __instance.screenTint.gameObject;
         var ttap = Tint.GetComponent<AspectPosition>();
         if (ttap != null) Object.Destroy(ttap);
         Tint.transform.SetParent(RightPanel.transform);
@@ -136,22 +136,17 @@ internal class TitleLogoPatch
 
         if (!DebugModeManager.AmDebugger)
         {
-            var scaler = RightPanel.transform.FindChild("MaskedBlackScreen").FindChild("GameModeButtons").FindChild("AspectSize").FindChild("Scaler");
-            scaler.FindChild("FreePlayButton")?.gameObject.SetActive(false);
-            scaler.FindChild("HowToPlayButton")?.gameObject.SetActive(false);
+            __instance.howToPlayButton.gameObject.SetActive(false);
+            __instance.gameModeButtons.transform.FindChild("AspectSize").FindChild("Scaler").FindChild("FreePlayButton")?.gameObject.SetActive(false);
         }
 
-        var creditsSizer = GameObject.Find("CreditsSizer");
-        if (creditsSizer != null)
+        var creditsScreen = __instance.creditsScreen;
+        if (creditsScreen != null)
         {
-            var creditsScreen = creditsSizer.transform.FindChild("CreditsScreen");
-            if (creditsScreen != null)
-            {
-                var csto = creditsScreen.GetComponent<TransitionOpen>();
-                if (csto != null) Object.Destroy(csto);
-                var closeButton = creditsScreen.transform.FindChild("CloseButton");
-                closeButton?.gameObject.SetActive(false);
-            }
+            var csto = creditsScreen.GetComponent<TransitionOpen>();
+            if (csto != null) Object.Destroy(csto);
+            var closeButton = creditsScreen.transform.FindChild("CloseButton");
+            closeButton?.gameObject.SetActive(false);
         }
 
         if ((Sizer = GameObject.Find("Sizer")) == null) return;
