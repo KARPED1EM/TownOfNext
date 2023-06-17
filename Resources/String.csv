@@ -938,6 +938,7 @@
 "CannotUnloadDuringGame","游戏中不能切换为原版","","","",""
 "Cancel","取消","","","",""
 "Unload","切换","","","",""
+"ExitGame","退出游戏","","","",""
 "DumpLog","输出日志","","","",""
 "UnlockFPS","解锁帧数限制","Unlock FPS","Убрать ограничение FPS","解鎖FPS限制","解锁帧数限制"
 "ForceOwnLanguage","强制模组使用您的语言","Force mod to use your language if possible","Использовать ваш язык если возможно","強制模組使用您的語言","强制模组使用您的语言"

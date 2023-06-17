@@ -39,8 +39,9 @@ public class ModUpdater
         NewVersionCheck();
         DeleteOldFiles();
         InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
-        InfoPopup.name = "InfoPopup";
+        InfoPopup.name = "TOHE Info Popup";
         InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
+        InfoPopup.gameObject.transform.FindChild("Background").transform.localScale *= 2f;
         if (!isChecked)
         {
             bool done;
@@ -124,7 +125,7 @@ public class ModUpdater
             else notice = notices[1];
             md5 = data[2];
             visit = int.TryParse(data[3], out int x) ? x : 0;
-            visit += 26820 + 99280; //旧版本数据
+            visit += 216822; //旧版本数据
             var create = 1;
             if (int.TryParse(data[0], out int ct) && ct < 1000) create = ct;
             if (create > Main.PluginCreate)
@@ -136,7 +137,8 @@ public class ModUpdater
             if (!Main.AlreadyShowMsgBox || create == 0)
             {
                 Main.AlreadyShowMsgBox = true;
-                ShowPopup(notice, create == 0 ? StringNames.ExitGame : StringNames.Okay, true, create == 0);
+                if (create == 0) ShowPopup(notice, GetString(StringNames.ExitGame), Application.Quit);
+                else ShowPopup(notice, GetString(StringNames.Okay));
             }
 
             Logger.Info("hasupdate: " + info[0], "2018k");
@@ -247,7 +249,7 @@ public class ModUpdater
     }
     public static void StartUpdate(string url)
     {
-        ShowPopup(GetString("updatePleaseWait"), StringNames.Cancel, true, false);
+        ShowPopup(GetString("updatePleaseWait"), GetString(StringNames.Cancel));
         _ = DownloadDLL(url);
         return;
     }
@@ -325,7 +327,7 @@ public class ModUpdater
             if (GetMD5HashFromFile(savePath) != md5)
             {
                 File.Delete(savePath);
-                ShowPopup(GetString("downloadFailed"), StringNames.Okay, true, false);
+                ShowPopup(GetString("downloadFailed"), GetString(StringNames.Okay));
                 MainMenuManagerPatch.UpdateButton.SetActive(true);
                 MainMenuManagerPatch.PlayButton.SetActive(false);
             }
@@ -334,13 +336,13 @@ public class ModUpdater
                 var fileName = Assembly.GetExecutingAssembly().Location;
                 File.Move(fileName, fileName + ".bak");
                 File.Move("BepInEx/plugins/TOHE.dll.temp", fileName);
-                ShowPopup(GetString("updateRestart"), StringNames.ExitGame, true, true);
+                ShowPopup(GetString("updateRestart"), "ExitGame", Application.Quit);
             }
         }
         catch (Exception ex)
         {
             Logger.Error($"更新失败\n{ex}", "DownloadDLL", false);
-            ShowPopup(GetString("updateManually"), StringNames.ExitGame, true, true);
+            ShowPopup(GetString("updateManually"), "ExitGame", Application.Quit);
             return false;
         }
         return true;
@@ -349,7 +351,7 @@ public class ModUpdater
     {
         try
         {
-            ShowPopup($"{GetString("updateInProgress")}\n{e.BytesReceived}/{e.TotalBytesToReceive}({e.ProgressPercentage}%)", StringNames.Cancel);
+            ShowPopup($"{GetString("updateInProgress")}\n{e.BytesReceived}/{e.TotalBytesToReceive}({e.ProgressPercentage}%)", GetString("Cancel"));
         }
         catch (Exception ex)
         {
@@ -378,24 +380,20 @@ public class ModUpdater
             throw new Exception("GetMD5HashFromFile() fail,error:" + ex.Message);
         }
     }
-    private static void DownloadCallBack(long total, long downloaded, double progress)
+    private static void ShowPopup(string message, string buttonText = null, Action buttonAction = null)
     {
-        ShowPopup($"{GetString("updateInProgress")}\n{downloaded}/{total}({progress}%)", StringNames.Cancel, true, false);
-    }
-    private static void ShowPopup(string message, StringNames buttonText, bool showButton = false, bool buttonIsExit = true)
-    {
-        if (InfoPopup != null)
+        if (InfoPopup == null) return;
+        InfoPopup.Show(message);
+        var button = InfoPopup.transform.FindChild("ExitGame");
+        if (button == null) return;
+        button.gameObject.SetActive(buttonText != null);
+        button.GetChild(0).gameObject.DestroyTranslator();
+        //button.GetChild(0).GetComponent<TMPro>
+        button.GetComponent<PassiveButton>().OnClick = new();
+        button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => 
         {
-            InfoPopup.Show(message);
-            var button = InfoPopup.transform.FindChild("ExitGame");
-            if (button != null)
-            {
-                button.gameObject.SetActive(showButton);
-                button.GetChild(0).GetComponent<TextTranslatorTMP>().TargetText = buttonText;
-                button.GetComponent<PassiveButton>().OnClick = new();
-                if (buttonIsExit) button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => Application.Quit()));
-                else button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => InfoPopup.Close()));
-            }
-        }
+            InfoPopup.Close();
+            buttonAction?.Invoke(); 
+        }));
     }
 }
