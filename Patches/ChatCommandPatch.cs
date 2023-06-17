@@ -21,7 +21,7 @@ internal class ChatCommands
 
     public static bool Prefix(ChatController __instance)
     {
-        if (__instance.TextArea.text == "") return false;
+        if (__instance.TextArea.text.Trim() == "") return false;
         __instance.TimeSinceLastMessage = 3f;
         var text = __instance.TextArea.text;
         if (ChatHistory.Count == 0 || ChatHistory[^1] != text) ChatHistory.Add(text);
@@ -34,10 +34,18 @@ internal class ChatCommands
         Logger.Info(text, "SendChat");
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
         if (text.Length >= 4) if (text[..3] == "/up") args[0] = "/up";
-        if (CustomRoleManager.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId)?.OnSendMessage(text) ?? false) goto Canceled;
+        if (CustomRoleManager.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId)?.OnSendMessage(text) ?? false)
+        {
+            canceled = true;
+            goto End;
+        }
         foreach (var func in CustomRoleManager.ReceiveMessage)
         {
-            if (!func(PlayerControl.LocalPlayer, text)) goto Canceled;
+            if (!func(PlayerControl.LocalPlayer, text))
+            {
+                canceled = true;
+                goto End;
+            }
         }
         switch (args[0])
         {
@@ -223,13 +231,6 @@ internal class ChatCommands
                     else Utils.SendMessage($"{GetString("Message.MessageWaitHelp")}\n{GetString("ForExample")}:\n{args[0]} 3", 0);
                     break;
 
-                case "/say":
-                case "/s":
-                    canceled = true;
-                    if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#ff0000>{GetString("MessageFromTheHost")}</color>");
-                    break;
-
                 case "/exe":
                     canceled = true;
                     if (GameStates.IsLobby)
@@ -384,18 +385,31 @@ internal class ChatCommands
                     break;
             }
         }
-        goto Skip;
-    Canceled:
-        Main.isChatCommand = false;
-        canceled = true;
-    Skip:
+    End:
         if (canceled)
         {
-
             Logger.Info("Command Canceled", "ChatCommand");
             __instance.TextArea.Clear();
             __instance.TextArea.SetText(cancelVal);
             __instance.quickChatMenu.ResetGlyphs();
+        }
+        else if(SendTargetPatch.SendTarget != SendTargetPatch.SendTargets.Default)
+        {
+            switch (SendTargetPatch.SendTarget)
+            {
+                case SendTargetPatch.SendTargets.All:
+                    Utils.SendMessage(text, title: $"<color=#ff0000>{GetString("MessageFromTheHost")}</color>");
+                    break;
+                case SendTargetPatch.SendTargets.Dead:
+                    Main.AllPlayerControls.Where(p => p.AmOwner || !p.IsAlive()).Do(p =>
+                        Utils.SendMessage(text, p.PlayerId, $"<color=#ff0000>{GetString("MessageFromTheHost")}</color>")
+                        );
+                    break;
+            }
+            __instance.TextArea.Clear();
+            __instance.TextArea.SetText(cancelVal);
+            __instance.quickChatMenu.ResetGlyphs();
+            return false;
         }
         return !canceled;
     }
@@ -738,16 +752,8 @@ internal class ChatCommands
 
             case "/say":
             case "/s":
-                if (player.FriendCode.GetDevUser().IsDev)
-                {
-                    if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{GetString("MessageFromDev")}</color>");
-                }
-                else if (player.FriendCode.IsDevUser())
-                {
-                    if (args.Length > 1)
-                        Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color=#4bc9b0>{GetString("MessageFromSponsor")}</color>");
-                }
+                if (player.FriendCode.GetDevUser().IsDev && args.Length > 1)
+                    Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{GetString("MessageFromDev")}</color>");
                 break;
 
             default:
