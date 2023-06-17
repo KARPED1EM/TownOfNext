@@ -211,8 +211,6 @@ public static class GameStartManagerBeginGamePatch
 {
     public static bool Prefix(GameStartManager __instance)
     {
-        SelectRandomMap();
-
         var invalidColor = Main.AllPlayerControls.Where(p => p.Data.DefaultOutfit.ColorId < 0 || Palette.PlayerColors.Length <= p.Data.DefaultOutfit.ColorId);
         if (invalidColor.Count() != 0)
         {
@@ -222,6 +220,8 @@ public static class GameStartManagerBeginGamePatch
             Utils.SendMessage(msg);
             return false;
         }
+
+        SelectRandomMap();
 
         //TODO: FXIME
         //RoleAssignManager.CheckRoleCount();
