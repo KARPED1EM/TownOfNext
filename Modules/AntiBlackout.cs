@@ -6,7 +6,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using TOHE.Modules;
 using TOHE.Roles.Core;
-using TOHE.Roles.Neutral;
 
 namespace TOHE;
 

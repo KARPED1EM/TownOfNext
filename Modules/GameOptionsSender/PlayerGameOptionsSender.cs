@@ -3,11 +3,9 @@ using Hazel;
 using Il2CppSystem.Linq;
 using InnerNet;
 using System.Linq;
-using Mathf = UnityEngine.Mathf;
-
 using TOHE.Roles.Core;
-using TOHE.Roles.Neutral;
 using TOHE.Roles.Crewmate;
+using Mathf = UnityEngine.Mathf;
 
 namespace TOHE.Modules;
 
@@ -94,21 +92,21 @@ public class PlayerGameOptionsSender : GameOptionsSender
                     opt.SetBool(BoolOptionNames.AnonymousVotes, false);
                     break;
                     //TODO
-                //case CustomRoles.Flashman:
-                //    Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
-                //    break;
-                //case CustomRoles.Lighter:
-                //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
-                //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
-                //    break;
-                //case CustomRoles.Bewilder:
-                //    opt.SetVision(false);
-                //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
-                //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
-                //    break;
-                //case CustomRoles.Reach:
-                //    opt.SetInt(Int32OptionNames.KillDistance, 2);
-                //    break;
+                    //case CustomRoles.Flashman:
+                    //    Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
+                    //    break;
+                    //case CustomRoles.Lighter:
+                    //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
+                    //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
+                    //    break;
+                    //case CustomRoles.Bewilder:
+                    //    opt.SetVision(false);
+                    //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
+                    //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
+                    //    break;
+                    //case CustomRoles.Reach:
+                    //    opt.SetInt(Int32OptionNames.KillDistance, 2);
+                    //    break;
             }
         }
 

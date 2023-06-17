@@ -1,21 +1,19 @@
+using AmongUs.GameOptions;
+using HarmonyLib;
+using Hazel;
+using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AmongUs.GameOptions;
-using Hazel;
-using InnerNet;
-using UnityEngine;
-using HarmonyLib;
-
 using TOHE.Modules;
+using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
-using TOHE.Roles.AddOns.Impostor;
+using UnityEngine;
 using static TOHE.Translator;
-using static UnityEngine.GraphicsBuffer;
 
 namespace TOHE;
 
@@ -346,7 +344,7 @@ static class ExtendedPlayerControl
         var sb = new StringBuilder();
         foreach (var role in SubRoles)
         {
-            if (role is CustomRoles.NotAssigned ) continue;
+            if (role is CustomRoles.NotAssigned) continue;
             sb.Append($"{Utils.ColorString(Color.white, " + ")}{Utils.GetRoleName(role, forUser)}");
         }
 

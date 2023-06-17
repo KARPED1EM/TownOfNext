@@ -26,37 +26,37 @@ internal class ShowDisconnectPopupPatch
             {
                 if (ReasonByHost != string.Empty) __instance.SetText(string.Format(GetString("DCNotify.Describtion"), ReasonByHost));
                 else switch (Reason)
-                {
-                    case DisconnectReasons.Hacking:
-                        __instance.SetText(GetString("DCNotify.Hacking"));
-                        break;
-                    case DisconnectReasons.Banned:
-                        __instance.SetText(GetString("DCNotify.Banned"));
-                        break;
-                    case DisconnectReasons.Kicked:
-                        __instance.SetText(GetString("DCNotify.Kicked"));
-                        break;
-                    case DisconnectReasons.GameNotFound:
-                        __instance.SetText(GetString("DCNotify.GameNotFound"));
-                        break;
-                    case DisconnectReasons.GameStarted:
-                        __instance.SetText(GetString("DCNotify.GameStarted"));
-                        break;
-                    case DisconnectReasons.GameFull:
-                        __instance.SetText(GetString("DCNotify.GameFull"));
-                        break;
-                    case DisconnectReasons.IncorrectVersion:
-                        __instance.SetText(GetString("DCNotify.IncorrectVersion"));
-                        break;
-                    case DisconnectReasons.Error:
-                        //if (StringReason.Contains("Couldn't find self")) __instance.SetText(GetString("DCNotify.DCFromServer"));
-                        if (StringReason.Contains("Failed to send message")) __instance.SetText(GetString("DCNotify.DCFromServer"));
-                        break;
-                    case DisconnectReasons.Custom:
-                        if (StringReason.Contains("Reliable packet")) __instance.SetText(GetString("DCNotify.DCFromServer"));
-                        else if (StringReason.Contains("remote has not responded to")) __instance.SetText(GetString("DCNotify.DCFromServer"));
-                        break;
-                }
+                    {
+                        case DisconnectReasons.Hacking:
+                            __instance.SetText(GetString("DCNotify.Hacking"));
+                            break;
+                        case DisconnectReasons.Banned:
+                            __instance.SetText(GetString("DCNotify.Banned"));
+                            break;
+                        case DisconnectReasons.Kicked:
+                            __instance.SetText(GetString("DCNotify.Kicked"));
+                            break;
+                        case DisconnectReasons.GameNotFound:
+                            __instance.SetText(GetString("DCNotify.GameNotFound"));
+                            break;
+                        case DisconnectReasons.GameStarted:
+                            __instance.SetText(GetString("DCNotify.GameStarted"));
+                            break;
+                        case DisconnectReasons.GameFull:
+                            __instance.SetText(GetString("DCNotify.GameFull"));
+                            break;
+                        case DisconnectReasons.IncorrectVersion:
+                            __instance.SetText(GetString("DCNotify.IncorrectVersion"));
+                            break;
+                        case DisconnectReasons.Error:
+                            //if (StringReason.Contains("Couldn't find self")) __instance.SetText(GetString("DCNotify.DCFromServer"));
+                            if (StringReason.Contains("Failed to send message")) __instance.SetText(GetString("DCNotify.DCFromServer"));
+                            break;
+                        case DisconnectReasons.Custom:
+                            if (StringReason.Contains("Reliable packet")) __instance.SetText(GetString("DCNotify.DCFromServer"));
+                            else if (StringReason.Contains("remote has not responded to")) __instance.SetText(GetString("DCNotify.DCFromServer"));
+                            break;
+                    }
             }
         }, 0.01f, "Override Disconnect Text");
     }

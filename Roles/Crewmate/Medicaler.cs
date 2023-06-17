@@ -3,11 +3,10 @@ using HarmonyLib;
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-
 using TOHE.Modules;
-using TOHE.Roles.Core.Interfaces;
 using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
 public sealed class Medicaler : RoleBase, IKiller
@@ -96,7 +95,7 @@ public sealed class Medicaler : RoleBase, IKiller
             ProtectList.Add(reader.ReadByte());
     }
     public bool OverrideKillButtonText(out string text)
-    { 
+    {
         text = Translator.GetString("MedicalerButtonText");
         return true;
     }

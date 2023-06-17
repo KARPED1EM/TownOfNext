@@ -1,11 +1,10 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
+using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
 using Il2CppSystem.Text;
-
-using AmongUs.GameOptions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Core;
@@ -54,10 +53,10 @@ public static class CustomRoleManager
 
         // 其他职业类对击杀事件的事先检查
         if (killerRole is not IKiller killerCheck || killerCheck.IsKiller)
-        foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
-        {
-            if (!onCheckMurderPlayer(info)) return;
-        }
+            foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
+            {
+                if (!onCheckMurderPlayer(info)) return;
+            }
 
         // キラーがキル能力持ちなら
         if (killerRole is IKiller killer)

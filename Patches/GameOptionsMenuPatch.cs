@@ -92,7 +92,7 @@ public static class GameOptionsMenuPatch
             var scOptions = new List<OptionBehaviour>();
             foreach (var option in OptionItem.AllOptions)
             {
-                if (option.Tab != (TabGroup)tab) continue;
+                if (option.Tab != tab) continue;
                 if (option.OptionBehaviour == null)
                 {
                     float yoffset = option.IsText ? 100f : 0f;

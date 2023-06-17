@@ -1,5 +1,4 @@
 using AmongUs.GameOptions;
-using Hazel;
 
 using TOHE.Modules;
 using TOHE.Roles.Core;
@@ -64,7 +63,7 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
 
         msg = msg.Trim().ToLower();
         if (msg.Length < 3 || msg[..3] != "/rv") return false;
-        
+
 
         if (msg == "/rv")
         {

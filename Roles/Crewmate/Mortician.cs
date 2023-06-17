@@ -1,9 +1,8 @@
 ﻿using AmongUs.GameOptions;
-using UnityEngine;
 using Hazel;
 using System.Collections.Generic;
-
 using TOHE.Roles.Core;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Crewmate;
@@ -86,7 +85,7 @@ public sealed class Mortician : RoleBase
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)
     {
-        if (MsgToSend !=null)
+        if (MsgToSend != null)
             msgToSend.Add((MsgToSend, Player.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("MorticianCheckTitle"))));
         MsgToSend = null;
     }

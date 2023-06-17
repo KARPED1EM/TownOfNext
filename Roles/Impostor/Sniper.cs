@@ -1,13 +1,12 @@
+using AmongUs.GameOptions;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using Hazel;
-using UnityEngine;
-using AmongUs.GameOptions;
-
+using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
-using TOHE.Modules;
 
 namespace TOHE.Roles.Impostor;
 public sealed class Sniper : RoleBase, IImpostor
@@ -340,7 +339,7 @@ public sealed class Sniper : RoleBase, IImpostor
     }
     public override bool OverrideAbilityButtonText(out string text)
     {
-        text =  GetString(BulletCount <= 0 ? "DefaultShapeshiftText" : "SniperSnipeButtonText");
+        text = GetString(BulletCount <= 0 ? "DefaultShapeshiftText" : "SniperSnipeButtonText");
         return true;
     }
 }

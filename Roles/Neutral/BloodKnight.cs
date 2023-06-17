@@ -1,8 +1,7 @@
 using AmongUs.GameOptions;
 using Hazel;
-
-using TOHE.Roles.Core.Interfaces;
 using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Neutral;

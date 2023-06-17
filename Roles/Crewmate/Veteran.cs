@@ -54,7 +54,7 @@ public sealed class Veteran : RoleBase
     }
     public override void ApplyGameOptions(IGameOptions opt)
     {
-        AURoleOptions.EngineerCooldown = 
+        AURoleOptions.EngineerCooldown =
             SkillLimit <= 0
             ? 255f
             : OptionSkillCooldown.GetFloat();

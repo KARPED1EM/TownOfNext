@@ -41,10 +41,10 @@ public static class UpdateFriendCodeUIPatch
         }
 
         var newRequest = GameObject.Find("NewRequest");
-        if (newRequest != null )
+        if (newRequest != null)
         {
             newRequest.transform.localPosition -= new Vector3(0f, 0f, 10f);
-            newRequest.transform.localScale = new Vector3 (0.8f, 1f, 1f);
+            newRequest.transform.localScale = new Vector3(0.8f, 1f, 1f);
         }
     }
 }

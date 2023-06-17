@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
-
 using TOHE.Roles.Core;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;

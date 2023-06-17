@@ -41,7 +41,7 @@ public sealed class Mediumshiper : RoleBase
     private byte ContactPlayer;
     private static void SetupOptionItem()
     {
-        OptionContactNums = IntegerOptionItem.Create(RoleInfo, 10, OptionName.MediumshiperContactLimit, new(1, 15, 1), 15,false)
+        OptionContactNums = IntegerOptionItem.Create(RoleInfo, 10, OptionName.MediumshiperContactLimit, new(1, 15, 1), 15, false)
             .SetValueFormat(OptionFormat.Times);
         OptionOnlyReceiveMsgFromCrew = BooleanOptionItem.Create(RoleInfo, 11, OptionName.MediumshiperOnlyReceiveMsgFromCrew, true, false);
     }
@@ -57,7 +57,7 @@ public sealed class Mediumshiper : RoleBase
 
         ContactLimit--;
         ContactPlayer = target.PlayerId;
-        
+
         Logger.Info($"通灵师建立联系：{Player.GetNameWithRole()} => {target.PlayerName}", "Mediumshiper.OnReportDeadBody");
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)

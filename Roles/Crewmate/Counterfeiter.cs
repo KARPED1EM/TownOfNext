@@ -1,13 +1,12 @@
 ﻿using AmongUs.GameOptions;
+using HarmonyLib;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using Hazel;
-using HarmonyLib;
-using UnityEngine;
-
 using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
 public sealed class Counterfeiter : RoleBase, IKiller
@@ -86,7 +85,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
     {
         if (SellLimit < 1) return false;
         var (killer, target) = info.AttemptTuple;
-        
+
         if (Customers.ContainsKey(target.PlayerId))
         {
             killer.Notify(Translator.GetString("CounterfeiterRepeatSell"));
@@ -110,7 +109,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
     {
         var (killer, target) = info.AttemptTuple;
 
-        foreach(var deceiver in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Counterfeiter)))
+        foreach (var deceiver in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Counterfeiter)))
         {
             if (deceiver.GetRoleClass() is not Counterfeiter roleClass) continue;
             if (roleClass.Customers.TryGetValue(killer.PlayerId, out var x) && x)
@@ -128,7 +127,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
     {
         var keys = Customers.Keys;
         keys.Do(x => Customers[x] = true);
-       foreach (var pcId in Customers.Keys)
+        foreach (var pcId in Customers.Keys)
         {
             var target = Utils.GetPlayerById(pcId);
             if (target == null || !target.IsAlive()) continue;

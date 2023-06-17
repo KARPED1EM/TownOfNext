@@ -42,7 +42,7 @@ public sealed class Assassin : RoleBase, IImpostor
     {
         MarkCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.AssassinMarkCooldown, new(2.5f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        AssassinateCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.AssassinAssassinateCooldown, new(2.5f, 180f, 2.5f),10f, false)
+        AssassinateCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.AssassinAssassinateCooldown, new(2.5f, 180f, 2.5f), 10f, false)
             .SetValueFormat(OptionFormat.Seconds);
         CanKillAfterAssassinate = BooleanOptionItem.Create(RoleInfo, 12, OptionName.AssassinCanKillAfterAssassinate, true, false);
     }

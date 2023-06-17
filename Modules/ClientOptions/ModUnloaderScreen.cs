@@ -1,8 +1,8 @@
-using System;
 using HarmonyLib;
+using InnerNet;
+using System;
 using TMPro;
 using UnityEngine;
-using InnerNet;
 using Object = UnityEngine.Object;
 
 namespace TOHE.Modules.ClientOptions;

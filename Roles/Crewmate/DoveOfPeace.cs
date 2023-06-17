@@ -48,7 +48,7 @@ public sealed class DoveOfPeace : RoleBase
     public override void Add() => SkillLimit = OptionSkillNums.GetInt();
     public override void ApplyGameOptions(IGameOptions opt)
     {
-        AURoleOptions.EngineerCooldown = 
+        AURoleOptions.EngineerCooldown =
             SkillLimit <= 0
             ? 255f
             : OptionSkillCooldown.GetFloat();

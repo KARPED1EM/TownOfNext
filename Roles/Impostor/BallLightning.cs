@@ -1,13 +1,12 @@
 ﻿using AmongUs.GameOptions;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using HarmonyLib;
 using Hazel;
-
+using System.Collections.Generic;
+using System.Linq;
 using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TOHE.Roles.Impostor;
 public sealed class BallLightning : RoleBase, IImpostor
@@ -113,7 +112,7 @@ public sealed class BallLightning : RoleBase, IImpostor
     }
     public override void OnFixedUpdate(PlayerControl player)
     {
-        if (!AmongUsClient.Instance.AmHost)  return;
+        if (!AmongUsClient.Instance.AmHost) return;
         List<byte> deList = new();
         foreach (var ghost in Ghosts)
         {

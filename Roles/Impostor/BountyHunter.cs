@@ -1,11 +1,10 @@
+using AmongUs.GameOptions;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using Hazel;
-using UnityEngine;
-using AmongUs.GameOptions;
-
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Impostor;

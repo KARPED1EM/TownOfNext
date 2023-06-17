@@ -42,7 +42,7 @@ public sealed class Detective : RoleBase
     public override void OnReportDeadBody(PlayerControl reporter, GameData.PlayerInfo target)
     {
         var tpc = target.Object;
-        if (reporter == null || !Is(reporter) || target == null || tpc  == null  || reporter.PlayerId == target.PlayerId) return;
+        if (reporter == null || !Is(reporter) || target == null || tpc == null || reporter.PlayerId == target.PlayerId) return;
         {
             string msg;
             msg = string.Format(GetString("DetectiveNoticeVictim"), tpc.GetRealName(), tpc.GetTrueRoleName());

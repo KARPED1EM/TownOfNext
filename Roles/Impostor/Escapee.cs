@@ -1,10 +1,9 @@
 ﻿using AmongUs.GameOptions;
-using UnityEngine;
 using Hazel;
-
 using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TOHE.Roles.Impostor;
 public sealed class Escapee : RoleBase, IImpostor

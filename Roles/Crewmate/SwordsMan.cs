@@ -1,9 +1,8 @@
 ﻿using AmongUs.GameOptions;
 using Hazel;
-using UnityEngine;
-
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
 public sealed class SwordsMan : RoleBase, IKiller

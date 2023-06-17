@@ -3,7 +3,6 @@ using InnerNet;
 using System.Linq;
 using TOHE.Modules;
 using UnityEngine;
-using static Il2CppSystem.Globalization.CultureInfo;
 using static TOHE.Translator;
 
 namespace TOHE;

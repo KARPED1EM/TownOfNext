@@ -1,9 +1,8 @@
+using AmongUs.GameOptions;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using AmongUs.GameOptions;
-
 using TOHE.Roles.Core;
+using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
 public class Snitch : RoleBase

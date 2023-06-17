@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using TMPro;
-using UnityEngine;
-
 using TOHE.Modules;
 using TOHE.Roles.Core;
-using TOHE.Roles.Impostor;
-using static TOHE.Translator;
 using TOHE.Roles.Crewmate;
+using TOHE.Roles.Impostor;
+using UnityEngine;
+using static TOHE.Translator;
 
 namespace TOHE;
 public static class GuesserHelper
@@ -124,7 +123,7 @@ public static class GuesserHelper
         }
         return true;
     }
-    public static bool Guess(PlayerControl guesser, PlayerControl target, CustomRoles role , out string reason, bool isUi = false)
+    public static bool Guess(PlayerControl guesser, PlayerControl target, CustomRoles role, out string reason, bool isUi = false)
     {
         reason = string.Empty;
 

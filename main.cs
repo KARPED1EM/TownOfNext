@@ -8,9 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
-
 using TOHE.Roles.Core;
+using UnityEngine;
 
 [assembly: AssemblyFileVersion(TOHE.Main.PluginVersion)]
 [assembly: AssemblyInformationalVersion(TOHE.Main.PluginVersion)]
@@ -65,7 +64,7 @@ public class Main : BasePlugin
     public static ConfigEntry<bool> EnableCustomSoundEffect { get; private set; }
     public static ConfigEntry<bool> VersionCheat { get; private set; }
     public static ConfigEntry<bool> GodMode { get; private set; }
-    
+
 
     public static Dictionary<byte, PlayerVersion> playerVersion = new();
     //Preset Name Options

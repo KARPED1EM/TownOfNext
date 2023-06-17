@@ -1,10 +1,9 @@
-using System;
 using AmongUs.GameOptions;
-
+using System;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
-using TOHE.Roles.Impostor;
 using TOHE.Roles.Crewmate;
+using TOHE.Roles.Impostor;
 
 namespace TOHE.Modules;
 

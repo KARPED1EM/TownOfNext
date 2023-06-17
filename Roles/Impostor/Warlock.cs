@@ -1,13 +1,11 @@
+using AmongUs.GameOptions;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using Hazel;
-
-using AmongUs.GameOptions;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
-using TOHE.Modules;
 
 namespace TOHE.Roles.Impostor;
 public sealed class Warlock : RoleBase, IImpostor
@@ -149,7 +147,7 @@ public sealed class Warlock : RoleBase, IImpostor
                     }
 
                     Logger.Info($"{killTarget.GetNameWithRole()} 被操控击杀", "Warlock.OnShapeshift");
-                    
+
                 }
                 else
                 {

@@ -111,7 +111,7 @@ public static class TemplateManager
             else Utils.SendMessage(string.Format(GetString("Message.TemplateNotFoundClient"), str), playerId);
         }
         else for (int i = 0; i < sendList.Count; i++)
-        {
+            {
                 if (str == "welcome" && playerId != 0xff)
                 {
                     var player = Utils.GetPlayerById(playerId);
@@ -119,7 +119,7 @@ public static class TemplateManager
                     Utils.SendMessage(ApplyReplaceDictionary(sendList[i]), playerId, string.Format($"<color=#aaaaff>{GetString("OnPlayerJoinMsgTitle")}</color>", Utils.ColorString(Palette.PlayerColors.Length > player.cosmetics.ColorId ? Palette.PlayerColors[player.cosmetics.ColorId] : UnityEngine.Color.white, player.GetRealName())));
                 }
                 else Utils.SendMessage(ApplyReplaceDictionary(sendList[i]), playerId);
-        }
+            }
     }
 
     private static string ApplyReplaceDictionary(string text)

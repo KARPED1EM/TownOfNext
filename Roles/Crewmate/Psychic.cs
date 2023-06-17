@@ -102,6 +102,6 @@ public sealed class Psychic : RoleBase
 
         NameColorManager.RemoveAll(Player.PlayerId);
         RedNames.Do(id => NameColorManager.Add(Player.PlayerId, id, "#ff1919"));
-        
+
     }
 }

@@ -74,7 +74,7 @@ public sealed class Jackal : RoleBase, IKiller
     public static void OnMurderPlayerOthers(MurderInfo info)
     {
         if (!ResetKillCooldown || info.IsSuicide || info.IsAccident) return;
-        foreach( var pc in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Jackal) && x.PlayerId != info.AttemptKiller.PlayerId))
+        foreach (var pc in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Jackal) && x.PlayerId != info.AttemptKiller.PlayerId))
         {
             pc.SetKillCooldownV2(0);
             RPC.PlaySoundRPC(pc.PlayerId, Sounds.ImpTransform);

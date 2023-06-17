@@ -67,7 +67,7 @@ public class MainMenuManagerPatch
     {
         int row = 1; int col = 0;
         GameObject CreatButton(string text, Action action)
-        { 
+        {
             col++; if (col > 2) { col = 1; row++; }
             var template = col == 1 ? __instance.creditsButton.gameObject : __instance.quitButton.gameObject;
             var button = Object.Instantiate(template, template.transform.parent);

@@ -1,9 +1,8 @@
 using AmongUs.GameOptions;
 using HarmonyLib;
 using System.Collections.Generic;
-
-using TOHE.Roles.Core;
 using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.Core;
 using TOHE.Roles.Impostor;
 
 namespace TOHE;

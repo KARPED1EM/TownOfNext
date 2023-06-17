@@ -3,9 +3,8 @@ using HarmonyLib;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
-
 using TOHE.Roles.Core;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;

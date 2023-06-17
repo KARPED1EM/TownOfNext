@@ -1,5 +1,5 @@
-using System;
 using BepInEx.Configuration;
+using System;
 using UnityEngine;
 
 namespace TOHE.Modules.ClientOptions;

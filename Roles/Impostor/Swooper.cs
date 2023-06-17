@@ -1,7 +1,6 @@
 ﻿using AmongUs.GameOptions;
-using System.Text;
 using Hazel;
-
+using System.Text;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using static TOHE.Translator;
@@ -160,7 +159,7 @@ public sealed class Swooper : RoleBase, IImpostor
         Utils.TP(killer.NetTransform, target.GetTruePosition());
         RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
         killer.SetKillCooldownV2();
-        
+
         target.SetRealKiller(killer);
         target.RpcMurderPlayerV2(target);
 

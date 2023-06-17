@@ -1,11 +1,10 @@
 using HarmonyLib;
-using UnityEngine;
-using System.Text;
 using System.Linq;
-
+using System.Text;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using TOHE.Roles.Neutral;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -70,7 +69,7 @@ class HudManagerPatch
                     __instance.ReportButton.OverrideText(reportLabel);
                     if (roleClass.HasAbility)
                     {
-                        if(roleClass.OverrideAbilityButtonText(out var abilityLabel))  __instance.AbilityButton.OverrideText(abilityLabel);
+                        if (roleClass.OverrideAbilityButtonText(out var abilityLabel)) __instance.AbilityButton.OverrideText(abilityLabel);
                         __instance.AbilityButton.ToggleVisible(roleClass.CanUseAbilityButton() && GameStates.IsInTask);
                     }
                 }
@@ -334,33 +333,33 @@ class TaskPanelBehaviourPatch
                     break;
 
                     //TODO: FIXME
-                //case CustomGameMode.SoloKombat:
+                    //case CustomGameMode.SoloKombat:
 
-                //    var lpc = PlayerControl.LocalPlayer;
+                    //    var lpc = PlayerControl.LocalPlayer;
 
-                //    AllText += "\r\n";
-                //    AllText += $"\r\n{GetString("PVP.ATK")}: {lpc.ATK()}";
-                //    AllText += $"\r\n{GetString("PVP.DF")}: {lpc.DF()}";
-                //    AllText += $"\r\n{GetString("PVP.RCO")}: {lpc.HPRECO()}";
-                //    AllText += "\r\n";
+                    //    AllText += "\r\n";
+                    //    AllText += $"\r\n{GetString("PVP.ATK")}: {lpc.ATK()}";
+                    //    AllText += $"\r\n{GetString("PVP.DF")}: {lpc.DF()}";
+                    //    AllText += $"\r\n{GetString("PVP.RCO")}: {lpc.HPRECO()}";
+                    //    AllText += "\r\n";
 
-                //    Dictionary<byte, string> SummaryText = new();
-                //    foreach (var id in PlayerState.AllPlayerStates.Keys)
-                //    {
-                //        string name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
-                //        string summary = $"{Utils.GetProgressText(id)}  {Utils.ColorString(Main.PlayerColors[id], name)}";
-                //        if (Utils.GetProgressText(id).Trim() == "") continue;
-                //        SummaryText[id] = summary;
-                //    }
+                    //    Dictionary<byte, string> SummaryText = new();
+                    //    foreach (var id in PlayerState.AllPlayerStates.Keys)
+                    //    {
+                    //        string name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
+                    //        string summary = $"{Utils.GetProgressText(id)}  {Utils.ColorString(Main.PlayerColors[id], name)}";
+                    //        if (Utils.GetProgressText(id).Trim() == "") continue;
+                    //        SummaryText[id] = summary;
+                    //    }
 
-                //    List<(int, byte)> list = new();
-                //    foreach (var id in PlayerState.AllPlayerStates.Keys) list.Add((SoloKombatManager.GetRankOfScore(id), id));
-                //    list.Sort();
-                //    foreach (var id in list.Where(x => SummaryText.ContainsKey(x.Item2))) AllText += "\r\n" + SummaryText[id.Item2];
+                    //    List<(int, byte)> list = new();
+                    //    foreach (var id in PlayerState.AllPlayerStates.Keys) list.Add((SoloKombatManager.GetRankOfScore(id), id));
+                    //    list.Sort();
+                    //    foreach (var id in list.Where(x => SummaryText.ContainsKey(x.Item2))) AllText += "\r\n" + SummaryText[id.Item2];
 
-                //    AllText = $"<size=80%>{AllText}</size>";
+                    //    AllText = $"<size=80%>{AllText}</size>";
 
-                //    break;
+                    //    break;
             }
 
             __instance.taskText.text = AllText;

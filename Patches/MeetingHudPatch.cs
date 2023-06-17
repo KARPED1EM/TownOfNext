@@ -1,13 +1,12 @@
+using HarmonyLib;
+using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using HarmonyLib;
-using UnityEngine;
-using Hazel;
-
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -474,7 +473,7 @@ class MeetingHudStartPatch
                 roleTextMeeting.enabled = true;
             }
         }
-        
+
         if (Options.SyncButtonMode.GetBool())
         {
             Utils.SendMessage(string.Format(GetString("Message.SyncButtonLeft"), Options.SyncedButtonCount.GetFloat() - Options.UsedButtonCount));
@@ -587,7 +586,8 @@ class MeetingHudStartPatch
             renderer.sprite = CustomButton.Get(meetingButton.ButtonName);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
             button.OnClick.RemoveAllListeners();
-            button.OnClick.AddListener((Action)(() => {
+            button.OnClick.AddListener((Action)(() =>
+            {
                 if (meetingButton.OnClickButtonLocal(pc))
                 {
                     if (AmongUsClient.Instance.AmHost) meetingButton.OnClickButton(pc);

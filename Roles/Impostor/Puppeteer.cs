@@ -1,13 +1,12 @@
+using AmongUs.GameOptions;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using Hazel;
-using AmongUs.GameOptions;
-
+using TOHE.Modules;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
-using TOHE.Modules;
 
 namespace TOHE.Roles.Impostor;
 public sealed class Puppeteer : RoleBase, IImpostor

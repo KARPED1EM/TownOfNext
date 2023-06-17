@@ -1,5 +1,6 @@
 using AmongUs.Data;
 using AmongUs.GameOptions;
+using HarmonyLib;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes;
 using InnerNet;
@@ -11,17 +12,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using UnityEngine;
-using HarmonyLib;
-
 using TOHE.Modules;
+using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
 using TOHE.Roles.Neutral;
-using TOHE.Roles.Crewmate;
-using TOHE.Roles.AddOns.Impostor;
-using TOHE.Roles.AddOns.Crewmate;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;
@@ -296,10 +295,10 @@ public static class Utils
                     || (seer.Is(CustomRoleTypes.Impostor) && seen.Is(CustomRoles.Madmate) && Options.ImpKnowWhosMadmate.GetBool())
                     || (seer.Is(CustomRoles.Madmate) && seen.Is(CustomRoles.Madmate) && Options.MadmateKnowWhosMadmate.GetBool());
 
-                    //TODO: FIXME
-                    //|| (seen.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
-                    //|| (Totocalcio.KnowRole(seer, seen))
-                    //|| (Succubus.KnowRole(seer, seen))
+        //TODO: FIXME
+        //|| (seen.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
+        //|| (Totocalcio.KnowRole(seer, seen))
+        //|| (Succubus.KnowRole(seer, seen))
 
         var (roleColor, roleText) = GetTrueRoleNameData(seen.PlayerId);
 
@@ -409,7 +408,7 @@ public static class Utils
     public static Color GetRoleTeamColor(CustomRoles role)
         => role.IsValid()
         ? GetCustomRoleTypeColor(role.GetCustomRoleTypes())
-        : new Color32(255,255, 255, byte.MaxValue);
+        : new Color32(255, 255, 255, byte.MaxValue);
     public static string GetRoleTeamColorCode(CustomRoles role)
         => role.IsValid()
         ? GetCustomRoleTypeColorCode(role.GetCustomRoleTypes())
@@ -659,7 +658,7 @@ public static class Utils
             var text = sb.ToString();
             sb.Clear().Append(text.RemoveHtmlTags());
         }
-        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null  && x.Id >= 90000 && !x.IsHiddenOn(Options.CurrentGameMode)))
+        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Id >= 90000 && !x.IsHiddenOn(Options.CurrentGameMode)))
         {
             if (opt.Name is "KillFlashDuration" or "RoleAssigningAlgorithm")
                 sb.Append($"\n【{opt.GetName(true)}: {opt.GetString()}】\n");
@@ -1245,7 +1244,7 @@ public static class Utils
         var ProgressPos = wide ? 9 : 9;
         var KillCountPos = wide ? 13 : 10;
         var VitalPos = wide ? 17 : 10;
-        
+
         var sb = new StringBuilder();
         sb.Append(ColorString(Main.PlayerColors[id], name));
         sb.Append($"<pos={NamePos}%> {GetProgressText(id)}</pos>");

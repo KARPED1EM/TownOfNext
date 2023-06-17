@@ -1,5 +1,4 @@
 using HarmonyLib;
-using TOHE.Modules;
 using TOHE.Modules.ClientOptions;
 using UnityEngine;
 
@@ -21,7 +20,7 @@ public static class OptionsMenuBehaviourStartPatch
     private static ClientActionItem DumpLog;
     private static ClientOptionItem VersionCheat;
     private static ClientOptionItem GodMode;
-    
+
 
     private static bool reseted = false;
     public static void Postfix(OptionsMenuBehaviour __instance)

@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using UnityEngine;
 using AmongUs.GameOptions;
 using Hazel;
-
+using System.Collections.Generic;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Neutral;
@@ -57,7 +56,7 @@ public sealed class Arsonist : RoleBase, IKiller
             Timer = timer;
         }
     }
-    
+
     private TimerInfo TargetInfo;
     public Dictionary<byte, bool> IsDoused;
     public bool IsKiller { get; private set; } = false;

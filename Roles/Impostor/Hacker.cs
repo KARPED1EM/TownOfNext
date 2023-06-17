@@ -1,10 +1,9 @@
 ﻿using AmongUs.GameOptions;
-using UnityEngine;
-using System.Collections.Generic;
 using Hazel;
-
+using System.Collections.Generic;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Impostor;
@@ -106,7 +105,7 @@ public sealed class Hacker : RoleBase, IImpostor
             targetId = DeadBodyList[IRandom.Instance.Next(0, DeadBodyList.Count)];
 
         if (targetId == byte.MaxValue)
-            new LateTask(() =>target?.NoCheckStartMeeting(target?.Data), 0.15f, "Hacker Hacking Report Self");
+            new LateTask(() => target?.NoCheckStartMeeting(target?.Data), 0.15f, "Hacker Hacking Report Self");
         else
             new LateTask(() => target?.NoCheckStartMeeting(Utils.GetPlayerById(targetId)?.Data), 0.15f, "Hacker Hacking Report");
     }

@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace TOHE;
@@ -41,7 +39,7 @@ public class MainMenuButtonHoverAnimation
     {
         if (GameObject.Find("MainUI") == null) return;
 
-            foreach (var kvp in AllButtons.Where(x => x.Key != null && x.Key.active))
+        foreach (var kvp in AllButtons.Where(x => x.Key != null && x.Key.active))
         {
             var button = kvp.Key;
             var pos = button.transform.position;

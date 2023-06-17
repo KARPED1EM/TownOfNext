@@ -3,7 +3,6 @@ using Hazel;
 using TOHE.Roles.Core;
 using TOHE.Roles.Crewmate;
 using TOHE.Roles.Impostor;
-using TOHE.Roles.Neutral;
 
 namespace TOHE;
 

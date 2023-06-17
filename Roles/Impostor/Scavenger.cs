@@ -2,7 +2,6 @@
 
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
-using TOHE.Roles.Neutral;
 
 namespace TOHE.Roles.Impostor;
 public sealed class Scavenger : RoleBase, IImpostor

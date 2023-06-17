@@ -1,8 +1,7 @@
+using AmongUs.GameOptions;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using Hazel;
-using AmongUs.GameOptions;
-
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 

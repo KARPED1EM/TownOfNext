@@ -3,9 +3,6 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TOHE.Modules;
-using TOHE.Roles.Neutral;
-using UnityEngine;
 
 using TOHE.Roles.Core;
 
@@ -125,7 +122,7 @@ public class PlayerState
     {
         taskState.Update(player);
     }
-    
+
     public byte GetRealKiller()
         => IsDead && RealKiller.Item1 != DateTime.MinValue ? RealKiller.Item2 : byte.MaxValue;
     public int GetKillCount(bool ExcludeSelfKill = false)

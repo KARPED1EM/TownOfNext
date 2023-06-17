@@ -1,17 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using AmongUs.GameOptions;
 using HarmonyLib;
 using Hazel;
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using TOHE.Modules;
-using TOHE.Roles.Core;
 using TOHE.Roles.AddOns.Common;
-using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.AddOns.Crewmate;
-using static TOHE.Translator;
+using TOHE.Roles.AddOns.Impostor;
+using TOHE.Roles.Core;
 using static TOHE.Modules.CustomRoleSelector;
+using static TOHE.Translator;
 
 namespace TOHE;
 
@@ -282,7 +281,7 @@ internal class SelectRolesPatch
             }
 
             if (CustomRoles.Lovers.IsEnable() && CustomRoles.FFF.IsEnable()) AssignLoversRoles();
-            else if (CustomRoles.Lovers.IsEnable() && rd.Next(0,100) < Options.GetRoleChance(CustomRoles.Lovers)) AssignLoversRoles();
+            else if (CustomRoles.Lovers.IsEnable() && rd.Next(0, 100) < Options.GetRoleChance(CustomRoles.Lovers)) AssignLoversRoles();
             if (CustomRoles.Madmate.IsEnable() && Options.MadmateSpawnMode.GetInt() == 0) AssignMadmateRoles();
             AddOnsAssignData.AssignAddOnsFromList();
 

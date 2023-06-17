@@ -3,12 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnityEngine;
-
-using TOHE.Roles.Core;
 using TOHE.Roles.AddOns.Common;
-using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.AddOns.Impostor;
+using TOHE.Roles.Core;
+using UnityEngine;
 
 namespace TOHE;
 
@@ -284,7 +283,7 @@ public static class Options
 
     public static OptionItem EnableUpMode;
 
-#endregion
+    #endregion
 
     /* 选项 */
 
@@ -424,7 +423,7 @@ public static class Options
             .SetHeader(true);
 
         bool setupExpNow = false;
-        
+
     StartSetupRoleOptions:
 
         if (setupExpNow)

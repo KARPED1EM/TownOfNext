@@ -1,11 +1,10 @@
 using AmongUs.GameOptions;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
-using Hazel;
-using UnityEngine;
-
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TOHE.Roles.Crewmate;
 public sealed class Sheriff : RoleBase, IKiller

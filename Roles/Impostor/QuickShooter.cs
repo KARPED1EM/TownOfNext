@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using AmongUs.GameOptions;
 using Hazel;
-using UnityEngine;
-using AmongUs.GameOptions;
-
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
+using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE.Roles.Impostor;
@@ -45,7 +42,7 @@ public sealed class QuickShooter : RoleBase, IImpostor
     {
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.KillCooldown, new(2.5f, 180f, 2.5f), 35f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionShapeshiftCooldown = FloatOptionItem.Create(RoleInfo,12, OptionName.QuickShooterShapeshiftCooldown, new(2.5f, 180f, 2.5f), 15f, false)
+        OptionShapeshiftCooldown = FloatOptionItem.Create(RoleInfo, 12, OptionName.QuickShooterShapeshiftCooldown, new(2.5f, 180f, 2.5f), 15f, false)
             .SetValueFormat(OptionFormat.Seconds);
         OptionMeetingReserved = IntegerOptionItem.Create(RoleInfo, 14, OptionName.MeetingReserved, new(0, 15, 1), 2, false)
             .SetValueFormat(OptionFormat.Pieces);
@@ -102,7 +99,7 @@ public sealed class QuickShooter : RoleBase, IImpostor
     {
         int before = ShotLimit;
         ShotLimit = Mathf.Clamp(ShotLimit, 0, OptionMeetingReserved.GetInt());
-        if(ShotLimit != before) SendRPC();
+        if (ShotLimit != before) SendRPC();
     }
     public void BeforeMurderPlayerAsKiller(MurderInfo info)
     {

@@ -1,6 +1,5 @@
-using System.Linq;
 using AmongUs.GameOptions;
-
+using System.Linq;
 using TOHE.Roles.Core;
 
 namespace TOHE.Roles.Neutral;

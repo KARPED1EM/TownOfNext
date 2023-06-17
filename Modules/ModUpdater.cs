@@ -416,10 +416,10 @@ public class ModUpdater
         var tmp = PopupButton.transform.GetChild(0).GetComponent<TextMeshPro>();
         tmp.SetText(buttonText);
         PopupButton.GetComponent<PassiveButton>().OnClick = new();
-        PopupButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() => 
+        PopupButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
         {
             InfoPopup.Close();
-            buttonAction?.Invoke(); 
+            buttonAction?.Invoke();
         }));
     }
 }

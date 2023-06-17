@@ -60,7 +60,7 @@ public sealed class CyberStar : RoleBase
         {
             if (isOnMeeting)
             {
-                Utils.SendMessage(string.Format(Translator.GetString("CyberStarDead"), pc.GetRealName()), pc.PlayerId, Utils.ColorString(RoleInfo.RoleColor, Translator.GetString("CyberStarNewsTitle")));;
+                Utils.SendMessage(string.Format(Translator.GetString("CyberStarDead"), pc.GetRealName()), pc.PlayerId, Utils.ColorString(RoleInfo.RoleColor, Translator.GetString("CyberStarNewsTitle"))); ;
             }
             else
             {
