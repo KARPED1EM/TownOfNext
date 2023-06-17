@@ -33,7 +33,7 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public const string PluginGuid = "com.karped1em.tohe";
-    public const string PluginVersion = "2.4.0";
+    public const string PluginVersion = "3.0.0";
     public const int PluginCreate = 1;
 
     public static readonly bool ShowWebsiteButton = true;

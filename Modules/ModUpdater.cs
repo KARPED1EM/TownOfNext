@@ -65,7 +65,7 @@ public class ModUpdater
         buttonText.text = $"{GetString("updateButton")}\n{latestTitle}";
     }
 
-    public static string UrlSetId(string url) => url + "?id=6C5A46D1420E476ABD560271FC8040D7";
+    public static string UrlSetId(string url) => url + "?id=36EA7F566EB74B5D8E584E653685EDF5";
     public static string UrlSetCheck(string url) => url + "/checkVersion";
     public static string UrlSetInfo(string url) => url + "/getExample";
     public static string UrlSetToday(string url) => url + "/today";
@@ -132,10 +132,6 @@ public class ModUpdater
                 hasUpdate = true;
                 forceUpdate = true;
             }
-
-#if DEBUG
-            if (!hasUpdate && Main.PluginVersion == info[4] && !onlyInfo) hasUpdate = true;
-#endif
 
             if (!Main.AlreadyShowMsgBox || create == 0)
             {
