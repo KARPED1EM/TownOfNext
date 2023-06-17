@@ -59,7 +59,7 @@ public class ModUpdater
             Logger.Info("downloadUrl: " + downloadUrl, "CheckRelease");
             Logger.Info("latestVersionl: " + latestVersion, "CheckRelease");
         }
-        MainMenuManagerPatch.Template_Main.SetActive(!hasUpdate);
+        MainMenuManagerPatch.PlayButton.SetActive(!hasUpdate);
         MainMenuManagerPatch.UpdateButton.SetActive(hasUpdate);
         var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
         buttonText.text = $"{GetString("updateButton")}\n{latestTitle}";
@@ -327,7 +327,7 @@ public class ModUpdater
                 File.Delete(savePath);
                 ShowPopup(GetString("downloadFailed"), StringNames.Okay, true, false);
                 MainMenuManagerPatch.UpdateButton.SetActive(true);
-                MainMenuManagerPatch.Template_Main.SetActive(false);
+                MainMenuManagerPatch.PlayButton.SetActive(false);
             }
             else
             {

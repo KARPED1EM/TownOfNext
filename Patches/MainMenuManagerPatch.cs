@@ -21,12 +21,10 @@ namespace TOHE;
 [HarmonyPatch]
 public class MainMenuManagerPatch
 {
-    public static GameObject Template_Left;
-    public static GameObject Template_Right;
-    public static GameObject Template_Main;
     public static GameObject InviteButton;
     public static GameObject WebsiteButton;
     public static GameObject UpdateButton;
+    public static GameObject PlayButton;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu)), HarmonyPrefix]
     public static void OpenGameModeMenu_Prefix(MainMenuManager __instance) => ShowingPanel = true;
@@ -65,14 +63,11 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
     public static void Start_Prefix(MainMenuManager __instance)
     {
-        if (Template_Left == null) Template_Left = GameObject.Find("CreditsButton");
-        if (Template_Right == null) Template_Right = GameObject.Find("ExitGameButton");
-        if (Template_Left == null || Template_Right == null) return;
         int row = 1; int col = 0;
         GameObject CreatButton(string text, Action action)
         { 
             col++; if (col > 2) { col = 1; row++; }
-            var template = col == 1 ? Template_Left : Template_Right;
+            var template = col == 1 ? __instance.creditsButton.gameObject : __instance.quitButton.gameObject;
             var button = Object.Instantiate(template, template.transform.parent);
             button.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
             var buttonText = button.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
@@ -96,10 +91,10 @@ public class MainMenuManagerPatch
 
         if (UpdateButton == null)
         {
-            Template_Main = GameObject.Find("PlayButton");
-            UpdateButton = Object.Instantiate(Template_Main, Template_Main.transform.parent);
+            PlayButton = __instance.playButton.gameObject;
+            UpdateButton = Object.Instantiate(PlayButton, PlayButton.transform.parent);
             UpdateButton.name = "TOHE Update Button";
-            UpdateButton.transform.localPosition = Template_Main.transform.localPosition - new Vector3(0f, 0f, 3f);
+            UpdateButton.transform.localPosition = PlayButton.transform.localPosition - new Vector3(0f, 0f, 3f);
             var inactive = UpdateButton.transform.FindChild("Inactive");
             var spriteRenderer = inactive.GetComponent<SpriteRenderer>();
             spriteRenderer.color = new Color32(255, 120, 255, byte.MaxValue);
@@ -110,13 +105,13 @@ public class MainMenuManagerPatch
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener((Action)(() =>
             {
-                Template_Main.SetActive(true);
+                PlayButton.SetActive(true);
                 UpdateButton.SetActive(false);
                 if (!DebugModeManager.AmDebugger || !Input.GetKey(KeyCode.LeftShift))
                     ModUpdater.StartUpdate(ModUpdater.downloadUrl);
             }));
             UpdateButton.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
-            Template_Main.SetActive(false);
+            PlayButton.SetActive(false);
         }
 
         Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;

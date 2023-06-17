@@ -10,14 +10,12 @@ namespace TOHE;
 [HarmonyPatch(typeof(PingTracker), nameof(PingTracker.Update))]
 internal class PingTrackerUpdatePatch
 {
-    private static readonly StringBuilder sb = new();
-
+    private static float deltaTime;
     private static void Postfix(PingTracker __instance)
     {
         __instance.text.alignment = TextAlignmentOptions.TopRight;
 
-        sb.Clear();
-
+        StringBuilder sb = new();
         sb.Append(Main.CredentialsText);
 
         var ping = AmongUsClient.Instance.Ping;
@@ -26,7 +24,11 @@ internal class PingTrackerUpdatePatch
         else if (ping < 100) color = "#7bc690";
         else if (ping < 200) color = "#f3920e";
         else if (ping < 400) color = "#ff146e";
-        sb.Append($"\r\n").Append($"<color={color}>Ping: {ping} ms</color>");
+
+        deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
+        float fps = Mathf.Ceil(1.0f / deltaTime);
+
+        sb.Append($"\r\n").Append($"<color={color}>{ping} <size=60%>Ping</size></color>\t<color=#00a4ff>{fps} <size=60%>FPS</size></color>");
 
         if (Options.NoGameEnd.GetBool()) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("NoGameEnd")));
         if (Options.AllowConsole.GetBool()) sb.Append($"\r\n").Append(Utils.ColorString(Color.red, GetString("AllowConsole")));
