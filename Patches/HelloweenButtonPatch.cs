@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace TOHE.Patches;
+namespace TOHE;
 
 [HarmonyPatch]
 public class HelloweenButtonPatch
