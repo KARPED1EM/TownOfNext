@@ -1,12 +1,36 @@
 using HarmonyLib;
+using System.Collections.Generic;
 
 namespace TOHE;
 
 [HarmonyPatch(typeof(TextBoxTMP))]
 public class TextBoxPatch
 {
-    //[HarmonyPatch(nameof(TextBoxTMP.IsCharAllowed)), HarmonyPostfix]
-    //public static void IsCharAllowed(TextBoxTMP __instance, char i, ref bool __result) => __result &= i is not ('\r' or '\n');
+    static Dictionary<string, string> replaceDic = new()
+            {
+                { "£¨", " (" },
+                { "£©", ") " },
+                { "£¬", ", " },
+                { "£º", ": " },
+                { "[", "¡¾" },
+                { "]", "¡¿" },
+                { "¡®", " '" },
+                { "¡¯", "' " },
+                { "¡°", " ''" },
+                { "¡±", "'' " },
+                { "£¡", "! " },
+            };
     [HarmonyPatch(nameof(TextBoxTMP.SetText)), HarmonyPrefix]
-    public static void ModifyCharacterLimit(TextBoxTMP __instance) => __instance.characterLimit = AmongUsClient.Instance.AmHost ? 999 : 300;
+    public static bool ModifyCharacterLimit(TextBoxTMP __instance, [HarmonyArgument(0)] string input, [HarmonyArgument(1)] string inputCompo = "")
+    {
+        __instance.characterLimit = AmongUsClient.Instance.AmHost ? 999 : 300;
+        if (input.Length < 1) return true;
+        string before = input[^1..];
+        if (replaceDic.TryGetValue(before, out var after))
+        {
+            __instance.SetText(input.Replace(before, after));
+            return false;
+        }
+        return true;
+    }
 }
