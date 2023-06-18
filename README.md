@@ -29,7 +29,7 @@
 > 
 ### :star: [TOH](https://github.com/tukasa0001/TownOfHost) :
 > 
-> - Our repo is forked from TOH
+> - Everything is based on TOH
 > 
 ### :star: [TOHY](https://github.com/Yumenopai/TownOfHost_Y) :
 > 
