@@ -29,7 +29,7 @@ public static class GuesserHelper
     public static bool CheckCommond(ref string msg, string command, bool exact = true)
     {
         var comList = command.Split('|');
-        for (int i = 0; i < comList.Count(); i++)
+        for (int i = 0; i < comList.Length; i++)
         {
             if (exact)
             {
@@ -332,12 +332,19 @@ public static class GuesserHelper
         }
     }
 
+    private static Color32 myColor = Color.white;
     public static TextMeshPro textTemplate;
     public static void ShowGuessPanel(byte playerId, MeetingHud __instance)
     {
 
         PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload");
 
+        if (PlayerControl.LocalPlayer.cosmetics.ColorId >= 0 && PlayerControl.LocalPlayer.cosmetics.ColorId  < Palette.PlayerColors.Count)
+        {
+            myColor = Palette.PlayerColors[PlayerControl.LocalPlayer.cosmetics.ColorId];
+            myColor = Utils.ShadeColor(myColor, -2f);
+        }
+        
         var pc = Utils.GetPlayerById(playerId);
         if (pc == null || !pc.IsAlive() || guesserUI != null || !GameStates.IsVoting) return;
 
@@ -403,6 +410,7 @@ public static class GuesserHelper
                 Transform TeambuttonMask = UnityEngine.Object.Instantiate(maskTemplate, TeambuttonParent);
                 TextMeshPro Teamlabel = UnityEngine.Object.Instantiate(textTemplate, Teambutton);
                 Teambutton.GetComponent<SpriteRenderer>().sprite = CustomButton.Get("GuessPlateWithKPD");
+                Teambutton.GetComponent<SpriteRenderer>().color = myColor;
                 RoleSelectButtons.Add((CustomRoleTypes)index, Teambutton.GetComponent<SpriteRenderer>());
                 TeambuttonParent.localPosition = new(-2.75f + tabCount++ * 1.73f, 2.225f, -200);
                 TeambuttonParent.localScale = new(0.53f, 0.53f, 1f);
@@ -458,7 +466,7 @@ public static class GuesserHelper
                 Pagebutton.GetComponent<SpriteRenderer>().sprite = CustomButton.Get("GuessPlateWithKPD");
                 PagebuttonParent.localPosition = IsNext ? new(3.535f, -2.2f, -200) : new(-3.475f, -2.2f, -200);
                 PagebuttonParent.localScale = new(0.55f, 0.55f, 1f);
-                Pagelabel.color = Color.white;
+                Pagelabel.color = myColor;
                 Pagelabel.text = GetString(IsNext ? "NextPage" : "PreviousPage");
                 Pagelabel.alignment = TextAlignmentOptions.Center;
                 Pagelabel.transform.localPosition = new Vector3(0, 0, Pagelabel.transform.localPosition.z);
@@ -499,6 +507,7 @@ public static class GuesserHelper
                 TextMeshPro label = UnityEngine.Object.Instantiate(textTemplate, button);
 
                 button.GetComponent<SpriteRenderer>().sprite = CustomButton.Get("GuessPlate");
+                button.GetComponent<SpriteRenderer>().color = myColor;
                 if (!RoleButtons.ContainsKey(role.GetCustomRoleTypes()))
                 {
                     RoleButtons.Add(role.GetCustomRoleTypes(), new());
@@ -523,7 +532,7 @@ public static class GuesserHelper
                     if (selectedButton != button)
                     {
                         selectedButton = button;
-                        buttons.ForEach(x => x.GetComponent<SpriteRenderer>().color = x == selectedButton ? Utils.GetRoleColor(PlayerControl.LocalPlayer.GetCustomRole()) : Color.white);
+                        buttons.ForEach(x => x.GetComponent<SpriteRenderer>().color = x == selectedButton ? Utils.GetRoleColor(PlayerControl.LocalPlayer.GetCustomRole()) : myColor);
                     }
                     else
                     {
