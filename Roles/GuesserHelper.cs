@@ -51,7 +51,7 @@ public static class GuesserHelper
         if (ComfirmIncludeMsg(msg, "红|紅|red")) return 0;
         if (ComfirmIncludeMsg(msg, "蓝|藍|深蓝|blue")) return 1;
         if (ComfirmIncludeMsg(msg, "绿|綠|深绿|green")) return 2;
-        if (ComfirmIncludeMsg(msg, "粉红|粉紅|pink")) return 3;
+        if (ComfirmIncludeMsg(msg, "粉红|粉紅|深粉|pink")) return 3;
         if (ComfirmIncludeMsg(msg, "橘|橘|orange")) return 4;
         if (ComfirmIncludeMsg(msg, "黄|黃|yellow")) return 5;
         if (ComfirmIncludeMsg(msg, "黑|黑|black")) return 6;
@@ -59,10 +59,10 @@ public static class GuesserHelper
         if (ComfirmIncludeMsg(msg, "紫|紫|perple")) return 8;
         if (ComfirmIncludeMsg(msg, "棕|棕|brown")) return 9;
         if (ComfirmIncludeMsg(msg, "青|青|cyan")) return 10;
-        if (ComfirmIncludeMsg(msg, "黄绿|黃綠|浅绿|lime")) return 11;
+        if (ComfirmIncludeMsg(msg, "黄绿|黃綠|浅绿|淡绿|lime")) return 11;
         if (ComfirmIncludeMsg(msg, "红褐|紅褐|深红|maroon")) return 12;
-        if (ComfirmIncludeMsg(msg, "玫红|玫紅|浅粉|rose")) return 13;
-        if (ComfirmIncludeMsg(msg, "焦黄|焦黃|淡黄|banana")) return 14;
+        if (ComfirmIncludeMsg(msg, "玫红|玫紅|浅粉|淡粉|rose")) return 13;
+        if (ComfirmIncludeMsg(msg, "焦黄|焦黃|浅黄|淡黄|banana")) return 14;
         if (ComfirmIncludeMsg(msg, "灰|灰|gray")) return 15;
         if (ComfirmIncludeMsg(msg, "茶|茶|tan")) return 16;
         if (ComfirmIncludeMsg(msg, "珊瑚|珊瑚|coral")) return 17;
@@ -227,6 +227,7 @@ public static class GuesserHelper
         }
         else
         {
+            //FIXME: 指令中包含颜色后无法正确匹配职业名
             //并不是玩家编号，判断是否颜色
             int color = GetColorFromMsg(msg);
             List<PlayerControl> list = Main.AllAlivePlayerControls.Where(p => p.cosmetics.ColorId == color).ToList();
