@@ -100,7 +100,7 @@ public sealed class Gangster : RoleBase, IImpostor
             target.RpcGuardAndKill(killer);
             target.RpcGuardAndKill(target);
 
-            Logger.Info("设置职业:" + target?.Data?.PlayerName + " = " + target.GetCustomRole().ToString() + " + " + CustomRoles.Madmate.ToString(), "Assign " + CustomRoles.Madmate.ToString());
+            Logger.Info($"注册附加职业：{target.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
             Logger.Info($"{killer.GetNameWithRole()} : 剩余{RecruitLimit}次招募机会", "Gangster");
             return false;
         }
