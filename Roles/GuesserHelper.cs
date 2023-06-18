@@ -46,7 +46,7 @@ public static class GuesserHelper
         }
         return false;
     }
-    public static byte GetColorFromMsg(string msg)
+    public static int GetColorFromMsg(string msg)
     {
         if (ComfirmIncludeMsg(msg, "红|紅|red")) return 0;
         if (ComfirmIncludeMsg(msg, "蓝|藍|深蓝|blue")) return 1;
@@ -66,17 +66,9 @@ public static class GuesserHelper
         if (ComfirmIncludeMsg(msg, "灰|灰|gray")) return 15;
         if (ComfirmIncludeMsg(msg, "茶|茶|tan")) return 16;
         if (ComfirmIncludeMsg(msg, "珊瑚|珊瑚|coral")) return 17;
-        else return byte.MaxValue;
+        else return -1;
     }
-    private static bool ComfirmIncludeMsg(string msg, string key)
-    {
-        var keys = key.Split('|');
-        for (int i = 0; i < keys.Length; i++)
-        {
-            if (msg.Contains(keys[i])) return true;
-        }
-        return false;
-    }
+    private static bool ComfirmIncludeMsg(string msg, string key) => key.Split('|').Any(msg.Contains);
     public static bool GuesserMsg(PlayerControl pc, string msg)
     {
         var originMsg = msg;
@@ -104,7 +96,6 @@ public static class GuesserHelper
         }
         else if (operate == 2)
         {
-
             if (
             pc.Is(CustomRoles.NiceGuesser) && NiceGuesser.OptionHideMsg.GetBool() ||
             pc.Is(CustomRoles.EvilGuesser) && EvilGuesser.OptionHideMsg.GetBool()
@@ -220,15 +211,15 @@ public static class GuesserHelper
     public static TextMeshPro NameText(this PoolablePlayer p) => p.cosmetics.nameText;
     private static bool MsgToPlayerAndRole(string msg, out byte id, out CustomRoles role, out string error)
     {
+        id = byte.MaxValue;
+        role = new();
+
         if (msg.StartsWith("/")) msg = msg.Replace("/", string.Empty);
 
         Regex r = new("\\d+");
         MatchCollection mc = r.Matches(msg);
         string result = string.Empty;
-        for (int i = 0; i < mc.Count; i++)
-        {
-            result += mc[i];//匹配结果是完整的数字，此处可以不做拼接的
-        }
+        mc.Do(m => result += m);
 
         if (int.TryParse(result, out int num))
         {
@@ -237,12 +228,19 @@ public static class GuesserHelper
         else
         {
             //并不是玩家编号，判断是否颜色
-            //byte color = GetColorFromMsg(msg);
-            //好吧我不知道怎么取某位玩家的颜色，等会了的时候再来把这里补上
-            id = byte.MaxValue;
-            error = GetString("GuessHelp");
-            role = new();
-            return false;
+            int color = GetColorFromMsg(msg);
+            List<PlayerControl> list = Main.AllAlivePlayerControls.Where(p => p.cosmetics.ColorId == color).ToList();
+            if (list.Count < 1)
+            {
+                error = GetString("GuessNull");
+                return false;
+            }
+            else if (list.Count != 1)
+            {
+                error = GetString("GuessMultipleColor");
+                return false;
+            }
+            id = list.FirstOrDefault().PlayerId;
         }
 
         //判断选择的玩家是否合理
@@ -250,7 +248,6 @@ public static class GuesserHelper
         if (target == null || target.Data.IsDead)
         {
             error = GetString("GuessNull");
-            role = new();
             return false;
         }
 
