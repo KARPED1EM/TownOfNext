@@ -3,23 +3,17 @@ using UnityEngine;
 
 namespace TOHE;
 
-[HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.FixedUpdate))]
-public class LobbyFixedUpdatePatch
+[HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
+public class LobbyStartPatch
 {
     private static GameObject Paint;
-    public static void Postfix()
+    public static void Postfix(LobbyBehaviour __instance)
     {
-        if (Paint == null)
-        {
-            var LeftBox = GameObject.Find("Leftbox");
-            if (LeftBox != null)
-            {
-                Paint = Object.Instantiate(LeftBox, LeftBox.transform.parent.transform);
-                Paint.name = "Lobby Paint";
-                Paint.transform.localPosition = new Vector3(0.042f, -2.59f, -10.5f);
-                SpriteRenderer renderer = Paint.GetComponent<SpriteRenderer>();
-                renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.LobbyPaint.png", 290f);
-            }
-        }
+        if (Paint != null) return;
+        Paint = Object.Instantiate(__instance.transform.FindChild("Leftbox").gameObject, __instance.transform);
+        Paint.name = "TOHE Lobby Paint";
+        Paint.transform.localPosition = new Vector3(0.042f, -2.59f, -10.5f);
+        SpriteRenderer renderer = Paint.GetComponent<SpriteRenderer>();
+        renderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.LobbyPaint.png", 290f);
     }
 }
