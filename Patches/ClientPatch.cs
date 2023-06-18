@@ -20,7 +20,7 @@ internal class MakePublicPatch
             Logger.SendInGame(message);
             return false;
         }
-        if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate))
+        if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !VersionChecker.IsSupported)
         {
             var message = "";
             if (ModUpdater.isBroken) message = GetString("ModBrokenMessage");
@@ -37,7 +37,7 @@ class MMOnlineManagerStartPatch
 {
     public static void Postfix(MMOnlineManager __instance)
     {
-        if (!(ModUpdater.hasUpdate || ModUpdater.isBroken)) return;
+        if (!(ModUpdater.hasUpdate || ModUpdater.isBroken || !VersionChecker.IsSupported)) return;
         var obj = GameObject.Find("FindGameButton");
         if (obj)
         {
@@ -47,9 +47,20 @@ class MMOnlineManagerStartPatch
             textObj.transform.position = new Vector3(1f, -0.3f, 0);
             textObj.name = "CanNotJoinPublic";
             textObj.DestroyTranslator();
-            var message = ModUpdater.isBroken ? $"<size=2>{Utils.ColorString(Color.red, GetString("ModBrokenMessage"))}</size>"
-                : $"<size=2>{Utils.ColorString(Color.red, GetString("CanNotJoinPublicRoomNoLatest"))}</size>";
-            textObj.text = message;
+            string message = "";
+            if (ModUpdater.hasUpdate)
+            {
+                message = GetString("CanNotJoinPublicRoomNoLatest");
+            }
+            else if (ModUpdater.isBroken)
+            {
+                message = GetString("ModBrokenMessage");
+            }
+            else if (!VersionChecker.IsSupported)
+            {
+                message = GetString("UnsupportedVersion");
+            }
+            textObj.text = $"<size=2>{Utils.ColorString(Color.red, message)}</size>";
         }
     }
 }
@@ -125,21 +136,6 @@ internal class KickPlayerPatch
         return true;
     }
 }
-[HarmonyPatch(typeof(ResolutionManager), nameof(ResolutionManager.SetResolution))]
-internal class SetResolutionManager
-{
-    public static void Postfix()
-    {
-        //TODO
-        //if (MainMenuManagerPatch.qqButton != null)
-        //    MainMenuManagerPatch.qqButton.transform.localPosition = Vector3.Reflect(MainMenuManagerPatch.template.transform.localPosition, Vector3.left);
-        //if (MainMenuManagerPatch.discordButton != null)
-        //    MainMenuManagerPatch.discordButton.transform.localPosition = Vector3.Reflect(MainMenuManagerPatch.template.transform.localPosition, Vector3.left);
-        //if (MainMenuManagerPatch.updateButton != null)
-        //    MainMenuManagerPatch.updateButton.transform.localPosition = MainMenuManagerPatch.template.transform.localPosition + new Vector3(0.25f, 0.75f);
-    }
-}
-
 [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.SendAllStreamedObjects))]
 internal class InnerNetObjectSerializePatch
 {

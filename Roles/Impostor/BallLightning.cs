@@ -12,7 +12,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class BallLightning : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(BallLightning),
             player => new BallLightning(player),
             CustomRoles.BallLightning,
@@ -155,7 +155,7 @@ public sealed class BallLightning : RoleBase, IImpostor
         {
             var player = Utils.GetPlayerById(ghost.Key);
             if (player == null) continue;
-            CheckForEndVotingPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Quantization, player.PlayerId);
+            MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Quantization, player.PlayerId);
             player.SetRealKiller(ghost.Value);
             Logger.Info($"{player.GetNameWithRole()} 作为量子幽灵参与会议，将在会议后死亡", "BallLightning.OnStartMeeting");
         }

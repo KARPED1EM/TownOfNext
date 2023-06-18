@@ -6,7 +6,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Needy : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Needy),
             player => new Needy(player),
             CustomRoles.Needy,

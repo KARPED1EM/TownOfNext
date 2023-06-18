@@ -9,7 +9,7 @@ namespace TOHE.Roles.Neutral;
 public sealed class Mario : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+       SimpleRoleInfo.Create(
             typeof(Mario),
             player => new Mario(player),
             CustomRoles.Mario,

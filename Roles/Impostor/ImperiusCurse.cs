@@ -7,7 +7,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class ImperiusCurse : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(ImperiusCurse),
             player => new ImperiusCurse(player),
             CustomRoles.ImperiusCurse,

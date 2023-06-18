@@ -8,7 +8,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class EvilGuesser : RoleBase, IImpostor, IMeetingButton
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(EvilGuesser),
             player => new EvilGuesser(player),
             CustomRoles.EvilGuesser,

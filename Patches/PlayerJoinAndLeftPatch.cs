@@ -141,13 +141,13 @@ class OnPlayerLeftPatch
             PlayerGameOptionsSender.RemoveSender(data.Character);
         }
 
+        Main.playerVersion.Remove(data.Character.PlayerId);
         Logger.Info($"{data?.PlayerName}(ClientID:{data?.Id}/FriendCode:{data?.FriendCode})断开连接(理由:{reason}，Ping:{AmongUsClient.Instance.Ping})", "Session");
 
         if (AmongUsClient.Instance.AmHost)
         {
             Main.SayStartTimes.Remove(__instance.ClientId);
             Main.SayBanwordsTimes.Remove(__instance.ClientId);
-            Main.playerVersion.Remove(data?.Character?.PlayerId ?? byte.MaxValue);
 
             // 附加描述掉线原因
             switch (reason)

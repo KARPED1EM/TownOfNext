@@ -9,7 +9,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class QuickShooter : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(QuickShooter),
             player => new QuickShooter(player),
             CustomRoles.QuickShooter,

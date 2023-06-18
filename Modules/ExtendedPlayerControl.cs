@@ -267,7 +267,10 @@ static class ExtendedPlayerControl
     }
     public static void RpcResetAbilityCooldown(this PlayerControl target)
     {
-        if (!AmongUsClient.Instance.AmHost) return; //ホスト以外が実行しても何も起こさない
+        if (target == null || !AmongUsClient.Instance.AmHost)
+        {
+            return;
+        }
         Logger.Info($"アビリティクールダウンのリセット:{target.name}({target.PlayerId})", "RpcResetAbilityCooldown");
         if (PlayerControl.LocalPlayer == target)
         {

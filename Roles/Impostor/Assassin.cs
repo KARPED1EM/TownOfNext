@@ -10,7 +10,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class Assassin : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Assassin),
             player => new Assassin(player),
             CustomRoles.Assassin,

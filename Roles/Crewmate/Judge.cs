@@ -11,7 +11,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Judge : RoleBase, IMeetingButton
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Judge),
             player => new Judge(player),
             CustomRoles.Judge,

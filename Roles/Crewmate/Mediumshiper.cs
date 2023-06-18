@@ -9,7 +9,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Mediumshiper : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Mediumshiper),
             player => new Mediumshiper(player),
             CustomRoles.Mediumshiper,

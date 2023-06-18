@@ -5,7 +5,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Luckey : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Luckey),
             player => new Luckey(player),
             CustomRoles.Luckey,

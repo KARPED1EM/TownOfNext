@@ -8,7 +8,7 @@ namespace TOHE.Roles.Neutral;
 public sealed class BloodKnight : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
-       new(
+       SimpleRoleInfo.Create(
            typeof(BloodKnight),
            player => new BloodKnight(player),
            CustomRoles.BloodKnight,

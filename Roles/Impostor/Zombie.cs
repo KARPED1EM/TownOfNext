@@ -6,7 +6,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class Zombie : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Zombie),
             player => new Zombie(player),
             CustomRoles.Zombie,
@@ -44,8 +44,11 @@ public sealed class Zombie : RoleBase, IImpostor
         return OptionKillCooldown.GetFloat();
     }
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetFloat(FloatOptionNames.ImpostorLightMod, 0.2f);
-    public override void OnCalculateVotes(ref PlayerVoteArea ps, ref int VoteNums)
+    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
     {
-        if (CustomRoleManager.GetByPlayerId(ps.VotedFor) is Zombie) VoteNums = 0;
+        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
+        var baseVote = (votedForId, numVotes, doVote);
+        if (sourceVotedForId == Player.PlayerId) baseVote.doVote = false;
+        return baseVote;
     }
 }

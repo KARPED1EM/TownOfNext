@@ -10,7 +10,7 @@ namespace TOHE.Roles.Neutral;
 public sealed class Arsonist : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Arsonist),
             player => new Arsonist(player),
             CustomRoles.Arsonist,

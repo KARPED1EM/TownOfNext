@@ -12,7 +12,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Counterfeiter : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Counterfeiter),
             player => new Counterfeiter(player),
             CustomRoles.Counterfeiter,
@@ -132,7 +132,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
             var target = Utils.GetPlayerById(pcId);
             if (target == null || !target.IsAlive()) continue;
             if (target.GetRoleClass() is IKiller x && x.IsKiller && x.CanKill) continue;
-            CheckForEndVotingPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Misfire, target.PlayerId);
+            MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Misfire, target.PlayerId);
             target.SetRealKiller(Player);
             Logger.Info($"赝品商 {Player.GetRealName()} 的客户 {target.GetRealName()} 因不带刀将在会议结束后自杀", "Counterfeiter.OnStartMeeting");
         }

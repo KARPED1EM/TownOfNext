@@ -6,7 +6,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class SabotageMaster : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(SabotageMaster),
             player => new SabotageMaster(player),
             CustomRoles.SabotageMaster,

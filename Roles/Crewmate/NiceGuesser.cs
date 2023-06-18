@@ -8,7 +8,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class NiceGuesser : RoleBase, IMeetingButton
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(NiceGuesser),
             player => new NiceGuesser(player),
             CustomRoles.NiceGuesser,

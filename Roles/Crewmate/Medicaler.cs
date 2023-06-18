@@ -12,7 +12,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Medicaler : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Medicaler),
             player => new Medicaler(player),
             CustomRoles.Medicaler,

@@ -6,7 +6,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Mayor : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Mayor),
             player => new Mayor(player),
             CustomRoles.Mayor,
@@ -26,7 +26,6 @@ public sealed class Mayor : RoleBase
         AdditionalVote = OptionAdditionalVote.GetInt();
         HasPortableButton = OptionHasPortableButton.GetBool();
         NumOfUseButton = OptionNumOfUseButton.GetInt();
-        HideVote = OptionHideVote.GetBool();
 
         LeftButtonCount = NumOfUseButton;
     }
@@ -34,13 +33,11 @@ public sealed class Mayor : RoleBase
     private static OptionItem OptionAdditionalVote;
     private static OptionItem OptionHasPortableButton;
     private static OptionItem OptionNumOfUseButton;
-    private static OptionItem OptionHideVote;
     enum OptionName
     {
         MayorAdditionalVote,
         MayorHasPortableButton,
-        MayorNumOfUseButton,
-        MayorHideVote,
+        MayorNumOfUseButton
     }
     public static int AdditionalVote;
     public static bool HasPortableButton;
@@ -55,7 +52,6 @@ public sealed class Mayor : RoleBase
         OptionHasPortableButton = BooleanOptionItem.Create(RoleInfo, 11, OptionName.MayorHasPortableButton, false, false);
         OptionNumOfUseButton = IntegerOptionItem.Create(RoleInfo, 12, OptionName.MayorNumOfUseButton, new(1, 99, 1), 3, false, OptionHasPortableButton)
             .SetValueFormat(OptionFormat.Times);
-        OptionHideVote = BooleanOptionItem.Create(RoleInfo, 13, OptionName.MayorHideVote, false, false);
     }
     public override void ApplyGameOptions(IGameOptions opt)
     {
@@ -76,22 +72,15 @@ public sealed class Mayor : RoleBase
         }
         return false;
     }
-    public override bool OnVotingEnd(ref List<MeetingHud.VoterState> statesList, ref PlayerVoteArea pva)
+    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
     {
-        if (HideVote) return true;
-        for (var i = 0; i < AdditionalVote; i++)
+        // ¼È¶¨‚Ž
+        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
+        if (voterId == Player.PlayerId)
         {
-            statesList.Add(new MeetingHud.VoterState()
-            {
-                VoterId = pva.TargetPlayerId,
-                VotedForId = pva.VotedFor
-            });
+            numVotes = AdditionalVote + 1;
         }
-        return true;
-    }
-    public override void OnCalculateVotes(ref PlayerVoteArea ps, ref int VoteNum)
-    {
-        if (CustomRoleManager.GetByPlayerId(ps.TargetPlayerId) is Mayor) VoteNum += AdditionalVote;
+        return (votedForId, numVotes, doVote);
     }
     public override void AfterMeetingTasks()
     {

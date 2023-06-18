@@ -304,7 +304,7 @@ class FixedUpdatePatch
 
         if (AmongUsClient.Instance.AmHost)
         {//実行クライアントがホストの場合のみ実行
-            if (GameStates.IsLobby && ((ModUpdater.hasUpdate && ModUpdater.forceUpdate) || ModUpdater.isBroken || !Main.AllowPublicRoom) && AmongUsClient.Instance.IsGamePublic)
+            if (GameStates.IsLobby && ((ModUpdater.hasUpdate && ModUpdater.forceUpdate) || ModUpdater.isBroken || !Main.AllowPublicRoom || !VersionChecker.IsSupported) && AmongUsClient.Instance.IsGamePublic)
                 AmongUsClient.Instance.ChangeGamePublic(false);
 
             if (GameStates.IsInTask && ReportDeadBodyPatch.CanReport[__instance.PlayerId] && ReportDeadBodyPatch.WaitReport[__instance.PlayerId].Count > 0)
@@ -344,6 +344,11 @@ class FixedUpdatePatch
 
             if (GameStates.IsInGame && player.AmOwner)
                 DisableDevice.FixedUpdate();
+
+            if (__instance.AmOwner)
+            {
+                Utils.ApplySuffix(PlayerControl.LocalPlayer);
+            }
         }
         //LocalPlayer専用
         if (__instance.AmOwner)
@@ -508,7 +513,7 @@ class FixedUpdatePatch
                         if (isExiled)
                         {
                             if (now) partnerPlayer?.RpcExileV2();
-                            CheckForEndVotingPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.FollowingSuicide, partnerPlayer.PlayerId);
+                            MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.FollowingSuicide, partnerPlayer.PlayerId);
                         }
                         else
                             partnerPlayer.RpcMurderPlayer(partnerPlayer);

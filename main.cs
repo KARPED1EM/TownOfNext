@@ -32,6 +32,7 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public const string PluginGuid = "com.karped1em.tohe";
+    public static readonly string LowestSupportedVersion = "2023.6.13";
     public const string PluginVersion = "3.0.0";
     public const int PluginCreate = 1;
 
@@ -84,8 +85,6 @@ public class Main : BasePlugin
     public static Dictionary<byte, Color32> PlayerColors = new();
     public static Dictionary<byte, CustomDeathReason> AfterMeetingDeathPlayers = new();
     public static Dictionary<CustomRoles, string> roleColors;
-    public static GameData.PlayerInfo LastVotedPlayerInfo;
-    public static string LastVotedPlayer;
     public static List<byte> ResetCamPlayerList = new();
     public static List<byte> winnerList = new();
     public static List<string> winnerNameList = new();
@@ -210,19 +209,13 @@ public class Main : BasePlugin
         {
             roleColors = new Dictionary<CustomRoles, string>()
             {
-                //原版职业
-                {CustomRoles.Crewmate, "#ffffff"},
-                {CustomRoles.Engineer, "#8cffff"},
-                {CustomRoles.Scientist, "#8cffff"},
-                {CustomRoles.GuardianAngel, "#ffffff"},
-
                 //SoloKombat
                 {CustomRoles.KB_Normal, "#f55252"},
 
                 //GM
                 {CustomRoles.GM, "#ff5b70"},
 
-                //附加职业
+                //Add-Ons
                 {CustomRoles.NotAssigned, "#ffffff"},
                 {CustomRoles.LastImpostor, "#ff1919"},
                 {CustomRoles.Lovers, "#ff9ace"},
@@ -248,17 +241,6 @@ public class Main : BasePlugin
                 {CustomRoles.Bait, "#00f7ff"},
                 {CustomRoles.Trapper, "#5a8fd0"},
             };
-            foreach (var role in Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>())
-            {
-                switch (role.GetCustomRoleTypes())
-                {
-                    case CustomRoleTypes.Impostor:
-                        roleColors.TryAdd(role, "#ff1919");
-                        break;
-                    default:
-                        break;
-                }
-            }
             var type = typeof(RoleBase);
             var roleClassArray =
             CustomRoleManager.AllRolesClassType = Assembly.GetAssembly(type)

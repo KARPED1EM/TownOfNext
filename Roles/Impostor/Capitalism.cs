@@ -9,7 +9,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class Capitalism : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Capitalism),
             player => new Capitalism(player),
             CustomRoles.Capitalism,

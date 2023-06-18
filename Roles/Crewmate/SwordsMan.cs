@@ -8,7 +8,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class SwordsMan : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(SwordsMan),
             player => new SwordsMan(player),
             CustomRoles.SwordsMan,

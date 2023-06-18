@@ -10,7 +10,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Psychic : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Psychic),
             player => new Psychic(player),
             CustomRoles.Psychic,

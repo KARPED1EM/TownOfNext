@@ -8,7 +8,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Transporter : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Transporter),
             player => new Transporter(player),
             CustomRoles.Transporter,

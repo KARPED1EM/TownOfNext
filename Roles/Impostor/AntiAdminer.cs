@@ -13,7 +13,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class AntiAdminer : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(AntiAdminer),
             player => new AntiAdminer(player),
             CustomRoles.AntiAdminer,

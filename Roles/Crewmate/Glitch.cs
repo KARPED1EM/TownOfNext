@@ -7,7 +7,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Glitch : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Glitch),
             player => new Glitch(player),
             CustomRoles.Glitch,
@@ -35,10 +35,12 @@ public sealed class Glitch : RoleBase
     {
         OptionCanVote = BooleanOptionItem.Create(RoleInfo, 10, OptionName.GlitchCanVote, true, false);
     }
-    public override bool OnVotingEnd(ref List<MeetingHud.VoterState> statesList, ref PlayerVoteArea pva) => OptionCanVote.GetBool();
-    public override void OnCalculateVotes(ref PlayerVoteArea ps, ref int VoteNum)
+    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
     {
-        if (!OptionCanVote.GetBool()) VoteNum = 0;
+        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
+        var baseVote = (votedForId, numVotes, doVote);
+        if (voterId != Player.PlayerId) return baseVote;
+        baseVote.doVote = OptionCanVote.GetBool();
+        return baseVote;
     }
-
 }

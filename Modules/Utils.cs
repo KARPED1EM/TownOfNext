@@ -7,6 +7,7 @@ using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -471,14 +472,18 @@ public static class Utils
         //Tasksがnullの場合があるのでその場合タスク無しとする
         if (p.Tasks == null) return false;
         if (p.Role == null) return false;
+        if (p.Disconnected) return false;
 
         var hasTasks = true;
         var States = PlayerState.GetByPlayerId(p.PlayerId);
-        if (p.Disconnected) return false;
         if (p.Role.IsImpostor)
             hasTasks = false; //タスクはCustomRoleを元に判定する
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat) return false;
-        if (p.IsDead && Options.GhostIgnoreTasks.GetBool()) hasTasks = false;
+        // 死んでいて，死人のタスク免除が有効なら確定でfalse
+        if (p.IsDead && Options.GhostIgnoreTasks.GetBool())
+        {
+            return false;
+        }
         var role = States.MainRole;
         var roleClass = CustomRoleManager.GetByPlayerId(p.PlayerId);
         if (roleClass != null)
@@ -973,7 +978,7 @@ public static class Utils
         //ミーティング中の呼び出しは不正
         if (GameStates.IsMeeting) return;
 
-        var caller = new System.Diagnostics.StackFrame(1, false);
+        var caller = new StackFrame(1, false);
         var callerMethod = caller.GetMethod();
         string callerMethodName = callerMethod.Name;
         string callerClassName = callerMethod.DeclaringType.FullName;
@@ -1186,16 +1191,6 @@ public static class Utils
             Logger.Info(sb.ToString(), "CountAlivePlayers");
         }
     }
-    public static string GetVoteName(byte num)
-    {
-        string name = "invalid";
-        var player = GetPlayerById(num);
-        if (num < 15 && player != null) name = player?.GetNameWithRole();
-        if (num == 253) name = "Skip";
-        if (num == 254) name = "None";
-        if (num == 255) name = "Dead";
-        return name;
-    }
     public static void KickPlayer(int playerId, bool ban, string reason)
     {
         if (!AmongUsClient.Instance.AmHost) return;
@@ -1228,9 +1223,17 @@ public static class Utils
             if (popup) PlayerControl.LocalPlayer.ShowPopUp(string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
             else HudManager.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
         }
-        System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("Explorer.exe")
+        ProcessStartInfo psi = new ProcessStartInfo("Explorer.exe")
         { Arguments = "/e,/select," + @filename.Replace("/", "\\") };
-        System.Diagnostics.Process.Start(psi);
+        Process.Start(psi);
+    }
+    public static void OpenDirectory(string path)
+    {
+        var startInfo = new ProcessStartInfo(path)
+        {
+            UseShellExecute = true,
+        };
+        Process.Start(startInfo);
     }
     public static string SummaryTexts(byte id, bool disableColor = true)
     {

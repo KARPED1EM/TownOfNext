@@ -15,9 +15,7 @@ static class CustomRolesHelper
         var roleInfo = role.GetRoleInfo();
         if (roleInfo != null)
             return roleInfo.CustomRoleType == CustomRoleTypes.Impostor;
-        return
-            role is CustomRoles.Impostor or
-            CustomRoles.Shapeshifter;
+        return false;
     }
     public static bool IsImpostorTeam(this CustomRoles role) => role.IsImpostor() || role is CustomRoles.Madmate;
     public static bool IsNeutral(this CustomRoles role)
@@ -65,7 +63,6 @@ static class CustomRolesHelper
         else if (role.IsCrewmate()) type = CustomRoleTypes.Crewmate;
         else if (role.IsNeutral()) type = CustomRoleTypes.Neutral;
         else if (role.IsAddon()) type = CustomRoleTypes.Addon;
-        //else Logger.Fatal($"Found Invalid Role: {role}", "GetCustomRoleTypes");
 
         return type;
     }
@@ -130,14 +127,7 @@ static class CustomRolesHelper
             return roleInfo.BaseRoleType.Invoke();
         return role switch
         {
-            CustomRoles.Scientist => RoleTypes.Scientist,
-
-            CustomRoles.Engineer => RoleTypes.Engineer,
-
-            CustomRoles.GuardianAngel or
             CustomRoles.GM => RoleTypes.GuardianAngel,
-
-            CustomRoles.Shapeshifter => RoleTypes.Shapeshifter,
 
             _ => role.IsImpostor() ? RoleTypes.Impostor : RoleTypes.Crewmate,
         };

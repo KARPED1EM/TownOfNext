@@ -11,7 +11,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class DoveOfPeace : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(DoveOfPeace),
             player => new DoveOfPeace(player),
             CustomRoles.DoveOfPeace,

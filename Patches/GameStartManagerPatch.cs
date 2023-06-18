@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using TOHE.Modules;
 using UnityEngine;
 using static TOHE.Translator;
 using Object = UnityEngine.Object;
@@ -76,7 +77,7 @@ public class GameStartManagerPatch
             if (!AmongUsClient.Instance.AmHost) return;
 
             // Make Public Button
-            if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !Main.AllowPublicRoom)
+            if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !Main.AllowPublicRoom || !VersionChecker.IsSupported)
             {
                 __instance.MakePublicButton.color = Palette.DisabledClear;
                 __instance.privatePublicText.color = Palette.DisabledClear;

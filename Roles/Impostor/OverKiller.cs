@@ -11,7 +11,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class OverKiller : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(OverKiller),
             player => new OverKiller(player),
             CustomRoles.OverKiller,

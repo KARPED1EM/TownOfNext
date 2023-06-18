@@ -6,7 +6,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class SpeedBooster : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(SpeedBooster),
             player => new SpeedBooster(player),
             CustomRoles.SpeedBooster,

@@ -7,7 +7,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class Miner : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Miner),
             player => new Miner(player),
             CustomRoles.Miner,

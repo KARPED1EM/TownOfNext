@@ -7,7 +7,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class Minimalism : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Minimalism),
             player => new Minimalism(player),
             CustomRoles.Minimalism,

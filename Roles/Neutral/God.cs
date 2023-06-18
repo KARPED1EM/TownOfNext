@@ -9,7 +9,7 @@ namespace TOHE.Roles.Neutral;
 public sealed class God : RoleBase, IOverrideWinner
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(God),
             player => new God(player),
             CustomRoles.God,

@@ -8,6 +8,7 @@
     <Authors>KARPED1EM</Authors>
     <langVersion>latest</langVersion>
     <Configurations>Debug;Release;Canary</Configurations>
+    <NoWarn>MSB3246</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

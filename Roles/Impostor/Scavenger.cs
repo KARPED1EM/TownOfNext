@@ -8,7 +8,7 @@ public sealed class Scavenger : RoleBase, IImpostor
 {
 
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Scavenger),
             player => new Scavenger(player),
             CustomRoles.Scavenger,

@@ -6,7 +6,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Paranoia : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Paranoia),
             player => new Paranoia(player),
             CustomRoles.Paranoia,

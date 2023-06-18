@@ -7,7 +7,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class CyberStar : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(CyberStar),
             player => new CyberStar(player),
             CustomRoles.CyberStar,

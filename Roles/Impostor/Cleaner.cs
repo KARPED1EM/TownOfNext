@@ -8,7 +8,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class Cleaner : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Cleaner),
             player => new Cleaner(player),
             CustomRoles.Cleaner,

@@ -8,7 +8,7 @@ namespace TOHE.Roles.Crewmate;
 public class Snitch : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Snitch),
             pc => new Snitch(pc),
             CustomRoles.Snitch,

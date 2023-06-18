@@ -7,7 +7,7 @@ namespace TOHE.Roles.Neutral;
 public sealed class Terrorist : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Terrorist),
             player => new Terrorist(player),
             CustomRoles.Terrorist,

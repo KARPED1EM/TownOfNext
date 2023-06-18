@@ -11,7 +11,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class BountyHunter : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(BountyHunter),
             player => new BountyHunter(player),
             CustomRoles.BountyHunter,

@@ -34,9 +34,8 @@ public class ModUpdater
     public static GameObject PopupButton;
     public static Task updateTask;
 
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
-    [HarmonyPriority(2)]
-    public static void Start_Prefix(MainMenuManager __instance)
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix, HarmonyPriority(Priority.LowerThanNormal)]
+    public static void StartPostfix()
     {
         NewVersionCheck();
         DeleteOldFiles();

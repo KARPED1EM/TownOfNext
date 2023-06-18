@@ -6,7 +6,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Observer : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Observer),
             player => new Observer(player),
             CustomRoles.Observer,

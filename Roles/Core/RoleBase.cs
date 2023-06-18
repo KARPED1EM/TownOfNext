@@ -235,28 +235,12 @@ public abstract class RoleBase : IDisposable
     { }
 
     /// <summary>
-    /// 玩家投票时调用的函数
+    /// 当有人投票时触发
     /// </summary>
-    /// <param name="statesList">储存全部投票信息的列表</param>
-    /// <param name="pva">玩家</param>
-    /// <returns>false：不继续向下执行原版的会议结束判断</returns>
-    public virtual bool OnCheckForEndVoting(ref List<MeetingHud.VoterState> statesList, PlayerVoteArea pva) => true;
-
-    /// <summary>
-    /// 在投票结束时对全部投票信息进行预处理
-    /// </summary>
-    /// <param name="statesList">全部投票信息</param>
-    /// <param name="pva">投票信息</param>
-    /// <returns>false：忽略该投票</returns>
-    public virtual bool OnVotingEnd(ref List<MeetingHud.VoterState> statesList, ref PlayerVoteArea pva) => true;
-
-    /// <summary>
-    /// 计算每位玩家投票的函数
-    /// </summary>
-    /// <param name="ps">投票信息</param>
-    /// <param name="VoteNums">结算票数</param>
-    public virtual void OnCalculateVotes(ref PlayerVoteArea ps, ref int VoteNum)
-    { }
+    /// <param name="voterId">被投票者的ID</param>
+    /// <param name="sourceVotedForId">投票者的ID</param>
+    /// <returns>(修改后的投票目标, 修改后的票数, 是否为有效投票)</returns>
+    public virtual (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId) => (null, null, true);
 
     /// <summary>
     /// 驱逐玩家后调用的函数

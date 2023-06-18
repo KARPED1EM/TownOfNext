@@ -9,7 +9,7 @@ public sealed class Sans : RoleBase, IImpostor
 {
 
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Sans),
             player => new Sans(player),
             CustomRoles.Sans,

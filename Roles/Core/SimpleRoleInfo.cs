@@ -25,7 +25,7 @@ public class SimpleRoleInfo
     public bool Experimental;
     public AudioClip IntroSound => introSound?.Invoke();
 
-    public SimpleRoleInfo(
+    private SimpleRoleInfo(
         Type classType,
         Func<PlayerControl, RoleBase> createInstance,
         CustomRoles roleName,
@@ -34,11 +34,11 @@ public class SimpleRoleInfo
         int configId,
         OptionCreatorDelegate optionCreator,
         string chatCommand,
-        string colorCode = "",
-        bool requireResetCam = false,
-        TabGroup tab = TabGroup.GameSettings,
-        Func<AudioClip> introSound = null,
-        bool experimental = false
+        string colorCode,
+        bool requireResetCam,
+        TabGroup tab,
+        Func<AudioClip> introSound,
+        bool experimental
     )
     {
         ClassType = classType;
@@ -76,6 +76,94 @@ public class SimpleRoleInfo
         Tab = tab;
 
         CustomRoleManager.AllRolesInfo.Add(roleName, this);
+    }
+    public static SimpleRoleInfo Create(
+        Type classType,
+        Func<PlayerControl, RoleBase> createInstance,
+        CustomRoles roleName,
+        Func<RoleTypes> baseRoleType,
+        CustomRoleTypes customRoleType,
+        int configId,
+        OptionCreatorDelegate optionCreator,
+        string chatCommand,
+        string colorCode = "",
+        bool requireResetCam = false,
+        TabGroup tab = TabGroup.GameSettings,
+        Func<AudioClip> introSound = null,
+        bool experimental = false
+    )
+    {
+        return
+            new(
+                classType,
+                createInstance,
+                roleName,
+                baseRoleType,
+                customRoleType,
+                configId,
+                optionCreator,
+                chatCommand,
+                colorCode,
+                requireResetCam,
+                tab,
+                introSound,
+                experimental
+            );
+    }
+    public static SimpleRoleInfo CreateForVanilla(
+        Type classType,
+        Func<PlayerControl, RoleBase> createInstance,
+        RoleTypes baseRoleType,
+        string colorCode = "",
+        bool experimental = false
+    )
+    {
+        CustomRoles roleName;
+        CustomRoleTypes customRoleType;
+
+        switch (baseRoleType)
+        {
+            case RoleTypes.Engineer:
+                roleName = CustomRoles.Engineer;
+                customRoleType = CustomRoleTypes.Crewmate;
+                break;
+            case RoleTypes.Scientist:
+                roleName = CustomRoles.Scientist;
+                customRoleType = CustomRoleTypes.Crewmate;
+                break;
+            case RoleTypes.GuardianAngel:
+                roleName = CustomRoles.GuardianAngel;
+                customRoleType = CustomRoleTypes.Crewmate;
+                break;
+            case RoleTypes.Impostor:
+                roleName = CustomRoles.Impostor;
+                customRoleType = CustomRoleTypes.Impostor;
+                break;
+            case RoleTypes.Shapeshifter:
+                roleName = CustomRoles.Shapeshifter;
+                customRoleType = CustomRoleTypes.Impostor;
+                break;
+            default:
+                roleName = CustomRoles.Crewmate;
+                customRoleType = CustomRoleTypes.Crewmate;
+                break;
+        }
+        return
+            new(
+                classType,
+                createInstance,
+                roleName,
+                () => baseRoleType,
+                customRoleType,
+                -1,
+                null,
+                null,
+                colorCode,
+                false,
+                TabGroup.GameSettings,
+                null,
+                experimental
+            );
     }
     public delegate void OptionCreatorDelegate();
 }

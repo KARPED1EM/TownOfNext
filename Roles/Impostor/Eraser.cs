@@ -10,7 +10,7 @@ namespace TOHE.Roles.Impostor;
 public sealed class Eraser : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Eraser),
             player => new Eraser(player),
             CustomRoles.Eraser,
@@ -29,11 +29,11 @@ public sealed class Eraser : RoleBase, IImpostor
     { }
 
     static OptionItem OptionEraseLimit;
-    static OptionItem OptionHideVote;
+    static OptionItem OptionIgnoreVote;
     enum OptionName
     {
         EraseLimit,
-        EraserHideVote,
+        EraserIgnoreVote,
     }
 
     private int EraseLimit;
@@ -42,7 +42,7 @@ public sealed class Eraser : RoleBase, IImpostor
     {
         OptionEraseLimit = IntegerOptionItem.Create(RoleInfo, 10, OptionName.EraseLimit, new(1, 15, 1), 2, false)
             .SetValueFormat(OptionFormat.Times);
-        OptionHideVote = BooleanOptionItem.Create(RoleInfo, 11, OptionName.EraserHideVote, false, false);
+        OptionIgnoreVote = BooleanOptionItem.Create(RoleInfo, 11, OptionName.EraserIgnoreVote, false, false);
     }
     public override void Add()
     {
@@ -60,33 +60,41 @@ public sealed class Eraser : RoleBase, IImpostor
         EraseLimit = reader.ReadInt32();
     }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(EraseLimit >= 1 ? Color.red : Color.gray, $"({EraseLimit})");
-    public override bool OnCheckForEndVoting(ref List<MeetingHud.VoterState> statesList, PlayerVoteArea pva)
+    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
     {
-        var target = Utils.GetPlayerById(pva.VotedFor);
-        if (target != null && pva.DidVote && pva.VotedFor < 253 && Player.IsAlive() && PlayerToErase != byte.MaxValue && EraseLimit >= 1)
+        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
+        var baseVote = (votedForId, numVotes, doVote);
+        var target = Utils.GetPlayerById(sourceVotedForId);
+        if (target == null || voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive() || EraseLimit < 1)
         {
-            if (Is(target))
-            {
-                Utils.SendMessage(GetString("EraserEraseSelf"), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
-                return true;
-            }
-
-            if (target.Is(CustomRoleTypes.Neutral))
-            {
-                Utils.SendMessage(string.Format(GetString("EraserEraseNeutralNotice"), target.GetRealName()), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
-                return true;
-            }
-
-            EraseLimit--;
-            SendRPC();
-
-            PlayerToErase = target.PlayerId;
-
-            Utils.SendMessage(string.Format(GetString("EraserEraseNotice"), target.GetRealName()), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+            return baseVote;
         }
-        return true;
+        if (OptionIgnoreVote.GetBool())
+        {
+            baseVote.doVote = false;
+        }
+
+        if (Is(target))
+        {
+            Utils.SendMessage(GetString("EraserEraseSelf"), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+            return baseVote;
+        }
+
+        if (target.Is(CustomRoleTypes.Neutral))
+        {
+            Utils.SendMessage(string.Format(GetString("EraserEraseNeutralNotice"), target.GetRealName()), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+            return baseVote;
+        }
+
+        EraseLimit--;
+        SendRPC();
+
+        PlayerToErase = target.PlayerId;
+
+        Utils.SendMessage(string.Format(GetString("EraserEraseNotice"), target.GetRealName()), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+
+        return baseVote;
     }
-    public override bool OnVotingEnd(ref List<MeetingHud.VoterState> statesList, ref PlayerVoteArea pva) => !OptionHideVote.GetBool();
     public override void OnStartMeeting()
     {
         PlayerToErase = byte.MaxValue;

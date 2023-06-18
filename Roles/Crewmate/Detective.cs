@@ -8,7 +8,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Detective : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Detective),
             player => new Detective(player),
             CustomRoles.Detective,

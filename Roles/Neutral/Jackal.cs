@@ -8,7 +8,7 @@ namespace TOHE.Roles.Neutral;
 public sealed class Jackal : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Jackal),
             player => new Jackal(player),
             CustomRoles.Jackal,

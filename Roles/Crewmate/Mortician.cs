@@ -9,7 +9,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Mortician : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Mortician),
             player => new Mortician(player),
             CustomRoles.Mortician,

@@ -8,7 +8,7 @@ namespace TOHE.Roles.Crewmate;
 public sealed class Veteran : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
-        new(
+        SimpleRoleInfo.Create(
             typeof(Veteran),
             player => new Veteran(player),
             CustomRoles.Veteran,
