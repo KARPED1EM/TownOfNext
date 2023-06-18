@@ -1,0 +1,14 @@
+D:\Desktop\TOHE\TOHE\bin\Debug\net6.0\TOHE.deps.json
+D:\Desktop\TOHE\TOHE\bin\Debug\net6.0\TOHE.dll
+D:\Desktop\TOHE\TOHE\bin\Debug\net6.0\TOHE.pdb
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\GitInfo.cache
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.csproj.AssemblyReference.cache
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.GeneratedMSBuildEditorConfig.editorconfig
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.AssemblyInfoInputs.cache
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.AssemblyInfo.cs
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.csproj.CoreCompileInputs.cache
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.csproj.Fody.CopyLocal.cache
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.dll
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\refint\TOHE.dll
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\TOHE.pdb
+D:\Desktop\TOHE\TOHE\obj\Debug\net6.0\ref\TOHE.dll

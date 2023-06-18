@@ -1,0 +1,75 @@
+#Number:100042
+#Title:TownOfHostEdited v2.3.5
+#SubTitle:★★★★Waiting for TOH update★★★★
+#ShortTitle:★TOHE v2.3.5
+#Date:2023-5-15T00:00:00Z
+#-----------------------------
+I hope this is the last version before the TOH update
+
+
+## Base
+- Base on TOH v4.1.2
+
+## Fix
+- Fixed the bug that in-game update often causes the game to crash
+- Fixed the bug that judged by Judge, guessed by Guesser, and revenged by Mafia on meeting will cause lovers to suicide not immediately but after the meeting
+- Fixed the bug that resets the Jackal's kill cooldown when the Jackal kills someone
+- Fixed the bug that Jackals can win by sabotage after death
+- Fixed the bug that players who died on meeting may keep flashing in the mod
+- Fixed the bug that Medium sometimes connect with themselves
+- Fixed the bug that Medium create connections with Hacker targets or Paranoid
+- Fixed the bug that after the Detective is hacked by the Hacker, the skills will be applied to himself
+- Fixed the bug that Mad Guesser has no crew in the UI
+- Fixed the bug that The Guesser will definitely suicide when he guesses some roles
+- Fixed the bug that some values in the settings panel may have too many decimals
+- Fixed the bug that The option for whether the Guessere can guess the Snitch who completed the tasks is invalid
+- Fixed the bug that the HUD prompt text format of some roles on mod is wrong
+- Fixed the bug that the task text in the task panel disappears after the crew dies
+- Fixed the bug that The task panel does not display the sabotage after the imp dies
+- Fixed the bug that expelled players quitting the game before the end of the meeting will cause some players' role names to be exposed
+- Fixed the bug that the number of bullets of the Quick Shooter may be less than 0
+- Fixed the bug that HUD text may be shown in meetings
+- Fixed the bug that the Stealer prompt will not include current kill
+- Fixed the bug that the attack cooldown on the mod is abnormal in the PVP mode
+- Fixed the bug that Sniper can snipe in the belly of Pelican
+- Fixed the bug that part of the code during a meeting causes low-spec PC games to become unresponsive
+- Fixed the bug that when the host is a Revolutionist, Arsonist, Mayor, Paranoid, Veteran, Grenadier, etc., clicking the vent button may not respond
+- Fixed the bug that some roles will be reset to double the time when resetting the kill/skill cooldown
+- Fixed the bug that Mayor's and Paranoid's vent cooldowns could be incorrectly reset to 300s
+- Fixed the bug that Puppeteers on non-host mod side can't see target marks
+- Fixed the bug that the game start countdown timer cannot be seen on the non-host mod
+- Fixed the bug that The file location will not pop up after outputting the log
+- Fixed the bug that Quick Shooter and Bomber's skill cooldowns were not being reset after a meeting
+- Fixed the bug that there was no prompt when the Veteran reached the upper limit of skill usage
+
+## Changing
+- End screen tweaks and fix some grammatical issue
+- Modified loading check of options to launch game faster
+- The mod will show the same kill-flash as the host instead of the sabotage based kill-flash
+- kill-flash changed to translucent to prevent blocking view and to be softer
+- Removed most of the shield-animations on mod
+- When you click the kill button on someone as Pelican/Hangman/Scavenger, you will lunge to that player like if you were doing a normal kill
+- The game over screen now displays white instead of blue if the cause of death is eviction
+- The game over screen for surviving players doesn't show dead instead of alive
+
+## New Feature
+- Option: Maximum number of times a Medium can establish contact
+- Option: The Medium will only receive messages from the crew
+- Added ending screen text for game over due to errors
+- Options: Guesser can guess the vanilla roles
+- Stricter checking for empty names
+- Option: Lighter Vision
+- Some skill buttons
+- Some skill sound effects
+- Option: Enable mod sound effects
+- Add button text for Warlock
+- Highlight the output file when the directory where the file is located is popped up after the log is output
+	
+## Role Changing
+- Mortician won't become Seer
+- Medium's skill changed to directly connect with the victim being reported for each meeting
+- Swooper will no longer be The Flash due to technical limitations
+- Succubus color changed and is no longer an experimental role
+
+## New Role
+- Crewmate: Dove of Peace

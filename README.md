@@ -3,10 +3,10 @@
 
 <br>
 
-<img align="left" alt="Cover" src="Resources/Images/TOHE-BG.jpg" width="50%" height="auto" /> 
+<img align="left" alt="Cover" src="Banner.webp" width="50%" height="auto" /> 
 
 <p align="right">
-  
+
 > ### Regarding this mod
 >
 > This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.
@@ -62,4 +62,3 @@
 > 
 > - Reference: Modify Text Box
 > - Reference: Hotkey To Choose Messages Send Target
-> 
