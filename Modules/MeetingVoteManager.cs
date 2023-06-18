@@ -69,6 +69,22 @@ public class MeetingVoteManager
         }
 
         bool doVote = true;
+
+        //主动叛变模式
+        if (Options.MadmateSpawnMode.GetInt() == 2 && voter == voteFor)
+        {
+            var player = Utils.GetPlayerById(voter);
+            if (player != null && Main.MadmateNum < CustomRoles.Madmate.GetCount() && player.CanBeMadmate())
+            {
+                Main.MadmateNum++;
+                player.RpcSetCustomRole(CustomRoles.Madmate);
+                ExtendedPlayerControl.RpcSetCustomRole(player.PlayerId, CustomRoles.Madmate);
+                Utils.NotifyRoles(true, player, true);
+                Logger.Info($"注册附加职业：{player.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
+            }
+            return;
+        }
+
         foreach (var role in CustomRoleManager.AllActiveRoles.Values)
         {
             var (roleVoteFor, roleNumVotes, roleDoVote) = role.OnVote(voter, voteFor);
