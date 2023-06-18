@@ -1,8 +1,10 @@
 
-/.vs
-/bin
-/obj
-/.editorconfig
+*.editorconfig
 
-FodyWeavers.xsd
-TOHE.sln
+.vs/
+
+TOHE/obj/
+TOHE/bin
+
+TOHE/FodyWeavers.xsd
+TOHE/FodyWeavers.xml

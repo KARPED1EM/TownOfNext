@@ -46,20 +46,20 @@ namespace
       /// <summary>Branch: TOHE</summary>
       public const string Branch = @"TOHE";
 
-      /// <summary>Commit: 295885c0</summary>
-      public const string Commit = @"295885c0";
+      /// <summary>Commit: 8cb31a75</summary>
+      public const string Commit = @"8cb31a75";
 
-      /// <summary>Sha: 295885c0d99f32ebc1e376747136417b5e29f597</summary>
-      public const string Sha = @"295885c0d99f32ebc1e376747136417b5e29f597";
+      /// <summary>Sha: 8cb31a75966ba34c00120224b6a69e8ba6c04892</summary>
+      public const string Sha = @"8cb31a75966ba34c00120224b6a69e8ba6c04892";
 
-      /// <summary>Commit date: 2023-06-19T03:40:52+08:00</summary>
-      public const string CommitDate = @"2023-06-19T03:40:52+08:00";
+      /// <summary>Commit date: 2023-06-19T04:07:38+08:00</summary>
+      public const string CommitDate = @"2023-06-19T04:07:38+08:00";
 
-      /// <summary>Commits on top of base version: 138</summary>
-      public const string Commits = @"138";
+      /// <summary>Commits on top of base version: 139</summary>
+      public const string Commits = @"139";
 
-      /// <summary>Tag: v2.3.5-138-g295885c0</summary>
-      public const string Tag = @"v2.3.5-138-g295885c0";
+      /// <summary>Tag: v2.3.5-139-g8cb31a75</summary>
+      public const string Tag = @"v2.3.5-139-g8cb31a75";
 
       /// <summary>Base tag: v2.3.5</summary>
       public const string BaseTag = @"v2.3.5";
@@ -86,8 +86,8 @@ namespace
         /// <summary>Minor: 3</summary>
         public const string Minor = @"3";
 
-        /// <summary>Patch: 143</summary>
-        public const string Patch = @"143";
+        /// <summary>Patch: 144</summary>
+        public const string Patch = @"144";
 
         /// <summary>Label: </summary>
         public const string Label = @"";
