@@ -365,7 +365,7 @@ internal class ChatCommands
                 case "/sd":
                     canceled = true;
                     subArgs = text.Remove(0, 3);
-                    if (args.Length < 1 || !int.TryParse(args[1], out int sound1)) break;
+                    if (subArgs.Length < 1 || !int.TryParse(subArgs, out int sound1)) break;
                     RPC.PlaySoundRPC(PlayerControl.LocalPlayer.PlayerId, (Sounds)sound1);
                     break;
 

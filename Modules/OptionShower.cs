@@ -1,25 +1,52 @@
+using HarmonyLib;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TMPro;
 using TOHE.Roles.Core;
 using UnityEngine;
 using static TOHE.Translator;
 
 namespace TOHE;
 
+[HarmonyPatch(typeof(HudManager))]
+public static class OptionShowerPatch
+{
+    public static float OriginalY = 2.9f;
+    public static Scroller Scroller;
+    public static GameObject GameSettings;
+    public static bool Allow => OptionShower.currentPage != 0 && Input.mousePosition.x < 320f;
+    [HarmonyPatch(nameof(HudManager.Start)), HarmonyPostfix]
+    public static void Start(HudManager __instance)
+    {
+        OptionShower.BuildText();
+        GameSettings = __instance.GameSettings.gameObject;
+        __instance.GameSettings.fontSizeMin =
+        __instance.GameSettings.fontSizeMax = 0.8f;
+        Scroller = __instance.GameSettings.transform.parent.gameObject.AddComponent<Scroller>();
+        Scroller.Inner = __instance.GameSettings.transform;
+        Scroller.SetYBoundsMin(OriginalY);
+        Scroller.allowY = true;
+    }
+    [HarmonyPatch(nameof(HudManager.Update)), HarmonyPostfix]
+    public static void Update(HudManager __instance)
+    {
+        if (GameStates.IsLobby)
+        {
+            var POM = GameObject.Find("PlayerOptionsMenu(Clone)");
+            __instance.GameSettings.text = POM != null ? "" : OptionShower.GetText();
+            Scroller.enabled = Allow;
+            CalculateAndSetYBounds();
+        }
+    }
+    public static void CalculateAndSetYBounds() => Scroller?.SetYBoundsMax(GameSettings.GetComponent<TextMeshPro>().renderedHeight - 2.6f);
+}
+
 public static class OptionShower
 {
     public static int currentPage = 0;
     public static List<string> pages = new();
-    static OptionShower()
-    {
-
-    }
-    public static string GetText()
-    {
-        if (pages.Count < 3) BuildText();
-        return $"{pages[currentPage]}{GetString("PressTabToNextPage")}({currentPage + 1}/{pages.Count})";
-    }
+    public static string GetText() => $"{GetString("PressTabToNextPage")}({currentPage + 1}/{pages.Count})\n\n{pages[currentPage]}";
     public static string BuildText()
     {
         //初期化
@@ -49,17 +76,29 @@ public static class OptionShower
                 pages.Add(sb.ToString() + "\n\n");
                 sb.Clear();
             }
-            //有効な役職と詳細設定一覧
-            pages.Add("");
-            nameAndValue(Options.EnableGM);
-            foreach (var kvp in Options.CustomRoleSpawnChances)
+
+            Dictionary<string, CustomRoleTypes> pageRoleTypes = new()
             {
-                if (!kvp.Key.IsEnable() || kvp.Value.IsHiddenOn(Options.CurrentGameMode)) continue;
-                sb.Append('\n');
-                sb.Append($"{Utils.ColorString(Utils.GetRoleColor(kvp.Key), Utils.GetRoleName(kvp.Key))}: {kvp.Value.GetString()}×{kvp.Key.GetCount()}\n");
-                ShowChildren(kvp.Value, ref sb, Utils.GetRoleColor(kvp.Key).ShadeColor(-0.5f), 1);
-                string rule = Utils.ColorString(Palette.ImpostorRed.ShadeColor(-0.5f), "┣ ");
-                string ruleFooter = Utils.ColorString(Palette.ImpostorRed.ShadeColor(-0.5f), "┗ ");
+                { "TypeImpostor", CustomRoleTypes.Impostor },
+                { "TypeCrewmate", CustomRoleTypes.Crewmate },
+                { "TypeNeutral", CustomRoleTypes.Neutral },
+                { "TypeAddon", CustomRoleTypes.Addon }
+            };
+
+            foreach (var type in pageRoleTypes)
+            {
+                sb.Append($"<size=140%>{Utils.ColorString(Utils.GetCustomRoleTypeColor(type.Value), GetString(type.Key))}</size>\n");
+                foreach (var kvp in Options.CustomRoleSpawnChances.Where(o => o.Key.GetCustomRoleTypes() == type.Value))
+                {
+                    if (!kvp.Key.IsEnable() || kvp.Value.IsHiddenOn(Options.CurrentGameMode)) continue;
+                    sb.Append('\n');
+                    sb.Append($"{Utils.ColorString(Utils.GetRoleColor(kvp.Key), Utils.GetRoleName(kvp.Key))}: {kvp.Value.GetString()}×{kvp.Key.GetCount()}\n");
+                    ShowChildren(kvp.Value, ref sb, Utils.GetRoleColor(kvp.Key).ShadeColor(-0.5f), 1);
+                    string rule = Utils.ColorString(Palette.ImpostorRed.ShadeColor(-0.5f), "┣ ");
+                    string ruleFooter = Utils.ColorString(Palette.ImpostorRed.ShadeColor(-0.5f), "┗ ");
+                }
+                pages.Add(sb.ToString());
+                sb.Clear();
             }
 
             foreach (var opt in OptionItem.AllOptions.Where(x => x.Id >= 90000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null && !x.IsText))
@@ -69,19 +108,12 @@ public static class OptionShower
                 if (opt.GetBool())
                     ShowChildren(opt, ref sb, Color.white, 1);
             }
-            //Onの時に子要素まで表示するメソッド
-            void nameAndValue(OptionItem o) => sb.Append($"{o.GetName()}: {o.GetString()}\n");
+            pages.Add(sb.ToString());
+            sb.Clear();
         }
-        //1ページにつき48行までにする処理
-        List<string> tmp = new(sb.ToString().Split("\n\n"));
-        for (var i = 0; i < tmp.Count; i++)
-        {
-            if (pages[^1].Count(c => c == '\n') + 1 + tmp[i].Count(c => c == '\n') + 1 > 48)
-                pages.Add(tmp[i] + "\n\n");
-            else pages[^1] += tmp[i] + "\n\n";
-        }
+
         if (currentPage >= pages.Count) currentPage = pages.Count - 1; //現在のページが最大ページ数を超えていれば最後のページに修正
-        return $"{pages[currentPage]}{GetString("PressTabToNextPage")}({currentPage + 1}/{pages.Count})";
+        return GetText();
     }
     public static void Next()
     {

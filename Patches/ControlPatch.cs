@@ -32,7 +32,9 @@ internal class ControllerManagerUpdatePatch
             for (var i = 0; i < 9; i++)
             {
                 if (ORGetKeysDown(KeyCode.Alpha1 + i, KeyCode.Keypad1 + i) && OptionShower.pages.Count >= i + 1)
+                {
                     OptionShower.currentPage = i;
+                }
             }
         }
         //捕捉全屏快捷键

@@ -12,16 +12,12 @@ public static class Zoom
 {
     public static void Postfix()
     {
-        //if (PlayerControl.LocalPlayer.Is(RoleType.Impostor) && Options.OperateVisibilityImpostor.GetBool()) return;
+        if (GameStates.IsLobby && OptionShowerPatch.Allow) return;
         if ((GameStates.IsShip || GameStates.IsLobby) && !GameStates.IsMeeting && GameStates.IsCanMove)
         {
             if (Input.mouseScrollDelta.y > 0)
             {
-                if (Camera.main.orthographicSize > 3.0f)
-                {
-                    SetZoomSize(times: false);
-                }
-
+                if (Camera.main.orthographicSize > 3.0f) SetZoomSize(times: false);
             }
             if (Input.mouseScrollDelta.y < 0)
             {
@@ -45,7 +41,7 @@ public static class Zoom
         }
     }
 
-    private static void SetZoomSize(bool times = false, bool reset = false)
+    public static void SetZoomSize(bool times = false, bool reset = false)
     {
         var size = 1.5f;
         if (!times) size = 1 / size;
