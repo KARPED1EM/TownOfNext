@@ -103,7 +103,7 @@ internal class TitleLogoPatch
         GameObject.Find("BackgroundTexture")?.SetActive(!MainMenuManagerPatch.ShowedBak);
 
         if ((ModStamp = GameObject.Find("ModStamp")) == null) return;
-        ModStamp.transform.localScale = new Vector3(0.4f, 0.4f, 0.4f);
+        ModStamp.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
         if ((Ambience = GameObject.Find("Ambience")) == null) return;
         Ambience.SetActive(false);
@@ -137,7 +137,7 @@ internal class TitleLogoPatch
         if (!DebugModeManager.AmDebugger)
         {
             __instance.howToPlayButton.gameObject.SetActive(false);
-            __instance.gameModeButtons.transform.FindChild("AspectSize").FindChild("Scaler").FindChild("FreePlayButton")?.gameObject.SetActive(false);
+            __instance.howToPlayButton.transform.parent.Find("FreePlayButton").gameObject.SetActive(false);
         }
 
         var creditsScreen = __instance.creditsScreen;

@@ -15,18 +15,17 @@ public class MainMenuManagerPatch
     public static GameObject UpdateButton;
     public static GameObject PlayButton;
 
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu)), HarmonyPrefix]
-    public static void OpenGameModeMenu_Prefix() => ShowingPanel = true;
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu)), HarmonyPrefix]
-    public static void OpenAccountMenu_Prefix() => ShowingPanel = true;
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenCredits)), HarmonyPrefix]
-    public static void OpenCredits_Prefix() => ShowingPanel = true;
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
-    public static void Start_Postfix() => ShowingPanel = false;
-    [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Open)), HarmonyPrefix]
-    public static void OpenOptionsMenu_Postfix() => ShowingPanel = false;
-    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Show)), HarmonyPrefix]
-    public static void AnnouncementPopUp_Postfix() => ShowingPanel = false;
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenGameModeMenu))]
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenAccountMenu))]
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenCredits))]
+    [HarmonyPrefix, HarmonyPriority(Priority.Last)]
+    public static void ShowRightPanel() => ShowingPanel = true;
+    
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
+    [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Open))]
+    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Show))]
+    [HarmonyPrefix, HarmonyPriority(Priority.Last)]
+    public static void HideRightPanel() => ShowingPanel = false;
 
     private static bool isOnline = false;
     public static bool ShowedBak = false;
