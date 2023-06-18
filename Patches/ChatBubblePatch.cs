@@ -32,14 +32,6 @@ public static class ChatBubblePatch
         bool modded = IsModdedMsg(__instance.playerInfo.PlayerName);
         var sr = __instance.transform.FindChild("Background").GetComponent<SpriteRenderer>();
         sr.color = modded ? new Color(0, 0, 0) : new Color(1, 1, 1);
-        if (modded)
-        {
-            chatText = Utils.ColorString(Color.white, chatText);
-            var newOutfit = Camouflage.CamouflageOutfit_KPD;
-            __instance.Player.SetBodyColor(newOutfit.ColorId);
-            __instance.Player.SetHat(newOutfit.HatId, newOutfit.ColorId);
-            __instance.Player.SetSkin(newOutfit.SkinId, newOutfit.ColorId);
-            __instance.Player.SetVisor(newOutfit.VisorId, newOutfit.ColorId);
-        }
+        if (modded) chatText = Utils.ColorString(Color.white, chatText);
     }
 }
