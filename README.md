@@ -15,16 +15,10 @@
 <p align="center">
 <a href="https://tohe.cc" target="_blank"><img src="https://img.shields.io/badge/Website%20-%231DA1F2.svg?&style=for-the-badge&logo=vuedotjs&logoColor=white&color=3aa675"/></a>
 <a href="https://discord.gg/hkk2p9ggv4" target="_blank"><img src="https://img.shields.io/badge/Discord%20-%231DA1F2.svg?&style=for-the-badge&logo=discord&logoColor=white&color=5662f6"/></a>
-<a href="https://github.com/KARPED1EM/TownOfHostEdited/releases/latest" target="_blank"><img src="https://img.shields.io/badge/Lateset Version%20-%231DA1F2.svg?&style=for-the-badge&logo=github&logoColor=white&color=181717"/></a>
+<a href="https://github.com/KARPED1EM/TownOfHostEdited/releases/latest" target="_blank"><img src="https://img.shields.io/badge/Latest Version%20-%231DA1F2.svg?&style=for-the-badge&logo=github&logoColor=white&color=181717"/></a>
 </p>
 
 </p>
-
----
-
-**TOHE has stopped support and service after v2.3.6.**
-
-**For more infomation, Please checkout our [website](https://tohe.cc).**
 
 ---
 
@@ -39,21 +33,21 @@
 > 
 ### :star: [TOHY](https://github.com/Yumenopai/TownOfHost_Y) :
 > 
-> - Many role ideas
-> - Provided role: AntiAdminer, CursedWolf, Workaholic, Greedier, DarkHide
-> - Reference: Modify game announcement
+> - Many Role Ideas
+> - Provided Roles: AntiAdminer, CursedWolf, Workaholic, Greedier, DarkHide
+> - Reference: Modify Game Announcement
 > 
 ### :star: [TOH:TOR](https://github.com/music-discussion/TownOfHost-TheOtherRoles) :
 > 
-> - Many role ideas
+> - Many Role Ideas
 > - Reference: Exile Confirm
 > - Reference: Split RPC Pack
 > 
 ### :star: [SNR](https://github.com/ykundesu/SuperNewRoles) :
 > 
-> - Reference: Credentials menu
+> - Reference: Credentials Menu
 > - Reference: Switch Horse Mode
-> - Reference: Search Mod Game
+> - Reference: Mod Matches Lobby
 > - Reference: Custom Button
 >
 ### :star: [TOP](https://github.com/tugaru1975/TownOfPlus) :
@@ -63,4 +57,9 @@
 ### :star: [RHR](https://github.com/sansaaaaai/Revolutionary-host-roles) :
 > 
 > - Reference: Modify settings menu
+> 
+### :star: [Lotus](https://github.com/ImaMapleTree/Lotus) :
+> 
+> - Reference: Modify Text Box
+> - Reference: Hotkey To Choose Messages Send Target
 > 
