@@ -22,18 +22,18 @@ internal class ControllerManagerUpdatePatch
     public static void Postfix(ControllerManager __instance)
     {
         //切换自定义设置的页面
-        if (GameStates.IsLobby)
+        if (GameStates.IsLobby && !ChatUpdatePatch.Active)
         {
             if (Input.GetKeyDown(KeyCode.Tab))
             {
-                OptionShower.Next();
+                if (Input.GetKey(KeyCode.LeftControl)) OptionShower.Previous();
+                else OptionShower.Next();
             }
-            if (!ChatUpdatePatch.Active)
-                for (var i = 0; i < 9; i++)
-                {
-                    if (ORGetKeysDown(KeyCode.Alpha1 + i, KeyCode.Keypad1 + i) && OptionShower.pages.Count >= i + 1)
-                        OptionShower.currentPage = i;
-                }
+            for (var i = 0; i < 9; i++)
+            {
+                if (ORGetKeysDown(KeyCode.Alpha1 + i, KeyCode.Keypad1 + i) && OptionShower.pages.Count >= i + 1)
+                    OptionShower.currentPage = i;
+            }
         }
         //捕捉全屏快捷键
         if (GetKeysDown(KeyCode.LeftAlt, KeyCode.Return))
@@ -175,7 +175,7 @@ internal class ControllerManagerUpdatePatch
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RestTOHESetting, SendOption.Reliable, -1);
                 AmongUsClient.Instance.FinishRpcImmediately(writer);
             }
-            OptionShower.GetText();
+            OptionShower.BuildText();
         }
         //放逐自己
         if (GetKeysDown(KeyCode.Return, KeyCode.E, KeyCode.LeftShift) && GameStates.IsInGame)

@@ -276,7 +276,7 @@ public class StringOptionIncreasePatch
         option.SetValue(option.CurrentValue + 1);
         return false;
     }
-    public static void Postfix(StringOption __instance) => OptionShower.GetText();
+    public static void Postfix(StringOption __instance) => OptionShower.BuildText();
 }
 
 [HarmonyPatch(typeof(StringOption), nameof(StringOption.Decrease))]
@@ -290,7 +290,7 @@ public class StringOptionDecreasePatch
         option.SetValue(option.CurrentValue - 1);
         return false;
     }
-    public static void Postfix(StringOption __instance) => OptionShower.GetText();
+    public static void Postfix(StringOption __instance) => OptionShower.BuildText();
 }
 
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSyncSettings))]
