@@ -1,8 +1,8 @@
 {
-  "version": "3.0.2",
+  "version": "3.0.0",
   "minVer": "latest",
-  "creation": 1,
-  "allowStart": true,
+  "creation": "1",
+  "allowStart": "true",
   
   "md5": "123",
   
