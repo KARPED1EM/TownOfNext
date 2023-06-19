@@ -1,11 +1,9 @@
 ﻿using AmongUs.Data;
 using AmongUs.Data.Player;
 using Assets.InnerNet;
-using BepInEx.Unity.IL2CPP.Utils.Collections;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,7 +37,6 @@ public class ModNews
             Date = Date,
             Id = "ModNews"
         };
-
         return result;
     }
 }
@@ -48,32 +45,6 @@ public class ModNews
 public class ModNewsHistory
 {
     public static List<ModNews> AllModNews = new();
-
-    [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Init)), HarmonyPostfix]
-    public static void Initialize(ref Il2CppSystem.Collections.IEnumerator __result)
-    {
-        static IEnumerator GetEnumerator()
-        {
-            while (AnnouncementPopUp.UpdateState == AnnouncementPopUp.AnnounceState.Fetching) yield return null;
-            if (AnnouncementPopUp.UpdateState > AnnouncementPopUp.AnnounceState.Fetching && DataManager.Player.Announcements.AllAnnouncements.Count > 0) yield break;
-
-            AnnouncementPopUp.UpdateState = AnnouncementPopUp.AnnounceState.Fetching;
-            AllModNews.Clear();
-
-            var lang = DataManager.Settings.Language.CurrentLanguage.ToString();
-            if (!Assembly.GetExecutingAssembly().GetManifestResourceNames().Any(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}.")))
-                lang = SupportedLangs.English.ToString();
-
-            var fileNames = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}."));
-            foreach (var file in fileNames)
-                AllModNews.Add(GetContentFromRes(file));
-
-            AnnouncementPopUp.UpdateState = AnnouncementPopUp.AnnounceState.NotStarted;
-        }
-
-        __result = Effects.Sequence(GetEnumerator().WrapToIl2Cpp(), __result);
-    }
-
     public static ModNews GetContentFromRes(string path)
     {
         ModNews mn = new();
@@ -111,19 +82,34 @@ public class ModNewsHistory
     }
 
     [HarmonyPatch(typeof(PlayerAnnouncementData), nameof(PlayerAnnouncementData.SetAnnouncements)), HarmonyPrefix]
-    public static bool SetModAnnouncements(PlayerAnnouncementData __instance, [HarmonyArgument(0)] Il2CppReferenceArray<Announcement> aRange)
+    public static bool SetModAnnouncements(PlayerAnnouncementData __instance, [HarmonyArgument(0)] ref Il2CppReferenceArray<Announcement> aRange)
     {
-        List<Announcement> list = new();
-        list.AddRange(aRange);
-        AllModNews.Do(x => list.Add(x.ToAnnouncement()));
-        list.Sort((a1, a2) => { return DateTime.Compare(DateTime.Parse(a2.Date), DateTime.Parse(a1.Date)); });
+        if (AllModNews.Count < 1)
+        {
+            var lang = DataManager.Settings.Language.CurrentLanguage.ToString();
+            if (!Assembly.GetExecutingAssembly().GetManifestResourceNames().Any(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}.")))
+                lang = SupportedLangs.English.ToString();
 
-        __instance.allAnnouncements = new();
-        list.Do(__instance.allAnnouncements.Add);
+            var fileNames = Assembly.GetExecutingAssembly().GetManifestResourceNames().Where(x => x.StartsWith($"TOHE.Resources.ModNews.{lang}."));
+            foreach (var file in fileNames)
+                AllModNews.Add(GetContentFromRes(file));
 
-        __instance.HandleChange();
-        __instance.OnAddAnnouncement?.Invoke();
+            AllModNews.Sort((a1, a2) => { return DateTime.Compare(DateTime.Parse(a2.Date), DateTime.Parse(a1.Date)); });
+        }
 
-        return false;
+        List<Announcement> FinalAllNews = new();
+        AllModNews.Do(n => FinalAllNews.Add(n.ToAnnouncement()));
+        foreach (var news in aRange)
+        {
+            if (!AllModNews.Any(x => x.Number == news.Number))
+                FinalAllNews.Add(news);
+        }
+        FinalAllNews.Sort((a1, a2) => { return DateTime.Compare(DateTime.Parse(a2.Date), DateTime.Parse(a1.Date)); });
+
+        aRange = new (FinalAllNews.Count);
+        for (int i = 0; i < FinalAllNews.Count; i++)
+            aRange[i] = FinalAllNews[i];
+
+        return true;
     }
 }
