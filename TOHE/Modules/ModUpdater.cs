@@ -63,6 +63,11 @@ public class ModUpdater
         InfoPopup.gameObject.transform.FindChild("Background").transform.localScale *= 1.4f;
 
         if (!isChecked) CheckForUpdate();
+
+        MainMenuManagerPatch.PlayButton.SetActive(!hasUpdate);
+        MainMenuManagerPatch.UpdateButton.SetActive(hasUpdate);
+        var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
+        buttonText.text = $"{GetString("updateButton")}\nv{latestVersion}";
     }
     public static void CheckForUpdate()
     {
@@ -106,11 +111,6 @@ public class ModUpdater
             else ShowPopup(GetString("updateCheckFailedRetry"), GetString(StringNames.RetryText), CheckForUpdate);
             retried++;
         }
-
-        MainMenuManagerPatch.PlayButton.SetActive(!hasUpdate);
-        MainMenuManagerPatch.UpdateButton.SetActive(hasUpdate);
-        var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
-        buttonText.text = $"{GetString("updateButton")}\nv{latestVersion}";
     }
     public static string Get(string url)
     {

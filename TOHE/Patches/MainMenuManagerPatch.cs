@@ -101,7 +101,6 @@ public class MainMenuManagerPatch
                     ModUpdater.StartUpdate();
             }));
             UpdateButton.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
-            PlayButton.SetActive(false);
         }
 
         Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
