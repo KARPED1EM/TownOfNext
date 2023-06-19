@@ -417,6 +417,10 @@ static class ExtendedPlayerControl
         }, FlashDuration + delay, "Fix Desync Reactor");
     }
 
+    public static string GetTrueName(this PlayerControl player)
+    {
+        return Main.AllPlayerNames.TryGetValue(player.PlayerId, out var name) ? name : GetRealName(player);
+    }
     public static string GetRealName(this PlayerControl player, bool isMeeting = false)
     {
         return isMeeting ? player?.Data?.PlayerName : player?.name;

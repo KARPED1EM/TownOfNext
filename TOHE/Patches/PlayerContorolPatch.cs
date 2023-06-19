@@ -345,10 +345,7 @@ class FixedUpdatePatch
             if (GameStates.IsInGame && player.AmOwner)
                 DisableDevice.FixedUpdate();
 
-            if (__instance.AmOwner)
-            {
-                Utils.ApplySuffix(PlayerControl.LocalPlayer);
-            }
+            NameTagManager.ApplyFor(player);
         }
         //LocalPlayer専用
         if (__instance.AmOwner)
