@@ -22,7 +22,7 @@ public class ModUpdater
     private static readonly string[] URLs = 
     {
         "https://raw.githubusercontent.com/KARPED1EM/TOHE-Dev/TOHE/Release/info.json",
-        "https://cdn.jsdelivr.net/gh/KARPED1EM/TOHE-Dev@latest/Release/info.json",
+        "https://cdn.jsdelivr.net/gh/KARPED1EM/TOHE-Dev/Release/info.json",
         "https://tohe-next-1301425958.cos.ap-shanghai.myqcloud.com/info.json"
     };
 
