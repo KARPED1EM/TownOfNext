@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "minVer": "latest",
   "creation": "1",
   "allowStart": true,
@@ -10,7 +10,7 @@
     "SChinese": "欢迎回家，但有些东西已经回不来了",
     "English": "Welcome Back Home :)"
   },
-  
+
   "url": {
     "github": "https://github.com/KARPED1EM/TownOfHostEdited/releases/download/{{version}}/TOHE.dll",
     "cos": "https://tohe-next-1301425958.cos.ap-shanghai.myqcloud.com/TOHE.dll"
