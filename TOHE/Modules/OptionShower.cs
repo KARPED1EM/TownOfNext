@@ -101,7 +101,19 @@ public static class OptionShower
                 sb.Clear();
             }
 
-            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id >= 90000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null && !x.IsText))
+            sb.Append($"<size=140%><color=#59ef83>{GetString("TabGroup.GameSettings")}</color></size>\n");
+            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null && !x.IsText))
+            {
+                if (opt.IsHeader) sb.Append('\n');
+                sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
+                if (opt.GetBool())
+                    ShowChildren(opt, ref sb, Color.white, 1);
+            }
+            pages.Add(sb.ToString());
+            sb.Clear();
+
+            sb.Append($"<size=140%><color={Main.ModColor}>{GetString("TabGroup.SystemSettings")}</color></size>\n");
+            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 2000000 and < 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null && !x.IsText))
             {
                 if (opt.IsHeader) sb.Append('\n');
                 sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
