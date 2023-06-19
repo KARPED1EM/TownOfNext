@@ -34,7 +34,7 @@ public class Main : BasePlugin
     public const string PluginGuid = "com.karped1em.tohe";
     public static readonly string LowestSupportedVersion = "2023.6.13";
     public const string PluginVersion = "3.0.0";
-    public const int PluginCreate = 1;
+    public const int PluginCreation = 1;
 
     public static readonly bool ShowWebsiteButton = true;
     public static readonly bool ShowQQButton = true;
@@ -76,7 +76,6 @@ public class Main : BasePlugin
     public static ConfigEntry<string> Preset5 { get; private set; }
     //Other Configs
     public static ConfigEntry<string> WebhookURL { get; private set; }
-    public static ConfigEntry<string> BetaBuildURL { get; private set; }
     public static ConfigEntry<float> LastKillCooldown { get; private set; }
     public static ConfigEntry<float> LastShapeshifterCooldown { get; private set; }
     public static OptionBackupData RealOptionsData;
@@ -164,9 +163,7 @@ public class Main : BasePlugin
         TOHE.Logger.Disable("CustomRpcSender");
         if (!DebugModeManager.AmDebugger)
         {
-            TOHE.Logger.Disable("2018k");
             TOHE.Logger.Disable("CheckRelease");
-            TOHE.Logger.Disable("Github");
             TOHE.Logger.Disable("CustomRpcSender");
             //TOHE.Logger.Disable("ReceiveRPC");
             TOHE.Logger.Disable("SendRPC");
@@ -198,7 +195,6 @@ public class Main : BasePlugin
         Preset4 = Config.Bind("Preset Name Options", "Preset4", "Preset_4");
         Preset5 = Config.Bind("Preset Name Options", "Preset5", "Preset_5");
         WebhookURL = Config.Bind("Other", "WebhookURL", "none");
-        BetaBuildURL = Config.Bind("Other", "BetaBuildURL", "");
         MessageWait = Config.Bind("Other", "MessageWait", 1);
         LastKillCooldown = Config.Bind("Other", "LastKillCooldown", (float)30);
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);

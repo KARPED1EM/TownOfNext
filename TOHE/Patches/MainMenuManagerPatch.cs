@@ -98,7 +98,7 @@ public class MainMenuManagerPatch
                 PlayButton.SetActive(true);
                 UpdateButton.SetActive(false);
                 if (!DebugModeManager.AmDebugger || !Input.GetKey(KeyCode.LeftShift))
-                    ModUpdater.StartUpdate(ModUpdater.downloadUrl);
+                    ModUpdater.StartUpdate();
             }));
             UpdateButton.transform.transform.FindChild("FontPlacer").GetChild(0).gameObject.DestroyTranslator();
             PlayButton.SetActive(false);

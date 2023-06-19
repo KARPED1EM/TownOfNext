@@ -1188,6 +1188,8 @@
 "EveryoneDied","无人生还","No One Left","Все Мертвы","無人生還","无人生还"
 "ForceEndText","房主强制结束了游戏","Host has aborted the game","Хост завершил игру","房主強制結束了遊戲","房主强制结束了游戏"
 "HideGameCodes","直播模式","Hide Game Code","Скрыть Игровой Код","直播模式","直播模式"
+"updateCheckFailedRetry","检查更新失败 :(\n要重试吗？","","","",""
+"updateCheckFailedExit","检查更新失败 :(\n请检查您的网络强度后重试","","","",""
 "updateButton","一键更新","Update","Обновление","一鍵更新","一键更新"
 "updatePleaseWait","请稍候……","Please Wait...","Пожалуйста, подождите...","請稍後......","请稍候……"
 "updateManually","更新失败，请更换网络重试或手动更新。","Update failed.\nPlease Update Manually.","Ошибка обновления. \nПожалуйста обновите вручную.","更新失敗，請嘗試更換網路重試或手動更新。","更新失败，请更换网络重试或手动更新。"
