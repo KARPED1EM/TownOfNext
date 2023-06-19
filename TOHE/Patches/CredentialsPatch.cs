@@ -1,4 +1,5 @@
 using HarmonyLib;
+using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -83,8 +84,7 @@ internal class VersionShowerStartPatch
     }
 }
 
-[HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
-[HarmonyPriority(Priority.First)]
+[HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPriority(Priority.First)]
 internal class TitleLogoPatch
 {
     public static GameObject ModStamp;
@@ -106,7 +106,7 @@ internal class TitleLogoPatch
         ModStamp.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
         if ((Ambience = GameObject.Find("Ambience")) == null) return;
-        Ambience.SetActive(false);
+        Ambience.transform.FindChild("PlayerParticles").gameObject.SetActive(false);
 
         var TOHEBG = new GameObject("TOHE Background");
         TOHEBG.transform.position = new Vector3(0, 0, 520f);
@@ -118,6 +118,37 @@ internal class TitleLogoPatch
         static void ResetParent(GameObject obj) => obj.transform.SetParent(LeftPanel.transform.parent);
         LeftPanel.ForEachChild((Il2CppSystem.Action<GameObject>)ResetParent);
         LeftPanel.SetActive(false);
+
+        Color shade = new(0f, 0f, 0f, 0f);
+        var standardActiveSprite = __instance.newsButton.activeSprites.GetComponent<SpriteRenderer>().sprite;
+        var minorActiveSprite = __instance.quitButton.activeSprites.GetComponent<SpriteRenderer>().sprite;
+
+        Dictionary<List<PassiveButton>, (Sprite, Color, Color, Color, Color)> mainButtons = new()
+        {
+            {new List<PassiveButton>() {__instance.playButton, __instance.inventoryButton, __instance.shopButton},
+                (standardActiveSprite, new(1f, 0.524f, 0.549f, 0.8f), shade, Color.white, Color.white) },
+            {new List<PassiveButton>() {__instance.newsButton, __instance.myAccountButton, __instance.settingsButton},
+                (minorActiveSprite, new(1f, 0.825f, 0.686f, 0.8f), shade, Color.white, Color.white) },
+            {new List<PassiveButton>() {__instance.creditsButton, __instance.quitButton},
+                (minorActiveSprite, new(0.526f, 1f, 0.792f, 0.8f), shade, Color.white, Color.white) },
+        };
+
+        void FormatButtonColor(PassiveButton button, Sprite borderType, Color inActiveColor, Color activeColor, Color inActiveTextColor, Color activeTextColor)
+        {
+            button.activeSprites.transform.FindChild("Shine")?.gameObject?.SetActive(false);
+            button.inactiveSprites.transform.FindChild("Shine")?.gameObject?.SetActive(false);
+            var activeRenderer = button.activeSprites.GetComponent<SpriteRenderer>();
+            var inActiveRenderer = button.inactiveSprites.GetComponent<SpriteRenderer>();
+            activeRenderer.sprite = minorActiveSprite;
+            inActiveRenderer.sprite = minorActiveSprite;
+            activeRenderer.color = activeColor.a == 0f ? new Color(inActiveColor.r, inActiveColor.g, inActiveColor.b, 1f) : activeColor;
+            inActiveRenderer.color = inActiveColor;
+            button.activeTextColor = activeTextColor;
+            button.inactiveTextColor = inActiveTextColor;
+        }
+
+        foreach (var kvp in mainButtons)
+            kvp.Key.Do(button => FormatButtonColor(button, kvp.Value.Item1, kvp.Value.Item2, kvp.Value.Item3, kvp.Value.Item4, kvp.Value.Item5));
 
         GameObject.Find("Divider")?.SetActive(false);
 

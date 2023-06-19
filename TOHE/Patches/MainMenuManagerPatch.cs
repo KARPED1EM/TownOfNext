@@ -50,8 +50,8 @@ public class MainMenuManagerPatch
         if (pos2.y > 7f) ShowedBak = true;
     }
 
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPrefix]
-    public static void Start_Prefix(MainMenuManager __instance)
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
+    public static void Start_Postfix(MainMenuManager __instance)
     {
         int row = 1; int col = 0;
         GameObject CreatButton(string text, Action action)
@@ -85,13 +85,9 @@ public class MainMenuManagerPatch
             UpdateButton = Object.Instantiate(PlayButton, PlayButton.transform.parent);
             UpdateButton.name = "TOHE Update Button";
             UpdateButton.transform.localPosition = PlayButton.transform.localPosition - new Vector3(0f, 0f, 3f);
-            var inactive = UpdateButton.transform.FindChild("Inactive");
-            var spriteRenderer = inactive.GetComponent<SpriteRenderer>();
-            spriteRenderer.color = new Color32(255, 120, 255, byte.MaxValue);
-            var shine = inactive.FindChild("Shine");
-            var shineSpriteRenderer = shine.GetComponent<SpriteRenderer>();
-            shineSpriteRenderer.color = new Color32(50, 200, 255, byte.MaxValue);
             var passiveButton = UpdateButton.GetComponent<PassiveButton>();
+            passiveButton.inactiveSprites.GetComponent<SpriteRenderer>().color = new Color(0.49f, 0.34f, 0.62f, 0.8f);
+            passiveButton.activeSprites.GetComponent<SpriteRenderer>().color = new Color(0.49f, 0.34f, 0.62f, 1f);
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener((Action)(() =>
             {
