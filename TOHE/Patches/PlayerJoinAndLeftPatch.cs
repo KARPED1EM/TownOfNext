@@ -24,6 +24,7 @@ class OnGameJoinedPatch
         if (GameStates.IsModHost)
             Main.HostClientId = Utils.GetPlayerById(0)?.GetClientId() ?? -1;
 
+        Main.AllPlayerNames = new();
         ShowDisconnectPopupPatch.ReasonByHost = string.Empty;
         ChatUpdatePatch.DoBlockChat = false;
         GameStates.InGame = false;
@@ -36,7 +37,6 @@ class OnGameJoinedPatch
             Main.newLobby = true;
             Main.DevRole = new();
             EAC.DeNum = new();
-            Main.AllPlayerNames = new();
 
             if (Main.NormalOptions.KillCooldown == 0f)
                 Main.NormalOptions.KillCooldown = Main.LastKillCooldown.Value;
