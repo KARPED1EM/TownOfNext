@@ -26,7 +26,6 @@ jobs:
         python -c "import sys; print(sys.version)"
     - name: Put Request To Cos
       env:
-        PUT_URL: ${{ secrets.PUT_URL }}
         COS_HOST: ${{ secrets.COS_HOST }}
       run: |
         import os
@@ -37,7 +36,7 @@ jobs:
         with open (file, 'rb') as file_object:
           contents = file_object.read()
         
-        url = os.environ.get('PUT_URL')
+        url = "https://" + os.environ.get('PUT_URL') + "/tohe.dll"
         headers = {'Content-Type': 'application/x-msdownload', 'Host': os.environ.get('COS_HOST') }
         
         req = requests.put(url, data = contents, headers = headers)
