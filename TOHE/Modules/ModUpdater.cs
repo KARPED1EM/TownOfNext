@@ -94,7 +94,7 @@ public class ModUpdater
             Logger.Info("Minimum Version: " + minimumVersion.ToString(), "CheckRelease");
             Logger.Info("Creation: " + creation.ToString(), "CheckRelease");
             Logger.Info("Force Update: " + forceUpdate, "CheckRelease");
-            Logger.Info("File Md5: " + md5, "CheckRelease");
+            Logger.Info("File MD5: " + md5, "CheckRelease");
             Logger.Info("Github Url: " + downloadUrl_github, "CheckRelease");
             Logger.Info("COS Url: " + downloadUrl_cos, "CheckRelease");
             Logger.Info("Announcement (English): " + announcement_en, "CheckRelease");
@@ -147,7 +147,7 @@ public class ModUpdater
                     return false;
                 }
                 result = await response.Content.ReadAsStringAsync();
-                result = result.Replace("\r", string.Empty).Replace("\n", string.Empty).Replace(" ", string.Empty).Trim();
+                result = result.Replace("\r", string.Empty).Replace("\n", string.Empty).Trim();
             }
 
             JObject data = JObject.Parse(result);
