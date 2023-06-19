@@ -44,6 +44,7 @@ public static class SendTargetPatch
         }
         else SendTarget = SendTargets.Default;
         SendTargetShower?.GetComponent<TextMeshPro>()?.SetText(text);
+        SendTargetShower?.SetActive(!SendTargetShower.transform.parent.FindChild("RateMessage (TMP)").gameObject.activeSelf);
     }
 }
 

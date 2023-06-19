@@ -62,7 +62,18 @@ public class ModUpdater
         PopupButton.transform.localScale *= 0.85f;
         InfoPopup.gameObject.transform.FindChild("Background").transform.localScale *= 1.4f;
 
+#if DEBUG
+        isChecked = true;
+#else
         if (!isChecked) CheckForUpdate();
+        if (!Main.AlreadyShowMsgBox || isBroken)
+            {
+                Main.AlreadyShowMsgBox = true;
+                var annos = IsInChina ? announcement_zh : announcement_en;
+                if (isBroken) ShowPopup(annos, GetString(StringNames.ExitGame), Application.Quit);
+                else ShowPopup(annos, GetString(StringNames.Okay));
+            }
+#endif
 
         MainMenuManagerPatch.PlayButton.SetActive(!hasUpdate);
         MainMenuManagerPatch.UpdateButton.SetActive(hasUpdate);
@@ -86,14 +97,6 @@ public class ModUpdater
         Logger.Msg("Check For Update: " + isChecked, "CheckRelease");
         if (isChecked)
         {
-            if (!Main.AlreadyShowMsgBox || isBroken)
-            {
-                Main.AlreadyShowMsgBox = true;
-                var annos = IsInChina ? announcement_zh : announcement_en;
-                if (isBroken) ShowPopup(annos, GetString(StringNames.ExitGame), Application.Quit);
-                else ShowPopup(annos, GetString(StringNames.Okay));
-            }
-
             Logger.Info("Has Update: " + hasUpdate, "CheckRelease");
             Logger.Info("Latest Version: " + latestVersion.ToString(), "CheckRelease");
             Logger.Info("Minimum Version: " + minimumVersion.ToString(), "CheckRelease");
