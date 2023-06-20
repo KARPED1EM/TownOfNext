@@ -1,4 +1,6 @@
 ﻿using HarmonyLib;
+using System.IO;
+using System.Reflection;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using UnityEngine;
@@ -7,67 +9,82 @@ namespace TOHE;
 
 public static class CustomButton
 {
-    public static Sprite Get(string name) => Utils.LoadSprite($"TOHE.Resources.Images.Skills.{name}.png", 115f);
+    public static Sprite GetSprite(string name) => Utils.LoadSprite($"TOHE.Resources.Images.Skills.{name}.png", 115f);
 }
 
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update)), HarmonyPriority(Priority.LowerThanNormal)]
 public static class HudSpritePatch
 {
-    private static Sprite Kill;
-    private static Sprite Ability;
-    private static Sprite Vent;
-    private static Sprite Report;
+    private static Sprite Defalt_Kill => DestroyableSingleton<HudManager>.Instance.KillButton.graphic.sprite;
+    private static Sprite Defalt_Ability => DestroyableSingleton<HudManager>.Instance.AbilityButton.graphic.sprite;
+    private static Sprite Defalt_Vent => DestroyableSingleton<HudManager>.Instance.ImpostorVentButton.graphic.sprite;
+    private static Sprite Defalt_Report => DestroyableSingleton<HudManager>.Instance.ReportButton.graphic.sprite;
     public static void Postfix(HudManager __instance)
     {
         var player = PlayerControl.LocalPlayer;
-        if (player == null || !GameStates.IsModHost) return;
+        if (player == null || !GameStates.IsModHost || !GameStates.IsInTask) return;
         if (!SetHudActivePatch.IsActive || !player.IsAlive()) return;
-        if (!AmongUsClient.Instance.IsGameStarted || !Main.introDestroyed)
-        {
-            Kill = null;
-            Ability = null;
-            Vent = null;
-            return;
-        }
 
-        bool shapeshifting = Main.CheckShapeshift.TryGetValue(player.PlayerId, out bool ss) && ss;
-
-        Kill ??= __instance.KillButton.graphic.sprite;
-        Ability ??= __instance.AbilityButton.graphic.sprite;
-        Vent ??= __instance.ImpostorVentButton.graphic.sprite;
-        Report ??= __instance.ReportButton.graphic.sprite;
-
-        Sprite newKillButton = Kill;
-        Sprite newAbilityButton = Ability;
-        Sprite newVentButton = Vent;
-        Sprite newReportButton = Report;
+        Sprite newKillButton = __instance.KillButton.graphic.sprite;
+        Sprite newAbilityButton = __instance.AbilityButton.graphic.sprite;
+        Sprite newVentButton = __instance.ImpostorVentButton.graphic.sprite;
+        Sprite newReportButton = __instance.ReportButton.graphic.sprite;
 
         if (Main.EnableCustomButton.Value)
         {
-
             if (player.GetRoleClass() is IKiller killer)
             {
                 if (killer.OverrideKillButtonSprite(out var newKillButtonName))
-                    newKillButton = CustomButton.Get(newKillButtonName);
+                    newKillButton = CustomButton.GetSprite(newKillButtonName);
 
                 if (killer.OverrideVentButtonSprite(out var newVentButtonName))
-                    newVentButton = CustomButton.Get(newVentButtonName);
+                    newVentButton = CustomButton.GetSprite(newVentButtonName);
             }
 
             if (player.GetRoleClass().OverrideAbilityButtonSprite(out var newAbilityButtonName))
-                newAbilityButton = CustomButton.Get(newAbilityButtonName);
+                newAbilityButton = CustomButton.GetSprite(newAbilityButtonName);
 
             if (player.GetRoleClass().OverrideReportButtonSprite(out var newReportButtonName))
-                newReportButton = CustomButton.Get(newReportButtonName);
+                newReportButton = CustomButton.GetSprite(newReportButtonName);
         }
-
+        else
+        {
+            newKillButton = Defalt_Kill;
+            newAbilityButton = Defalt_Ability;
+            newVentButton = Defalt_Vent;
+            newReportButton = Defalt_Report;
+        }
+        
         if (player.GetRoleClass() is IKiller)
         {
-            __instance.KillButton.graphic.sprite = newKillButton;
-            __instance.ImpostorVentButton.graphic.sprite = newVentButton;
+            if (__instance.KillButton.graphic.sprite != newKillButton)
+            {
+                __instance.KillButton.graphic.sprite = newKillButton;
+                __instance.KillButton.graphic.material = __instance.ReportButton.graphic.material;
+                Logger.Test("Update KillButton");
+            }
+            if (__instance.ImpostorVentButton.graphic.sprite != newVentButton)
+            {
+                __instance.ImpostorVentButton.graphic.sprite = newVentButton;
+                Logger.Test("Update VentButton");
+            }
+
+            __instance.KillButton.graphic.material.SetFloat("_Desat", __instance.KillButton.isCoolingDown ? 1f : 0f);
         }
 
-        __instance.AbilityButton.graphic.sprite = newAbilityButton;
-        __instance.ReportButton.graphic.sprite = newReportButton;
+        if (__instance.AbilityButton.graphic.sprite != newAbilityButton)
+        {
+            __instance.AbilityButton.graphic.sprite = newAbilityButton;
+            __instance.AbilityButton.graphic.material = __instance.ReportButton.graphic.material;
+            Logger.Test("Update AbilityButton");
+        }
+        if (__instance.ReportButton.graphic.sprite != newReportButton)
+        {
+            __instance.ReportButton.graphic.sprite = newReportButton;
+            Logger.Test("Update ReportButton");
+        }
+
+        __instance.AbilityButton.graphic.material.SetFloat("_Desat", __instance.AbilityButton.isCoolingDown ? 1f : 0f);
+
     }
 }
