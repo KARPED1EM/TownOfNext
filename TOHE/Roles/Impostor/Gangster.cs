@@ -78,6 +78,11 @@ public sealed class Gangster : RoleBase, IImpostor
         text = GetString("GangsterButtonText");
         return RecruitLimit >= 1;
     }
+    public bool OverrideKillButtonSprite(out string buttonName)
+    {
+        buttonName = "Sidekick";
+        return RecruitLimit >= 1;
+    }
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         if (RecruitLimit < 1) return true;
