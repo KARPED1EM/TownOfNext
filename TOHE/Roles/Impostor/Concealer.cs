@@ -50,6 +50,11 @@ public sealed class Concealer : RoleBase, IImpostor
 
         Camouflage.CheckCamouflage();
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Camo";
+        return !Shapeshifting;
+    }
     public static bool IsHidding
         => Main.AllAlivePlayerControls.Any(x => (x.GetRoleClass() is Concealer roleClass) && roleClass.Shapeshifting) && GameStates.IsInTask;
 }
