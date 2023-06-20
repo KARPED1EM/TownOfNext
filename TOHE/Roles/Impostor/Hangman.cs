@@ -61,4 +61,9 @@ public sealed class Hangman : RoleBase, IImpostor
         }
         return true;
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Hangman";
+        return true;
+    }
 }
