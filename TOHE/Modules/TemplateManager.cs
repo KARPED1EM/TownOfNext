@@ -14,7 +14,7 @@ namespace TOHE;
 
 public static class TemplateManager
 {
-    private static readonly string TEMPLATE_FILE_PATH = "./TOHE_DATA/template.txt";
+    private static readonly string TEMPLATE_FILE_PATH = "./TOHE_Data/template.txt";
     private static Dictionary<string, Func<string>> _replaceDictionary = new()
     {
         ["HostName"] = () => PlayerControl.LocalPlayer.GetRealName(),

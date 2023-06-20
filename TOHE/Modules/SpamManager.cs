@@ -11,7 +11,7 @@ namespace TOHE;
 
 public static class SpamManager
 {
-    private static readonly string BANEDWORDS_FILE_PATH = "./TOHE_DATA/BanWords.txt";
+    private static readonly string BANEDWORDS_FILE_PATH = "./TOHE_Data/BanWords.txt";
     public static List<string> BanWords = new();
     public static void Init()
     {
