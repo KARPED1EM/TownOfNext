@@ -72,6 +72,11 @@ public sealed class Hacker : RoleBase, IImpostor
         text = GetString("HackerShapeshiftText");
         return HackLimit >= 1;
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Hack";
+        return true;
+    }
     public override void OnStartMeeting() => DeadBodyList = new();
     public override void OnPlayerDeath(PlayerControl player, CustomDeathReason deathReason, bool isOnMeeting = false)
     {
