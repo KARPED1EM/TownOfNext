@@ -1278,6 +1278,23 @@ public static class Utils
         return null;
     }
     public static string ColorString(Color32 color, string str) => $"<color=#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}>{str}</color>";
+    public static bool TryParseToColor32(string str, out Color32? color)
+    {
+        try
+        {
+            str = str.Trim().TrimStart('#');
+            var r = Convert.ToInt32(str.Substring(0, 2), 16);
+            var g = Convert.ToInt32(str.Substring(2, 2), 16);
+            var b = Convert.ToInt32(str.Substring(4, 2), 16);
+            color = new Color32((byte)r, (byte)g, (byte)b, byte.MaxValue);
+            return true;
+        }
+        catch
+        {
+            color = null;
+            return false;
+        }
+    } 
     /// <summary>
     /// Darkness:１の比率で黒色と元の色を混ぜる。マイナスだと白色と混ぜる。
     /// </summary>
