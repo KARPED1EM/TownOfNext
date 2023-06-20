@@ -392,7 +392,7 @@ public abstract class RoleBase : IDisposable
     { }
 
     /// <summary>
-    /// 更改变形按钮的文本
+    /// 更改变形/跳管/生命面板按钮的文本
     /// </summary>
     public virtual bool OverrideAbilityButtonText(out string text)
     {
@@ -411,11 +411,33 @@ public abstract class RoleBase : IDisposable
     }
 
     /// <summary>
-    /// 更改报告按钮文本
+    /// 更改变形/跳管/生命面板按钮的图片
+    /// </summary>
+    /// <param name="buttonName">按钮图片名</param>
+    /// <returns>true：确定要覆盖</returns>
+    public virtual bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = default;
+        return false;
+    }
+
+    /// <summary>
+    /// 更改报告按钮的文本
     /// </summary>
     /// <param name="text">覆盖后的文本</param>
     /// <returns>true：确定要覆盖</returns>
     public virtual string GetReportButtonText() => GetString(StringNames.ReportLabel);
+
+    /// <summary>
+    /// 更改报告按钮的图片
+    /// </summary>
+    /// <param name="buttonName">按钮图片名</param>
+    /// <returns>true：确定要覆盖</returns>
+    public virtual bool OverrideReportButtonSprite(out string buttonName)
+    {
+        buttonName = default;
+        return false;
+    }
 
     /// <summary>
     /// 会议开始时的全部提示信息

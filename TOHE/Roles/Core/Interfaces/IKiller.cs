@@ -52,13 +52,35 @@ public interface IKiller
     public void BeforeMurderPlayerAsKiller(MurderInfo info) { }
 
     /// <summary>
-    /// 更改击杀按钮文本
+    /// 更改击杀按钮的文本
     /// </summary>
     /// <param name="text">覆盖后的文本</param>
     /// <returns>true：确定要覆盖</returns>
     public bool OverrideKillButtonText(out string text)
     {
         text = default;
+        return false;
+    }
+
+    /// <summary>
+    /// 更改击杀按钮的图片
+    /// </summary>
+    /// <param name="buttonName">按钮图片名</param>
+    /// <returns>true：确定要覆盖</returns>
+    public virtual bool OverrideKillButtonSprite(out string buttonName)
+    {
+        buttonName = default;
+        return false;
+    }
+
+    /// <summary>
+    /// 更改跳管按钮的图片
+    /// </summary>
+    /// <param name="buttonName">按钮图片名</param>
+    /// <returns>true：确定要覆盖</returns>
+    public virtual bool OverrideVentButtonSprite(out string buttonName)
+    {
+        buttonName = default;
         return false;
     }
 }
