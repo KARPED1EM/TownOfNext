@@ -60,20 +60,22 @@ public sealed class Warlock : RoleBase, IImpostor
     }
     public bool OverrideKillButtonText(out string text)
     {
-        if (!Shapeshifting)
-        {
-            text = GetString("WarlockCurseButtonText");
-            return true;
-        }
-        else
-        {
-            text = default;
-            return false;
-        }
+        text = GetString("WarlockCurseButtonText");
+        return !Shapeshifting;
+    }
+    public bool OverrideKillButtonSprite(out string buttonName)
+    {
+        buttonName = "Curse";
+        return !Shapeshifting;
     }
     public override bool OverrideAbilityButtonText(out string text)
     {
         text = GetString("WarlockShapeshiftButtonText");
+        return !Shapeshifting && IsCursed;
+    }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "CurseKill";
         return !Shapeshifting && IsCursed;
     }
     public override void ApplyGameOptions(IGameOptions opt)
