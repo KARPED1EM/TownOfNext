@@ -99,6 +99,11 @@ public sealed class Medicaler : RoleBase, IKiller
         text = Translator.GetString("MedicalerButtonText");
         return true;
     }
+    public bool OverrideKillButtonSprite(out string buttonName)
+    {
+        buttonName = "Shield";
+        return true;
+    }
     public float CalculateKillCooldown() => CanUseKillButton() ? OptionProtectCooldown.GetFloat() : 255f;
     public bool CanUseKillButton()
        => Player.IsAlive()
