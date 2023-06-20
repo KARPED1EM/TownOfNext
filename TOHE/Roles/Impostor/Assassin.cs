@@ -121,4 +121,14 @@ public sealed class Assassin : RoleBase, IImpostor
         text = GetString("AssassinShapeshiftText");
         return MarkedPlayer != byte.MaxValue && !Shapeshifting;
     }
+    public bool OverrideKillButtonSprite(out string buttonName)
+    {
+        buttonName = "Mark";
+        return !Shapeshifting;
+    }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Assassinate";
+        return MarkedPlayer != byte.MaxValue && !Shapeshifting;
+    }
 }
