@@ -178,4 +178,9 @@ public sealed class FireWorks : RoleBase, IImpostor
             : GetString("FireWorksInstallAtionButtonText");
         return true;
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = State == FireWorksState.ReadyFire ? "FireworkD": "FireworkP";
+        return true;
+    }
 }
