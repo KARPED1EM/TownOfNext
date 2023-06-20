@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using System.IO;
-using System.Reflection;
 using TOHE.Roles.Core;
 using TOHE.Roles.Core.Interfaces;
 using UnityEngine;
@@ -61,12 +59,10 @@ public static class HudSpritePatch
             {
                 __instance.KillButton.graphic.sprite = newKillButton;
                 __instance.KillButton.graphic.material = __instance.ReportButton.graphic.material;
-                Logger.Test("Update KillButton");
             }
             if (__instance.ImpostorVentButton.graphic.sprite != newVentButton)
             {
                 __instance.ImpostorVentButton.graphic.sprite = newVentButton;
-                Logger.Test("Update VentButton");
             }
 
             __instance.KillButton.graphic.material.SetFloat("_Desat", __instance.KillButton.isCoolingDown ? 1f : 0f);
@@ -76,12 +72,10 @@ public static class HudSpritePatch
         {
             __instance.AbilityButton.graphic.sprite = newAbilityButton;
             __instance.AbilityButton.graphic.material = __instance.ReportButton.graphic.material;
-            Logger.Test("Update AbilityButton");
         }
         if (__instance.ReportButton.graphic.sprite != newReportButton)
         {
             __instance.ReportButton.graphic.sprite = newReportButton;
-            Logger.Test("Update ReportButton");
         }
 
         __instance.AbilityButton.graphic.material.SetFloat("_Desat", __instance.AbilityButton.isCoolingDown ? 1f : 0f);
