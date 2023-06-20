@@ -368,7 +368,7 @@ public static class Options
         GameMode = StringOptionItem.Create(1, "GameMode", gameModes, 0, TabGroup.GameSettings, false)
             .SetHeader(true);
 
-        Logger.Msg("开始加载职业设置", "Load Options");
+        Logger.Msg("Loading Role Options...", "Load Options");
 
         #region 职业详细设置
         CustomRoleCounts = new();
@@ -499,7 +499,7 @@ public static class Options
 
         #endregion
 
-        Logger.Msg("开始加载系统设置", "Load Options");
+        Logger.Msg("Loading System Options...", "Load Options");
 
         #region 系统设置
 
@@ -570,7 +570,7 @@ public static class Options
 
         #endregion 
 
-        Logger.Msg("开始加载游戏设置", "Load Options");
+        Logger.Msg("Loading Game Options...", "Load Options");
 
         #region 游戏设置
 
@@ -848,7 +848,7 @@ public static class Options
 
         #endregion 
 
-        Logger.Msg("模组选项加载完毕", "Load Options");
+        Logger.Msg("All Mod Options Loaded!", "Load Options");
         IsLoaded = true;
     }
 
