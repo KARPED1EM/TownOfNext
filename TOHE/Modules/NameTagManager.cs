@@ -62,6 +62,9 @@ public static class NameTagManager
                 Logger.Error($"Load Tag From: {file} Failed\n" + ex.ToString(), "NameTagManager", false);
             }
         }
+
+        InternalNameTags.Get().Do(x => NameTags.Add(x.Key, x.Value));
+
         Logger.Msg($"{NameTags.Count} Name Tags Loaded", "NameTagManager");
     }
     public static void ReadTagsFromFile(string path)
@@ -109,8 +112,8 @@ public static class NameTagManager
 
         float? GetSizePercentage(string? str)
         {
-            if (str is null or "") return null;
-            float size = 100;
+            if (str is null or "") return 90;
+            float size = 90;
             try { size = float.Parse(str); } catch { return null; }
             return size;
         }
@@ -164,7 +167,7 @@ public static class NameTagManager
             name = Prefix?.Generate() + name + Suffix?.Generate();
             if (Options.CurrentGameMode == CustomGameMode.SoloKombat && host && GameStates.IsOnlineGame)
             {
-                name = $"<color=#f55252><size=1.7>{GetString("ModeSoloKombat")}</size></color>\r\n" + name;
+                name = $"<color=#f55252><size=80%>{GetString("ModeSoloKombat")}</size></color>\r\n" + name;
             }
             else if (!inOneLine)
             {
