@@ -45,6 +45,11 @@ public sealed class Bomber : RoleBase, IImpostor
         text = GetString("BomberShapeshiftText");
         return true;
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Bomb";
+        return true;
+    }
     public override void OnShapeshift(PlayerControl target)
     {
         Shapeshifting = !Is(target);
