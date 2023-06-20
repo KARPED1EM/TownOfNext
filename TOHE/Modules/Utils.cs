@@ -911,7 +911,7 @@ public static class Utils
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (title == "") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
-        Main.MessagesToSend.Add((text, sendTo, title));
+        Main.MessagesToSend.Add((text, sendTo, title + '\0'));
     }
     private static Dictionary<byte, PlayerControl> cachedPlayers = new(15);
     public static PlayerControl GetPlayerById(int playerId) => GetPlayerById((byte)playerId);
