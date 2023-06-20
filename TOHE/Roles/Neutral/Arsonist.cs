@@ -206,7 +206,17 @@ public sealed class Arsonist : RoleBase, IKiller
     public override bool OverrideAbilityButtonText(out string text)
     {
         text = GetString("ArsonistVetnButtonText");
+        return IsDouseDone(Player);
+    }
+    public bool OverrideKillButtonSprite(out string buttonName)
+    {
+        buttonName = "Douse";
         return true;
+    }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Ignite";
+        return IsDouseDone(Player);
     }
 
     public override string GetMark(PlayerControl seer, PlayerControl seen, bool isForMeeting = false)
