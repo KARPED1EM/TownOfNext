@@ -281,7 +281,7 @@ public static class Options
 
     public static OptionItem KPDCamouflageMode;
 
-    public static OptionItem EnableUpMode;
+    public static OptionItem EnableDirectorMode;
 
     #endregion
 
@@ -528,7 +528,7 @@ public static class Options
 
         LowLoadMode = BooleanOptionItem.Create(2_002_001, "LowLoadMode", false, TabGroup.SystemSettings, false)
             .SetHeader(true)
-            .SetColor(Color.red);
+            .SetColor(Color.green);
 
         EndWhenPlayerBug = BooleanOptionItem.Create(2_003_001, "EndWhenPlayerBug", true, TabGroup.SystemSettings, false)
             .SetHeader(true)
@@ -564,8 +564,8 @@ public static class Options
 
         DebugModeManager.SetupCustomOption();
 
-        EnableUpMode = BooleanOptionItem.Create(2_018_001, "EnableYTPlan", false, TabGroup.SystemSettings, false)
-            .SetColor(Color.cyan)
+        EnableDirectorMode = BooleanOptionItem.Create(2_018_001, "EnableDirectorMode", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(214, 157, 133, byte.MaxValue))
             .SetHeader(true);
 
         #endregion 

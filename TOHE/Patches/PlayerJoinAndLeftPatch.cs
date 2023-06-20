@@ -245,14 +245,14 @@ class CreatePlayerPatch
                     }
                 }, 3.2f, "DisplayLastResult");
             }
-            if (PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsUp && Options.EnableUpMode.GetBool())
+            if (Options.EnableDirectorMode.GetBool())
             {
                 new LateTask(() =>
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
                         Main.isChatCommand = true;
-                        Utils.SendMessage($"{GetString("Message.YTPlanNotice")} {PlayerControl.LocalPlayer.FriendCode.GetDevUser().UpName}", client.Character.PlayerId);
+                        Utils.SendMessage($"{GetString("Message.DirectorModeNotice")}", client.Character.PlayerId);
                     }
                 }, 3.3f, "DisplayUpWarnning");
             }

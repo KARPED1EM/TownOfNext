@@ -113,7 +113,7 @@ internal class KickPlayerPatch
 {
     public static bool Prefix(InnerNetClient __instance, int clientId, bool ban)
     {
-        if (DevManager.DevUserList.Where(x => x.IsDev).Any(x => AmongUsClient.Instance.GetRecentClient(clientId).FriendCode == x.Code))
+        if (Main.AllPlayerControls.Where(p => p.IsDev()).Any(p => AmongUsClient.Instance.GetRecentClient(clientId).FriendCode == p.FriendCode))
         {
             Logger.SendInGame(GetString("Warning.CantKickDev"));
             return false;

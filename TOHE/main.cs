@@ -261,7 +261,6 @@ public class Main : BasePlugin
         BanManager.Init();
         TemplateManager.Init();
         SpamManager.Init();
-        DevManager.Init();
         NameTagManager.Init();
         Cloud.Init();
 

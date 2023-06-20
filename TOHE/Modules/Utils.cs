@@ -1355,4 +1355,10 @@ public static class Utils
     public static bool IsAllAlive => PlayerState.AllPlayerStates.Values.All(state => state.countTypes == CountTypes.OutOfGame || !state.IsDead);
     public static int PlayersCount(CountTypes countTypes) => PlayerState.AllPlayerStates.Values.Count(state => state.countTypes == countTypes);
     public static int AlivePlayersCount(CountTypes countTypes) => Main.AllAlivePlayerControls.Count(pc => pc.Is(countTypes));
+
+    public static bool IsDev(this PlayerControl pc) =>
+        pc.FriendCode
+        is "actorour#0029" //咔哥
+        or "pinklaze#1776" //NCM
+        or "sofaagile#3120"; //天寸
 }

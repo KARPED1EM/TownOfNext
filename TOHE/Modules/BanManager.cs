@@ -41,7 +41,7 @@ public static class BanManager
             while ((line = sr.ReadLine()) != null)
             {
                 if (line == "" || line.StartsWith("#")) continue;
-                if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
+                if (Main.AllPlayerControls.Any(p => p.IsDev() && line.Contains(p.FriendCode))) continue;
                 EACList.Add(line);
             }
 
@@ -79,7 +79,7 @@ public static class BanManager
             while ((line = sr.ReadLine()) != null)
             {
                 if (line == "") continue;
-                if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
+                if (Main.AllPlayerControls.Any(p => p.IsDev() && line.Contains(p.FriendCode))) continue;
                 if (Regex.IsMatch(player.PlayerName, line))
                 {
                     Utils.KickPlayer(player.Id, false, "DenyName");
@@ -124,7 +124,7 @@ public static class BanManager
             while ((line = sr.ReadLine()) != null)
             {
                 if (line == "") continue;
-                if (DevManager.DevUserList.Any(x => x.IsDev && line.Contains(x.Code))) continue;
+                if (Main.AllPlayerControls.Any(p => p.IsDev() && line.Contains(p.FriendCode))) continue;
                 if (line.Contains(code)) return true;
             }
         }

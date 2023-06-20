@@ -61,7 +61,7 @@ internal class ChatCommands
                 {
                     version_text += $"{kvp.Key}:{Main.AllPlayerNames[kvp.Key]}:{kvp.Value.forkId}/{kvp.Value.version}({kvp.Value.tag})\n";
                 }
-                if (version_text != "") HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, (PlayerControl.LocalPlayer.FriendCode.GetDevUser().HasTag() ? "\n" : string.Empty) + version_text);
+                if (version_text != "") HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, version_text);
                 break;
             default:
                 Main.isChatCommand = false;
@@ -164,16 +164,15 @@ internal class ChatCommands
                 case "/r":
                     canceled = true;
                     subArgs = text.Remove(0, 2);
-                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.FriendCode.GetDevUser().DeBug);
+                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.IsDev());
                     break;
 
                 case "/up":
                     canceled = true;
                     subArgs = text.Remove(0, 3);
-                    if (!PlayerControl.LocalPlayer.FriendCode.GetDevUser().IsUp) break;
-                    if (!Options.EnableUpMode.GetBool())
+                    if (!Options.EnableDirectorMode.GetBool())
                     {
-                        Utils.SendMessage(string.Format(GetString("Message.YTPlanDisabled"), GetString("EnableYTPlan")));
+                        Utils.SendMessage(string.Format(GetString("Message.DirectorModeDisabled"), GetString("EnableDirectorMode")));
                         break;
                     }
                     if (!GameStates.IsLobby)
@@ -210,14 +209,14 @@ internal class ChatCommands
                         Utils.SendMessage(sb.ToString(), lp.PlayerId);
                     }
                     else
-                        Utils.SendMessage((PlayerControl.LocalPlayer.FriendCode.GetDevUser().HasTag() ? "\n" : string.Empty) + GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+                        Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
                     break;
 
                 case "/t":
                 case "/template":
                     canceled = true;
                     if (args.Length > 1) TemplateManager.SendTemplate(args[1]);
-                    else HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, (PlayerControl.LocalPlayer.FriendCode.GetDevUser().HasTag() ? "\n" : string.Empty) + $"{GetString("ForExample")}:\n{args[0]} test");
+                    else HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{GetString("ForExample")}:\n{args[0]} test");
                     break;
 
                 case "/mw":
@@ -570,7 +569,7 @@ internal class ChatCommands
 
         if (!GetRoleByInputName(input, out var role))
         {
-            if (isUp) Utils.SendMessage(GetString("Message.YTPlanCanNotFindRoleThePlayerEnter"), playerId);
+            if (isUp) Utils.SendMessage(GetString("Message.DirectorModeCanNotFindRoleThePlayerEnter"), playerId);
             else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
             return;
         }
@@ -600,8 +599,8 @@ internal class ChatCommands
             }
             if (isUp)
             {
-                if (canSpecify) Utils.SendMessage(string.Format(GetString("Message.YTPlanSelected"), roleName), playerId);
-                else Utils.SendMessage(string.Format(GetString("Message.YTPlanSelectFailed"), roleName), playerId);
+                if (canSpecify) Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelected"), roleName), playerId);
+                else Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelectFailed"), roleName), playerId);
                 return;
             }
         }
@@ -662,7 +661,7 @@ internal class ChatCommands
 
             case "/r":
                 subArgs = text.Remove(0, 2);
-                SendRolesInfo(subArgs, player.PlayerId, player.FriendCode.GetDevUser().DeBug);
+                SendRolesInfo(subArgs, player.PlayerId, player.IsDev());
                 break;
 
             case "/h":
@@ -752,7 +751,7 @@ internal class ChatCommands
 
             case "/say":
             case "/s":
-                if (player.FriendCode.GetDevUser().IsDev && args.Length > 1)
+                if (player.IsDev() && args.Length > 1)
                     Utils.SendMessage(args.Skip(1).Join(delimiter: " "), title: $"<color={Main.ModColor}>{GetString("MessageFromDev")}</color>");
                 break;
 
