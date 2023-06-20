@@ -61,7 +61,7 @@ internal class ChatCommands
                 {
                     version_text += $"{kvp.Key}:{Main.AllPlayerNames[kvp.Key]}:{kvp.Value.forkId}/{kvp.Value.version}({kvp.Value.tag})\n";
                 }
-                if (version_text != "") HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, version_text);
+                if (version_text != "") Utils.AddChatMessage(version_text);
                 break;
             default:
                 Main.isChatCommand = false;
@@ -154,7 +154,7 @@ internal class ChatCommands
                             break;
 
                         default:
-                            __instance.AddChat(PlayerControl.LocalPlayer, "crew | imp");
+                            Utils.AddChatMessage("crew | imp");
                             cancelVal = "/dis";
                             break;
                     }
@@ -216,7 +216,7 @@ internal class ChatCommands
                 case "/template":
                     canceled = true;
                     if (args.Length > 1) TemplateManager.SendTemplate(args[1]);
-                    else HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{GetString("ForExample")}:\n{args[0]} test");
+                    else Utils.AddChatMessage($"{GetString("ForExample")}:\n{args[0]} test");
                     break;
 
                 case "/mw":

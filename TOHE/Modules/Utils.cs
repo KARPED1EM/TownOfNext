@@ -913,6 +913,16 @@ public static class Utils
         if (title == "") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
         Main.MessagesToSend.Add((text, sendTo, title + '\0'));
     }
+    public static void AddChatMessage(string text, string title = "")
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+        var player = PlayerControl.LocalPlayer;
+        if (title == "") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
+        var name = player.Data.PlayerName;
+        player.SetName(title + '\0');
+        DestroyableSingleton<HudManager>.Instance?.Chat?.AddChat(player, text);
+        player.SetName(name);
+    }
     private static Dictionary<byte, PlayerControl> cachedPlayers = new(15);
     public static PlayerControl GetPlayerById(int playerId) => GetPlayerById((byte)playerId);
     public static PlayerControl GetPlayerById(byte playerId)
@@ -1182,7 +1192,7 @@ public static class Utils
         if (PlayerControl.LocalPlayer != null)
         {
             if (popup) PlayerControl.LocalPlayer.ShowPopUp(string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
-            else HudManager.Instance?.Chat?.AddChat(PlayerControl.LocalPlayer, string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
+            else AddChatMessage(string.Format(GetString("Message.DumpfileSaved"), $"TOHE - v{Main.PluginVersion}-{t}.log"));
         }
         ProcessStartInfo psi = new ProcessStartInfo("Explorer.exe")
         { Arguments = "/e,/select," + @filename.Replace("/", "\\") };
