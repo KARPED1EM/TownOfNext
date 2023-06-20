@@ -97,6 +97,11 @@ public sealed class Vampire : RoleBase, IImpostor
         text = GetString("VampireBiteButtonText");
         return true;
     }
+    public bool OverrideKillButtonSprite(out string buttonName)
+    {
+        buttonName = "Bite";
+        return true;
+    }
 
     private void KillBitten(PlayerControl target, bool isButton = false)
     {

@@ -170,6 +170,11 @@ public sealed class EvilTracker : RoleBase, IImpostor, IKillFlashSeeable
         text = GetString("EvilTrackerChangeButtonText");
         return true;
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Track";
+        return true;
+    }
     public override bool CanUseAbilityButton() => CanTarget();
 
     // 値取得の関数

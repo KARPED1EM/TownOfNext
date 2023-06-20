@@ -65,6 +65,11 @@ public sealed class Veteran : RoleBase
         text = GetString("VeteranVetnButtonText");
         return true;
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Veteran";
+        return true;
+    }
     public override bool OnEnterVent(PlayerPhysics physics, int ventId)
     {
         if (SkillLimit >= 1)
