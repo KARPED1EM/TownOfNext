@@ -121,7 +121,7 @@ public static class NameTagManager
         Color32? GetTextColor(string? str)
         {
             if (str is null or "") return null;
-            return Utils.TryParseToColor32(str, out var color) ? color : null;
+            return ColorUtility.TryParseHtmlString(str, out var color) ? color : null;
         }
 
         ColorGradient? GetGradient(string? str)
@@ -132,8 +132,8 @@ public static class NameTagManager
             List<Color> colors = new();
             args.Do(arg =>
             {
-                if (Utils.TryParseToColor32(arg, out var color))
-                    colors.Add(color.GetValueOrDefault());
+                if (ColorUtility.TryParseHtmlString(arg, out var color))
+                    colors.Add(color);
             });
             var gradient = new ColorGradient(colors.ToArray());
             return gradient.IsValid ? gradient : null;
@@ -153,23 +153,29 @@ public static class NameTagManager
         public Component? Prefix { get; set; }
         public Component? Suffix { get; set; }
         public Component? Name { get; set; }
-        public string Apply(string name, bool host, bool inOneLine = false)
+        public string Apply(string name, bool host, bool onlyName = false)
         {
-            if (host && GameStates.IsOnlineGame)
-            {
-                name = $"<color=#ffd6ec>TOHE</color><color=#baf7ca>★</color>" + name;
-            }
             if (Name != null)
             {
                 Name.Text = name;
                 name = Name.Generate(false);
             }
+
+            if (onlyName) return name;
+
             name = Prefix?.Generate() + name + Suffix?.Generate();
-            if (Options.CurrentGameMode == CustomGameMode.SoloKombat && host && GameStates.IsOnlineGame)
+
+            if (host && GameStates.IsOnlineGame)
             {
-                name = $"<color=#f55252><size=80%>{GetString("ModeSoloKombat")}</size></color>\r\n" + name;
+                var upper = $"<size=80%><color=#ffd6ec>{Main.ModName}</color><color=#baf7ca>★</color>";
+                upper += Options.CurrentGameMode switch
+                {
+                    CustomGameMode.SoloKombat => $"<color=#f55252>{GetString("ModeSoloKombat")}</color>",
+                    _ => $"<color=#87cefa>{Main.PluginVersion}</color>",
+                };
+                name = upper + "</size>\r\n" + name;
             }
-            else if (!inOneLine)
+            else
             {
                 var upperText = UpperText?.Generate(false);
                 if (upperText is not null and not "")

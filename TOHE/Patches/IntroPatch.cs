@@ -9,10 +9,11 @@ using static TOHE.Translator;
 
 namespace TOHE;
 
-[HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.ShowRole))]
-class SetUpRoleTextPatch
+[HarmonyPatch(typeof(IntroCutscene))]
+class IntroCutscenePatch
 {
-    public static void Postfix(IntroCutscene __instance)
+    [HarmonyPatch(nameof(IntroCutscene.ShowRole)), HarmonyPostfix]
+    public static void ShowRole_Postfix(IntroCutscene __instance)
     {
         if (!GameStates.IsModHost) return;
         new LateTask(() =>
@@ -35,6 +36,9 @@ class SetUpRoleTextPatch
                     __instance.YouAreText.color = Utils.GetRoleColor(role);
                     __instance.RoleText.text = Utils.GetRoleName(role);
                     __instance.RoleText.color = Utils.GetRoleColor(role);
+                    __instance.RoleText.fontWeight = TMPro.FontWeight.Thin;
+                    __instance.RoleText.SetOutlineColor(Utils.ShadeColor(Utils.GetRoleColor(role), 0.3f));
+                    __instance.RoleText.SetOutlineThickness(0.12f);
                     __instance.RoleBlurbText.color = Utils.GetRoleColor(role);
                     __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
                 }
@@ -44,13 +48,10 @@ class SetUpRoleTextPatch
                     __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), GetString($"{CustomRoles.Lovers}Info"));
                 __instance.RoleText.text += Utils.GetSubRolesText(PlayerControl.LocalPlayer.PlayerId, false, true);
             }
-        }, 0.01f, "Override Role Text");
+        }, 0.0001f, "Override Role Text");
     }
-}
-[HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.CoBegin))]
-class CoBeginPatch
-{
-    public static void Prefix()
+    [HarmonyPatch(nameof(IntroCutscene.CoBegin)), HarmonyPrefix]
+    public static void CoBegin_Prefix()
     {
         var logger = Logger.Handler("Info");
         logger.Info("------------显示名称------------");
@@ -98,11 +99,8 @@ class CoBeginPatch
 
         GameStates.InGame = true;
     }
-}
-[HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginCrewmate))]
-class BeginCrewmatePatch
-{
-    public static bool Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+    [HarmonyPatch(nameof(IntroCutscene.BeginCrewmate)), HarmonyPrefix]
+    public static bool BeginCrewmate_Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
     {
         if (PlayerControl.LocalPlayer.Is(CustomRoles.Crewpostor))
         {
@@ -128,7 +126,8 @@ class BeginCrewmatePatch
         }
         return true;
     }
-    public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
+    [HarmonyPatch(nameof(IntroCutscene.BeginCrewmate)), HarmonyPostfix]
+    public static void BeginCrewmate_Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> teamToDisplay)
     {
         //チーム表示変更
         CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
@@ -224,11 +223,8 @@ class BeginCrewmatePatch
             __instance.BackgroundBar.material.color = LerpingColor;
         }
     }
-}
-[HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.BeginImpostor))]
-class BeginImpostorPatch
-{
-    public static bool Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+    [HarmonyPatch(nameof(IntroCutscene.BeginImpostor)), HarmonyPrefix]
+    public static bool BeginImpostor_Prefix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
         var role = PlayerControl.LocalPlayer.GetCustomRole();
         if (role is CustomRoles.Crewpostor)
@@ -255,18 +251,16 @@ class BeginImpostorPatch
             __instance.overlayHandle.color = Palette.CrewmateBlue;
             return false;
         }
-        BeginCrewmatePatch.Prefix(__instance, ref yourTeam);
+        BeginCrewmate_Prefix(__instance, ref yourTeam);
         return true;
     }
-    public static void Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
+    [HarmonyPatch(nameof(IntroCutscene.BeginImpostor)), HarmonyPostfix]
+    public static void BeginImpostor_Postfix(IntroCutscene __instance, ref Il2CppSystem.Collections.Generic.List<PlayerControl> yourTeam)
     {
-        BeginCrewmatePatch.Postfix(__instance, ref yourTeam);
+        BeginCrewmate_Postfix(__instance, ref yourTeam);
     }
-}
-[HarmonyPatch(typeof(IntroCutscene), nameof(IntroCutscene.OnDestroy))]
-class IntroCutsceneDestroyPatch
-{
-    public static void Postfix(IntroCutscene __instance)
+    [HarmonyPatch(nameof(IntroCutscene.OnDestroy)), HarmonyPostfix]
+    public static void OnDestroy_Postfix(IntroCutscene __instance)
     {
         if (!GameStates.IsInGame) return;
         Main.introDestroyed = true;
