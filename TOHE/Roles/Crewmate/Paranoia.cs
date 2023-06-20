@@ -54,6 +54,11 @@ public sealed class Paranoia : RoleBase
         text = Translator.GetString("ParanoiaVetnButtonText");
         return true;
     }
+    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    {
+        buttonName = "Paranoid";
+        return true;
+    }
     public override bool OnEnterVent(PlayerPhysics physics, int ventId)
     {
         if (SkillLimit >= 1)
