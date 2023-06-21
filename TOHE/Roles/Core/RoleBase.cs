@@ -237,10 +237,13 @@ public abstract class RoleBase : IDisposable
     /// <summary>
     /// 当有人投票时触发
     /// </summary>
-    /// <param name="voterId">被投票者的ID</param>
-    /// <param name="sourceVotedForId">投票者的ID</param>
-    /// <returns>(修改后的投票目标, 修改后的票数, 是否为有效投票)</returns>
-    public virtual (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId) => (null, null, true);
+    /// <param name="voterId">投票者的ID</param>
+    /// <param name="sourceVotedForId">被投票者的ID</param>
+    /// <param name="roleVoteFor">修改此值以更改投票目标</param>
+    /// <param name="roleNumVotes">修改此值以更改票数</param>
+    /// <param name="clearVote">改为 true 则将投票者视为未投票状态，允许其再次进行投票。但投票数据还是会计入，若多次投票将以最后一次投票的数据为准</param>
+    /// <returns>false: 忽略本次投票，不计入数据</returns>
+    public virtual bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote) => true;
 
     /// <summary>
     /// 驱逐玩家后调用的函数

@@ -5,6 +5,9 @@ using UnityEngine;
 using TOHE.Roles.Core;
 using TOHE.Modules;
 using static TOHE.Translator;
+using System.Diagnostics.Metrics;
+using System.Linq;
+using Hazel;
 
 namespace TOHE;
 
@@ -24,9 +27,60 @@ public static class MeetingHudPatch
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.CastVote))]
     public static class CastVotePatch
     {
-        public static void Prefix([HarmonyArgument(0)] byte srcPlayerId /* 投票者 */ , [HarmonyArgument(1)] byte suspectPlayerId /* 被票者 */ )
+        public static bool Prefix(MeetingHud __instance, [HarmonyArgument(0)] byte srcPlayerId /* 投票者 */ , [HarmonyArgument(1)] byte suspectPlayerId /* 被票者 */ )
         {
-            MeetingVoteManager.Instance.AddVote(srcPlayerId, suspectPlayerId);
+            if (!AmongUsClient.Instance.AmHost) return true;
+
+            var voter = Utils.GetPlayerById(srcPlayerId);
+            if (voter != null)
+            {
+                //主动叛变模式
+                if (Options.MadmateSpawnMode.GetInt() == 2 && srcPlayerId == suspectPlayerId)
+                {
+                    if (Main.MadmateNum < CustomRoles.Madmate.GetCount() && voter.CanBeMadmate())
+                    {
+                        Main.MadmateNum++;
+                        voter.RpcSetCustomRole(CustomRoles.Madmate);
+                        ExtendedPlayerControl.RpcSetCustomRole(voter.PlayerId, CustomRoles.Madmate);
+                        Logger.Info($"注册附加职业：{voter.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
+                        voter.ShowPopUp(GetString("MadmateSelfVoteModeSuccessfulMutiny"));
+                        Utils.SendMessage(GetString("MadmateSelfVoteModeSuccessfulMutiny"), voter.PlayerId);
+                    }
+                    else
+                    {
+                        voter.ShowPopUp(GetString("MadmateSelfVoteModeMutinyFailed"));
+                        Utils.SendMessage(GetString("MadmateSelfVoteModeMutinyFailed"), voter.PlayerId);
+                    }
+                    ClearVote(__instance, voter);
+                    return false;
+                }
+            }
+
+            if (MeetingVoteManager.Instance.AddVote(srcPlayerId, suspectPlayerId)) return true;
+            else
+            {
+                ClearVote(__instance, voter);
+                return false;
+            }
+        }
+        private static void ClearVote(MeetingHud hud, PlayerControl target)
+        {
+            new LateTask(() => { ClearVote(hud, target); }, 0.4f, "ClearVote First");
+            new LateTask(() => { ClearVote(hud, target); }, 0.6f, "ClearVote Second");
+            static void ClearVote(MeetingHud hud, PlayerControl target)
+            {
+                Logger.Info($"Clear Vote For: {target.GetNameWithRole()}", "ClearVote");
+                MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
+                writer.StartMessage(6);
+                writer.Write(AmongUsClient.Instance.GameId);
+                writer.WritePacked(target.GetClientId());
+                {
+                    writer.StartMessage(2);
+                    writer.WritePacked(hud.NetId);
+                    writer.WritePacked((uint)RpcCalls.ClearVote);
+                }
+                AmongUsClient.Instance.FinishRpcImmediately(writer);
+            }
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

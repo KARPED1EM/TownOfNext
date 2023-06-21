@@ -56,59 +56,48 @@ public class MeetingVoteManager
     /// <param name="voter">投票者</param>
     /// <param name="voteFor">投票目标</param>
     /// <param name="numVotes">票数</param>
-    public void AddVote(byte voter, byte voteFor, int numVotes = 1)
+    /// <returns>false: 请撤销本次投票以允许投票者重新投票</returns>
+    public bool AddVote(byte voter, byte voteFor, int numVotes = 1)
     {
         if (!allVotes.TryGetValue(voter, out var vote))
         {
-            logger.Warn($"ID: {voter}没有存在的投票数据，创建新的投票数据");
+            logger.Warn($"ID: {voter} 没有存在的投票数据，创建新的投票数据");
             vote = new(voter);
         }
         if (vote.HasVoted)
         {
-            logger.Info($"ID: {voter}已经存在投票数据，覆盖原先的投票数据");
+            logger.Info($"ID: {voter} 已经存在投票数据，覆盖原先的投票数据");
         }
 
         bool doVote = true;
-
-        //主动叛变模式
-        if (Options.MadmateSpawnMode.GetInt() == 2 && voter == voteFor)
-        {
-            var player = Utils.GetPlayerById(voter);
-            if (player != null && Main.MadmateNum < CustomRoles.Madmate.GetCount() && player.CanBeMadmate())
-            {
-                Main.MadmateNum++;
-                player.RpcSetCustomRole(CustomRoles.Madmate);
-                ExtendedPlayerControl.RpcSetCustomRole(player.PlayerId, CustomRoles.Madmate);
-                Utils.NotifyRoles(true, player, true);
-                Logger.Info($"注册附加职业：{player.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
-            }
-            return;
-        }
+        bool clearVote = false;
 
         foreach (var role in CustomRoleManager.AllActiveRoles.Values)
         {
-            var (roleVoteFor, roleNumVotes, roleDoVote) = role.OnVote(voter, voteFor);
-            if (roleVoteFor.HasValue)
+            var (roleVoteFor, roleNumVotes) = (voteFor, numVotes);
+            doVote = role.OnVote(voter, voteFor, ref roleVoteFor, ref roleNumVotes, ref clearVote);
+            if (roleVoteFor != voteFor)
             {
-                logger.Info($"{role.Player.GetNameWithRole()} 将 {Utils.GetPlayerById(voter).GetNameWithRole()} 的投票目标修改为 {GetVoteName(roleVoteFor.Value)}");
-                voteFor = roleVoteFor.Value;
+                logger.Info($"{role.Player.GetNameWithRole()} 将 {Utils.GetPlayerById(voter).GetNameWithRole()} 的投票目标修改为 {GetVoteName(roleVoteFor)}");
+                voteFor = roleVoteFor;
             }
-            if (roleNumVotes.HasValue)
+            if (roleNumVotes != numVotes)
             {
-                logger.Info($"{role.Player.GetNameWithRole()} 将 {Utils.GetPlayerById(voter).GetNameWithRole()} 的票数修改为 {roleNumVotes.Value}");
-                numVotes = roleNumVotes.Value;
+                logger.Info($"{role.Player.GetNameWithRole()} 将 {Utils.GetPlayerById(voter).GetNameWithRole()} 的票数修改为 {roleNumVotes}");
+                numVotes = roleNumVotes;
             }
-            if (!roleDoVote)
+            if (!doVote)
             {
-                logger.Info($"{role.Player.GetNameWithRole()} 撤回了投票");
-                doVote = roleDoVote;
+                logger.Info($"{role.Player.GetNameWithRole()} 阻塞了投票，本次投票数据不计入");
+            }
+            if (clearVote)
+            {
+                logger.Info($"{role.Player.GetNameWithRole()} 撤销了投票，允许重新投票");
             }
         }
 
-        if (doVote)
-        {
-            vote.DoVote(voteFor, numVotes);
-        }
+        if (doVote) vote.DoVote(voteFor, numVotes);
+        return !clearVote;
     }
     /// <summary>
     /// 如果会议时间耗尽或每个人都已投票，则结束会议

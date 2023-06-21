@@ -35,12 +35,10 @@ public sealed class Glitch : RoleBase
     {
         OptionCanVote = BooleanOptionItem.Create(RoleInfo, 10, OptionName.GlitchCanVote, true, false);
     }
-    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
+    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
     {
-        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
-        var baseVote = (votedForId, numVotes, doVote);
-        if (voterId != Player.PlayerId) return baseVote;
-        baseVote.doVote = OptionCanVote.GetBool();
-        return baseVote;
+        if (voterId != Player.PlayerId || OptionCanVote.GetBool()) return true;
+        roleNumVotes = 0;
+        return true;
     }
 }

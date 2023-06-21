@@ -24,17 +24,25 @@ public sealed class Dictator : RoleBase
     )
     { }
 
-    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
+    public override void OnStartMeeting() => LastVoted = byte.MaxValue;
+    private byte LastVoted;
+    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
     {
-        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
-        var baseVote = (votedForId, numVotes, doVote);
-        if (voterId != Player.PlayerId || sourceVotedForId == Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive())
+        if (voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive()) return true;
+
+        if (LastVoted == roleVoteFor)
         {
-            return baseVote;
+            MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Suicide, Player.PlayerId);
+            Utils.GetPlayerById(sourceVotedForId).SetRealKiller(Player);
+            MeetingVoteManager.Instance.ClearAndExile(Player.PlayerId, sourceVotedForId);
+            return false;
         }
-        MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Suicide, Player.PlayerId);
-        Utils.GetPlayerById(sourceVotedForId).SetRealKiller(Player);
-        MeetingVoteManager.Instance.ClearAndExile(Player.PlayerId, sourceVotedForId);
-        return (votedForId, numVotes, false);
+        else
+        {
+            Utils.SendMessage(Translator.GetString("DictatorOnVote"), Player.PlayerId);
+            LastVoted = roleVoteFor;
+            clearVote = true;
+            return true;
+        }
     }
 }

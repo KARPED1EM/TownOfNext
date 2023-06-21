@@ -44,11 +44,9 @@ public sealed class Zombie : RoleBase, IImpostor
         return OptionKillCooldown.GetFloat();
     }
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetFloat(FloatOptionNames.ImpostorLightMod, 0.2f);
-    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
+    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
     {
-        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
-        var baseVote = (votedForId, numVotes, doVote);
-        if (sourceVotedForId == Player.PlayerId) baseVote.doVote = false;
-        return baseVote;
+        if (sourceVotedForId == Player.PlayerId) roleNumVotes = 0;
+        return true;
     }
 }

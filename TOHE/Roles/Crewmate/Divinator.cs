@@ -29,12 +29,10 @@ public sealed class Divinator : RoleBase
 
     static OptionItem OptionCheckNums;
     static OptionItem OptionAccurateCheck;
-    static OptionItem OptionIgnoreVote;
     enum OptionName
     {
         DivinatorSkillLimit,
-        AccurateCheckMode,
-        DivinatorIgnoreVote,
+        AccurateCheckMode
     }
 
     private int CheckLimit;
@@ -44,41 +42,34 @@ public sealed class Divinator : RoleBase
         OptionCheckNums = IntegerOptionItem.Create(RoleInfo, 10, OptionName.DivinatorSkillLimit, new(1, 15, 1), 5, false)
             .SetValueFormat(OptionFormat.Times);
         OptionAccurateCheck = BooleanOptionItem.Create(RoleInfo, 11, OptionName.AccurateCheckMode, false, false);
-        OptionIgnoreVote = BooleanOptionItem.Create(RoleInfo, 12, OptionName.DivinatorIgnoreVote, false, false);
         Options.OverrideTasksData.Create(RoleInfo, 20);
     }
     public override void Add() => CheckLimit = OptionCheckNums.GetInt();
     public override void OnStartMeeting() => DidVote = false;
-    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
+    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
     {
-        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
-        var baseVote = (votedForId, numVotes, doVote);
-        if (voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive() || DidVote)
-        {
-            return baseVote;
-        }
-        if (OptionIgnoreVote.GetBool())
-        {
-            baseVote.doVote = false;
-        }
+        if (voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive() || DidVote) return true;
 
         DidVote = true;
 
         var target = Utils.GetPlayerById(sourceVotedForId);
-        if (target == null) return baseVote;
+        if (target == null) return true;
 
         if (CheckLimit < 1)
         {
             Utils.SendMessage(GetString("DivinatorCheckReachLimit"), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
-            return baseVote;
+            return true;
         }
 
         CheckLimit--;
 
         if (Is(target))
         {
-            Utils.SendMessage(GetString("DivinatorCheckSelfMsg") + "\n\n" + string.Format(GetString("DivinatorCheckLimit"), CheckLimit), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
-            return baseVote;
+            string notice1 = GetString("DivinatorCheckSelfMsg") + "\n\n" + string.Format(GetString("DivinatorCheckLimit"), CheckLimit) + GetString("SkillDoneAndYouCanVoteNormallyNow");
+            Player.ShowPopUp(notice1);
+            Utils.SendMessage(notice1, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
+            clearVote = true;
+            return false;
         }
 
         string msg;
@@ -210,8 +201,11 @@ public sealed class Divinator : RoleBase
             msg = string.Format(GetString("DivinatorCheck." + text), target.GetRealName());
         }
 
-        Utils.SendMessage(GetString("DivinatorCheck") + "\n" + msg + "\n\n" + string.Format(GetString("DivinatorCheckLimit"), CheckLimit), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
+        string notice2 = GetString("DivinatorCheck") + "\n" + msg + "\n\n" + string.Format(GetString("DivinatorCheckLimit"), CheckLimit) + GetString("SkillDoneAndYouCanVoteNormallyNow");
+        Player.ShowPopUp(notice2);
+        Utils.SendMessage(notice2, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
 
-        return baseVote;
+        clearVote = true;
+        return false;
     }
 }

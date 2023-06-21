@@ -29,11 +29,9 @@ public sealed class Eraser : RoleBase, IImpostor
     { }
 
     static OptionItem OptionEraseLimit;
-    static OptionItem OptionIgnoreVote;
     enum OptionName
     {
-        EraseLimit,
-        EraserIgnoreVote,
+        EraseLimit
     }
 
     private int EraseLimit;
@@ -42,7 +40,6 @@ public sealed class Eraser : RoleBase, IImpostor
     {
         OptionEraseLimit = IntegerOptionItem.Create(RoleInfo, 10, OptionName.EraseLimit, new(1, 15, 1), 2, false)
             .SetValueFormat(OptionFormat.Times);
-        OptionIgnoreVote = BooleanOptionItem.Create(RoleInfo, 11, OptionName.EraserIgnoreVote, false, false);
     }
     public override void Add()
     {
@@ -60,30 +57,27 @@ public sealed class Eraser : RoleBase, IImpostor
         EraseLimit = reader.ReadInt32();
     }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(EraseLimit >= 1 ? Color.red : Color.gray, $"({EraseLimit})");
-    public override (byte? votedForId, int? numVotes, bool doVote) OnVote(byte voterId, byte sourceVotedForId)
+    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
     {
-        var (votedForId, numVotes, doVote) = base.OnVote(voterId, sourceVotedForId);
-        var baseVote = (votedForId, numVotes, doVote);
         var target = Utils.GetPlayerById(sourceVotedForId);
-        if (target == null || voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive() || EraseLimit < 1)
-        {
-            return baseVote;
-        }
-        if (OptionIgnoreVote.GetBool())
-        {
-            baseVote.doVote = false;
-        }
+        if (target == null || voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive() || EraseLimit < 1 || PlayerToErase != byte.MaxValue) return true;
 
         if (Is(target))
         {
-            Utils.SendMessage(GetString("EraserEraseSelf"), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
-            return baseVote;
+            string notice1 = GetString("EraserEraseSelf") + GetString("SkillDoneAndYouCanVoteNormallyNow");
+            Player.ShowPopUp(notice1);
+            Utils.SendMessage(notice1, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+            clearVote = true;
+            return false;
         }
 
         if (target.Is(CustomRoleTypes.Neutral))
         {
-            Utils.SendMessage(string.Format(GetString("EraserEraseNeutralNotice"), target.GetRealName()), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
-            return baseVote;
+            string notice2 = string.Format(GetString("EraserEraseNeutralNotice"), target.GetRealName()) + GetString("SkillDoneAndYouCanVoteNormallyNow");
+            Player.ShowPopUp(notice2);
+            Utils.SendMessage(notice2, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+            clearVote = true;
+            return false;
         }
 
         EraseLimit--;
@@ -91,9 +85,12 @@ public sealed class Eraser : RoleBase, IImpostor
 
         PlayerToErase = target.PlayerId;
 
-        Utils.SendMessage(string.Format(GetString("EraserEraseNotice"), target.GetRealName()), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+        string notice3 = string.Format(GetString("EraserEraseNotice"), target.GetRealName()) + GetString("SkillDoneAndYouCanVoteNormallyNow");
+        Player.ShowPopUp(notice3);
+        Utils.SendMessage(notice3, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
 
-        return baseVote;
+        clearVote = true;
+        return false;
     }
     public override void OnStartMeeting()
     {
