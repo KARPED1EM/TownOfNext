@@ -69,7 +69,7 @@ public class NameTagPanel
                 CustomBackground.gameObject.SetActive(true);
             }));
 
-            var sliderTemplate = AccountManager.Instance.transform.FindChild("MainSignInWindow").FindChild("SignIn").FindChild("AccountsMenu").FindChild("Accounts").FindChild("Slider").gameObject;
+            var sliderTemplate = AccountManager.Instance.transform.FindChild("MainSignInWindow/SignIn/AccountsMenu/Accounts/Slider").gameObject;
             if (sliderTemplate != null && Slider == null)
             {
                 Slider = Object.Instantiate(sliderTemplate, CustomBackground.transform);
