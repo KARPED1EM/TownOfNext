@@ -1,3 +1,4 @@
+using HarmonyLib;
 using UnityEngine;
 
 namespace TOHE;
@@ -9,14 +10,13 @@ public static class ObjectHelper
     /// </summary>
     public static void DestroyTranslator(this GameObject obj)
     {
+        if (obj == null) return;
         obj.ForEachChild((Il2CppSystem.Action<GameObject>)DestroyTranslator);
-        var translator = obj.transform.GetComponentInChildren<TextTranslatorTMP>(true);
-        if (translator != null) Object.Destroy(translator);
-        translator = obj.GetComponent<TextTranslatorTMP>();
-        if (translator != null) Object.Destroy(translator);
+        TextTranslatorTMP[] translator = obj.GetComponentsInChildren<TextTranslatorTMP>(true);
+        translator?.Do(Object.Destroy);
     }
     /// <summary>
     /// オブジェクトの<see cref="TextTranslatorTMP"/>コンポーネントを破棄します
     /// </summary>
-    public static void DestroyTranslator(this MonoBehaviour obj) => obj.gameObject.DestroyTranslator();
+    public static void DestroyTranslator(this MonoBehaviour obj) => obj?.gameObject?.DestroyTranslator();
 }

@@ -32,8 +32,6 @@ public class NameTagPanel
         }
         var generalTab = mouseMoveToggle.transform.parent.parent.parent;
 
-        RefreshTagList(leaveButton.gameObject);
-
         if (CustomBackground == null || TagOptionsButton == null)
         {
             numItems = 0;
@@ -83,8 +81,11 @@ public class NameTagPanel
                 scroller.SetYBoundsMax(50f);
             }
         }
+
+        RefreshTagList();
+
     }
-    public static void RefreshTagList(GameObject template)
+    public static void RefreshTagList()
     {
         var scroller = Slider.GetComponent<Scroller>();
         scroller.Inner.gameObject.ForEachChild((Action<GameObject>)(DestroyObj));
@@ -97,13 +98,13 @@ public class NameTagPanel
         foreach (var nameTag in NameTagManager.NameTags)
         {
             numItems++;
-            var button = Object.Instantiate(template, scroller.Inner);
+            var button = Object.Instantiate(AccountManager.Instance.transform.FindChild("DOBEnterScreen/EnterAgePage/SubmitButton").gameObject, scroller.Inner);
             button.transform.localPosition = new(-0.7f, 0.9f -0.4f * numItems, -0.5f);
             button.transform.localScale = new(1f, 0.8f, 1f);
             button.name = "Name Tag Item For " + nameTag.Key;
-            button.transform.GetChild(0).GetComponent<TextMeshPro>().DestroyTranslator();
-            button.transform.GetChild(0).GetComponent<TextMeshPro>().text = nameTag.Key;
-            button.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            button.DestroyTranslator();
+            button.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>().text = nameTag.Key;
+            button.transform.FindChild("Background").GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
             var passiveButton = button.GetComponent<PassiveButton>();
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener(new Action(() =>
