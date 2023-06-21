@@ -1,5 +1,6 @@
 using HarmonyLib;
 using TOHE.Modules.ClientOptions;
+using TOHE.Modules.NameTagPanel;
 using UnityEngine;
 
 namespace TOHE;
@@ -25,6 +26,11 @@ public static class OptionsMenuBehaviourStartPatch
     public static void Postfix(OptionsMenuBehaviour __instance)
     {
         if (__instance.DisableMouseMovement == null) return;
+
+        if (NameTagPanel.CustomBackground == null)
+            NameTagPanel.Init(__instance);
+
+        NameTagPanel.RefreshTagList();
 
         if (!reseted || !DebugModeManager.AmDebugger)
         {
@@ -95,9 +101,7 @@ public static class OptionsMenuBehaviourStartPatch
         }
 
         if (ModUnloaderScreen.Popup == null)
-        {
             ModUnloaderScreen.Init(__instance);
-        }
     }
 }
 
@@ -106,10 +110,8 @@ public static class OptionsMenuBehaviourClosePatch
 {
     public static void Postfix()
     {
-        if (ClientActionItem.CustomBackground != null)
-        {
-            ClientActionItem.CustomBackground.gameObject.SetActive(false);
-        }
+        ClientActionItem.CustomBackground?.gameObject.SetActive(false);
+        NameTagPanel.CustomBackground?.gameObject.SetActive(false);
         ModUnloaderScreen.Hide();
     }
 }

@@ -26,7 +26,7 @@ public class ClientActionItem
             {
                 numItems = 0;
                 CustomBackground = Object.Instantiate(optionsMenuBehaviour.Background, optionsMenuBehaviour.transform);
-                CustomBackground.name = "CustomBackground";
+                CustomBackground.name = "Client Options Background";
                 CustomBackground.transform.localScale = new(0.9f, 0.9f, 1f);
                 CustomBackground.transform.localPosition += Vector3.back * 8;
                 CustomBackground.gameObject.SetActive(false);
@@ -66,13 +66,11 @@ public class ClientActionItem
                 var generalTab = mouseMoveToggle.transform.parent.parent.parent;
 
                 ModOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
-                ModOptionsButton.transform.localPosition = leaveButton?.transform?.localPosition ?? new(0f, -2.4f, 1f);
+                ModOptionsButton.transform.localPosition = leaveButton?.transform?.localPosition + new Vector3(1.24f, 0f, 0f) ?? new(1.24f, -2.4f, 1f);
                 ModOptionsButton.name = "TOHE Options";
                 ModOptionsButton.Text.text = Translator.GetString("TOHEOptions");
                 if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
-                {
                     ModOptionsButton.Background.color = modColor;
-                }
                 var modOptionsPassiveButton = ModOptionsButton.GetComponent<PassiveButton>();
                 modOptionsPassiveButton.OnClick = new();
                 modOptionsPassiveButton.OnClick.AddListener(new Action(() =>
@@ -99,6 +97,7 @@ public class ClientActionItem
                 -6f);
             ToggleButton.name = name;
             ToggleButton.Text.text = Translator.GetString(name);
+            ToggleButton.Background.color = Color.white;
             var passiveButton = ToggleButton.GetComponent<PassiveButton>();
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener((Action)OnClick);

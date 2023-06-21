@@ -46,16 +46,10 @@ public sealed class ClientOptionItem : ClientActionItem
 
     public void UpdateToggle()
     {
-        if (ToggleButton == null)
-        {
-            return;
-        }
+        if (ToggleButton == null) return;
 
         var color = Config.Value ? new Color32(255, 192, 203, byte.MaxValue) : new Color32(77, 77, 77, byte.MaxValue);
         ToggleButton.Background.color = color;
-        if (ToggleButton.Rollover != null)
-        {
-            ToggleButton.Rollover.ChangeOutColor(color);
-        }
+        ToggleButton.Rollover?.ChangeOutColor(color);
     }
 }
