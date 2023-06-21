@@ -44,8 +44,10 @@ public class ModUpdater
     public static string downloadUrl_github = "";
     public static string downloadUrl_cos = "";
 
-    public static GenericPopup InfoPopup;
-    public static GameObject PopupButton;
+    public static GameObject Fill;
+    public static GameObject InfoScreen;
+    public static PassiveButton ActionButton;
+
     public static Task updateTask;
 
     private static int retried = 0;
@@ -53,37 +55,46 @@ public class ModUpdater
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix, HarmonyPriority(Priority.LowerThanNormal)]
     public static void StartPostfix()
     {
-        InfoPopup = UnityEngine.Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup);
-        InfoPopup.name = "TOHE Info Popup";
-        InfoPopup.TextAreaTMP.GetComponent<RectTransform>().sizeDelta = new(2.5f, 2f);
-        PopupButton = InfoPopup.transform.FindChild("ExitGame").gameObject;
-        PopupButton.name = "Action Button";
-        PopupButton.transform.localPosition -= new Vector3(0f, 0.3f, 0f);
-        PopupButton.transform.localScale *= 0.85f;
-        InfoPopup.gameObject.transform.FindChild("Background").transform.localScale *= 1.4f;
+        var DOBScreen = AccountManager.Instance.transform.FindChild("DOBEnterScreen");
+        if (DOBScreen != null && (Fill == null || InfoScreen == null || ActionButton == null))
+        {
+            Fill = UnityEngine.Object.Instantiate(DOBScreen.FindChild("Fill").gameObject);
+            Fill.transform.SetLocalZ(-100f);
+            Fill.name = "TOHE Info Popup Fill";
+            Fill.SetActive(false);
+            InfoScreen = UnityEngine.Object.Instantiate(DOBScreen.FindChild("InfoPage").gameObject);
+            InfoScreen.transform.SetLocalZ(-110f);
+            InfoScreen.name = "TOHE Info Popup Page";
+            InfoScreen.SetActive(false);
+            ActionButton = InfoScreen.transform.FindChild("BackButton").GetComponent<PassiveButton>();
+            ActionButton.gameObject.name = "ActionButton";
+        }
 
 #if DEBUG
         isChecked = true;
 #else
         if (!isChecked) CheckForUpdate();
-        if (!Main.AlreadyShowMsgBox || isBroken)
-            {
-                Main.AlreadyShowMsgBox = true;
-                var annos = IsInChina ? announcement_zh : announcement_en;
-                if (isBroken) ShowPopup(annos, GetString(StringNames.ExitGame), Application.Quit);
-                else ShowPopup(annos, GetString(StringNames.Okay));
-            }
 #endif
 
-        MainMenuManagerPatch.PlayButton.SetActive(!hasUpdate);
-        MainMenuManagerPatch.UpdateButton.SetActive(hasUpdate);
+        SetUpdateButtonStatus();
+    }
+    public static void SetUpdateButtonStatus()
+    {
+        MainMenuManagerPatch.UpdateButton.SetActive(isChecked && hasUpdate);
+        MainMenuManagerPatch.PlayButton.SetActive(!MainMenuManagerPatch.UpdateButton.activeSelf);
         var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
-        buttonText.text = $"{GetString("updateButton")}\nv{latestVersion}";
+        buttonText.text = $"{GetString("updateButton")}\nv{latestVersion?.ToString() ?? "???"}";
+    }
+    public static void Retry()
+    {
+        retried++;
+        ShowPopup(GetString("updateCheckPopupTitle"), GetString("PleaseWait"));
+        new LateTask(CheckForUpdate, 0.3f, "Retry Check Update");
     }
     public static void CheckForUpdate()
     {
         isChecked = false;
-        DeleteOldFiles();
+        DeleteOldFiles();   
 
         foreach (var url in URLs)
         {
@@ -107,13 +118,22 @@ public class ModUpdater
             Logger.Info("COS Url: " + downloadUrl_cos, "CheckRelease");
             Logger.Info("Announcement (English): " + announcement_en, "CheckRelease");
             Logger.Info("Announcement (SChinese): " + announcement_zh, "CheckRelease");
+
+            if ((!Main.AlreadyShowMsgBox || isBroken))
+            {
+                Main.AlreadyShowMsgBox = true;
+                var annos = IsInChina ? announcement_zh : announcement_en;
+                if (isBroken) ShowPopup(GetString(StringNames.AnnouncementLabel), annos, GetString(StringNames.ExitGame), Application.Quit);
+                else ShowPopup(GetString(StringNames.AnnouncementLabel), annos, GetString(StringNames.Okay));
+            }
         }
         else
         {
-            if (retried >= 2) ShowPopup(GetString("updateCheckFailedExit"), GetString(StringNames.ExitGame), Application.Quit);
-            else ShowPopup(GetString("updateCheckFailedRetry"), GetString(StringNames.RetryText), CheckForUpdate);
-            retried++;
+            if (retried >= 2) ShowPopup(GetString("updateCheckPopupTitle"), GetString("updateCheckFailedExit"), GetString(StringNames.Okay));
+            else ShowPopup(GetString("updateCheckPopupTitle"), GetString("updateCheckFailedRetry"), GetString("Retry"), Retry);
         }
+
+        SetUpdateButtonStatus();
     }
     public static string Get(string url)
     {
@@ -177,14 +197,14 @@ public class ModUpdater
         }
         catch (Exception ex)
         {
-            Logger.Error($"Exception:\n{ex}", "CheckRelease", false);
+            Logger.Error($"Exception:\n{ex.Message}", "CheckRelease", false);
             return false;
         }
     }
     public static void StartUpdate(string url = "")
     {
         if (url == "") url = IsInChina ? downloadUrl_cos : downloadUrl_github;
-        ShowPopup(GetString("updatePleaseWait"));
+        ShowPopup(GetString("updatePopupTitle"), GetString("updatePleaseWait"));
         updateTask = DownloadDLL(url);
     }
     public static void DeleteOldFiles()
@@ -221,13 +241,13 @@ public class ModUpdater
             switch (ex.StatusCode)
             {
                 case HttpStatusCode.NotFound:
-                    ShowPopup(GetString("HttpNotFound"));
+                    ShowPopup(GetString("updatePopupTitleFialed"), GetString("HttpNotFound"), GetString(StringNames.Okay));
                     break;
                 case HttpStatusCode.Forbidden:
-                    ShowPopup(GetString("HttpForbidden"));
+                    ShowPopup(GetString("updatePopupTitleFialed"), GetString("HttpForbidden"), GetString(StringNames.Okay));
                     break;
                 default:
-                    ShowPopup(ex.Message);
+                    ShowPopup(GetString("updatePopupTitleFialed"), ex.Message, GetString(StringNames.Okay));
                     break;
             }
             return false;
@@ -249,7 +269,7 @@ public class ModUpdater
                     readLength += length;
                     int progress = (int)((double)readLength / fileSize * 100);
                     if (lastUpdateTime != Utils.GetTimeStamp())
-                        ShowPopup($"<size=150%>{GetString("updateInProgress")}\n{readLength}/{fileSize}\n({progress}%)");
+                        ShowPopup(GetString("updatePopupTitle"), $"<size=150%>{GetString("updateInProgress")}\n{readLength}/{fileSize}\n({progress}%)");
                     lastUpdateTime = Utils.GetTimeStamp();
                     fileStream.Write(buffer, 0, length);
                 }
@@ -258,14 +278,14 @@ public class ModUpdater
         catch (Exception ex)
         {
             Logger.Error($"更新失败\n{ex}", "DownloadDLL", false);
-            ShowPopup(GetString("updateManually"), GetString(StringNames.ExitGame), Application.Quit);
+            ShowPopup(GetString("updatePopupTitleFialed"), GetString("downloadFailed"), GetString(StringNames.ExitGame), Application.Quit);
             return false;
         }
 
         if (GetMD5HashFromFile(savePath) != md5)
         {
             File.Delete(savePath);
-            ShowPopup(GetString("downloadFailed"), GetString(StringNames.Okay));
+            ShowPopup(GetString("updatePopupTitleFialed"), GetString("updateFileMd5Incorrect"), GetString(StringNames.Okay));
             MainMenuManagerPatch.UpdateButton.SetActive(true);
             MainMenuManagerPatch.PlayButton.SetActive(false);
         }
@@ -274,7 +294,7 @@ public class ModUpdater
             var fileName = Assembly.GetExecutingAssembly().Location;
             File.Move(fileName, fileName + ".bak");
             File.Move("BepInEx/plugins/TOHE.dll.temp", fileName);
-            ShowPopup(GetString("updateRestart"), GetString(StringNames.ExitGame), Application.Quit);
+            ShowPopup(GetString("updatePopupTitleDone"), GetString("updateRestart"), GetString(StringNames.ExitGame), Application.Quit);
         }
         return true;
     }
@@ -297,20 +317,33 @@ public class ModUpdater
             return "";
         }
     }
-    private static void ShowPopup(string message, string buttonText = null, Action buttonAction = null)
+    private static void ShowPopup(string title, string message, string buttonText = null, Action buttonAction = null)
     {
-        if (InfoPopup == null) return;
-        InfoPopup.Show(message);
-        if (PopupButton == null) return;
-        PopupButton.gameObject.SetActive(buttonText != null);
-        PopupButton.transform.GetChild(0).gameObject.DestroyTranslator();
-        var tmp = PopupButton.transform.GetChild(0).GetComponent<TextMeshPro>();
-        tmp.SetText(buttonText);
-        PopupButton.GetComponent<PassiveButton>().OnClick = new();
-        PopupButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
+        if (Fill == null || InfoScreen == null) return;
+        var titleTmp = InfoScreen.transform.FindChild("Title Text").GetComponent<TextMeshPro>();
+        titleTmp.DestroyTranslator();
+        titleTmp.text = title;
+        var infoTmp = InfoScreen.transform.FindChild("InfoText_TMP").GetComponent<TextMeshPro>();
+        infoTmp.DestroyTranslator();
+        infoTmp.text = message;
+        Fill.SetActive(true);
+        if (ActionButton == null || buttonText == null)
         {
-            InfoPopup.Close();
+            ActionButton?.gameObject?.SetActive(buttonText != null);
+            InfoScreen.SetActive(true);
+            return;
+        }
+        var buttonTmp = ActionButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
+        buttonTmp.DestroyTranslator();
+        buttonTmp.text = buttonText ?? GetString(StringNames.Okay);
+        ActionButton.OnClick = new();
+        ActionButton.OnClick.AddListener((Action)(() =>
+        {
+            Fill.SetActive(false);
+            InfoScreen.SetActive(false);
             buttonAction?.Invoke();
         }));
+        ActionButton.gameObject.SetActive(true);
+        InfoScreen.SetActive(true);
     }
 }

@@ -2,6 +2,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.AddOns.Crewmate;
@@ -23,17 +24,24 @@ public enum CustomGameMode
 public static class Options
 {
     static Task taskOptionsLoad;
+    static GameObject postLoadWaiting;
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize)), HarmonyPostfix]
     public static void OptionsLoadStart()
     {
         Logger.Info("Options.Load Start", "Options");
         taskOptionsLoad = Task.Run(Load);
     }
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
+    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.Awake)), HarmonyPostfix]
+    public static void OptionsLoadStart(AccountManager __instance)
+    {
+        postLoadWaiting = __instance.postLoadWaiting;
+        __instance.postLoadWaiting.SetActive(!taskOptionsLoad.IsCompleted);
+    }
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void WaitOptionsLoad()
     {
-        taskOptionsLoad.Wait();
-        Logger.Info("Options.Load End", "Options");
+        if (!taskOptionsLoad.IsCompleted && (postLoadWaiting?.activeSelf ?? false))
+            postLoadWaiting?.SetActive(true);
     }
 
     // 预设
