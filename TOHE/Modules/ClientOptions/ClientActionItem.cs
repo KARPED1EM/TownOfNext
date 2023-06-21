@@ -66,7 +66,8 @@ public class ClientActionItem
                 var generalTab = mouseMoveToggle.transform.parent.parent.parent;
 
                 ModOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
-                ModOptionsButton.transform.localPosition = leaveButton?.transform?.localPosition + new Vector3(1.24f, 0f, 0f) ?? new(1.24f, -2.4f, 1f);
+                var pos = leaveButton?.transform?.localPosition;
+                ModOptionsButton.transform.localPosition = pos != null ? pos.Value + new Vector3(1.24f, 0f, 0f) : new(1.24f, -2.4f, 1f);
                 ModOptionsButton.name = "TOHE Options";
                 ModOptionsButton.Text.text = Translator.GetString("TOHEOptions");
                 if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))

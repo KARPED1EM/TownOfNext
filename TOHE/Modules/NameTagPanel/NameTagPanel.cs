@@ -20,25 +20,6 @@ public class NameTagPanel
     {
         var mouseMoveToggle = optionsMenuBehaviour.DisableMouseMovement;
 
-        numItems = 0;
-        CustomBackground = Object.Instantiate(optionsMenuBehaviour.Background, optionsMenuBehaviour.transform);
-        CustomBackground.name = "Name Tag Panel Background";
-        CustomBackground.transform.localScale = new(0.9f, 0.9f, 1f);
-        CustomBackground.transform.localPosition += Vector3.back * 8;
-        CustomBackground.gameObject.SetActive(false);
-
-        var closeButton = Object.Instantiate(mouseMoveToggle, CustomBackground.transform);
-        closeButton.transform.localPosition = new(1.3f, -2.3f, -6f);
-        closeButton.name = "Close";
-        closeButton.Text.text = Translator.GetString("Close");
-        closeButton.Background.color = Palette.DisabledGrey;
-        var closePassiveButton = closeButton.GetComponent<PassiveButton>();
-        closePassiveButton.OnClick = new();
-        closePassiveButton.OnClick.AddListener(new Action(() =>
-        {
-            CustomBackground.gameObject.SetActive(false);
-        }));
-
         UiElement[] selectableButtons = optionsMenuBehaviour.ControllerSelectable.ToArray();
         PassiveButton leaveButton = null;
         PassiveButton returnButton = null;
@@ -51,34 +32,59 @@ public class NameTagPanel
         }
         var generalTab = mouseMoveToggle.transform.parent.parent.parent;
 
-        TagOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
-        TagOptionsButton.transform.localPosition = leaveButton?.transform?.localPosition - new Vector3(1.3f, 0f, 0f) ?? new(-1.3f, -2.4f, 1f);
-        TagOptionsButton.name = "Name Tag Options";
-        TagOptionsButton.Text.text = Translator.GetString("NameTagOptions");
-        if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
-        {
-            TagOptionsButton.Background.color = modColor;
-        }
-        var tagOptionsPassiveButton = TagOptionsButton.GetComponent<PassiveButton>();
-        tagOptionsPassiveButton.OnClick = new();
-        tagOptionsPassiveButton.OnClick.AddListener(new Action(() =>
-        {
-            CustomBackground.gameObject.SetActive(true);
-        }));
+        RefreshTagList(leaveButton.gameObject);
 
-        var sliderTemplate = AccountManager.Instance.transform.FindChild("MainSignInWindow").FindChild("SignIn").FindChild("AccountsMenu").FindChild("Accounts").FindChild("Slider").gameObject;
-        if (sliderTemplate != null && Slider == null)
+        if (CustomBackground == null || TagOptionsButton == null)
         {
-            Slider = Object.Instantiate(sliderTemplate, CustomBackground.transform);
-            Slider.name = "Name Tags Slider";
-            Slider.transform.localPosition = new Vector3(0f, 0f, -1f);
-            Slider.transform.localScale = new Vector3(1.2f, 1.5f, 1f);
-            var scroller = Slider.GetComponent<Scroller>();
-            scroller.ScrollWheelSpeed = 0.3f;
-            scroller.SetYBoundsMax(50f);
+            numItems = 0;
+            CustomBackground = Object.Instantiate(optionsMenuBehaviour.Background, optionsMenuBehaviour.transform);
+            CustomBackground.name = "Name Tag Panel Background";
+            CustomBackground.transform.localScale = new(0.9f, 0.9f, 1f);
+            CustomBackground.transform.localPosition += Vector3.back * 8;
+            CustomBackground.gameObject.SetActive(false);
+
+            var closeButton = Object.Instantiate(mouseMoveToggle, CustomBackground.transform);
+            closeButton.transform.localPosition = new(1.3f, -2.3f, -6f);
+            closeButton.name = "Close";
+            closeButton.Text.text = Translator.GetString("Close");
+            closeButton.Background.color = Palette.DisabledGrey;
+            var closePassiveButton = closeButton.GetComponent<PassiveButton>();
+            closePassiveButton.OnClick = new();
+            closePassiveButton.OnClick.AddListener(new Action(() =>
+            {
+                CustomBackground.gameObject.SetActive(false);
+            }));
+
+            TagOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
+            var pos = leaveButton?.transform?.localPosition;
+            TagOptionsButton.transform.localPosition = pos != null ? pos.Value - new Vector3(1.3f, 0f, 0f) : new(-1.3f, -2.4f, 1f);
+            TagOptionsButton.name = "Name Tag Options";
+            TagOptionsButton.Text.text = Translator.GetString("NameTagOptions");
+            if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
+            {
+                TagOptionsButton.Background.color = modColor;
+            }
+            var tagOptionsPassiveButton = TagOptionsButton.GetComponent<PassiveButton>();
+            tagOptionsPassiveButton.OnClick = new();
+            tagOptionsPassiveButton.OnClick.AddListener(new Action(() =>
+            {
+                CustomBackground.gameObject.SetActive(true);
+            }));
+
+            var sliderTemplate = AccountManager.Instance.transform.FindChild("MainSignInWindow").FindChild("SignIn").FindChild("AccountsMenu").FindChild("Accounts").FindChild("Slider").gameObject;
+            if (sliderTemplate != null && Slider == null)
+            {
+                Slider = Object.Instantiate(sliderTemplate, CustomBackground.transform);
+                Slider.name = "Name Tags Slider";
+                Slider.transform.localPosition = new Vector3(0f, 0f, -1f);
+                Slider.transform.localScale = new Vector3(1.2f, 1.5f, 1f);
+                var scroller = Slider.GetComponent<Scroller>();
+                scroller.ScrollWheelSpeed = 0.3f;
+                scroller.SetYBoundsMax(50f);
+            }
         }
     }
-    public static void RefreshTagList()
+    public static void RefreshTagList(GameObject template)
     {
         var scroller = Slider.GetComponent<Scroller>();
         scroller.Inner.gameObject.ForEachChild((Action<GameObject>)(DestroyObj));
@@ -91,7 +97,7 @@ public class NameTagPanel
         foreach (var nameTag in NameTagManager.NameTags)
         {
             numItems++;
-            var button = Object.Instantiate(Twitch.TwitchManager.Instance.TwitchPopup.transform.FindChild("ExitGame").gameObject, scroller.Inner);
+            var button = Object.Instantiate(template, scroller.Inner);
             button.transform.localPosition = new(-0.7f, 0.9f -0.4f * numItems, -0.5f);
             button.transform.localScale = new(1f, 0.8f, 1f);
             button.name = "Name Tag Item For " + nameTag.Key;
@@ -103,11 +109,6 @@ public class NameTagPanel
             passiveButton.OnClick.AddListener(new Action(() =>
             {
                 Logger.Test("Onlick: " + nameTag.Key);
-            }));
-            passiveButton.OnMouseOver = new();
-            passiveButton.OnMouseOver.AddListener(new Action(() =>
-            {
-                button.GetComponent<SpriteRenderer>().color = new Color32(109, 207, 246, 255);
             }));
         }
     }

@@ -27,10 +27,7 @@ public static class OptionsMenuBehaviourStartPatch
     {
         if (__instance.DisableMouseMovement == null) return;
 
-        if (NameTagPanel.CustomBackground == null)
-            NameTagPanel.Init(__instance);
-
-        NameTagPanel.RefreshTagList();
+        NameTagPanel.Init(__instance);
 
         if (!reseted || !DebugModeManager.AmDebugger)
         {
