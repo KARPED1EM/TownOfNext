@@ -1,4 +1,5 @@
 ﻿using AmongUs.Data;
+using Cpp2IL.Core.Extensions;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,7 +15,29 @@ namespace TOHE;
 public static class NameTagManager
 {
     private static readonly string TAGS_DIRECTORY_PATH = @"./TOHE_Data/NameTags/";
-    public static Dictionary<string, NameTag> NameTags = new();
+    private static Dictionary<string, NameTag> NameTags = new();
+    public static IReadOnlyDictionary<string, NameTag> AllNameTags => NameTags;
+    public static NameTag DeepClone(NameTag tag)
+    {
+        NameTag newTag = new();
+        newTag.UpperText = CloneCom(tag.UpperText);
+        newTag.Prefix = CloneCom(tag.Prefix);
+        newTag.Suffix = CloneCom(tag.Suffix);
+        newTag.Name = CloneCom(tag.Name);
+        return newTag;
+        static Component? CloneCom(Component? com)
+        {
+            if (com == null) return null;
+            return new()
+            {
+                Text = com.Text ?? null,
+                SizePercentage = com.SizePercentage ?? null,
+                TextColor = com.TextColor ?? null,
+                Gradient = com.Gradient ?? null,
+                Spaced = com.Spaced
+            };
+        }
+    }
     public static void ApplyFor(PlayerControl player)
     {
         if (!AmongUsClient.Instance.AmHost || player == null) return;
@@ -204,7 +227,7 @@ public static class NameTagManager
     }
     public class ColorGradient
     {
-        private List<Color> Colors;
+        public List<Color> Colors { get; private set; }
         private float Spacing;
         public ColorGradient(params Color[] colors)
         {

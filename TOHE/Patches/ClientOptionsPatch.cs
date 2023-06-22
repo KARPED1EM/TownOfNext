@@ -109,6 +109,7 @@ public static class OptionsMenuBehaviourClosePatch
     {
         ClientActionItem.CustomBackground?.gameObject.SetActive(false);
         NameTagPanel.CustomBackground?.gameObject.SetActive(false);
+        NameTagEditMenu.Toggle("", false);
         ModUnloaderScreen.Hide();
     }
 }

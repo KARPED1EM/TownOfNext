@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Object = UnityEngine.Object;
 
 namespace TOHE.Modules.NameTagPanel;
@@ -11,7 +10,6 @@ public class NameTagPanel
 {
     public static ToggleButtonBehaviour TagOptionsButton { get; private set; }
     public static SpriteRenderer CustomBackground { get; private set; }
-    public static SpriteRenderer EditMenuBackground { get; private set; }
     public static GameObject Slider { get; private set; }
     public static Dictionary<string, GameObject> Items { get; private set; }
     
@@ -95,7 +93,7 @@ public class NameTagPanel
         }
 
         Items = new();
-        foreach (var nameTag in NameTagManager.NameTags)
+        foreach (var nameTag in NameTagManager.AllNameTags)
         {
             numItems++;
             var button = Object.Instantiate(AccountManager.Instance.transform.FindChild("DOBEnterScreen/EnterAgePage/SubmitButton").gameObject, scroller.Inner);
@@ -109,7 +107,7 @@ public class NameTagPanel
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener(new Action(() =>
             {
-                Logger.Test("Onlick: " + nameTag.Key);
+                NameTagEditMenu.Toggle(nameTag.Key, null);
             }));
         }
     }

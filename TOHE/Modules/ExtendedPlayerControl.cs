@@ -420,7 +420,7 @@ static class ExtendedPlayerControl
 
     public static string GetTrueName(this PlayerControl player)
     {
-        if (player.AmOwner) return Main.nickName != "" ? Main.nickName : DataManager.player.Customization.Name;
+        if (player?.AmOwner ?? false) return Main.nickName != "" ? Main.nickName : DataManager.player.Customization.Name;
         return Main.AllPlayerNames.TryGetValue(player.PlayerId, out var name) ? name : GetRealName(player);
     }
     public static string GetRealName(this PlayerControl player, bool isMeeting = false)
