@@ -1,5 +1,4 @@
 ﻿using AmongUs.Data;
-using Cpp2IL.Core.Extensions;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System;
@@ -136,9 +135,7 @@ public static class NameTagManager
         float? GetSizePercentage(string? str)
         {
             if (str is null or "") return 90;
-            float size = 90;
-            try { size = float.Parse(str); } catch { return null; }
-            return size;
+            return float.TryParse(str, out var sizef) ? sizef : 90;
         }
 
         Color32? GetTextColor(string? str)
