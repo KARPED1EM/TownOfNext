@@ -13,7 +13,7 @@ namespace TOHE;
 #nullable enable
 public static class NameTagManager
 {
-    private static readonly string TAGS_DIRECTORY_PATH = @"./TOHE_Data/NameTags/";
+    public static readonly string TAGS_DIRECTORY_PATH = @"./TOHE_Data/NameTags/";
     private static Dictionary<string, NameTag> NameTags = new();
     public static IReadOnlyDictionary<string, NameTag> AllNameTags => NameTags;
     public static NameTag DeepClone(NameTag tag)

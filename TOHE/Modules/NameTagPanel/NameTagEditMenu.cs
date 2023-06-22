@@ -2,11 +2,14 @@
 using TMPro;
 using UnityEngine;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using HarmonyLib;
+using Newtonsoft.Json;
 using Object = UnityEngine.Object;
 using Component = TOHE.NameTagManager.Component;
+
 using static TOHE.NameTagManager;
-using HarmonyLib;
-using System.Collections.Generic;
 
 namespace TOHE.Modules.NameTagPanel;
 
@@ -35,6 +38,7 @@ public class NameTagEditMenu
     public static GameObject PreviewButton { get; private set; }
     public static GameObject SaveAndExitButton { get; private set; }
 
+    private static string FriendCode;
     private static NameTag CacheTag;
     private static ComponentType CurrentComponent;
     private enum ComponentType { Upper, Prefix, Suffix, Name }
@@ -43,6 +47,7 @@ public class NameTagEditMenu
     {
         if (Menu == null) Init();
         Menu.SetActive(on ?? !Menu.activeSelf);
+        FriendCode = friendCode;
         CacheTag = (friendCode != null && AllNameTags.TryGetValue(friendCode, out var tag)) ? DeepClone(tag) : new NameTag();
         if (!Menu.activeSelf) return;
         LoadComponent(CacheTag?.UpperText);
@@ -129,10 +134,77 @@ public class NameTagEditMenu
         };
 
     }
-    private static void SaveToFile()
+#nullable enable
+    private enum ComponentName
     {
-
+        UpperText,
+        Prefix,
+        Suffix,
+        Name
     }
+    private static bool SaveToFile(string friendCode, NameTag tag)
+    {
+        if (FriendCode is null or "") return false;
+
+        Il2CppSystem.IO.StringWriter sw = new();
+        JsonWriter JsonWriter = new JsonTextWriter(sw);
+        JsonWriter.WriteStartObject();
+
+        foreach (ComponentName comName in Enum.GetValues(typeof(ComponentName)))
+        {
+            var com = comName switch
+            {
+                ComponentName.UpperText => tag.UpperText,
+                ComponentName.Prefix => tag.Prefix,
+                ComponentName.Suffix => tag.Suffix,
+                ComponentName.Name => tag.Name,
+                _ => null
+            };
+
+            if (com == null) continue;
+
+            JsonWriter.WritePropertyName(Enum.GetName(typeof(ComponentName), comName));
+            JsonWriter.WriteStartObject();
+
+            if (com.Text != null && comName != ComponentName.Name)
+            {
+                JsonWriter.WritePropertyName("Text");
+                JsonWriter.WriteValue(com.Text);
+            }
+            if (com.SizePercentage != null)
+            {
+                JsonWriter.WritePropertyName("SizePercentage");
+                JsonWriter.WriteValue(com.SizePercentage.ToString());
+            }
+            if (com.Gradient != null && com.Gradient.IsValid)
+            {
+                string colors = "";
+                com.Gradient.Colors.Do(c => colors += "#" + ColorUtility.ToHtmlStringRGBA(c)[..6] + ",");
+                JsonWriter.WritePropertyName("Gradient");
+                JsonWriter.WriteValue(colors.TrimEnd(','));
+            }
+            else if (com.TextColor != null)
+            {
+                JsonWriter.WritePropertyName("Color");
+                JsonWriter.WriteValue("#" + ColorUtility.ToHtmlStringRGBA(com.TextColor.Value)[..6]);
+            }
+            if (comName is not ComponentName.UpperText and not ComponentName.Name)
+            {
+                JsonWriter.WritePropertyName("Spaced");
+                JsonWriter.WriteValue(com.Spaced.ToString());
+            }
+            JsonWriter.WriteEndObject();
+        }
+
+        JsonWriter.WriteEndObject();
+        sw.Flush();
+
+        string fileName = TAGS_DIRECTORY_PATH + friendCode.Trim() + ".json";
+        if (!File.Exists(fileName)) File.Create(fileName).Close();
+        File.WriteAllText(fileName, sw.ToString());
+        return true;
+    }
+#nullable disable
     public static void Init()
     {
         Menu = Object.Instantiate(AccountManager.Instance.transform.FindChild("InfoTextBox").gameObject, NameTagPanel.CustomBackground.transform.parent);
@@ -180,7 +252,7 @@ public class NameTagEditMenu
         SaveAndExitButton.transform.localPosition = new Vector3(3.5f, -2.5f, 0f);
         SaveAndExitButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
         {
-            SaveToFile();
+            SaveToFile(FriendCode, CacheTag);
             Toggle(null, false);
         }));
         var saveButtonTmp = SaveAndExitButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
