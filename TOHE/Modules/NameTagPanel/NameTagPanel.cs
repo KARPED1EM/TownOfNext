@@ -1,5 +1,7 @@
-﻿using System;
+﻿using HarmonyLib;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -55,7 +57,6 @@ public class NameTagPanel
             var pos = leaveButton?.transform?.localPosition;
             TagOptionsButton.transform.localPosition = pos != null ? pos.Value - new Vector3(1.3f, 0f, 0f) : new(-1.3f, -2.4f, 1f);
             TagOptionsButton.name = "Name Tag Options";
-            TagOptionsButton.Text.text = Translator.GetString("NameTagOptions");
             if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
             {
                 TagOptionsButton.Background.color = modColor;
@@ -72,16 +73,35 @@ public class NameTagPanel
             {
                 Slider = Object.Instantiate(sliderTemplate, CustomBackground.transform);
                 Slider.name = "Name Tags Slider";
-                Slider.transform.localPosition = new Vector3(0f, 0f, -1f);
-                Slider.transform.localScale = new Vector3(1.2f, 1.5f, 1f);
+                Slider.transform.localPosition = new Vector3(0f, 0.5f, -1f);
+                Slider.transform.localScale = new Vector3(1f, 1f, 1f);
+                Slider.GetComponent<SpriteRenderer>().size = new(5f, 4f);
                 var scroller = Slider.GetComponent<Scroller>();
                 scroller.ScrollWheelSpeed = 0.3f;
-                scroller.SetYBoundsMax(50f);
+                var mask = Slider.transform.FindChild("Mask");
+                mask.transform.localScale = new Vector3(4.9f, 3.92f, 1f);
             }
         }
 
-        RefreshTagList();
+        if (GameObject.Find("TOHE Background") == null)
+        {
+            TagOptionsButton.Text.text = "仅首页可用";
+            TagOptionsButton.GetComponent<PassiveButton>().enabled = false;
+            TagOptionsButton.Background.color = Palette.DisabledGrey;
+            return;
+        }
+        else
+        {
+            TagOptionsButton.Text.text = Translator.GetString("NameTagOptions");
+            TagOptionsButton.GetComponent<PassiveButton>().enabled = true;
+            if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
+            {
+                TagOptionsButton.Background.color = modColor;
+            }
+        }
 
+        NameTagManager.ReloadTag(null);
+        RefreshTagList();
     }
     public static void RefreshTagList()
     {
@@ -95,19 +115,20 @@ public class NameTagPanel
         var numberSetter = AccountManager.Instance.transform.FindChild("DOBEnterScreen/EnterAgePage/MonthMenu/Months").GetComponent<NumberSetter>();
         var buttonPrefab = numberSetter.ButtonPrefab.gameObject;
 
+        Items?.Values?.Do(Object.Destroy);
         Items = new();
-        foreach (var nameTag in NameTagManager.AllNameTags)
+
+        foreach (var nameTag in NameTagManager.AllNameTags.Where(t => !t.Value.Isinternal))
         {
             numItems++;
             var button = Object.Instantiate(buttonPrefab, scroller.Inner);
-            button.transform.localPosition = new(-0.7f, 0.9f - 0.4f * numItems, -0.5f);
-            button.transform.localScale = new(1f, 0.8f, 1f);
+            button.transform.localPosition = new(-1f, 1.6f - 0.6f * numItems, -0.5f);
+            button.transform.localScale = new(1.2f, 1.2f, 1.2f);
             button.name = "Name Tag Item For " + nameTag.Key;
             Object.Destroy(button.GetComponent<UIScrollbarHelper>());
             Object.Destroy(button.GetComponent<NumberButton>());
             button.transform.GetChild(0).GetComponent<TextMeshPro>().text = nameTag.Key;
             var renderer = button.GetComponent<SpriteRenderer>();
-            renderer.size.Set(3f, 0.45f);
             renderer.color = Palette.DisabledGrey;
             var rollover = button.GetComponent<ButtonRolloverHandler>();
             rollover.OutColor = Palette.DisabledGrey;
@@ -117,6 +138,16 @@ public class NameTagPanel
             {
                 NameTagEditMenu.Toggle(nameTag.Key, null);
             }));
+            var previewText = Object.Instantiate(button.transform.GetChild(0).GetComponent<TextMeshPro>(), button.transform);
+            previewText.transform.SetLocalX(1.9f);
+            previewText.fontSize = 1f;
+            string preview = "（不支持预览）";
+            if (nameTag.Value.UpperText?.Text != null)
+                preview = nameTag.Value.UpperText.Generate();
+            previewText.text = preview;
+            Items.Add(nameTag.Key, button);
         }
+
+        scroller.SetYBoundsMax(0.6f * numItems);
     }
 }

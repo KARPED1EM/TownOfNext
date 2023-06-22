@@ -72,6 +72,31 @@ public static class NameTagManager
         if (name != player.name && player.CurrentOutfitType == PlayerOutfitType.Default)
             player.RpcSetName(name);
     }
+    public static void ReloadTag(string? friendCode)
+    {
+        if (friendCode == null)
+        {
+            Init();
+            return;
+        }
+
+        NameTags.Remove(friendCode);
+
+        string path = $"{TAGS_DIRECTORY_PATH}{friendCode}.json";
+        if (File.Exists(path))
+        {
+            try { ReadTagsFromFile(path); }
+            catch (Exception ex)
+            {
+                Logger.Error($"Load Tag From: {path} Failed\n" + ex.ToString(), "NameTagManager", false);
+            }
+        }
+
+        if (!NameTags.ContainsKey(friendCode) && InternalNameTags.Get().TryGetValue(friendCode, out var tag))
+        {
+            NameTags.Add(friendCode, tag);
+        }
+    }
     public static void Init()
     {
         NameTags = new();
@@ -85,7 +110,10 @@ public static class NameTagManager
             }
         }
 
-        InternalNameTags.Get().Do(x => NameTags.Add(x.Key, x.Value));
+        Dictionary<string, NameTag> internalTags = InternalNameTags.Get();
+        internalTags.Values.Do(v => v.Isinternal = true);
+
+        internalTags.DoIf(x => !NameTags.ContainsKey(x.Key), x => NameTags.Add(x.Key, x.Value));
 
         Logger.Msg($"{NameTags.Count} Name Tags Loaded", "NameTagManager");
     }
@@ -141,6 +169,7 @@ public static class NameTagManager
         Color32? GetTextColor(string? str)
         {
             if (str is null or "") return null;
+            if (!str.StartsWith("#")) str = "#" + str;
             return ColorUtility.TryParseHtmlString(str, out var color) ? color : null;
         }
 
@@ -152,6 +181,7 @@ public static class NameTagManager
             List<Color> colors = new();
             args.Do(arg =>
             {
+                if (!arg.StartsWith("#")) arg = "#" + arg;
                 if (ColorUtility.TryParseHtmlString(arg, out var color))
                     colors.Add(color);
             });
@@ -169,6 +199,7 @@ public static class NameTagManager
     }
     public class NameTag
     {
+        public bool Isinternal { get; set; } = false;
         public Component? UpperText { get; set; }
         public Component? Prefix { get; set; }
         public Component? Suffix { get; set; }

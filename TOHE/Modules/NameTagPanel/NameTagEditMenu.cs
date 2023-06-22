@@ -42,10 +42,18 @@ public class NameTagEditMenu
     private static ComponentType CurrentComponent;
     private enum ComponentType { Upper, Prefix, Suffix, Name }
 
+#nullable enable
     public static void Toggle(string? friendCode, bool? on)
     {
+        on ??= !Menu?.activeSelf ?? true;
+        if (GameObject.Find("TOHE Background") == null || !on.Value)
+        {
+            Menu?.SetActive(false);
+            return;
+        }
         if (Menu == null) Init();
-        Menu.SetActive(on ?? !Menu.activeSelf);
+        if (Menu == null) return;
+        Menu.SetActive(on.Value);
         FriendCode = friendCode;
         CacheTag = (friendCode != null && AllNameTags.TryGetValue(friendCode, out var tag)) ? DeepClone(tag) : new NameTag();
         if (!Menu.activeSelf) return;
@@ -91,6 +99,7 @@ public class NameTagEditMenu
             Color1_Enter.GetComponent<TextBoxTMP>().SetText(ColorUtility.ToHtmlStringRGBA(com.TextColor.Value)[..6]);
         }
     }
+#nullable disable
     private static void UpdatePreview()
     {
         if (!Menu.active || CacheTag == null || Preview == null) return;
@@ -206,6 +215,8 @@ public class NameTagEditMenu
 #nullable disable
     public static void Init()
     {
+        if (GameObject.Find("TOHE Background") == null) return;
+
         Menu = Object.Instantiate(AccountManager.Instance.transform.FindChild("InfoTextBox").gameObject, NameTagPanel.CustomBackground.transform.parent);
         Menu.name = "Name Tag Edit Menu";
         Menu.transform.FindChild("Background").localScale *= 1.4f;
@@ -252,6 +263,8 @@ public class NameTagEditMenu
         SaveAndExitButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
         {
             SaveToFile(FriendCode, CacheTag);
+            ReloadTag(FriendCode);
+            NameTagPanel.RefreshTagList();
             Toggle(null, false);
         }));
         var saveButtonTmp = SaveAndExitButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
