@@ -37,8 +37,8 @@ class IntroCutscenePatch
                     __instance.RoleText.text = Utils.GetRoleName(role);
                     __instance.RoleText.color = Utils.GetRoleColor(role);
                     __instance.RoleText.fontWeight = TMPro.FontWeight.Thin;
-                    __instance.RoleText.SetOutlineColor(Utils.ShadeColor(Utils.GetRoleColor(role), 0.3f));
-                    __instance.RoleText.SetOutlineThickness(0.12f);
+                    __instance.RoleText.SetOutlineColor(Utils.ShadeColor(Utils.GetRoleColor(role), 0.1f).SetAlpha(0.38f));
+                    __instance.RoleText.SetOutlineThickness(0.17f);
                     __instance.RoleBlurbText.color = Utils.GetRoleColor(role);
                     __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
                 }
