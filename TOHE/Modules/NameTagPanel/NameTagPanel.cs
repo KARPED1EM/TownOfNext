@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using static TOHE.NameTagManager;
 using Object = UnityEngine.Object;
 
 namespace TOHE.Modules.NameTagPanel;
 
-public class NameTagPanel
+public static class NameTagPanel
 {
     public static ToggleButtonBehaviour TagOptionsButton { get; private set; }
     public static SpriteRenderer CustomBackground { get; private set; }
@@ -42,7 +43,7 @@ public class NameTagPanel
             CustomBackground.gameObject.SetActive(false);
 
             var closeButton = Object.Instantiate(mouseMoveToggle, CustomBackground.transform);
-            closeButton.transform.localPosition = new(1.3f, -2.3f, -6f);
+            closeButton.transform.localPosition = new(1.3f, -2.43f, -6f);
             closeButton.name = "Close";
             closeButton.Text.text = Translator.GetString("Close");
             closeButton.Background.color = Palette.DisabledGrey;
@@ -51,6 +52,18 @@ public class NameTagPanel
             closePassiveButton.OnClick.AddListener(new Action(() =>
             {
                 CustomBackground.gameObject.SetActive(false);
+            }));
+
+            var newButton = Object.Instantiate(mouseMoveToggle, CustomBackground.transform);
+            newButton.transform.localPosition = new(1.3f, -1.88f, -6f);
+            newButton.name = "New Tag";
+            newButton.Text.text = "新建";
+            newButton.Background.color = Palette.White;
+            var newPassiveButton = newButton.GetComponent<PassiveButton>();
+            newPassiveButton.OnClick = new();
+            newPassiveButton.OnClick.AddListener(new Action(() =>
+            {
+                NameTagNewWindow.Open();
             }));
 
             TagOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
@@ -100,7 +113,7 @@ public class NameTagPanel
             }
         }
 
-        NameTagManager.ReloadTag(null);
+        ReloadTag(null);
         RefreshTagList();
     }
     public static void RefreshTagList()

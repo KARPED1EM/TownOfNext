@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 
 namespace TOHE.Modules.NameTagPanel;
 
-public class NameTagEditMenu
+public static class NameTagEditMenu
 {
     public static GameObject Menu { get; private set; }
 
