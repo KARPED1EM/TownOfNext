@@ -91,7 +91,7 @@ public static class InternalNameTags
                 UpperText = new()
                 {
                     Text = $"美術NotKomi",
-                    Gradient = new(new(211, 164, 255, 255), new(90, 90, 173, 255)),
+                    Gradient = new(new Color32(211, 164, 255, 255), new Color32(90, 90, 173, 255)),
                     SizePercentage = 80
                 }
             }
