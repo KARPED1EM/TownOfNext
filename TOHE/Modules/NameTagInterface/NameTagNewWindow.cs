@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -25,7 +21,7 @@ public static class NameTagNewWindow
     }
     public static void Init()
     {
-        if (GameObject.Find("TOHE Background") == null) return;
+        if (!GameStates.IsNotJoined) return;
 
         Window = Object.Instantiate(AccountManager.Instance.transform.FindChild("InfoTextBox").gameObject, NameTagPanel.CustomBackground.transform.parent);
         Window.name = "New Name Tag Window";

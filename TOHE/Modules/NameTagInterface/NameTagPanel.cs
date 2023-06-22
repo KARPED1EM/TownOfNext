@@ -96,7 +96,7 @@ public static class NameTagPanel
             }
         }
 
-        if (GameObject.Find("TOHE Background") == null)
+        if (!GameStates.IsNotJoined)
         {
             TagOptionsButton.Text.text = "仅首页可用";
             TagOptionsButton.GetComponent<PassiveButton>().enabled = false;

@@ -47,7 +47,7 @@ public static class NameTagEditMenu
     public static void Toggle(string? friendCode, bool? on)
     {
         on ??= !Menu?.activeSelf ?? true;
-        if (GameObject.Find("TOHE Background") == null || !on.Value)
+        if (!GameStates.IsNotJoined || !on.Value)
         {
             Menu?.SetActive(false);
             return;
@@ -216,7 +216,7 @@ public static class NameTagEditMenu
 #nullable disable
     public static void Init()
     {
-        if (GameObject.Find("TOHE Background") == null) return;
+        if (!GameStates.IsNotJoined) return;
 
         Menu = Object.Instantiate(AccountManager.Instance.transform.FindChild("InfoTextBox").gameObject, NameTagPanel.CustomBackground.transform.parent);
         Menu.name = "Name Tag Edit Menu";
