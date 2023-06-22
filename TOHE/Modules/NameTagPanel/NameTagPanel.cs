@@ -92,17 +92,26 @@ public class NameTagPanel
             if (obj.name.StartsWith("AccountButton")) Object.Destroy(obj);
         }
 
+        var numberSetter = AccountManager.Instance.transform.FindChild("DOBEnterScreen/EnterAgePage/MonthMenu/Months").GetComponent<NumberSetter>();
+        var buttonPrefab = numberSetter.ButtonPrefab.gameObject;
+
         Items = new();
         foreach (var nameTag in NameTagManager.AllNameTags)
         {
             numItems++;
-            var button = Object.Instantiate(AccountManager.Instance.transform.FindChild("DOBEnterScreen/EnterAgePage/SubmitButton").gameObject, scroller.Inner);
+            var button = Object.Instantiate(buttonPrefab, scroller.Inner);
             button.transform.localPosition = new(-0.7f, 0.9f -0.4f * numItems, -0.5f);
             button.transform.localScale = new(1f, 0.8f, 1f);
             button.name = "Name Tag Item For " + nameTag.Key;
-            button.DestroyTranslator();
-            button.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>().text = nameTag.Key;
-            button.transform.FindChild("Background").GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
+            Object.Destroy(button.GetComponent<UIScrollbarHelper>());
+            Object.Destroy(button.GetComponent<NumberButton>());
+            button.transform.GetChild(0).GetComponent<TextMeshPro>().text = nameTag.Key;
+            var renderer = button.GetComponent<SpriteRenderer>();
+            renderer.size.Set(3f, 0.45f);
+            renderer.color = Palette.DisabledGrey;
+            var rollover = button.GetComponent<ButtonRolloverHandler>();
+            rollover.OutColor = Palette.DisabledGrey;
+            rollover.OverColor = new Color32(255, 192, 203, 255);
             var passiveButton = button.GetComponent<PassiveButton>();
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener(new Action(() =>
