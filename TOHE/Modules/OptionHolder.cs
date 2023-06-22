@@ -287,6 +287,7 @@ public static class Options
     public static OptionItem RoleAssigningAlgorithm;
 
     public static OptionItem KPDCamouflageMode;
+    public static OptionItem AllowPlayerPlayWithColoredNameByCustomTags;
 
     public static OptionItem EnableDirectorMode;
 
@@ -569,9 +570,13 @@ public static class Options
             .SetHeader(true)
             .SetColor(new Color32(255, 192, 203, byte.MaxValue));
 
+        AllowPlayerPlayWithColoredNameByCustomTags = BooleanOptionItem.Create(2_018_001, "AllowPlayerPlayWithColoredNameByCustomTags", false, TabGroup.SystemSettings, false)
+            .SetHeader(true)
+            .SetColor(new Color32(255, 0, 102, byte.MaxValue));
+
         DebugModeManager.SetupCustomOption();
 
-        EnableDirectorMode = BooleanOptionItem.Create(2_018_001, "EnableDirectorMode", false, TabGroup.SystemSettings, false)
+        EnableDirectorMode = BooleanOptionItem.Create(2_019_001, "EnableDirectorMode", false, TabGroup.SystemSettings, false)
             .SetColor(new Color32(214, 157, 133, byte.MaxValue))
             .SetHeader(true);
 

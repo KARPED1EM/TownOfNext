@@ -55,7 +55,7 @@ public static class NameTagManager
                 name = Palette.GetColorName(Camouflage.PlayerSkins[PlayerControl.LocalPlayer.PlayerId].ColorId);
         }
 
-        if (NameTags.ContainsKey(player.FriendCode))
+        if (NameTags.ContainsKey(player.FriendCode) && (GameStates.IsLobby || Options.AllowPlayerPlayWithColoredNameByCustomTags.GetBool()))
         {
             name = NameTags[player.FriendCode].Apply(name, player.AmOwner, !GameStates.IsLobby);
         }
