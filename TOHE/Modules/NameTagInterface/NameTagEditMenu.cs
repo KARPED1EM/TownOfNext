@@ -264,6 +264,7 @@ public static class NameTagEditMenu
         SaveAndExitButton.transform.localPosition = new Vector3(3.5f, -2.5f, 0f);
         SaveAndExitButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
         {
+            SaveToCache(CurrentComponent);
             SaveToFile(FriendCode, CacheTag);
             ReloadTag(FriendCode);
             NameTagPanel.RefreshTagList();
@@ -273,7 +274,7 @@ public static class NameTagEditMenu
         saveButtonTmp.text = GetString("SaveAndClose");
 
         DeleteButton = Object.Instantiate(buttonPrefab, Menu.transform);
-        DeleteButton.name = "Save And Exit Button";
+        DeleteButton.name = "Delete Name Tag Button";
         DeleteButton.transform.localPosition = new Vector3(-3.5f, -2.5f, 0f);
         DeleteButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
         {

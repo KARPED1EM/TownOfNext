@@ -162,6 +162,7 @@ public static class NameTagPanel
             Items.Add(nameTag.Key, button);
         }
 
+        scroller.SetYBoundsMin(0f);
         scroller.SetYBoundsMax(0.6f * numItems);
     }
 }
