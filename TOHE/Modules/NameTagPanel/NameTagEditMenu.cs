@@ -36,6 +36,7 @@ public static class NameTagEditMenu
 
     public static GameObject PreviewButton { get; private set; }
     public static GameObject SaveAndExitButton { get; private set; }
+    public static GameObject DeleteButton { get; private set; }
 
     private static string FriendCode;
     private static NameTag CacheTag;
@@ -269,6 +270,21 @@ public static class NameTagEditMenu
         }));
         var saveButtonTmp = SaveAndExitButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
         saveButtonTmp.text = "保存并退出";
+
+        DeleteButton = Object.Instantiate(buttonPrefab, Menu.transform);
+        DeleteButton.name = "Save And Exit Button";
+        DeleteButton.transform.localPosition = new Vector3(-3.5f, -2.5f, 0f);
+        DeleteButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
+        {
+            string fileName = TAGS_DIRECTORY_PATH + FriendCode.Trim() + ".json";
+            if (File.Exists(fileName)) File.Delete(fileName);
+            ReloadTag(FriendCode);
+            NameTagPanel.RefreshTagList();
+            Toggle(null, false);
+        }));
+        var deleteButtonTmp = DeleteButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
+        deleteButtonTmp.color = Color.red;
+        deleteButtonTmp.text = "删除";
 
         EditUpperButton = Object.Instantiate(buttonPrefab, Menu.transform);
         EditUpperButton.name = "Edit Upper Button";
