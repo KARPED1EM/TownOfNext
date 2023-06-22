@@ -73,11 +73,11 @@ public static class NameTagEditMenu
     private static void LoadComponent(Component? com, bool name = false)
     {
         Text_Enter.GetComponent<TextBoxTMP>().enabled = !name;
-        if (!name) Text_Enter.GetComponent<TextBoxTMP>().SetText(com?.Text ?? "");
+        Text_Enter.GetComponent<TextBoxTMP>().SetText(!name ? (com?.Text ?? "") : "（不可修改）");
         Size_Enter.GetComponent<TextBoxTMP>().SetText((com?.SizePercentage ?? 100).ToString());
-        Color1_Enter.GetComponent<TextBoxTMP>().SetText("");
-        Color2_Enter.GetComponent<TextBoxTMP>().SetText("");
-        Color3_Enter.GetComponent<TextBoxTMP>().SetText("");
+        Color1_Enter.GetComponent<TextBoxTMP>().Clear();
+        Color2_Enter.GetComponent<TextBoxTMP>().Clear();
+        Color3_Enter.GetComponent<TextBoxTMP>().Clear();
         if (com?.Gradient?.IsValid ?? false)
         {
             int colorNum = 1;
