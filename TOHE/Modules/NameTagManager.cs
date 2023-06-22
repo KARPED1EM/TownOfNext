@@ -137,8 +137,7 @@ public static class NameTagManager
         {
             if (str is null or "") return 90;
             float size = 90;
-            try { size = float.Parse(str); } catch { return null; }
-            return size;
+            return float.TryParse(str, out var sizef) ? sizef : null;
         }
 
         Color32? GetTextColor(string? str)
