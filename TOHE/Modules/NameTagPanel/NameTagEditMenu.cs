@@ -1,15 +1,14 @@
 ﻿using AmongUs.Data;
-using TMPro;
-using UnityEngine;
+using HarmonyLib;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using HarmonyLib;
-using Newtonsoft.Json;
-using Object = UnityEngine.Object;
-using Component = TOHE.NameTagManager.Component;
-
+using TMPro;
+using UnityEngine;
 using static TOHE.NameTagManager;
+using Component = TOHE.NameTagManager.Component;
+using Object = UnityEngine.Object;
 
 namespace TOHE.Modules.NameTagPanel;
 

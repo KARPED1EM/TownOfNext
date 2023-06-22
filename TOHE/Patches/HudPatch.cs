@@ -42,7 +42,7 @@ class HudManagerPatch
                 player.Collider.offset = new Vector2(0f, -0.3636f);
             }
         }
-        
+
         //ゲーム中でなければ以下は実行されない
         if (!AmongUsClient.Instance.IsGameStarted) return;
 

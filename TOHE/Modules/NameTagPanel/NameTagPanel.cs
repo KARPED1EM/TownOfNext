@@ -12,7 +12,7 @@ public class NameTagPanel
     public static SpriteRenderer CustomBackground { get; private set; }
     public static GameObject Slider { get; private set; }
     public static Dictionary<string, GameObject> Items { get; private set; }
-    
+
     private static int numItems = 0;
     public static void Init(OptionsMenuBehaviour optionsMenuBehaviour)
     {
@@ -100,7 +100,7 @@ public class NameTagPanel
         {
             numItems++;
             var button = Object.Instantiate(buttonPrefab, scroller.Inner);
-            button.transform.localPosition = new(-0.7f, 0.9f -0.4f * numItems, -0.5f);
+            button.transform.localPosition = new(-0.7f, 0.9f - 0.4f * numItems, -0.5f);
             button.transform.localScale = new(1f, 0.8f, 1f);
             button.name = "Name Tag Item For " + nameTag.Key;
             Object.Destroy(button.GetComponent<UIScrollbarHelper>());

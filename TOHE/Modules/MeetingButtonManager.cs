@@ -1,10 +1,10 @@
 ﻿using HarmonyLib;
+using Hazel;
 using System;
 using System.Linq;
-using TOHE.Roles.Core.Interfaces;
 using TOHE.Roles.Core;
+using TOHE.Roles.Core.Interfaces;
 using UnityEngine;
-using Hazel;
 
 namespace TOHE;
 

@@ -392,7 +392,7 @@ internal class ChatCommands
             __instance.TextArea.SetText(cancelVal);
             __instance.quickChatMenu.ResetGlyphs();
         }
-        else if(SendTargetPatch.SendTarget != SendTargetPatch.SendTargets.Default)
+        else if (SendTargetPatch.SendTarget != SendTargetPatch.SendTargets.Default)
         {
             switch (SendTargetPatch.SendTarget)
             {

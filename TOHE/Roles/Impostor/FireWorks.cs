@@ -180,7 +180,7 @@ public sealed class FireWorks : RoleBase, IImpostor
     }
     public override bool OverrideAbilityButtonSprite(out string buttonName)
     {
-        buttonName = State == FireWorksState.ReadyFire ? "FireworkD": "FireworkP";
+        buttonName = State == FireWorksState.ReadyFire ? "FireworkD" : "FireworkP";
         return true;
     }
 }

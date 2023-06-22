@@ -52,7 +52,7 @@ public static class HudSpritePatch
             newVentButton = Defalt_Vent;
             newReportButton = Defalt_Report;
         }
-        
+
         if (player.GetRoleClass() is IKiller)
         {
             if (__instance.KillButton.graphic.sprite != newKillButton)

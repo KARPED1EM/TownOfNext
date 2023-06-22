@@ -106,7 +106,7 @@ public class ModNewsHistory
         }
         FinalAllNews.Sort((a1, a2) => { return DateTime.Compare(DateTime.Parse(a2.Date), DateTime.Parse(a1.Date)); });
 
-        aRange = new (FinalAllNews.Count);
+        aRange = new(FinalAllNews.Count);
         for (int i = 0; i < FinalAllNews.Count; i++)
             aRange[i] = FinalAllNews[i];
 

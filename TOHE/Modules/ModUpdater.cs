@@ -19,7 +19,7 @@ namespace TOHE;
 public class ModUpdater
 {
     public static bool IsInChina => CultureInfo.CurrentCulture.Name == "zh-CN";
-    private static readonly string[] URLs = 
+    private static readonly string[] URLs =
     {
         "https://raw.githubusercontent.com/KARPED1EM/TOHE-Dev/TOHE/Release/info.json",
         "https://cdn.jsdelivr.net/gh/KARPED1EM/TOHE-Dev/Release/info.json",
@@ -94,7 +94,7 @@ public class ModUpdater
     public static void CheckForUpdate()
     {
         isChecked = false;
-        DeleteOldFiles();   
+        DeleteOldFiles();
 
         foreach (var url in URLs)
         {
@@ -189,10 +189,10 @@ public class ModUpdater
             JObject downloadUrl = data["url"].Cast<JObject>();
             downloadUrl_github = downloadUrl["github"]?.ToString().Replace("{{version}}", $"v{latestVersion}");
             downloadUrl_cos = downloadUrl["cos"]?.ToString();
-            
+
             hasUpdate = Main.version < latestVersion;
             forceUpdate = Main.version < minimumVersion || creation > Main.PluginCreation;
-           
+
             return true;
         }
         catch (Exception ex)

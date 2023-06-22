@@ -1,13 +1,11 @@
+using HarmonyLib;
+using Hazel;
 using System.Collections.Generic;
 using System.Text;
-using HarmonyLib;
-using UnityEngine;
-using TOHE.Roles.Core;
 using TOHE.Modules;
+using TOHE.Roles.Core;
+using UnityEngine;
 using static TOHE.Translator;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using Hazel;
 
 namespace TOHE;
 

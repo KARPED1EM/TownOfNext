@@ -337,12 +337,12 @@ public static class GuesserHelper
 
         PlayerControl.LocalPlayer.RPCPlayCustomSound("Gunload");
 
-        if (PlayerControl.LocalPlayer.cosmetics.ColorId >= 0 && PlayerControl.LocalPlayer.cosmetics.ColorId  < Palette.PlayerColors.Count)
+        if (PlayerControl.LocalPlayer.cosmetics.ColorId >= 0 && PlayerControl.LocalPlayer.cosmetics.ColorId < Palette.PlayerColors.Count)
         {
             myColor = Palette.PlayerColors[PlayerControl.LocalPlayer.cosmetics.ColorId];
             myColor = Utils.ShadeColor(myColor, -2f);
         }
-        
+
         var pc = Utils.GetPlayerById(playerId);
         if (pc == null || !pc.IsAlive() || guesserUI != null || !GameStates.IsVoting) return;
 

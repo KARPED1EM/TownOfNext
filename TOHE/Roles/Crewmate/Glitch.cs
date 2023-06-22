@@ -1,5 +1,4 @@
 ﻿using AmongUs.GameOptions;
-using System.Collections.Generic;
 
 using TOHE.Roles.Core;
 

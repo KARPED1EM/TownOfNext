@@ -20,7 +20,7 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.OpenCredits))]
     [HarmonyPrefix, HarmonyPriority(Priority.Last)]
     public static void ShowRightPanel() => ShowingPanel = true;
-    
+
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Open))]
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Show))]
