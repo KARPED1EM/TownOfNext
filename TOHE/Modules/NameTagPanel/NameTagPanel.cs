@@ -111,7 +111,6 @@ public class NameTagPanel
             renderer.color = Palette.DisabledGrey;
             var rollover = button.GetComponent<ButtonRolloverHandler>();
             rollover.OutColor = Palette.DisabledGrey;
-            rollover.OverColor = new Color32(255, 192, 203, 255);
             var passiveButton = button.GetComponent<PassiveButton>();
             passiveButton.OnClick = new();
             passiveButton.OnClick.AddListener(new Action(() =>

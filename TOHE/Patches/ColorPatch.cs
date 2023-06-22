@@ -9,16 +9,23 @@ class ButtonRolloverHandlerPatch
     [HarmonyPatch(nameof(ButtonRolloverHandler.DoMouseOver)), HarmonyPrefix]
     public static void DoMouseOver_Prefix(ButtonRolloverHandler __instance)
     {
-        if (__instance.OverColor == new Color(0, 1, 0, 1))
+        if (__instance.OverColor == new Color(0, 1, 0, 1) || __instance.OverColor == Palette.AcceptedGreen)
             __instance.OverColor = new Color32(255, 192, 203, 255);
     }
     [HarmonyPatch(nameof(ButtonRolloverHandler.ChangeOutColor)), HarmonyPrefix]
     public static void ChangeOutColor_Prefix(ButtonRolloverHandler __instance, ref Color color)
     {
-        if (color == new Color(0, 1, 0.165f, 1))
-        {
-            color = new Color32(255, 192, 203, 180);
-            Logger.Test("Changed");
-        }
+        if (color == Palette.AcceptedGreen)
+            color = new Color32(255, 129, 166, 255);
+    }
+}
+[HarmonyPatch(typeof(Palette))]
+class PalettePath
+{
+    [HarmonyPatch(nameof(Palette.AcceptedGreen), MethodType.Getter), HarmonyPrefix]
+    public static bool GetAcceptedGreenPrefix(ref Color __result)
+    {
+        __result = new Color32(255, 129, 166, 255);
+        return false;
     }
 }
