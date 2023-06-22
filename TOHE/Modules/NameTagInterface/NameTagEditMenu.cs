@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using static TOHE.NameTagManager;
@@ -11,7 +12,7 @@ using static TOHE.Translator;
 using Component = TOHE.NameTagManager.Component;
 using Object = UnityEngine.Object;
 
-namespace TOHE.Modules.NameTagPanel;
+namespace TOHE.Modules.NameTagInterface;
 
 public static class NameTagEditMenu
 {
@@ -47,17 +48,18 @@ public static class NameTagEditMenu
 #nullable enable
     public static void Toggle(string? friendCode, bool? on)
     {
-        on ??= !Menu?.activeSelf ?? true;
+        if (Menu == null) on ??= true;
+        else on ??= !Menu.activeSelf;
         if (!GameStates.IsNotJoined || !on.Value)
         {
-            Menu?.SetActive(false);
+            if (Menu != null) Menu?.SetActive(false);
             return;
         }
         if (Menu == null) Init();
         if (Menu == null) return;
         Menu.SetActive(on.Value);
         FriendCode = friendCode;
-        CacheTag = (friendCode != null && AllNameTags.TryGetValue(friendCode, out var tag)) ? DeepClone(tag) : new NameTag();
+        CacheTag = (friendCode != null && AllExternalNameTags.TryGetValue(friendCode, out var tag)) ? DeepClone(tag) : new NameTag();
         if (!Menu.activeSelf) return;
         LoadComponent(CacheTag?.UpperText);
         SetButtonHighlight(EditUpperButton);
@@ -142,7 +144,6 @@ public static class NameTagEditMenu
                 CacheTag.Name = com;
                 break;
         };
-
     }
 #nullable enable
     private enum ComponentName

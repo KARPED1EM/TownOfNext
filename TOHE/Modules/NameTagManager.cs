@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using static TOHE.Translator;
@@ -16,6 +17,8 @@ public static class NameTagManager
     public static readonly string TAGS_DIRECTORY_PATH = @"./TOHE_Data/NameTags/";
     private static Dictionary<string, NameTag> NameTags = new();
     public static IReadOnlyDictionary<string, NameTag> AllNameTags => NameTags;
+    public static IReadOnlyDictionary<string, NameTag> AllInternalNameTags => AllNameTags.Where(t => t.Value.Isinternal).ToDictionary(x => x.Key, x => x.Value);
+    public static IReadOnlyDictionary<string, NameTag> AllExternalNameTags => AllNameTags.Where(t => !t.Value.Isinternal).ToDictionary(x => x.Key, x => x.Value);
     public static NameTag DeepClone(NameTag tag)
     {
         NameTag newTag = new();
@@ -100,6 +103,8 @@ public static class NameTagManager
     public static void Init()
     {
         NameTags = new();
+
+        if (!Directory.Exists(TAGS_DIRECTORY_PATH)) Directory.CreateDirectory(TAGS_DIRECTORY_PATH);
         var files = Directory.EnumerateFiles(TAGS_DIRECTORY_PATH, "*.json", SearchOption.AllDirectories);
         foreach (string file in files)
         {
@@ -110,10 +115,7 @@ public static class NameTagManager
             }
         }
 
-        Dictionary<string, NameTag> internalTags = InternalNameTags.Get();
-        internalTags.Values.Do(v => v.Isinternal = true);
-
-        internalTags.DoIf(x => !NameTags.ContainsKey(x.Key), x => NameTags.Add(x.Key, x.Value));
+        InternalNameTags.Get().DoIf(x => !NameTags.ContainsKey(x.Key), x => NameTags.Add(x.Key, x.Value));
 
         Logger.Msg($"{NameTags.Count} Name Tags Loaded", "NameTagManager");
     }

@@ -25,7 +25,7 @@ class PalettePath
     [HarmonyPatch(nameof(Palette.AcceptedGreen), MethodType.Getter), HarmonyPrefix]
     public static bool Get_AcceptedGreen_Prefix(ref Color __result)
     {
-        __result = new Color32(255, 129, 166, 255);
+        __result = new Color32(255, 129, 166, (byte)(__result.a * 255));
         return false;
     }
 }

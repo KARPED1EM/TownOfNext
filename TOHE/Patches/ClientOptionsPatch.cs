@@ -1,6 +1,6 @@
 using HarmonyLib;
 using TOHE.Modules.ClientOptions;
-using TOHE.Modules.NameTagPanel;
+using TOHE.Modules.NameTagInterface;
 using UnityEngine;
 
 namespace TOHE;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 using static TOHE.NameTagManager;
 using static TOHE.Translator;
@@ -7,7 +8,13 @@ namespace TOHE;
 
 public static class InternalNameTags
 {
-    public static Dictionary<string, NameTag> Get() => new()
+    public static IReadOnlyDictionary<string, NameTag> Get()
+    {
+        var tags = GetAll();
+        tags.Do(t => t.Value.Isinternal = true);
+        return tags;
+    }
+    private static Dictionary<string, NameTag> GetAll() => new()
     {
         {
             "actorour#0029", //咔哥

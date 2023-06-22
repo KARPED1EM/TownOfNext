@@ -8,7 +8,7 @@ using static TOHE.NameTagManager;
 using static TOHE.Translator;
 using Object = UnityEngine.Object;
 
-namespace TOHE.Modules.NameTagPanel;
+namespace TOHE.Modules.NameTagInterface;
 
 public static class NameTagPanel
 {
