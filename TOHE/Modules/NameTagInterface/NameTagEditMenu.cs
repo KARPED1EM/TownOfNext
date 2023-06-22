@@ -7,6 +7,7 @@ using System.IO;
 using TMPro;
 using UnityEngine;
 using static TOHE.NameTagManager;
+using static TOHE.Translator;
 using Component = TOHE.NameTagManager.Component;
 using Object = UnityEngine.Object;
 
@@ -74,7 +75,7 @@ public static class NameTagEditMenu
     private static void LoadComponent(Component? com, bool name = false)
     {
         Text_Enter.GetComponent<TextBoxTMP>().enabled = !name;
-        Text_Enter.GetComponent<TextBoxTMP>().SetText(!name ? (com?.Text ?? "") : "（不可修改）");
+        Text_Enter.GetComponent<TextBoxTMP>().SetText(!name ? (com?.Text ?? "") : GetString("CanNotEdit"));
         Size_Enter.GetComponent<TextBoxTMP>().SetText((com?.SizePercentage ?? 100).ToString());
         Color1_Enter.GetComponent<TextBoxTMP>().Clear();
         Color2_Enter.GetComponent<TextBoxTMP>().Clear();
@@ -256,7 +257,7 @@ public static class NameTagEditMenu
             UpdatePreview();
         }));
         var previewButtonTmp = PreviewButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-        previewButtonTmp.text = "刷新预览";
+        previewButtonTmp.text = GetString("RefreshPreview");
 
         SaveAndExitButton = Object.Instantiate(buttonPrefab, Menu.transform);
         SaveAndExitButton.name = "Save And Exit Button";
@@ -269,7 +270,7 @@ public static class NameTagEditMenu
             Toggle(null, false);
         }));
         var saveButtonTmp = SaveAndExitButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-        saveButtonTmp.text = "保存并退出";
+        saveButtonTmp.text = GetString("SaveAndClose");
 
         DeleteButton = Object.Instantiate(buttonPrefab, Menu.transform);
         DeleteButton.name = "Save And Exit Button";
@@ -284,7 +285,7 @@ public static class NameTagEditMenu
         }));
         var deleteButtonTmp = DeleteButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
         deleteButtonTmp.color = Color.red;
-        deleteButtonTmp.text = "删除";
+        deleteButtonTmp.text = GetString("Delete");
 
         EditUpperButton = Object.Instantiate(buttonPrefab, Menu.transform);
         EditUpperButton.name = "Edit Upper Button";
@@ -297,7 +298,7 @@ public static class NameTagEditMenu
             CurrentComponent = ComponentType.Upper;
         }));
         var upperButtonTmp = EditUpperButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-        upperButtonTmp.text = "头衔";
+        upperButtonTmp.text = GetString("UpperText");
 
         editButtonNum++;
 
@@ -312,7 +313,7 @@ public static class NameTagEditMenu
             CurrentComponent = ComponentType.Prefix;
         }));
         var prefixButtonTmp = EditPrefixButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-        prefixButtonTmp.text = "前缀";
+        prefixButtonTmp.text = GetString("PrefixText");
 
         editButtonNum++;
 
@@ -327,7 +328,7 @@ public static class NameTagEditMenu
             CurrentComponent = ComponentType.Suffix;
         }));
         var suffixButtonTmp = EditSuffixButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-        suffixButtonTmp.text = "后缀";
+        suffixButtonTmp.text = GetString("SuffixText");
 
         editButtonNum++;
 
@@ -342,7 +343,7 @@ public static class NameTagEditMenu
             CurrentComponent = ComponentType.Name;
         }));
         var nameButtonTmp = EditNameButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-        nameButtonTmp.text = "名字";
+        nameButtonTmp.text = GetString("PlayerName");
 
         Preview = Object.Instantiate(titlePrefab, Menu.transform);
         Preview.name = "Preview Text";
@@ -354,7 +355,7 @@ public static class NameTagEditMenu
         Text_Info.name = "Edit Text Description";
         Text_Info.transform.localPosition = new Vector3(-2.95f, 0f, 0f);
         var textInfoTmp = Text_Info.GetComponent<TextMeshPro>();
-        textInfoTmp.text = "文本内容";
+        textInfoTmp.text = GetString("TextContent");
 
         Text_Enter = Object.Instantiate(enterPrefab, Menu.transform);
         Text_Enter.name = "Edit Text Enter Box";
@@ -364,7 +365,7 @@ public static class NameTagEditMenu
         Size_Info.name = "Edit Size Description";
         Size_Info.transform.localPosition = new Vector3(-2.95f, -1.5f, 0f);
         var sizeInfoTmp = Size_Info.GetComponent<TextMeshPro>();
-        sizeInfoTmp.text = "文本大小<size=60%>（默认100%）</size>";
+        sizeInfoTmp.text = GetString("TextContentDescription");
 
         Size_Enter = Object.Instantiate(enterPrefab, Menu.transform);
         Size_Enter.name = "Edit Size Enter Box";
@@ -374,7 +375,7 @@ public static class NameTagEditMenu
         Color_Info.name = "Edit Color Description";
         Color_Info.transform.localPosition = new Vector3(1.95f, 0f, 0f);
         var colorInfoTmp = Color_Info.GetComponent<TextMeshPro>();
-        colorInfoTmp.text = "文本颜色<size=60%>（Hex 颜色代码）\n不需要请留空，填写多个则自动渐变</size>";
+        colorInfoTmp.text = GetString("TextColorDescription");
 
         Color1_Enter = Object.Instantiate(enterPrefab, Menu.transform);
         Color1_Enter.name = "Edit Color 1 Enter Box";

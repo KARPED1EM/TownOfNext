@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
+using static TOHE.Translator;
 using Object = UnityEngine.Object;
 
 namespace TOHE.Modules.NameTagPanel;
@@ -54,7 +55,7 @@ public static class NameTagNewWindow
         Info.name = "Enter Friend Code Description";
         Info.transform.localPosition = new Vector3(0f, 0.2f, 0f);
         var colorInfoTmp = Info.GetComponent<TextMeshPro>();
-        colorInfoTmp.text = "请输入头衔持有者的好友代码：\n<size=70%>（若无法输入 # 请使用 - 代替）</size>";
+        colorInfoTmp.text = GetString("PleaseEnterFriendCode");
 
         EnterBox = Object.Instantiate(enterPrefab, Window.transform);
         EnterBox.name = "Enter Friend Code Box";
@@ -70,13 +71,13 @@ public static class NameTagNewWindow
             if (NameTagManager.AllNameTags.TryGetValue(code, out var tag) && !tag.Isinternal)
             {
                 ConfirmButton.SetActive(false);
-                colorInfoTmp.text = "该好友代码已拥有头衔";
+                colorInfoTmp.text = GetString("FriendCodeAlreadyExist");
                 colorInfoTmp.color = Color.blue;
             }
             else if (!reg.Match(code).Success)
             {
                 ConfirmButton.SetActive(false);
-                colorInfoTmp.text = "请输入正确的好友代码";
+                colorInfoTmp.text = GetString("FriendCodeIncorrect");
                 colorInfoTmp.color = Color.red;
             }
             else
@@ -87,13 +88,13 @@ public static class NameTagNewWindow
             }
             new LateTask(() =>
             {
-                colorInfoTmp.text = "请输入头衔持有者的好友代码：\n<size=70%>（若无法输入 # 请使用 - 代替）</size>";
+                colorInfoTmp.text = GetString("PleaseEnterFriendCode");
                 colorInfoTmp.color = Color.white;
                 ConfirmButton.SetActive(true);
             }, 1.2f, "Reactivate Enter Box");
         }));
         var upperButtonTmp = ConfirmButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
-        upperButtonTmp.text = "确定";
+        upperButtonTmp.text = GetString(StringNames.Confirm);
 
         titlePrefab.SetActive(false);
         infoPrefab.SetActive(false);

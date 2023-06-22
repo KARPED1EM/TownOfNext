@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using static TOHE.NameTagManager;
+using static TOHE.Translator;
 using Object = UnityEngine.Object;
 
 namespace TOHE.Modules.NameTagPanel;
@@ -45,7 +46,7 @@ public static class NameTagPanel
             var closeButton = Object.Instantiate(mouseMoveToggle, CustomBackground.transform);
             closeButton.transform.localPosition = new(1.3f, -2.43f, -6f);
             closeButton.name = "Close";
-            closeButton.Text.text = Translator.GetString("Close");
+            closeButton.Text.text = GetString("Close");
             closeButton.Background.color = Palette.DisabledGrey;
             var closePassiveButton = closeButton.GetComponent<PassiveButton>();
             closePassiveButton.OnClick = new();
@@ -57,7 +58,7 @@ public static class NameTagPanel
             var newButton = Object.Instantiate(mouseMoveToggle, CustomBackground.transform);
             newButton.transform.localPosition = new(1.3f, -1.88f, -6f);
             newButton.name = "New Tag";
-            newButton.Text.text = "新建";
+            newButton.Text.text = GetString("NewNameTag");
             newButton.Background.color = Palette.White;
             var newPassiveButton = newButton.GetComponent<PassiveButton>();
             newPassiveButton.OnClick = new();
@@ -98,14 +99,14 @@ public static class NameTagPanel
 
         if (!GameStates.IsNotJoined)
         {
-            TagOptionsButton.Text.text = "仅首页可用";
+            TagOptionsButton.Text.text = GetString("OnlyAvailableInMainMenu");
             TagOptionsButton.GetComponent<PassiveButton>().enabled = false;
             TagOptionsButton.Background.color = Palette.DisabledGrey;
             return;
         }
         else
         {
-            TagOptionsButton.Text.text = Translator.GetString("NameTagOptions");
+            TagOptionsButton.Text.text = GetString("NameTagOptions");
             TagOptionsButton.GetComponent<PassiveButton>().enabled = true;
             if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
             {
@@ -131,7 +132,7 @@ public static class NameTagPanel
         Items?.Values?.Do(Object.Destroy);
         Items = new();
 
-        foreach (var nameTag in NameTagManager.AllNameTags.Where(t => !t.Value.Isinternal))
+        foreach (var nameTag in AllNameTags.Where(t => !t.Value.Isinternal))
         {
             numItems++;
             var button = Object.Instantiate(buttonPrefab, scroller.Inner);
@@ -154,7 +155,7 @@ public static class NameTagPanel
             var previewText = Object.Instantiate(button.transform.GetChild(0).GetComponent<TextMeshPro>(), button.transform);
             previewText.transform.SetLocalX(1.9f);
             previewText.fontSize = 1f;
-            string preview = "（不支持预览）";
+            string preview = GetString("PreviewNotAvailable");
             if (nameTag.Value.UpperText?.Text != null)
                 preview = nameTag.Value.UpperText.Generate();
             previewText.text = preview;
