@@ -15,7 +15,7 @@ class ButtonRolloverHandlerPatch
     [HarmonyPatch(nameof(ButtonRolloverHandler.ChangeOutColor)), HarmonyPrefix]
     public static void ChangeOutColor_Prefix(ButtonRolloverHandler __instance, ref Color color)
     {
-        if (color == Palette.AcceptedGreen)
+        if (color.r == 0 && color.g == 1 && color.b is > 0.163f and < 0.165f && color.a == 1)
             color = new Color32(255, 129, 166, 255);
     }
 }
@@ -23,7 +23,7 @@ class ButtonRolloverHandlerPatch
 class PalettePath
 {
     [HarmonyPatch(nameof(Palette.AcceptedGreen), MethodType.Getter), HarmonyPrefix]
-    public static bool GetAcceptedGreenPrefix(ref Color __result)
+    public static bool Get_AcceptedGreen_Prefix(ref Color __result)
     {
         __result = new Color32(255, 129, 166, 255);
         return false;
