@@ -92,11 +92,10 @@ internal class Cloud
                 EacClientSocket.Connect(IP, EAC_PORT);
                 Logger.Warn("已连接至TOHE服务器", "EAC Cloud");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 connecting = false;
-                Logger.Exception(e, "EAC Cloud");
-                throw;
+                Logger.Error($"Connect To EAC Failed:\n{ex.Message}", "EAC Cloud", false);
             }
             connecting = false;
         }, 3.5f, "EAC Cloud Connect");
