@@ -100,7 +100,7 @@ public static class Options
 
     #region 创建选项
 
-    //* 阵营&职业的详细设定 *//
+    //// 阵营 ////
 
     public static float DefaultKillCooldown = Main.NormalOptions?.KillCooldown ?? 20;
     public static OptionItem DefaultShapeshiftCooldown;
@@ -132,7 +132,7 @@ public static class Options
     public static OptionItem JudgeCanBeMadmate;
     public static OptionItem MadSnitchTasks;
 
-    //* 游戏设置 *//
+    //// 游戏设置 ////
 
     public static OptionItem EnableGM;
 
@@ -246,8 +246,9 @@ public static class Options
     public static OptionItem GhostCanSeeOtherVotes;
     public static OptionItem GhostCanSeeDeathReason;
 
-    /* 系统设定 */
+    //// 系统设定 ////
 
+    // 自动踢出相关设定
     public static OptionItem KickLowLevelPlayer;
     public static OptionItem KickAndroidPlayer;
     public static OptionItem KickPlayerFriendCodeNotExist;
@@ -261,35 +262,36 @@ public static class Options
     public static OptionItem AutoKickStopWordsTimes;
     public static OptionItem AutoWarnStopWords;
 
+    // 云服务相关设定
     public static OptionItem ShareLobby;
     public static OptionItem ShareLobbyMinPlayer;
 
-    public static OptionItem LowLoadMode;
-
-    public static OptionItem EndWhenPlayerBug;
-
-    public static OptionItem CheatResponses;
-
+    // 游戏信息相关设定
     public static OptionItem AutoDisplayKillLog;
     public static OptionItem AutoDisplayLastRoles;
     public static OptionItem AutoDisplayLastResult;
-
-    public static OptionItem SuffixMode;
-    public static OptionItem HideGameSettings;
-    public static OptionItem DIYGameSettings;
-    public static OptionItem PlayerCanSetColor;
-    public static OptionItem FormatNameMode;
-    public static OptionItem DisableEmojiName;
     public static OptionItem ChangeNameToRoleInfo;
     public static OptionItem SendRoleDescriptionFirstMeeting;
-    public static OptionItem NoGameEnd;
-    public static OptionItem AllowConsole;
-    public static OptionItem RoleAssigningAlgorithm;
+    public static OptionItem HideGameSettings;
+    public static OptionItem DIYGameSettings;
 
+    // 个性化相关设定
+    public static OptionItem SuffixMode;
+    public static OptionItem FormatNameMode;
+    public static OptionItem DisableEmojiName;
+    public static OptionItem PlayerCanSetColor;
     public static OptionItem KPDCamouflageMode;
     public static OptionItem AllowPlayerPlayWithColoredNameByCustomTags;
+    public static OptionItem NonModPleyerCanShowUpperCustomTag;
 
+    // 高级设定
+    public static OptionItem NoGameEnd;
+    public static OptionItem AllowConsole;
     public static OptionItem EnableDirectorMode;
+    public static OptionItem LowLoadMode;
+    public static OptionItem EndWhenPlayerBug;
+    public static OptionItem CheatResponses;
+    public static OptionItem RoleAssigningAlgorithm;
 
     #endregion
 
@@ -511,74 +513,117 @@ public static class Options
 
         #region 系统设置
 
+        // 自动踢出相关设定
+        TextOptionItem.Create(2_100_001, "MenuTitle.AutoKick", TabGroup.SystemSettings)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+
         KickLowLevelPlayer = IntegerOptionItem.Create(2_000_001, "KickLowLevelPlayer", new(0, 100, 1), 0, TabGroup.SystemSettings, false)
             .SetValueFormat(OptionFormat.Level)
-            .SetHeader(true);
-        KickAndroidPlayer = BooleanOptionItem.Create(2_000_002, "KickAndroidPlayer", false, TabGroup.SystemSettings, false);
-        KickPlayerFriendCodeNotExist = BooleanOptionItem.Create(2_000_003, "KickPlayerFriendCodeNotExist", false, TabGroup.SystemSettings, true);
-        ApplyDenyNameList = BooleanOptionItem.Create(2_000_004, "ApplyDenyNameList", true, TabGroup.SystemSettings, true);
-        ApplyBanList = BooleanOptionItem.Create(2_000_005, "ApplyBanList", true, TabGroup.SystemSettings, true);
-        AutoKickStart = BooleanOptionItem.Create(2_000_006, "AutoKickStart", false, TabGroup.SystemSettings, false);
+            .SetHeader(true)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        KickAndroidPlayer = BooleanOptionItem.Create(2_000_002, "KickAndroidPlayer", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        KickPlayerFriendCodeNotExist = BooleanOptionItem.Create(2_000_003, "KickPlayerFriendCodeNotExist", false, TabGroup.SystemSettings, true)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        ApplyDenyNameList = BooleanOptionItem.Create(2_000_004, "ApplyDenyNameList", true, TabGroup.SystemSettings, true)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        ApplyBanList = BooleanOptionItem.Create(2_000_005, "ApplyBanList", true, TabGroup.SystemSettings, true)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        AutoKickStart = BooleanOptionItem.Create(2_000_006, "AutoKickStart", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
         AutoKickStartTimes = IntegerOptionItem.Create(2_000_007, "AutoKickStartTimes", new(0, 99, 1), 1, TabGroup.SystemSettings, false).SetParent(AutoKickStart)
-            .SetValueFormat(OptionFormat.Times);
-        AutoKickStartAsBan = BooleanOptionItem.Create(2_000_008, "AutoKickStartAsBan", false, TabGroup.SystemSettings, false).SetParent(AutoKickStart);
-        AutoKickStopWords = BooleanOptionItem.Create(2_000_009, "AutoKickStopWords", false, TabGroup.SystemSettings, false);
+            .SetValueFormat(OptionFormat.Times)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        AutoKickStartAsBan = BooleanOptionItem.Create(2_000_008, "AutoKickStartAsBan", false, TabGroup.SystemSettings, false).SetParent(AutoKickStart)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        AutoKickStopWords = BooleanOptionItem.Create(2_000_009, "AutoKickStopWords", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
         AutoKickStopWordsTimes = IntegerOptionItem.Create(2_000_010, "AutoKickStopWordsTimes", new(0, 99, 1), 3, TabGroup.SystemSettings, false).SetParent(AutoKickStopWords)
-            .SetValueFormat(OptionFormat.Times);
-        AutoKickStopWordsAsBan = BooleanOptionItem.Create(2_000_011, "AutoKickStopWordsAsBan", false, TabGroup.SystemSettings, false).SetParent(AutoKickStopWords);
-        AutoWarnStopWords = BooleanOptionItem.Create(2_000_012, "AutoWarnStopWords", false, TabGroup.SystemSettings, false);
+            .SetValueFormat(OptionFormat.Times)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        AutoKickStopWordsAsBan = BooleanOptionItem.Create(2_000_011, "AutoKickStopWordsAsBan", false, TabGroup.SystemSettings, false).SetParent(AutoKickStopWords)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+        AutoWarnStopWords = BooleanOptionItem.Create(2_000_012, "AutoWarnStopWords", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(0, 121, 255, byte.MaxValue));
+
+        // 云服务相关设定
+        TextOptionItem.Create(2_100_002, "MenuTitle.CloudServer", TabGroup.SystemSettings)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(new Color32(0, 223, 162, byte.MaxValue));
 
         ShareLobby = BooleanOptionItem.Create(2_001_001, "ShareLobby", true, TabGroup.SystemSettings, false)
             .SetHeader(true)
-            .SetColor(Color.cyan);
+            .SetColor(new Color32(0, 223, 162, byte.MaxValue));
         ShareLobbyMinPlayer = IntegerOptionItem.Create(2_001_002, "ShareLobbyMinPlayer", new(3, 12, 1), 5, TabGroup.SystemSettings, false).SetParent(ShareLobby)
-            .SetValueFormat(OptionFormat.Players);
+            .SetValueFormat(OptionFormat.Players)
+            .SetColor(new Color32(0, 223, 162, byte.MaxValue));
 
-        LowLoadMode = BooleanOptionItem.Create(2_002_001, "LowLoadMode", false, TabGroup.SystemSettings, false)
+        // 游戏信息相关设定
+        TextOptionItem.Create(2_100_003, "MenuTitle.GameInfo", TabGroup.SystemSettings)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
+
+        AutoDisplayKillLog = BooleanOptionItem.Create(2_002_001, "AutoDisplayKillLog", true, TabGroup.SystemSettings, false)
             .SetHeader(true)
-            .SetColor(Color.green);
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
+        AutoDisplayLastRoles = BooleanOptionItem.Create(2_002_002, "AutoDisplayLastRoles", true, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
+        AutoDisplayLastResult = BooleanOptionItem.Create(2_002_003, "AutoDisplayLastResult", true, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
+        ChangeNameToRoleInfo = BooleanOptionItem.Create(2_002_004, "ChangeNameToRoleInfo", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
+        SendRoleDescriptionFirstMeeting = BooleanOptionItem.Create(2_002_005, "SendRoleDescriptionFirstMeeting", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
+        HideGameSettings = BooleanOptionItem.Create(2_002_006, "HideGameSettings", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
+        DIYGameSettings = BooleanOptionItem.Create(2_002_007, "DIYGameSettings", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
 
-        EndWhenPlayerBug = BooleanOptionItem.Create(2_003_001, "EndWhenPlayerBug", true, TabGroup.SystemSettings, false)
+        // 个性化相关设定
+        TextOptionItem.Create(2_100_004, "MenuTitle.Personality", TabGroup.SystemSettings)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
+
+        SuffixMode = StringOptionItem.Create(2_003_001, "SuffixMode", suffixModes, 0, TabGroup.SystemSettings, true)
             .SetHeader(true)
-            .SetColor(Color.blue);
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
+        FormatNameMode = StringOptionItem.Create(2_003_002, "FormatNameMode", formatNameModes, 0, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
+        DisableEmojiName = BooleanOptionItem.Create(2_003_003, "DisableEmojiName", true, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
+        PlayerCanSetColor = BooleanOptionItem.Create(2_003_004, "PlayerCanSetColor", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
+        KPDCamouflageMode = BooleanOptionItem.Create(2_003_005, "KPDCamouflageMode", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
+        AllowPlayerPlayWithColoredNameByCustomTags = BooleanOptionItem.Create(2_003_006, "AllowPlayerPlayWithColoredNameByCustomTags", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
+        NonModPleyerCanShowUpperCustomTag = BooleanOptionItem.Create(2_003_007, "NonModPleyerCanShowUpperCustomTag", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(255, 0, 96, byte.MaxValue));
 
-        CheatResponses = StringOptionItem.Create(2_004_001, "CheatResponses", CheatResponsesNames, 0, TabGroup.SystemSettings, false)
-            .SetHeader(true);
+        // 高级设定
+        TextOptionItem.Create(2_100_005, "MenuTitle.Advanced", TabGroup.SystemSettings)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(new Color32(147, 118, 224, byte.MaxValue));
 
-        AutoDisplayKillLog = BooleanOptionItem.Create(2_005_001, "AutoDisplayKillLog", true, TabGroup.SystemSettings, false)
-            .SetHeader(true);
-        AutoDisplayLastRoles = BooleanOptionItem.Create(2_005_002, "AutoDisplayLastRoles", true, TabGroup.SystemSettings, false);
-        AutoDisplayLastResult = BooleanOptionItem.Create(2_005_003, "AutoDisplayLastResult", true, TabGroup.SystemSettings, false);
-
-        SuffixMode = StringOptionItem.Create(2_006_001, "SuffixMode", suffixModes, 0, TabGroup.SystemSettings, true)
-            .SetHeader(true);
-        HideGameSettings = BooleanOptionItem.Create(2_007_001, "HideGameSettings", false, TabGroup.SystemSettings, false);
-        DIYGameSettings = BooleanOptionItem.Create(2_008_001, "DIYGameSettings", false, TabGroup.SystemSettings, false);
-        PlayerCanSetColor = BooleanOptionItem.Create(2_009_001, "PlayerCanSetColor", false, TabGroup.SystemSettings, false);
-        FormatNameMode = StringOptionItem.Create(2_010_001, "FormatNameMode", formatNameModes, 0, TabGroup.SystemSettings, false);
-        DisableEmojiName = BooleanOptionItem.Create(2_011_001, "DisableEmojiName", true, TabGroup.SystemSettings, false);
-        ChangeNameToRoleInfo = BooleanOptionItem.Create(2_012_001, "ChangeNameToRoleInfo", false, TabGroup.SystemSettings, false);
-        SendRoleDescriptionFirstMeeting = BooleanOptionItem.Create(2_013_001, "SendRoleDescriptionFirstMeeting", false, TabGroup.SystemSettings, false);
-        NoGameEnd = BooleanOptionItem.Create(2_014_001, "NoGameEnd", false, TabGroup.SystemSettings, false);
-        AllowConsole = BooleanOptionItem.Create(2_015_001, "AllowConsole", false, TabGroup.SystemSettings, false);
-        RoleAssigningAlgorithm = StringOptionItem.Create(2_016_001, "RoleAssigningAlgorithm", roleAssigningAlgorithms, 4, TabGroup.SystemSettings, true)
-           .RegisterUpdateValueEvent(
-                (object obj, OptionItem.UpdateValueEventArgs args) => IRandom.SetInstanceById(args.CurrentValue)
-            );
-
-        KPDCamouflageMode = BooleanOptionItem.Create(2_017_001, "KPDCamouflageMode", false, TabGroup.SystemSettings, false)
+        NoGameEnd = BooleanOptionItem.Create(2_004_001, "NoGameEnd", false, TabGroup.SystemSettings, false)
             .SetHeader(true)
-            .SetColor(new Color32(255, 192, 203, byte.MaxValue));
-
-        AllowPlayerPlayWithColoredNameByCustomTags = BooleanOptionItem.Create(2_018_001, "AllowPlayerPlayWithColoredNameByCustomTags", false, TabGroup.SystemSettings, false)
-            .SetHeader(true)
-            .SetColor(new Color32(255, 0, 102, byte.MaxValue));
+            .SetColor(new Color32(147, 118, 224, byte.MaxValue));
+        AllowConsole = BooleanOptionItem.Create(2_004_002, "AllowConsole", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(147, 118, 224, byte.MaxValue));
+        EnableDirectorMode = BooleanOptionItem.Create(2_004_003, "EnableDirectorMode", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(147, 118, 224, byte.MaxValue));
+        LowLoadMode = BooleanOptionItem.Create(2_004_004, "LowLoadMode", false, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(147, 118, 224, byte.MaxValue));
+        EndWhenPlayerBug = BooleanOptionItem.Create(2_004_005, "EndWhenPlayerBug", true, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(147, 118, 224, byte.MaxValue));
+        CheatResponses = StringOptionItem.Create(2_004_006, "CheatResponses", CheatResponsesNames, 0, TabGroup.SystemSettings, false)
+            .SetColor(new Color32(147, 118, 224, byte.MaxValue));
+        RoleAssigningAlgorithm = StringOptionItem.Create(2_004_007, "RoleAssigningAlgorithm", roleAssigningAlgorithms, 4, TabGroup.SystemSettings, true)
+           .RegisterUpdateValueEvent((object obj, OptionItem.UpdateValueEventArgs args) => IRandom.SetInstanceById(args.CurrentValue))
+           .SetColor(new Color32(147, 118, 224, byte.MaxValue));
 
         DebugModeManager.SetupCustomOption();
-
-        EnableDirectorMode = BooleanOptionItem.Create(2_019_001, "EnableDirectorMode", false, TabGroup.SystemSettings, false)
-            .SetColor(new Color32(214, 157, 133, byte.MaxValue))
-            .SetHeader(true);
 
         #endregion 
 
