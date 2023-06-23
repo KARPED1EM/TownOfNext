@@ -60,6 +60,9 @@ public static class NameTagNewWindow
         EnterBox = Object.Instantiate(enterPrefab, Window.transform);
         EnterBox.name = "Enter Friend Code Box";
         EnterBox.transform.localPosition = new Vector3(0f, -0.1f, 0f);
+        var textBoxTMP = EnterBox.GetComponent<TextBoxTMP>();
+        textBoxTMP.AllowEmail = false;
+        textBoxTMP.AllowSymbols = true;
 
         ConfirmButton = Object.Instantiate(buttonPrefab, Window.transform);
         ConfirmButton.name = "Confirm Button";
