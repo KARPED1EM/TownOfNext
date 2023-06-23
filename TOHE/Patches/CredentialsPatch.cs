@@ -29,7 +29,7 @@ internal class PingTrackerUpdatePatch
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         float fps = Mathf.Ceil(1.0f / deltaTime);
 
-        sb.Append($"\r\n").Append($"<color={color}>{ping} <size=60%>Ping</size></color>\t<color=#00a4ff>{fps} <size=60%>FPS</size></color>");
+        sb.Append($"\r\n").Append($"<color={color}>{ping} <size=60%>Ping</size></color>  <color=#00a4ff>{fps} <size=60%>FPS</size></color>");
 
         if (!GameStates.IsModHost) sb.Append($"\r\n").Append("<size=135%>" + Utils.ColorString(Color.red, GetString("Warning.NoModHost")) + "</size>");
         else

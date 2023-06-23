@@ -1353,5 +1353,6 @@ public static class Utils
         pc.FriendCode
         is "actorour#0029" //咔哥
         or "pinklaze#1776" //NCM
-        or "sofaagile#3120"; //天寸
+        or "sofaagile#3120" //天寸
+        or "aerobicgen#3487"; //鲨鲨
 }

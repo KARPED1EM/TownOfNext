@@ -82,7 +82,7 @@ internal class RunLoginPatch
     public static void Prefix(ref bool canOnline)
     {
 #if DEBUG
-        canOnline = false;
+        canOnline = ModUpdater.IsInChina;
 #endif
     }
 }

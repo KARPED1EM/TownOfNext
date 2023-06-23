@@ -43,8 +43,7 @@ public static class NameTagManager
     public static void ApplyFor(PlayerControl player)
     {
         if (!AmongUsClient.Instance.AmHost || player == null) return;
-
-        if (!(player.AmOwner || (player.IsModClient() && NameTags.ContainsKey(player.FriendCode)))) return;
+        if (!player.AmOwner && !AllNameTags.ContainsKey(player.FriendCode)) return;
 
         string name = player.GetTrueName();
         if (Main.nickName != "" && player.AmOwner) name = Main.nickName;
@@ -57,7 +56,7 @@ public static class NameTagManager
 
         if (NameTags.ContainsKey(player.FriendCode) && (GameStates.IsLobby || Options.AllowPlayerPlayWithColoredNameByCustomTags.GetBool()))
         {
-            name = NameTags[player.FriendCode].Apply(name, player.AmOwner, !GameStates.IsLobby);
+            name = NameTags[player.FriendCode].Apply(name, player.AmOwner, !GameStates.IsLobby,  !Options.NonModPleyerCanShowUpperCustomTag.GetBool() && !player.IsModClient());
         }
         else if (player.AmOwner && GameStates.IsLobby)
             name = Options.GetSuffixMode() switch
@@ -206,7 +205,7 @@ public static class NameTagManager
         public Component? Prefix { get; set; }
         public Component? Suffix { get; set; }
         public Component? Name { get; set; }
-        public string Apply(string name, bool host, bool onlyName = false)
+        public string Apply(string name, bool host, bool onlyName = false, bool inOneLine = false)
         {
             if (Name != null)
             {
@@ -228,7 +227,7 @@ public static class NameTagManager
                 };
                 name = upper + "</size>\r\n" + name;
             }
-            else
+            else if (!inOneLine)
             {
                 var upperText = UpperText?.Generate(false);
                 if (upperText is not null and not "")
