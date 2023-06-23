@@ -93,6 +93,7 @@ internal class TitleLogoPatch
 {
     public static GameObject ModStamp;
     public static GameObject Ambience;
+    public static GameObject Starfield;
     public static GameObject LeftPanel;
     public static GameObject RightPanel;
     public static GameObject Tint;
@@ -111,6 +112,11 @@ internal class TitleLogoPatch
 
         if ((Ambience = GameObject.Find("Ambience")) == null) return;
         Ambience.transform.FindChild("PlayerParticles").gameObject.SetActive(false);
+
+        if ((Starfield = Ambience.transform.FindChild("starfield").gameObject) == null) return;
+        StarGen starGen = Starfield.GetComponent<StarGen>();
+        starGen.SetDirection(new Vector2(0, -2));
+
 
         var TOHEBG = new GameObject("TOHE Background");
         TOHEBG.transform.position = new Vector3(0, 0, 520f);
