@@ -22,7 +22,7 @@ public static class OptionShowerPatch
         OptionShower.BuildText();
         GameSettings = __instance.GameSettings.gameObject;
         __instance.GameSettings.fontSizeMin =
-        __instance.GameSettings.fontSizeMax = 0.8f;
+        __instance.GameSettings.fontSizeMax = 0.85f;
         Scroller = __instance.GameSettings.transform.parent.gameObject.AddComponent<Scroller>();
         Scroller.Inner = __instance.GameSettings.transform;
         Scroller.SetYBoundsMin(OriginalY);
@@ -102,23 +102,23 @@ public static class OptionShower
             }
 
             sb.Append($"<size=140%><color=#59ef83>{GetString("TabGroup.GameSettings")}</color></size>\n");
-            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null && !x.IsText))
+            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
             {
                 if (opt.IsHeader) sb.Append('\n');
-                sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
-                if (opt.GetBool())
-                    ShowChildren(opt, ref sb, Color.white, 1);
+                if (opt.IsText) sb.Append($"   {opt.GetName()}\n");
+                else sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
+                if (opt.GetBool()) ShowChildren(opt, ref sb, Color.white, 1);
             }
             pages.Add(sb.ToString());
             sb.Clear();
 
             sb.Append($"<size=140%><color={Main.ModColor}>{GetString("TabGroup.SystemSettings")}</color></size>\n");
-            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 2000000 and < 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null && !x.IsText))
+            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 2000000 and < 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
             {
                 if (opt.IsHeader) sb.Append('\n');
-                sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
-                if (opt.GetBool())
-                    ShowChildren(opt, ref sb, Color.white, 1);
+                if (opt.IsText) sb.Append($"   {opt.GetName()}\n");
+                else sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
+                if (opt.GetBool()) ShowChildren(opt, ref sb, Color.white, 1);
             }
             pages.Add(sb.ToString());
             sb.Clear();
