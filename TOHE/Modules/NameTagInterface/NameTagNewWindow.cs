@@ -63,6 +63,7 @@ public static class NameTagNewWindow
         var textBoxTMP = EnterBox.GetComponent<TextBoxTMP>();
         textBoxTMP.AllowEmail = false;
         textBoxTMP.AllowSymbols = true;
+        textBoxTMP.AllowPaste = true;
 
         ConfirmButton = Object.Instantiate(buttonPrefab, Window.transform);
         ConfirmButton.name = "Confirm Button";
