@@ -420,9 +420,7 @@ public abstract class RoleBase : IDisposable
     /// <returns>true：确定要覆盖</returns>
     public virtual bool OverrideAbilityButtonSprite(out string buttonName)
     {
-        Logger.Test("123");
         buttonName = default;
-        Logger.Test("321");
         return false;
     }
 
