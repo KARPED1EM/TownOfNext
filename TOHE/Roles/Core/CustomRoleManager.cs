@@ -85,8 +85,8 @@ public static class CustomRoleManager
         {
             //MurderPlayer用にinfoを保存
             CheckMurderInfos[appearanceKiller.PlayerId] = info;
-            appearanceKiller.RpcMurderPlayer(appearanceTarget);
-            if (actionAfterAll != null) actionAfterAll();
+            appearanceKiller.RpcMurderPlayerEx(appearanceTarget);
+            actionAfterAll?.Invoke();
         }
         else
         {
