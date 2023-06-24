@@ -20,7 +20,8 @@ public sealed class Arsonist : RoleBase, IKiller
             SetupOptionItem,
             "ar",
             "#ff6633",
-            introSound: () => GetIntroSound(RoleTypes.Crewmate)
+            introSound: () => GetIntroSound(RoleTypes.Crewmate),
+            broken: true
         );
     public Arsonist(PlayerControl player)
     : base(

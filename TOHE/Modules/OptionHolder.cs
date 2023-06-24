@@ -79,6 +79,10 @@ public static class Options
             "Rate0",  "Rate5",  "Rate10", "Rate20", "Rate30", "Rate40",
             "Rate50", "Rate60", "Rate70", "Rate80", "Rate90", "Rate100",
     };
+    public static readonly string[] RoleBroken =
+    {
+        "RoleOff",
+    };
     public static readonly string[] RoleSpwanModes =
     {
         "RoleOff", "RoleRate", "RoleOn"
@@ -925,8 +929,11 @@ public static class Options
     {
         if (role.IsVanilla()) return;
 
-        var spawnOption = StringOptionItem.Create(id, role.ToString(), RoleSpwanModes, 0, tab, false).SetColor(Utils.GetRoleColor(role))
+        bool broken = role.GetRoleInfo()?.Broken ?? false;
+
+        var spawnOption = StringOptionItem.Create(id, role.ToString(), broken ? RoleBroken : RoleSpwanModes, 0, tab, false).SetColor(broken ? Palette.DisabledGrey : Utils.GetRoleColor(role))
             .SetHeader(true)
+            .SetAddDesc(broken ? Utils.ColorString(Palette.DisabledGrey, Translator.GetString("RoleBroken")) : "")
             .SetGameMode(customGameMode) as StringOptionItem;
         var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, tab, false).SetParent(spawnOption)
             .SetValueFormat(OptionFormat.Players)
@@ -937,8 +944,11 @@ public static class Options
     }
     public static void SetupSingleRoleOptions(int id, TabGroup tab, CustomRoles role, int count, CustomGameMode customGameMode = CustomGameMode.Standard)
     {
-        var spawnOption = StringOptionItem.Create(id, role.ToString(), RoleSpwanModes, 0, tab, false).SetColor(Utils.GetRoleColor(role))
+        bool broken = role.GetRoleInfo()?.Broken ?? false;
+
+        var spawnOption = StringOptionItem.Create(id, role.ToString(), broken ? RoleBroken : RoleSpwanModes, 0, tab, false).SetColor(broken ? Palette.DisabledGrey : Utils.GetRoleColor(role))
             .SetHeader(true)
+            .SetAddDesc(broken ? Utils.ColorString(Palette.DisabledGrey, Translator.GetString("RoleBroken")) : "")
             .SetGameMode(customGameMode) as StringOptionItem;
         // 初期値,最大値,最小値が同じで、stepが0のどうやっても変えることができない個数オプション
         var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(count, count, count), count, tab, false).SetParent(spawnOption)

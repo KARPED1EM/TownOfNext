@@ -88,7 +88,7 @@ public static class OptionShower
             foreach (var type in pageRoleTypes)
             {
                 sb.Append($"<size=140%>{Utils.ColorString(Utils.GetCustomRoleTypeColor(type.Value), GetString(type.Key))}</size>\n");
-                foreach (var kvp in Options.CustomRoleSpawnChances.Where(o => o.Key.GetCustomRoleTypes() == type.Value))
+                foreach (var kvp in Options.CustomRoleSpawnChances.Where(o => o.Key.GetCustomRoleTypes() == type.Value && !(o.Key.GetRoleInfo()?.Broken ?? false)))
                 {
                     if (!kvp.Key.IsEnable() || kvp.Value.IsHiddenOn(Options.CurrentGameMode)) continue;
                     sb.Append('\n');

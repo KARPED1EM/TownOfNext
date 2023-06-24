@@ -23,6 +23,7 @@ public class SimpleRoleInfo
     public bool RequireResetCam;
     private Func<AudioClip> introSound;
     public bool Experimental;
+    public bool Broken;
     public AudioClip IntroSound => introSound?.Invoke();
 
     private SimpleRoleInfo(
@@ -38,7 +39,8 @@ public class SimpleRoleInfo
         bool requireResetCam,
         TabGroup tab,
         Func<AudioClip> introSound,
-        bool experimental
+        bool experimental,
+        bool broken
     )
     {
         ClassType = classType;
@@ -52,6 +54,7 @@ public class SimpleRoleInfo
         this.introSound = introSound;
         ChatCommand = chatCommand;
         Experimental = experimental;
+        Broken = broken;
 
         if (colorCode == "")
             colorCode = customRoleType switch
@@ -90,7 +93,8 @@ public class SimpleRoleInfo
         bool requireResetCam = false,
         TabGroup tab = TabGroup.GameSettings,
         Func<AudioClip> introSound = null,
-        bool experimental = false
+        bool experimental = false,
+        bool broken = false
     )
     {
         return
@@ -107,15 +111,15 @@ public class SimpleRoleInfo
                 requireResetCam,
                 tab,
                 introSound,
-                experimental
+                experimental,
+                broken
             );
     }
     public static SimpleRoleInfo CreateForVanilla(
         Type classType,
         Func<PlayerControl, RoleBase> createInstance,
         RoleTypes baseRoleType,
-        string colorCode = "",
-        bool experimental = false
+        string colorCode = ""
     )
     {
         CustomRoles roleName;
@@ -162,7 +166,8 @@ public class SimpleRoleInfo
                 false,
                 TabGroup.GameSettings,
                 null,
-                experimental
+                false,
+                false
             );
     }
     public delegate void OptionCreatorDelegate();

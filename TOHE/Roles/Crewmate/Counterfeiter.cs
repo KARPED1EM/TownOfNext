@@ -22,7 +22,8 @@ public sealed class Counterfeiter : RoleBase, IKiller
             SetupOptionItem,
             "de",
             "#e0e0e0",
-            true
+            true,
+            broken: true
         );
     public Counterfeiter(PlayerControl player)
     : base(

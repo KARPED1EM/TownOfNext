@@ -22,7 +22,8 @@ public sealed class Medicaler : RoleBase, IKiller
             SetupOptionItem,
             "me",
             "#00a4ff",
-            true
+            true,
+            broken: true
         );
     public Medicaler(PlayerControl player)
     : base(

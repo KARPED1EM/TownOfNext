@@ -28,12 +28,14 @@ internal class ControllerManagerUpdatePatch
             {
                 if (Input.GetKey(KeyCode.LeftControl)) OptionShower.Previous();
                 else OptionShower.Next();
+                OptionShowerPatch.Scroller.ScrollToTop();
             }
             for (var i = 0; i < 9; i++)
             {
                 if (ORGetKeysDown(KeyCode.Alpha1 + i, KeyCode.Keypad1 + i) && OptionShower.pages.Count >= i + 1)
                 {
                     OptionShower.currentPage = i;
+                    OptionShowerPatch.Scroller.ScrollToTop();
                 }
             }
         }

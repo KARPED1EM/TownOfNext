@@ -18,7 +18,8 @@ public sealed class Capitalism : RoleBase, IImpostor
             4300,
             SetupOptionItem,
             "ca",
-            experimental: true
+            experimental: true,
+            broken: true
         );
     public Capitalism(PlayerControl player)
     : base(

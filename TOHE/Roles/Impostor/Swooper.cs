@@ -17,7 +17,8 @@ public sealed class Swooper : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3900,
             SetupOptionItem,
-            "sw"
+            "sw",
+            broken: true
         );
 
     public Swooper(PlayerControl player)

@@ -17,7 +17,8 @@ public sealed class Sans : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3000,
             SetupOptionItem,
-            "ag"
+            "ag",
+            broken: true
         );
     public Sans(PlayerControl player)
     : base(

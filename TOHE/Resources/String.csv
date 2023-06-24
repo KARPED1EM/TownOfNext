@@ -1427,6 +1427,7 @@
 "SendTargetSwitchNotice","（按住 Shift 发送给所有人 / 按住 Ctrl 发送给死亡玩家）"
 "Retry","重试","","","",""
 "PleaseWait","请稍候...","","","",""
+"RoleBroken","（损坏）","","","",""
 
 "## 作弊 / EAC"
 "EAC.CheatDetected.HighLevel","警告：EAC正在抵御炸房外挂","Warning: EAC detected High Level of cheats.","Предупреждение: EAC обнаружил высокий уровень читов.","警告: EAC正在抵禦炸房外掛","警告：EAC正在抵御炸房外挂"

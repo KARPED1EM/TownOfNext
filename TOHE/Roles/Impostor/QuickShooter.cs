@@ -17,7 +17,8 @@ public sealed class QuickShooter : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3700,
             SetupOptionItem,
-            "qs"
+            "qs",
+            broken: true
         );
     public QuickShooter(PlayerControl player)
     : base(

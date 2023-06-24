@@ -18,7 +18,8 @@ public sealed class SwordsMan : RoleBase, IKiller
             null,
             "vi",
             "#f0e68c",
-            true
+            true,
+            broken: true
         );
     public SwordsMan(PlayerControl player)
     : base(

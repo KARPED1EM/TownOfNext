@@ -29,6 +29,7 @@ public abstract class OptionItem
     public bool IsHeader { get; protected set; }
     public bool IsHidden { get; protected set; }
     public bool IsText { get; protected set; }
+    public string AddonDescription { get; protected set; }
     public Dictionary<string, string> ReplacementDictionary
     {
         get => _replacementDictionary;
@@ -82,6 +83,7 @@ public abstract class OptionItem
         IsHeader = false;
         IsHidden = false;
         IsText = false;
+        AddonDescription = "";
 
         // オブジェクト初期化
         Children = new();
@@ -125,6 +127,7 @@ public abstract class OptionItem
     public OptionItem SetHeader(bool value) => Do(i => i.IsHeader = value);
     public OptionItem SetHidden(bool value) => Do(i => i.IsHidden = value);
     public OptionItem SetText(bool value) => Do(i => i.IsText = value);
+    public OptionItem SetAddDesc(string value) => Do(i => i.AddonDescription = value);
 
     public OptionItem SetParent(OptionItem parent) => Do(i =>
     {
@@ -155,9 +158,10 @@ public abstract class OptionItem
     // Getter
     public virtual string GetName(bool disableColor = false, bool console = false)
     {
-        return disableColor ?
+        return (disableColor ?
             Translator.GetString(Name, ReplacementDictionary, console) :
-            Utils.ColorString(NameColor, Translator.GetString(Name, ReplacementDictionary));
+            Utils.ColorString(NameColor, Translator.GetString(Name, ReplacementDictionary)))
+            + AddonDescription;
     }
     public virtual bool GetBool() => CurrentValue != 0 && (Parent == null || Parent.GetBool());
     public virtual int GetInt() => CurrentValue;

@@ -15,7 +15,8 @@ public sealed class Hangman : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3800,
             SetupOptionItem,
-            "ha"
+            "ha",
+            broken: true
         );
     public Hangman(PlayerControl player)
     : base(

@@ -16,7 +16,8 @@ public sealed class Greedier : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3400,
             SetupOptionItem,
-            "gr"
+            "gr",
+            broken: true
         );
     public Greedier(PlayerControl player)
     : base(
