@@ -92,9 +92,12 @@ internal class VersionShowerStartPatch
 internal class TitleLogoPatch
 {
     public static GameObject ModStamp;
+    public static GameObject TOHE_Background;
     public static GameObject Ambience;
+    public static GameObject Starfield;
     public static GameObject LeftPanel;
     public static GameObject RightPanel;
+    public static GameObject CloseRightButton;
     public static GameObject Tint;
     public static GameObject Sizer;
     public static GameObject AULogo;
@@ -106,18 +109,22 @@ internal class TitleLogoPatch
     {
         GameObject.Find("BackgroundTexture")?.SetActive(!MainMenuManagerPatch.ShowedBak);
 
-        if ((ModStamp = GameObject.Find("ModStamp")) == null) return;
+        if (!(ModStamp = GameObject.Find("ModStamp"))) return;
         ModStamp.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
 
-        if ((Ambience = GameObject.Find("Ambience")) == null) return;
-        Ambience.transform.FindChild("PlayerParticles").gameObject.SetActive(false);
-
-        var TOHEBG = new GameObject("TOHE Background");
-        TOHEBG.transform.position = new Vector3(0, 0, 520f);
-        var bgRenderer = TOHEBG.AddComponent<SpriteRenderer>();
+        TOHE_Background = new GameObject("TOHE Background");
+        TOHE_Background.transform.position = new Vector3(0, 0, 520f);
+        var bgRenderer = TOHE_Background.AddComponent<SpriteRenderer>();
         bgRenderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.TOHE-BG.jpg", 179f);
 
-        if ((LeftPanel = GameObject.Find("LeftPanel")) == null) return;
+        if (!(Ambience = GameObject.Find("Ambience"))) return;
+        if (!(Starfield = Ambience.transform.FindChild("starfield").gameObject)) return;
+        StarGen starGen = Starfield.GetComponent<StarGen>();
+        starGen.SetDirection(new Vector2(0, -2));
+        Starfield.transform.SetParent(TOHE_Background.transform);
+        GameObject.Destroy(Ambience);
+
+        if (!(LeftPanel = GameObject.Find("LeftPanel"))) return;
         LeftPanel.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         static void ResetParent(GameObject obj) => obj.transform.SetParent(LeftPanel.transform.parent);
         LeftPanel.ForEachChild((Il2CppSystem.Action<GameObject>)ResetParent);
@@ -156,15 +163,31 @@ internal class TitleLogoPatch
 
         GameObject.Find("Divider")?.SetActive(false);
 
-        if ((RightPanel = GameObject.Find("RightPanel")) == null) return;
+        if (!(RightPanel = GameObject.Find("RightPanel"))) return;
         var rpap = RightPanel.GetComponent<AspectPosition>();
-        if (rpap != null) Object.Destroy(rpap);
+        if (rpap) Object.Destroy(rpap);
         RightPanelOp = RightPanel.transform.localPosition;
         RightPanel.transform.localPosition = RightPanelOp + new Vector3(10f, 0f, 0f);
 
+        var te = __instance.creditsButton.gameObject;
+        CloseRightButton = GameObject.Instantiate(te, RightPanel.transform);
+        CloseRightButton.name = "CloseRightButton";
+        GameObject.Destroy(CloseRightButton.transform.FindChild("FontPlacer").gameObject);
+        GameObject.Destroy(CloseRightButton.GetComponent<AspectPosition>());
+        GameObject.Destroy(CloseRightButton.GetComponent<AspectScaledAsset>());
+        CloseRightButton.transform.Rotate(new Vector3(0,0,90f));
+        CloseRightButton.transform.localPosition = new Vector3(-4.8763f,1.6754f,0);
+        CloseRightButton.GetComponent<PassiveButton>().OnClick = new();
+        CloseRightButton.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => MainMenuManagerPatch.HideRightPanel()));
+        var activeRenderer = CloseRightButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
+        var inActiveRenderer = CloseRightButton.transform.FindChild("Highlight").GetComponent<SpriteRenderer>();
+        ColorUtility.TryParseHtmlString(Main.ModColor, out Color modcolor);
+        inActiveRenderer.color = modcolor;
+        activeRenderer.color = modcolor;
+
         Tint = __instance.screenTint.gameObject;
         var ttap = Tint.GetComponent<AspectPosition>();
-        if (ttap != null) Object.Destroy(ttap);
+        if (ttap) Object.Destroy(ttap);
         Tint.transform.SetParent(RightPanel.transform);
         Tint.transform.localPosition = new Vector3(-0.0824f, 0.0513f, Tint.transform.localPosition.z);
         Tint.transform.localScale = new Vector3(1f, 1f, 1f);
@@ -176,22 +199,22 @@ internal class TitleLogoPatch
         }
 
         var creditsScreen = __instance.creditsScreen;
-        if (creditsScreen != null)
+        if (creditsScreen)
         {
             var csto = creditsScreen.GetComponent<TransitionOpen>();
-            if (csto != null) Object.Destroy(csto);
+            if (csto) Object.Destroy(csto);
             var closeButton = creditsScreen.transform.FindChild("CloseButton");
             closeButton?.gameObject.SetActive(false);
         }
 
-        if ((Sizer = GameObject.Find("Sizer")) == null) return;
-        if ((AULogo = GameObject.Find("LOGO-AU")) == null) return;
+        if (!(Sizer = GameObject.Find("Sizer"))) return;
+        if (!(AULogo = GameObject.Find("LOGO-AU"))) return;
         Sizer.transform.localPosition += new Vector3(0f, 0.1f, 0f);
         AULogo.transform.position += new Vector3(0f, 0.1f, 0f);
         var logoRenderer = AULogo.GetComponent<SpriteRenderer>();
         logoRenderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.TOHE-Logo.png");
 
-        if ((BottomButtonBounds = GameObject.Find("BottomButtonBounds")) == null) return;
+        if (!(BottomButtonBounds = GameObject.Find("BottomButtonBounds"))) return;
         BottomButtonBounds.transform.localPosition -= new Vector3(0f, 0.1f, 0f);
     }
 }
