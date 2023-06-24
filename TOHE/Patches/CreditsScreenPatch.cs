@@ -51,6 +51,7 @@ public class CreditsScreenPatch
                 $"{GetString("TownOfHost_Y")}",
                 $"{GetString("TownOfHost-TheOtherRoles")}",
                 $"{GetString("SuperNewRoles")}",
+                $"{GetString("Project-Lotus")}",
 
                 "\t",
 
