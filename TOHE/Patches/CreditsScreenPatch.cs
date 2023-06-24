@@ -21,9 +21,9 @@ public class CreditsScreenPatch
 
                 "\t",
 
-                $"<color={Main.ModColor}>♡KARPED1EM</color> - {GetString("Creater")}",
-                $"<color={Main.ModColor}>♡IRIDESCENT</color> - {GetString("Art")}",
+                $"KARPED1EM - {GetString("Creater")}",
                 $"SHAAARKY - {GetString("Collaborators")}",
+                $"IRIDESCENT - {GetString("Art")}",
                 $"Endrmen40409 - {GetString("Art")}",
                 $"天寸梦初 - {GetString("PullRequester")}",
                 $"NCSIMON - {GetString("PullRequester")}",
