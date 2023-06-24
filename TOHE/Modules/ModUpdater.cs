@@ -21,9 +21,13 @@ public class ModUpdater
     public static bool IsInChina => CultureInfo.CurrentCulture.Name == "zh-CN";
     private static readonly string[] URLs =
     {
+#if DEBUG
+        "file:///D:/Desktop/TOHE/Release/info.json",
+#else
         "https://raw.githubusercontent.com/KARPED1EM/TOHE-Dev/TOHE/Release/info.json",
         "https://cdn.jsdelivr.net/gh/KARPED1EM/TOHE-Dev/Release/info.json",
-        "https://tohe-next-1301425958.cos.ap-shanghai.myqcloud.com/info.json"
+        "https://tohe-next-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
+#endif
     };
 
     public static bool hasUpdate = false;
@@ -70,11 +74,7 @@ public class ModUpdater
             ActionButton.gameObject.name = "ActionButton";
         }
 
-#if DEBUG
-        isChecked = true;
-#else
         if (!isChecked) CheckForUpdate();
-#endif
 
         SetUpdateButtonStatus();
     }
@@ -106,6 +106,7 @@ public class ModUpdater
         }
 
         Logger.Msg("Check For Update: " + isChecked, "CheckRelease");
+        isBroken = !isChecked;
         if (isChecked)
         {
             Logger.Info("Has Update: " + hasUpdate, "CheckRelease");
@@ -159,8 +160,13 @@ public class ModUpdater
         try
         {
             string result;
-            using (HttpClient client = new())
+            if (url.StartsWith("file:///"))
             {
+                result = File.ReadAllText(url[8..]);
+            }
+            else
+            {
+                using HttpClient client = new();
                 client.DefaultRequestHeaders.Add("User-Agent", "TOHE Updater");
                 client.DefaultRequestHeaders.Add("Referer", "tohe.cc");
                 using var response = await client.GetAsync(new Uri(url), HttpCompletionOption.ResponseContentRead);
@@ -215,7 +221,7 @@ public class ModUpdater
             {
                 if (path.EndsWith(Path.GetFileName(Assembly.GetExecutingAssembly().Location))) continue;
                 if (path.EndsWith("TOHE.dll")) continue;
-                Logger.Info($"{Path.GetFileName(path)} Deleted", "DeleteOldFiles");
+                Logger.Info($"{Path.GetFileName(path)} 已删除", "DeleteOldFiles");
                 File.Delete(path);
             }
         }

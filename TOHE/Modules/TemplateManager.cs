@@ -14,7 +14,7 @@ namespace TOHE;
 
 public static class TemplateManager
 {
-    private static readonly string TEMPLATE_FILE_PATH = "./TOHE_Data/template.txt";
+    private static readonly string TEMPLATE_FILE_PATH = "./TOHE_Next_Data/template.txt";
     private static Dictionary<string, Func<string>> _replaceDictionary = new()
     {
         ["HostName"] = () => PlayerControl.LocalPlayer.GetRealName(),
@@ -49,7 +49,7 @@ public static class TemplateManager
         {
             try
             {
-                if (!Directory.Exists(@"TOHE_Data")) Directory.CreateDirectory(@"TOHE_Data");
+                if (!Directory.Exists(@"TOHE_Next_Data")) Directory.CreateDirectory(@"TOHE_Next_Data");
                 if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
                 else
                 {

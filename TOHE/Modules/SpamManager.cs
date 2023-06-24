@@ -11,7 +11,7 @@ namespace TOHE;
 
 public static class SpamManager
 {
-    private static readonly string BANEDWORDS_FILE_PATH = "./TOHE_Data/BanWords.txt";
+    private static readonly string BANEDWORDS_FILE_PATH = "./TOHE_Next_Data/BanWords.txt";
     public static List<string> BanWords = new();
     public static void Init()
     {
@@ -24,7 +24,7 @@ public static class SpamManager
         {
             try
             {
-                if (!Directory.Exists(@"TOHE_Data")) Directory.CreateDirectory(@"TOHE_Data");
+                if (!Directory.Exists(@"TOHE_Next_Data")) Directory.CreateDirectory(@"TOHE_Next_Data");
                 if (File.Exists(@"./BanWords.txt")) File.Move(@"./BanWords.txt", BANEDWORDS_FILE_PATH);
                 else
                 {
