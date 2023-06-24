@@ -168,23 +168,23 @@ internal class TitleLogoPatch
         if (rpap) Object.Destroy(rpap);
         RightPanelOp = RightPanel.transform.localPosition;
         RightPanel.transform.localPosition = RightPanelOp + new Vector3(10f, 0f, 0f);
+        RightPanel.GetComponent<SpriteRenderer>().color = new(1f, 0.78f, 0.9f, 1f);
 
-        CloseRightButton = Object.Instantiate(__instance.creditsButton.gameObject, RightPanel.transform);
-        CloseRightButton.name = "CloseRightPanelButton";
-        Object.Destroy(CloseRightButton.transform.FindChild("FontPlacer").gameObject);
-        Object.Destroy(CloseRightButton.GetComponent<AspectPosition>());
-        Object.Destroy(CloseRightButton.GetComponent<AspectScaledAsset>());
-        CloseRightButton.transform.Rotate(new Vector3(0, 0, 90f));
-        CloseRightButton.transform.localPosition = new Vector3(-4.8763f, 1.6754f, 0);
-        CloseRightButton.GetComponent<PassiveButton>().OnClick = new();
-        CloseRightButton.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => MainMenuManagerPatch.HideRightPanel()));
-        var activeRenderer = CloseRightButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
-        var inActiveRenderer = CloseRightButton.transform.FindChild("Highlight").GetComponent<SpriteRenderer>();
-        if (ColorUtility.TryParseHtmlString(Main.ModColor, out Color modcolor))
-        {
-            inActiveRenderer.color = modcolor;
-            activeRenderer.color = modcolor;
-        }
+        CloseRightButton = new GameObject("CloseRightPanelButton");
+        CloseRightButton.transform.SetParent(RightPanel.transform);
+        CloseRightButton.transform.localPosition = new Vector3(-4.78f, 1.3f, 1f);
+        CloseRightButton.transform.localScale = new(1f, 1f, 1f);
+        CloseRightButton.AddComponent<BoxCollider2D>().size = new(0.6f, 1.5f);
+        var closeRightSpriteRenderer = CloseRightButton.AddComponent<SpriteRenderer>();
+        closeRightSpriteRenderer.sprite = Utils.LoadSprite("TOHE.Resources.Images.RightPanelCloseButton.png", 100f);
+        closeRightSpriteRenderer.color = new(1f, 0.78f, 0.9f, 1f);
+        var closeRightPassiveButton = CloseRightButton.AddComponent<PassiveButton>();
+        closeRightPassiveButton.OnClick = new();
+        closeRightPassiveButton.OnClick.AddListener((System.Action)MainMenuManagerPatch.HideRightPanel);
+        closeRightPassiveButton.OnMouseOut = new();
+        closeRightPassiveButton.OnMouseOut.AddListener((System.Action)(()=>closeRightSpriteRenderer.color = new(1f, 0.78f, 0.9f, 1f) ));
+        closeRightPassiveButton.OnMouseOver = new();
+        closeRightPassiveButton.OnMouseOver.AddListener((System.Action)(()=>closeRightSpriteRenderer.color = new(1f, 0.68f, 0.99f, 1f)));
 
         Tint = __instance.screenTint.gameObject;
         var ttap = Tint.GetComponent<AspectPosition>();

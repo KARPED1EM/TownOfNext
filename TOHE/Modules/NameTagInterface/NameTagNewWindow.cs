@@ -105,5 +105,4 @@ public static class NameTagNewWindow
         buttonPrefab.SetActive(false);
         enterPrefab.SetActive(false);
     }
-
 }
