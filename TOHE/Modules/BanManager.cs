@@ -19,16 +19,16 @@ public static class BanManager
     {
         try
         {
-            Directory.CreateDirectory("TOHE_DATA");
+            Directory.CreateDirectory("TOHE_Data");
 
             if (!File.Exists(BAN_LIST_PATH))
             {
-                Logger.Warn("创建新的 BanList.txt 文件", "BanManager");
+                Logger.Warn("Create New BanList.txt", "BanManager");
                 File.Create(BAN_LIST_PATH).Close();
             }
             if (!File.Exists(DENY_NAME_LIST_PATH))
             {
-                Logger.Warn("创建新的 DenyName.txt 文件", "BanManager");
+                Logger.Warn("Create New DenyName.txt", "BanManager");
                 File.Create(DENY_NAME_LIST_PATH).Close();
                 File.WriteAllText(DENY_NAME_LIST_PATH, GetResourcesTxt("TOHE.Resources.Config.DenyName.txt"));
             }
@@ -72,7 +72,7 @@ public static class BanManager
         if (!AmongUsClient.Instance.AmHost || !Options.ApplyDenyNameList.GetBool()) return;
         try
         {
-            Directory.CreateDirectory("TOHE_DATA");
+            Directory.CreateDirectory("TOHE_Data");
             if (!File.Exists(DENY_NAME_LIST_PATH)) File.Create(DENY_NAME_LIST_PATH).Close();
             using StreamReader sr = new(DENY_NAME_LIST_PATH);
             string line;
@@ -117,7 +117,7 @@ public static class BanManager
         if (code == "") return false;
         try
         {
-            Directory.CreateDirectory("TOHE_DATA");
+            Directory.CreateDirectory("TOHE_Data");
             if (!File.Exists(BAN_LIST_PATH)) File.Create(BAN_LIST_PATH).Close();
             using StreamReader sr = new(BAN_LIST_PATH);
             string line;

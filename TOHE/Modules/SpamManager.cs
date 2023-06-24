@@ -24,7 +24,7 @@ public static class SpamManager
         {
             try
             {
-                if (!Directory.Exists(@"TOHE_DATA")) Directory.CreateDirectory(@"TOHE_DATA");
+                if (!Directory.Exists(@"TOHE_Data")) Directory.CreateDirectory(@"TOHE_Data");
                 if (File.Exists(@"./BanWords.txt")) File.Move(@"./BanWords.txt", BANEDWORDS_FILE_PATH);
                 else
                 {
@@ -38,7 +38,7 @@ public static class SpamManager
                             _ => "English"
                         };
                     else fileName = "English";
-                    Logger.Warn($"创建新的 BanWords 文件：{fileName}", "SpamManager");
+                    Logger.Warn($"Create New BanWords: {fileName}", "SpamManager");
                     File.WriteAllText(BANEDWORDS_FILE_PATH, GetResourcesTxt($"TOHE.Resources.Config.BanWords.{fileName}.txt"));
                 }
             }

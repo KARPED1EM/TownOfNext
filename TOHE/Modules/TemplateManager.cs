@@ -49,7 +49,7 @@ public static class TemplateManager
         {
             try
             {
-                if (!Directory.Exists(@"TOHE_DATA")) Directory.CreateDirectory(@"TOHE_DATA");
+                if (!Directory.Exists(@"TOHE_Data")) Directory.CreateDirectory(@"TOHE_Data");
                 if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
                 else
                 {
@@ -63,7 +63,7 @@ public static class TemplateManager
                             _ => "English"
                         };
                     else fileName = "English";
-                    Logger.Warn($"创建新的 Template 文件：{fileName}", "TemplateManager");
+                    Logger.Warn($"Create New Template: {fileName}", "TemplateManager");
                     File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt($"TOHE.Resources.Config.template.{fileName}.txt"));
                 }
             }
