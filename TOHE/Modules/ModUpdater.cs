@@ -336,7 +336,7 @@ public class ModUpdater
         infoTmp.DestroyTranslator();
         infoTmp.text = message;
         Fill.SetActive(true);
-        if (ActionButton == null || buttonText == null)
+        if (ActionButton == null || buttonText == null) 
         {
             ActionButton?.gameObject?.SetActive(buttonText != null);
             InfoScreen.SetActive(true);

@@ -14,7 +14,8 @@ public sealed class Luckey : RoleBase
             20100,
             SetupOptionItem,
             "lk",
-            "#b8d7a3"
+            "#b8d7a3",
+            broken: true
         );
     public Luckey(PlayerControl player)
     : base(

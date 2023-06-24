@@ -19,7 +19,8 @@ public sealed class EvilTracker : RoleBase, IImpostor, IKillFlashSeeable
             CustomRoleTypes.Impostor,
             2800,
             SetupOptionItem,
-            "et"
+            "et",
+            broken: true
         );
 
     public EvilTracker(PlayerControl player)

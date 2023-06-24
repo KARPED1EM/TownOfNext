@@ -16,7 +16,8 @@ public sealed class Bodyguard : RoleBase
             21900,
             SetupOptionItem,
             "bg",
-            "#185abd"
+            "#185abd",
+            broken: true
         );
     public Bodyguard(PlayerControl player)
     : base(
