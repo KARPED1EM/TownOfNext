@@ -327,9 +327,12 @@ public class ModUpdater
     {
         if (Fill == null || InfoScreen == null) return;
         var titleTmp = InfoScreen.transform.FindChild("Title Text").GetComponent<TextMeshPro>();
+        titleTmp.transform.localPosition = new(0f, 2.3f, 3f);
         titleTmp.DestroyTranslator();
         titleTmp.text = title;
+        InfoScreen.transform.FindChild("InfoText_TMP").GetComponent<RectTransform>().sizeDelta = new(7f, 1.3f);
         var infoTmp = InfoScreen.transform.FindChild("InfoText_TMP").GetComponent<TextMeshPro>();
+        infoTmp.transform.localScale = new(1f, 1f, 1f);
         infoTmp.DestroyTranslator();
         infoTmp.text = message;
         Fill.SetActive(true);
@@ -339,6 +342,8 @@ public class ModUpdater
             InfoScreen.SetActive(true);
             return;
         }
+        ActionButton.transform.localScale = new(0.66f, 0.66f, 0.66f);
+        ActionButton.transform.localPosition = new(0f, -0.65f, 3f);
         var buttonTmp = ActionButton.transform.FindChild("Text_TMP").GetComponent<TextMeshPro>();
         buttonTmp.DestroyTranslator();
         buttonTmp.text = buttonText ?? GetString(StringNames.Okay);
