@@ -56,7 +56,7 @@ public static class NameTagManager
 
         if (NameTags.ContainsKey(player.FriendCode) && (GameStates.IsLobby || Options.AllowPlayerPlayWithColoredNameByCustomTags.GetBool()))
         {
-            name = NameTags[player.FriendCode].Apply(name, player.AmOwner, !GameStates.IsLobby,  !Options.NonModPleyerCanShowUpperCustomTag.GetBool() && !player.IsModClient());
+            name = NameTags[player.FriendCode].Apply(name, player.AmOwner, !GameStates.IsLobby, !Options.NonModPleyerCanShowUpperCustomTag.GetBool() && !player.IsModClient());
         }
         else if (player.AmOwner && GameStates.IsLobby)
             name = Options.GetSuffixMode() switch

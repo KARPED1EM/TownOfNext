@@ -122,7 +122,7 @@ internal class TitleLogoPatch
         StarGen starGen = Starfield.GetComponent<StarGen>();
         starGen.SetDirection(new Vector2(0, -2));
         Starfield.transform.SetParent(TOHE_Background.transform);
-        GameObject.Destroy(Ambience);
+        Object.Destroy(Ambience);
 
         if (!(LeftPanel = GameObject.Find("LeftPanel"))) return;
         LeftPanel.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
@@ -170,20 +170,22 @@ internal class TitleLogoPatch
         RightPanel.transform.localPosition = RightPanelOp + new Vector3(10f, 0f, 0f);
 
         var te = __instance.creditsButton.gameObject;
-        CloseRightButton = GameObject.Instantiate(te, RightPanel.transform);
-        CloseRightButton.name = "CloseRightButton";
-        GameObject.Destroy(CloseRightButton.transform.FindChild("FontPlacer").gameObject);
-        GameObject.Destroy(CloseRightButton.GetComponent<AspectPosition>());
-        GameObject.Destroy(CloseRightButton.GetComponent<AspectScaledAsset>());
-        CloseRightButton.transform.Rotate(new Vector3(0,0,90f));
-        CloseRightButton.transform.localPosition = new Vector3(-4.8763f,1.6754f,0);
+        CloseRightButton = Object.Instantiate(te, RightPanel.transform);
+        CloseRightButton.name = "CloseRightPanelButton";
+        Object.Destroy(CloseRightButton.transform.FindChild("FontPlacer").gameObject);
+        Object.Destroy(CloseRightButton.GetComponent<AspectPosition>());
+        Object.Destroy(CloseRightButton.GetComponent<AspectScaledAsset>());
+        CloseRightButton.transform.Rotate(new Vector3(0, 0, 90f));
+        CloseRightButton.transform.localPosition = new Vector3(-4.8763f, 1.6754f, 0);
         CloseRightButton.GetComponent<PassiveButton>().OnClick = new();
         CloseRightButton.GetComponent<PassiveButton>().OnClick.AddListener((System.Action)(() => MainMenuManagerPatch.HideRightPanel()));
         var activeRenderer = CloseRightButton.transform.FindChild("Inactive").GetComponent<SpriteRenderer>();
         var inActiveRenderer = CloseRightButton.transform.FindChild("Highlight").GetComponent<SpriteRenderer>();
-        ColorUtility.TryParseHtmlString(Main.ModColor, out Color modcolor);
-        inActiveRenderer.color = modcolor;
-        activeRenderer.color = modcolor;
+        if (ColorUtility.TryParseHtmlString(Main.ModColor, out Color modcolor))
+        {
+            inActiveRenderer.color = modcolor;
+            activeRenderer.color = modcolor;
+        }
 
         Tint = __instance.screenTint.gameObject;
         var ttap = Tint.GetComponent<AspectPosition>();
