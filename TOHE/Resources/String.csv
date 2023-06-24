@@ -973,7 +973,7 @@
 "TextContent","文本内容","","","",""
 "TextContentDescription","文本大小<size=60%>（默认100%）</size>","","","",""
 "TextColorDescription","文本颜色<size=60%>（Hex 颜色代码）\n不需要请留空，填写多个则自动渐变</size>","","","",""
-"PleaseEnterFriendCode","请输入新头衔绑定的好友代码\n<size=70%>（若无法输入 # 请使用 - 代替）</size>","","","",""
+"PleaseEnterFriendCode","请输入新头衔绑定的好友代码","","","",""
 "FriendCodeAlreadyExist","该好友代码已拥有头衔","","","",""
 "FriendCodeIncorrect","请输入正确的好友代码","","","",""
 

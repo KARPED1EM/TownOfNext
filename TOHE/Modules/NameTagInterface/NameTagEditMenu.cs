@@ -244,6 +244,7 @@ public static class NameTagEditMenu
         var enterPrefab = Object.Instantiate(AccountManager.Instance.transform.FindChild("PremissionRequestWindow/GuardianEmailConfirm").gameObject, Menu.transform);
         enterPrefab.name = "Enter Box Prefab";
         enterPrefab.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
+        enterPrefab.GetComponent<TextBoxTMP>().AllowPaste = true;
         Object.Destroy(enterPrefab.GetComponent<EmailTextBehaviour>());
 
         int editButtonNum = 0;
@@ -361,6 +362,10 @@ public static class NameTagEditMenu
         Text_Enter = Object.Instantiate(enterPrefab, Menu.transform);
         Text_Enter.name = "Edit Text Enter Box";
         Text_Enter.transform.localPosition = new Vector3(-2.9f, 0f, 0f);
+        var textEnterTBT = Text_Enter.GetComponent<TextBoxTMP>();
+        textEnterTBT.allowAllCharacters =
+        textEnterTBT.AllowEmail =
+        textEnterTBT.AllowSymbols = true;
 
         Size_Info = Object.Instantiate(infoPrefab, Menu.transform);
         Size_Info.name = "Edit Size Description";
@@ -371,6 +376,11 @@ public static class NameTagEditMenu
         Size_Enter = Object.Instantiate(enterPrefab, Menu.transform);
         Size_Enter.name = "Edit Size Enter Box";
         Size_Enter.transform.localPosition = new Vector3(-2.9f, -1.5f, 0f);
+        var sizeEnterTBT = Size_Enter.GetComponent<TextBoxTMP>();
+        sizeEnterTBT.allowAllCharacters =
+        sizeEnterTBT.AllowEmail =
+        sizeEnterTBT.AllowSymbols =
+        sizeEnterTBT.AllowPaste = false;
 
         Color_Info = Object.Instantiate(infoPrefab, Menu.transform);
         Color_Info.name = "Edit Color Description";

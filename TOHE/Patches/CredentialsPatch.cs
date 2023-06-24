@@ -169,8 +169,7 @@ internal class TitleLogoPatch
         RightPanelOp = RightPanel.transform.localPosition;
         RightPanel.transform.localPosition = RightPanelOp + new Vector3(10f, 0f, 0f);
 
-        var te = __instance.creditsButton.gameObject;
-        CloseRightButton = Object.Instantiate(te, RightPanel.transform);
+        CloseRightButton = Object.Instantiate(__instance.creditsButton.gameObject, RightPanel.transform);
         CloseRightButton.name = "CloseRightPanelButton";
         Object.Destroy(CloseRightButton.transform.FindChild("FontPlacer").gameObject);
         Object.Destroy(CloseRightButton.GetComponent<AspectPosition>());

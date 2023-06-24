@@ -53,13 +53,13 @@ public static class NameTagNewWindow
 
         Info = Object.Instantiate(infoPrefab, Window.transform);
         Info.name = "Enter Friend Code Description";
-        Info.transform.localPosition = new Vector3(0f, 0.2f, 0f);
+        Info.transform.localPosition = new Vector3(0f, 0.1f, 0f);
         var colorInfoTmp = Info.GetComponent<TextMeshPro>();
         colorInfoTmp.text = GetString("PleaseEnterFriendCode");
 
         EnterBox = Object.Instantiate(enterPrefab, Window.transform);
         EnterBox.name = "Enter Friend Code Box";
-        EnterBox.transform.localPosition = new Vector3(0f, -0.1f, 0f);
+        EnterBox.transform.localPosition = new Vector3(0f, -0.04f, 0f);
         var enterBoxTBT = EnterBox.GetComponent<TextBoxTMP>();
         enterBoxTBT.AllowEmail = false;
         enterBoxTBT.AllowSymbols = true;
