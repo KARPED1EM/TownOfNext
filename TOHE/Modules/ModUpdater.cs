@@ -215,7 +215,7 @@ public class ModUpdater
             {
                 if (path.EndsWith(Path.GetFileName(Assembly.GetExecutingAssembly().Location))) continue;
                 if (path.EndsWith("TOHE.dll")) continue;
-                Logger.Info($"{Path.GetFileName(path)} 已删除", "DeleteOldFiles");
+                Logger.Info($"{Path.GetFileName(path)} Deleted", "DeleteOldFiles");
                 File.Delete(path);
             }
         }
