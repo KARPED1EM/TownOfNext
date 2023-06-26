@@ -2,7 +2,11 @@ name: Sync To Gitee After Release
 
 on:
   release:
+    branches: [ "TOHE" ]
     types: [ published, edited]
+  push:
+    branches: [ "TOHE" ]
+    paths: [ "Release/info.json" ]
 
 jobs:
   repo-sync:
