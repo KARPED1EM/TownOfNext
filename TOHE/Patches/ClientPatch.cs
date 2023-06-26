@@ -44,7 +44,7 @@ class MMOnlineManagerStartPatch
             obj?.SetActive(false);
             var parentObj = obj.transform.parent.gameObject;
             var textObj = Object.Instantiate(obj.transform.FindChild("Text_TMP").GetComponent<TMPro.TextMeshPro>());
-            textObj.transform.position = new Vector3(1f, -0.3f, 0);
+            textObj.transform.position = new Vector3(0.5f, -0.4f, 0f);
             textObj.name = "CanNotJoinPublic";
             textObj.DestroyTranslator();
             string message = "";
