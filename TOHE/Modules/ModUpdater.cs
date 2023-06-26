@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -61,6 +62,8 @@ public class ModUpdater
     public static string downloadUrl_cos = "";
 
     private static int retried = 0;
+
+    private static CancellationTokenSource cts = new();
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix, HarmonyPriority(Priority.LowerThanNormal)]
     public static void StartPostfix()
@@ -215,7 +218,8 @@ public class ModUpdater
             });
             return;
         }
-        CustomPopup.Show(GetString("updatePopupTitle"), GetString("updatePleaseWait"), new() { (GetString(StringNames.Okay), null) });
+
+        CustomPopup.Show(GetString("updatePopupTitle"), GetString("updatePleaseWait"), null);
 
         var task = DownloadDLL(url);
         task.ContinueWith(t =>
@@ -278,7 +282,17 @@ public class ModUpdater
             };
             var downloader = new DownloadService(downloadOpt);
             downloader.DownloadProgressChanged += OnDownloadProgressChanged;
-            await downloader.DownloadFileTaskAsync(url, DownloadFileTempPath);
+
+            cts = new();
+            CustomPopup.ShowLater(GetString("updatePopupTitle"), GetString("updatePleaseWait"), new() { (GetString(StringNames.Cancel), () =>
+            {
+                cts.Cancel();
+                SetUpdateButtonStatus();
+            }) });
+            
+            await downloader.DownloadFileTaskAsync(url, DownloadFileTempPath, cts.Token);
+            Thread.Sleep(100);
+            if (cts.IsCancellationRequested) return (true, null);
 
             if (GetMD5HashFromFile(DownloadFileTempPath) != md5)
             {
