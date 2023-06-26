@@ -114,7 +114,7 @@ public class AddOnsAssignData
     {
         var rnd = IRandom.Instance;
         var candidates = new List<PlayerControl>();
-        var validPlayers = Main.AllPlayerControls.Where(pc => ValidRoles.Contains(pc.GetCustomRole()) && CheckRoleConflict(pc, data.Role) && rnd.Next(0, 100) < GetRoleChance(data.Role));
+        var validPlayers = Main.AllPlayerControls.Where(pc => ValidRoles.Contains(pc.GetCustomRole()) && pc.GetCustomSubRoles()?.Count < AddonsNumLimit.GetInt() && CheckRoleConflict(pc, data.Role) && rnd.Next(0, 100) < GetRoleChance(data.Role));
 
         if (data.CrewmateMaximum != null)
         {

@@ -118,7 +118,7 @@ public static class Options
     public static OptionItem NeutralRoleWinTogether;
     public static OptionItem NeutralWinTogether;
 
-    public static OptionItem NoLimitAddonsNum;
+    public static OptionItem AddonsNumLimit;
 
     public static OptionItem LoverKnowRoles;
     public static OptionItem LoverSuicide;
@@ -423,7 +423,7 @@ public static class Options
         NeutralWinTogether = BooleanOptionItem.Create(1_003_004, "NeutralWinTogether", false, TabGroup.NeutralRoles, false).SetParent(NeutralRoleWinTogether)
             .SetGameMode(CustomGameMode.Standard);
 
-        NoLimitAddonsNum = BooleanOptionItem.Create(1_003_005, "NoLimitAddonsNum", false, TabGroup.Addons, false)
+        AddonsNumLimit = IntegerOptionItem.Create(1_003_005, "AddonsNumLimit", new(0, 99, 1), 1, TabGroup.Addons, false)
             .SetGameMode(CustomGameMode.Standard)
             .SetHeader(true);
 

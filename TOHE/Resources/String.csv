@@ -712,7 +712,7 @@
 "SniperAimAssist","狙击范围内有玩家时提醒狙击手","Aim Assist","Помощь в прицеливании","狙擊範圍有玩家時提醒狙擊手","狙击范围内有玩家时提醒狙击手"
 "SniperAimAssistOneshot","只在射击时提示","One shot Assist","Помощь только с одним выстрелом","閃爍提示而不是一直顯示","闪烁提示而不是一直显示"
 "NameDisplayAddons","显示职业同时显示<color=#ff9ace>附加职业</color>","Dispay Add-Ons next to the role name","Показывать Атрибуты","顯示職業時同時顯示附加職業","显示职业同时显示附加职业"
-"NoLimitAddonsNum","不限制每位玩家的<color=#ff9ace>附加职业</color>上限","Players can have multiple Add-Ons","Количество Атрибутов для одного игрока не ограничено ","不限制每位玩家的附加職業上限","不限制每位玩家的附加职业上限"
+"AddonsNumLimit","每位玩家的<color=#ff9ace>附加职业</color>数上限","","","",""
 "AdditionRolesSpawnRate","出现概率","Spawn Chance","Шанс появления","出現機率","出现概率"
 "LighterVision","执灯视野大小","<color=#eee5be>Lighter</color> Vision","Дальность <color=#eee5be>Фонарика</color>","持燈人視野大小",""
 "BewilderVision","迷幻视野大小","<color=#c894f5>Bewilder</color> Vision","Дальность обзора <color=#c894f5>Растерянного</color>","視障的視野大小","迷幻视野大小"
