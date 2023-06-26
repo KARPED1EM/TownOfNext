@@ -297,8 +297,7 @@ public class ModUpdater
         {
             File.Delete(savePath);
             CustomPopup.Show(GetString("updatePopupTitleFialed"), GetString("updateFileMd5Incorrect"), new() { (GetString(StringNames.Okay), null) });
-            MainMenuManagerPatch.UpdateButton.SetActive(true);
-            MainMenuManagerPatch.PlayButton.SetActive(false);
+            SetUpdateButtonStatus();
         }
         else
         {

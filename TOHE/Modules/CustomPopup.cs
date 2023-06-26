@@ -62,19 +62,16 @@ public static class CustomPopup
 
         if (ActionButtons.Count > 1)
         {
-            float widthSum = ActionButtons.Count * ActionButtonPrefab.transform.FindChild("Background").GetComponent<SpriteRenderer>().size.x;
+            float widthSum = ActionButtons.Count * ActionButtonPrefab.gameObject.GetComponent<BoxCollider2D>().size.x;
             widthSum += (ActionButtons.Count - 1) * 0.1f;
             float start = -Math.Abs(widthSum / 2);
             float each = widthSum / ActionButtons.Count;
             int index = 0;
             foreach (var button in ActionButtons)
             {
-                button.transform.SetLocalX(start + each * index);
+                button.transform.SetLocalX(start + each * (index + 0.5f));
                 index++;
             }
-            Logger.Test("widthSum" + widthSum);
-            Logger.Test("start" + start);
-            Logger.Test("each" + each);
         }
 
         Fill.SetActive(true);
