@@ -63,7 +63,7 @@ public class ModUpdater
 
     private static int retried = 0;
 
-    private static CancellationTokenSource cts = new();
+    private static CancellationTokenSource cts;
 
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix, HarmonyPriority(Priority.LowerThanNormal)]
     public static void StartPostfix()
@@ -121,7 +121,7 @@ public class ModUpdater
             {
                 Main.AlreadyShowMsgBox = true;
                 var annos = IsInChina ? announcement_zh : announcement_en;
-                if (isBroken) CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.ExitGame), Application.Quit)});
+                if (isBroken) CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.ExitGame), Application.Quit) });
                 else CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.Okay), null) });
             }
         }
@@ -130,7 +130,7 @@ public class ModUpdater
             if (retried >= 2) CustomPopup.Show(GetString("updateCheckPopupTitle"), GetString("updateCheckFailedExit"), new() { (GetString(StringNames.Okay), null) });
             else CustomPopup.Show(GetString("updateCheckPopupTitle"), GetString("updateCheckFailedRetry"), new() { (GetString("Retry"), Retry) });
         }
-        
+
         SetUpdateButtonStatus();
     }
     public static string Get(string url)
@@ -267,7 +267,7 @@ public class ModUpdater
                     HttpStatusCode.Forbidden => GetString("HttpForbidden"),
                     _ => response.StatusCode.ToString()
                 };
-                
+
                 return (false, msg);
             }
 
@@ -277,7 +277,7 @@ public class ModUpdater
             var downloadOpt = new DownloadConfiguration()
             {
                 MaxTryAgainOnFailover = 1,
-                MaximumMemoryBufferBytes = 1024 * 1024 * 5,
+                MaximumMemoryBufferBytes = 1024 * 1024 * 50,
                 ClearPackageOnCompletionWithFailure = true,
             };
             var downloader = new DownloadService(downloadOpt);
@@ -289,7 +289,7 @@ public class ModUpdater
                 cts.Cancel();
                 SetUpdateButtonStatus();
             }) });
-            
+
             await downloader.DownloadFileTaskAsync(url, DownloadFileTempPath, cts.Token);
             Thread.Sleep(100);
             if (cts.IsCancellationRequested) return (true, null);
