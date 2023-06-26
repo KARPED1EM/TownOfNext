@@ -7,12 +7,13 @@
   "md5": "123",
   
   "announcement": {
-    "SChinese": "最近在这个项目上又学到了不少东西，所以给你们整了一些新花样\n这是个完全重做的TOHE，因此或许会有很多问题\n遇到问题或者Bug直接去频道反馈就好，毕竟树懒搞出的特殊时期，反正也玩不了，发着玩玩\nBug我们会修，但是我们对职业什么的不感兴趣了，我们可能会更偏向于开发比较有挑战性的功能\n总之，欢迎回家 :)",
+    "SChinese": "最近又学了不少东西，所以给你们整了一些花样\n这是个完全重做的TOHE，因此或许会有很多问题\n遇到问题或者Bug直接去频道反馈就好，但最近树懒特殊时期，能不能玩还是个问题\nBug我们会修，但是我们对职业什么的不感兴趣了，我们可能会更偏向于开发比较有挑战性的功能\n随缘更新，总之，欢迎回家 :)",
     "English": "Welcome Back Home :)"
   },
 
   "url": {
     "github": "https://github.com/KARPED1EM/TownOfHostEdited/releases/download/{{version}}/TOHE.dll",
+    "gitee": "https://gitee.com/leeverz/TOHE-Dev/raw/TOHE/Release/TOHE.dll",
     "cos": "https://tohe-next-1301425958.cos.ap-shanghai.myqcloud.com/TOHE.dll"
   }
 }

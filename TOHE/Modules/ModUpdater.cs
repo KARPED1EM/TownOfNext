@@ -47,6 +47,7 @@ public class ModUpdater
     public static string announcement_zh = "";
     public static string announcement_en = "";
     public static string downloadUrl_github = "";
+    public static string downloadUrl_gitee = "";
     public static string downloadUrl_cos = "";
 
     public static GameObject Fill;
@@ -117,7 +118,8 @@ public class ModUpdater
             Logger.Info("Force Update: " + forceUpdate, "CheckRelease");
             Logger.Info("File MD5: " + md5, "CheckRelease");
             Logger.Info("Github Url: " + downloadUrl_github, "CheckRelease");
-            Logger.Info("COS Url: " + downloadUrl_cos, "CheckRelease");
+            Logger.Info("Gitee Url: " + downloadUrl_github, "CheckRelease");
+            Logger.Info("COS Url: " + downloadUrl_gitee, "CheckRelease");
             Logger.Info("Announcement (English): " + announcement_en, "CheckRelease");
             Logger.Info("Announcement (SChinese): " + announcement_zh, "CheckRelease");
 
@@ -195,6 +197,7 @@ public class ModUpdater
 
             JObject downloadUrl = data["url"].Cast<JObject>();
             downloadUrl_github = downloadUrl["github"]?.ToString().Replace("{{version}}", $"v{latestVersion}");
+            downloadUrl_gitee = downloadUrl["gitee"]?.ToString();
             downloadUrl_cos = downloadUrl["cos"]?.ToString();
 
             hasUpdate = Main.version < latestVersion;
@@ -210,7 +213,7 @@ public class ModUpdater
     }
     public static void StartUpdate(string url = "")
     {
-        if (url == "") url = IsInChina ? downloadUrl_cos : downloadUrl_github;
+        if (url == "") url = IsInChina ? downloadUrl_gitee : downloadUrl_github;
         ShowPopup(GetString("updatePopupTitle"), GetString("updatePleaseWait"));
         updateTask = DownloadDLL(url);
     }
