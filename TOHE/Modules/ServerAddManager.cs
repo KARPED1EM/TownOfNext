@@ -13,15 +13,17 @@ public static class ServerAddManager
     private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
     public static void Init()
     {
-        if (CultureInfo.CurrentCulture.Name.StartsWith("zh") && serverManager.AvailableRegions.Count == 7) return;
-        if (!CultureInfo.CurrentCulture.Name.StartsWith("zh") && serverManager.AvailableRegions.Count == 6) return;
-
+        var defaultRegion = serverManager.CurrentRegion;
         serverManager.AvailableRegions = ServerManager.DefaultRegions;
         List<IRegionInfo> regionInfos = new();
 
         if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
         {
             regionInfos.Add(CreateHttp("au-sh.pafyx.top", "梦服上海 (新)", 22000, false));
+            regionInfos.Add(CreateHttp("103.151.216.200", "梦服香港 (新)", 22000, false));
+            regionInfos.Add(CreateHttp("124.222.148.195", "小猫私服", 22000, false));
+            regionInfos.Add(CreateHttp("103.151.216.200", "新港服", 22000, false));
+            regionInfos.Add(CreateHttp("47.122.47.172", "梦服福州", 22000, false));
             //regionInfos.Add(CreateHttp("120.78.171.61", "霸总广州", 22000, false));
         }
         regionInfos.Add(CreateHttp("au-as.duikbo.at", "Modded Asia (MAS)", 443, true));
@@ -29,6 +31,8 @@ public static class ServerAddManager
         regionInfos.Add(CreateHttp("au-eu.duikbo.at", "Modded EU (MEU)", 443, true));
 
         regionInfos.Where(x => !serverManager.AvailableRegions.Contains(x)).Do(serverManager.AddOrUpdateRegion);
+        if (serverManager.AvailableRegions.Contains(defaultRegion))
+            serverManager.SetRegion(defaultRegion);
     }
 
     public static IRegionInfo CreateHttp(string ip, string name, ushort port, bool ishttps)
