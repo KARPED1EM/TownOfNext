@@ -25,6 +25,7 @@ public class ModUpdater
         "file:///D:/Desktop/TOHE/Release/info.json",
 #else
         "https://raw.githubusercontent.com/KARPED1EM/TOHE-Dev/TOHE/Release/info.json",
+        "https://gitee.com/leeverz/TOHE-Dev/raw/TOHE/Release/info.json",
         "https://cdn.jsdelivr.net/gh/KARPED1EM/TOHE-Dev/Release/info.json",
         "https://tohe-next-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
 #endif
