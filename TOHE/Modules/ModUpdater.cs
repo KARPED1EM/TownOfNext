@@ -1,8 +1,10 @@
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -19,17 +21,23 @@ namespace TOHE;
 public class ModUpdater
 {
     public static bool IsInChina => CultureInfo.CurrentCulture.Name == "zh-CN";
-    private static readonly string[] URLs =
+    private static IReadOnlyList<string> URLs => new List<string>
     {
 #if DEBUG
         "file:///D:/Desktop/TOHE/Release/info.json",
 #else
         "https://raw.githubusercontent.com/KARPED1EM/TOHE-Dev/TOHE/Release/info.json",
-        "https://gitee.com/leeverz/TOHE-Dev/raw/TOHE/Release/info.json",
         "https://cdn.jsdelivr.net/gh/KARPED1EM/TOHE-Dev/Release/info.json",
         "https://tohe-next-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
+        "https://gitee.com/leeverz/TOHE-Dev/raw/TOHE/Release/info.json",
 #endif
     };
+    private static IReadOnlyList<string> GetInfoFileUrlList()
+    {
+        var list = URLs.ToList();
+        if (IsInChina) list.Reverse();
+        return list;
+    }
 
     public static bool hasUpdate = false;
     public static bool forceUpdate = false;
@@ -98,7 +106,7 @@ public class ModUpdater
         isChecked = false;
         DeleteOldFiles();
 
-        foreach (var url in URLs)
+        foreach (var url in GetInfoFileUrlList())
         {
             if (GetVersionInfo(url).GetAwaiter().GetResult())
             {
