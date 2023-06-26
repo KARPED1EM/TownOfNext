@@ -42,6 +42,8 @@ public class ModUpdater
         return list;
     }
 
+    public static bool firstStart = true;
+
     public static bool hasUpdate = false;
     public static bool forceUpdate = false;
     public static bool isBroken = false;
@@ -70,13 +72,14 @@ public class ModUpdater
     {
         CustomPopup.Init();
 
-        if (!isChecked) CheckForUpdate();
-
+        if (!isChecked && firstStart) CheckForUpdate();
         SetUpdateButtonStatus();
+
+        firstStart = false;
     }
     public static void SetUpdateButtonStatus()
     {
-        MainMenuManagerPatch.UpdateButton.SetActive(isChecked && hasUpdate);
+        MainMenuManagerPatch.UpdateButton.SetActive(isChecked && hasUpdate && firstStart);
         MainMenuManagerPatch.PlayButton.SetActive(!MainMenuManagerPatch.UpdateButton.activeSelf);
         var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
         buttonText.text = $"{GetString("updateButton")}\nv{latestVersion?.ToString() ?? "???"}";
