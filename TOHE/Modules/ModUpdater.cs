@@ -1,3 +1,4 @@
+using Downloader;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,7 +10,6 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -21,10 +21,12 @@ namespace TOHE;
 public class ModUpdater
 {
     public static bool IsInChina => CultureInfo.CurrentCulture.Name == "zh-CN";
+    public static string DownloadFileTempPath = "BepInEx/plugins/TOHE.dll.temp";
     private static IReadOnlyList<string> URLs => new List<string>
     {
 #if DEBUG
         "file:///D:/Desktop/TOHE/Release/info.json",
+        "file:///D:/Desktop/info.json",
 #else
         "https://raw.githubusercontent.com/KARPED1EM/TOHE-Dev/TOHE/Release/info.json",
         "https://cdn.jsdelivr.net/gh/KARPED1EM/TOHE-Dev/Release/info.json",
@@ -57,8 +59,6 @@ public class ModUpdater
     public static string downloadUrl_github = "";
     public static string downloadUrl_gitee = "";
     public static string downloadUrl_cos = "";
-
-    public static Task updateTask;
 
     private static int retried = 0;
 
@@ -127,7 +127,7 @@ public class ModUpdater
             if (retried >= 2) CustomPopup.Show(GetString("updateCheckPopupTitle"), GetString("updateCheckFailedExit"), new() { (GetString(StringNames.Okay), null) });
             else CustomPopup.Show(GetString("updateCheckPopupTitle"), GetString("updateCheckFailedRetry"), new() { (GetString("Retry"), Retry) });
         }
-
+        
         SetUpdateButtonStatus();
     }
     public static string Get(string url)
@@ -215,8 +215,18 @@ public class ModUpdater
             });
             return;
         }
-        CustomPopup.Show(GetString("updatePopupTitle"), GetString("updatePleaseWait"), null);
-        updateTask = DownloadDLL(url);
+        CustomPopup.Show(GetString("updatePopupTitle"), GetString("updatePleaseWait"), new() { (GetString(StringNames.Okay), null) });
+
+        var task = DownloadDLL(url);
+        task.ContinueWith(t =>
+        {
+            var (done, reason) = task.GetAwaiter().GetResult();
+            if (!done)
+            {
+                CustomPopup.ShowLater(GetString("updatePopupTitleFialed"), reason, new() { (GetString(StringNames.Okay), null) });
+                SetUpdateButtonStatus();
+            }
+        });
     }
     public static void DeleteOldFiles()
     {
@@ -225,8 +235,8 @@ public class ModUpdater
             foreach (var path in Directory.EnumerateFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "*.*"))
             {
                 if (path.EndsWith(Path.GetFileName(Assembly.GetExecutingAssembly().Location))) continue;
-                if (path.EndsWith("TOHE.dll")) continue;
-                Logger.Info($"{Path.GetFileName(path)} 已删除", "DeleteOldFiles");
+                if (path.EndsWith("TOHE.dll") || path.EndsWith("Downloader.dll")) continue;
+                Logger.Info($"{Path.GetFileName(path)} Deleted", "DeleteOldFiles");
                 File.Delete(path);
             }
         }
@@ -236,90 +246,71 @@ public class ModUpdater
         }
         return;
     }
-    public static async Task<bool> DownloadDLL(string url)
+    public static async Task<(bool, string)> DownloadDLL(string url)
     {
-        var savePath = "BepInEx/plugins/TOHE.dll.temp";
-        File.Delete(savePath);
-
-        HttpClient client = new HttpClient();
-        HttpResponseMessage response = await client.GetAsync(url);
-        try
-        {
-            response.EnsureSuccessStatusCode();
-        }
-        catch (HttpRequestException ex)
-        {
-            switch (ex.StatusCode)
-            {
-                case HttpStatusCode.NotFound:
-                    CustomPopup.Show(GetString("updatePopupTitleFialed"), GetString("HttpNotFound"), new() { (GetString(StringNames.Okay), null) });
-                    break;
-                case HttpStatusCode.Forbidden:
-                    CustomPopup.Show(GetString("updatePopupTitleFialed"), GetString("HttpForbidden"), new() { (GetString(StringNames.Okay), null) });
-                    break;
-                default:
-                    CustomPopup.Show(GetString("updatePopupTitleFialed"), ex.Message, new() { (GetString(StringNames.Okay), null) });
-                    break;
-            }
-            return false;
-        }
+        File.Delete(DownloadFileTempPath);
+        File.Create(DownloadFileTempPath).Close();
 
         try
         {
-            var fileSize = response.Content.Headers.ContentLength.Value;
-            var stream = await response.Content.ReadAsStreamAsync();
-            using (var fileStream = File.Create(savePath))
-            using (stream)
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
             {
-                byte[] buffer = new byte[1024];
-                var readLength = 0;
-                int length;
-                long lastUpdateTime = 0;
-                while ((length = await stream.ReadAsync(buffer)) != 0)
+                string msg = response.StatusCode switch
                 {
-                    readLength += length;
-                    int progress = (int)((double)readLength / fileSize * 100);
-                    if (lastUpdateTime != Utils.GetTimeStamp())
-                        CustomPopup.Show(GetString("updatePopupTitle"), $"<size=150%>{GetString("updateInProgress")}\n{readLength}/{fileSize}\n({progress}%)", null);
-                    lastUpdateTime = Utils.GetTimeStamp();
-                    fileStream.Write(buffer, 0, length);
-                }
+                    HttpStatusCode.NotFound => GetString("HttpNotFound"),
+                    HttpStatusCode.Forbidden => GetString("HttpForbidden"),
+                    _ => response.StatusCode.ToString()
+                };
+                
+                return (false, msg);
+            }
+
+            Logger.Warn("Start Downlaod From: " + url, "DownloadDLL");
+            Logger.Warn("Save To: " + DownloadFileTempPath, "DownloadDLL");
+
+            var downloadOpt = new DownloadConfiguration()
+            {
+                MaxTryAgainOnFailover = 1,
+                MaximumMemoryBufferBytes = 1024 * 1024 * 5,
+                ClearPackageOnCompletionWithFailure = true,
+            };
+            var downloader = new DownloadService(downloadOpt);
+            downloader.DownloadProgressChanged += OnDownloadProgressChanged;
+            await downloader.DownloadFileTaskAsync(url, DownloadFileTempPath);
+
+            if (GetMD5HashFromFile(DownloadFileTempPath) != md5)
+            {
+                File.Delete(DownloadFileTempPath);
+                return (false, GetString("updateFileMd5Incorrect"));
+            }
+            else
+            {
+                var fileName = Assembly.GetExecutingAssembly().Location;
+                File.Move(fileName, fileName + ".bak");
+                File.Move("BepInEx/plugins/TOHE.dll.temp", fileName);
+                return (true, null);
             }
         }
         catch (Exception ex)
         {
             Logger.Error($"更新失败\n{ex}", "DownloadDLL", false);
-            CustomPopup.Show(GetString("updatePopupTitleFialed"), GetString("downloadFailed"), new() { (GetString(StringNames.ExitGame), Application.Quit) });
-            return false;
+            return (false, GetString("downloadFailed"));
         }
-
-        if (GetMD5HashFromFile(savePath) != md5)
-        {
-            File.Delete(savePath);
-            CustomPopup.Show(GetString("updatePopupTitleFialed"), GetString("updateFileMd5Incorrect"), new() { (GetString(StringNames.Okay), null) });
-            SetUpdateButtonStatus();
-        }
-        else
-        {
-            var fileName = Assembly.GetExecutingAssembly().Location;
-            File.Move(fileName, fileName + ".bak");
-            File.Move("BepInEx/plugins/TOHE.dll.temp", fileName);
-            CustomPopup.Show(GetString("updatePopupTitleDone"), GetString("updateRestart"), new() { (GetString(StringNames.ExitGame), Application.Quit) });
-        }
-        return true;
+    }
+    private static void OnDownloadProgressChanged(object sender, Downloader.DownloadProgressChangedEventArgs e)
+    {
+        CustomPopup.UpdateTextLater($"{GetString("updateInProgress")}\n{(int)(e.BytesPerSecondSpeed / 1024)}KB/s  -  {(int)e.ProgressPercentage}%");
     }
     public static string GetMD5HashFromFile(string fileName)
     {
         try
         {
-            FileStream file = new(fileName, FileMode.Open);
-            MD5 md5 = MD5.Create();
-            byte[] retVal = md5.ComputeHash(file);
-            file.Close();
-
-            StringBuilder sb = new();
-            for (int i = 0; i < retVal.Length; i++) sb.Append(retVal[i].ToString("x2"));
-            return sb.ToString();
+            using var md5 = MD5.Create();
+            using var stream = File.OpenRead(fileName);
+            var hash = md5.ComputeHash(stream);
+            return BitConverter.ToString(hash).Replace("-", "").ToLower();
         }
         catch (Exception ex)
         {

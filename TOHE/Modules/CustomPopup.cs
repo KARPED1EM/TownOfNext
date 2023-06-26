@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using Epic.OnlineServices.Presence;
+using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,18 +21,22 @@ public static class CustomPopup
     public static PassiveButton? ActionButtonPrefab;
     public static List<PassiveButton> ActionButtons = new();
 
+    private static bool busy = false;
+
     /// <summary>
     /// 显示一个全屏信息显示界面
     /// </summary>
     /// <param name="title">标题</param>
-    /// <param name="message">内容</param>
+    /// <param name="info">内容</param>
     /// <param name="buttons">按钮（文字，点击事件）</param>
-    public static void Show(string title, string message, List<(string, Action)>? buttons)
+    public static void Show(string title, string info, List<(string, Action)>? buttons)
     {
-        if (Fill == null || InfoScreen == null || ActionButtonPrefab == null || TitleTMP == null || InfoTMP == null) return;
+        if (busy || Fill == null || InfoScreen == null || ActionButtonPrefab == null || TitleTMP == null || InfoTMP == null) return;
+
+        busy = true;
 
         TitleTMP.text = title;
-        InfoTMP.text = message;
+        InfoTMP.text = info;
 
         ActionButtons.Do(b => Object.Destroy(b.gameObject));
         ActionButtons = new();
@@ -76,6 +81,25 @@ public static class CustomPopup
 
         Fill.SetActive(true);
         InfoScreen.SetActive(true);
+
+        busy = false;
+    }
+    private static (string title, string info, List<(string, Action)>? buttons)? waitToShow = null;
+    public static void ShowLater(string title, string info, List<(string, Action)>? buttons) => waitToShow = (title, info, buttons);
+    private static string waitToUpdateText = "";
+    public static void UpdateTextLater(string info) => waitToUpdateText = info;
+    public static void Update()
+    {
+        if (waitToShow != null)
+        {
+            Show(waitToShow.Value.title, waitToShow.Value.info, waitToShow.Value.buttons);
+            waitToShow = null;
+        }
+        if (waitToUpdateText != "")
+        {
+            InfoTMP?.SetText(waitToUpdateText);
+            waitToUpdateText = "";
+        }
     }
     public static void Init()
     {

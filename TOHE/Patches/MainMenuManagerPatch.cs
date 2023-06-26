@@ -35,6 +35,8 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void MainMenuManager_LateUpdate()
     {
+        CustomPopup.Update();
+
         if (GameObject.Find("MainUI") == null) ShowingPanel = false;
 
         var pos1 = TitleLogoPatch.RightPanel.transform.localPosition;
