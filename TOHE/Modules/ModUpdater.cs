@@ -204,7 +204,17 @@ public class ModUpdater
     }
     public static void StartUpdate(string url = "")
     {
-        if (url == "") url = IsInChina ? downloadUrl_gitee : downloadUrl_github;
+        if (url.Trim() == "")
+        {
+            CustomPopup.Show(GetString("updatePopupTitle"), GetString("updateChoseSource"), new()
+            {
+                (GetString("updateSource.Cos"), () => StartUpdate(downloadUrl_cos)),
+                (GetString("updateSource.Github"), () => StartUpdate(downloadUrl_github)),
+                (GetString("updateSource.Gitee"), () => StartUpdate(downloadUrl_gitee)),
+                (GetString(StringNames.Cancel), SetUpdateButtonStatus)
+            });
+            return;
+        }
         CustomPopup.Show(GetString("updatePopupTitle"), GetString("updatePleaseWait"), null);
         updateTask = DownloadDLL(url);
     }
