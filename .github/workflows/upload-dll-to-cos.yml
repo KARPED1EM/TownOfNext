@@ -2,7 +2,6 @@ name: Upload Dll To Cos After Release
 
 on:
   release:
-    branches: [ "TOHE" ]
     types: [ published, edited]
 
 permissions:
