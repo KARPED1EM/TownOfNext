@@ -18,8 +18,7 @@ public sealed class Assassin : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1600,
             SetupOptionItem,
-            "as",
-            broken: true
+            "as"
         );
     public Assassin(PlayerControl player)
     : base(

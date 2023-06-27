@@ -19,8 +19,7 @@ public sealed class Witch : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             2100,
             SetupOptionItem,
-            "wi",
-            broken: true
+            "wi"
         );
     public Witch(PlayerControl player)
     : base(

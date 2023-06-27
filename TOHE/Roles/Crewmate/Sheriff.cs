@@ -20,8 +20,7 @@ public sealed class Sheriff : RoleBase, IKiller
             SetupOptionItem,
             "sh",
             "#f8cd46",
-            true,
-            broken: true
+            true
         );
     public Sheriff(PlayerControl player)
     : base(

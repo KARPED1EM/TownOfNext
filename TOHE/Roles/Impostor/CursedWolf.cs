@@ -18,8 +18,7 @@ public sealed class CursedWolf : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3500,
             SetupOptionItem,
-            "cw",
-            broken: true
+            "cw"
         );
     public CursedWolf(PlayerControl player)
     : base(

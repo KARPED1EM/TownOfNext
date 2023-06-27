@@ -17,8 +17,7 @@ public sealed class Veteran : RoleBase
             21800,
             SetupOptionItem,
             "ve",
-            "#a77738",
-            broken: true
+            "#a77738"
         );
     public Veteran(PlayerControl player)
     : base(

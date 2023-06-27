@@ -16,8 +16,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1200,
             SetUpOptionItem,
-            "sk",
-            broken: true
+            "sk"
         );
     public SerialKiller(PlayerControl player)
     : base(

@@ -15,8 +15,7 @@ public sealed class Glitch : RoleBase
             23000,
             SetupOptionItem,
             "gl",
-            "#dcdcdc",
-            broken: true
+            "#dcdcdc"
         );
     public Glitch(PlayerControl player)
     : base(

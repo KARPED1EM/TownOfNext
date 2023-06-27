@@ -19,8 +19,7 @@ public sealed class Warlock : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1500,
             SetupOptionItem,
-            "wa",
-            broken: true
+            "wa"
         );
     public Warlock(PlayerControl player)
     : base(

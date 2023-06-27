@@ -20,8 +20,7 @@ public sealed class Vampire : RoleBase, IImpostor
             1400,
             SetupOptionItem,
             "va",
-            introSound: () => GetIntroSound(RoleTypes.Shapeshifter),
-            broken: true
+            introSound: () => GetIntroSound(RoleTypes.Shapeshifter)
         );
     public Vampire(PlayerControl player)
     : base(

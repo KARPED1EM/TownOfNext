@@ -21,8 +21,7 @@ public sealed class BallLightning : RoleBase, IImpostor
             4400,
             SetupOptionItem,
             "li",
-            experimental: true,
-            broken: true
+            experimental: true
         );
     public BallLightning(PlayerControl player)
     : base(

@@ -18,8 +18,7 @@ public sealed class Gangster : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3200,
             SetupOptionItem,
-            "ga",
-            broken: true
+            "ga"
         );
     public Gangster(PlayerControl player)
     : base(

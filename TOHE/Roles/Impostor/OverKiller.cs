@@ -20,8 +20,7 @@ public sealed class OverKiller : RoleBase, IImpostor
             4700,
             null,
             "bu",
-            experimental: true,
-            broken: true
+            experimental: true
         );
     public OverKiller(PlayerControl player)
     : base(
