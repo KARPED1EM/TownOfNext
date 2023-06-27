@@ -96,30 +96,28 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 case CustomRoles.Flashman:
                     Main.AllPlayerSpeed[player.PlayerId] = Flashman.OptionSpeed.GetFloat();
                     break;
-                    //case CustomRoles.Lighter:
-                    //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
-                    //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
-                    //    break;
-                    //case CustomRoles.Bewilder:
-                    //    opt.SetVision(false);
-                    //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
-                    //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
-                    //    break;
+                //case CustomRoles.Lighter:
+                //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
+                //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
+                //    break;
+                case CustomRoles.Bewilder:
+                    opt.SetVision(false);
+                    opt.SetFloat(FloatOptionNames.CrewLightMod, Bewilder.OptionVision.GetFloat());
+                    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Bewilder.OptionVision.GetFloat());
+                    break;
                     //case CustomRoles.Reach:
                     //    opt.SetInt(Int32OptionNames.KillDistance, 2);
                     //    break;
             }
         }
 
-        /* TODO: FIXME
         // Œ™√‘ªÛ’ﬂµƒ–◊ ÷
-        if (Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Bewilder) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId && !x.Is(CustomRoles.Hangman)).Count() > 0)
+        if (Main.AllPlayerControls.Any(x => x.Is(CustomRoles.Bewilder) && !x.IsAlive() && x.GetRealKiller()?.PlayerId == player.PlayerId && !x.Is(CustomRoles.Hangman)))
         {
             opt.SetVision(false);
-            opt.SetFloat(FloatOptionNames.CrewLightMod, Options.BewilderVision.GetFloat());
-            opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.BewilderVision.GetFloat());
+            opt.SetFloat(FloatOptionNames.CrewLightMod, Bewilder.OptionVision.GetFloat());
+            opt.SetFloat(FloatOptionNames.ImpostorLightMod, Bewilder.OptionVision.GetFloat());
         }
-        */
 
         // Õ∂÷¿…µπœµ∞¿≤£°£°£°£°£°
         if (Grenadier.IsBlinding(player))
