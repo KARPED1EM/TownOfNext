@@ -266,16 +266,19 @@ class GameEndChecker
             if (CustomRoles.Sunnyboy.Exist() && Main.AllAlivePlayerControls.Count() > 1) return false;
 
             int Imp = Utils.AlivePlayersCount(CountTypes.Impostor);
+            int Crew = Utils.AlivePlayersCount(CountTypes.Crew);
             int Jackal = Utils.AlivePlayersCount(CountTypes.Jackal);
             int Pel = Utils.AlivePlayersCount(CountTypes.Pelican);
-            int Crew = Utils.AlivePlayersCount(CountTypes.Crew);
             int Gam = Utils.AlivePlayersCount(CountTypes.Gamer);
             int BK = Utils.AlivePlayersCount(CountTypes.BloodKnight);
             int CM = Utils.AlivePlayersCount(CountTypes.Succubus);
 
-            Imp += Main.AllAlivePlayerControls.Count(x => x.GetCustomRole().IsImpostor() && x.Is(CustomRoles.DualPersonality));
-            Crew += Main.AllAlivePlayerControls.Count(x => x.GetCustomRole().IsCrewmate() && x.Is(CustomRoles.DualPersonality));
-            CM += Main.AllAlivePlayerControls.Count(x => x.Is(CustomRoles.Charmed) && x.Is(CustomRoles.DualPersonality));
+            foreach (var dualPc in Main.AllAlivePlayerControls.Where(p => p.Is(CustomRoles.DualPersonality)))
+            {
+                if (dualPc.Is(CountTypes.Impostor)) Imp++;
+                else if (dualPc.Is(CountTypes.Crew)) Crew++;
+                else if (dualPc.Is(CountTypes.Succubus)) CM++;
+            }
 
             if (Imp == 0 && Crew == 0 && Jackal == 0 && Pel == 0 && Gam == 0 && BK == 0 && CM == 0) //全灭
             {
