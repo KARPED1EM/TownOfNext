@@ -638,7 +638,7 @@ public static class Utils
             if (opt.GetBool()) OptionShower.ShowChildren(opt, ref sb, Color.white, 1);
         }
 
-        SendMessage(sb.ToString(), PlayerId);
+        SendMessage(sb.ToString().TrimStart('\n'), PlayerId);
     }
     public static void CopyCurrentSettings()
     {
