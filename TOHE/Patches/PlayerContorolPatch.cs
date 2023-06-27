@@ -222,12 +222,9 @@ class ReportDeadBodyPatch
                 Logger.Info("使用可能ボタン回数が最大数を超えているため、ボタンはキャンセルされました。", "ReportDeadBody");
                 return false;
             }
-            else Options.UsedButtonCount++;
-            if (Options.SyncedButtonCount.GetFloat() == Options.UsedButtonCount)
-            {
-                Logger.Info("使用可能ボタン回数が最大数に達しました。", "ReportDeadBody");
-            }
         }
+
+        if (__instance.Is(CustomRoles.Oblivious) && target != null) return false;
 
         foreach (var role in CustomRoleManager.AllActiveRoles.Values)
         {
@@ -241,6 +238,15 @@ class ReportDeadBodyPatch
         //=============================================
         //以下、ボタンが押されることが確定したものとする。
         //=============================================
+
+        if (Options.SyncButtonMode.GetBool() && target == null)
+        {
+            Options.UsedButtonCount++;
+            if (Options.SyncedButtonCount.GetFloat() == Options.UsedButtonCount)
+            {
+                Logger.Info("使用可能ボタン回数が最大数に達しました。", "ReportDeadBody");
+            }
+        }
 
         foreach (var role in CustomRoleManager.AllActiveRoles.Values)
         {
