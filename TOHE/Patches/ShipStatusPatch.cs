@@ -2,7 +2,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.Core;
 
 namespace TOHE;
@@ -41,8 +41,16 @@ class RepairSystemPatch
 
         if (!AmongUsClient.Instance.AmHost) return true; //以下、ホストのみ実行
 
+        if (!player.Is(CustomRoleTypes.Impostor) && player.Is(CustomRoles.Fool))
+        {
+            if (systemType is SystemTypes.Reactor or SystemTypes.Comms or SystemTypes.Electrical or SystemTypes.Laboratory or SystemTypes.LifeSupp) return false;
+            if (systemType is SystemTypes.Doors && Fool.OptionImpFoolCanNotOpenDoor.GetBool()) return false;
+        }
+
         if (systemType == SystemTypes.Sabotage)
         {
+            if (player.Is(CustomRoleTypes.Impostor) && player.Is(CustomRoles.Fool) && Fool.OptionImpFoolCanNotSabotage.GetBool())
+                return false;
             if (Options.DisableSabotage.GetBool()) return false;
             var nextSabotage = (SystemTypes)amount;
             //PVP禁止破坏

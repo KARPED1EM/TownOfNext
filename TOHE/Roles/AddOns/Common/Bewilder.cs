@@ -11,6 +11,7 @@ public static class Bewilder
     private static List<byte> playerIdList = new();
 
     public static OptionItem OptionVision;
+
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Bewilder);

@@ -897,6 +897,8 @@
 "DoveOfPeaceMaxOfUseage","歌颂次数上限","Max Number of Ability Uses","Количество способностей","歌頌次數上限",""
 "CleanerResetKillCooldownAfterClean","清理尸体后重置击杀冷却","","","",""
 "BoobyTrapSuicideDelay","设陷后自杀延迟","","","",""
+"ImpFoolCanNotSabotage","蠢蛋<color=#ff1919>内鬼</color>不可以破坏","","","",""
+"FoolCanNotOpenDoor","蠢蛋不能开门","","","",""
 
 "## 死因 / Death Reasons"
 "DeathReason.Kill","被杀","Kill","Убит","被殺","被杀"
