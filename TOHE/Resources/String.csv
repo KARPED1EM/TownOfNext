@@ -976,6 +976,7 @@
 "PleaseEnterFriendCode","请输入新头衔绑定的好友代码","","","",""
 "FriendCodeAlreadyExist","该好友代码已拥有头衔","","","",""
 "FriendCodeIncorrect","请输入正确的好友代码","","","",""
+"CustomNameTagHelp","房主可以为其他玩家或自己添加头衔，头衔会在该房主开房时生效。每位房主设定的头衔不同，因此您设定的头衔不会在其他人的房间生效。（若有玩家自带头衔，那是系统发放的）"
 
 "## 指令帮助 / Commands"
 "CommandList","★ 主要指令:","★ Command list:","★ Список команд:","★ 主要指令:","★ 主要指令:"

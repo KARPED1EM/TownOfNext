@@ -67,6 +67,14 @@ public static class NameTagPanel
                 NameTagNewWindow.Open();
             }));
 
+            var helpText = Object.Instantiate(CustomPopup.InfoTMP.gameObject, CustomBackground.transform);
+            helpText.name = "Help Text";
+            helpText.transform.localPosition = new(-1.25f, -2.15f, -5f);
+            helpText.transform.localScale = new(1f, 1f, 1f);
+            var helpTextTMP = helpText.GetComponent<TextMeshPro>();
+            helpTextTMP.text = GetString("CustomNameTagHelp");
+            helpText.gameObject.GetComponent<RectTransform>().sizeDelta = new(2.45f, 1f);
+
             TagOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
             var pos = leaveButton?.transform?.localPosition;
             TagOptionsButton.transform.localPosition = pos != null ? pos.Value - new Vector3(1.3f, 0f, 0f) : new(-1.3f, -2.4f, 1f);
