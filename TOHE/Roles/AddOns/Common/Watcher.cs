@@ -8,7 +8,6 @@ public static class Watcher
 {
     private static readonly int Id = 80300;
     private static Color RoleColor = Utils.GetRoleColor(CustomRoles.Watcher);
-    public static string SubRoleMark = Utils.ColorString(RoleColor, "Ｗ");
     private static List<byte> playerIdList = new();
 
     public static void SetupCustomOption()

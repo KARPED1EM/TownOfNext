@@ -4,6 +4,7 @@ using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Il2CppSystem.Linq;
 using InnerNet;
 using System.Linq;
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.Core;
 using TOHE.Roles.Crewmate;
 using Mathf = UnityEngine.Mathf;
@@ -92,10 +93,9 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 case CustomRoles.Watcher:
                     opt.SetBool(BoolOptionNames.AnonymousVotes, false);
                     break;
-                    //TODO
-                    //case CustomRoles.Flashman:
-                    //    Main.AllPlayerSpeed[player.PlayerId] = Options.FlashmanSpeed.GetFloat();
-                    //    break;
+                case CustomRoles.Flashman:
+                    Main.AllPlayerSpeed[player.PlayerId] = Flashman.OptionSpeed.GetFloat();
+                    break;
                     //case CustomRoles.Lighter:
                     //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
                     //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
