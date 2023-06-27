@@ -15,7 +15,7 @@ public static class Flashman
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.OtherRoles, CustomRoles.Flashman);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Flashman, true, true, true);
+        AddOnsAssignData.Create(Id + 10, TabGroup.OtherRoles, CustomRoles.Flashman, true, true, true);
         OptionSpeed = FloatOptionItem.Create(Id + 20, "FlashmanSpeed", new(0.25f, 5f, 0.25f), 2.5f, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Flashman])
             .SetValueFormat(OptionFormat.Multiplier);
     }

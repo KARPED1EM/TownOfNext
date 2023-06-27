@@ -42,20 +42,20 @@ public class AddOnsAssignData
     static CustomRoles[] ImpostorRoles = ValidRoles.Where(role => role.IsImpostor()).ToArray();
     static CustomRoles[] NeutralRoles = ValidRoles.Where(role => role.IsNeutral()).ToArray();
 
-    public AddOnsAssignData(int idStart, CustomRoles role, bool assignCrewmate, bool assignImpostor, bool assignNeutral)
+    public AddOnsAssignData(int idStart, TabGroup tab, CustomRoles role, bool assignCrewmate, bool assignImpostor, bool assignNeutral)
     {
         IdStart = idStart;
         Role = role;
         if (assignCrewmate)
         {
-            CrewmateMaximum = IntegerOptionItem.Create(idStart++, "%roleTypes%Maximum", new(0, 15, 1), 1, TabGroup.Addons, false)
+            CrewmateMaximum = IntegerOptionItem.Create(idStart++, "%roleTypes%Maximum", new(0, 15, 1), 1, tab, false)
                 .SetParent(CustomRoleSpawnChances[role])
                 .SetValueFormat(OptionFormat.Players);
             CrewmateMaximum.ReplacementDictionary = new Dictionary<string, string> { { "%roleTypes%", Utils.ColorString(new Color32(140, 255, 255, byte.MaxValue), GetString("TeamCrewmate")) } };
-            CrewmateFixedRole = BooleanOptionItem.Create(idStart++, "FixedRole", false, TabGroup.Addons, false)
+            CrewmateFixedRole = BooleanOptionItem.Create(idStart++, "FixedRole", false, tab, false)
                 .SetParent(CrewmateMaximum);
             var crewmateStringArray = CrewmateRoles.Select(role => role.ToString()).ToArray();
-            CrewmateAssignTarget = StringOptionItem.Create(idStart++, "Role", crewmateStringArray, 0, TabGroup.Addons, false)
+            CrewmateAssignTarget = StringOptionItem.Create(idStart++, "Role", crewmateStringArray, 0, tab, false)
                 .SetParent(CrewmateFixedRole);
         }
 
@@ -88,8 +88,10 @@ public class AddOnsAssignData
         if (!AllData.ContainsKey(role)) AllData.Add(role, this);
         else Logger.Warn("重複したCustomRolesを対象とするAddOnsAssignDataが作成されました", "AddOnsAssignData");
     }
+    public static AddOnsAssignData Create(int idStart, TabGroup tab, CustomRoles role, bool assignCrewmate, bool assignImpostor, bool assignNeutral)
+        => new(idStart, tab, role, assignCrewmate, assignImpostor, assignNeutral);
     public static AddOnsAssignData Create(int idStart, CustomRoles role, bool assignCrewmate, bool assignImpostor, bool assignNeutral)
-        => new(idStart, role, assignCrewmate, assignImpostor, assignNeutral);
+        => new(idStart, TabGroup.Addons, role, assignCrewmate, assignImpostor, assignNeutral);
     ///<summary>
     ///AddOnsAssignDataが存在する属性を一括で割り当て
     ///</summary>

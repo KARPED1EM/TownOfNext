@@ -13,7 +13,7 @@ public static class Ntr
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.OtherRoles, CustomRoles.Ntr);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Ntr, true, true, true);
+        AddOnsAssignData.Create(Id + 10, TabGroup.OtherRoles, CustomRoles.Ntr, true, true, true);
     }
     public static void Init()
     {
