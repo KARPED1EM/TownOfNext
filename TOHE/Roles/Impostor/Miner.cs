@@ -15,7 +15,7 @@ public sealed class Miner : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1900,
             null,
-            "mn"
+            "mn|礦工"
         );
     public Miner(PlayerControl player)
     : base(

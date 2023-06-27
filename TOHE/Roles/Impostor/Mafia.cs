@@ -17,7 +17,7 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
             CustomRoleTypes.Impostor,
             2200,
             SetupOptionItem,
-            "mf"
+            "mf|黑手黨|黑手"
         );
     public Mafia(PlayerControl player)
     : base(

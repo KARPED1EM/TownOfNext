@@ -16,7 +16,7 @@ public sealed class NiceGuesser : RoleBase, IMeetingButton
             CustomRoleTypes.Crewmate,
             20000,
             SetupOptionItem,
-            "ng",
+            "ng|正義賭怪|正义的赌怪|好赌|正义赌|正赌|挣亿的赌怪|挣亿赌怪",
             "#eede26"
         );
     public NiceGuesser(PlayerControl player)

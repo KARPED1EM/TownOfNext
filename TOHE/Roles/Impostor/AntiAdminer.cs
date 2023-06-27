@@ -21,7 +21,7 @@ public sealed class AntiAdminer : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             2900,
             SetupOptionItem,
-            "aa"
+            "aa|監視者|监管"
         );
     public AntiAdminer(PlayerControl player)
     : base(

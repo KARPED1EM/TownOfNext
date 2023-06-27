@@ -16,7 +16,7 @@ public sealed class Detective : RoleBase
             CustomRoleTypes.Crewmate,
             21300,
             SetupOptionItem,
-            "de",
+            "de|偵探",
             "#7160e8"
         );
     public Detective(PlayerControl player)

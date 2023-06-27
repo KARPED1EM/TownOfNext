@@ -17,7 +17,7 @@ public sealed class Mario : RoleBase
             CustomRoleTypes.Neutral,
             50850,
             SetupOptionItem,
-            "ma",
+            "ma|馬里奧|马力欧",
             "#ff6201",
             experimental: true
         );

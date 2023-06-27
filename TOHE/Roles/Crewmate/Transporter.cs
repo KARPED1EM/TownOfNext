@@ -16,7 +16,7 @@ public sealed class Transporter : RoleBase
             CustomRoleTypes.Crewmate,
             21500,
             SetupOptionItem,
-            "tr",
+            "tr|傳送師|传送",
             "#42D1FF"
         );
     public Transporter(PlayerControl player)

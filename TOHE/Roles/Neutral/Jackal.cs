@@ -16,7 +16,7 @@ public sealed class Jackal : RoleBase, IKiller
             CustomRoleTypes.Neutral,
             50900,
             SetupOptionItem,
-            "jac",
+            "jac|≤Ú¿«",
             "#00b4eb"
         );
     public Jackal(PlayerControl player)

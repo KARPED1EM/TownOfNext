@@ -20,7 +20,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
             CustomRoleTypes.Crewmate,
             21700,
             SetupOptionItem,
-            "de",
+            "de|贗品商|赝品",
             "#e0e0e0",
             true
         );

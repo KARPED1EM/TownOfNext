@@ -16,7 +16,7 @@ public sealed class Mare : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             2600,
             SetupCustomOption,
-            "ma"
+            "ma|夢魘|夜魇"
         );
     public Mare(PlayerControl player)
     : base(

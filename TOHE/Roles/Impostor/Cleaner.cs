@@ -16,7 +16,7 @@ public sealed class Cleaner : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3300,
             SetupOptionItem,
-            "cl"
+            "cl|清潔工|清洁工|清理|清洁"
         );
     public Cleaner(PlayerControl player)
     : base(

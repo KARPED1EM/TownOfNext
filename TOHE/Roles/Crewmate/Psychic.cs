@@ -18,7 +18,7 @@ public sealed class Psychic : RoleBase
             CustomRoleTypes.Crewmate,
             20900,
             SetupOptionItem,
-            "psy",
+            "psy|愚者|愚",
             "#6F698C"
         );
     public Psychic(PlayerControl player)

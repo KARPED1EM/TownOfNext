@@ -18,7 +18,7 @@ public sealed class Bomber : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3100,
             SetupOptionItem,
-            "bb"
+            "bb|自爆"
         );
     public Bomber(PlayerControl player)
     : base(

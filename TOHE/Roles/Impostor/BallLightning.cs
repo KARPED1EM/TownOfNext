@@ -20,7 +20,7 @@ public sealed class BallLightning : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4400,
             SetupOptionItem,
-            "li",
+            "li|球狀閃電|球闪|球状",
             experimental: true
         );
     public BallLightning(PlayerControl player)

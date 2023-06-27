@@ -14,7 +14,7 @@ public sealed class Needy : RoleBase
             CustomRoleTypes.Crewmate,
             20200,
             null,
-            "lg",
+            "lg|擺爛人|摆烂",
             "#a4dffe"
         );
     public Needy(PlayerControl player)

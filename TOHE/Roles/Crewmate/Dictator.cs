@@ -14,7 +14,7 @@ public sealed class Dictator : RoleBase
             CustomRoleTypes.Crewmate,
             21200,
             null,
-            "dic",
+            "dic|ªš²ÃÕß|¶À²Ã",
             "#df9b00"
         );
     public Dictator(PlayerControl player)

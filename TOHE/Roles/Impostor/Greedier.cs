@@ -16,7 +16,7 @@ public sealed class Greedier : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3400,
             SetupOptionItem,
-            "gr"
+            "gr|貪婪者|贪婪"
         );
     public Greedier(PlayerControl player)
     : base(

@@ -15,7 +15,7 @@ public sealed class SuperStar : RoleBase
             CustomRoleTypes.Crewmate,
             20300,
             SetupOptionItem,
-            "ss",
+            "ss|明星",
             "#f6f657"
         );
     public SuperStar(PlayerControl player)

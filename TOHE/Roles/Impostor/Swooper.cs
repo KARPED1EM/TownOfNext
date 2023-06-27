@@ -17,7 +17,7 @@ public sealed class Swooper : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3900,
             SetupOptionItem,
-            "sw"
+            "sw|隱匿者|隐匿|隐身人|隐身"
         );
 
     public Swooper(PlayerControl player)

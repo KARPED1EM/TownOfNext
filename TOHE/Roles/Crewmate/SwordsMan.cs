@@ -16,7 +16,7 @@ public sealed class SwordsMan : RoleBase, IKiller
             CustomRoleTypes.Crewmate,
             21400,
             null,
-            "vi",
+            "vi|俠客",
             "#f0e68c",
             true
         );

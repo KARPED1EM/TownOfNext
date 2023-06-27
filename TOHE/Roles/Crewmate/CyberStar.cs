@@ -15,7 +15,7 @@ public sealed class CyberStar : RoleBase
             CustomRoleTypes.Crewmate,
             20400,
             SetupOptionItem,
-            "se",
+            "se|網紅",
             "#ee4a55"
         );
     public CyberStar(PlayerControl player)

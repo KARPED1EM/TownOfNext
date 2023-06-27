@@ -19,7 +19,7 @@ public sealed class Vampire : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1400,
             SetupOptionItem,
-            "va",
+            "va|吸血",
             introSound: () => GetIntroSound(RoleTypes.Shapeshifter)
         );
     public Vampire(PlayerControl player)

@@ -14,7 +14,7 @@ public sealed class Paranoia : RoleBase
             CustomRoleTypes.Crewmate,
             20800,
             SetupOptionItem,
-            "pa",
+            "pa|被害妄想|被迫害妄想症|被害|妄想|妄想症",
             "#c993f5"
         );
     public Paranoia(PlayerControl player)

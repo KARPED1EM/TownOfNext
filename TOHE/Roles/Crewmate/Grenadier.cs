@@ -18,7 +18,7 @@ public sealed class Grenadier : RoleBase
             CustomRoleTypes.Crewmate,
             22000,
             SetupOptionItem,
-            "gr",
+            "gr|擲雷兵|掷雷|闪光弹",
             "#3c4a16"
         );
     public Grenadier(PlayerControl player)

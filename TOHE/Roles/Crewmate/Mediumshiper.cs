@@ -17,7 +17,7 @@ public sealed class Mediumshiper : RoleBase
             CustomRoleTypes.Crewmate,
             22500,
             SetupOptionItem,
-            "me",
+            "me|通靈師|通灵",
             "#a200ff"
         );
     public Mediumshiper(PlayerControl player)

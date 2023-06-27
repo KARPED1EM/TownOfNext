@@ -18,7 +18,7 @@ public sealed class Sheriff : RoleBase, IKiller
             CustomRoleTypes.Crewmate,
             20700,
             SetupOptionItem,
-            "sh",
+            "sh|警長",
             "#f8cd46",
             true
         );

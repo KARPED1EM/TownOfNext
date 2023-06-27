@@ -16,7 +16,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1200,
             SetUpOptionItem,
-            "sk"
+            "sk|嗜血殺手|嗜血"
         );
     public SerialKiller(PlayerControl player)
     : base(

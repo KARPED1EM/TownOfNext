@@ -19,7 +19,7 @@ public sealed class Judge : RoleBase, IMeetingButton
             CustomRoleTypes.Crewmate,
             22300,
             SetupOptionItem,
-            "ju",
+            "ju|法官|审判",
             "#f8d85a"
         );
     public Judge(PlayerControl player)

@@ -20,7 +20,7 @@ public sealed class Medicaler : RoleBase, IKiller
             CustomRoleTypes.Crewmate,
             22100,
             SetupOptionItem,
-            "me",
+            "me|醫生",
             "#00a4ff",
             true
         );

@@ -15,7 +15,7 @@ public sealed class Minimalism : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4000,
             SetupOptionItem,
-            "km"
+            "km|殺戮機器|杀戮|机器|杀戮兵器|杀人机器"
         );
     public Minimalism(PlayerControl player)
     : base(

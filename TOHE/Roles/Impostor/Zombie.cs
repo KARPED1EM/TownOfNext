@@ -14,7 +14,7 @@ public sealed class Zombie : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4100,
             SetupOptionItem,
-            "zb",
+            "zb|殭屍|丧尸",
             experimental: true
         );
     public Zombie(PlayerControl player)

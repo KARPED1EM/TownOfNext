@@ -16,7 +16,7 @@ public sealed class BloodKnight : RoleBase, IKiller
            CustomRoleTypes.Neutral,
            50923,
            SetupOptionItem,
-           "bn",
+           "bn|ÊÈÑªòTÊ¿|ÑªÆï|ÆïÊ¿",
            "#630000"
        );
     public BloodKnight(PlayerControl player)

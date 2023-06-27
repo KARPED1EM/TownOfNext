@@ -19,7 +19,7 @@ public sealed class EvilTracker : RoleBase, IImpostor, IKillFlashSeeable
             CustomRoleTypes.Impostor,
             2800,
             SetupOptionItem,
-            "et"
+            "et|邪惡的追踪者|邪恶追踪者|邪恶的追踪者|追踪"
         );
 
     public EvilTracker(PlayerControl player)

@@ -18,7 +18,7 @@ public sealed class Hacker : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1700,
             SetupOptionItem,
-            "ha"
+            "ha|駭客|黑客"
         );
     public Hacker(PlayerControl player)
     : base(

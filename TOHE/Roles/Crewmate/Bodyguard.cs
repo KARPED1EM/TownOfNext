@@ -15,7 +15,7 @@ public sealed class Bodyguard : RoleBase
             CustomRoleTypes.Crewmate,
             21900,
             SetupOptionItem,
-            "bg",
+            "bg|保鏢",
             "#185abd"
         );
     public Bodyguard(PlayerControl player)

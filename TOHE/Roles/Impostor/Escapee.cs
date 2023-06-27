@@ -17,7 +17,7 @@ public sealed class Escapee : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             2000,
             null,
-            "ec"
+            "ec|逃逸"
         );
     public Escapee(PlayerControl player)
     : base(

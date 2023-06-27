@@ -19,7 +19,7 @@ public sealed class OverKiller : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4700,
             null,
-            "bu",
+            "bu|肢解",
             experimental: true
         );
     public OverKiller(PlayerControl player)

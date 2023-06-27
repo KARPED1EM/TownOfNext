@@ -16,7 +16,7 @@ public sealed class BoobyTrap : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4200,
             SetupOptionItem,
-            "bt"
+            "bt|詭雷"
         );
     public BoobyTrap(PlayerControl player)
     : base(

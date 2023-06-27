@@ -14,7 +14,7 @@ public sealed class Observer : RoleBase
             CustomRoleTypes.Crewmate,
             22600,
             null,
-            "ob",
+            "ob|觀察者|观察",
             "#a8e0fa"
         );
     public Observer(PlayerControl player)

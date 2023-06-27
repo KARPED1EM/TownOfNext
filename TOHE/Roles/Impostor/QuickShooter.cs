@@ -17,7 +17,7 @@ public sealed class QuickShooter : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3700,
             SetupOptionItem,
-            "qs"
+            "qs|快槍手|快枪"
         );
     public QuickShooter(PlayerControl player)
     : base(

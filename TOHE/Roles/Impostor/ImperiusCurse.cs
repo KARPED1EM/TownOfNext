@@ -15,7 +15,7 @@ public sealed class ImperiusCurse : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3600,
             SetupOptionItem,
-            "st",
+            "st|奪魂者|多混|夺魂",
             experimental: true
         );
     public ImperiusCurse(PlayerControl player)

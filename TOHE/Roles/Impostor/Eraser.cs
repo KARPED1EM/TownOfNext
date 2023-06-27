@@ -17,7 +17,7 @@ public sealed class Eraser : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4600,
             SetupOptionItem,
-            "er",
+            "er|抹除者|抹除",
             experimental: true
         );
     public Eraser(PlayerControl player)

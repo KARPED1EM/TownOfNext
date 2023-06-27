@@ -17,7 +17,7 @@ public sealed class Mortician : RoleBase
             CustomRoleTypes.Crewmate,
             22400,
             null,
-            "mo",
+            "mo|入殮師|入检师|入殓",
             "#333c49"
         );
     public Mortician(PlayerControl player)

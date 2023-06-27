@@ -15,7 +15,7 @@ public sealed class Doctor : RoleBase, IDeathReasonSeeable
             CustomRoleTypes.Crewmate,
             21100,
             SetupOptionItem,
-            "doc",
+            "doc|·¨át",
             "#80ffdd"
         );
     public Doctor(PlayerControl player)

@@ -16,7 +16,7 @@ public sealed class TimeThief : RoleBase, IMeetingTimeAlterable, IImpostor
             CustomRoleTypes.Impostor,
             2700,
             SetupOptionItem,
-            "tt"
+            "tt|Œgïr’ﬂ| ¥ ±|Õµ ±"
         );
     public TimeThief(PlayerControl player)
     : base(

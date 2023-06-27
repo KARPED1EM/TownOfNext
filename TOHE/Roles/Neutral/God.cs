@@ -17,7 +17,7 @@ public sealed class God : RoleBase, IOverrideWinner
             CustomRoleTypes.Neutral,
             50300,
             SetupOptionItem,
-            "go",
+            "go|神|上帝",
             "#f96464",
             experimental: true
         );

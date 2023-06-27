@@ -13,7 +13,7 @@ public sealed class Mayor : RoleBase
             CustomRoleTypes.Crewmate,
             20500,
             SetupOptionItem,
-            "my",
+            "my| –ÈL| ≈≥§",
             "#204d42"
         );
     public Mayor(PlayerControl player)

@@ -17,7 +17,7 @@ public sealed class Capitalism : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4300,
             SetupOptionItem,
-            "ca",
+            "ca|資本家|资本|资本主义",
             experimental: true
         );
     public Capitalism(PlayerControl player)

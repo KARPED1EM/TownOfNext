@@ -16,7 +16,7 @@ public sealed class Concealer : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4500,
             SetupOptionItem,
-            "co",
+            "co|隱蔽者|隐蔽|小黑人",
             experimental: true
         );
     public Concealer(PlayerControl player)

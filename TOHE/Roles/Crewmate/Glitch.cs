@@ -14,7 +14,7 @@ public sealed class Glitch : RoleBase
             CustomRoleTypes.Crewmate,
             23000,
             SetupOptionItem,
-            "gl",
+            "gl|活死",
             "#dcdcdc"
         );
     public Glitch(PlayerControl player)

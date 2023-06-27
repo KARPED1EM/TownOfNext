@@ -19,7 +19,7 @@ public sealed class DoveOfPeace : RoleBase
             CustomRoleTypes.Crewmate,
             22800,
             SetupOptionItem,
-            "dp",
+            "dp|和平之鴿|和平的鸽子|和平|鸽子|和平鸟",
             "#FFFFFF"
         );
     public DoveOfPeace(PlayerControl player)

@@ -17,7 +17,7 @@ public sealed class Sans : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             3000,
             SetupOptionItem,
-            "ag"
+            "ag|狂妄殺手|狂妄"
         );
     public Sans(PlayerControl player)
     : base(

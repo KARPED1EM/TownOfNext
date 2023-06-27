@@ -18,7 +18,7 @@ public sealed class Crewpostor : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             4800,
             SetupOptionItem,
-            "ca",
+            "ca|舰长",
             requireResetCam: true,
             experimental: true
         );

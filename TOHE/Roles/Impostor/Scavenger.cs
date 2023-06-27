@@ -16,7 +16,7 @@ public sealed class Scavenger : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1800,
             SetupOptionItem,
-            "sc"
+            "sc|清道|"
         );
     public Scavenger(PlayerControl player)
     : base(

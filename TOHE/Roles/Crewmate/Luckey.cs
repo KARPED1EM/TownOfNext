@@ -13,7 +13,7 @@ public sealed class Luckey : RoleBase
             CustomRoleTypes.Crewmate,
             20100,
             SetupOptionItem,
-            "lk",
+            "lk|幸運兒|幸运",
             "#b8d7a3"
         );
     public Luckey(PlayerControl player)

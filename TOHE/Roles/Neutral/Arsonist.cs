@@ -18,7 +18,7 @@ public sealed class Arsonist : RoleBase, IKiller
             CustomRoleTypes.Neutral,
             50500,
             SetupOptionItem,
-            "ar",
+            "ar|縱火犯|纵火",
             "#ff6633",
             introSound: () => GetIntroSound(RoleTypes.Crewmate)
         );

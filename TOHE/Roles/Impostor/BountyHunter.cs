@@ -19,7 +19,7 @@ public sealed class BountyHunter : RoleBase, IImpostor
             CustomRoleTypes.Impostor,
             1100,
             SetupOptionItem,
-            "bo"
+            "bo|賞金獵人|赏金"
         );
     public BountyHunter(PlayerControl player)
     : base(
