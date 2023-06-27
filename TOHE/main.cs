@@ -24,6 +24,7 @@ public class Main : BasePlugin
     // == プログラム設定 / Program Config ==
     public static readonly string ModName = "TOHE";
     public static readonly string ModColor = "#ffc0cb";
+    public static readonly Color32 ModColor32 = new(255, 192, 203, 255);
     public static readonly bool AllowPublicRoom = true;
     public static readonly string ForkId = "TOHE";
     public const string OriginalForkId = "OriginalTOH";

@@ -44,6 +44,11 @@ public static class NameTagEditMenu
     private static ComponentType CurrentComponent;
     private enum ComponentType { Upper, Prefix, Suffix, Name }
 
+    public static void Hide()
+    {
+        if (Menu != null)
+            Menu?.SetActive(false);
+    }
 #nullable enable
     public static void Toggle(string? friendCode, bool? on)
     {

@@ -108,8 +108,8 @@ public static class OptionsMenuBehaviourClosePatch
     public static void Postfix()
     {
         ClientActionItem.CustomBackground?.gameObject?.SetActive(false);
-        NameTagPanel.CustomBackground?.gameObject?.SetActive(false);
-        NameTagEditMenu.Toggle(null, false);
+        NameTagPanel.Hide();
+        NameTagEditMenu.Hide();
         ModUnloaderScreen.Hide();
     }
 }

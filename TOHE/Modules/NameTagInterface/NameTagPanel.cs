@@ -18,6 +18,11 @@ public static class NameTagPanel
     public static Dictionary<string, GameObject> Items { get; private set; }
 
     private static int numItems = 0;
+    public static void Hide()
+    {
+        if (CustomBackground != null)
+            CustomBackground?.gameObject?.SetActive(false);
+    }
     public static void Init(OptionsMenuBehaviour optionsMenuBehaviour)
     {
         var mouseMoveToggle = optionsMenuBehaviour.DisableMouseMovement;
@@ -34,7 +39,36 @@ public static class NameTagPanel
         }
         var generalTab = mouseMoveToggle.transform.parent.parent.parent;
 
-        if (CustomBackground == null || TagOptionsButton == null)
+        if (TagOptionsButton == null)
+        {
+            TagOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
+            var pos = leaveButton?.transform?.localPosition;
+            TagOptionsButton.transform.localPosition = pos != null ? pos.Value - new Vector3(1.3f, 0f, 0f) : new(-1.3f, -2.4f, 1f);
+            TagOptionsButton.name = "Name Tag Options";
+            TagOptionsButton.Background.color = Main.ModColor32;
+            var tagOptionsPassiveButton = TagOptionsButton.GetComponent<PassiveButton>();
+            tagOptionsPassiveButton.OnClick = new();
+            tagOptionsPassiveButton.OnClick.AddListener(new Action(() =>
+            {
+                CustomBackground.gameObject.SetActive(true);
+            }));
+        }
+
+        if (!GameStates.IsNotJoined)
+        {
+            TagOptionsButton.Text.text = GetString("OnlyAvailableInMainMenu");
+            TagOptionsButton.GetComponent<PassiveButton>().enabled = false;
+            TagOptionsButton.Background.color = Palette.DisabledGrey;
+            return;
+        }
+        else
+        {
+            TagOptionsButton.Text.text = GetString("NameTagOptions");
+            TagOptionsButton.GetComponent<PassiveButton>().enabled = true;
+            TagOptionsButton.Background.color = Main.ModColor32;
+        }
+        
+        if (CustomBackground == null)
         {
             numItems = 0;
             CustomBackground = Object.Instantiate(optionsMenuBehaviour.Background, optionsMenuBehaviour.transform);
@@ -75,21 +109,6 @@ public static class NameTagPanel
             helpTextTMP.text = GetString("CustomNameTagHelp");
             helpText.gameObject.GetComponent<RectTransform>().sizeDelta = new(2.45f, 1f);
 
-            TagOptionsButton = Object.Instantiate(mouseMoveToggle, generalTab);
-            var pos = leaveButton?.transform?.localPosition;
-            TagOptionsButton.transform.localPosition = pos != null ? pos.Value - new Vector3(1.3f, 0f, 0f) : new(-1.3f, -2.4f, 1f);
-            TagOptionsButton.name = "Name Tag Options";
-            if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
-            {
-                TagOptionsButton.Background.color = modColor;
-            }
-            var tagOptionsPassiveButton = TagOptionsButton.GetComponent<PassiveButton>();
-            tagOptionsPassiveButton.OnClick = new();
-            tagOptionsPassiveButton.OnClick.AddListener(new Action(() =>
-            {
-                CustomBackground.gameObject.SetActive(true);
-            }));
-
             var sliderTemplate = AccountManager.Instance.transform.FindChild("MainSignInWindow/SignIn/AccountsMenu/Accounts/Slider").gameObject;
             if (sliderTemplate != null && Slider == null)
             {
@@ -102,23 +121,6 @@ public static class NameTagPanel
                 scroller.ScrollWheelSpeed = 0.3f;
                 var mask = Slider.transform.FindChild("Mask");
                 mask.transform.localScale = new Vector3(4.9f, 3.92f, 1f);
-            }
-        }
-
-        if (!GameStates.IsNotJoined)
-        {
-            TagOptionsButton.Text.text = GetString("OnlyAvailableInMainMenu");
-            TagOptionsButton.GetComponent<PassiveButton>().enabled = false;
-            TagOptionsButton.Background.color = Palette.DisabledGrey;
-            return;
-        }
-        else
-        {
-            TagOptionsButton.Text.text = GetString("NameTagOptions");
-            TagOptionsButton.GetComponent<PassiveButton>().enabled = true;
-            if (ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor))
-            {
-                TagOptionsButton.Background.color = modColor;
             }
         }
 
