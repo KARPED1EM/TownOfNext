@@ -17,7 +17,7 @@ public static class TicketsStealer
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.TicketsStealer);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.TicketsStealer, true, true, true);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.TicketsStealer, false, true, false);
         OptionTicketsPerKill = FloatOptionItem.Create(Id + 20, "TicketsPerKill", new(0.1f, 10f, 0.1f), 0.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.TicketsStealer])
             .SetValueFormat(OptionFormat.Votes);
     }
