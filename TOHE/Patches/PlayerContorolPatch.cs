@@ -174,12 +174,8 @@ class ShapeshiftPatch
         Main.CheckShapeshift[shapeshifter.PlayerId] = shapeshifting;
         Main.ShapeshiftTarget[shapeshifter.PlayerId] = target.PlayerId;
 
-        if (shapeshifter.IsEaten() || GameStates.IsVoting || !target.IsAlive())
-            goto End;
-
-        shapeshifter.GetRoleClass()?.OnShapeshift(target);
-
-    End:
+        if (!shapeshifter.IsEaten())
+            shapeshifter.GetRoleClass()?.OnShapeshift(target);
 
         if (!AmongUsClient.Instance.AmHost) return;
 
