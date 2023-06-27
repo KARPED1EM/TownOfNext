@@ -212,6 +212,14 @@ public class Main : BasePlugin
                 //GM
                 {CustomRoles.GM, "#ff5b70"},
 
+                //Vanilla
+                {CustomRoles.Crewmate, "#ffffff"},
+                {CustomRoles.Engineer, "#8cffff"},
+                {CustomRoles.Scientist, "#8cffff"},
+                {CustomRoles.GuardianAngel, "#ffffff"},
+                {CustomRoles.Impostor, "#ff1919"},
+                {CustomRoles.Shapeshifter, "#ff1919"},
+
                 //Add-Ons
                 {CustomRoles.NotAssigned, "#ffffff"},
                 {CustomRoles.LastImpostor, "#ff1919"},
