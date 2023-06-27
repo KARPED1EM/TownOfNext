@@ -217,7 +217,7 @@ public static class NameTagManager
 
             name = Prefix?.Generate() + name + Suffix?.Generate();
 
-            if (host && GameStates.IsOnlineGame)
+            if (host && GameStates.IsOnlineGame && UpperText == null)
             {
                 var upper = $"<size=80%><color=#ffd6ec>{Main.ModName}</color><color=#baf7ca>★</color>";
                 upper += Options.CurrentGameMode switch
