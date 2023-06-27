@@ -3,6 +3,7 @@ using Hazel;
 using System.Collections.Generic;
 using System.Text;
 using TOHE.Modules;
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.Core;
 using UnityEngine;
 using static TOHE.Translator;
@@ -146,6 +147,7 @@ public static class MeetingHudPatch
             {
                 CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnStartMeeting());
                 MeetingStartNotify.OnMeetingStart();
+                Brakar.OnMeetingStart();
             }
 
             if (AmongUsClient.Instance.AmHost)

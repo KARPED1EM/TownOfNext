@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.Core;
 
 namespace TOHE.Modules;
@@ -268,11 +269,13 @@ public class MeetingVoteManager
             logger.Info($"投票：{Utils.GetPlayerById(Voter).GetNameWithRole()} => {GetVoteName(voteTo)} x {numVotes}");
             VotedFor = voteTo;
             NumVotes = numVotes;
+            Brakar.OnVote(Voter, voteTo);
         }
         public void ChangeVoteTarget(byte voteTarget)
         {
             logger.Info($"{Utils.GetPlayerById(Voter).GetNameWithRole()} 的投票目标由 {GetVoteName(VotedFor)} 变为 {GetVoteName(voteTarget)}");
             VotedFor = voteTarget;
+            Brakar.OnVote(Voter, voteTarget);
         }
     }
 
@@ -316,6 +319,12 @@ public class MeetingVoteManager
                 IsTie = false;
                 Exiled = GameData.Instance.GetPlayerById(mostVotedPlayers[0]);
                 logger.Info($"得票最多者：{GetVoteName(mostVotedPlayers[0])}");
+            }
+
+            if (IsTie && Brakar.ChooseExileTarget(mostVotedPlayers, out var brakarTarget))
+            {
+                IsTie = false;
+                Exiled = GameData.Instance.GetPlayerById(brakarTarget);
             }
 
             // 同数投票時の特殊モード
