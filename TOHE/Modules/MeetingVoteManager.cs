@@ -97,7 +97,7 @@ public class MeetingVoteManager
                 logger.Info($"{role.Player.GetNameWithRole()} 撤销了投票，允许重新投票");
             }
         }
-        
+
         //SubRoles
         doVote = TicketsStealer.OnVote(voter, voteFor, ref voteFor, ref numVotes, ref clearVote);
 

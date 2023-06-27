@@ -40,7 +40,7 @@ public static class Brakar
     public static bool ChooseExileTarget(byte[] mostVotedPlayers, out byte target)
     {
         target = byte.MaxValue;
-        if(mostVotedPlayers.Count(BrakarVotes.ContainsValue) == 1)
+        if (mostVotedPlayers.Count(BrakarVotes.ContainsValue) == 1)
         {
             target = mostVotedPlayers.Where(BrakarVotes.ContainsValue).FirstOrDefault();
             Logger.Info($"Brakar Override Tie => {Utils.GetPlayerById(target)?.GetNameWithRole()}", "Brakar");

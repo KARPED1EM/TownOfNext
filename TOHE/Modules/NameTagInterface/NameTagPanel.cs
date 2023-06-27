@@ -67,7 +67,7 @@ public static class NameTagPanel
             TagOptionsButton.GetComponent<PassiveButton>().enabled = true;
             TagOptionsButton.Background.color = Main.ModColor32;
         }
-        
+
         if (CustomBackground == null)
         {
             numItems = 0;
