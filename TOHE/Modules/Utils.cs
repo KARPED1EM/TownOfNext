@@ -207,7 +207,7 @@ public static class Utils
     {
         PlayerControl killer = info.AppearanceKiller, target = info.AttemptTarget;
 
-        if (seer.Is(CustomRoles.GM)) return true;
+        if (seer.Is(CustomRoles.GM) || seer.Is(CustomRoles.Seer)) return true;
         if (seer.Data.IsDead || killer == seer || target == seer) return false;
 
         if (seer.GetRoleClass() is IKillFlashSeeable killFlashSeeable)
