@@ -39,6 +39,7 @@ public static class Options
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void WaitOptionsLoad()
     {
+        if (!postLoadWaiting || !ModUpdater.firstStart) return;
         if ((!taskOptionsLoad.IsCompleted) && (postLoadWaiting?.activeSelf ?? false))
             postLoadWaiting?.SetActive(true);
     }
