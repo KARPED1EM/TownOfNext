@@ -13,11 +13,12 @@ public static class Trapper
     private static List<byte> playerIdList = new();
 
     public static OptionItem OptionBlockMoveTime;
+
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Trapper);
         AddOnsAssignData.Create(Id + 10, CustomRoles.Trapper, true, true, true);
-        OptionBlockMoveTime = FloatOptionItem.Create(20810, "TrapperBlockMoveTime", new(1f, 180f, 1f), 5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper])
+        OptionBlockMoveTime = FloatOptionItem.Create(Id + 20, "TrapperBlockMoveTime", new(1f, 180f, 1f), 5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper])
             .SetValueFormat(OptionFormat.Seconds);
     }
     public static void Init()
