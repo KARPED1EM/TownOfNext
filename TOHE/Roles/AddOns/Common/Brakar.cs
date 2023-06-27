@@ -16,7 +16,7 @@ public static class Brakar
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Brakar);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Brakar, true, true, false);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.Brakar, true, true, true);
     }
     public static void Init()
     {

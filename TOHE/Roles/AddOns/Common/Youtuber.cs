@@ -13,7 +13,7 @@ public static class Youtuber
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Youtuber);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Youtuber, true, true, true);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.Youtuber, true, false, false);
     }
     public static void Init()
     {

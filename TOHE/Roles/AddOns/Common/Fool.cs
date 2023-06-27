@@ -16,7 +16,7 @@ public static class Fool
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Fool);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Fool, true, true, false);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.Fool, true, true, true);
         OptionImpFoolCanNotSabotage = BooleanOptionItem.Create(Id + 20, "ImpFoolCanNotSabotage", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Fool]);
         OptionImpFoolCanNotOpenDoor = BooleanOptionItem.Create(Id + 21, "FoolCanNotOpenDoor", false, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Fool]);
     }

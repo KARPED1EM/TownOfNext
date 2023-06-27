@@ -13,7 +13,7 @@ public static class Oblivious
     public static void SetupCustomOption()
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Oblivious);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Oblivious, true, true, false);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.Oblivious, true, true, true);
     }
     public static void Init()
     {
