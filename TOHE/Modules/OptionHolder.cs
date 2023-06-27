@@ -510,7 +510,7 @@ public static class Options
         SetupLoversRoleOptionsToggle(80100);
         Ntr.SetupCustomOption();
         Watcher.SetupCustomOption();
-        //Lighter
+        Lighter.SetupCustomOption();
         Seer.SetupCustomOption();
         Flashman.SetupCustomOption();
         Brakar.SetupCustomOption();

@@ -96,10 +96,10 @@ public class PlayerGameOptionsSender : GameOptionsSender
                 case CustomRoles.Flashman:
                     Main.AllPlayerSpeed[player.PlayerId] = Flashman.OptionSpeed.GetFloat();
                     break;
-                //case CustomRoles.Lighter:
-                //    opt.SetFloat(FloatOptionNames.CrewLightMod, Options.LighterVision.GetFloat());
-                //    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Options.LighterVision.GetFloat());
-                //    break;
+                case CustomRoles.Lighter:
+                    opt.SetFloat(FloatOptionNames.CrewLightMod, Lighter.OptionVistion.GetFloat());
+                    opt.SetFloat(FloatOptionNames.ImpostorLightMod, Lighter.OptionVistion.GetFloat());
+                    break;
                 case CustomRoles.Bewilder:
                     opt.SetVision(false);
                     opt.SetFloat(FloatOptionNames.CrewLightMod, Bewilder.OptionVision.GetFloat());
