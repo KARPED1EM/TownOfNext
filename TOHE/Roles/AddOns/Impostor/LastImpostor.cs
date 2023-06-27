@@ -10,7 +10,7 @@ public static class LastImpostor
     public static OptionItem KillCooldown;
     public static void SetupCustomOption()
     {
-        SetupSingleRoleOptions(Id, TabGroup.Addons, CustomRoles.LastImpostor, 1);
+        SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.LastImpostor, RoleSpwanToggle, false);
         KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 180f, 1f), 15f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.LastImpostor])
             .SetValueFormat(OptionFormat.Seconds);
     }

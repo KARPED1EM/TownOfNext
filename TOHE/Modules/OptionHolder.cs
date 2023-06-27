@@ -945,12 +945,15 @@ public static class Options
     }
 
     public static void SetupAddonOptions(int id, TabGroup tab, CustomRoles role, CustomGameMode customGameMode = CustomGameMode.Standard)
+        => SetupAddonOptions(id, tab, role, Rates, true, customGameMode);
+    public static void SetupAddonOptions(int id, TabGroup tab, CustomRoles role, string[] selections, bool canSetNum, CustomGameMode customGameMode = CustomGameMode.Standard)
     {
-        var spawnOption = StringOptionItem.Create(id, role.ToString(), Rates, 0, tab, false).SetColor(Utils.GetRoleColor(role))
+        var spawnOption = StringOptionItem.Create(id, role.ToString(), selections, 0, tab, false).SetColor(Utils.GetRoleColor(role))
                 .SetHeader(true)
                 .SetGameMode(customGameMode) as StringOptionItem;
-        var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, tab, false).SetParent(spawnOption)
+        var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, canSetNum ? 15 : 1, 1), 1, tab, false).SetParent(spawnOption)
             .SetValueFormat(OptionFormat.Players)
+            .SetHidden(!canSetNum)
             .SetGameMode(customGameMode);
 
         CustomRoleSpawnChances.Add(role, spawnOption);
@@ -1016,6 +1019,9 @@ public static class Options
                 .SetHeader(true)
                 .SetGameMode(customGameMode) as StringOptionItem;
 
+        var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, TabGroup.Addons, false).SetParent(spawnOption)
+            .SetGameMode(customGameMode);
+
         MadmateSpawnMode = StringOptionItem.Create(id + 10, "MadmateSpawnMode", madmateSpawnMode, 0, TabGroup.Addons, false).SetParent(spawnOption);
         MadmateCountMode = StringOptionItem.Create(id + 11, "MadmateCountMode", madmateCountMode, 0, TabGroup.Addons, false).SetParent(spawnOption);
         SheriffCanBeMadmate = BooleanOptionItem.Create(id + 12, "SheriffCanBeMadmate", false, TabGroup.Addons, false).SetParent(spawnOption);
@@ -1025,10 +1031,6 @@ public static class Options
         MadSnitchTasks = IntegerOptionItem.Create(id + 16, "MadSnitchTasks", new(1, 99, 1), 3, TabGroup.Addons, false).SetParent(SnitchCanBeMadmate)
             .SetValueFormat(OptionFormat.Pieces);
         JudgeCanBeMadmate = BooleanOptionItem.Create(id + 17, "JudgeCanBeMadmate", false, TabGroup.Addons, false).SetParent(spawnOption);
-
-        var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, TabGroup.Addons, false).SetParent(spawnOption)
-            .SetHidden(true)
-            .SetGameMode(customGameMode);
 
         CustomRoleSpawnChances.Add(role, spawnOption);
         CustomRoleCounts.Add(role, countOption);
