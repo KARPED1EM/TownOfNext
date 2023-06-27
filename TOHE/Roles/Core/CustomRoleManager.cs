@@ -238,6 +238,9 @@ public static class CustomRoleManager
         foreach (var pc in Main.AllPlayerControls)
         {
             CreateInstance(pc.GetCustomRole(), pc);
+
+            foreach (var subRole in PlayerState.GetByPlayerId(pc.PlayerId).SubRoles)
+                CreateInstance(subRole, pc);
         }
     }
     public static void CreateInstance(CustomRoles role, PlayerControl player)
