@@ -5,6 +5,7 @@ using Il2CppSystem.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Core;
@@ -123,6 +124,9 @@ public static class CustomRoleManager
         //ターゲットの処理
         var targetRole = attemptTarget.GetRoleClass();
         targetRole?.OnMurderPlayerAsTarget(info);
+
+        //SubRoels
+        Bait.OnMurderPlayerAsTarget(info);
 
         //その他視点の処理があれば実行
         foreach (var onMurderPlayer in OnMurderPlayerOthers.ToArray())
