@@ -427,9 +427,26 @@ internal class ChatCommands
             ConcatCommands(CustomRoleTypes.Neutral);
 
             // SubRoles
-            roleCommands.Add(CustomRoles.Lovers, new() { "lo" });
-            roleCommands.Add(CustomRoles.Watcher, new() { "wat" });
-            roleCommands.Add(CustomRoles.Workhorse, new() { "wh" });
+            roleCommands.Add(CustomRoles.Lovers, new() { "lo", "情人", "愛人", "链子" });
+            roleCommands.Add(CustomRoles.Watcher, new() { "wat", "窺視者", "窥视" });
+            roleCommands.Add(CustomRoles.Workhorse, new() { "wh", "加班" });
+            roleCommands.Add(CustomRoles.Avanger, new() { "av", "復仇者", "复仇" });
+            roleCommands.Add(CustomRoles.Bait, new() { "ba", "誘餌", "大奖", "头奖" });
+            roleCommands.Add(CustomRoles.Bewilder, new() { "bwd", "迷幻", "迷惑者" });
+            roleCommands.Add(CustomRoles.Brakar, new() { "br", "破平" });
+            roleCommands.Add(CustomRoles.DualPersonality, new() { "sp", "雙重人格", "双重", "双人格", "人格" });
+            roleCommands.Add(CustomRoles.Egoist, new() { "ego", "利己主義者", "利己主义", "利己", "野心" });
+            roleCommands.Add(CustomRoles.Flashman, new() { "fl", "閃電俠", "闪电" });
+            roleCommands.Add(CustomRoles.Fool, new() { "fo", "蠢蛋", "笨蛋", "蠢狗", "傻逼" });
+            roleCommands.Add(CustomRoles.Lighter, new() { "li", "執燈人", "执灯", "灯人", "小灯人" });
+            roleCommands.Add(CustomRoles.Ntr, new() { "np", "ntr", "渣男" });
+            roleCommands.Add(CustomRoles.Oblivious, new() { "pb", "膽小鬼", "胆小" });
+            roleCommands.Add(CustomRoles.Reach, new() { "re", "持槍", "手长" });
+            roleCommands.Add(CustomRoles.Seer, new() { "se", "靈媒" });
+            roleCommands.Add(CustomRoles.Trapper, new() { "tra", "陷阱師", "陷阱", "小奖" });
+            roleCommands.Add(CustomRoles.Youtuber, new() { "yt", "up" });
+            roleCommands.Add(CustomRoles.Mimic, new() { "mi", "寶箱怪", "宝箱" });
+            roleCommands.Add(CustomRoles.TicketsStealer, new() { "ts", "竊票者", "偷票", "偷票者", "窃票师", "窃票" });
 #pragma warning restore IDE0028
         }
 
