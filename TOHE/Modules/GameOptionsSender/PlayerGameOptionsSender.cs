@@ -105,9 +105,9 @@ public class PlayerGameOptionsSender : GameOptionsSender
                     opt.SetFloat(FloatOptionNames.CrewLightMod, Bewilder.OptionVision.GetFloat());
                     opt.SetFloat(FloatOptionNames.ImpostorLightMod, Bewilder.OptionVision.GetFloat());
                     break;
-                    //case CustomRoles.Reach:
-                    //    opt.SetInt(Int32OptionNames.KillDistance, 2);
-                    //    break;
+                case CustomRoles.Reach:
+                    opt.SetInt(Int32OptionNames.KillDistance, 2);
+                    break;
             }
         }
 
