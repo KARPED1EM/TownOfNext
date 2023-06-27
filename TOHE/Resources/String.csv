@@ -617,6 +617,9 @@
 "MenuTitle.GameInfo","☎ 游戏信息相关设定","","","",""
 "MenuTitle.Personality","☃ 个性化相关设定","","","",""
 "MenuTitle.Advanced","★ 高级设定","","","",""
+"MenuTitle.Addon.Common","◈ 通用附加","","","",""
+"MenuTitle.Addon.Crew","◇ 船员附加","","","",""
+"MenuTitle.Addon.Imp","◆ 内鬼附加","","","",""
 "ShieldPersonDiedFirst","首刀保护（仅限被杀）","Shield the person who got killed first in the last game","Щит для первого убитого в прошлой игре","首刀保護(僅限被殺)","首刀保护（仅限被杀）"
 
 "## 详细设定 / Advanced Settings"

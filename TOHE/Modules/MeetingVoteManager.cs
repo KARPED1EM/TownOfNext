@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TOHE.Roles.AddOns.Common;
+using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.Core;
 
 namespace TOHE.Modules;

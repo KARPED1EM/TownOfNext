@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.Core;
 using UnityEngine;
 using static TOHE.Options;
 
-namespace TOHE.Roles.AddOns.Common;
+namespace TOHE.Roles.AddOns.Crewmate;
 public static class Youtuber
 {
     private static readonly int Id = 80700;

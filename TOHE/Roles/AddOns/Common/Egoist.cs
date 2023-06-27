@@ -16,7 +16,7 @@ public static class Egoist
     {
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Egoist);
         AddOnsAssignData.Create(Id + 10, CustomRoles.Egoist, true, true, false);
-        OptionImpEgoVisibalToAllies = BooleanOptionItem.Create(Id + 20, "ImpEgoistVisibalToAllies", true, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
+        OptionImpEgoVisibalToAllies = BooleanOptionItem.Create(Id + 20, "ImpEgoistVisibalToAllies", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
     }
     public static void Init()
     {

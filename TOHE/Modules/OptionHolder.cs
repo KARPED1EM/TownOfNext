@@ -501,11 +501,46 @@ public static class Options
         }
 
         // Add-Ons
-        LastImpostor.SetupCustomOption();
+
+        // 通用附加
+        TextOptionItem.Create(5_100_001, "MenuTitle.Addon.Common", TabGroup.Addons)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(Utils.GetCustomRoleTypeColor(CustomRoleTypes.Addon));
+
         SetupLoversRoleOptionsToggle(80100);
-        SetupMadmateRoleOptionsToggle(80200);
+        Ntr.SetupCustomOption();
         Watcher.SetupCustomOption();
+        //Lighter
+        Seer.SetupCustomOption();
+        Flashman.SetupCustomOption();
+        Brakar.SetupCustomOption();
+        Oblivious.SetupCustomOption();
+        Bewilder.SetupCustomOption();
+        Fool.SetupCustomOption();
+        Avanger.SetupCustomOption();
+        Egoist.SetupCustomOption();
+        DualPersonality.SetupCustomOption();
+        Reach.SetupCustomOption();
+        Bait.SetupCustomOption();
+        Trapper.SetupCustomOption();
+
+        // 船员专属附加
+        TextOptionItem.Create(5_100_002, "MenuTitle.Addon.Crew", TabGroup.Addons)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(Utils.GetCustomRoleTypeColor(CustomRoleTypes.Crewmate));
+
+        Youtuber.SetupCustomOption();
         Workhorse.SetupCustomOption();
+        SetupMadmateRoleOptionsToggle(80200);
+
+        // 内鬼专属附加
+        TextOptionItem.Create(5_100_003, "MenuTitle.Addon.Imp", TabGroup.Addons)
+            .SetGameMode(CustomGameMode.Standard)
+            .SetColor(Utils.GetCustomRoleTypeColor(CustomRoleTypes.Impostor));
+
+        LastImpostor.SetupCustomOption();
+        TicketsStealer.SetupCustomOption();
+        Mimic.SetupCustomOption();
 
         #endregion
 

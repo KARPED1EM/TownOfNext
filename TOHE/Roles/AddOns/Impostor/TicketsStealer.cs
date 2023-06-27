@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using TOHE.Modules;
+using TOHE.Roles.AddOns.Common;
 using TOHE.Roles.Core;
 using UnityEngine;
 using static TOHE.Options;
 
-namespace TOHE.Roles.AddOns.Common;
+namespace TOHE.Roles.AddOns.Impostor;
 public static class TicketsStealer
 {
     private static readonly int Id = 81900;
