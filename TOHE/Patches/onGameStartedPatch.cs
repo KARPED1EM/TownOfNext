@@ -112,8 +112,7 @@ internal class ChangeRoleSettings
                 RPC.SyncCustomSettingsRPC();
             }
             CustomRoleManager.Initialize();
-            FallFromLadder.Reset();
-            LastImpostor.Init();
+            FallFromLadder.Reset();=
             TargetArrow.Init();
             LocateArrow.Init();
             DoubleTrigger.Init();
@@ -122,9 +121,28 @@ internal class ChangeRoleSettings
             AntiBlackout.Reset();
             SoloKombatManager.Init();
 
-            // 附加职业的初始化
+            //SubRoles
             Watcher.Init();
             Workhorse.Init();
+            LastImpostor.Init();
+            Avanger.Init();
+            Bait.Init();
+            Bewilder.Init();
+            Brakar.Init();
+            DualPersonality.Init();
+            Egoist.Init();
+            Flashman.Init();
+            Fool.Init();
+            Lighter.Init();
+            Ntr.Init();
+            Oblivious.Init();
+            Reach.Init();
+            Seer.Init();
+            Trapper.Init();
+            Youtuber.Init();
+            Mimic.Init();
+            TicketsStealer.Init();
+
 
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
 

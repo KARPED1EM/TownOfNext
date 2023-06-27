@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TOHE.Roles.AddOns.Common;
+using TOHE.Roles.AddOns.Crewmate;
+using TOHE.Roles.AddOns.Impostor;
 using TOHE.Roles.Core.Interfaces;
 
 namespace TOHE.Roles.Core;
@@ -259,8 +261,60 @@ public static class CustomRoleManager
         {
             switch (subRole)
             {
-                //TODO: FIXME
-
+                case CustomRoles.Watcher:
+                    Watcher.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Avanger:
+                    Avanger.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Bait:
+                    Bait.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Bewilder:
+                    Bewilder.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Brakar:
+                    Brakar.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.DualPersonality:
+                    DualPersonality.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Egoist:
+                    Egoist.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Flashman:
+                    Flashman.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Fool:
+                    Fool.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Lighter:
+                    Lighter.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Ntr:
+                    Ntr.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Oblivious:
+                    Oblivious.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Reach:
+                    Reach.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Seer:
+                    Seer.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Trapper:
+                    Trapper.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Youtuber:
+                    Youtuber.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.Mimic:
+                    Mimic.Add(pc.PlayerId);
+                    break;
+                case CustomRoles.TicketsStealer:
+                    TicketsStealer.Add(pc.PlayerId);
+                    break;
             }
         }
     }
