@@ -41,12 +41,14 @@ public static class MeetingStartNotify
             new LateTask(() => { msgTemp.Do(x => Utils.SendMessage(x.Item1, x.Item2, x.Item3 ?? "")); }, 3f, "NotifyOnMeetingStart");
         }
 
+        msgToSend = new();
+        CustomRoleManager.AllActiveRoles.Values.Do(x => x.NotifyOnMeetingStart(ref msgToSend));
+
         //Mimic Msg Combine
         var mimicSb = new StringBuilder();
         foreach (var vic in Main.AllPlayerControls.Where(p => !p.IsAlive()))
         {
-            var killer = PlayerState.GetByPlayerId(vic.PlayerId)?.GetRealKiller();
-            if (killer != null && Main.AllPlayerControls.Any(p => !p.IsAlive() && p.Is(CustomRoles.Mimic) && p.PlayerId == killer))
+            if ((vic.GetRealKiller()?.Is(CustomRoles.Mimic) ?? false) && (!vic.GetRealKiller()?.IsAlive() ?? false))
                 mimicSb.Append($"\n{vic.GetNameWithRole(true)}");
         }
         if (mimicSb.Length > 1)
@@ -56,7 +58,6 @@ public static class MeetingStartNotify
                 AddMsg(mimicMsg, ipc.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mimic), GetString("MimicMsgTitle")));
         }
 
-        msgToSend = new();
         CustomRoleManager.AllActiveRoles.Values.Do(x => x.NotifyOnMeetingStart(ref msgToSend));
         msgToSend.Do(x => Logger.Info($"To:{x.Item2} {x.Item3 ?? ""} => {x.Item1}", "NotifyOnMeetingStart"));
         new LateTask(() => { msgToSend.DoIf(x => x.Item1 != null, x => Utils.SendMessage(x.Item1, x.Item2, x.Item3 ?? "")); }, 3f, "NotifyOnMeetingStart");
