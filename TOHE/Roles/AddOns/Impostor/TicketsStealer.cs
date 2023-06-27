@@ -42,6 +42,6 @@ public static class TicketsStealer
     {
         if (!playerIdList.Contains(playerId)) return "";
         var votes = (int)((PlayerState.GetByPlayerId(playerId)?.GetKillCount(true) ?? 0) * OptionTicketsPerKill.GetFloat());
-        return votes > 0 ? Utils.ColorString(RoleColor.ShadeColor(0.5f), $"+{votes}t") : "";
+        return votes > 0 ? Utils.ColorString(RoleColor.ShadeColor(0.5f), $"+{votes}") : "";
     }
 }
