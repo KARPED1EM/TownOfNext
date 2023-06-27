@@ -129,6 +129,7 @@ public static class CustomRoleManager
 
         //SubRoels
         Bait.OnMurderPlayerOthers(info);
+        Trapper.OnMurderPlayerOthers(info);
 
         //その他視点の処理があれば実行
         foreach (var onMurderPlayer in OnMurderPlayerOthers.ToArray())
