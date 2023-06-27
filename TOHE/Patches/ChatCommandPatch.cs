@@ -403,9 +403,9 @@ internal class ChatCommands
         if (input == "") return false;
         foreach (CustomRoles role in Enum.GetValues(typeof(CustomRoles)))
         {
-            if (!includeVanilla && role.IsVanilla() && role != CustomRoles.GuardianAngel) continue;
+            if (!includeVanilla && role.IsVanilla()) continue;
             if (input == GetString(Enum.GetName(typeof(CustomRoles), role)).TrimStart('*').ToLower().Trim().Replace(" ", string.Empty).RemoveHtmlTags() //匹配到翻译文件中的职业原名
-                || roleCommands[role].Any(c => input == c.Trim().ToLower()) //匹配到职业缩写
+                || (roleCommands.TryGetValue(role, out var com) && com.Any(c => input == c.Trim().ToLower())) //匹配到职业缩写
                 )
             {
                 output = role;
