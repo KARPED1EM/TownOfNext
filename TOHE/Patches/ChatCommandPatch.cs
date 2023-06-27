@@ -674,22 +674,38 @@ internal class ChatUpdatePatch
         int clientId = sendTo == byte.MaxValue ? -1 : Utils.GetPlayerById(sendTo).GetClientId();
         var name = player.Data.PlayerName;
 
+        Dictionary<int, bool> receiver = new();
         if (clientId == -1)
         {
-            player.SetName(title);
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
-            player.SetName(name);
+            if (msg.RemoveHtmlTags() == msg) receiver.Add(-1, false);
+            else if (Main.AllPlayerControls.All(p => !p.AmOwner && !p.IsModClient())) receiver.Add(-1, false);
+            else if (Main.AllPlayerControls.All(p => p.IsModClient())) receiver.Add(-1, true);
+            else Main.AllPlayerControls.Do(p => receiver.Add(p.GetClientId(), p.IsModClient()));
+        }
+        else
+        {
+            Main.AllPlayerControls.DoIf(p => p.GetClientId() == clientId, p => receiver.Add(p.GetClientId(), p.IsModClient()));
+            receiver.Remove(-1);
         }
 
-        if (msg.RemoveHtmlTags() == msg)
+        foreach (var kvp in receiver)
         {
+            var (id, isMod) = kvp;
+
+            if (id == -1)
+            {
+                player.SetName(title);
+                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
+                player.SetName(name);
+            }
+
             var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-            writer.StartMessage(clientId);
+            writer.StartMessage(id);
             writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
                 .Write(title)
                 .EndRpc();
             writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-                .Write(msg)
+                .Write(isMod ? msg : msg.RemoveHtmlTags())
                 .EndRpc();
             writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
                 .Write(player.Data.PlayerName)
@@ -697,25 +713,7 @@ internal class ChatUpdatePatch
             writer.EndMessage();
             writer.SendMessage();
         }
-        else
-        {
-            Main.AllPlayerControls.DoIf(p => clientId == -1 || p.GetClientId() == clientId, player =>
-            {
-                var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-                writer.StartMessage(clientId);
-                writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                    .Write(title)
-                    .EndRpc();
-                writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-                    .Write(player.IsModClient() ? msg : msg.RemoveHtmlTags())
-                    .EndRpc();
-                writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                    .Write(player.Data.PlayerName)
-                    .EndRpc();
-                writer.EndMessage();
-                writer.SendMessage();
-            });
-        }
+
         __instance.TimeSinceLastMessage = 0f;
     }
 }
