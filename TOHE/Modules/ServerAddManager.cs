@@ -13,7 +13,7 @@ public static class ServerAddManager
     private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
     public static void Init()
     {
-        var defaultRegion = serverManager.CurrentRegion;
+        
         serverManager.AvailableRegions = ServerManager.DefaultRegions;
         List<IRegionInfo> regionInfos = new();
 
@@ -30,9 +30,9 @@ public static class ServerAddManager
         regionInfos.Add(CreateHttp("aumods.one", "Modded NA (MNA)", 443, true));
         regionInfos.Add(CreateHttp("au-eu.duikbo.at", "Modded EU (MEU)", 443, true));
 
+        var defaultRegion = serverManager.CurrentRegion;
         regionInfos.Where(x => !serverManager.AvailableRegions.Contains(x)).Do(serverManager.AddOrUpdateRegion);
-        if (serverManager.AvailableRegions.Contains(defaultRegion))
-            serverManager.SetRegion(defaultRegion);
+        serverManager.SetRegion(defaultRegion);
     }
 
     public static IRegionInfo CreateHttp(string ip, string name, ushort port, bool ishttps)

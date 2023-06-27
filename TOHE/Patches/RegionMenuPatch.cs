@@ -9,21 +9,21 @@ public static class RegionMenuPatch
 {
     public static Scroller Scroller;
 
-    [HarmonyPatch(nameof(RegionMenu.Awake))]
+    [HarmonyPatch(nameof(RegionMenu.Awake)), HarmonyPostfix]
     public static void Postfix(RegionMenu __instance)
     {
         if (Scroller != null) return;
-        var Inner = new GameObject("Inner");
-        __instance.ButtonPool.gameObject.ForEachChild(new Action<GameObject>(c =>
-        {
-            if (c.name != "Backdrop")
-            c.transform.SetParent(Inner.transform);
-        }));
+
+        var back = __instance.ButtonPool.transform.FindChild("Backdrop");
+        back.transform.localScale *= 10f;
+
         Scroller = __instance.ButtonPool.transform.parent.gameObject.AddComponent<Scroller>();
-        Scroller.Inner = Inner.transform;
+        Scroller.Inner = __instance.ButtonPool.transform;
         Scroller.MouseMustBeOverToScroll = true;
-        Scroller.ClickMask = __instance.ButtonPool.transform.FindChild("Backdrop").GetComponent<BoxCollider2D>();
+        Scroller.ClickMask = back.GetComponent<BoxCollider2D>();
         Scroller.ScrollWheelSpeed = 0.7f;
+        Scroller.SetYBoundsMin(0f);
+        Scroller.SetYBoundsMax(4f);
         Scroller.allowY = true;
     }
 }
