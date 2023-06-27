@@ -15,7 +15,8 @@ public sealed class SpeedBooster : RoleBase
             22900,
             SetupOptionItem,
             "sb|增速",
-            "#00ffff"
+            "#00ffff",
+            experimental: true
         );
     public SpeedBooster(PlayerControl player)
     : base(

@@ -127,10 +127,6 @@ internal class ChatCommands
                         case "roles":
                             Utils.ShowActiveRoles();
                             break;
-                        case "a":
-                        case "all":
-                            Utils.ShowAllActiveSettings();
-                            break;
                         default:
                             Utils.ShowActiveSettings();
                             break;
@@ -541,10 +537,6 @@ internal class ChatCommands
                     case "r":
                     case "roles":
                         Utils.ShowActiveRoles(player.PlayerId);
-                        break;
-                    case "a":
-                    case "all":
-                        Utils.ShowAllActiveSettings(player.PlayerId);
                         break;
                     default:
                         Utils.ShowActiveSettings(player.PlayerId);

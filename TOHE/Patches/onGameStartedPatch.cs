@@ -112,7 +112,7 @@ internal class ChangeRoleSettings
                 RPC.SyncCustomSettingsRPC();
             }
             CustomRoleManager.Initialize();
-            FallFromLadder.Reset();=
+            FallFromLadder.Reset();
             TargetArrow.Init();
             LocateArrow.Init();
             DoubleTrigger.Init();
@@ -142,7 +142,6 @@ internal class ChangeRoleSettings
             Youtuber.Init();
             Mimic.Init();
             TicketsStealer.Init();
-
 
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
 

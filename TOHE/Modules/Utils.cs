@@ -623,58 +623,19 @@ public static class Utils
         }
 
         var sb = new StringBuilder();
-        sb.Append(" ★ " + GetString("TabGroup.SystemSettings"));
-        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Tab is TabGroup.SystemSettings && !x.IsHiddenOn(Options.CurrentGameMode)))
+        foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 2000000 and < 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
         {
-            sb.Append($"\n{opt.GetName(true)}: {opt.GetString()}");
-            //ShowChildrenSettings(opt, ref sb);
-            var text = sb.ToString();
-            sb.Clear().Append(text.RemoveHtmlTags());
+            if (opt.IsHeader) sb.Append('\n');
+            if (opt.IsText) sb.Append($"   {opt.GetName()}\n");
+            else sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
+            if (opt.GetBool()) OptionShower.ShowChildren(opt, ref sb, Color.white, 1);
         }
-        sb.Append("\n\n ★ " + GetString("TabGroup.GameSettings"));
-        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Tab is TabGroup.GameSettings && !x.IsHiddenOn(Options.CurrentGameMode)))
+        foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 3000000 and < 5000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
         {
-            sb.Append($"\n{opt.GetName(true)}: {opt.GetString()}");
-            //ShowChildrenSettings(opt, ref sb);
-            var text = sb.ToString();
-            sb.Clear().Append(text.RemoveHtmlTags());
-        }
-
-        SendMessage(sb.ToString(), PlayerId);
-    }
-    public static void ShowAllActiveSettings(byte PlayerId = byte.MaxValue)
-    {
-        var mapId = Main.NormalOptions.MapId;
-        if (Options.HideGameSettings.GetBool() && PlayerId != byte.MaxValue)
-        {
-            SendMessage(GetString("Message.HideGameSettings"), PlayerId);
-            return;
-        }
-        if (Options.DIYGameSettings.GetBool())
-        {
-            SendMessage(GetString("Message.NowOverrideText"), PlayerId);
-            return;
-        }
-        var sb = new StringBuilder();
-
-        sb.Append(GetString("Settings")).Append(':');
-        foreach (var role in Options.CustomRoleCounts)
-        {
-            if (!role.Key.IsEnable()) continue;
-            sb.Append($"\n【{GetRoleName(role.Key)}:{GetRoleDisplaySpawnMode(role.Key, false)}×{role.Key.GetCount()}】\n");
-            ShowChildrenSettings(Options.CustomRoleSpawnChances[role.Key], ref sb);
-            var text = sb.ToString();
-            sb.Clear().Append(text.RemoveHtmlTags());
-        }
-        foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Id >= 90000 && !x.IsHiddenOn(Options.CurrentGameMode)))
-        {
-            if (opt.Name is "KillFlashDuration" or "RoleAssigningAlgorithm")
-                sb.Append($"\n【{opt.GetName(true)}: {opt.GetString()}】\n");
-            else
-                sb.Append($"\n【{opt.GetName(true)}】\n");
-            ShowChildrenSettings(opt, ref sb);
-            var text = sb.ToString();
-            sb.Clear().Append(text.RemoveHtmlTags());
+            if (opt.IsHeader) sb.Append('\n');
+            if (opt.IsText) sb.Append($"   {opt.GetName()}\n");
+            else sb.Append($"{opt.GetName()}: {opt.GetString()}\n");
+            if (opt.GetBool()) OptionShower.ShowChildren(opt, ref sb, Color.white, 1);
         }
 
         SendMessage(sb.ToString(), PlayerId);

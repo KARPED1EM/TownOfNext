@@ -102,7 +102,7 @@ public static class OptionShower
             }
 
             sb.Append($"<size=140%><color=#59ef83>{GetString("TabGroup.GameSettings")}</color></size>\n");
-            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
+            foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 3000000 and < 5000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
             {
                 if (opt.IsHeader) sb.Append('\n');
                 if (opt.IsText) sb.Append($"   {opt.GetName()}\n");
@@ -137,7 +137,7 @@ public static class OptionShower
         currentPage--;
         if (currentPage < 0) currentPage = pages.Count - 1; //超过最小页数时切换到最后一页
     }
-    private static void ShowChildren(OptionItem option, ref StringBuilder sb, Color color, int deep = 0)
+    public static void ShowChildren(OptionItem option, ref StringBuilder sb, Color color, int deep = 0)
     {
         foreach (var opt in option.Children.Select((v, i) => new { Value = v, Index = i + 1 }))
         {
