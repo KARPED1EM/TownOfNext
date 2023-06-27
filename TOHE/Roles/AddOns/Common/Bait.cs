@@ -37,7 +37,7 @@ public static class Bait
     }
     public static bool IsEnable => playerIdList.Count > 0;
     public static bool IsThisRole(byte playerId) => playerIdList.Contains(playerId);
-    public static void OnMurderPlayerAsTarget(MurderInfo info)
+    public static void OnMurderPlayerOthers(MurderInfo info)
     {
         var (killer, target) = info.AttemptTuple;
         if (!playerIdList.Contains(target.PlayerId) || info.IsSuicide) return;
