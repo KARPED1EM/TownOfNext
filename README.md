@@ -1,5 +1,4 @@
-
-<h1 align="center">~ TownofHost Edited ~</h1>
+<h1 align="center">~ Town Of Next ~</h1>
 
 <br>
 

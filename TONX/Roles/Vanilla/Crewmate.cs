@@ -1,0 +1,21 @@
+using AmongUs.GameOptions;
+
+using TONX.Roles.Core;
+
+namespace TONX.Roles.Vanilla;
+
+public sealed class Crewmate : RoleBase
+{
+    public static readonly SimpleRoleInfo RoleInfo =
+        SimpleRoleInfo.CreateForVanilla(
+            typeof(Crewmate),
+            player => new Crewmate(player),
+            RoleTypes.Crewmate
+        );
+    public Crewmate(PlayerControl player)
+    : base(
+        RoleInfo,
+        player
+    )
+    { }
+}
