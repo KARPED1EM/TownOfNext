@@ -30,7 +30,6 @@ public class MainMenuManagerPatch
     private static bool isOnline = false;
     public static bool ShowedBak = false;
     private static bool ShowingPanel = false;
-    private static GameObject RightPanel;
     [HarmonyPatch(typeof(SignInStatusComponent), nameof(SignInStatusComponent.SetOnline)), HarmonyPostfix]
     public static void SetOnline_Postfix() => new LateTask(() => { isOnline = true; }, 0.2f, "Set Online Status");
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
@@ -40,15 +39,14 @@ public class MainMenuManagerPatch
 
         if (GameObject.Find("MainUI") == null) ShowingPanel = false;
 
-        RightPanel ??= GameObject.Find("RightPanel");
-        if (RightPanel != null)
+        if (TitleLogoPatch.RightPanel != null)
         {
-            var pos1 = RightPanel.transform.localPosition;
+            var pos1 = TitleLogoPatch.RightPanel.transform.localPosition;
             Vector3 lerp1 = Vector3.Lerp(pos1, TitleLogoPatch.RightPanelOp + new Vector3((ShowingPanel ? 0f : 10f), 0f, 0f), Time.deltaTime * (ShowingPanel ? 3f : 2f));
             if (ShowingPanel
-                ? RightPanel.transform.localPosition.x > TitleLogoPatch.RightPanelOp.x + 0.03f
-                : RightPanel.transform.localPosition.x < TitleLogoPatch.RightPanelOp.x + 9f
-                ) RightPanel.transform.localPosition = lerp1;
+                ? TitleLogoPatch.RightPanel.transform.localPosition.x > TitleLogoPatch.RightPanelOp.x + 0.03f
+                : TitleLogoPatch.RightPanel.transform.localPosition.x < TitleLogoPatch.RightPanelOp.x + 9f
+                ) TitleLogoPatch.RightPanel.transform.localPosition = lerp1;
         }
 
         if (ShowedBak || !isOnline) return;
