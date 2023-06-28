@@ -593,7 +593,8 @@ public static class GuesserHelper
     {
         public static void Postfix()
         {
-            UnityEngine.Object.Destroy(textTemplate.gameObject);
+            if (textTemplate != null && textTemplate.gameObject != null)
+                UnityEngine.Object.Destroy(textTemplate.gameObject);
         }
     }
 }
