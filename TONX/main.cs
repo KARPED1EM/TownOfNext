@@ -32,7 +32,7 @@ public class Main : BasePlugin
     public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
-    public const string PluginGuid = "com.karped1em.TONX";
+    public const string PluginGuid = "com.karped1em.tonx";
     public static readonly string LowestSupportedVersion = "2023.6.13";
     public const string PluginVersion = "1.0.0";
     public const int PluginCreation = 1;
