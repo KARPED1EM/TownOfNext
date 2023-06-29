@@ -11,7 +11,7 @@ namespace TONX;
 
 public static class SpamManager
 {
-    private static readonly string BANEDWORDS_FILE_PATH = "./TONX_Next_Data/BanWords.txt";
+    private static readonly string BANEDWORDS_FILE_PATH = "./TONX_Data/BanWords.txt";
     public static List<string> BanWords = new();
     public static void Init()
     {
@@ -24,7 +24,7 @@ public static class SpamManager
         {
             try
             {
-                if (!Directory.Exists(@"TONX_Next_Data")) Directory.CreateDirectory(@"TONX_Next_Data");
+                if (!Directory.Exists(@"TONX_Data")) Directory.CreateDirectory(@"TONX_Data");
                 if (File.Exists(@"./BanWords.txt")) File.Move(@"./BanWords.txt", BANEDWORDS_FILE_PATH);
                 else
                 {

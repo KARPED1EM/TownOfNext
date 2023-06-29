@@ -14,7 +14,7 @@ namespace TONX;
 
 public static class TemplateManager
 {
-    private static readonly string TEMPLATE_FILE_PATH = "./TONX_Next_Data/template.txt";
+    private static readonly string TEMPLATE_FILE_PATH = "./TONX_Data/template.txt";
     private static Dictionary<string, Func<string>> _replaceDictionary = new()
     {
         ["HostName"] = () => PlayerControl.LocalPlayer.GetRealName(),
@@ -49,7 +49,7 @@ public static class TemplateManager
         {
             try
             {
-                if (!Directory.Exists(@"TONX_Next_Data")) Directory.CreateDirectory(@"TONX_Next_Data");
+                if (!Directory.Exists(@"TONX_Data")) Directory.CreateDirectory(@"TONX_Data");
                 if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
                 else
                 {
