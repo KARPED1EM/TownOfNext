@@ -211,7 +211,7 @@ internal class TitleLogoPatch
         if (!(Sizer = GameObject.Find("Sizer"))) return;
         if (!(AULogo = GameObject.Find("LOGO-AU"))) return;
         Sizer.transform.localPosition += new Vector3(0f, 0.12f, 0f);
-        Sizer.transform.localScale = new(0.0075f, 0.0075f, 0.0075f);
+        AULogo.transform.localScale = new Vector3(0.66f, 0.67f, 1f);
         AULogo.transform.position += new Vector3(0f, 0.1f, 0f);
         var logoRenderer = AULogo.GetComponent<SpriteRenderer>();
         logoRenderer.sprite = Utils.LoadSprite("TONX.Resources.Images.TONX-Logo.png");
