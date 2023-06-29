@@ -23,25 +23,17 @@ public enum CustomGameMode
 public static class Options
 {
     static Task taskOptionsLoad;
-    static GameObject postLoadWaiting;
     [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize)), HarmonyPostfix]
     public static void OptionsLoadStart()
     {
         Logger.Info("Options.Load Start", "Options");
         taskOptionsLoad = Task.Run(Load);
     }
-    [HarmonyPatch(typeof(AccountManager), nameof(AccountManager.Awake)), HarmonyPostfix]
-    public static void OptionsLoadStart(AccountManager __instance)
-    {
-        postLoadWaiting = __instance.postLoadWaiting;
-        __instance.postLoadWaiting.SetActive(!taskOptionsLoad.IsCompleted);
-    }
-    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
+    [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
     public static void WaitOptionsLoad()
     {
-        if (!postLoadWaiting || !ModUpdater.firstStart) return;
-        if ((!taskOptionsLoad.IsCompleted) && (postLoadWaiting?.activeSelf ?? false))
-            postLoadWaiting?.SetActive(true);
+        taskOptionsLoad.Wait();
+        Logger.Info("Options.Load End", "Options");
     }
 
     // 预设
