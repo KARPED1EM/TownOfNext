@@ -29,10 +29,10 @@ public class ModUpdater
         "file:///D:/Desktop/TONX/Release/info.json",
         "file:///D:/Desktop/info.json",
 #else
-        "https://raw.githubusercontent.com/KARPED1EM/TONX-Dev/TONX/Release/info.json",
-        "https://cdn.jsdelivr.net/gh/KARPED1EM/TONX-Dev/Release/info.json",
-        "https://TONX-next-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
-        "https://gitee.com/leeverz/TONX-Dev/raw/TONX/Release/info.json",
+        "https://raw.githubusercontent.com/KARPED1EM/TONX/TONX/Release/info.json",
+        "https://cdn.jsdelivr.net/gh/KARPED1EM/TONX/Release/info.json",
+        "https://tonx-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
+        "https://gitee.com/leeverz/TONX/raw/TONX/Release/info.json",
 #endif
     };
     private static IReadOnlyList<string> GetInfoFileUrlList()
