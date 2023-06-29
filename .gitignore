@@ -3,7 +3,7 @@
 
 .vs/
 
-TONX/obj/
+TONX/obj
 TONX/bin
 
 TONX/FodyWeavers.xsd
