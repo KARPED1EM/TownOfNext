@@ -30,12 +30,12 @@ jobs:
         import os
         import requests
         
-        file = './Release/TOHE.dll'
+        file = './Release/TONX.dll'
         size = os.stat(file).st_size
         with open (file, 'rb') as file_object:
           contents = file_object.read()
         
-        url = "https://" + str(os.environ.get('COS_HOST')) + "/tohe.dll"
+        url = "https://" + str(os.environ.get('COS_HOST')) + "/tonx.dll"
         headers = {'Content-Type': 'application/x-msdownload', 'Host': os.environ.get('COS_HOST') }
         
         req = requests.put(url, data = contents, headers = headers)

@@ -2,7 +2,7 @@ name: Upload info.json To Cos When File Changed
 
 on:
   push:
-    branches: [ "TOHE" ]
+    branches: [ "TONX" ]
     paths: [ "Release/info.json" ]
 
 permissions:
