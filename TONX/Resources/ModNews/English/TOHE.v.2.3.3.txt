@@ -1,7 +1,7 @@
 #Number:100040
-#Title:TownOfNext v2.3.3
+#Title:TownOfHostEdited v2.3.3
 #SubTitle:★★★★Waiting for TOH update★★★★
-#ShortTitle:★TONX v2.3.3
+#ShortTitle:★TOHE v2.3.3
 #Date:2023-5-7T00:00:00Z
 #-----------------------------
 I hope this is the last version before the TOH update

@@ -1,10 +1,10 @@
 #Number:100030
-#Title:TownOfNext v2.2.6
+#Title:TownOfHostEdited v2.2.6
 #SubTitle:★★★★本家快快快更新啊啊啊啊★★★★
-#ShortTitle:★TONX v2.2.6
+#ShortTitle:★TOHE v2.2.6
 #Date:2023-4-7T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 
 ## 对应官方版本

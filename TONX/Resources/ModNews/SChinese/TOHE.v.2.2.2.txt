@@ -1,7 +1,7 @@
 #Number:100026
-#Title:TownOfNext v2.2.2
+#Title:TownOfHostEdited v2.2.2
 #SubTitle:★★★★技术大爆炸！！★★★★
-#ShortTitle:★TONX v2.2.2
+#ShortTitle:★TOHE v2.2.2
 #Date:2023-3-26T00:00:00Z
 #-----------------------------
 老样子哈，还是没有新职业

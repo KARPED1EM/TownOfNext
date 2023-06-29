@@ -1,10 +1,10 @@
 #Number:100029
-#Title:TownOfNext v2.2.5
+#Title:TownOfHostEdited v2.2.5
 #SubTitle:★★★★本家为什么不更新啊啊啊啊★★★★
-#ShortTitle:★TONX v2.2.5
+#ShortTitle:★TOHE v2.2.5
 #Date:2023-4-5T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 ## 对应官方版本
 - 基于官方版本 v4.1.2

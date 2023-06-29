@@ -1,10 +1,10 @@
 #Number:100033
-#Title:TownOfNext v2.2.9
+#Title:TownOfHostEdited v2.2.9
 #SubTitle:★★★★Just Fixing★★★★
-#ShortTitle:★TONX v2.2.9
+#ShortTitle:★TOHE v2.2.9
 #Date:2023-4-16T00:00:00Z
 #-----------------------------
-Thank you for using TONX!
+Thank you for using TOHE!
 
 
 ## Base

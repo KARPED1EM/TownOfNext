@@ -1,7 +1,7 @@
 #Number:100037
-#Title:TownOfNext v2.3.0
+#Title:TownOfHostEdited v2.3.0
 #SubTitle:★★★★框架更新★★★★
-#ShortTitle:★TONX v2.3.0
+#ShortTitle:★TOHE v2.3.0
 #Date:2023-5-1T00:00:00Z
 #-----------------------------
 本次更新针对.NET和BepinEx

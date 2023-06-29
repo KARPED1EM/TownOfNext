@@ -1,7 +1,7 @@
 #Number:100022
-#Title:TownOfNext v2.1.7
+#Title:TownOfHostEdited v2.1.7
 #SubTitle:★★★★比较赶的版本★★★★
-#ShortTitle:★TONX v2.1.7
+#ShortTitle:★TOHE v2.1.7
 #Date:2023-3-20T00:00:00Z
 #-----------------------------
 我C#在这一块学差不多了，准备收工了

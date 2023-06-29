@@ -1,10 +1,10 @@
 #Number:100003
-#Title:TownOfNext v4.0.2.2
+#Title:TownOfHostEdited v4.0.2.2
 #SubTitle:★★★★哈哈哈不是吧，开始稳定更新了★★★★
-#ShortTitle:★TONX v4.0.2.2
+#ShortTitle:★TOHE v4.0.2.2
 #Date:2023-1-21T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 ## 对应官方版本
 - 基于官方提交 #1241

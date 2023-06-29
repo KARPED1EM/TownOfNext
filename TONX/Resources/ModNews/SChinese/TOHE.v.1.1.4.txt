@@ -1,10 +1,10 @@
 #Number:100007
-#Title:TownOfNext v1.1.4
+#Title:TownOfHostEdited v1.1.4
 #SubTitle:★★★★好久没写发布公告了★★★★
-#ShortTitle:★TONX v1.1.4
+#ShortTitle:★TOHE v1.1.4
 #Date:2023-2-12T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 ## 对应官方版本
 - 合并官方提交 #1244：Twister 随机算法

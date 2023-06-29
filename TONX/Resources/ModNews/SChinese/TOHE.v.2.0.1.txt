@@ -1,10 +1,10 @@
 #Number:100013
-#Title:TownOfNext v2.0.1
+#Title:TownOfHostEdited v2.0.1
 #SubTitle:★★★★啊哈哈哈，新职业来咯★★★★
-#ShortTitle:★TONX v2.0.1
+#ShortTitle:★TOHE v2.0.1
 #Date:2023-2-23T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 ## 对应官方版本
 - 基于官方版本 v4.1.0

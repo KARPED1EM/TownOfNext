@@ -1,10 +1,10 @@
 #Number:100039
-#Title:TownOfNext v2.3.2
+#Title:TownOfHostEdited v2.3.2
 #SubTitle:★★★★紧急修复★★★★
-#ShortTitle:★TONX v2.3.2
+#ShortTitle:★TOHE v2.3.2
 #Date:2023-5-6T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 
 ## 对应官方版本

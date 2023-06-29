@@ -1,7 +1,7 @@
 #Number:100019
-#Title:TownOfNext v2.1.4
+#Title:TownOfHostEdited v2.1.4
 #SubTitle:★★★★重大Bug修复★★★★
-#ShortTitle:★TONX v2.1.4
+#ShortTitle:★TOHE v2.1.4
 #Date:2023-3-13T00:00:00Z
 #-----------------------------
 没有内容更新，就是修复重大Bug
@@ -20,4 +20,4 @@
 - 分割RPC包以降低网络压力（或许降低了掉线率）
 
 ## 新增
-- 游戏公告会显示TONX的版本更新内容
+- 游戏公告会显示TOHE的版本更新内容

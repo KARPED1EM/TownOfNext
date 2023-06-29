@@ -1,7 +1,7 @@
 #Number:100023
-#Title:TownOfNext v2.1.8
+#Title:TownOfHostEdited v2.1.8
 #SubTitle:★★★★同步本家更新★★★★
-#ShortTitle:★TONX v2.1.8
+#ShortTitle:★TOHE v2.1.8
 #Date:2023-3-21T00:00:00Z
 #-----------------------------
 感觉TOH本家这次更新也挺摆烂的

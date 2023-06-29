@@ -1,7 +1,7 @@
 #Number:100020
-#Title:TownOfNext v2.1.5
+#Title:TownOfHostEdited v2.1.5
 #SubTitle:★★★★嘿嘿嘿嘿嘿嘿嘿★★★★
-#ShortTitle:★TONX v2.1.5
+#ShortTitle:★TOHE v2.1.5
 #Date:2023-3-16T00:00:00Z
 #-----------------------------
 修了个重大Bug，如果接下来没有什么特殊情况的话，可能要鸽一段时间了

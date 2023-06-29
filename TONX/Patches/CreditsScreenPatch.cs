@@ -99,7 +99,7 @@ public class CreditsScreenPatch
             TONXLogo.name = "TONX Logo Image";
             TONXLogo.transform.localPosition = template.transform.localPosition;
             var logoRenderer = TONXLogo.GetComponent<SpriteRenderer>();
-            logoRenderer.sprite = Utils.LoadSprite("TONX.Resources.Images.TONX-Icon.png", 76f);
+            logoRenderer.sprite = Utils.LoadSprite("TONX.Resources.Images.TONX-Logo.png", 76f);
 
             GameObject CreateBlock(string header, List<string> lines)
             {

@@ -1,10 +1,10 @@
 #Number:100017
-#Title:TownOfNext v2.1.2
+#Title:TownOfHostEdited v2.1.2
 #SubTitle:★★★★再次致敬2077★★★★
-#ShortTitle:★TONX v2.1.2
+#ShortTitle:★TOHE v2.1.2
 #Date:2023-3-8T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 ## 对应官方版本
 - 基于官方版本 v4.1.1

@@ -1,7 +1,7 @@
 #Number:100021
-#Title:TownOfNext v2.1.6
+#Title:TownOfHostEdited v2.1.6
 #SubTitle:★★★★又是一个专门修Bug的版本★★★★
-#ShortTitle:★TONX v2.1.6
+#ShortTitle:★TOHE v2.1.6
 #Date:2023-3-19T00:00:00Z
 #-----------------------------
 最近很忙，没什么时间做职业

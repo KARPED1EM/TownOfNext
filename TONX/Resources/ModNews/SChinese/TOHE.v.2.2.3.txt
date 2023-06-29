@@ -1,7 +1,7 @@
 #Number:100027
-#Title:TownOfNext v2.2.3
+#Title:TownOfHostEdited v2.2.3
 #SubTitle:★★★★修Bug啦~★★★★
-#ShortTitle:★TONX v2.2.3
+#ShortTitle:★TOHE v2.2.3
 #Date:2023-3-29T00:00:00Z
 #-----------------------------
 什么？你说这次更新很少？别小看它啊喂！至少这个版本修了几个很弱智的Bug~

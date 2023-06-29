@@ -1,10 +1,10 @@
 #Number:100016
-#Title:TownOfNext v2.1.1
+#Title:TownOfHostEdited v2.1.1
 #SubTitle:★★★★给叛徒浅浅增强下★★★★
-#ShortTitle:★TONX v2.1.1
+#ShortTitle:★TOHE v2.1.1
 #Date:2023-3-6T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 ## 对应官方版本
 - 基于官方版本 v4.1.1

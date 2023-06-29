@@ -1,10 +1,10 @@
 #Number:100035
-#Title:TownOfNext v2.2.11
+#Title:TownOfHostEdited v2.2.11
 #SubTitle:★★★★啦啦啦我真的太他妈喜欢修Bug啦★★★★
-#ShortTitle:★TONX v2.2.11
+#ShortTitle:★TOHE v2.2.11
 #Date:2023-4-23T00:00:00Z
 #-----------------------------
-感谢您对TONX的支持！！！
+感谢您对TOHE的支持！！！
 
 
 ## 对应官方版本

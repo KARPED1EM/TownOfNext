@@ -1,10 +1,10 @@
 #Number:100035
-#Title:TownOfNext v2.2.11
+#Title:TownOfHostEdited v2.2.11
 #SubTitle:★★★★BUUUUUUUGG!!!★★★★
-#ShortTitle:★TONX v2.2.11
+#ShortTitle:★TOHE v2.2.11
 #Date:2023-4-23T00:00:00Z
 #-----------------------------
-Thank you for using TONX!
+Thank you for using TOHE!
 
 
 ## Base
@@ -36,5 +36,5 @@ Thank you for using TONX!
 ## New Feature
 - Guesser UI now has additional roles
 - The shield-animation will display as a reminder when the Swooper skill ends
-- Discord TONX-Chan
+- Discord TOHE-Chan
 - Option: Low Load Mode
