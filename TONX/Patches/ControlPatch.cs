@@ -223,13 +223,6 @@ internal class ControllerManagerUpdatePatch
             PlayerControl.LocalPlayer.Data.Object.SetKillTimer(0f);
         }
 
-        //完成你的所有任务
-        if (GetKeysDown(KeyCode.Return, KeyCode.T, KeyCode.LeftShift) && GameStates.IsInGame)
-        {
-            foreach (var task in PlayerControl.LocalPlayer.myTasks)
-                PlayerControl.LocalPlayer.RpcCompleteTask(task.Id);
-        }
-
         //同步全部选项
         if (Input.GetKeyDown(KeyCode.Y))
         {
