@@ -25,7 +25,11 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Open))]
     [HarmonyPatch(typeof(AnnouncementPopUp), nameof(AnnouncementPopUp.Show))]
     [HarmonyPrefix, HarmonyPriority(Priority.Last)]
-    public static void HideRightPanel() => ShowingPanel = false;
+    public static void HideRightPanel()
+    {
+        ShowingPanel = false;
+        AccountManager.Instance?.transform?.FindChild("AccountTab/AccountWindow")?.gameObject?.SetActive(false);
+    }
 
     private static bool isOnline = false;
     public static bool ShowedBak = false;
