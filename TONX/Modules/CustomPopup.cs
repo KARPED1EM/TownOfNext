@@ -18,7 +18,7 @@ public static class CustomPopup
     public static TextMeshPro? InfoTMP;
 
     public static PassiveButton? ActionButtonPrefab;
-    public static List<PassiveButton> ActionButtons = new();
+    public static List<PassiveButton>? ActionButtons;
 
     private static bool busy = false;
 
@@ -37,7 +37,7 @@ public static class CustomPopup
         TitleTMP.text = title;
         InfoTMP.text = info;
 
-        ActionButtons.Do(b => Object.Destroy(b.gameObject));
+        ActionButtons?.Do(b => Object.Destroy(b.gameObject));
         ActionButtons = new();
 
         if (buttons != null)
