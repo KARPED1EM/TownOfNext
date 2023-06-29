@@ -1,2 +1,2 @@
-welcome:★ Welcome! This lobby has mod TONX v{{ModVersion}}\n○ Check website for more info：TONX.cc\n● /help → Show all commands
-OnMeeting:● Discord: discord.gg/hkk2p9ggv4\n○ Website：TONX.cc\n————————————————————\n★ Send：/r → Shows rolelist\n★ Send：/r [role] → Show role description \n★ Send：/m → Check your role
+welcome:★ Welcome! This lobby has mod TONX v{{ModVersion}}\n○ Check website for more info：tonx.cc\n● /help → Show all commands
+OnMeeting:● Discord: discord.gg/hkk2p9ggv4\n○ Website：tonx.cc\n————————————————————\n★ Send：/r → Shows rolelist\n★ Send：/r [role] → Show role description \n★ Send：/m → Check your role
