@@ -272,8 +272,11 @@ class IntroCutscenePatch
                 if (Options.FixFirstKillCooldown.GetBool() && Options.CurrentGameMode != CustomGameMode.SoloKombat)
                     new LateTask(() =>
                     {
-                        Main.AllPlayerControls.Do(x => x.ResetKillCooldown());
-                        Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldownV2(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
+                        if (GameStates.IsInTask)
+                        {
+                            Main.AllPlayerControls.Do(x => x.ResetKillCooldown());
+                            Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldownV2(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
+                        }
                     }, 2f, "FixKillCooldownTask");
                 new LateTask(() =>
                 {
