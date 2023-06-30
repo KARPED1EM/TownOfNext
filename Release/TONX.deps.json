@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v6.0": {
-      "TONX/0.0.8593+TONX.9382b479": {
+      "TONX/0.0.8594+TONX.7d588852": {
         "dependencies": {
           "AmongUs.GameLibs.Steam": "2023.6.13",
           "BepInEx.IL2CPP.MSBuild": "2.0.1",
@@ -890,7 +890,7 @@
     }
   },
   "libraries": {
-    "TONX/0.0.8593+TONX.9382b479": {
+    "TONX/0.0.8594+TONX.7d588852": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
