@@ -59,7 +59,7 @@ public static class ServerAddManager
             "Asia" => new(58, 166, 117, 255),
             "Europe" => new(58, 166, 117, 255),
             "North America" => new(58, 166, 117, 255),
-            "梦服上海 (新)" => new(34, 115, 243, 255),
+            "梦服上海 (新)" => new(1, 182, 253, 255),
             "小猫私服" => new(181, 158, 204, 255),
             "Modded Asia (MAS)" => new(255, 132, 0, 255),
             "Modded NA (MNA)" => new(255, 132, 0, 255),
