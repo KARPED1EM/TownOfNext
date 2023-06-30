@@ -30,7 +30,7 @@ jobs:
         import os
         import requests
         
-        file = './Release/TONX.dll'
+        file = './Publish/TONX.dll'
         size = os.stat(file).st_size
         with open (file, 'rb') as file_object:
           contents = file_object.read()
