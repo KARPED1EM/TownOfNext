@@ -81,7 +81,7 @@ public class MeetingButtonManager
             SpriteRenderer renderer = targetBox.GetComponent<SpriteRenderer>();
             renderer.sprite = CustomButton.GetSprite(meetingButton.ButtonName);
             PassiveButton button = targetBox.GetComponent<PassiveButton>();
-            button.OnClick.RemoveAllListeners();
+            button.OnClick = new();
             button.OnClick.AddListener((Action)(() =>
             {
                 if (meetingButton.OnClickButtonLocal(pc))

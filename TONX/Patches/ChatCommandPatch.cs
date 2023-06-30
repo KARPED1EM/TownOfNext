@@ -21,6 +21,8 @@ internal class ChatCommands
 
     public static bool Prefix(ChatController __instance)
     {
+        if (roleCommands == null) InitRoleCommands();
+
         if (__instance.TextArea.text.Trim() == "") return false;
         __instance.TimeSinceLastMessage = 3f;
         var text = __instance.TextArea.text;
@@ -410,46 +412,45 @@ internal class ChatCommands
         }
         return false;
     }
-    public static void SendRolesInfo(string input, byte playerId, bool isDev = false, bool isUp = false)
+    public static void InitRoleCommands()
     {
         // 初回のみ処理
-        if (roleCommands == null)
-        {
 #pragma warning disable IDE0028  // Dictionary初期化の簡素化をしない
-            roleCommands = new();
+        roleCommands = new();
 
-            // GM
-            roleCommands.Add(CustomRoles.GM, new() { "gm", "管理" });
+        // GM
+        roleCommands.Add(CustomRoles.GM, new() { "gm", "管理" });
 
-            // RoleClass
-            ConcatCommands(CustomRoleTypes.Impostor);
-            ConcatCommands(CustomRoleTypes.Crewmate);
-            ConcatCommands(CustomRoleTypes.Neutral);
+        // RoleClass
+        ConcatCommands(CustomRoleTypes.Impostor);
+        ConcatCommands(CustomRoleTypes.Crewmate);
+        ConcatCommands(CustomRoleTypes.Neutral);
 
-            // SubRoles
-            roleCommands.Add(CustomRoles.Lovers, new() { "lo", "情人", "愛人", "链子" });
-            roleCommands.Add(CustomRoles.Watcher, new() { "wat", "窺視者", "窥视" });
-            roleCommands.Add(CustomRoles.Workhorse, new() { "wh", "加班" });
-            roleCommands.Add(CustomRoles.Avanger, new() { "av", "復仇者", "复仇" });
-            roleCommands.Add(CustomRoles.Bait, new() { "ba", "誘餌", "大奖", "头奖" });
-            roleCommands.Add(CustomRoles.Bewilder, new() { "bwd", "迷幻", "迷惑者" });
-            roleCommands.Add(CustomRoles.Brakar, new() { "br", "破平" });
-            roleCommands.Add(CustomRoles.DualPersonality, new() { "sp", "雙重人格", "双重", "双人格", "人格" });
-            roleCommands.Add(CustomRoles.Egoist, new() { "ego", "利己主義者", "利己主义", "利己", "野心" });
-            roleCommands.Add(CustomRoles.Flashman, new() { "fl", "閃電俠", "闪电" });
-            roleCommands.Add(CustomRoles.Fool, new() { "fo", "蠢蛋", "笨蛋", "蠢狗", "傻逼" });
-            roleCommands.Add(CustomRoles.Lighter, new() { "li", "執燈人", "执灯", "灯人", "小灯人" });
-            roleCommands.Add(CustomRoles.Ntr, new() { "np", "ntr", "渣男" });
-            roleCommands.Add(CustomRoles.Oblivious, new() { "pb", "膽小鬼", "胆小" });
-            roleCommands.Add(CustomRoles.Reach, new() { "re", "持槍", "手长" });
-            roleCommands.Add(CustomRoles.Seer, new() { "se", "靈媒" });
-            roleCommands.Add(CustomRoles.Trapper, new() { "tra", "陷阱師", "陷阱", "小奖" });
-            roleCommands.Add(CustomRoles.Youtuber, new() { "yt", "up" });
-            roleCommands.Add(CustomRoles.Mimic, new() { "mi", "寶箱怪", "宝箱" });
-            roleCommands.Add(CustomRoles.TicketsStealer, new() { "ts", "竊票者", "偷票", "偷票者", "窃票师", "窃票" });
+        // SubRoles
+        roleCommands.Add(CustomRoles.Lovers, new() { "lo", "情人", "愛人", "链子" });
+        roleCommands.Add(CustomRoles.Watcher, new() { "wat", "窺視者", "窥视" });
+        roleCommands.Add(CustomRoles.Workhorse, new() { "wh", "加班" });
+        roleCommands.Add(CustomRoles.Avanger, new() { "av", "復仇者", "复仇" });
+        roleCommands.Add(CustomRoles.Bait, new() { "ba", "誘餌", "大奖", "头奖" });
+        roleCommands.Add(CustomRoles.Bewilder, new() { "bwd", "迷幻", "迷惑者" });
+        roleCommands.Add(CustomRoles.Brakar, new() { "br", "破平" });
+        roleCommands.Add(CustomRoles.DualPersonality, new() { "sp", "雙重人格", "双重", "双人格", "人格" });
+        roleCommands.Add(CustomRoles.Egoist, new() { "ego", "利己主義者", "利己主义", "利己", "野心" });
+        roleCommands.Add(CustomRoles.Flashman, new() { "fl", "閃電俠", "闪电" });
+        roleCommands.Add(CustomRoles.Fool, new() { "fo", "蠢蛋", "笨蛋", "蠢狗", "傻逼" });
+        roleCommands.Add(CustomRoles.Lighter, new() { "li", "執燈人", "执灯", "灯人", "小灯人" });
+        roleCommands.Add(CustomRoles.Ntr, new() { "np", "ntr", "渣男" });
+        roleCommands.Add(CustomRoles.Oblivious, new() { "pb", "膽小鬼", "胆小" });
+        roleCommands.Add(CustomRoles.Reach, new() { "re", "持槍", "手长" });
+        roleCommands.Add(CustomRoles.Seer, new() { "se", "靈媒" });
+        roleCommands.Add(CustomRoles.Trapper, new() { "tra", "陷阱師", "陷阱", "小奖" });
+        roleCommands.Add(CustomRoles.Youtuber, new() { "yt", "up" });
+        roleCommands.Add(CustomRoles.Mimic, new() { "mi", "寶箱怪", "宝箱" });
+        roleCommands.Add(CustomRoles.TicketsStealer, new() { "ts", "竊票者", "偷票", "偷票者", "窃票师", "窃票" });
 #pragma warning restore IDE0028
-        }
-
+    }
+    public static void SendRolesInfo(string input, byte playerId, bool isDev = false, bool isUp = false)
+    {
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             Utils.SendMessage(GetString("ModeDescribe.SoloKombat"), playerId);
@@ -516,6 +517,8 @@ internal class ChatCommands
     }
     public static void OnReceiveChat(PlayerControl player, string text, out bool canceled)
     {
+        if (roleCommands == null) InitRoleCommands();
+
         canceled = false;
         if (!AmongUsClient.Instance.AmHost) return;
         if (text.StartsWith("\n")) text = text[1..];

@@ -377,7 +377,7 @@ public static class GuesserHelper
             exitButtonParent.transform.localPosition = new Vector3(3.88f, 2.12f, -200f);
             exitButtonParent.transform.localScale = new Vector3(0.22f, 0.9f, 1f);
             exitButtonParent.transform.SetAsFirstSibling();
-            exitButton.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
+            exitButton.GetComponent<PassiveButton>().OnClick = new();
             exitButton.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
             {
                 __instance.playerStates.ToList().ForEach(x => x.gameObject.SetActive(true));
@@ -524,7 +524,7 @@ public static class GuesserHelper
                 label.autoSizeTextContainer = true;
                 int copiedIndex = i[(int)role.GetCustomRoleTypes()];
 
-                button.GetComponent<PassiveButton>().OnClick.RemoveAllListeners();
+                button.GetComponent<PassiveButton>().OnClick = new();
                 if (PlayerControl.LocalPlayer.IsAlive()) button.GetComponent<PassiveButton>().OnClick.AddListener((Action)(() =>
                 {
                     if (selectedButton != button)
