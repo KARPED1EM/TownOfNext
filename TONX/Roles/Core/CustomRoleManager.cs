@@ -564,7 +564,7 @@ public enum CustomRoles
     Provocateur, //TODO
     Sunnyboy, //TODO
     BloodKnight,
-    Totocalcio, //TODO
+    Totocalcio,
     Succubus, //TODO
 
     //SoloKombat

@@ -17,7 +17,8 @@ public sealed class Jackal : RoleBase, IKiller
             50900,
             SetupOptionItem,
             "jac|≤Ú¿«",
-            "#00b4eb"
+            "#00b4eb",
+            true
         );
     public Jackal(PlayerControl player)
     : base(

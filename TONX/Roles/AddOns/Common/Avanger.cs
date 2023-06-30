@@ -15,7 +15,7 @@ public static class Avanger
     public static OptionItem OptionRevengeNums;
     public static OptionItem OptionRevengeOnKilled;
     public static OptionItem OptionRevengeOnSuicide;
-    public static readonly string[] revengeModes = 
+    public static readonly string[] revengeModes =
     {
         "AvangerMode.Killer",
         "AvangerMode.Random",
@@ -73,7 +73,7 @@ public static class Avanger
                     break;
             }
             list = list.Where(p => p != target).ToList();
-            for(int i = 0; i < OptionRevengeNums.GetInt(); i++)
+            for (int i = 0; i < OptionRevengeNums.GetInt(); i++)
             {
                 if (list.Count < 1) break;
                 int index = IRandom.Instance.Next(0, list.Count);
@@ -82,7 +82,7 @@ public static class Avanger
             }
         }
 
-        foreach (var pc in  targets)
+        foreach (var pc in targets)
         {
             pc.SetRealKiller(target);
             pc.SetDeathReason(CustomDeathReason.Revenge);
