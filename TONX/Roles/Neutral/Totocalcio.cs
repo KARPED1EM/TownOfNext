@@ -2,13 +2,12 @@
 using Hazel;
 using System;
 using System.Linq;
-using TONX;
 using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
-namespace TOHE.Roles.Neutral;
+namespace TONX.Roles.Neutral;
 public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
 {
     public static readonly SimpleRoleInfo RoleInfo =
@@ -20,7 +19,7 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
             CustomRoleTypes.Neutral,
             51000,
             SetupOptionItem,
-            "賭徒",
+            "fo|賭徒",
             "#ff9409",
             true
         );
@@ -123,7 +122,7 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
         if (OptionBetTargetKnowTotocalcio.GetBool())
             target.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), Translator.GetString("TotocalcioBetOnYou")));
 
-        TONX.Logger.Info($"赌徒下注：{killer.GetNameWithRole()} => {target.GetNameWithRole()}", "Totocalcio");
+        Logger.Info($"赌徒下注：{killer.GetNameWithRole()} => {target.GetNameWithRole()}", "Totocalcio");
 
         return false;
     }

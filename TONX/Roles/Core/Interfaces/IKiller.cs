@@ -67,7 +67,7 @@ public interface IKiller
     /// </summary>
     /// <param name="buttonName">按钮图片名</param>
     /// <returns>true：确定要覆盖</returns>
-    public virtual bool OverrideKillButtonSprite(out string buttonName)
+    public bool OverrideKillButtonSprite(out string buttonName)
     {
         buttonName = default;
         return false;
@@ -78,7 +78,7 @@ public interface IKiller
     /// </summary>
     /// <param name="buttonName">按钮图片名</param>
     /// <returns>true：确定要覆盖</returns>
-    public virtual bool OverrideVentButtonSprite(out string buttonName)
+    public bool OverrideVentButtonSprite(out string buttonName)
     {
         buttonName = default;
         return false;

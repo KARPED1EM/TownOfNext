@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using TONX.Roles.Core;
+using TONX.Roles.Neutral;
 
 namespace TONX;
 
@@ -86,14 +87,13 @@ public class PlayerState
         }
         if (role == CustomRoles.Charmed)
         {
-            //TODO: FIXME
-            //countTypes = Succubus.CharmedCountMode.GetInt() switch
-            //{
-            //    0 => CountTypes.OutOfGame,
-            //    1 => CountTypes.Succubus,
-            //    2 => countTypes,
-            //    _ => throw new NotImplementedException()
-            //};
+            countTypes = Succubus.OptionCharmedCountMode.GetInt() switch
+            {
+                0 => CountTypes.OutOfGame,
+                1 => CountTypes.Succubus,
+                2 => countTypes,
+                _ => throw new NotImplementedException()
+            };
             SubRoles.Remove(CustomRoles.Madmate);
         }
 

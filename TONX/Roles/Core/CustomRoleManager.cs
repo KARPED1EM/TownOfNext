@@ -565,7 +565,7 @@ public enum CustomRoles
     Sunnyboy, //TODO
     BloodKnight,
     Totocalcio,
-    Succubus, //TODO
+    Succubus,
 
     //SoloKombat
     KB_Normal, //TODO

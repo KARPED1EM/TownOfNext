@@ -3,6 +3,7 @@ using TONX.Roles.AddOns.Common;
 using TONX.Roles.Core;
 using TONX.Roles.Crewmate;
 using TONX.Roles.Impostor;
+using TONX.Roles.Neutral;
 
 namespace TONX;
 
@@ -41,7 +42,7 @@ public static class NameColorManager
         //÷ÈÄ§Ð¡µÜ»¥ÈÏ
         if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Succubus)) color = Main.roleColors[CustomRoles.Succubus];
         if (seer.Is(CustomRoles.Succubus) && target.Is(CustomRoles.Charmed)) color = Main.roleColors[CustomRoles.Charmed];
-        //if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Charmed) && Succubus.TargetKnowOtherTarget.GetBool()) color = Main.roleColors[CustomRoles.Charmed];
+        if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Charmed) && Succubus.OptionTargetKnowOtherTarget.GetBool()) color = Main.roleColors[CustomRoles.Charmed];
 
         if (color != "") return true;
         else return seer == target
