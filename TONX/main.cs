@@ -12,7 +12,7 @@ using TONX.Roles.Core;
 using UnityEngine;
 
 [assembly: AssemblyFileVersion(TONX.Main.PluginVersion)]
-[assembly: AssemblyInformationalVersion(TONX.Main.PluginVersion)]
+[assembly: AssemblyInformationalVersion(TONX.Main.LowestSupportedVersion)]
 [assembly: AssemblyVersion(TONX.Main.PluginVersion)]
 namespace TONX;
 
@@ -33,7 +33,7 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public const string PluginGuid = "com.karped1em.tonx";
-    public static readonly string LowestSupportedVersion = "2023.6.13";
+    public const string LowestSupportedVersion = "2023.6.13";
     public const string PluginVersion = "1.0.0";
     public const int PluginCreation = 1;
 
