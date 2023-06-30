@@ -96,10 +96,7 @@ public static class NameTagPanel
             newButton.Background.color = Palette.White;
             var newPassiveButton = newButton.GetComponent<PassiveButton>();
             newPassiveButton.OnClick = new();
-            newPassiveButton.OnClick.AddListener(new Action(() =>
-            {
-                NameTagNewWindow.Open();
-            }));
+            newPassiveButton.OnClick.AddListener(new Action(NameTagNewWindow.Open));
 
             var helpText = Object.Instantiate(CustomPopup.InfoTMP.gameObject, CustomBackground.transform);
             helpText.name = "Help Text";
