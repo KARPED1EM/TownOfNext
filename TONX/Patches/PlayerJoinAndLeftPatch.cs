@@ -48,6 +48,15 @@ class OnGameJoinedPatch
         }
     }
 }
+[HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.OnBecomeHost))]
+class OnBecomeHostPatch
+{
+    public static void Postfix()
+    {
+        if (GameStates.InGame)
+            GameManager.Instance.RpcEndGame(GameOverReason.ImpostorDisconnect, false);
+    }
+}
 [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.DisconnectInternal))]
 class DisconnectInternalPatch
 {
