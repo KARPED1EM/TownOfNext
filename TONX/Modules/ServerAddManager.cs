@@ -66,7 +66,7 @@ public static class ServerAddManager
             "Modded EU (MEU)" => new(255, 132, 0, 255),
             _ => new(255, 255, 255, 255),
         };
-            
+
         PingTrackerUpdatePatch.ServerName = Utils.ColorString(color, name);
     }
 
