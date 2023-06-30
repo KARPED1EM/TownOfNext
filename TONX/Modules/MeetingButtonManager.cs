@@ -34,6 +34,8 @@ public class MeetingButtonManager
     [HarmonyPatch(nameof(MeetingHud.Update)), HarmonyPostfix, HarmonyPriority(Priority.LowerThanNormal)]
     public static void Update(MeetingHud __instance)
     {
+        if (__instance == null || !GameStates.IsInGame || __instance.IsDestroyedOrNull()) return;
+
         Count = Count > 20 ? 0 : ++Count;
         if (Count != 0) return;
 
