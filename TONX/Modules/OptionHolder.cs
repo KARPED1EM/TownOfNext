@@ -470,6 +470,10 @@ public static class Options
             switch (info.RoleName)
             {
                 case CustomRoles.Jackal: //ジャッカルは1人固定
+                case CustomRoles.Gamer:
+                case CustomRoles.Succubus:
+                case CustomRoles.Pelican:
+                case CustomRoles.BloodKnight:
                     SetupSingleRoleOptions(info.ConfigId, info.Tab, info.RoleName, 1);
                     break;
                 default:
