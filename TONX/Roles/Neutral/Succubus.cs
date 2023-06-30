@@ -88,6 +88,7 @@ public sealed class Succubus : RoleBase, IKiller
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         var (killer, target) = info.AttemptTuple;
+        if (info.IsSuicide) return true;
         if (CharmLimit < 1) return false;
         if (CanBeCharmed(target))
         {

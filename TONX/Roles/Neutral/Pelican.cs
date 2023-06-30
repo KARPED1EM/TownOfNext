@@ -88,6 +88,7 @@ public sealed class Pelican : RoleBase, IKiller
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         var (killer, target) = info.AttemptTuple;
+        if (info.IsSuicide) return true;
         if (!CanEat(target.PlayerId)) return false;
         Utils.TP(killer.NetTransform, target.GetTruePosition());
         EatPlayer(killer, target);

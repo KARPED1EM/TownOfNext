@@ -456,7 +456,7 @@ static class ExtendedPlayerControl
 
             CustomRoles.Jackal => Jackal.CanVent,
             CustomRoles.Pelican => Pelican.CanVent,
-            //CustomRoles.Gamer => Gamer.CanVent.GetBool(),
+            CustomRoles.Gamer => Gamer.CanVent,
             CustomRoles.BloodKnight => BloodKnight.CanVent,
 
             CustomRoles.Arsonist => Arsonist.IsDouseDone(pc),

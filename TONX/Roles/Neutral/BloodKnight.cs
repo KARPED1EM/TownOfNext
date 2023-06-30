@@ -68,7 +68,7 @@ public sealed class BloodKnight : RoleBase, IKiller
     private bool InProtect() => ProtectStartTime != 0 && ProtectStartTime + OptionProtectDuration.GetFloat() > Utils.GetTimeStamp();
     public void OnMurderPlayerAsKiller(MurderInfo info)
     {
-        if (info.IsSuicide || info.IsFakeSuicide) return;
+        if (info.IsSuicide) return;
         ProtectStartTime = Utils.GetTimeStamp();
         SendRPC();
         Utils.NotifyRoles(Player);

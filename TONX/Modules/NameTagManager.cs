@@ -279,7 +279,7 @@ public static class NameTagManager
             }
             return sb.ToString();
         }
-        private Color Evaluate(float percent)
+        public Color Evaluate(float percent)
         {
             if (percent > 1) percent = 1;
             int indexLow = Mathf.FloorToInt(percent / Spacing);

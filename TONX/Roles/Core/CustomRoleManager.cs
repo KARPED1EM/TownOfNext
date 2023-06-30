@@ -557,7 +557,7 @@ public enum CustomRoles
     Revolutionist, //TODO
     FFF, //TODO
     Konan, //TODO
-    Gamer, //TODO
+    Gamer,
     DarkHide, //TODO
     Workaholic, //TODO
     Collector, //TODO

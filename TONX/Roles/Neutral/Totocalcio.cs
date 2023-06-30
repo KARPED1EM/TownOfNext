@@ -103,9 +103,8 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         var (killer, target) = info.AttemptTuple;
-        if (info.IsSuicide) return false;
-        if (BetTarget == target.PlayerId) return false;
-        if (BetLimit < 1) return false;
+        if (info.IsSuicide) return true;
+        if (BetTarget == target.PlayerId || BetLimit < 1) return false;
 
         BetLimit--;
         var beforeTarget = Utils.GetPlayerById(BetTarget);
