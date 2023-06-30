@@ -1,11 +1,11 @@
-﻿using Hazel;
-using TONX.Roles.Core.Interfaces;
-using TONX.Roles.Core;
-using UnityEngine;
-using AmongUs.GameOptions;
+﻿using AmongUs.GameOptions;
+using Hazel;
 using System.Collections.Generic;
 using System.Linq;
 using TONX.Modules;
+using TONX.Roles.Core;
+using TONX.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TONX.Roles.Neutral;
 public sealed class Pelican : RoleBase, IKiller
@@ -74,7 +74,7 @@ public sealed class Pelican : RoleBase, IKiller
     {
         if (rpcType != CustomRPC.SyncPelicanEatenPlayers) return;
         EatenPlayers = new();
-        for (int i = 0; i< reader.ReadInt32(); i++)
+        for (int i = 0; i < reader.ReadInt32(); i++)
             EatenPlayers.Add(reader.ReadByte());
     }
     public static bool IsEaten(byte id) => Main.AllPlayerControls.Any(p => p.GetRoleClass() is Pelican roleClass && (roleClass.EatenPlayers?.Contains(id) ?? false));

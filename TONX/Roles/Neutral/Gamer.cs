@@ -1,11 +1,11 @@
-﻿using Hazel;
-using TONX.Roles.Core.Interfaces;
-using TONX.Roles.Core;
-using UnityEngine;
-using AmongUs.GameOptions;
-using System.Collections.Generic;
+﻿using AmongUs.GameOptions;
 using HarmonyLib;
+using Hazel;
 using System;
+using System.Collections.Generic;
+using TONX.Roles.Core;
+using TONX.Roles.Core.Interfaces;
+using UnityEngine;
 
 namespace TONX.Roles.Neutral;
 public sealed class Gamer : RoleBase, IKiller

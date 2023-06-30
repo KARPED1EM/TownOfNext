@@ -1,8 +1,8 @@
-﻿using Hazel;
-using TONX.Roles.Core.Interfaces;
+﻿using AmongUs.GameOptions;
+using Hazel;
 using TONX.Roles.Core;
+using TONX.Roles.Core.Interfaces;
 using UnityEngine;
-using AmongUs.GameOptions;
 
 namespace TONX.Roles.Neutral;
 public sealed class Succubus : RoleBase, IKiller
@@ -42,7 +42,7 @@ public sealed class Succubus : RoleBase, IKiller
         "CharmedCountMode.Original",
     };
     enum OptionName
-    { 
+    {
         SuccubusCharmCooldown,
         SuccubusCharmCooldownIncrese,
         SuccubusCharmMax,
