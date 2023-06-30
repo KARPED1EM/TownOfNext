@@ -210,12 +210,12 @@ public static class NameTagManager
             if (Name != null)
             {
                 Name.Text = name;
-                name = Name.Generate(false);
+                name = Name.Generate(false, !inOneLine);
             }
 
             if (onlyName) return name;
 
-            name = Prefix?.Generate() + name + Suffix?.Generate();
+            name = Prefix?.Generate(true, !inOneLine) + name + Suffix?.Generate(true, !inOneLine);
 
             if (host && GameStates.IsOnlineGame && UpperText == null)
             {
@@ -243,14 +243,14 @@ public static class NameTagManager
         public Color32? TextColor { get; set; }
         public ColorGradient? Gradient { get; set; }
         public bool Spaced { get; set; } = true;
-        public string Generate(bool applySpace = true)
+        public string Generate(bool applySpace = true, bool applySize = true)
         {
             if (Text == null) return "";
             var text = Text;
             if (Gradient != null && Gradient.IsValid) text = Gradient.Apply(text);
             else if (TextColor != null) text = Utils.ColorString(TextColor.Value, text);
             if (Spaced && applySpace) text = " " + text + " ";
-            if (SizePercentage != null) text = $"<size={SizePercentage}%>{text}</size>";
+            if (SizePercentage != null && applySize) text = $"<size={SizePercentage}%>{text}</size>";
             return text;
         }
     }
