@@ -1173,7 +1173,7 @@ public static class Utils
     public static string SummaryTexts(byte id, bool disableColor = true)
     {
         var name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
-        if (id == PlayerControl.LocalPlayer.PlayerId) name = DataManager.player.Customization.Name;
+        if (id == PlayerControl.LocalPlayer.PlayerId) name = Main.nickName == "" ? DataManager.player.Customization.Name : Main.nickName;
         else name = GetPlayerById(id)?.Data.PlayerName ?? name;
 
         bool wide = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian;
