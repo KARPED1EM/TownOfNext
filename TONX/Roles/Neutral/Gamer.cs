@@ -81,9 +81,11 @@ public sealed class Gamer : RoleBase, IKiller
     public bool CanUseKillButton() => Player.IsAlive();
     private void SendRPC(byte id)
     {
-        var sender = CreateSender(CustomRPC.SetGamerHealth);
-        sender.Writer.Write(id);
-        sender.Writer.Write(Player.PlayerId == id ? GamerHP : PlayerHP[id]);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetGamerHealth, SendOption.Reliable, -1);
+        writer.Write(Player.PlayerId);
+        writer.Write(id);
+        writer.Write(Player.PlayerId == id ? GamerHP : PlayerHP[id]);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {

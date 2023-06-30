@@ -225,7 +225,7 @@ internal class EAC
         catch (Exception e)
         {
             Logger.Exception(e, "EAC");
-            throw e;
+            throw;
         }
         WarnHost(-1);
         return false;

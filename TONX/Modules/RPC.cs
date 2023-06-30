@@ -50,9 +50,9 @@ public enum CustomRPC
     //Roles
     SetDrawPlayer,
     SetCurrentDrawTarget,
-    SetGamerHealth,
     SyncPelicanEatenPlayers,
     SwordsManKill,
+    SetGamerHealth,
     SetCounterfeiterSellLimit,
     SetMedicalerProtectLimit,
     SetGangsterRecruitLimit,
