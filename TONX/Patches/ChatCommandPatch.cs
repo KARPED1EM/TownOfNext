@@ -293,18 +293,7 @@ internal class ChatCommands
 
                 case "/xf":
                     canceled = true;
-                    if (!GameStates.IsInGame)
-                    {
-                        Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
-                        break;
-                    }
-                    foreach (var pc in Main.AllPlayerControls)
-                    {
-                        pc.RpcSetNameEx(pc.GetRealName(isMeeting: true));
-                    }
-                    ChatUpdatePatch.DoBlockChat = false;
-                    Utils.NotifyRoles(isForMeeting: GameStates.IsMeeting, NoCache: true);
-                    Utils.SendMessage(GetString("Message.TryFixName"), PlayerControl.LocalPlayer.PlayerId);
+                    SetAllNamesManual();
                     break;
 
                 case "/id":
@@ -515,6 +504,35 @@ internal class ChatCommands
             coms.DoIf(c => c.Trim() != "", roleCommands[role.RoleName].Add);
         }
     }
+    private static void SetAllNamesManual()
+    {
+        if (!GameStates.IsInGame)
+        {
+            Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+            return;
+        }
+        ChatUpdatePatch.DoBlockChat = true;
+        if (GameStates.IsMeeting)
+        {
+            foreach (var seer in Main.AllPlayerControls)
+            {
+                foreach (var seen in Main.AllPlayerControls)
+                {
+                    var seenName = seen.GetTrueName();
+                    var coloredName = Utils.ColorString(seen.GetRoleColor(), seenName);
+                    seen.RpcSetNamePrivate(
+                        seer == seen ? coloredName : seenName,
+                        true, seer);
+                }
+            }
+        }
+        else
+        {
+            Utils.NotifyRoles();
+        }
+        ChatUpdatePatch.DoBlockChat = false;
+        Utils.SendMessage(GetString("Message.TryFixName"), PlayerControl.LocalPlayer.PlayerId);
+    }
     public static void OnReceiveChat(PlayerControl player, string text, out bool canceled)
     {
         if (roleCommands == null) InitRoleCommands();
@@ -644,14 +662,7 @@ internal class ChatCommands
                 break;
 
             case "/xf":
-                if (!GameStates.IsInGame)
-                {
-                    Utils.SendMessage(GetString("Message.CanNotUseInLobby"), player.PlayerId);
-                    break;
-                }
-                ChatUpdatePatch.DoBlockChat = false;
-                Utils.NotifyRoles(isForMeeting: GameStates.IsMeeting, NoCache: true);
-                Utils.SendMessage(GetString("Message.TryFixName"), player.PlayerId);
+                SetAllNamesManual();
                 break;
 
             case "/say":
