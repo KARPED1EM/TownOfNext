@@ -734,7 +734,7 @@ public static class Utils
         foreach (var id in Main.winnerList)
         {
             if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-            sb.Append($"\n★ ").Append(EndGamePatch.SummaryText[id].RemoveHtmlTags());
+            sb.Append($"\n★ ").Append(EndGamePatch.SummaryText[id]);
             cloneRoles.Remove(id);
         }
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
@@ -750,7 +750,7 @@ public static class Utils
             foreach (var id in cloneRoles)
             {
                 if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-                sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id].RemoveHtmlTags());
+                sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id]);
             }
         }
         SendMessage(sb.ToString(), PlayerId);
@@ -1172,9 +1172,11 @@ public static class Utils
     }
     public static string SummaryTexts(byte id, bool disableColor = true)
     {
-        var name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
-        if (id == PlayerControl.LocalPlayer.PlayerId) name = Main.nickName == "" ? DataManager.player.Customization.Name : Main.nickName;
-        else name = GetPlayerById(id)?.Data.PlayerName ?? name;
+        if (GetPlayerById(id)?.GetTrueName() is not string name)
+            if (!Main.AllPlayerNames.TryGetValue(id, out name))
+                name = "Unknown";
+
+        name = ColorString(Main.PlayerColors[id], name);
 
         bool wide = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian;
         var NamePos = wide ? 24 : 24;
@@ -1183,7 +1185,7 @@ public static class Utils
         var VitalPos = wide ? 17 : 10;
 
         var sb = new StringBuilder();
-        sb.Append(ColorString(Main.PlayerColors[id], name));
+        sb.Append(name);
         sb.Append($"<pos={NamePos}%> {GetProgressText(id)}</pos>");
         sb.Append($"<pos={NamePos + ProgressPos}%> {GetKillCountText(id)}</pos>");
         sb.Append($"<pos={NamePos + ProgressPos + KillCountPos}%> {GetVitalText(id, true, true)}</pos>");
@@ -1193,8 +1195,8 @@ public static class Utils
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
         {
             if (TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese)
-                summary = $"{GetProgressText(id)}\t<pos=22%>{ColorString(Main.PlayerColors[id], name)}</pos>";
-            else summary = $"{ColorString(Main.PlayerColors[id], name)}<pos=30%>{GetProgressText(id)}</pos>";
+                summary = $"{GetProgressText(id)}\t<pos=22%>{name}</pos>";
+            else summary = $"{name}<pos=30%>{GetProgressText(id)}</pos>";
             if (GetProgressText(id).Trim() == "") return "INVALID";
         }
         return disableColor ? summary.RemoveHtmlTags() : summary;
