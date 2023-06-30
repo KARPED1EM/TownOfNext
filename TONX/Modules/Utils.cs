@@ -659,10 +659,8 @@ public static class Utils
         sb.Append($"━━━━━━━━━━━━【{GetString("Settings")}】━━━━━━━━━━━━");
         foreach (var opt in OptionItem.AllOptions.Where(x => x.GetBool() && x.Parent == null && x.Id >= 90000 && !x.IsHiddenOn(Options.CurrentGameMode)))
         {
-            if (opt.Name == "KillFlashDuration")
-                sb.Append($"\n【{opt.GetName(true)}: {opt.GetString()}】\n");
-            else
-                sb.Append($"\n【{opt.GetName(true)}】\n");
+            if (opt.IsText) sb.Append($"\n【{opt.GetName(true, true)}】\n");
+            else sb.Append($"\n【{opt.GetName(true, true)}: {opt.GetString()}】\n");
             ShowChildrenSettings(opt, ref sb);
             var text = sb.ToString();
             sb.Clear().Append(text.RemoveHtmlTags());
