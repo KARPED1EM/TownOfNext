@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using UnityEngine;
 
 namespace TONX;
 
@@ -10,7 +11,6 @@ public static class ServerAddManager
     private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
     public static void Init()
     {
-
         serverManager.AvailableRegions = ServerManager.DefaultRegions;
         List<IRegionInfo> regionInfos = new();
 
@@ -26,6 +26,48 @@ public static class ServerAddManager
         var defaultRegion = serverManager.CurrentRegion;
         regionInfos.Where(x => !serverManager.AvailableRegions.Contains(x)).Do(serverManager.AddOrUpdateRegion);
         serverManager.SetRegion(defaultRegion);
+
+        SetServerName(defaultRegion.Name);
+    }
+    public static void SetServerName(string serverName = "")
+    {
+        if (serverName == "") serverName = ServerManager.Instance.CurrentRegion.Name;
+        var name = serverName switch
+        {
+            "Modded Asia (MAS)" => "MAS",
+            "Modded NA (MNA)" => "MNA",
+            "Modded EU (MEU)" => "MEU",
+            "North America" => "NA",
+            "梦服上海 (新)" => "梦服",
+            "小猫私服" => "小猫服",
+            _ => serverName,
+        };
+
+        if ((TranslationController.Instance?.currentLanguage?.languageID ?? SupportedLangs.SChinese) is SupportedLangs.SChinese or SupportedLangs.TChinese)
+        {
+            name = name switch
+            {
+                "Asia" => "亚服",
+                "Europe" => "欧服",
+                "North America" => "北美服",
+                _ => name,
+            };
+        };
+
+        Color32 color = serverName switch
+        {
+            "Asia" => new(58, 166, 117, 255),
+            "Europe" => new(58, 166, 117, 255),
+            "North America" => new(58, 166, 117, 255),
+            "梦服上海 (新)" => new(34, 115, 243, 255),
+            "小猫私服" => new(181, 158, 204, 255),
+            "Modded Asia (MAS)" => new(255, 132, 0, 255),
+            "Modded NA (MNA)" => new(255, 132, 0, 255),
+            "Modded EU (MEU)" => new(255, 132, 0, 255),
+            _ => new(255, 255, 255, 255),
+        };
+            
+        PingTrackerUpdatePatch.ServerName = Utils.ColorString(color, name);
     }
 
     public static IRegionInfo CreateHttp(string ip, string name, ushort port, bool ishttps)

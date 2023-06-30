@@ -264,10 +264,10 @@ public class Main : BasePlugin
             ExceptionMessageIsShown = false;
         }
 
+        Translator.Init();
         CustomWinnerHolder.Reset();
         RegistryManager.Init();
         ServerAddManager.Init();
-        Translator.Init();
         BanManager.Init();
         TemplateManager.Init();
         SpamManager.Init();

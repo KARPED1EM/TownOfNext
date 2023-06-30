@@ -1,4 +1,5 @@
 using HarmonyLib;
+using Rewired.UI.ControlMapper;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
@@ -12,6 +13,7 @@ namespace TONX;
 internal class PingTrackerUpdatePatch
 {
     private static float deltaTime;
+    public static string ServerName = "";
     private static void Postfix(PingTracker __instance)
     {
         __instance.text.alignment = TextAlignmentOptions.TopRight;
@@ -29,7 +31,7 @@ internal class PingTrackerUpdatePatch
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         float fps = Mathf.Ceil(1.0f / deltaTime);
 
-        sb.Append($"\r\n").Append($"<color={color}>{ping} <size=60%>Ping</size></color>  <color=#00a4ff>{fps} <size=60%>FPS</size></color>");
+        sb.Append($"\r\n").Append($"<color={color}>{ping} <size=60%>Ping</size></color>  <color=#00a4ff>{fps} <size=60%>FPS</size></color>  {ServerName}");
 
         if (!GameStates.IsModHost) sb.Append($"\r\n").Append("<size=135%>" + Utils.ColorString(Color.red, GetString("Warning.NoModHost")) + "</size>");
         else
