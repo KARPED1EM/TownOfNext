@@ -515,7 +515,7 @@ class FixedUpdatePatch
                             MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.FollowingSuicide, partnerPlayer.PlayerId);
                         }
                         else
-                            partnerPlayer.RpcMurderPlayer(partnerPlayer);
+                            partnerPlayer.RpcMurderPlayerEx(partnerPlayer);
                     }
                 }
             }

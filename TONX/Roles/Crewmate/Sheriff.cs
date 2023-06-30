@@ -153,7 +153,7 @@ public sealed class Sheriff : RoleBase, IKiller
                 killer.ResetKillCooldown();
                 return true;
             }
-            killer.RpcMurderPlayer(killer);
+            killer.RpcMurderPlayerEx(killer);
             PlayerState.GetByPlayerId(killer.PlayerId).DeathReason = CustomDeathReason.Misfire;
             if (!MisfireKillsTarget.GetBool()) return false;
         }

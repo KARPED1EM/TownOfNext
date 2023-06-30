@@ -184,7 +184,7 @@ public sealed class Arsonist : RoleBase, IKiller
                 {
                     //生存者は焼殺
                     pc.SetRealKiller(Player);
-                    pc.RpcMurderPlayer(pc);
+                    pc.RpcMurderPlayerEx(pc);
                     var state = PlayerState.GetByPlayerId(pc.PlayerId);
                     state.DeathReason = CustomDeathReason.Torched;
                     state.SetDead();
@@ -206,7 +206,7 @@ public sealed class Arsonist : RoleBase, IKiller
     public override bool OverrideAbilityButtonText(out string text)
     {
         text = GetString("ArsonistVetnButtonText");
-        return IsDouseDone(Player);
+        return true;
     }
     public bool OverrideKillButtonSprite(out string buttonName)
     {
@@ -216,7 +216,7 @@ public sealed class Arsonist : RoleBase, IKiller
     public override bool OverrideAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Ignite";
-        return IsDouseDone(Player);
+        return true;
     }
 
     public override string GetMark(PlayerControl seer, PlayerControl seen, bool isForMeeting = false)
