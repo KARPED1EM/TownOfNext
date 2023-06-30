@@ -700,14 +700,14 @@ internal class ChatUpdatePatch
         Dictionary<int, bool> receiver = new();
         if (clientId == -1)
         {
-            if (msg.RemoveHtmlTags() == msg) receiver.Add(-1, false);
-            else if (Main.AllPlayerControls.All(p => !p.AmOwner && !p.IsModClient())) receiver.Add(-1, false);
-            else if (Main.AllPlayerControls.All(p => p.IsModClient())) receiver.Add(-1, true);
-            else Main.AllPlayerControls.Do(p => receiver.Add(p.GetClientId(), p.IsModClient()));
+            if (msg.RemoveHtmlTags() == msg) receiver.TryAdd(-1, false);
+            else if (Main.AllPlayerControls.All(p => !p.AmOwner && !p.IsModClient())) receiver.TryAdd(-1, false);
+            else if (Main.AllPlayerControls.All(p => p.IsModClient())) receiver.TryAdd(-1, true);
+            else Main.AllPlayerControls.Do(p => receiver.TryAdd(p.GetClientId(), p.IsModClient()));
         }
         else
         {
-            Main.AllPlayerControls.DoIf(p => p.GetClientId() == clientId, p => receiver.Add(p.GetClientId(), p.IsModClient()));
+            Main.AllPlayerControls.DoIf(p => p.GetClientId() == clientId, p => receiver.TryAdd(p.GetClientId(), p.IsModClient()));
             receiver.Remove(-1);
         }
 
