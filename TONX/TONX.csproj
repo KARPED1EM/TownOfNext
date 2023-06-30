@@ -7,8 +7,9 @@
         <Description>Town Of Next</Description>
         <Authors>KARPED1EM</Authors>
         <langVersion>latest</langVersion>
-        <Configurations>Debug;Release;Canary</Configurations>
+        <Configurations>Debug;Release</Configurations>
         <NoWarn>MSB3246</NoWarn>
+        <Copyright>2023 © KARPED1EM</Copyright>
     </PropertyGroup>
 
     <ItemGroup> 
@@ -36,6 +37,5 @@
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
         <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="$(AmongUs)/BepInEx/plugins/" Condition="'$(Configuration)' == 'Debug'" />
-		<Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFolder="../Release/" Condition="'$(Configuration)' == 'Release'" />
     </Target>
 </Project>
