@@ -137,7 +137,7 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
         return (seen.GetRoleClass() is Totocalcio roleClass && roleClass.BetTarget == seer.PlayerId)
             ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), "♦") : "";
     }
-    public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Utils.ShadeColor(Utils.GetRoleColor(CustomRoles.Totocalcio), 0.25f) : Color.gray, $"({BetLimit})");
+    public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Utils.ShadeColor(RoleInfo.RoleColor, 0.25f) : Color.gray, $"({BetLimit})");
     public bool CheckWin(out AdditionalWinners winnerType)
     {
         winnerType = AdditionalWinners.Totocalcio;

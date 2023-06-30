@@ -281,7 +281,7 @@ public static class SoloKombatManager
         originalSpeed.Remove(target.PlayerId);
         originalSpeed.Add(target.PlayerId, Main.AllPlayerSpeed[target.PlayerId]);
 
-        //Utils.TP(target.NetTransform, Pelican.GetBlackRoomPS());
+        Utils.TP(target.NetTransform, Utils.GetBlackRoomPS());
         Main.AllPlayerSpeed[target.PlayerId] = 0.3f;
         target.MarkDirtySettings();
 
@@ -368,10 +368,10 @@ public static class SoloKombatManager
             {
                 foreach (var pc in Main.AllPlayerControls.Where(x => !x.SoloAlive()))
                 {
-                    // 锁定死亡玩家在小黑屋
-                    //var pos = Pelican.GetBlackRoomPS();
-                    //var dis = Vector2.Distance(pos, pc.GetTruePosition());
-                    //if (dis > 1f) Utils.TP(pc.NetTransform, pos);
+                    //锁定死亡玩家在小黑屋
+                    var pos = Utils.GetBlackRoomPS();
+                    var dis = Vector2.Distance(pos, pc.GetTruePosition());
+                    if (dis > 1f) Utils.TP(pc.NetTransform, pos);
                 }
 
                 if (LastFixedUpdate == Utils.GetTimeStamp()) return;
@@ -396,9 +396,9 @@ public static class SoloKombatManager
                     // 复活玩家随机复活（二次确认）
                     if (pc.SoloAlive())
                     {
-                        //var pos = Pelican.GetBlackRoomPS();
-                        //var dis = Vector2.Distance(pos, pc.GetTruePosition());
-                        //if (dis < 1.2f) PlayerRandomSpwan(pc);
+                        var pos = Utils.GetBlackRoomPS();
+                        var dis = Vector2.Distance(pos, pc.GetTruePosition());
+                        if (dis < 1.2f) PlayerRandomSpwan(pc);
                     }
                     // 复活倒计时
                     if (BackCountdown.ContainsKey(pc.PlayerId))

@@ -984,8 +984,8 @@ public static class Utils
             //TODO: FIXME
             //if (seer.Is(CustomRoles.Revolutionist) && seer.IsDrawDone())
             //    SelfName = $">{ColorString(seer.GetRoleColor(), string.Format(GetString("EnterVentWinCountDown"), Main.RevolutionistCountdown.TryGetValue(seer.PlayerId, out var x) ? x : 10))}";
-            //if (Pelican.IsEaten(seer.PlayerId))
-            //    SelfName = $"{ColorString(GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"))}";
+            if (Pelican.IsEaten(seer.PlayerId))
+                SelfName = $"{ColorString(GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"))}";
             if (NameNotifyManager.GetNameNotify(seer, out var name))
                 SelfName = name;
             SelfName = SelfRoleName + "\r\n" + SelfName;
@@ -1319,4 +1319,16 @@ public static class Utils
         or "pinklaze#1776" //NCM
         or "sofaagile#3120" //天寸
         or "aerobicgen#3487"; //鲨鲨
+
+    public static Vector2 GetBlackRoomPS()
+    {
+        return Main.NormalOptions.MapId switch
+        {
+            0 => new(-27f, 3.3f), // The Skeld
+            1 => new(-11.4f, 8.2f), // MIRA HQ
+            2 => new(42.6f, -19.9f), // Polus
+            4 => new(-16.8f, -6.2f), // Airship
+            _ => throw new System.NotImplementedException(),
+        };
+    }
 }

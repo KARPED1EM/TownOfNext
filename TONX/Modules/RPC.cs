@@ -51,7 +51,7 @@ public enum CustomRPC
     SetDrawPlayer,
     SetCurrentDrawTarget,
     SetGamerHealth,
-    SetPelicanEtenNum,
+    SyncPelicanEatenPlayers,
     SwordsManKill,
     SetCounterfeiterSellLimit,
     SetMedicalerProtectLimit,

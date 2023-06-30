@@ -84,7 +84,6 @@ public sealed class Succubus : RoleBase, IKiller
         if (rpcType != CustomRPC.SetSuccubusCharmLimit) return;
         CharmLimit = reader.ReadInt32();
     }
-
     public bool CanUseKillButton() => Player.IsAlive() && CharmLimit >= 1;
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {
@@ -122,7 +121,7 @@ public sealed class Succubus : RoleBase, IKiller
     {
         if (seer.Is(CustomRoles.Charmed)) enabled = true;
     }
-    public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Utils.ShadeColor(Utils.GetRoleColor(CustomRoles.Succubus), 0.25f) : Color.gray, $"({CharmLimit})");
+    public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Utils.ShadeColor(RoleInfo.RoleColor, 0.25f) : Color.gray, $"({CharmLimit})");
     public static bool CanBeCharmed(PlayerControl pc) => pc != null && (pc.GetCustomRole().IsCrewmate() || pc.GetCustomRole().IsImpostor()) && !pc.Is(CustomRoles.Charmed);
     public bool OverrideKillButtonText(out string text)
     {

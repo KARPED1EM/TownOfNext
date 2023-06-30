@@ -553,7 +553,7 @@ public enum CustomRoles
     Executioner,
     Jackal,
     Innocent, //TODO
-    Pelican, //TODO
+    Pelican,
     Revolutionist, //TODO
     FFF, //TODO
     Konan, //TODO

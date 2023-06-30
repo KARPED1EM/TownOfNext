@@ -38,8 +38,7 @@ public sealed class Scavenger : RoleBase, IImpostor
 
         Utils.TP(killer.NetTransform, target.GetTruePosition());
         RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
-        //TODO: FIXME
-        //Utils.TP(target.NetTransform, Pelican.GetBlackRoomPS());
+        Utils.TP(target.NetTransform, Utils.GetBlackRoomPS());
         target.SetRealKiller(killer);
         target.RpcMurderPlayerV2(target);
         killer.SetKillCooldownV2();
