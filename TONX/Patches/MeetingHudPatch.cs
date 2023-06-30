@@ -152,7 +152,7 @@ public static class MeetingHudPatch
                     {
                         foreach (var target in Main.AllPlayerControls)
                         {
-                            var seerName = seer.GetRealName(isMeeting: true);
+                            var seerName = seer.GetTrueName();
                             var coloredName = Utils.ColorString(seer.GetRoleColor(), seerName);
                             seer.RpcSetNamePrivate(
                                 seer == target ? coloredName : seerName,
