@@ -752,7 +752,7 @@ public static class Utils
                 sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id]);
             }
         }
-        SendMessage(sb.ToString(), PlayerId);
+        SendMessage(sb.ToString().RemoveHtmlTagsExcept("color"), PlayerId);
     }
     public static void ShowKillLog(byte PlayerId = byte.MaxValue)
     {
@@ -1200,7 +1200,8 @@ public static class Utils
         }
         return disableColor ? summary.RemoveHtmlTags() : summary;
     }
-    public static string RemoveHtmlTags(this string str) => Regex.Replace(str, "<[^>]*?>", "");
+    public static string RemoveHtmlTags(this string str) => Regex.Replace(str, "<[^>]*?>", string.Empty);
+    public static string RemoveHtmlTagsExcept(this string str, string exceptionLabel) => Regex.Replace(str, "<(?!/*" + exceptionLabel + ")[^>]*?>", string.Empty);
     public static void FlashColor(Color color, float duration = 1f)
     {
         var hud = DestroyableSingleton<HudManager>.Instance;
