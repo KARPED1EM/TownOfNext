@@ -141,8 +141,10 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
     public bool CheckWin(out AdditionalWinners winnerType)
     {
         winnerType = AdditionalWinners.Totocalcio;
-        return CustomWinnerHolder.WinnerIds.Contains(BetTarget)
-            || CustomWinnerHolder.WinnerRoles.Contains(PlayerState.GetByPlayerId(BetTarget).MainRole);
+        if (BetTarget == byte.MaxValue) return false;
+        var targetPs = PlayerState.GetByPlayerId(BetTarget);
+        return (CustomWinnerHolder.WinnerIds?.Contains(BetTarget) ?? false)
+            || (targetPs != null && (CustomWinnerHolder.WinnerRoles?.Contains(targetPs.MainRole) ?? false));
     }
     public bool OverrideKillButtonText(out string text)
     {
