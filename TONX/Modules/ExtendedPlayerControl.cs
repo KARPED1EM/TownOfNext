@@ -151,7 +151,7 @@ static class ExtendedPlayerControl
         }
         Main.LastNotifyNames[(player.PlayerId, seer.PlayerId)] = name;
         HudManagerPatch.LastSetNameDesyncCount++;
-        Logger.Info($"Set:{player?.Data?.PlayerName}:{name} for {seer.GetNameWithRole()}", "RpcSetNamePrivate");
+        Logger.Info($"Set: {player?.Data?.PlayerName} => {name} for {seer.GetNameWithRole()}", "RpcSetNamePrivate");
 
         var clientId = seer.GetClientId();
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(player.NetId, (byte)RpcCalls.SetName, SendOption.Reliable, clientId);
@@ -425,7 +425,7 @@ static class ExtendedPlayerControl
     }
     public static string GetRealName(this PlayerControl player, bool isMeeting = false)
     {
-        return isMeeting ? player?.Data?.PlayerName : player?.name;
+        return isMeeting ? ((player?.AmOwner ?? false && Main.nickName != "") ? Main.nickName : player?.Data?.PlayerName) : player?.name;
     }
     public static bool CanUseKillButton(this PlayerControl pc)
     {

@@ -152,11 +152,11 @@ public static class MeetingHudPatch
                     {
                         foreach (var target in Main.AllPlayerControls)
                         {
-                            var seerName = seer.GetTrueName();
-                            var coloredName = Utils.ColorString(seer.GetRoleColor(), seerName);
-                            seer.RpcSetNamePrivate(
-                                seer == target ? coloredName : seerName,
-                                true);
+                            var targetName = target.GetTrueName();
+                            var coloredName = Utils.ColorString(target.GetRoleColor(), targetName);
+                            target.RpcSetNamePrivate(
+                                seer == target ? coloredName : targetName,
+                                true, seer);
                         }
                     }
                     ChatUpdatePatch.DoBlockChat = false;
