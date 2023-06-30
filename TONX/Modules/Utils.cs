@@ -301,7 +301,7 @@ public static class Utils
         //|| (Totocalcio.KnowRole(seer, seen))
         //|| (Succubus.KnowRole(seer, seen))
 
-        var (roleColor, roleText) = GetTrueRoleNameData(seen.PlayerId);
+        var (roleColor, roleText) = GetTrueRoleNameData(seen.PlayerId, seer == seen || !seer.IsAlive());
 
         //seen側による変更
         seen.GetRoleClass()?.OverrideRoleNameAsSeen(seer, ref enabled, ref roleColor, ref roleText);
