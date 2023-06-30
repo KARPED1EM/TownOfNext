@@ -226,6 +226,7 @@ public static class NameTagEditMenu
 
         Menu = Object.Instantiate(AccountManager.Instance.transform.FindChild("InfoTextBox").gameObject, NameTagPanel.CustomBackground.transform.parent);
         Menu.name = "Name Tag Edit Menu";
+        Menu.transform.SetLocalZ(-30f);
         Menu.transform.FindChild("Background").localScale *= 1.4f;
 
         Object.Destroy(Menu.transform.FindChild("Button2").gameObject);

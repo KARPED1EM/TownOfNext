@@ -17,6 +17,7 @@ public static class NameTagNewWindow
     {
         if (Window == null) Init();
         if (Window == null) return;
+        if (NameTagEditMenu.Menu?.active ?? false) return;
         Window.SetActive(true);
         EnterBox.GetComponent<TextBoxTMP>().Clear();
     }

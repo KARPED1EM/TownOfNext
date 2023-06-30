@@ -55,7 +55,7 @@ public class ModUpdater
     public static Version minimumVersion = null;
     public static int creation = 0;
     public static string md5 = "";
-    public static int visit => isChecked ? 216822 : 0; //只能手动更新了
+    public static int visit => isChecked ? 216822 : 0; //你他妈不是说改了吗
 
     public static string announcement_zh = "";
     public static string announcement_en = "";
