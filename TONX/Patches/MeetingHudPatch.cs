@@ -83,6 +83,7 @@ public static class MeetingHudPatch
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
+    [HarmonyPriority(Priority.First)]
     class StartPatch
     {
         public static void Prefix()
@@ -145,13 +146,6 @@ public static class MeetingHudPatch
 
             if (AmongUsClient.Instance.AmHost)
             {
-                CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnStartMeeting());
-                MeetingStartNotify.OnMeetingStart();
-                Brakar.OnMeetingStart();
-            }
-
-            if (AmongUsClient.Instance.AmHost)
-            {
                 _ = new LateTask(() =>
                 {
                     foreach (var seer in Main.AllPlayerControls)
@@ -167,6 +161,13 @@ public static class MeetingHudPatch
                     }
                     ChatUpdatePatch.DoBlockChat = false;
                 }, 3f, "SetName To Chat");
+            }
+
+            if (AmongUsClient.Instance.AmHost)
+            {
+                CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnStartMeeting());
+                MeetingStartNotify.OnMeetingStart();
+                Brakar.OnMeetingStart();
             }
 
             foreach (var pva in __instance.playerStates)
