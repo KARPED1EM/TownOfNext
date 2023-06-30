@@ -35,7 +35,7 @@ public class Main : BasePlugin
     public const string PluginGuid = "com.karped1em.tonx";
     public const string LowestSupportedVersion = "2023.6.13";
     public const string PluginVersion = "1.0.0";
-    public const int PluginCreation = 2;
+    public const int PluginCreation = 1;
 
     public static readonly bool ShowWebsiteButton = true;
     public static readonly bool ShowQQButton = true;
