@@ -576,27 +576,27 @@ public enum CustomRoles
     NotAssigned = 500,
     LastImpostor,
     Lovers,
-    Ntr, //TODO
-    Madmate, //TODO
+    Ntr,
+    Madmate,
     Watcher,
-    Flashman, //TODO
-    Lighter, //TODO
-    Seer, //TODO
-    Brakar, //TODO
-    Oblivious, //TODO
-    Bewilder, //TODO
-    Workhorse, //TODO
-    Fool, //TODO
-    Avanger, //TODO
-    Youtuber, //TODO
-    Egoist, //TODO
-    TicketsStealer, //TODO,
-    DualPersonality, //TODO
-    Mimic, //TODO
-    Reach, //TODO
-    Charmed, //TODO
-    Bait, //TODO
-    Trapper, //TODO
+    Flashman,
+    Lighter,
+    Seer,
+    Brakar,
+    Oblivious,
+    Bewilder,
+    Workhorse,
+    Fool,
+    Avanger,
+    Youtuber,
+    Egoist,
+    TicketsStealer,
+    DualPersonality,
+    Mimic,
+    Reach,
+    Charmed,
+    Bait,
+    Trapper,
 }
 public enum CustomRoleTypes
 {
