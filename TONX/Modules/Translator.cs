@@ -67,9 +67,9 @@ public static class Translator
 
     public static string GetString(string s, Dictionary<string, string> replacementDic = null, bool console = false)
     {
-        var langId = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.English;
-        if (console) langId = SupportedLangs.SChinese;
+        var langId = TranslationController.Instance?.currentLanguage?.languageID ?? GetUserTrueLang();
         if (Main.ForceOwnLanguage.Value) langId = GetUserTrueLang();
+        if (console) langId = SupportedLangs.SChinese;
         string str = GetString(s, langId);
         if (replacementDic != null)
             foreach (var rd in replacementDic)
@@ -105,7 +105,7 @@ public static class Translator
         => DestroyableSingleton<TranslationController>.Instance.GetString(stringName, new Il2CppReferenceArray<Il2CppSystem.Object>(0));
     public static string GetRoleString(string str, bool forUser = true)
     {
-        var CurrentLanguage = TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.English;
+        var CurrentLanguage = TranslationController.Instance?.currentLanguage?.languageID ?? SupportedLangs.English;
         var lang = forUser ? CurrentLanguage : SupportedLangs.SChinese;
         if (Main.ForceOwnLanguageRoleName.Value)
             lang = GetUserTrueLang();
@@ -121,7 +121,7 @@ public static class Translator
             if (name.StartsWith("zh_CHT")) return SupportedLangs.TChinese;
             if (name.StartsWith("zh")) return SupportedLangs.SChinese;
             if (name.StartsWith("ru")) return SupportedLangs.Russian;
-            return TranslationController.InstanceExists ? TranslationController.Instance.currentLanguage.languageID : SupportedLangs.English;
+            return TranslationController.Instance?.currentLanguage?.languageID ?? SupportedLangs.English;
         }
         catch
         {
