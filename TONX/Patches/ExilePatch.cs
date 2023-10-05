@@ -103,7 +103,7 @@ class ExileControllerWrapUpPatch
         //WrapUpPostfixで例外が発生しても、この部分だけは確実に実行されます。
         if (AmongUsClient.Instance.AmHost)
         {
-            new LateTask(() =>
+            _ = new LateTask(() =>
             {
                 exiled = AntiBlackout_LastExiled;
                 AntiBlackout.SendGameData();
@@ -114,7 +114,7 @@ class ExileControllerWrapUpPatch
                     exiled.Object.RpcExileV2();
                 }
             }, 0.5f, "Restore IsDead Task");
-            new LateTask(() =>
+            _ = new LateTask(() =>
             {
                 Main.AfterMeetingDeathPlayers.Do(x =>
                 {
