@@ -88,7 +88,7 @@ public class ModUpdater
     {
         retried++;
         CustomPopup.Show(GetString("updateCheckPopupTitle"), GetString("PleaseWait"), null);
-        new LateTask(CheckForUpdate, 0.3f, "Retry Check Update");
+        _ = new LateTask(CheckForUpdate, 0.3f, "Retry Check Update");
     }
     public static void CheckForUpdate()
     {
