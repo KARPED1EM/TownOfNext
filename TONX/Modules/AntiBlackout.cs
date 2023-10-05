@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using TONX.Attributes;
 using TONX.Modules;
 using TONX.Roles.Core;
 
@@ -136,6 +137,7 @@ public static class AntiBlackout
         }
     }
 
+    [GameModuleInitializer]
     public static void Reset()
     {
         logger.Info("==Reset==");
