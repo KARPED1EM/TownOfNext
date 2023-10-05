@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TONX.Roles.AddOns.Common;
 using TONX.Roles.Core;
+using UnityEngine;
 
 namespace TONX;
 
@@ -58,7 +59,7 @@ class RepairSystemPatch
             var roleClass = player.GetRoleClass();
             if (roleClass != null)
             {
-                return roleClass.CanSabotage(nextSabotage);
+                return roleClass.OnInvokeSabotage(nextSabotage);
             }
             else
             {
@@ -108,6 +109,24 @@ class RepairSystemPatch
         if (!player.Is(CustomRoleTypes.Impostor))
         {
             return false;
+        }
+        return true;
+    }
+    public static bool OnSabotage(PlayerControl player, SystemTypes systemType, byte amount)
+    {
+        // 停電サボタージュが鳴らされた場合は関係なし(ホスト名義で飛んでくるため誤爆注意)
+        if (systemType == SystemTypes.Electrical && amount.HasBit(SwitchSystem.DamageSystem))
+        {
+            return true;
+        }
+
+        //Airshipの特定の停電を直せないならキャンセル
+        if (systemType == SystemTypes.Electrical && Main.NormalOptions.MapId == 4)
+        {
+            var truePosition = player.GetTruePosition();
+            if (Options.DisableAirshipViewingDeckLightsPanel.GetBool() && Vector2.Distance(truePosition, new(-12.93f, -11.28f)) <= 2f) return false;
+            if (Options.DisableAirshipGapRoomLightsPanel.GetBool() && Vector2.Distance(truePosition, new(13.92f, 6.43f)) <= 2f) return false;
+            if (Options.DisableAirshipCargoLightsPanel.GetBool() && Vector2.Distance(truePosition, new(30.56f, 2.12f)) <= 2f) return false;
         }
         return true;
     }
