@@ -681,7 +681,7 @@ internal class ChatUpdatePatch
     public static bool DoBlockChat = false;
     public static void Postfix(ChatController __instance)
     {
-        Active = __instance.IsOpenOrOpening & !__instance.IsAnimating;
+        Active = __instance.IsOpenOrOpening;
 
         __instance.freeChatField.textArea.AllowPaste = true;
         __instance.chatBubblePool.Prefab.Cast<ChatBubble>().TextArea.overrideColorTags = false;

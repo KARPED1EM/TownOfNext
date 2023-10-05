@@ -35,7 +35,7 @@ public static class SendTargetPatch
     {
         if (SendTargetShower == null) return;
         string text = Translator.GetString($"SendTargets.{Enum.GetName(SendTarget)}");
-        if (AmongUsClient.Instance.AmHost && GameStates.IsInGame && __instance.IsOpenOrOpening && !__instance.IsAnimating)
+        if (AmongUsClient.Instance.AmHost && GameStates.IsInGame && __instance.IsOpenOrOpening)
         {
             text += "<size=75%>" + Translator.GetString("SendTargetSwitchNotice") + "</size>";
             if (Input.GetKey(KeyCode.LeftShift)) SendTarget = SendTargets.All;
@@ -44,7 +44,7 @@ public static class SendTargetPatch
         }
         else SendTarget = SendTargets.Default;
         SendTargetShower?.GetComponent<TextMeshPro>()?.SetText(text);
-        SendTargetShower?.SetActive(!SendTargetShower.transform.parent.FindChild("RateMessage (TMP)").gameObject.activeSelf);
+        //SendTargetShower?.SetActive(!SendTargetShower.transform.parent.FindChild("RateMessage (TMP)").gameObject.activeSelf);
     }
 }
 
