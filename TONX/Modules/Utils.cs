@@ -36,11 +36,11 @@ public static class Utils
             Logger.Fatal($"{text} 错误，触发防黑屏措施", "Anti-black");
             ChatUpdatePatch.DoBlockChat = true;
             Main.OverrideWelcomeMsg = GetString("AntiBlackOutNotifyInLobby");
-            new LateTask(() =>
+            _ = new LateTask(() =>
             {
                 Logger.SendInGame(GetString("AntiBlackOutLoggerSendInGame"), true);
             }, 3f, "Anti-Black Msg SendInGame");
-            new LateTask(() =>
+            _ = new LateTask(() =>
             {
                 CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Error);
                 GameManager.Instance.LogicFlow.CheckEndCriteria();
@@ -54,18 +54,18 @@ public static class Utils
             writer.EndMessage();
             if (Options.EndWhenPlayerBug.GetBool())
             {
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     Logger.SendInGame(GetString("AntiBlackOutRequestHostToForceEnd"), true);
                 }, 3f, "Anti-Black Msg SendInGame");
             }
             else
             {
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     Logger.SendInGame(GetString("AntiBlackOutHostRejectForceEnd"), true);
                 }, 3f, "Anti-Black Msg SendInGame");
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     AmongUsClient.Instance.ExitGame(DisconnectReasons.Custom);
                     Logger.Fatal($"{text} 错误，已断开游戏", "Anti-black");
@@ -243,7 +243,7 @@ public static class Utils
         }
         else if (!ReactorCheck) player.ReactorFlash(0f); //リアクターフラッシュ
         player.MarkDirtySettings();
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             state.IsBlackOut = false; //ブラックアウト解除
             player.MarkDirtySettings();
@@ -397,7 +397,7 @@ public static class Utils
     public static Color GetRoleColor(CustomRoles role)
     {
         if (!Main.roleColors.TryGetValue(role, out var hexColor)) hexColor = role.GetRoleInfo()?.RoleColorCode;
-        ColorUtility.TryParseHtmlString(hexColor, out Color c);
+        _ = ColorUtility.TryParseHtmlString(hexColor, out Color c);
         return c;
     }
     public static string GetRoleColorCode(CustomRoles role)
@@ -675,7 +675,7 @@ public static class Utils
             SendMessage(GetString("Message.HideGameSettings"), PlayerId);
             return;
         }
-        var sb = new StringBuilder(GetString("Roles")).Append(":");
+        var sb = new StringBuilder(GetString("Roles")).Append(':');
         sb.AppendFormat("\n{0}:{1}", GetRoleName(CustomRoles.GM), Options.EnableGM.GetString().RemoveHtmlTags());
         int headCount = -1;
         foreach (CustomRoles role in CustomRolesHelper.AllRoles.Where(x => x.IsValid()))
@@ -726,7 +726,7 @@ public static class Utils
         }
         var sb = new StringBuilder();
 
-        sb.Append(GetString("PlayerInfo")).Append(":");
+        sb.Append(GetString("PlayerInfo")).Append(':');
         List<byte> cloneRoles = new(PlayerState.AllPlayerStates.Keys);
         foreach (var id in Main.winnerList)
         {
@@ -1307,10 +1307,10 @@ public static class Utils
         casted = obj.TryCast<T>();
         return casted != null;
     }
-    public static int AllPlayersCount => PlayerState.AllPlayerStates.Values.Count(state => state.countTypes != CountTypes.OutOfGame);
+    public static int AllPlayersCount => PlayerState.AllPlayerStates.Values.Count(state => state.CountType != CountTypes.OutOfGame);
     public static int AllAlivePlayersCount => Main.AllAlivePlayerControls.Count(pc => !pc.Is(CountTypes.OutOfGame));
-    public static bool IsAllAlive => PlayerState.AllPlayerStates.Values.All(state => state.countTypes == CountTypes.OutOfGame || !state.IsDead);
-    public static int PlayersCount(CountTypes countTypes) => PlayerState.AllPlayerStates.Values.Count(state => state.countTypes == countTypes);
+    public static bool IsAllAlive => PlayerState.AllPlayerStates.Values.All(state => state.CountType == CountTypes.OutOfGame || !state.IsDead);
+    public static int PlayersCount(CountTypes countTypes) => PlayerState.AllPlayerStates.Values.Count(state => state.CountType == countTypes);
     public static int AlivePlayersCount(CountTypes countTypes) => Main.AllAlivePlayerControls.Count(pc => pc.Is(countTypes));
 
     public static bool IsDev(this PlayerControl pc) =>

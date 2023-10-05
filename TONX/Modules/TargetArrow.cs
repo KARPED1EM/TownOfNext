@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Attributes;
 using UnityEngine;
 
 namespace TONX;
@@ -39,6 +40,7 @@ static class TargetArrow
         "・"
     };
 
+    [GameModuleInitializer]
     public static void Init()
     {
         TargetArrows.Clear();

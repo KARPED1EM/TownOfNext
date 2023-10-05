@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using TONX.Attributes;
 
 namespace TONX;
 
@@ -15,6 +16,8 @@ public static class Translator
 {
     public static Dictionary<string, Dictionary<int, string>> translateMaps;
     public const string LANGUAGE_FOLDER_NAME = "Language";
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         Logger.Info("加载语言文件...", "Translator");
@@ -136,7 +139,7 @@ public static class Translator
             Logger.Info($"加载自定义翻译文件：{filename}", "LoadCustomTranslation");
             using StreamReader sr = new(path, Encoding.GetEncoding("UTF-8"));
             string text;
-            string[] tmp = { };
+            string[] tmp = Array.Empty<string>();
             while ((text = sr.ReadLine()) != null)
             {
                 tmp = text.Split(":");
