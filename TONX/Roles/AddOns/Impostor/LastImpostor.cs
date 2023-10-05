@@ -1,3 +1,4 @@
+using TONX.Attributes;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using static TONX.Options;
@@ -14,6 +15,7 @@ public static class LastImpostor
         KillCooldown = FloatOptionItem.Create(Id + 10, "KillCooldown", new(0f, 180f, 1f), 15f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.LastImpostor])
             .SetValueFormat(OptionFormat.Seconds);
     }
+    [GameModuleInitializer]
     public static void Init() => currentId = byte.MaxValue;
     public static void Add(byte id) => currentId = id;
     public static void SetKillCooldown()

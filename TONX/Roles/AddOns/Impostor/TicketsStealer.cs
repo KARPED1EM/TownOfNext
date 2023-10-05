@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -19,6 +20,7 @@ public static class TicketsStealer
         OptionTicketsPerKill = FloatOptionItem.Create(Id + 20, "TicketsPerKill", new(0.1f, 10f, 0.1f), 0.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.TicketsStealer])
             .SetValueFormat(OptionFormat.Votes);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

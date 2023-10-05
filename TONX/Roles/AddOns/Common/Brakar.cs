@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -18,6 +19,7 @@ public static class Brakar
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Brakar);
         AddOnsAssignData.Create(Id + 10, CustomRoles.Brakar, true, true, true);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

@@ -3,6 +3,7 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.RandomSpawn;
@@ -80,6 +81,7 @@ public static class SoloKombatManager
             .SetColor(new Color32(245, 82, 82, byte.MaxValue));
     }
 
+    [GameModuleInitializer]
     public static void Init()
     {
         if (Options.CurrentGameMode != CustomGameMode.SoloKombat) return;

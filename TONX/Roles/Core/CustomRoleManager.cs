@@ -5,6 +5,7 @@ using Il2CppSystem.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Attributes;
 using TONX.Roles.AddOns.Common;
 using TONX.Roles.AddOns.Crewmate;
 using TONX.Roles.AddOns.Impostor;
@@ -221,6 +222,7 @@ public static class CustomRoleManager
         return !cancel;
     }
     // ==初始化处理 ==
+    [GameModuleInitializer]
     public static void Initialize()
     {
         AllRolesInfo.Do(kvp => kvp.Value.IsEnable = kvp.Key.IsEnable());

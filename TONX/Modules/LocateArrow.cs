@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Attributes;
 using UnityEngine;
 
 namespace TONX;
@@ -38,6 +39,7 @@ static class LocateArrow
         "・"
     };
 
+    [GameModuleInitializer]
     public static void Init()
     {
         LocateArrows.Clear();

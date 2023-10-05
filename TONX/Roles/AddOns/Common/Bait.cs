@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Modules;
 using TONX.Roles.Core;
 using UnityEngine;
@@ -27,6 +28,7 @@ public static class Bait
         OptionDelayNotifyForKiller = BooleanOptionItem.Create(Id + 22, "BaitDelayNotify", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Bait]);
 
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

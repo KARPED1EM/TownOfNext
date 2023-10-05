@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -19,6 +20,7 @@ public static class Lighter
         OptionVistion = FloatOptionItem.Create(Id + 20, "LighterVision", new(0.5f, 5f, 0.25f), 1.5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Lighter])
             .SetValueFormat(OptionFormat.Multiplier);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

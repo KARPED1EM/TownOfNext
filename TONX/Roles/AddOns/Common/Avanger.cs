@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -33,6 +34,7 @@ public static class Avanger
         OptionRevengeOnKilled = BooleanOptionItem.Create(Id + 22, "AvangerRevengeOnKilled", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger]);
         OptionRevengeOnSuicide = BooleanOptionItem.Create(Id + 23, "AvangerRevengeOnSuicide", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger]);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

@@ -1,11 +1,14 @@
 ﻿using Hazel;
 using System.Collections.Generic;
+using TONX.Attributes;
 
 namespace TONX;
 
 public static class NameNotifyManager
 {
     private static Dictionary<byte, (string, long)> Notice = new();
+
+    [GameModuleInitializer]
     public static void Reset() => Notice = new();
     public static bool Notifying(this PlayerControl pc) => Notice.ContainsKey(pc.PlayerId);
     public static void Notify(this PlayerControl pc, string text, float time = 4f)

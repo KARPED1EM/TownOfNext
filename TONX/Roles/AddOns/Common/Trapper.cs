@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -19,6 +20,7 @@ public static class Trapper
         OptionBlockMoveTime = FloatOptionItem.Create(Id + 20, "TrapperBlockMoveTime", new(1f, 180f, 1f), 5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper])
             .SetValueFormat(OptionFormat.Seconds);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

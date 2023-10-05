@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -15,6 +16,7 @@ public static class Mimic
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Mimic);
         AddOnsAssignData.Create(Id + 10, CustomRoles.Mimic, false, true, false);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -18,6 +19,7 @@ public static class Egoist
         AddOnsAssignData.Create(Id + 10, CustomRoles.Egoist, true, true, false);
         OptionImpEgoVisibalToAllies = BooleanOptionItem.Create(Id + 20, "ImpEgoistVisibalToAllies", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Egoist]);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

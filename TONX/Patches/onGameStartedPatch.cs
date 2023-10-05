@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TONX.Modules;
+using TONX.Attributes;
 using TONX.Roles.AddOns;
 using TONX.Roles.AddOns.Common;
 using TONX.Roles.AddOns.Crewmate;
@@ -30,8 +31,6 @@ internal class ChangeRoleSettings
                 Main.NormalOptions.roleOptions.SetRoleRate(RoleTypes.Engineer, 0, 0);
                 Main.NormalOptions.roleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
             }
-
-            PlayerState.Clear();
 
             Main.OverrideWelcomeMsg = "";
             Main.AllPlayerKillCooldown = new();
@@ -62,7 +61,6 @@ internal class ChangeRoleSettings
 
             RandomSpawn.CustomNetworkTransformPatch.NumOfTP = new();
 
-            MeetingTimeManager.Init();
             Main.DefaultCrewmateVision = Main.RealOptionsData.GetFloat(FloatOptionNames.CrewLightMod);
             Main.DefaultImpostorVision = Main.RealOptionsData.GetFloat(FloatOptionNames.ImpostorLightMod);
 
@@ -72,12 +70,12 @@ internal class ChangeRoleSettings
             //名前の記録
             RPC.SyncAllPlayerNames();
 
-            Camouflage.Init();
             //var invalidColor = Main.AllPlayerControls.Where(p => p.Data.DefaultOutfit.ColorId < 0 || Palette.PlayerColors.Length <= p.Data.DefaultOutfit.ColorId);
-            //if (invalidColor.Count() != 0)
+            //if (invalidColor.Any())
             //{
-            //    var msg = GetString("Error.InvalidColor");
+            //    var msg = Translator.GetString("Error.InvalidColor");
             //    Logger.SendInGame(msg);
+            //    msg += "\n" + string.Join(",", invalidColor.Select(p => $"{p.name}({p.Data.DefaultOutfit.ColorId})"));
             //    Utils.SendMessage(msg);
             //    Logger.Error(msg, "CoStartGame");
             //}
@@ -112,37 +110,6 @@ internal class ChangeRoleSettings
             {
                 RPC.SyncCustomSettingsRPC();
             }
-            CustomRoleManager.Initialize();
-            FallFromLadder.Reset();
-            TargetArrow.Init();
-            LocateArrow.Init();
-            DoubleTrigger.Init();
-            CustomWinnerHolder.Reset();
-            NameNotifyManager.Reset();
-            AntiBlackout.Reset();
-            SoloKombatManager.Init();
-
-            //SubRoles
-            Watcher.Init();
-            Workhorse.Init();
-            LastImpostor.Init();
-            Avanger.Init();
-            Bait.Init();
-            Bewilder.Init();
-            Brakar.Init();
-            DualPersonality.Init();
-            Egoist.Init();
-            Flashman.Init();
-            Fool.Init();
-            Lighter.Init();
-            Ntr.Init();
-            Oblivious.Init();
-            Reach.Init();
-            Seer.Init();
-            Trapper.Init();
-            Youtuber.Init();
-            Mimic.Init();
-            TicketsStealer.Init();
 
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
 
