@@ -18,14 +18,14 @@ public sealed class Succubus : RoleBase, IKiller
             SetupOptionItem,
             "su",
             "#ff00ff",
-            true
+            true,
+            countType: CountTypes.Succubus
         );
     public Succubus(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Succubus
+        () => HasTask.False
     )
     { }
 

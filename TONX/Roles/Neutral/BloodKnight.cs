@@ -17,14 +17,14 @@ public sealed class BloodKnight : RoleBase, IKiller
            50923,
            SetupOptionItem,
            "bn|ÊÈÑªòTÊ¿|ÑªÆï|ÆïÊ¿",
-           "#630000"
+           "#630000",
+           countType: CountTypes.BloodKnight
        );
     public BloodKnight(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.BloodKnight
+        () => HasTask.False
     )
     {
         CanVent = OptionCanVent.GetBool();

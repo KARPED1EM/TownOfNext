@@ -21,14 +21,14 @@ public sealed class Pelican : RoleBase, IKiller
             SetupOptionItem,
             "pe|鵜鶘",
             "#34c84b",
-            true
+            true,
+            countType: CountTypes.Pelican
         );
     public Pelican(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Pelican
+        () => HasTask.False
     )
     {
         OriginalSpeed = new();

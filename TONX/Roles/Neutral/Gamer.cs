@@ -21,14 +21,14 @@ public sealed class Gamer : RoleBase, IKiller
             SetupOptionItem,
             "dm",
             "#68bc71",
-            true
+            true,
+            countType: CountTypes.Gamer
         );
     public Gamer(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Gamer
+        () => HasTask.False
     )
     {
         CanVent = OptionCanVent.GetBool();
