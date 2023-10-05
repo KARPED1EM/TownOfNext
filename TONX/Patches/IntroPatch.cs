@@ -16,7 +16,7 @@ class IntroCutscenePatch
     public static void ShowRole_Postfix(IntroCutscene __instance)
     {
         if (!GameStates.IsModHost) return;
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
             {
@@ -88,7 +88,9 @@ class IntroCutscenePatch
         logger.Info("------------详细设置------------");
         foreach (var o in OptionItem.AllOptions)
             if (!o.IsHiddenOn(Options.CurrentGameMode) && (o.Parent == null ? !o.GetString().Equals("0%") : o.Parent.GetBool()))
-                logger.Info($"{(o.Parent == null ? o.GetName(true, true).RemoveHtmlTags().PadRightV2(40) : $"┗ {o.GetName(true, true).RemoveHtmlTags()}".PadRightV2(41))}:{o.GetString().RemoveHtmlTags()}");
+                logger.Info(
+                    $"{(o.Parent == null ? o.GetName(true, true).RemoveHtmlTags().PadRightV2(40) : $"┗ {o.GetName(true, true).RemoveHtmlTags()}".PadRightV2(41))}:{o.GetString().RemoveHtmlTags()}"
+                    );
         logger.Info("-------------其它信息-------------");
         logger.Info($"玩家人数: {Main.AllPlayerControls.Count()}");
         Main.AllPlayerControls.Do(x => PlayerState.GetByPlayerId(x.PlayerId).InitTask(x));
@@ -270,7 +272,7 @@ class IntroCutscenePatch
             {
                 Main.AllPlayerControls.Do(pc => pc.RpcResetAbilityCooldown());
                 if (Options.FixFirstKillCooldown.GetBool() && Options.CurrentGameMode != CustomGameMode.SoloKombat)
-                    new LateTask(() =>
+                    _ = new LateTask(() =>
                     {
                         if (GameStates.IsInTask)
                         {
@@ -278,12 +280,12 @@ class IntroCutscenePatch
                             Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldownV2(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
                         }
                     }, 2f, "FixKillCooldownTask");
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     CustomRoleManager.AllActiveRoles.Values.Do(x => x?.OnGameStart());
                 }, 0.1f, "RoleClassOnGameStartTask");
             }
-            new LateTask(() => Main.AllPlayerControls.Do(pc => pc.RpcSetRoleDesync(RoleTypes.Shapeshifter, -3)), 2f, "SetImpostorForServer");
+            _ = new LateTask(() => Main.AllPlayerControls.Do(pc => pc.RpcSetRoleDesync(RoleTypes.Shapeshifter, -3)), 2f, "SetImpostorForServer");
             if (PlayerControl.LocalPlayer.Is(CustomRoles.GM))
             {
                 PlayerControl.LocalPlayer.RpcExile();
