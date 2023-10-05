@@ -74,7 +74,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
     }
     public float CalculateKillCooldown() => CanUseKillButton() ? OptionSellCooldown.GetFloat() : 255f;
     public bool CanUseKillButton() => Player.IsAlive() && SellLimit >= 1;
-    public override bool CanSabotage(SystemTypes systemType) => false;
+    public override bool OnInvokeSabotage(SystemTypes systemType) => false;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
     public bool OverrideKillButtonText(out string text)
     {

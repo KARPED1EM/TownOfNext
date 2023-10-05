@@ -64,7 +64,7 @@ public sealed class BloodKnight : RoleBase, IKiller
     public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(OptionHasImpostorVision.GetBool());
     public static void SetHudActive(HudManager __instance, bool _) => __instance.SabotageButton.ToggleVisible(false);
-    public override bool CanSabotage(SystemTypes systemType) => false;
+    public override bool OnInvokeSabotage(SystemTypes systemType) => false;
     private bool InProtect() => ProtectStartTime != 0 && ProtectStartTime + OptionProtectDuration.GetFloat() > Utils.GetTimeStamp();
     public void OnMurderPlayerAsKiller(MurderInfo info)
     {

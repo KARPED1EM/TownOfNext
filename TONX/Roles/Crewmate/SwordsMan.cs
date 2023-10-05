@@ -49,7 +49,7 @@ public sealed class SwordsMan : RoleBase, IKiller
     }
     public float CalculateKillCooldown() => CanUseKillButton() ? 0f : 255f;
     public bool CanUseKillButton() => Player.IsAlive() && !IsKilled;
-    public override bool CanSabotage(SystemTypes systemType) => false;
+    public override bool OnInvokeSabotage(SystemTypes systemType) => false;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {
