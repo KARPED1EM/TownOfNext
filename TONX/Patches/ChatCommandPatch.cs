@@ -1,11 +1,11 @@
-using Assets.CoreScripts;
-using HarmonyLib;
-using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using Assets.CoreScripts;
+using HarmonyLib;
+using Hazel;
 using TONX.Modules;
 using TONX.Roles.Core;
 using UnityEngine;
@@ -23,9 +23,9 @@ internal class ChatCommands
     {
         if (roleCommands == null) InitRoleCommands();
 
-        if (__instance.TextArea.text.Trim() == "") return false;
-        __instance.TimeSinceLastMessage = 3f;
-        var text = __instance.TextArea.text;
+        if (__instance.freeChatField.textArea.text == "") return false;
+        __instance.timeSinceLastMessage = 3f;
+        var text = __instance.freeChatField.textArea.text;
         if (ChatHistory.Count == 0 || ChatHistory[^1] != text) ChatHistory.Add(text);
         ChatControllerUpdatePatch.CurrentHistorySelection = ChatHistory.Count;
         string[] args = text.Split(' ');
@@ -356,9 +356,8 @@ internal class ChatCommands
         if (canceled)
         {
             Logger.Info("Command Canceled", "ChatCommand");
-            __instance.TextArea.Clear();
-            __instance.TextArea.SetText(cancelVal);
-            __instance.quickChatMenu.ResetGlyphs();
+            __instance.freeChatField.textArea.Clear();
+            __instance.freeChatField.textArea.SetText(cancelVal);
         }
         else if (SendTargetPatch.SendTarget != SendTargetPatch.SendTargets.Default)
         {
@@ -373,9 +372,8 @@ internal class ChatCommands
                         );
                     break;
             }
-            __instance.TextArea.Clear();
-            __instance.TextArea.SetText(cancelVal);
-            __instance.quickChatMenu.ResetGlyphs();
+            __instance.freeChatField.textArea.Clear();
+            __instance.freeChatField.textArea.SetText(cancelVal);
             return false;
         }
         return !canceled;
@@ -683,12 +681,12 @@ internal class ChatUpdatePatch
     public static bool DoBlockChat = false;
     public static void Postfix(ChatController __instance)
     {
-        Active = __instance.IsOpen;
+        Active = __instance.IsOpenOrOpening & !__instance.IsAnimating;
 
-        __instance.TextArea.AllowPaste = true;
-        __instance.chatBubPool.Prefab.Cast<ChatBubble>().TextArea.overrideColorTags = false;
+        __instance.freeChatField.textArea.AllowPaste = true;
+        __instance.chatBubblePool.Prefab.Cast<ChatBubble>().TextArea.overrideColorTags = false;
 
-        if (!AmongUsClient.Instance.AmHost || Main.MessagesToSend.Count < 1 || (Main.MessagesToSend[0].Item2 == byte.MaxValue && Main.MessageWait.Value > __instance.TimeSinceLastMessage)) return;
+        if (!AmongUsClient.Instance.AmHost || Main.MessagesToSend.Count < 1 || (Main.MessagesToSend[0].Item2 == byte.MaxValue && Main.MessageWait.Value > __instance.timeSinceLastMessage)) return;
         if (DoBlockChat) return;
         var player = Main.AllAlivePlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault() ?? Main.AllPlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault();
         if (player == null) return;
@@ -737,22 +735,22 @@ internal class ChatUpdatePatch
             writer.SendMessage();
         }
 
-        __instance.TimeSinceLastMessage = 0f;
+        __instance.timeSinceLastMessage = 0f;
     }
 }
-[HarmonyPatch(typeof(ChatController), nameof(ChatController.UpdateCharCount))]
+[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.UpdateCharCount))]
 internal class UpdateCharCountPatch
 {
-    public static void Postfix(ChatController __instance)
+    public static void Postfix(FreeChatInputField __instance)
     {
-        int length = __instance.TextArea.text.Length;
-        __instance.CharCount.SetText($"{length}/{__instance.TextArea.characterLimit}");
+        int length = __instance.textArea.text.Length;
+        __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
         if (length < (AmongUsClient.Instance.AmHost ? 888 : 250))
-            __instance.CharCount.color = Color.black;
+            __instance.charCountText.color = Color.black;
         else if (length < (AmongUsClient.Instance.AmHost ? 999 : 300))
-            __instance.CharCount.color = new Color(1f, 1f, 0f, 1f);
+            __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
         else
-            __instance.CharCount.color = Color.red;
+            __instance.charCountText.color = Color.red;
     }
 }
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
@@ -782,7 +780,7 @@ internal class RpcSendChatPatch
         chatText = new StringBuilder(chatText).Insert(0, "\n", return_count).ToString();
         if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
             DestroyableSingleton<HudManager>.Instance.Chat.AddChat(__instance, chatText);
-        if (chatText.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
+        if (chatText.Contains("who", StringComparison.OrdinalIgnoreCase))
             DestroyableSingleton<Telemetry>.Instance.SendWho();
         MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None);
         messageWriter.Write(chatText);

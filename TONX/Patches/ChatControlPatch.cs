@@ -17,12 +17,12 @@ public static class SendTargetPatch
     }
     public static SendTargets SendTarget = SendTargets.Default;
     public static GameObject SendTargetShower;
-    [HarmonyPatch(nameof(ChatController.Awake)), HarmonyPostfix]
-    public static void Awake_Postfix(ChatController __instance)
+    [HarmonyPatch(nameof(FreeChatInputField)), HarmonyPostfix]
+    public static void Awake_Postfix(FreeChatInputField __instance)
     {
-        __instance.CharCount.SetText("");
+        __instance.textArea.SetText("");
         if (SendTargetShower != null) return;
-        SendTargetShower = UnityEngine.Object.Instantiate(__instance.CharCount.gameObject, __instance.CharCount.transform.parent);
+        SendTargetShower = UnityEngine.Object.Instantiate(__instance.charCountText.gameObject, __instance.charCountText.transform.parent);
         SendTargetShower.name = "TONX Send Target Shower";
         SendTargetShower.transform.localPosition = new Vector3(1.95f, 0.5f, 0f);
         SendTargetShower.GetComponent<RectTransform>().sizeDelta = new Vector2(5f, 0.1f);
@@ -35,7 +35,7 @@ public static class SendTargetPatch
     {
         if (SendTargetShower == null) return;
         string text = Translator.GetString($"SendTargets.{Enum.GetName(SendTarget)}");
-        if (AmongUsClient.Instance.AmHost && GameStates.IsInGame && __instance.IsOpen)
+        if (AmongUsClient.Instance.AmHost && GameStates.IsInGame && __instance.IsOpenOrOpening && !__instance.IsAnimating)
         {
             text += "<size=75%>" + Translator.GetString("SendTargetSwitchNotice") + "</size>";
             if (Input.GetKey(KeyCode.LeftShift)) SendTarget = SendTargets.All;
@@ -59,27 +59,27 @@ public static class ChatControllerUpdatePatch
     }
     public static void Postfix(ChatController __instance)
     {
-        if (!__instance.TextArea.hasFocus) return;
+        if (!__instance.freeChatField.textArea.hasFocus) return;
         if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.C))
-            ClipboardHelper.PutClipboardString(__instance.TextArea.text);
+            ClipboardHelper.PutClipboardString(__instance.freeChatField.textArea.text);
         if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.V))
-            __instance.TextArea.SetText(__instance.TextArea.text + GUIUtility.systemCopyBuffer);
+            __instance.freeChatField.textArea.SetText(__instance.freeChatField.textArea.text + GUIUtility.systemCopyBuffer);
         if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.X))
         {
-            ClipboardHelper.PutClipboardString(__instance.TextArea.text);
-            __instance.TextArea.SetText("");
+            ClipboardHelper.PutClipboardString(__instance.freeChatField.textArea.text);
+            __instance.freeChatField.textArea.SetText("");
         }
         if (Input.GetKeyDown(KeyCode.UpArrow) && ChatCommands.ChatHistory.Count > 0)
         {
             CurrentHistorySelection = Mathf.Clamp(--CurrentHistorySelection, 0, ChatCommands.ChatHistory.Count - 1);
-            __instance.TextArea.SetText(ChatCommands.ChatHistory[CurrentHistorySelection]);
+            __instance.freeChatField.textArea.SetText(ChatCommands.ChatHistory[CurrentHistorySelection]);
         }
         if (Input.GetKeyDown(KeyCode.DownArrow) && ChatCommands.ChatHistory.Count > 0)
         {
             CurrentHistorySelection++;
             if (CurrentHistorySelection < ChatCommands.ChatHistory.Count)
-                __instance.TextArea.SetText(ChatCommands.ChatHistory[CurrentHistorySelection]);
-            else __instance.TextArea.SetText("");
+                __instance.freeChatField.textArea.SetText(ChatCommands.ChatHistory[CurrentHistorySelection]);
+            else __instance.freeChatField.textArea.SetText("");
         }
     }
 }
