@@ -1,14 +1,14 @@
 {
-  "version": "1.0.0",
+  "version": "0.1.0",
   "minVer": "latest",
   "creation": "1",
   "allowStart": "true",
   
-  "md5": "520",
+  "md5": "46c09900863fe61fc59c0be7b0a267c0",
   
   "announcement": {
-    "SChinese": "最近又学了点东西，所以给你们整了一些花样\n基本上完全重做了，因此或许会有很多问题\n遇到问题或者Bug直接去频道反馈就好，最近树懒特殊时期，能不能玩还是个问题\nBug我们会修，但是我们可能会更偏向于开发比较有挑战性的功能\n随缘更新，总之，欢迎回家 :)",
-    "English": "Welcome Back Home :)"
+    "SChinese": "半成品，该模组仅用于测试",
+    "English": "半成品，该模组仅用于测试"
   },
 
   "url": {

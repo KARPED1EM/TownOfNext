@@ -34,8 +34,8 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public const string PluginGuid = "com.karped1em.tonx";
-    public const string LowestSupportedVersion = "2023.6.13";
-    public const string PluginVersion = "1.0.0";
+    public const string LowestSupportedVersion = "2023.6.27";
+    public const string PluginVersion = "0.1.0";
     public const int PluginCreation = 1;
 
     public static readonly bool ShowWebsiteButton = true;
