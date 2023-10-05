@@ -194,22 +194,17 @@ public abstract class OptionItem
             opt.oldValue = opt.Value = CurrentValue;
         }
     }
-    public virtual void SetValue(int value)
+    public virtual void SetValue(int value, bool doSync = true)
     {
         int beforeValue = CurrentEntry.Value;
         int afterValue = CurrentEntry.Value = value;
 
         CallUpdateValueEvent(beforeValue, afterValue);
         Refresh();
-        RPC.SyncCustomSettingsRPCforOneOption(this);
-    }
-    public virtual void SetValueNoRpc(int value)
-    {
-        int beforeValue = CurrentEntry.Value;
-        int afterValue = CurrentEntry.Value = value;
-
-        CallUpdateValueEvent(beforeValue, afterValue);
-        Refresh();
+        if (doSync)
+        {
+            RPC.SyncCustomSettingsRPCforOneOption(this);
+        }
     }
 
     // 演算子オーバーロード

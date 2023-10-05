@@ -30,10 +30,7 @@ public class TextOptionItem : OptionItem
     }
 
     // Setter
-    public override void SetValue(int value)
-    {
-    }
-    public override void SetValueNoRpc(int value)
+    public override void SetValue(int value, bool doSync = true)
     {
     }
 }
