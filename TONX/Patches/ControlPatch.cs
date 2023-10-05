@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using TONX.Roles.Core;
 using UnityEngine;
+using TONX.Modules;
 using static TONX.Translator;
 
 namespace TONX;
@@ -24,6 +25,7 @@ internal class ControllerManagerUpdatePatch
         //切换自定义设置的页面
         if (GameStates.IsLobby && !ChatUpdatePatch.Active)
         {
+            //カスタム設定切り替え
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (Input.GetKey(KeyCode.LeftControl)) OptionShower.Previous();
@@ -37,6 +39,21 @@ internal class ControllerManagerUpdatePatch
                     OptionShower.currentPage = i;
                     OptionShowerPatch.Scroller.ScrollToTop();
                 }
+            }
+            // 現在の設定を文字列形式のデータに変換してコピー
+            if (GetKeysDown(KeyCode.O, KeyCode.LeftAlt))
+            {
+                OptionSerializer.SaveToClipboard();
+            }
+            // 現在の設定を文字列形式のデータに変換してファイルに出力
+            if (GetKeysDown(KeyCode.L, KeyCode.LeftAlt))
+            {
+                OptionSerializer.SaveToFile();
+            }
+            // クリップボードから文字列形式の設定データを読み込む
+            if (GetKeysDown(KeyCode.P, KeyCode.LeftAlt))
+            {
+                OptionSerializer.LoadFromClipboard();
             }
         }
         //职业介绍
@@ -166,7 +183,7 @@ internal class ControllerManagerUpdatePatch
         //将 TONX 选项设置为默认值
         if (GetKeysDown(KeyCode.Delete, KeyCode.LeftControl))
         {
-            OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValueNoRpc(x.DefaultValue));
+            OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValue(x.DefaultValue, false));
             Logger.SendInGame(GetString("RestTONXSetting"));
             if (!(!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)))
             {
