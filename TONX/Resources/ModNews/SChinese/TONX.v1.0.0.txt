@@ -8,7 +8,7 @@
 
 
 ## 对应官方版本
-- 基于 TOH [v5.0.2](https://github.com/tukasa0001/TownOfHost/releases/tag/v5.0.2)
+- 基于 TOH v5.0.2
 
 ## 您需要知道的
 - 这个模组就是TOHE，只不过改名成TONX了
@@ -22,7 +22,7 @@
 - 个人竞技模式还未适配
 
 ## 重要
-- BeipinEx框架更新：66.0.0-be.668 => 6.0.0-be.674
+- BeipinEx框架更新：6.0.0-be.668 => 6.0.0-be.674
 
 ## 云服务相关
 - 车队姬未恢复
