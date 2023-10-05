@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using TONX.Roles.Impostor;
 
@@ -39,6 +40,7 @@ public static class Camouflage
     public static bool IsCamouflage;
     public static Dictionary<byte, GameData.PlayerOutfit> PlayerSkins = new();
 
+    [GameModuleInitializer]
     public static void Init()
     {
         IsCamouflage = false;

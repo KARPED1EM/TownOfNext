@@ -1,6 +1,6 @@
 using Hazel;
 using System.Collections.Generic;
-
+using TONX.Attributes;
 using TONX.Roles.Core;
 
 namespace TONX;
@@ -21,6 +21,7 @@ public static class CustomWinnerHolder
     // 単独勝利するニュートラルの処理に最適です。
     public static HashSet<byte> WinnerIds;
 
+    [GameModuleInitializer, PluginModuleInitializer]
     public static void Reset()
     {
         WinnerTeam = CustomWinner.Default;
