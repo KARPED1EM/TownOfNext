@@ -40,7 +40,7 @@ public static class Trapper
         Main.AllPlayerSpeed[killer.PlayerId] = Main.MinSpeed;    //tmpSpeed¤Çáá¤Û¤É‚Ž¤ò‘ø¤¹¤Î¤Ç´úÈë¤·¤Æ¤¤¤Þ¤¹¡£
         ReportDeadBodyPatch.CanReport[killer.PlayerId] = false;
         killer.MarkDirtySettings();
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             Main.AllPlayerSpeed[killer.PlayerId] = tmpSpeed;
             ReportDeadBodyPatch.CanReport[killer.PlayerId] = true;

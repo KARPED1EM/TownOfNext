@@ -3,6 +3,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using TONX.Attributes;
 
 namespace TONX;
 
@@ -12,6 +13,8 @@ public static class RegistryManager
     public static RegistryKey SoftwareKeys => Registry.CurrentUser.OpenSubKey("Software", true);
     public static RegistryKey Keys = SoftwareKeys.OpenSubKey("AU-TONX", true);
     public static Version LastVersion;
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         if (Keys == null)

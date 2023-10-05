@@ -18,14 +18,14 @@ public sealed class Jackal : RoleBase, IKiller
             SetupOptionItem,
             "jac|²òÀÇ",
             "#00b4eb",
-            true
+            true,
+            countType: CountTypes.Jackal
         );
     public Jackal(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Jackal
+        () => HasTask.False
     )
     {
         KillCooldown = OptionKillCooldown.GetFloat();
@@ -71,7 +71,7 @@ public sealed class Jackal : RoleBase, IKiller
     {
         __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage);
     }
-    public override bool CanSabotage(SystemTypes systemType) => CanUseSabotage;
+    public override bool OnInvokeSabotage(SystemTypes systemType) => CanUseSabotage;
     public static void OnMurderPlayerOthers(MurderInfo info)
     {
         if (!ResetKillCooldown || info.IsSuicide || info.IsAccident) return;

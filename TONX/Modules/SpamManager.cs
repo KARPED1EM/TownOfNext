@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TONX.Attributes;
 using static TONX.Translator;
 
 namespace TONX;
@@ -13,6 +14,8 @@ public static class SpamManager
 {
     private static readonly string BANEDWORDS_FILE_PATH = "./TONX_Data/BanWords.txt";
     public static List<string> BanWords = new();
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         CreateIfNotExists();

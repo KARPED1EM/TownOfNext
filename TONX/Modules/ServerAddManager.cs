@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using TONX.Attributes;
 using UnityEngine;
 
 namespace TONX;
@@ -9,6 +10,8 @@ namespace TONX;
 public static class ServerAddManager
 {
     private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         serverManager.AvailableRegions = ServerManager.DefaultRegions;

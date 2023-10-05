@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using TONX.Attributes;
 using static TONX.Translator;
 
 namespace TONX;
@@ -15,6 +16,8 @@ public static class BanManager
     private static readonly string DENY_NAME_LIST_PATH = @"./TONX_Data/DenyName.txt";
     private static readonly string BAN_LIST_PATH = @"./TONX_Data/BanList.txt";
     private static List<string> EACList = new();
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         try

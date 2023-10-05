@@ -94,7 +94,7 @@ public sealed class Sniper : RoleBase, IImpostor
         using var sender = CreateSender(CustomRPC.SniperSync);
 
         var snList = ShotNotify;
-        sender.Writer.Write(snList.Count());
+        sender.Writer.Write(snList.Count);
         foreach (var sn in snList)
         {
             sender.Writer.Write(sn);
@@ -252,7 +252,7 @@ public sealed class Sniper : RoleBase, IImpostor
                 Utils.NotifyRoles(SpecifySeer: otherPc);
             }
             SendRPC();
-            new LateTask(
+            _ = new LateTask(
                 () =>
                 {
                     snList.Clear();

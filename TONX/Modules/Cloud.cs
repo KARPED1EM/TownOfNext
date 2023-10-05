@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using TONX.Attributes;
 
 namespace TONX;
 
@@ -16,6 +17,8 @@ internal class Cloud
     private static Socket ClientSocket;
     private static Socket EacClientSocket;
     private static long LastRepotTimeStamp = 0;
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         try

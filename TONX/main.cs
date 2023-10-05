@@ -264,15 +264,6 @@ public class Main : BasePlugin
             ExceptionMessageIsShown = false;
         }
 
-        Translator.Init();
-        CustomWinnerHolder.Reset();
-        RegistryManager.Init();
-        ServerAddManager.Init();
-        BanManager.Init();
-        TemplateManager.Init();
-        SpamManager.Init();
-        Cloud.Init();
-
         IRandom.SetInstance(new NetRandomWrapper());
 
         TONX.Logger.Info($"{Application.version}", "AmongUs Version");
