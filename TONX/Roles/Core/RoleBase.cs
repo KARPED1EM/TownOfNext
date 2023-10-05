@@ -40,15 +40,10 @@ public abstract class RoleBase : IDisposable
     /// 是否拥有技能按钮
     /// </summary>
     public bool HasAbility { get; private set; }
-    /// <summary>
-    /// 在人数上被计为
-    /// </summary>
-    public CountTypes CountType => MyState.countTypes;
     public RoleBase(
         SimpleRoleInfo roleInfo,
         PlayerControl player,
         Func<HasTask> hasTasks = null,
-        CountTypes? countType = null,
         bool? hasAbility = null,
         bool? canBeMadmate = null
     )
@@ -67,16 +62,16 @@ public abstract class RoleBase : IDisposable
         MyState = PlayerState.GetByPlayerId(player.PlayerId);
         MyTaskState = MyState.GetTaskState();
 
-        MyState.countTypes = countType ?? (roleInfo.RoleName.IsImpostor() ? CountTypes.Impostor : CountTypes.Crew);
-
         CustomRoleManager.AllActiveRoles.Add(Player.PlayerId, this);
     }
+#pragma warning disable CA1816
     public void Dispose()
     {
         OnDestroy();
         CustomRoleManager.AllActiveRoles.Remove(Player.PlayerId);
         Player = null;
     }
+#pragma warning restore CA1816
     public bool Is(PlayerControl player)
     {
         return player.PlayerId == Player.PlayerId;
@@ -279,12 +274,12 @@ public abstract class RoleBase : IDisposable
 
     // == 破坏相关处理 ==
     /// <summary>
-    /// 是否可以破坏
+    /// 当玩家造成破坏时调用
     /// 若禁止将无法关门
     /// </summary>
     /// <param name="systemType">破坏的设施类型</param>
     /// <returns>false：取消破坏</returns>
-    public virtual bool CanSabotage(SystemTypes systemType) => true;
+    public virtual bool OnInvokeSabotage(SystemTypes systemType) => true;
 
     /// <summary>
     /// 当有人造成破坏时调用

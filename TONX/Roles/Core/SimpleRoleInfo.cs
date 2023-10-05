@@ -12,6 +12,7 @@ public class SimpleRoleInfo
     public CustomRoles RoleName;
     public Func<RoleTypes> BaseRoleType;
     public CustomRoleTypes CustomRoleType;
+    public CountTypes CountType;
     public Color RoleColor;
     public string RoleColorCode;
     public int ConfigId;
@@ -32,6 +33,7 @@ public class SimpleRoleInfo
         CustomRoles roleName,
         Func<RoleTypes> baseRoleType,
         CustomRoleTypes customRoleType,
+        CountTypes countType,
         int configId,
         OptionCreatorDelegate optionCreator,
         string chatCommand,
@@ -48,6 +50,7 @@ public class SimpleRoleInfo
         RoleName = roleName;
         BaseRoleType = baseRoleType;
         CustomRoleType = customRoleType;
+        CountType = countType;
         ConfigId = configId;
         OptionCreator = optionCreator;
         RequireResetCam = requireResetCam;
@@ -64,7 +67,7 @@ public class SimpleRoleInfo
             };
         RoleColorCode = colorCode;
 
-        ColorUtility.TryParseHtmlString(colorCode, out RoleColor);
+        _ =ColorUtility.TryParseHtmlString(colorCode, out RoleColor);
 
         if (Experimental) tab = TabGroup.OtherRoles;
         else if (tab == TabGroup.GameSettings)
@@ -93,10 +96,14 @@ public class SimpleRoleInfo
         bool requireResetCam = false,
         TabGroup tab = TabGroup.GameSettings,
         Func<AudioClip> introSound = null,
+        CountTypes? countType = null,
         bool experimental = false,
         bool broken = false
     )
     {
+        countType ??= customRoleType == CustomRoleTypes.Impostor ?
+            CountTypes.Impostor :
+            CountTypes.Crew;
         return
             new(
                 classType,
@@ -104,6 +111,7 @@ public class SimpleRoleInfo
                 roleName,
                 baseRoleType,
                 customRoleType,
+                countType.Value,
                 configId,
                 optionCreator,
                 chatCommand,
@@ -124,6 +132,7 @@ public class SimpleRoleInfo
     {
         CustomRoles roleName;
         CustomRoleTypes customRoleType;
+        CountTypes countType = CountTypes.Crew;
 
         switch (baseRoleType)
         {
@@ -142,10 +151,12 @@ public class SimpleRoleInfo
             case RoleTypes.Impostor:
                 roleName = CustomRoles.Impostor;
                 customRoleType = CustomRoleTypes.Impostor;
+                countType = CountTypes.Impostor;
                 break;
             case RoleTypes.Shapeshifter:
                 roleName = CustomRoles.Shapeshifter;
                 customRoleType = CustomRoleTypes.Impostor;
+                countType = CountTypes.Impostor;
                 break;
             default:
                 roleName = CustomRoles.Crewmate;
@@ -159,6 +170,7 @@ public class SimpleRoleInfo
                 roleName,
                 () => baseRoleType,
                 customRoleType,
+                countType,
                 -1,
                 null,
                 null,
