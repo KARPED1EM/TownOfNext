@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 
@@ -263,6 +264,8 @@ public class Main : BasePlugin
             ExceptionMessage = ex.Message;
             ExceptionMessageIsShown = false;
         }
+
+        PluginModuleInitializerAttribute.InitializeAll();
 
         IRandom.SetInstance(new NetRandomWrapper());
 

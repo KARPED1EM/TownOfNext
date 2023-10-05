@@ -80,6 +80,8 @@ internal class ChangeRoleSettings
             //    Logger.Error(msg, "CoStartGame");
             //}
 
+            GameModuleInitializerAttribute.InitializeAll();
+
             foreach (var target in Main.AllPlayerControls)
             {
                 foreach (var seer in Main.AllPlayerControls)
