@@ -17,12 +17,12 @@ public static class SendTargetPatch
     }
     public static SendTargets SendTarget = SendTargets.Default;
     public static GameObject SendTargetShower;
-    [HarmonyPatch(nameof(FreeChatInputField)), HarmonyPostfix]
-    public static void Awake_Postfix(FreeChatInputField __instance)
+    [HarmonyPatch(nameof(ChatController.Awake)), HarmonyPostfix]
+    public static void Awake_Postfix(ChatController __instance)
     {
-        __instance.textArea.SetText("");
+        __instance.freeChatField.textArea.SetText("");
         if (SendTargetShower != null) return;
-        SendTargetShower = UnityEngine.Object.Instantiate(__instance.charCountText.gameObject, __instance.charCountText.transform.parent);
+        SendTargetShower = UnityEngine.Object.Instantiate(__instance.freeChatField.charCountText.gameObject, __instance.freeChatField.charCountText.transform.parent);
         SendTargetShower.name = "TONX Send Target Shower";
         SendTargetShower.transform.localPosition = new Vector3(1.95f, 0.5f, 0f);
         SendTargetShower.GetComponent<RectTransform>().sizeDelta = new Vector2(5f, 0.1f);
