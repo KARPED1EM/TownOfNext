@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
 using System;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Crewmate;
@@ -14,6 +15,7 @@ public class MeetingTimeManager
     private static int DefaultDiscussionTime;
     private static int DefaultVotingTime;
 
+    [GameModuleInitializer]
     public static void Init()
     {
         DefaultDiscussionTime = Main.RealOptionsData.GetInt(Int32OptionNames.DiscussionTime);
