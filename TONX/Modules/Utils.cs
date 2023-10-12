@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using TONX.Modules;
+using TONX.Roles;
 using TONX.Roles.AddOns.Crewmate;
 using TONX.Roles.AddOns.Impostor;
 using TONX.Roles.Core;
@@ -303,10 +304,10 @@ public static class Utils
         var (roleColor, roleText) = GetTrueRoleNameData(seen.PlayerId, seer == seen || !seer.IsAlive());
 
         //seen側による変更
-        seen.GetRoleClass()?.OverrideRoleNameAsSeen(seer, ref enabled, ref roleColor, ref roleText);
+        seen.GetRoleClass()?.OverrideDisplayRoleNameAsSeen(seer, ref enabled, ref roleColor, ref roleText);
 
         //seer側による変更
-        seer.GetRoleClass()?.OverrideRoleNameAsSeer(seen, ref enabled, ref roleColor, ref roleText);
+        seer.GetRoleClass()?.OverrideDisplayRoleNameAsSeer(seen, ref enabled, ref roleColor, ref roleText);
 
         return enabled ? ColorString(roleColor, roleText) : "";
     }
@@ -374,7 +375,9 @@ public static class Utils
     private static (Color color, string text) GetTrueRoleNameData(byte playerId, bool showSubRoleMarks = true)
     {
         var state = PlayerState.GetByPlayerId(playerId);
-        return GetRoleNameData(state.MainRole, state.SubRoles, showSubRoleMarks);
+        var (color, text) = GetRoleNameData(state.MainRole, state.SubRoles, showSubRoleMarks);
+        CustomRoleManager.GetByPlayerId(playerId)?.OverrideTrueRoleName(ref color, ref text);
+        return (color, text);
     }
     /// <summary>
     /// 対象のRoleNameを全て正確に表示
@@ -621,7 +624,7 @@ public static class Utils
             return;
         }
 
-        var sb = new StringBuilder();
+        var sb = new StringBuilder().AppendFormat("<line-height={0}>", ActiveSettingsLineHeight);
         foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 2000000 and < 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
         {
             if (opt.IsHeader) sb.Append('\n');
@@ -713,7 +716,7 @@ public static class Utils
                 sb.Append(string.Concat(Enumerable.Repeat("┃", Mathf.Max(deep - 1, 0))));
                 sb.Append(opt.Index == option.Children.Count ? "┗ " : "┣ ");
             }
-            sb.Append($"{opt.Value.GetName(true)}: {opt.Value.GetString()}\n");
+            sb.Append($"{opt.Value.GetName(true).RemoveHtmlTags()}: {opt.Value.GetString()}\n");
             if (opt.Value.GetBool()) ShowChildrenSettings(opt.Value, ref sb, deep + 1);
         }
     }
@@ -725,13 +728,19 @@ public static class Utils
             return;
         }
         var sb = new StringBuilder();
+        var winnerColor = ((CustomRoles)CustomWinnerHolder.WinnerTeam).GetRoleInfo()?.RoleColor ?? Palette.DisabledGrey;
 
-        sb.Append(GetString("PlayerInfo")).Append(':');
+        sb.Append("""<align="center">""");
+        sb.Append("<size=150%>").Append(GetString("PlayerInfo")).Append("</size>");
+        sb.Append('\n').Append(SetEverythingUpPatch.LastWinsText.Mark(winnerColor, false));
+        sb.Append("</align>");
+
+        sb.Append("<size=70%>\n");
         List<byte> cloneRoles = new(PlayerState.AllPlayerStates.Keys);
         foreach (var id in Main.winnerList)
         {
             if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-            sb.Append($"\n★ ").Append(EndGamePatch.SummaryText[id]);
+            sb.Append($"\n★ ".Color(winnerColor)).Append(SummaryTexts(id, true));
             cloneRoles.Remove(id);
         }
         if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
@@ -747,10 +756,10 @@ public static class Utils
             foreach (var id in cloneRoles)
             {
                 if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-                sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id]);
+                sb.Append($"\n　 ").Append(SummaryTexts(id, true));
             }
         }
-        SendMessage(sb.ToString().RemoveHtmlTagsExcept("color"), PlayerId);
+        SendMessage(sb.ToString(), PlayerId);
     }
     public static void ShowKillLog(byte PlayerId = byte.MaxValue)
     {
@@ -1167,39 +1176,36 @@ public static class Utils
         };
         Process.Start(startInfo);
     }
-    public static string SummaryTexts(byte id, bool disableColor = true)
+    public static string SummaryTexts(byte id, bool isForChat)
     {
-        if (GetPlayerById(id)?.GetTrueName() is not string name)
-            if (!Main.AllPlayerNames.TryGetValue(id, out name))
-                name = "Unknown";
+        // 全プレイヤー中最長の名前の長さからプレイヤー名の後の水平位置を計算する
+        // 1em ≒ 半角2文字
+        // 空白は0.5emとする
+        // SJISではアルファベットは1バイト，日本語は基本的に2バイト
+        var longestNameByteCount = Main.AllPlayerNames.Values.Select(name => name.GetByteCount()).OrderByDescending(byteCount => byteCount).FirstOrDefault();
+        //最大11.5emとする(★+日本語10文字分+半角空白)
+        var pos = Math.Min(((float)longestNameByteCount / 2) + 1.5f /* ★+末尾の半角空白 */ , 11.5f);
 
-        name = ColorString(Main.PlayerColors[id], name);
-
-        bool wide = TranslationController.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian;
-        var NamePos = wide ? 24 : 24;
-        var ProgressPos = wide ? 9 : 9;
-        var KillCountPos = wide ? 13 : 10;
-        var VitalPos = wide ? 17 : 10;
-
-        var sb = new StringBuilder();
-        sb.Append(name);
-        sb.Append($"<pos={NamePos}%> {GetProgressText(id)}</pos>");
-        sb.Append($"<pos={NamePos + ProgressPos}%> {GetKillCountText(id)}</pos>");
-        sb.Append($"<pos={NamePos + ProgressPos + KillCountPos}%> {GetVitalText(id, true, true)}</pos>");
-        sb.Append($"<pos={NamePos + ProgressPos + KillCountPos + VitalPos}%> {GetTrueRoleName(id, false)}{GetSubRolesText(id, summary: true)}</pos>");
-        var summary = sb.ToString();
-
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-        {
-            if (TranslationController.Instance.currentLanguage.languageID is SupportedLangs.SChinese or SupportedLangs.TChinese)
-                summary = $"{GetProgressText(id)}\t<pos=22%>{name}</pos>";
-            else summary = $"{name}<pos=30%>{GetProgressText(id)}</pos>";
-            if (GetProgressText(id).Trim() == "") return "INVALID";
-        }
-        return disableColor ? summary.RemoveHtmlTags() : summary;
+        var builder = new StringBuilder();
+        builder.Append(isForChat ? Main.AllPlayerNames[id] : ColorString(Main.PlayerColors[id], Main.AllPlayerNames[id]));
+        builder.AppendFormat("<pos={0}em>", pos).Append(isForChat ? GetProgressText(id).RemoveColorTags() : GetProgressText(id)).Append("</pos>");
+        // "(00/00) " = 4em
+        pos += 4f;
+        builder.AppendFormat("<pos={0}em>", pos).Append(GetKillCountText(id)).Append("</pos>");
+        pos += 6f;
+        builder.AppendFormat("<pos={0}em>", pos).Append(GetVitalText(id)).Append("</pos>");
+        // "Lover's Suicide " = 8em
+        // "回線切断 " = 4.5em
+        pos += DestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian ? 8f : 4.5f;
+        builder.AppendFormat("<pos={0}em>", pos);
+        builder.Append(isForChat ? GetTrueRoleName(id, false).RemoveColorTags() : GetTrueRoleName(id, false));
+        builder.Append(isForChat ? GetSubRolesText(id).RemoveColorTags() : GetSubRolesText(id));
+        builder.Append("</pos>");
+        return builder.ToString();
     }
     public static string RemoveHtmlTags(this string str) => Regex.Replace(str, "<[^>]*?>", string.Empty);
     public static string RemoveHtmlTagsExcept(this string str, string exceptionLabel) => Regex.Replace(str, "<(?!/*" + exceptionLabel + ")[^>]*?>", string.Empty);
+    public static string RemoveColorTags(this string str) => Regex.Replace(str, "</?color(=#[0-9a-fA-F]*)?>", "");
     public static void FlashColor(Color color, float duration = 1f)
     {
         var hud = DestroyableSingleton<HudManager>.Instance;
@@ -1312,6 +1318,9 @@ public static class Utils
     public static bool IsAllAlive => PlayerState.AllPlayerStates.Values.All(state => state.CountType == CountTypes.OutOfGame || !state.IsDead);
     public static int PlayersCount(CountTypes countTypes) => PlayerState.AllPlayerStates.Values.Count(state => state.CountType == countTypes);
     public static int AlivePlayersCount(CountTypes countTypes) => Main.AllAlivePlayerControls.Count(pc => pc.Is(countTypes));
+
+    private const string ActiveSettingsSize = "70%";
+    private const string ActiveSettingsLineHeight = "55%";
 
     public static bool IsDev(this PlayerControl pc) =>
         pc.FriendCode
