@@ -34,6 +34,12 @@ public enum CustomRPC
     SetEvilTrackerTarget,
     SetRealKiller,
     SyncPuppet,
+    SetSchrodingerCatTeam,
+    StealthDarken,
+    EvilHackerCreateMurderNotify,
+    PenguinSync,
+    MareSync,
+    SyncPlagueDoctor,
 
     //TONX
     AntiBlackout,
