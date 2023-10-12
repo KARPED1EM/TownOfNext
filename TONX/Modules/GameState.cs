@@ -19,6 +19,16 @@ public class PlayerState
     public CustomDeathReason DeathReason { get; set; }
     public TaskState taskState;
     public bool IsBlackOut { get; set; }
+    private bool _canUseMovingPlatform = true;
+    public bool CanUseMovingPlatform
+    {
+        get => _canUseMovingPlatform;
+        set
+        {
+            Logger.Info($"ID: {PlayerId} の昇降機可用性を {value} に設定", nameof(PlayerState));
+            _canUseMovingPlatform = value;
+        }
+    }
     public (DateTime, byte) RealKiller;
     public PlainShipRoom LastRoom;
     public Dictionary<byte, string> TargetColorData;
@@ -197,6 +207,8 @@ public class TaskState
         CompletedTasksCount = Math.Min(AllTasksCount, CompletedTasksCount);
         Logger.Info($"{player.GetNameWithRole()}: TaskCounts = {CompletedTasksCount}/{AllTasksCount}", "TaskState.Update");
     }
+    public bool HasCompletedEnoughCountOfTasks(int count) =>
+            IsTaskFinished || CompletedTasksCount >= count;
 }
 public class PlayerVersion
 {
