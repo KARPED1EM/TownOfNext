@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TONX.Modules;
 using TONX.Roles.AddOns.Common;
 using TONX.Roles.AddOns.Crewmate;
 using TONX.Roles.AddOns.Impostor;
@@ -37,7 +38,6 @@ public static class Options
     }
 
     // 预设
-    public const int PresetId = 0;
     private static readonly string[] presets =
     {
         Main.Preset1.Value, Main.Preset2.Value, Main.Preset3.Value,
@@ -69,8 +69,8 @@ public static class Options
     public static Dictionary<CustomRoles, StringOptionItem> CustomRoleSpawnChances;
     public static readonly string[] Rates =
     {
-            "Rate0",  "Rate5",  "Rate10", "Rate20", "Rate30", "Rate40",
-            "Rate50", "Rate60", "Rate70", "Rate80", "Rate90", "Rate100",
+        "Rate0",  "Rate5",  "Rate10", "Rate20", "Rate30", "Rate40",
+        "Rate50", "Rate60", "Rate70", "Rate80", "Rate90", "Rate100",
     };
     public static readonly string[] RoleSpwanModes =
     {
@@ -209,10 +209,16 @@ public static class Options
     public static OptionItem DisableAirshipViewingDeckLightsPanel;
     public static OptionItem DisableAirshipGapRoomLightsPanel;
     public static OptionItem DisableAirshipCargoLightsPanel;
+    public static OptionItem BlockDisturbancesToSwitches;
+
+    public static OptionItem ModifySabotageCooldown;
+    public static OptionItem SabotageCooldown;
 
     // 地图相关设定
     public static OptionItem AirShipVariableElectrical;
     public static OptionItem DisableAirshipMovingPlatform;
+    public static OptionItem ResetDoorsEveryTurns;
+    public static OptionItem DoorsResetMode;
 
     // 其它设定
     public static OptionItem RandomMapsMode;
@@ -362,6 +368,8 @@ public static class Options
     public static void Load()
     {
         if (IsLoaded) return;
+        OptionSaver.Initialize();
+
         // 预设
         _ = PresetOptionItem.Create(0, TabGroup.SystemSettings)
             .SetColor(new Color32(255, 235, 4, byte.MaxValue))
@@ -439,7 +447,7 @@ public static class Options
         // Impostor
         sortedRoleInfo.Where(role => role.CustomRoleType == CustomRoleTypes.Impostor && role.Experimental == setupExpNow).Do(info =>
         {
-            SetupRoleOptions(info.ConfigId, info.Tab, info.RoleName);
+            SetupRoleOptions(info);
             info.OptionCreator?.Invoke();
         });
 
@@ -453,7 +461,7 @@ public static class Options
         // Crewmate
         sortedRoleInfo.Where(role => role.CustomRoleType == CustomRoleTypes.Crewmate && role.Experimental == setupExpNow).Do(info =>
         {
-            SetupRoleOptions(info.ConfigId, info.Tab, info.RoleName);
+            SetupRoleOptions(info);
             info.OptionCreator?.Invoke();
         });
 
@@ -467,19 +475,7 @@ public static class Options
         // Neutral
         sortedRoleInfo.Where(role => role.CustomRoleType == CustomRoleTypes.Neutral && role.Experimental == setupExpNow).Do(info =>
         {
-            switch (info.RoleName)
-            {
-                case CustomRoles.Jackal: //ジャッカルは1人固定
-                case CustomRoles.Gamer:
-                case CustomRoles.Succubus:
-                case CustomRoles.Pelican:
-                case CustomRoles.BloodKnight:
-                    SetupSingleRoleOptions(info.ConfigId, info.Tab, info.RoleName, 1);
-                    break;
-                default:
-                    SetupRoleOptions(info.ConfigId, info.Tab, info.RoleName);
-                    break;
-            }
+            SetupRoleOptions(info);
             info.OptionCreator?.Invoke();
         });
 
@@ -504,7 +500,7 @@ public static class Options
             .SetGameMode(CustomGameMode.Standard)
             .SetColor(Utils.GetCustomRoleTypeColor(CustomRoleTypes.Addon));
 
-        SetupLoversRoleOptionsToggle(80100);
+        SetupRoleOptions(80100, TabGroup.Addons, CustomRoles.Lovers, assignCountRule: new(2, 2, 2));
         Ntr.SetupCustomOption();
         Watcher.SetupCustomOption();
         Lighter.SetupCustomOption();
@@ -848,13 +844,23 @@ public static class Options
 
         // 停电特殊设定（飞艇）
         LightsOutSpecialSettings = BooleanOptionItem.Create(3_022_001, "LightsOutSpecialSettings", false, TabGroup.GameSettings, false)
-          .SetColor(new Color32(241, 212, 227, byte.MaxValue))
+            .SetColor(new Color32(241, 212, 227, byte.MaxValue))
             .SetGameMode(CustomGameMode.Standard);
         DisableAirshipViewingDeckLightsPanel = BooleanOptionItem.Create(3_022_002, "DisableAirshipViewingDeckLightsPanel", false, TabGroup.GameSettings, false).SetParent(LightsOutSpecialSettings)
             .SetGameMode(CustomGameMode.Standard);
         DisableAirshipGapRoomLightsPanel = BooleanOptionItem.Create(3_022_003, "DisableAirshipGapRoomLightsPanel", false, TabGroup.GameSettings, false).SetParent(LightsOutSpecialSettings)
             .SetGameMode(CustomGameMode.Standard);
         DisableAirshipCargoLightsPanel = BooleanOptionItem.Create(3_022_004, "DisableAirshipCargoLightsPanel", false, TabGroup.GameSettings, false).SetParent(LightsOutSpecialSettings)
+            .SetGameMode(CustomGameMode.Standard);
+        BlockDisturbancesToSwitches = BooleanOptionItem.Create(3_022_005, "BlockDisturbancesToSwitches", false, TabGroup.GameSettings, false).SetParent(LightsOutSpecialSettings)
+            .SetGameMode(CustomGameMode.Standard);
+
+        // 修改破坏冷却时间
+        ModifySabotageCooldown = BooleanOptionItem.Create(3_023_001, "ModifySabotageCooldown", false, TabGroup.GameSettings, false)
+            .SetColor(new Color32(241, 212, 227, byte.MaxValue))
+            .SetGameMode(CustomGameMode.Standard);
+        SabotageCooldown = FloatOptionItem.Create(3_023_002, "SabotageCooldown", new(1f, 60f, 1f), 30f, TabGroup.GameSettings, false).SetParent(ModifySabotageCooldown)
+            .SetValueFormat(OptionFormat.Seconds)
             .SetGameMode(CustomGameMode.Standard);
 
         // 地图相关设定
@@ -865,6 +871,10 @@ public static class Options
             .SetHeader(true)
             .SetColor(new Color32(85, 170, 255, byte.MaxValue));
         DisableAirshipMovingPlatform = BooleanOptionItem.Create(3_030_002, "DisableAirshipMovingPlatform", false, TabGroup.GameSettings, false)
+            .SetColor(new Color32(85, 170, 255, byte.MaxValue));
+        ResetDoorsEveryTurns = BooleanOptionItem.Create(3_030_003, "ResetDoorsEveryTurns", false, TabGroup.GameSettings, false)
+            .SetColor(new Color32(85, 170, 255, byte.MaxValue));
+        DoorsResetMode = StringOptionItem.Create(3_030_004, "DoorsResetMode", EnumHelper.GetAllNames<DoorsReset.ResetMode>(), 0, TabGroup.GameSettings, false).SetParent(ResetDoorsEveryTurns)
             .SetColor(new Color32(85, 170, 255, byte.MaxValue));
 
         // 其它设定
@@ -937,8 +947,10 @@ public static class Options
 
         #endregion 
 
-        Logger.Msg("All Mod Options Loaded!", "Load Options");
+        OptionSaver.Load();
+
         IsLoaded = true;
+        Logger.Msg("All Mod Options Loaded!", "Load Options");
     }
 
     public static void SetupAddonOptions(int id, TabGroup tab, CustomRoles role, CustomGameMode customGameMode = CustomGameMode.Standard)
@@ -956,54 +968,24 @@ public static class Options
         CustomRoleSpawnChances.Add(role, spawnOption);
         CustomRoleCounts.Add(role, countOption);
     }
-    public static void SetupRoleOptions(int id, TabGroup tab, CustomRoles role, CustomGameMode customGameMode = CustomGameMode.Standard)
+    public static void SetupRoleOptions(SimpleRoleInfo info) =>
+        SetupRoleOptions(info.ConfigId, info.Tab, info.RoleName, info.AssignCountRule);
+    public static void SetupRoleOptions(int id, TabGroup tab, CustomRoles role, IntegerValueRule assignCountRule = null, CustomGameMode customGameMode = CustomGameMode.Standard)
     {
         if (role.IsVanilla()) return;
+        assignCountRule ??= new(1, 15, 1);
 
         bool broken = role.GetRoleInfo()?.Broken ?? false;
 
-        var spawnOption = StringOptionItem.Create(id, role.ToString(), RoleSpwanModes, 0, tab, false).SetColor(broken ? Palette.DisabledGrey : Utils.GetRoleColor(role))
+        var spawnOption = StringOptionItem.Create(id, role.ToString(), RoleSpwanModes, 0, tab, false)
+            .SetColor(broken ? Palette.DisabledGrey : Utils.GetRoleColor(role))
             .SetHeader(true)
             .SetAddDesc(broken ? Utils.ColorString(Palette.DisabledGrey, Translator.GetString("RoleBroken")) : "")
             .SetGameMode(customGameMode) as StringOptionItem;
-        var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(1, 15, 1), 1, tab, false).SetParent(spawnOption)
+
+        var countOption = IntegerOptionItem.Create(id + 1, "Maximum", assignCountRule, assignCountRule.Step, tab, false)
+            .SetParent(spawnOption)
             .SetValueFormat(OptionFormat.Players)
-            .SetGameMode(customGameMode);
-
-        CustomRoleSpawnChances.Add(role, spawnOption);
-        CustomRoleCounts.Add(role, countOption);
-    }
-    public static void SetupSingleRoleOptions(int id, TabGroup tab, CustomRoles role, int count, CustomGameMode customGameMode = CustomGameMode.Standard)
-    {
-        bool broken = role.GetRoleInfo()?.Broken ?? false;
-
-        var spawnOption = StringOptionItem.Create(id, role.ToString(), RoleSpwanModes, 0, tab, false).SetColor(broken ? Palette.DisabledGrey : Utils.GetRoleColor(role))
-            .SetHeader(true)
-            .SetAddDesc(broken ? Utils.ColorString(Palette.DisabledGrey, Translator.GetString("RoleBroken")) : "")
-            .SetGameMode(customGameMode) as StringOptionItem;
-        // 初期値,最大値,最小値が同じで、stepが0のどうやっても変えることができない個数オプション
-        var countOption = IntegerOptionItem.Create(id + 1, "Maximum", new(count, count, count), count, tab, false).SetParent(spawnOption)
-            .SetHidden(true)
-            .SetGameMode(customGameMode);
-
-        CustomRoleSpawnChances.Add(role, spawnOption);
-        CustomRoleCounts.Add(role, countOption);
-    }
-    private static void SetupLoversRoleOptionsToggle(int id, CustomGameMode customGameMode = CustomGameMode.Standard)
-    {
-        var role = CustomRoles.Lovers;
-        var spawnOption = StringOptionItem.Create(id, role.ToString(), Rates, 0, TabGroup.Addons, false).SetColor(Utils.GetRoleColor(role))
-                .SetHeader(true)
-                .SetGameMode(customGameMode) as StringOptionItem;
-
-        LoverKnowRoles = BooleanOptionItem.Create(id + 4, "LoverKnowRoles", true, TabGroup.Addons, false).SetParent(spawnOption)
-            .SetGameMode(customGameMode);
-
-        LoverSuicide = BooleanOptionItem.Create(id + 3, "LoverSuicide", true, TabGroup.Addons, false).SetParent(spawnOption)
-            .SetGameMode(customGameMode);
-
-        var countOption = IntegerOptionItem.Create(id + 1, "NumberOfLovers", new(2, 2, 1), 2, TabGroup.Addons, false).SetParent(spawnOption)
-            .SetHidden(true)
             .SetGameMode(customGameMode);
 
         CustomRoleSpawnChances.Add(role, spawnOption);
