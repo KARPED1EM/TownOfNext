@@ -148,15 +148,16 @@ public static class MeetingHudPatch
             {
                 _ = new LateTask(() =>
                 {
-                    foreach (var seer in Main.AllPlayerControls)
+                    foreach (var seen in Main.AllPlayerControls)
                     {
-                        foreach (var target in Main.AllPlayerControls)
+                        var seenName = seen.GetRealName(isMeeting: true);
+                        var coloredName = Utils.ColorString(seen.GetRoleColor(), seenName);
+                        foreach (var seer in Main.AllPlayerControls)
                         {
-                            var targetName = target.GetTrueName();
-                            var coloredName = Utils.ColorString(target.GetRoleColor(), targetName);
-                            target.RpcSetNamePrivate(
-                                seer == target ? coloredName : targetName,
-                                true, seer);
+                            seen.RpcSetNamePrivate(
+                                seer == seen ? coloredName : seenName,
+                                true,
+                                seer);
                         }
                     }
                     ChatUpdatePatch.DoBlockChat = false;
