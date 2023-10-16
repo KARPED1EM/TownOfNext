@@ -403,23 +403,6 @@ class FixedUpdatePatch
                 //名前変更
                 RealName = target.GetRealName();
 
-                //名前色変更処理
-                //自分自身の名前の色を変更
-                if (target.AmOwner && GameStates.IsInTask)
-                { //targetが自分自身
-                    if (target.Is(CustomRoles.Arsonist) && Arsonist.IsDouseDone(target))
-                        RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Arsonist), GetString("EnterVentToWin"));
-                    //TODO: FIXME
-                    //if (target.Is(CustomRoles.Revolutionist) && target.IsDrawDone())
-                    //    RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Revolutionist), string.Format(GetString("EnterVentWinCountDown"), Main.RevolutionistCountdown.TryGetValue(seer.PlayerId, out var x) ? x : 10));
-                    if (seer.IsEaten())
-                        RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"));
-                    if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-                        SoloKombatManager.GetNameNotify(target, ref RealName);
-                    if (NameNotifyManager.GetNameNotify(target, out var name))
-                        RealName = name;
-                }
-
                 //NameColorManager準拠の処理
                 RealName = RealName.ApplyNameColorData(seer, target, false);
 
@@ -613,16 +596,14 @@ class PlayerControlCompleteTaskPatch
         taskState.Update(pc);
 
         var roleClass = pc.GetRoleClass();
-        bool ret;
+        bool ret = true;
         if (roleClass != null && roleClass.OnCompleteTask(out bool cancel))
         {
             ret = cancel;
         }
-        else
-        {
-            ret = Capitalism.OnCompleteTask(pc);
-            if (ret) ret = Workhorse.OnCompleteTask(pc);
-        }
+        //属性クラスの扱いを決定するまで仮置き
+        ret &= Workhorse.OnCompleteTask(pc);
+        ret &= Capitalism.OnCompleteTask(pc);
 
         Utils.NotifyRoles();
         return ret;
@@ -698,5 +679,17 @@ class PlayerControlSetRolePatch
             }
         }
         return true;
+    }
+}
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.Die))]
+public static class PlayerControlDiePatch
+{
+    public static void Postfix(PlayerControl __instance)
+    {
+        if (AmongUsClient.Instance.AmHost)
+        {
+            // 死者の最終位置にペットが残るバグ対応
+            __instance.RpcSetPet("");
+        }
     }
 }
