@@ -15,7 +15,7 @@ public sealed class Insider : RoleBase, IImpostor
             CustomRoles.Insider,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            2800,
+            5100,
             SetupOptionItem,
             "ins"
         );
