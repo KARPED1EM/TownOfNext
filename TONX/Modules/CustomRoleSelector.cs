@@ -7,7 +7,7 @@ using TONX.Roles.Core;
 
 namespace TONX.Modules;
 
-internal class CustomRoleSelector
+internal static class CustomRoleSelector
 {
     public static Dictionary<PlayerControl, CustomRoles> RoleResult;
     public static IReadOnlyList<CustomRoles> AllRoles => RoleResult.Values.ToList();
@@ -50,7 +50,7 @@ internal class CustomRoleSelector
             CustomRoles role = (CustomRoles)Enum.Parse(typeof(CustomRoles), cr.ToString());
             if (role.IsVanilla() || role.IsAddon() || !Options.CustomRoleSpawnChances.TryGetValue(role, out var option) || option.Selections.Length != 3) continue;
             if (role is CustomRoles.GM or CustomRoles.NotAssigned) continue;
-            for (int i = 0; i < role.GetCount(); i++)
+            for (int i = 0; i < role.GetAssignCount(); i++)
                 roleList.Add(role);
         }
 
@@ -102,7 +102,7 @@ internal class CustomRoleSelector
             NeutralOnList.Remove(select);
             rolesToAssign.Add(select);
             readyRoleNum++;
-            readyNeutralNum += select.GetCount();
+            readyNeutralNum += select.GetAssignCount();
             Logger.Info(select.ToString() + " 加入中立职业待选列表（优先）", "CustomRoleSelector");
             if (readyRoleNum >= playerCount) goto EndOfAssign;
             if (readyNeutralNum >= optNeutralNum) break;
@@ -116,7 +116,7 @@ internal class CustomRoleSelector
                 NeutralRateList.Remove(select);
                 rolesToAssign.Add(select);
                 readyRoleNum++;
-                readyNeutralNum += select.GetCount();
+                readyNeutralNum += select.GetAssignCount();
                 Logger.Info(select.ToString() + " 加入中立职业待选列表", "CustomRoleSelector");
                 if (readyRoleNum >= playerCount) goto EndOfAssign;
                 if (readyNeutralNum >= optNeutralNum) break;
@@ -262,6 +262,17 @@ internal class CustomRoleSelector
             RoleTypes.Shapeshifter => addShapeshifterNum,
             _ => 0
         };
+    }
+    public static int GetAssignCount(this CustomRoles role)
+    {
+        int maximumCount = role.GetCount();
+        int assignUnitCount = CustomRoleManager.GetRoleInfo(role)?.AssignUnitCount ??
+            role switch
+            {
+                CustomRoles.Lovers => 2,
+                _ => 1,
+            };
+        return maximumCount / assignUnitCount;
     }
 
     public static List<CustomRoles> AddonRolesList = new();
