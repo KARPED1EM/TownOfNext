@@ -25,29 +25,23 @@ public sealed class Insider : RoleBase, IImpostor
         player
     )
     {
-        canSeeImpostorAbilities = optionCanSeeImpostorAbilities.GetBool();
         canSeeMadmates = optionCanSeeMadmates.GetBool();
         killCountToSeeMadmates = optionKillCountToSeeMadmates.GetInt();
     }
-    private static OptionItem optionCanSeeImpostorAbilities;
     private static OptionItem optionCanSeeMadmates;
     private static OptionItem optionKillCountToSeeMadmates;
     private enum OptionName
     {
-        InsiderCanSeeAllGhostsRoles,
-        InsiderCanSeeImpostorAbilities,
         InsiderCanSeeMadmates,
         InsiderKillCountToSeeMadmates,
     }
-    private static bool canSeeImpostorAbilities;
     private static bool canSeeMadmates;
     private static int killCountToSeeMadmates;
 
     private static void SetupOptionItem()
     {
-        optionCanSeeImpostorAbilities = BooleanOptionItem.Create(RoleInfo, 11, OptionName.InsiderCanSeeImpostorAbilities, true, false);
-        optionCanSeeMadmates = BooleanOptionItem.Create(RoleInfo, 12, OptionName.InsiderCanSeeMadmates, false, false);
-        optionKillCountToSeeMadmates = IntegerOptionItem.Create(RoleInfo, 13, OptionName.InsiderKillCountToSeeMadmates, new(0, 15, 1), 2, false)
+        optionCanSeeMadmates = BooleanOptionItem.Create(RoleInfo, 10, OptionName.InsiderCanSeeMadmates, false, false);
+        optionKillCountToSeeMadmates = IntegerOptionItem.Create(RoleInfo, 11, OptionName.InsiderKillCountToSeeMadmates, new(0, 15, 1), 2, false)
             .SetParent(optionCanSeeMadmates)
             .SetValueFormat(OptionFormat.Times);
     }
@@ -90,14 +84,12 @@ public sealed class Insider : RoleBase, IImpostor
         if (seen.Is(CustomRoles.Lovers) && !seer.Is(CustomRoles.Lovers) && IsAbilityAvailable(seen))
             mark.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), "♡"));
 
-        if (canSeeImpostorAbilities)
+        foreach (var impostor in Main.AllPlayerControls)
         {
-            foreach (var impostor in Main.AllPlayerControls)
-            {
-                if (seer == impostor || impostor.Is(CustomRoles.Insider) || !impostor.Is(CustomRoleTypes.Impostor)) continue;
-                mark.Append(impostor.GetRoleClass()?.GetMark(impostor, seen, isForMeeting));
-            }
+            if (seer == impostor || impostor.Is(CustomRoles.Insider) || !impostor.Is(CustomRoleTypes.Impostor)) continue;
+            mark.Append(impostor.GetRoleClass()?.GetMark(impostor, seen, isForMeeting));
         }
+
         return mark.ToString();
     }
 }

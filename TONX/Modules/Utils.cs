@@ -1094,11 +1094,6 @@ public static class Utils
         if (Options.AirShipVariableElectrical.GetBool())
             AirShipElectricalDoors.Initialize();
     }
-    public static void AfterPlayerDeathTasks(PlayerControl target, bool onMeeting = false)
-    {
-        if (!AmongUsClient.Instance.AmHost) return;
-        FixedUpdatePatch.LoversSuicide(target.PlayerId, onMeeting, true);
-    }
     public static void ChangeInt(ref int ChangeTo, int input, int max)
     {
         var tmp = ChangeTo * 10;

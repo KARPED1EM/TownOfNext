@@ -127,7 +127,6 @@ public sealed class Pelican : RoleBase, IKiller
             target.SetRealKiller(Player);
             target.SetDeathReason(CustomDeathReason.Eaten);
             PlayerState.GetByPlayerId(id)?.SetDead();
-            Utils.AfterPlayerDeathTasks(target, true);
 
             Logger.Info($"{Player.GetRealName()} 消化了 {target.GetRealName()}", "Pelican.OnReportDeadBody");
         }

@@ -198,7 +198,6 @@ public static class GuesserHelper
             dp.RpcSuicideWithAnime();
 
             //死者检查
-            Utils.AfterPlayerDeathTasks(dp, true);
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
             new LateTask(() => { Utils.SendMessage(string.Format(GetString("GuessKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.NiceGuesser), GetString("GuessKillTitle"))); }, 0.6f, "Guess Msg");

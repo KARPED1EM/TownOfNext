@@ -112,7 +112,6 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
             {
                 target.RpcSuicideWithAnime();
                 //死者检查
-                Utils.AfterPlayerDeathTasks(target, true);
                 Utils.NotifyRoles(isForMeeting: true, NoCache: true);
             }
             else

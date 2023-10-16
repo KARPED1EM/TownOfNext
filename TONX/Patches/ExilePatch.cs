@@ -130,7 +130,6 @@ class ExileControllerWrapUpPatch
                         player?.SetRealKiller(player, true);
                     if (Main.ResetCamPlayerList.Contains(x.Key) || (requireResetCam.HasValue && requireResetCam.Value))
                         player?.ResetPlayerCam(1f);
-                    Utils.AfterPlayerDeathTasks(player);
                 });
                 Main.AfterMeetingDeathPlayers.Clear();
             }, 0.5f, "AfterMeetingDeathPlayers Task");
