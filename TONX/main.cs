@@ -34,14 +34,14 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public const string PluginGuid = "com.karped1em.tonx";
-    public const string LowestSupportedVersion = "2023.7.13";
-    public const string PluginVersion = "0.1.0";
+    public const string LowestSupportedVersion = "2023.7.14";
+    public const string PluginVersion = "0.2.0";
     public const int PluginCreation = 1;
 
     public static readonly bool ShowWebsiteButton = true;
     public static readonly bool ShowQQButton = true;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
-    public static readonly bool ShowDiscordButton = true;
+    public static readonly bool ShowDiscordButton = false;
     public static readonly string DiscordInviteUrl = "https://discord.gg/hkk2p9ggv4";
 
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
