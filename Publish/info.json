@@ -1,14 +1,14 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "minVer": "latest",
   "creation": "1",
   "allowStart": "true",
   
-  "md5": "46c09900863fe61fc59c0be7b0a267c0",
+  "md5": "0f12bdfb570e8b67b2aa09e08d118a5c",
   
   "announcement": {
-    "SChinese": "半成品，该模组仅用于测试",
-    "English": "半成品，该模组仅用于测试"
+    "SChinese": "仅用于适配TOH最新版本\n版本：Beta",
+    "English": "Only used to adapt to the latest version of TOH\nVer. Beta"
   },
 
   "url": {
