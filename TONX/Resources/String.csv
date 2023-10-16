@@ -1104,6 +1104,7 @@
 "MadmateSelfVoteModeSuccessfulMutiny","您已成为叛徒，本次投票不计入，您现在可以进行正常投票了"
 "MadmateSelfVoteModeMutinyFailed","很抱歉，目前您无法成为叛徒，本次投票不计入，请重新投票"
 "SkillDoneAndYouCanVoteNormallyNow","\n\n您现在可以正常投票了","","","",""
+"TargetInvalidAndYouShouldChooseAnotherTarget","\n\n请重新选择一个目标","","","",""
 
 "## 信息 / Message"
 "Message.SetToSeconds","信息发送冷却时间为【{0}】秒","Set to 【{0}】 seconds.","Установлен на 【{0}】 секунды","訊息傳送冷卻時間設為【{0}】秒","信息发送冷却时间为【{0}】秒"

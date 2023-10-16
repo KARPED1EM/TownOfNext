@@ -1,4 +1,5 @@
 using AmongUs.GameOptions;
+using TONX.Roles.Neutral;
 
 namespace TONX.Roles.Core.Interfaces;
 
@@ -30,6 +31,6 @@ public interface IImpostor : IKiller, ISchrodingerCatOwner
     /// </summary>
     void ISchrodingerCatOwner.ApplySchrodingerCatOptions(IGameOptions option)
     {
-        SchrodingerCat.ApplyMadCatOptions(option);
+        //SchrodingerCat.ApplyMadCatOptions(option);
     }
 }

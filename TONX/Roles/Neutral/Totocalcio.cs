@@ -95,7 +95,7 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
         BetTarget = reader.ReadByte();
     }
     public bool CanUseKillButton() => Player.IsAlive() && BetLimit >= 1;
-    public override void OverrideRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref UnityEngine.Color roleColor, ref string roleText)
+    public override void OverrideDisplayRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
     {
         if (!OptionKnowTargetRole.GetBool()) return;
         if (seen.PlayerId == BetTarget) enabled = true;

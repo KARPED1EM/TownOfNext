@@ -1,4 +1,5 @@
 ﻿using AmongUs.GameOptions;
+using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 
@@ -44,9 +45,14 @@ public sealed class Zombie : RoleBase, IImpostor
         return OptionKillCooldown.GetFloat();
     }
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetFloat(FloatOptionNames.ImpostorLightMod, 0.2f);
-    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
+    public override (byte? votedForId, int? numVotes, bool doVote) ModifyVote(byte voterId, byte sourceVotedForId, bool isIntentional)
     {
-        if (sourceVotedForId == Player.PlayerId) roleNumVotes = 0;
-        return true;
+        var (votedForId, numVotes, doVote) = base.ModifyVote(voterId, sourceVotedForId, isIntentional);
+        var baseVote = (votedForId, numVotes, doVote);
+        if (!isIntentional || voterId == Player.PlayerId || sourceVotedForId != Player.PlayerId || sourceVotedForId >= 253)
+        {
+            return baseVote;
+        }
+        return (votedForId, numVotes, false);
     }
 }

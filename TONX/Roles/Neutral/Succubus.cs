@@ -114,11 +114,11 @@ public sealed class Succubus : RoleBase, IKiller
         Logger.Info($"{killer.GetNameWithRole()} : 剩余{CharmLimit}次魅惑机会", "Succubus");
         return false;
     }
-    public override void OverrideRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
+    public override void OverrideDisplayRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
     {
         if (OptionKnowTargetRole.GetBool() && seen.Is(CustomRoles.Charmed)) enabled = true;
     }
-    public override void OverrideRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
+    public override void OverrideDisplayRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
     {
         if (seer.Is(CustomRoles.Charmed)) enabled = true;
     }

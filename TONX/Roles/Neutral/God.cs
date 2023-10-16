@@ -39,7 +39,7 @@ public sealed class God : RoleBase, IOverrideWinner
     {
         OptionNotifyGodAlive = BooleanOptionItem.Create(RoleInfo, 10, OptionName.NotifyGodAlive, true, false);
     }
-    public override void OverrideRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
+    public override void OverrideDisplayRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
     {
         enabled = true;
     }
