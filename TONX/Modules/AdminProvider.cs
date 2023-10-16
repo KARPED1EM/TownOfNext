@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Il2CppInterop.Runtime.InteropTypes.Arrays;
+﻿using Il2CppInterop.Runtime.InteropTypes.Arrays;
+using System.Collections.Generic;
 using TONX.Roles.Core;
 using UnityEngine;
 

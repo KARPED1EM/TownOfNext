@@ -63,7 +63,7 @@ public sealed class Eraser : RoleBase, IImpostor
         if (Is(votedFor))
         {
             // 抹除自己
-            ShowMsg( GetString("EraserEraseSelf") + GetString("TargetInvalidAndYouShouldChooseAnotherTarget"));
+            ShowMsg(GetString("EraserEraseSelf") + GetString("TargetInvalidAndYouShouldChooseAnotherTarget"));
         }
         else if (votedFor.Is(CustomRoleTypes.Neutral))
         {
@@ -80,7 +80,7 @@ public sealed class Eraser : RoleBase, IImpostor
 
             ShowMsg(string.Format(GetString("EraserEraseNotice"), votedFor.GetRealName()) + GetString("SkillDoneAndYouCanVoteNormallyNow"));
         }
-        
+
         return false;
 
         void ShowMsg(string msg)

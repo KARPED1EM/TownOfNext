@@ -1,5 +1,4 @@
 using HarmonyLib;
-using Hazel;
 using System.Collections.Generic;
 using System.Text;
 using TONX.Modules;
@@ -32,7 +31,7 @@ public static class MeetingHudPatch
 
             var voter = Utils.GetPlayerById(srcPlayerId);
             var voted = Utils.GetPlayerById(suspectPlayerId);
-            
+
             if (voter != null)
             {
                 //主动叛变模式

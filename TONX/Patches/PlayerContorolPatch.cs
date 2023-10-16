@@ -9,10 +9,8 @@ using TONX.Modules;
 using TONX.Roles.AddOns.Crewmate;
 using TONX.Roles.Core;
 using TONX.Roles.Impostor;
-using TONX.Roles.Neutral;
 using UnityEngine;
 using static TONX.Translator;
-using static UnityEngine.GraphicsBuffer;
 
 namespace TONX;
 

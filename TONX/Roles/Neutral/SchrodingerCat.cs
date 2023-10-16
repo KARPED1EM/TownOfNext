@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using AmongUs.GameOptions;
+﻿using AmongUs.GameOptions;
 using Hazel;
+using System.Collections.Generic;
+using System.Linq;
+using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
-using TONX.Modules;
+using UnityEngine;
 
 namespace TONX.Roles.Neutral;
 

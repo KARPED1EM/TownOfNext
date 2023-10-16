@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using AmongUs.GameOptions;
+﻿using AmongUs.GameOptions;
 using Hazel;
-using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Core;
+using TONX.Roles.Core.Interfaces;
+using UnityEngine;
 using static TONX.Translator;
 
 namespace TONX.Roles.Impostor;
