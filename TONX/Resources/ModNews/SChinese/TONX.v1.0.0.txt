@@ -1,5 +1,5 @@
 #Number:100043
-#Title:TownOfNext Alpha
+#Title:TownOfNext Beta
 #SubTitle:★★★★TO Next★★★★
 #ShortTitle:★TONX Beta
 #Date:2023-10-16T00:00:00Z
