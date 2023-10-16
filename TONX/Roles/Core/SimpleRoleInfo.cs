@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
 using System;
+using System.Linq;
 using UnityEngine;
 using static TONX.Options;
 
@@ -23,9 +24,22 @@ public class SimpleRoleInfo
     public string ChatCommand;
     public bool RequireResetCam;
     private Func<AudioClip> introSound;
+    public AudioClip IntroSound => introSound?.Invoke();
     public bool Experimental;
     public bool Broken;
-    public AudioClip IntroSound => introSound?.Invoke();
+    /// <summary>
+    /// 人数设定上的最小人数/最大人数/一单位数
+    /// </summary>
+    public IntegerValueRule AssignCountRule;
+    /// <summary>
+    /// 人数应该分配多少
+    /// 役職の抽選回数 = 設定人数 / AssignUnitCount
+    /// </summary>
+    public int AssignUnitCount => AssignCountRule?.Step ?? 1;
+    /// <summary>
+    /// 実際にアサインされる役職の内訳
+    /// </summary>
+    public CustomRoles[] AssignUnitRoles;
 
     private SimpleRoleInfo(
         Type classType,
@@ -42,7 +56,9 @@ public class SimpleRoleInfo
         TabGroup tab,
         Func<AudioClip> introSound,
         bool experimental,
-        bool broken
+        bool broken,
+        IntegerValueRule assignCountRule,
+        CustomRoles[] assignUnitRoles
     )
     {
         ClassType = classType;
@@ -58,11 +74,14 @@ public class SimpleRoleInfo
         ChatCommand = chatCommand;
         Experimental = experimental;
         Broken = broken;
+        AssignCountRule = assignCountRule;
+        AssignUnitRoles = assignUnitRoles;
 
         if (colorCode == "")
             colorCode = customRoleType switch
             {
                 CustomRoleTypes.Impostor => "#ff1919",
+                CustomRoleTypes.Crewmate => "#8cffff",
                 _ => "#ffffff"
             };
         RoleColorCode = colorCode;
@@ -98,12 +117,18 @@ public class SimpleRoleInfo
         Func<AudioClip> introSound = null,
         CountTypes? countType = null,
         bool experimental = false,
-        bool broken = false
+        bool broken = false,
+        IntegerValueRule assignCountRule = null,
+        CustomRoles[] assignUnitRoles = null
     )
     {
         countType ??= customRoleType == CustomRoleTypes.Impostor ?
             CountTypes.Impostor :
             CountTypes.Crew;
+        assignCountRule ??= customRoleType == CustomRoleTypes.Impostor ?
+            new(1, 3, 1) :
+            new(1, 15, 1);
+        assignUnitRoles ??= Enumerable.Repeat(roleName, assignCountRule.Step).ToArray();
         return
             new(
                 classType,
@@ -120,7 +145,9 @@ public class SimpleRoleInfo
                 tab,
                 introSound,
                 experimental,
-                broken
+                broken,
+                assignCountRule,
+                assignUnitRoles
             );
     }
     public static SimpleRoleInfo CreateForVanilla(
@@ -179,7 +206,9 @@ public class SimpleRoleInfo
                 TabGroup.GameSettings,
                 null,
                 false,
-                false
+                false,
+                new(1, 15, 1),
+                new CustomRoles[1] { roleName }
             );
     }
     public delegate void OptionCreatorDelegate();
