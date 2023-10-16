@@ -5,7 +5,7 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Roles.Neutral;
-public sealed class Jackal : RoleBase, IKiller
+public sealed class Jackal : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
@@ -19,7 +19,8 @@ public sealed class Jackal : RoleBase, IKiller
             "jac|²òÀÇ",
             "#00b4eb",
             true,
-            countType: CountTypes.Jackal
+            countType: CountTypes.Jackal,
+            assignCountRule: new(1, 1, 1)
         );
     public Jackal(PlayerControl player)
     : base(
@@ -55,6 +56,9 @@ public sealed class Jackal : RoleBase, IKiller
     public static bool WinBySabotage;
     private static bool HasImpostorVision;
     private static bool ResetKillCooldown;
+
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Jackal;
+
     private static void SetupOptionItem()
     {
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 20f, false)
@@ -72,6 +76,7 @@ public sealed class Jackal : RoleBase, IKiller
         __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage);
     }
     public override bool OnInvokeSabotage(SystemTypes systemType) => CanUseSabotage;
+    public void ApplySchrodingerCatOptions(IGameOptions option) => ApplyGameOptions(option);
     public static void OnMurderPlayerOthers(MurderInfo info)
     {
         if (!ResetKillCooldown || info.IsSuicide || info.IsAccident) return;
