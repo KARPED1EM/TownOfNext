@@ -644,6 +644,8 @@
 "MenuTitle.Addon.Crew","◇ 船员附加","","","",""
 "MenuTitle.Addon.Imp","◆ 内鬼附加","","","",""
 "ShieldPersonDiedFirst","首刀保护（仅限被杀）","Shield the person who got killed first in the last game","Щит для первого убитого в прошлой игре","首刀保護(僅限被殺)","首刀保护（仅限被杀）"
+"ModifySabotageCooldown","修改破坏冷却","Sabotage Cooldown Control","","",""
+"SabotageCooldown","破坏冷却时长","Sabotage Cooldown","","",""
 
 "## 详细设定 / Advanced Settings"
 "AssignMode","职业分配模式","","","",""
