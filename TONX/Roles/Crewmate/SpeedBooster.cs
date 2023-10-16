@@ -48,7 +48,7 @@ public sealed class SpeedBooster : RoleBase
     public override bool OnCompleteTask(out bool cancel)
     {
         var playerId = Player.PlayerId;
-        if ((MyTaskState.CompletedTasksCount + 1) <= BoostTimes)
+        if (!MyTaskState.HasCompletedEnoughCountOfTasks(BoostTimes))
         {
             Main.AllPlayerSpeed[playerId] += UpSpeed;
             if (Main.AllPlayerSpeed[playerId] > 3) Player.Notify(Translator.GetString("SpeedBoosterSpeedLimit"));
