@@ -490,7 +490,7 @@ class FixedUpdatePatch
     //FIXME: 役職クラス化のタイミングで、このメソッドは移動予定
     public static void LoversSuicide(byte deathId = 0x7f, bool isExiled = false, bool now = false)
     {
-        if (Options.LoverSuicide.GetBool() && CustomRoles.Lovers.IsExist(true) && Main.isLoversDead == false)
+        if (Options.LoverSuicide.GetBool() && CustomRoles.Lovers.IsExist(true) && !Main.isLoversDead)
         {
             foreach (var loversPlayer in Main.LoversPlayers)
             {

@@ -500,7 +500,14 @@ public static class Options
             .SetGameMode(CustomGameMode.Standard)
             .SetColor(Utils.GetCustomRoleTypeColor(CustomRoleTypes.Addon));
 
+        #region Options of Lover
         SetupRoleOptions(80100, TabGroup.Addons, CustomRoles.Lovers, assignCountRule: new(2, 2, 2));
+        LoverKnowRoles = BooleanOptionItem.Create(80100 + 4, "LoverKnowRoles", true, TabGroup.Addons, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Lovers])
+            .SetGameMode(CustomGameMode.Standard);
+        LoverSuicide = BooleanOptionItem.Create(80100 + 3, "LoverSuicide", true, TabGroup.Addons, false).SetParent(Options.CustomRoleSpawnChances[CustomRoles.Lovers])
+            .SetGameMode(CustomGameMode.Standard);
+        #endregion
+
         Ntr.SetupCustomOption();
         Watcher.SetupCustomOption();
         Lighter.SetupCustomOption();
