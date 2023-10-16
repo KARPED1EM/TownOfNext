@@ -7,7 +7,6 @@ using Hazel;
 using TONX.Modules;
 using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Core;
-using TONX;
 using UnityEngine;
 
 namespace TONX.Roles.Impostor;
@@ -21,7 +20,7 @@ public sealed class Messenger : RoleBase, IImpostor, IKillFlashSeeable
             CustomRoles.Messenger,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
-            3100,
+            5000,
             SetupOptionItems,
             "me|信差"
         );
