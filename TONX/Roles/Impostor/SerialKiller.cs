@@ -70,7 +70,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
     }
     public override void OnFixedUpdate(PlayerControl player)
     {
-        if (AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance.AmHost && !ExileController.Instance)
         {
             if (!HasKilled())
             {
@@ -107,5 +107,9 @@ public sealed class SerialKiller : RoleBase, IImpostor
             if (HasKilled())
                 SuicideTimer = 0f;
         }
+    }
+    public void OnSchrodingerCatKill(SchrodingerCat schrodingerCat)
+    {
+        SuicideTimer = null;
     }
 }
