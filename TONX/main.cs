@@ -303,6 +303,7 @@ public enum CustomDeathReason
     Sniped,
     Revenge,
     Execution,
+    Infected,
     Disconnected,
     Fall,
 
@@ -348,6 +349,7 @@ public enum CustomWinner
     Collector = CustomRoles.Collector,
     BloodKnight = CustomRoles.BloodKnight,
     Succubus = CustomRoles.Succubus,
+    PlagueDoctor = CustomRoles.PlagueDoctor,
 }
 public enum AdditionalWinners
 {
