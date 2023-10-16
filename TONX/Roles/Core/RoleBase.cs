@@ -244,7 +244,7 @@ public abstract class RoleBase : IDisposable
     /// </summary>
     /// <param name="voterId">投票人的ID</param>
     /// <param name="sourceVotedForId">被投票人的ID</param>
-    /// <returns>(修改后的被票者的ID(不修改则为 null), 修改后的票数(不修改则为 null), 是否计票)</returns>
+    /// <returns>(修改后的被票者的ID(不修改则为 null), 修改后的票数(不修改则为 null), 是否玩家自行操作)</returns>
     public virtual (byte? votedForId, int? numVotes, bool doVote) ModifyVote(byte voterId, byte sourceVotedForId, bool isIntentional) => (null, null, true);
 
     /// <summary>
