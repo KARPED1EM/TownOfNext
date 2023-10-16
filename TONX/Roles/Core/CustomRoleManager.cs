@@ -574,7 +574,7 @@ public enum CustomRoles
     Totocalcio,
     Succubus,
     PlagueDoctor,
-    SchrodingerCat, //TODO
+    SchrodingerCat,
 
     //SoloKombat
     KB_Normal, //TODO

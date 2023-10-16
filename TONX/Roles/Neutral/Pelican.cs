@@ -8,7 +8,7 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Neutral;
-public sealed class Pelican : RoleBase, IKiller
+public sealed class Pelican : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
@@ -47,6 +47,8 @@ public sealed class Pelican : RoleBase, IKiller
     Vector2 MyLastPos;
 
     public static bool CanVent;
+
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Pelican;
 
     private static void SetupOptionItem()
     {

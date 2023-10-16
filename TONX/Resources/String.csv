@@ -940,7 +940,7 @@
 "PlagueDoctorCanInfectSelf","自身可被感染","Can Infect Self","","",""
 "PlagueDoctorCanInfectVent","可感染通风管道内的玩家","Can Infect in Vent","","",""
 "CanBeforeSchrodingerCatWinTheCrewmate","无阵营时可以跟随<color=#8cffff>船员</color>阵营胜利","Can Win With Crewmates If No Team","","",""
-"SchrodingerCatExiledTeamChanges","被票出时改变阵营","Team Changes When Ejected","","",""
+"SchrodingerCatExiledTeamChanges","被票出时变为随机阵营","Team Changes When Ejected","","",""
 "SchrodingerCatCanSeeKillableTeammate","可以看见具有击杀能力的队友","Can See Killable Teammate","","",""
 
 

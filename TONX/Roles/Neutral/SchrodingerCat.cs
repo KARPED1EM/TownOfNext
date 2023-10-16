@@ -21,7 +21,7 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
             CustomRoleTypes.Neutral,
             50400,
             SetupOptionItem,
-            "sc",
+            "sc|cat|猫|猫猫|薛丁格的貓|貓",
             "#696969",
             introSound: () => GetIntroSound(RoleTypes.Impostor)
         );
@@ -73,7 +73,7 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
 
     public static void SetupOptionItem()
     {
-        OptionCanWinTheCrewmateBeforeChange = BooleanOptionItem.Create(RoleInfo, 10, OptionName.CanBeforeSchrodingerCatWinTheCrewmate, false, false);
+        OptionCanWinTheCrewmateBeforeChange = BooleanOptionItem.Create(RoleInfo, 10, OptionName.CanBeforeSchrodingerCatWinTheCrewmate, true, false);
         OptionChangeTeamWhenExile = BooleanOptionItem.Create(RoleInfo, 11, OptionName.SchrodingerCatExiledTeamChanges, false, false);
         OptionCanSeeKillableTeammate = BooleanOptionItem.Create(RoleInfo, 12, OptionName.SchrodingerCatCanSeeKillableTeammate, false, false);
     }
@@ -167,13 +167,21 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
             TeamType.Crew,
             TeamType.Mad,
         };
-        if (CustomRoles.Egoist.IsExist())
-        {
-            candidates.Add(TeamType.Egoist);
-        }
         if (CustomRoles.Jackal.IsExist())
         {
             candidates.Add(TeamType.Jackal);
+        }
+        if (CustomRoles.Pelican.IsExist())
+        {
+            candidates.Add(TeamType.Pelican);
+        }
+        if (CustomRoles.BloodKnight.IsExist())
+        {
+            candidates.Add(TeamType.BloodKnight);
+        }
+        if (CustomRoles.Gamer.IsExist())
+        {
+            candidates.Add(TeamType.Gamer);
         }
         var team = candidates[rand.Next(candidates.Count)];
         RpcSetTeam(team);
@@ -187,7 +195,9 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
             TeamType.Mad => CustomWinnerHolder.WinnerTeam == CustomWinner.Impostor,
             TeamType.Crew => CustomWinnerHolder.WinnerTeam == CustomWinner.Crewmate,
             TeamType.Jackal => CustomWinnerHolder.WinnerTeam == CustomWinner.Jackal,
-            TeamType.Egoist => CustomWinnerHolder.WinnerTeam == CustomWinner.Egoist,
+            TeamType.Pelican => CustomWinnerHolder.WinnerTeam == CustomWinner.Pelican,
+            TeamType.BloodKnight => CustomWinnerHolder.WinnerTeam == CustomWinner.BloodKnight,
+            TeamType.Gamer => CustomWinnerHolder.WinnerTeam == CustomWinner.Gamer,
             _ => null,
         };
         if (!won.HasValue)
@@ -220,32 +230,18 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
     /// </summary>
     public enum TeamType : byte
     {
-        /// <summary>
-        /// どこの陣営にも属していない状態
-        /// </summary>
         None = 0,
 
-        // 10-49 シェリフキルオプションを作成しない変化先
-
-        /// <summary>
-        /// インポスター陣営に所属する状態
-        /// </summary>
+        // 10-49 不显示在警长的猫可击杀目标选项下的
         Mad = 10,
-        /// <summary>
-        /// クルー陣営に所属する状態
-        /// </summary>
         Crew,
 
-        // 50- シェリフキルオプションを作成する変化先
-
-        /// <summary>
-        /// ジャッカル陣営に所属する状態
-        /// </summary>
+        // 50- 与上相反
         Jackal = 50,
-        /// <summary>
-        /// エゴイスト陣営に所属する状態
-        /// </summary>
-        Egoist,
+        Pelican,
+        BloodKnight,
+        Gamer,
+
     }
     public static Color GetCatColor(TeamType catType)
     {
@@ -255,7 +251,9 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
             TeamType.Mad => Utils.GetRoleColor(CustomRoles.Madmate),
             TeamType.Crew => Utils.GetRoleColor(CustomRoles.Crewmate),
             TeamType.Jackal => Utils.GetRoleColor(CustomRoles.Jackal),
-            TeamType.Egoist => Utils.GetRoleColor(CustomRoles.Egoist),
+            TeamType.Pelican => Utils.GetRoleColor(CustomRoles.Pelican),
+            TeamType.BloodKnight => Utils.GetRoleColor(CustomRoles.BloodKnight),
+            TeamType.Gamer => Utils.GetRoleColor(CustomRoles.Gamer),
             _ => null,
         };
         if (!color.HasValue)

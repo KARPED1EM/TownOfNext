@@ -8,7 +8,7 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Neutral;
-public sealed class Gamer : RoleBase, IKiller
+public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
@@ -53,6 +53,8 @@ public sealed class Gamer : RoleBase, IKiller
     public static bool CanVent;
     private static Dictionary<byte, int> PlayerHP;
     private int GamerHP;
+
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Gamer;
 
     private static void SetupOptionItem()
     {

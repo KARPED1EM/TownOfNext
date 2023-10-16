@@ -5,7 +5,7 @@ using TONX.Roles.Core.Interfaces;
 using static TONX.Translator;
 
 namespace TONX.Roles.Neutral;
-public sealed class BloodKnight : RoleBase, IKiller
+public sealed class BloodKnight : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
        SimpleRoleInfo.Create(
@@ -41,6 +41,9 @@ public sealed class BloodKnight : RoleBase, IKiller
     public static bool CanVent;
 
     private long ProtectStartTime;
+
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.BloodKnight;
+
     private static void SetupOptionItem()
     {
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 25f, false)
