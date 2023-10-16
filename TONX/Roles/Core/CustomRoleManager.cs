@@ -510,6 +510,11 @@ public enum CustomRoles
     Bard,
     Swooper,
     Crewpostor,
+    Penguin,
+    Stealth,
+    NekoKabocha,
+    Messenger,
+    Insider,
     //Crewmate(Vanilla)
     Engineer,
     GuardianAngel,
@@ -568,6 +573,8 @@ public enum CustomRoles
     BloodKnight,
     Totocalcio,
     Succubus,
+    PlagueDoctor,
+    SchrodingerCat,
 
     //SoloKombat
     KB_Normal, //TODO
