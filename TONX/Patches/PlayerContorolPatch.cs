@@ -425,7 +425,7 @@ class FixedUpdatePatch
                 {
                     Mark.Append($"<color={Utils.GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                 }
-                else if (__instance == PlayerControl.LocalPlayer && CustomRoles.Ntr.Exist())
+                else if (__instance == PlayerControl.LocalPlayer && CustomRoles.Ntr.IsExist())
                 {
                     Mark.Append($"<color={Utils.GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                 }
@@ -475,7 +475,7 @@ class FixedUpdatePatch
     //FIXME: 役職クラス化のタイミングで、このメソッドは移動予定
     public static void LoversSuicide(byte deathId = 0x7f, bool isExiled = false, bool now = false)
     {
-        if (Options.LoverSuicide.GetBool() && CustomRoles.Lovers.Exist(true) && Main.isLoversDead == false)
+        if (Options.LoverSuicide.GetBool() && CustomRoles.Lovers.IsExist(true) && Main.isLoversDead == false)
         {
             foreach (var loversPlayer in Main.LoversPlayers)
             {

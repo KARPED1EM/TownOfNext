@@ -48,7 +48,7 @@ class GameEndChecker
             //カモフラージュ強制解除
             Main.AllPlayerControls.Do(pc => Camouflage.RpcSetSkin(pc, ForceRevert: true, RevertToDefault: true));
 
-            if (reason == GameOverReason.ImpostorBySabotage && CustomRoles.Jackal.Exist() && Jackal.WinBySabotage && !Main.AllAlivePlayerControls.Any(x => x.GetCustomRole().IsImpostorTeam()))
+            if (reason == GameOverReason.ImpostorBySabotage && CustomRoles.Jackal.IsExist() && Jackal.WinBySabotage && !Main.AllAlivePlayerControls.Any(x => x.GetCustomRole().IsImpostorTeam()))
             {
                 reason = GameOverReason.ImpostorByKill;
                 CustomWinnerHolder.WinnerIds.Clear();
@@ -77,7 +77,7 @@ class GameEndChecker
             if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Draw and not CustomWinner.None and not CustomWinner.Error)
             {
                 //恋人抢夺胜利
-                if (CustomRoles.Lovers.Exist() && !reason.Equals(GameOverReason.HumansByTask))
+                if (CustomRoles.Lovers.IsExist() && !reason.Equals(GameOverReason.HumansByTask))
                 {
                     if (!(!Main.LoversPlayers.ToArray().All(p => p.IsAlive()) && Options.LoverSuicide.GetBool()))
                     {
@@ -263,7 +263,7 @@ class GameEndChecker
         {
             reason = GameOverReason.ImpostorByKill;
 
-            if (CustomRoles.Sunnyboy.Exist() && Main.AllAlivePlayerControls.Count() > 1) return false;
+            if (CustomRoles.Sunnyboy.IsExist() && Main.AllAlivePlayerControls.Count() > 1) return false;
 
             int Imp = Utils.AlivePlayersCount(CountTypes.Impostor);
             int Crew = Utils.AlivePlayersCount(CountTypes.Crew);

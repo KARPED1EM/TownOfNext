@@ -13,7 +13,7 @@ public static class AntiBlackout
     ///<summary>
     ///追放処理を上書きするかどうか
     ///</summary>
-    public static bool OverrideExiledPlayer => Options.NoGameEnd.GetBool() || CustomRoles.Jackal.Exist(true) || CustomRoles.Pelican.Exist(true) || CustomRoles.Gamer.Exist(true) || CustomRoles.BloodKnight.Exist(true) || CustomRoles.Succubus.Exist(true);
+    public static bool OverrideExiledPlayer => Options.NoGameEnd.GetBool() || CustomRoles.Jackal.IsExist(true) || CustomRoles.Pelican.IsExist(true) || CustomRoles.Gamer.IsExist(true) || CustomRoles.BloodKnight.IsExist(true) || CustomRoles.Succubus.IsExist(true);
 
     public static bool IsCached { get; private set; } = false;
     private static Dictionary<byte, (bool isDead, bool Disconnected)> isDeadCache = new();

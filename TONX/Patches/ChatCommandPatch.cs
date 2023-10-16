@@ -211,7 +211,7 @@ internal class ChatCommands
                         sb.Clear().Append(txt.RemoveHtmlTags());
                         foreach (var subRole in PlayerState.AllPlayerStates[lp.PlayerId].SubRoles)
                             sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                        if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                        if (CustomRoles.Ntr.IsExist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
                             sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
                         Utils.SendMessage(sb.ToString(), lp.PlayerId);
                     }
@@ -612,7 +612,7 @@ internal class ChatCommands
                     sb.Clear().Append(txt);
                     foreach (var subRole in PlayerState.AllPlayerStates[player.PlayerId].SubRoles)
                         sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                    if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                    if (CustomRoles.Ntr.IsExist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
                         sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
                     Utils.SendMessage(sb.ToString(), player.PlayerId);
                 }

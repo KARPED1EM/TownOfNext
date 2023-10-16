@@ -53,7 +53,7 @@ public sealed class Capitalism : RoleBase, IImpostor
     public static int GetShortTasks(byte playerId, int shortTasks) => (NumShortTasks != null && NumShortTasks.TryGetValue(playerId, out var x)) ? x : shortTasks;
     public static bool OnCompleteTask(PlayerControl pc)
     {
-        if (!CustomRoles.Capitalism.Exist(true)) return true;
+        if (!CustomRoles.Capitalism.IsExist(true)) return true;
         if (pc.Is(CustomRoles.Workhorse)) return true;
         if (!Utils.HasTasks(pc.Data) || pc.AllTasksCompleted()) return true;
         if (TasksWaitToAdd == null || !TasksWaitToAdd.ContainsKey(pc.PlayerId)) return true;

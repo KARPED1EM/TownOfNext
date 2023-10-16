@@ -794,7 +794,7 @@ public static class Utils
             sb.Append($"{ColorString(Color.white, " + ")}{RoleText}");
         }
 
-        if (intro && !SubRoles.Contains(CustomRoles.Lovers) && !SubRoles.Contains(CustomRoles.Ntr) && CustomRoles.Ntr.Exist())
+        if (intro && !SubRoles.Contains(CustomRoles.Lovers) && !SubRoles.Contains(CustomRoles.Ntr) && CustomRoles.Ntr.IsExist())
         {
             var RoleText = disableColor ? GetRoleName(CustomRoles.Lovers) : ColorString(GetRoleColor(CustomRoles.Lovers), GetRoleName(CustomRoles.Lovers));
             sb.Append($"{ColorString(Color.white, " + ")}{RoleText}");

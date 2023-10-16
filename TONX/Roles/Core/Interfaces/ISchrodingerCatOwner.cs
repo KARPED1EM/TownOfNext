@@ -1,4 +1,5 @@
 ﻿using AmongUs.GameOptions;
+using TONX.Roles.Neutral;
 
 namespace TONX.Roles.Core.Interfaces;
 

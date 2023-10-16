@@ -155,7 +155,7 @@ public sealed class Executioner : RoleBase, IAdditionalWinner
     }
     public override void OnPlayerDeath(PlayerControl player, CustomDeathReason deathReason, bool isOnMeeting)
     {
-        if (!CustomRoles.Executioner.Exist()) return;
+        if (!CustomRoles.Executioner.IsExist()) return;
         foreach (var executioner in Executioners.Where(x => x.TargetId == player.PlayerId))
         {
             executioner.ChangeRole();

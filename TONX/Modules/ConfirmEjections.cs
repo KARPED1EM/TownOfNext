@@ -24,7 +24,7 @@ public static class ConfirmEjections
         int neutralnum = 0;
 
         // 吟游诗人创作
-        if (CustomRoles.Bard.Exist())
+        if (CustomRoles.Bard.IsExist())
         {
             try { name = ModUpdater.Get("https://v1.hitokoto.cn/?encode=text"); }
             catch { name = GetString("ByBardGetFailed"); }

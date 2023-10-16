@@ -87,7 +87,7 @@ internal class ControllerManagerUpdatePatch
                 addDes = new();
                 foreach (var subRole in PlayerState.GetByPlayerId(lp.PlayerId).SubRoles.Where(x => x is not CustomRoles.Charmed))
                     addDes.Add(GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                if (CustomRoles.Ntr.IsExist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
                     addDes.Add(GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
 
                 addonIndex++;
