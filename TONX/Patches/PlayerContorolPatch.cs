@@ -12,6 +12,7 @@ using TONX.Roles.Impostor;
 using TONX.Roles.Neutral;
 using UnityEngine;
 using static TONX.Translator;
+using static UnityEngine.GraphicsBuffer;
 
 namespace TONX;
 
@@ -690,6 +691,8 @@ public static class PlayerControlDiePatch
         {
             // 死者の最終位置にペットが残るバグ対応
             __instance.RpcSetPet("");
+            // 调用玩家死亡的函数
+            CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnPlayerDeath(__instance, PlayerState.GetByPlayerId(__instance.PlayerId).DeathReason, false));
         }
     }
 }

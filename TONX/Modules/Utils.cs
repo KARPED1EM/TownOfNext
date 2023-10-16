@@ -199,9 +199,6 @@ public static class Utils
                 continue;
             }
         }
-
-        CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnPlayerDeath(target, PlayerState.GetByPlayerId(target.PlayerId).DeathReason, false));
-
     }
     public static bool KillFlashCheck(MurderInfo info, PlayerControl seer)
     {
@@ -1100,7 +1097,6 @@ public static class Utils
     public static void AfterPlayerDeathTasks(PlayerControl target, bool onMeeting = false)
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnPlayerDeath(target, PlayerState.GetByPlayerId(target.PlayerId).DeathReason, onMeeting));
         FixedUpdatePatch.LoversSuicide(target.PlayerId, onMeeting, true);
     }
     public static void ChangeInt(ref int ChangeTo, int input, int max)
