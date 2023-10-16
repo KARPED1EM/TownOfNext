@@ -874,11 +874,11 @@ public static class Utils
             + $"\n  ○ /dump {GetString("Command.dump")}"
             , ID);
     }
-    public static void SendMessage(string text, byte sendTo = byte.MaxValue, string title = "")
+    public static void SendMessage(string text, byte sendTo = byte.MaxValue, string title = "", bool removeTags = true)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (title == "") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
-        Main.MessagesToSend.Add((text, sendTo, title + '\0'));
+        Main.MessagesToSend.Add((removeTags ? text.RemoveHtmlTags() : text, sendTo, title + '\0'));
     }
     public static void AddChatMessage(string text, string title = "")
     {

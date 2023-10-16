@@ -36,7 +36,7 @@ public enum CustomRPC
     SyncPuppet,
     SetSchrodingerCatTeam,
     StealthDarken,
-    EvilHackerCreateMurderNotify,
+    MessengerCreateMurderNotify,
     PenguinSync,
     MareSync,
     SyncPlagueDoctor,
