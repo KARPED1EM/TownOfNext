@@ -321,22 +321,29 @@ public abstract class RoleBase : IDisposable
     // Suffix：其他信息，例如箭头
 
     /// <summary>
-    /// 作为 seen 重写 RoleName
+    /// 作为 seen 重写显示上的 RoleName
     /// </summary>
     /// <param name="seer">将要看到您的 RoleName 的玩家</param>
     /// <param name="enabled">是否显示 RoleName</param>
     /// <param name="roleColor">RoleName 的颜色</param>
     /// <param name="roleText">RoleName 的文本</param>
-    public virtual void OverrideRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
+    public virtual void OverrideDisplayRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
     { }
     /// <summary>
-    /// 作为 seer 重写 RoleName
+    /// 作为 seer 重写显示上的 RoleName
     /// </summary>
     /// <param name="seen">您将要看到其 RoleName 的玩家</param>
     /// <param name="enabled">是否显示 RoleName</param>
     /// <param name="roleColor">RoleName 的颜色</param>
     /// <param name="roleText">RoleName 的文本</param>
-    public virtual void OverrideRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
+    public virtual void OverrideDisplayRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
+    { }
+    /// <summary>
+    /// 重写原来的职业名
+    /// </summary>
+    /// <param name="roleColor">RoleName 的颜色</param>
+    /// <param name="roleText">RoleName 的文本</param>
+    public virtual void OverrideTrueRoleName(ref Color roleColor, ref string roleText)
     { }
     /// <summary>
     /// 作为 seer 重写 ProgressText
