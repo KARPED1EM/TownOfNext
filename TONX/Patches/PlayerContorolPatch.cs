@@ -404,6 +404,21 @@ class FixedUpdatePatch
                 //名前変更
                 RealName = target.GetRealName();
 
+                // 名前色変更処理
+                //自分自身の名前の色を変更
+                if (target.AmOwner && GameStates.IsInTask)
+                { //targetが自分自身
+                    //TODO: FIXME
+                    //if (target.Is(CustomRoles.Revolutionist) && target.IsDrawDone())
+                    //    RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Revolutionist), string.Format(GetString("EnterVentWinCountDown"), Main.RevolutionistCountdown.TryGetValue(seer.PlayerId, out var x) ? x : 10));
+                    if (seer.IsEaten())
+                        RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"));
+                    if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+                        SoloKombatManager.GetNameNotify(target, ref RealName);
+                    if (NameNotifyManager.GetNameNotify(target, out var name))
+                        RealName = name;
+                }
+
                 //NameColorManager準拠の処理
                 RealName = RealName.ApplyNameColorData(seer, target, false);
 

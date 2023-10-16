@@ -31,6 +31,8 @@ public static class MeetingHudPatch
             if (!AmongUsClient.Instance.AmHost) return true;
 
             var voter = Utils.GetPlayerById(srcPlayerId);
+            var voted = Utils.GetPlayerById(suspectPlayerId);
+            
             if (voter != null)
             {
                 //主动叛变模式
@@ -50,36 +52,20 @@ public static class MeetingHudPatch
                         voter.ShowPopUp(GetString("MadmateSelfVoteModeMutinyFailed"));
                         Utils.SendMessage(GetString("MadmateSelfVoteModeMutinyFailed"), voter.PlayerId);
                     }
-                    ClearVote(__instance, voter);
+                    __instance.RpcClearVote(voter.GetClientId());
+                    Logger.Info($"{voter.GetNameWithRole()} 的投票被清除", nameof(CastVotePatch));
+                    return false;
+                }
+                if (voter.GetRoleClass()?.CheckVoteAsVoter(voted) == false)
+                {
+                    __instance.RpcClearVote(voter.GetClientId());
+                    Logger.Info($"{voter.GetNameWithRole()} 的投票被清除", nameof(CastVotePatch));
                     return false;
                 }
             }
 
-            if (MeetingVoteManager.Instance.AddVote(srcPlayerId, suspectPlayerId)) return true;
-            else
-            {
-                ClearVote(__instance, voter);
-                return false;
-            }
-        }
-        private static void ClearVote(MeetingHud hud, PlayerControl target)
-        {
-            new LateTask(() => { ClearVote(hud, target); }, 0.4f, "ClearVote First");
-            new LateTask(() => { ClearVote(hud, target); }, 0.6f, "ClearVote Second");
-            static void ClearVote(MeetingHud hud, PlayerControl target)
-            {
-                Logger.Info($"Clear Vote For: {target.GetNameWithRole()}", "ClearVote");
-                MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
-                writer.StartMessage(6);
-                writer.Write(AmongUsClient.Instance.GameId);
-                writer.WritePacked(target.GetClientId());
-                {
-                    writer.StartMessage(2);
-                    writer.WritePacked(hud.NetId);
-                    writer.WritePacked((uint)RpcCalls.ClearVote);
-                }
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-            }
+            MeetingVoteManager.Instance?.SetVote(srcPlayerId, suspectPlayerId);
+            return true;
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]

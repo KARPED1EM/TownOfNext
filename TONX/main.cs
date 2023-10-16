@@ -361,6 +361,7 @@ public enum AdditionalWinners
     Provocateur = CustomRoles.Provocateur,
     Sunnyboy = CustomRoles.Sunnyboy,
     Totocalcio = CustomRoles.Totocalcio,
+    SchrodingerCat = CustomRoles.SchrodingerCat,
 }
 public enum SuffixModes
 {
