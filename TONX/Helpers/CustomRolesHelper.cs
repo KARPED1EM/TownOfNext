@@ -38,7 +38,7 @@ static class CustomRolesHelper
     public static bool IsAddon(this CustomRoles role) => (int)role > 500;
     public static bool IsValid(this CustomRoles role) => role is not CustomRoles.KB_Normal and not CustomRoles.GM and not CustomRoles.NotAssigned;
     public static bool Exist(this CustomRoles role, bool CountDeath = false) => Main.AllPlayerControls.Any(x => x.Is(role) && x.IsAlive() || CountDeath);
-    public static bool IsDesyncRole(this CustomRoles role) => role.GetRoleInfo()?.CustomRoleType != CustomRoleTypes.Impostor && role.GetRoleInfo()?.BaseRoleType.Invoke() is RoleTypes.Impostor or RoleTypes.Shapeshifter or RoleTypes.ImpostorGhost;
+    public static bool IsDesyncRole(this CustomRoles role) => role.GetRoleInfo().RequireResetCam;
     public static bool IsVanilla(this CustomRoles role)
     {
         return
