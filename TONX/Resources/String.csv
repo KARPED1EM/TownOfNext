@@ -653,7 +653,7 @@
 "AssignAlgorithm.Random","随机","","","",""
 "RoleTypeMin","最小%roleType%职业","","","",""
 "RoleTypeMax","最大%roleType%职业","","","",""
-"%roleTypes%Maximum","%roleTypes%最多几人拥有该职业","","","",""
+"RoleTypesMaximum","%roleTypes%最多几人拥有该职业","","","",""
 "FixedRole","固定分配给指定职业","","","",""
 "Role","职业","","","",""
 "Cooldown","冷却时间","Cooldown","Откат","冷卻時間","冷却时间"

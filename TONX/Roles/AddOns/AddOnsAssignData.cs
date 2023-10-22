@@ -63,7 +63,7 @@ public class AddOnsAssignData
         Role = role;
         if (assignCrewmate)
         {
-            CrewmateMaximum = IntegerOptionItem.Create(idStart++, "%roleTypes%Maximum", new(0, 15, 1), 1, tab, false)
+            CrewmateMaximum = IntegerOptionItem.Create(idStart++, "RoleTypesMaximum", new(0, 15, 1), 1, tab, false)
                 .SetParent(CustomRoleSpawnChances[role])
                 .SetValueFormat(OptionFormat.Players);
             CrewmateMaximum.ReplacementDictionary = new Dictionary<string, string> { { "%roleTypes%", Utils.ColorString(new Color32(140, 255, 255, byte.MaxValue), GetString("TeamCrewmate")) } };
@@ -76,7 +76,7 @@ public class AddOnsAssignData
 
         if (assignImpostor)
         {
-            ImpostorMaximum = IntegerOptionItem.Create(idStart++, "%roleTypes%Maximum", new(0, 3, 1), 1, TabGroup.Addons, false)
+            ImpostorMaximum = IntegerOptionItem.Create(idStart++, "RoleTypesMaximum", new(0, 3, 1), 1, TabGroup.Addons, false)
                 .SetParent(CustomRoleSpawnChances[role])
                 .SetValueFormat(OptionFormat.Players);
             ImpostorMaximum.ReplacementDictionary = new Dictionary<string, string> { { "%roleTypes%", Utils.ColorString(new Color32(247, 70, 49, byte.MaxValue), GetString("TeamImpostor")) } };
@@ -89,7 +89,7 @@ public class AddOnsAssignData
 
         if (assignNeutral)
         {
-            NeutralMaximum = IntegerOptionItem.Create(idStart++, "%roleTypes%Maximum", new(0, 15, 1), 1, TabGroup.Addons, false)
+            NeutralMaximum = IntegerOptionItem.Create(idStart++, "RoleTypesMaximum", new(0, 15, 1), 1, TabGroup.Addons, false)
                 .SetParent(CustomRoleSpawnChances[role])
                 .SetValueFormat(OptionFormat.Players);
             NeutralMaximum.ReplacementDictionary = new Dictionary<string, string> { { "%roleTypes%", Utils.ColorString(new Color32(255, 171, 27, byte.MaxValue), GetString("TeamNeutral")) } };
