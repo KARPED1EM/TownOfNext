@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "1.0.0",
   "minVer": "latest",
   "creation": "1",
   "allowStart": "true",
@@ -7,8 +7,8 @@
   "md5": "0f12bdfb570e8b67b2aa09e08d118a5c",
   
   "announcement": {
-    "SChinese": "仅用于适配TOH最新版本\n版本：Beta",
-    "English": "Only used to adapt to the latest version of TOH\nVer. Beta"
+    "SChinese": "欢迎回家 :)",
+    "English": "Welcome home :)"
   },
 
   "url": {
