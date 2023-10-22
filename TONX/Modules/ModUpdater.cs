@@ -26,13 +26,13 @@ public class ModUpdater
     private static IReadOnlyList<string> URLs => new List<string>
     {
 #if DEBUG
-        "file:///D:/Desktop/TONX/Publish/info.json",
+        "file:///D:/Desktop/TONX/info.json",
         "file:///D:/Desktop/info.json",
 #else
-        "https://raw.githubusercontent.com/KARPED1EM/TONX/TONX/Publish/info.json",
-        "https://cdn.jsdelivr.net/gh/KARPED1EM/TONX/Publish/info.json",
+        "https://raw.githubusercontent.com/KARPED1EM/TONX/TONX/info.json",
+        "https://cdn.jsdelivr.net/gh/KARPED1EM/TONX/info.json",
         "https://tonx-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
-        "https://gitee.com/leeverz/TONX/raw/TONX/Publish/info.json",
+        "https://gitee.com/leeverz/TONX/raw/TONX/info.json",
 #endif
     };
     private static IReadOnlyList<string> GetInfoFileUrlList()

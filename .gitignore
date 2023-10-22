@@ -3,9 +3,6 @@
 
 .vs/
 
+Export/
 TONX/obj/
-TONX/bin/
 TONX/Properties/PublishProfiles/
-
-/TONX/FodyWeavers.xsd
-/TONX/FodyWeavers.xml
