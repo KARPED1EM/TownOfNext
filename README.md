@@ -22,7 +22,13 @@
 
 ---
 
-**This is a project for me to learn C#.**
+## Announcement
+
+**Starting from May 20, TOHE stopped development due to some reasons. At the request of many players, TOHE will maintain the most basic adaptation and synchronize updates with TOH to ensure that players in need can still play normally. By the way, TOHE has renamed TONX**
+
+---
+
+**This project is for me to learn C# and is maintained by my free time**
 
 **So many thanks to these mods for their codes and helps:**
 
