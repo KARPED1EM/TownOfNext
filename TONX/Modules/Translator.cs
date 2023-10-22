@@ -1,4 +1,3 @@
-using Csv;
 using HarmonyLib;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using System;
@@ -6,15 +5,16 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
-using System.Text.RegularExpressions;
 using TONX.Attributes;
+using YamlDotNet.RepresentationModel;
 
 namespace TONX;
 
 public static class Translator
 {
-    public static Dictionary<string, Dictionary<int, string>> translateMaps;
+    public static Dictionary<int, Dictionary<string, string>> translateMaps = new();
     public const string LANGUAGE_FOLDER_NAME = "Language";
 
     [PluginModuleInitializer]
@@ -26,34 +26,39 @@ public static class Translator
     }
     public static void LoadLangs()
     {
-        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-        var stream = assembly.GetManifestResourceStream("TONX.Resources.String.csv");
-        translateMaps = new Dictionary<string, Dictionary<int, string>>();
+        var assembly = Assembly.GetExecutingAssembly();
+        var fileNames = assembly.GetManifestResourceNames().Where(x => x.StartsWith($"TONX.Resources.Lang."));
+        foreach (var fileName in fileNames)
+        {
+            var yaml = new YamlStream();
+            var stream = assembly.GetManifestResourceStream(fileName);
+            yaml.Load(new StringReader(new StreamReader(stream).ReadToEnd()));
+            var mapping = (YamlMappingNode)yaml.Documents[0].RootNode;
 
-        var options = new CsvOptions()
-        {
-            HeaderMode = HeaderMode.HeaderPresent,
-            AllowNewLineInEnclosedFieldValues = false,
-        };
-        foreach (var line in CsvReader.ReadFromStream(stream, options))
-        {
-            if (line.Values[0][0] == '#') continue;
-            try
+            int langId = -1;
+            var dic = new Dictionary<string, string>();
+
+            foreach (var entry in mapping.Children)
             {
-                Dictionary<int, string> dic = new();
-                for (int i = 1; i < line.ColumnCount; i++)
+                (string key, string value) = (((YamlScalarNode)entry.Key).Value, ((YamlScalarNode)entry.Value).Value);
+                
+                if (key == "LangID")
                 {
-                    int id = int.Parse(line.Headers[i]);
-                    dic[id] = line.Values[i].Replace("\\n", "\n").Replace("\\r", "\r");
+                    langId = int.Parse(value);
+                    continue;
                 }
-                if (!translateMaps.TryAdd(line.Values[0], dic))
-                    Logger.Warn($"待翻译的 CSV 文件中存在重复项：第{line.Index}行 => \"{line.Values[0]}\"", "Translator");
+
+                if (!dic.TryAdd(key, value))
+                    Logger.Warn($"翻译文件 [{fileName}] 出现重复字符串 => {key} / {value}", "Translator");
             }
-            catch (Exception ex)
+
+            if (langId != -1)
             {
-                Logger.Warn($"翻译文件错误：第{line.Index}行 => \"{line.Values[0]}\"", "Translator");
-                Logger.Warn(ex.ToString(), "Translator");
+                translateMaps.Remove(langId);
+                translateMaps.Add(langId, dic);
             }
+            else
+                Logger.Error($"翻译文件 [{fileName}] 没有提供语言ID", "Translator");
         }
 
         // カスタム翻訳ファイルの読み込み
@@ -70,8 +75,8 @@ public static class Translator
 
     public static string GetString(string s, Dictionary<string, string> replacementDic = null, bool console = false)
     {
-        var langId = TranslationController.Instance?.currentLanguage?.languageID ?? GetUserTrueLang();
-        if (Main.ForceOwnLanguage.Value) langId = GetUserTrueLang();
+        var langId = TranslationController.Instance?.currentLanguage?.languageID ?? GetUserLangByRegion();
+        if (Main.ForceOwnLanguage.Value) langId = GetUserLangByRegion();
         if (console) langId = SupportedLangs.SChinese;
         string str = GetString(s, langId);
         if (replacementDic != null)
@@ -85,12 +90,14 @@ public static class Translator
         var res = $"<INVALID:{str}>";
         try
         {
-            if (translateMaps.TryGetValue(str, out var dic) && (!dic.TryGetValue((int)langId, out res) || res == "" || (langId is not SupportedLangs.SChinese and not SupportedLangs.TChinese && Regex.IsMatch(res, @"[\u4e00-\u9fa5]") && res == GetString(str, SupportedLangs.SChinese)))) //strに該当する&無効なlangIdかresが空
-            {
-                if (langId == SupportedLangs.SChinese || langId == SupportedLangs.English) res = $"*{str}";
-                else res = GetString(str, SupportedLangs.English);
-            }
-            if (!translateMaps.ContainsKey(str)) //translateMapsにない場合、StringNamesにあれば取得する
+            if (!translateMaps.ContainsKey((int)langId))
+                langId = SupportedLangs.English;
+
+            if (translateMaps[(int)langId].TryGetValue(str, out var trans))
+                res = trans;
+            else if (langId != SupportedLangs.English && translateMaps[0].TryGetValue(str, out trans))
+                res = trans;
+            else //translateMapsにない場合、StringNamesにあれば取得する
             {
                 var stringNames = EnumHelper.GetAllValues<StringNames>().Where(x => x.ToString() == str);
                 if (stringNames != null && stringNames.Any())
@@ -111,11 +118,11 @@ public static class Translator
         var CurrentLanguage = TranslationController.Instance?.currentLanguage?.languageID ?? SupportedLangs.English;
         var lang = forUser ? CurrentLanguage : SupportedLangs.SChinese;
         if (Main.ForceOwnLanguageRoleName.Value)
-            lang = GetUserTrueLang();
+            lang = GetUserLangByRegion();
 
         return GetString(str, lang);
     }
-    public static SupportedLangs GetUserTrueLang()
+    public static SupportedLangs GetUserLangByRegion()
     {
         try
         {
@@ -147,7 +154,7 @@ public static class Translator
                 {
                     try
                     {
-                        translateMaps[tmp[0]][(int)lang] = tmp.Skip(1).Join(delimiter: ":").Replace("\\n", "\n").Replace("\\r", "\r");
+                        translateMaps[(int)lang][tmp[0]] = tmp.Skip(1).Join(delimiter: ":").Replace("\\n", "\n").Replace("\\r", "\r");
                     }
                     catch (KeyNotFoundException)
                     {
@@ -173,10 +180,11 @@ public static class Translator
         LoadLangs();
         var sb = new StringBuilder();
         var lang = TranslationController.Instance.currentLanguage.languageID;
-        foreach (var title in translateMaps)
+        foreach (var kvp in translateMaps[13])
         {
-            if (!title.Value.TryGetValue((int)lang, out var text)) text = "";
-            sb.Append($"{title.Key}:{text.Replace("\n", "\\n").Replace("\r", "\\r")}\n");
+            var text = kvp.Value;
+            if (!translateMaps.ContainsKey((int)lang)) text = "";
+            sb.Append($"{kvp.Key}:{text}\n");
         }
         File.WriteAllText(@$"./{LANGUAGE_FOLDER_NAME}/export_{lang}.dat", sb.ToString());
     }

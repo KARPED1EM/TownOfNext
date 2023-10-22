@@ -27,20 +27,16 @@
 		
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" />
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.674" Private="false" ExcludeAssets="runtime;native" />
-        <PackageReference Include="Downloader" Version="3.0.6" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Costura.Fody" Version="5.7.0">
-            <IncludeAssets>runtime; compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="csv" Version="2.0.93" />
-        <PackageReference Include="GitInfo" Version="3.1.0">
+        <PackageReference Include="GitInfo" Version="3.3.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="17.0.31709.430" />
+		</PackageReference>
+        <PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="17.5.33428.366" />
+		<PackageReference Include="Downloader" Version="3.0.6" />
+		<PackageReference Include="YamlDotNet" Version="13.7.1" />
     </ItemGroup>
 
     <Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">
