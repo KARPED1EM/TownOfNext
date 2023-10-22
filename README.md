@@ -24,7 +24,7 @@
 
 ## Announcement
 
-**Starting from May 20, TOHE stopped development due to some reasons. At the request of many players, TOHE will maintain the most basic adaptation and synchronize updates with TOH to ensure that players in need can still play normally. By the way, TOHE has renamed TONX**
+**Since May 20, TOHE stopped development due to some reasons. At the request of many players, TOHE will maintain the most basic adaptation and synchronize updates with TOH to ensure that players in need can still play normally. By the way, TOHE has renamed TONX**
 
 ---
 
