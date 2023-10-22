@@ -3,7 +3,7 @@ name: Upload info.json To Cos When File Changed
 on:
   push:
     branches: [ "TONX" ]
-    paths: [ "Publish/info.json" ]
+    paths: [ "info.json" ]
 
 permissions:
   contents: read
@@ -31,7 +31,7 @@ jobs:
         import os
         import requests
         
-        file = './Publish/info.json'
+        file = './info.json'
         size = os.stat(file).st_size
         with open (file, 'rb') as file_object:
           contents = file_object.read()
