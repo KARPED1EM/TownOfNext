@@ -22,9 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-		<Reference Include="$(AmongUs)\BepInEx\core\*.dll" />
-		<Reference Include="$(AmongUs)\BepInEx\interop\*.dll" />
-		
+		<PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.7.11" />
         <PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" />
         <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.674" Private="false" ExcludeAssets="runtime;native" />
     </ItemGroup>
