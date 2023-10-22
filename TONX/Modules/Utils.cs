@@ -857,6 +857,7 @@ public static class Utils
             + $"\n  ○ /id {GetString("Command.idlist")}"
             + $"\n  ○ /qq {GetString("Command.qq")}"
             + $"\n  ○ /dump {GetString("Command.dump")}"
+            + $"\n  ○ /up {GetString("Command.up")}"
             , ID);
     }
     public static void SendMessage(string text, byte sendTo = byte.MaxValue, string title = "", bool removeTags = false)

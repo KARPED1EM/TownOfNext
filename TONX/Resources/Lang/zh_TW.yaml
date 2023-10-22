@@ -1000,6 +1000,7 @@ Command.level: "[等級] → 修改您的遊戲等級"
 Command.idlist: "→ 顯示玩家ID列表"
 Command.qq: "→ 讓車隊姬在群裡發房號"
 Command.dump: "→ 將遊戲運行紀錄輸出到桌面"
+Command.up: "[職業名] → 指定下局您的職業（導演模式）"
 #给玩家的技能提示信息 / Skills in Meeting
 SkillUsedLeft: "您發動了技能召開了會議。\n您的技能剩餘使用次數:"
 MafiaDeadMsg: "黑手黨的死亡，意味著復仇的開始\n請使用/rv + [玩家ID] 以殺死指定玩家\n您可以在玩家名字前看到該玩家的ID\n或輸入/rv獲得玩家ID列表"

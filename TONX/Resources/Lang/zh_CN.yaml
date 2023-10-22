@@ -1037,6 +1037,7 @@ Command.level: "[等级] → 修改您的游戏等级"
 Command.idlist: "→ 显示玩家编号列表"
 Command.qq: "→ 让车队姬在群里发房号"
 Command.dump: "→ 将游戏运行日志输出到桌面"
+Command.up: "[职业名] → 指定下局您的职业（导演模式）"
 
 # 给玩家的技能提示信息 / Skills in Meeting
 SkillUsedLeft: "您发动技能召开了会议。\n您的技能剩余使用次数："
