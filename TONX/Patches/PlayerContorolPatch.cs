@@ -112,13 +112,6 @@ class CheckMurderPatch
             return false;
         }
 
-        // SoloKombat 的击杀处理
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-        {
-            SoloKombatManager.OnPlayerAttack(killer, target);
-            return false;
-        }
-
         return true;
     }
 }
@@ -200,7 +193,6 @@ class ReportDeadBodyPatch
     {
         if (GameStates.IsMeeting) return false;
         if (Options.DisableMeeting.GetBool()) return false;
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat) return false;
         if (!CanReport[__instance.PlayerId])
         {
             WaitReport[__instance.PlayerId].Add(target);
@@ -411,8 +403,6 @@ class FixedUpdatePatch
                     //    RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Revolutionist), string.Format(GetString("EnterVentWinCountDown"), Main.RevolutionistCountdown.TryGetValue(seer.PlayerId, out var x) ? x : 10));
                     if (seer.IsEaten())
                         RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"));
-                    if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-                        SoloKombatManager.GetNameNotify(target, ref RealName);
                     if (NameNotifyManager.GetNameNotify(target, out var name))
                         RealName = name;
                 }
@@ -451,9 +441,6 @@ class FixedUpdatePatch
 
                 //seerに関わらず発動するSuffix
                 Suffix.Append(CustomRoleManager.GetSuffixOthers(seer, target));
-
-                if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-                    Suffix.Append(SoloKombatManager.GetDisplayHealth(target));
 
                 /*if(main.AmDebugger.Value && main.BlockKilling.TryGetValue(target.PlayerId, out var isBlocked)) {
                     Mark = isBlocked ? "(true)" : "(false)";

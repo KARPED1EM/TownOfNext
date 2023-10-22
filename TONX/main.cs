@@ -207,9 +207,6 @@ public class Main : BasePlugin
         {
             roleColors = new Dictionary<CustomRoles, string>()
             {
-                //SoloKombat
-                {CustomRoles.KB_Normal, "#f55252"},
-
                 //GM
                 {CustomRoles.GM, "#ff5b70"},
 

@@ -576,9 +576,6 @@ public enum CustomRoles
     PlagueDoctor,
     SchrodingerCat,
 
-    //SoloKombat
-    KB_Normal, //TODO
-
     //GM
     GM,
 

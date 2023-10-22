@@ -462,9 +462,6 @@ static class ExtendedPlayerControl
             CustomRoles.Arsonist => Arsonist.IsDouseDone(pc),
             //CustomRoles.Revolutionist => pc.IsDrawDone(),
 
-            //SoloKombat
-            CustomRoles.KB_Normal => true,
-
             _ => pc.Is(CustomRoleTypes.Impostor),
         };
     }
@@ -549,7 +546,6 @@ static class ExtendedPlayerControl
 
         if (GameStates.IsMeeting) return;
         if (Options.DisableMeeting.GetBool()) return;
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat) return;
         Logger.Info($"{reporter.GetNameWithRole()} => {target?.Object?.GetNameWithRole() ?? "null"}", "NoCheckStartMeeting");
 
         foreach (var role in CustomRoleManager.AllActiveRoles.Values)

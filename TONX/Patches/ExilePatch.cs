@@ -72,7 +72,7 @@ class ExileControllerWrapUpPatch
         {
             pc.ResetKillCooldown();
         }
-        if (Options.RandomSpawn.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat)
+        if (Options.RandomSpawn.GetBool())
         {
             RandomSpawn.SpawnMap map;
             switch (Main.NormalOptions.MapId)

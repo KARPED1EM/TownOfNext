@@ -447,12 +447,6 @@ internal class ChatCommands
     }
     public static void SendRolesInfo(string input, byte playerId, bool isDev = false, bool isUp = false)
     {
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-        {
-            Utils.SendMessage(GetString("ModeDescribe.SoloKombat"), playerId);
-            return;
-        }
-
         if (input.Trim() == "" || input.Trim() == string.Empty)
         {
             Utils.ShowActiveRoles(playerId);
@@ -482,7 +476,7 @@ internal class ChatCommands
         if ((isDev || isUp) && GameStates.IsLobby)
         {
             canSpecify = true;
-            if (!role.IsEnable() || role.IsAddon() || role.IsVanilla() || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
+            if (!role.IsEnable() || role.IsAddon() || role.IsVanilla() || role is CustomRoles.GM or CustomRoles.NotAssigned || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
             if (canSpecify)
             {
                 byte pid = playerId == byte.MaxValue ? byte.MinValue : playerId;

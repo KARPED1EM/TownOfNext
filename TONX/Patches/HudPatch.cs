@@ -84,9 +84,6 @@ class HudManagerPatch
 
                 LowerInfoText.text = roleClass?.GetLowerText(player, isForMeeting: GameStates.IsMeeting, isForHud: true) ?? "";
 
-                if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-                    LowerInfoText.text = SoloKombatManager.GetHudText();
-
                 LowerInfoText.enabled = LowerInfoText.text != "";
 
                 if ((!AmongUsClient.Instance.IsGameStarted && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) || GameStates.IsMeeting)
@@ -220,7 +217,6 @@ class SetHudActivePatch
                 __instance.AbilityButton.ToggleVisible(false);
                 break;
             case CustomRoles.Minimalism:
-            case CustomRoles.KB_Normal:
                 __instance.SabotageButton.ToggleVisible(false);
                 __instance.AbilityButton.ToggleVisible(false);
                 __instance.ReportButton.ToggleVisible(false);

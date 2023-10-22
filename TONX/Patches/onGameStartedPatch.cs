@@ -248,14 +248,6 @@ internal class SelectRolesPatch
                 PlayerState.GetByPlayerId(pc.PlayerId).SetMainRole(role);
             }
 
-            // 个人竞技模式用
-            if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-            {
-                foreach (var pair in PlayerState.AllPlayerStates)
-                    ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
-                goto EndOfSelectRolePatch;
-            }
-
             var rd = IRandom.Instance;
 
             foreach (var kv in RoleResult)
@@ -277,8 +269,6 @@ internal class SelectRolesPatch
                     ExtendedPlayerControl.RpcSetCustomRole(pair.Key, subRole);
             }
 
-        EndOfSelectRolePatch:
-
             CustomRoleManager.CreateInstance();
             foreach (var pc in Main.AllPlayerControls)
             {
@@ -297,9 +287,6 @@ internal class SelectRolesPatch
             {
                 case CustomGameMode.Standard:
                     GameEndChecker.SetPredicateToNormal();
-                    break;
-                case CustomGameMode.SoloKombat:
-                    GameEndChecker.SetPredicateToSoloKombat();
                     break;
             }
 

@@ -54,8 +54,6 @@ class RepairSystemPatch
                 return false;
             if (Options.DisableSabotage.GetBool()) return false;
             var nextSabotage = (SystemTypes)amount;
-            //PVP禁止破坏
-            if ((Options.CurrentGameMode == CustomGameMode.SoloKombat)) return false;
             var roleClass = player.GetRoleClass();
             if (roleClass != null)
             {
@@ -136,7 +134,7 @@ class CloseDoorsPatch
 {
     public static bool Prefix(ShipStatus __instance)
     {
-        return !(Options.DisableSabotage.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat);
+        return !(Options.DisableSabotage.GetBool());
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.Start))]
@@ -188,7 +186,7 @@ class CheckTaskCompletionPatch
 {
     public static bool Prefix(ref bool __result)
     {
-        if (Options.DisableTaskWin.GetBool() || Options.NoGameEnd.GetBool() || TaskState.InitialTotalTasks == 0 || Options.CurrentGameMode == CustomGameMode.SoloKombat)
+        if (Options.DisableTaskWin.GetBool() || Options.NoGameEnd.GetBool() || TaskState.InitialTotalTasks == 0)
         {
             __result = false;
             return false;
