@@ -41,7 +41,7 @@ public static class Translator
             foreach (var entry in mapping.Children)
             {
                 (string key, string value) = (((YamlScalarNode)entry.Key).Value, ((YamlScalarNode)entry.Value).Value);
-                
+
                 if (key == "LangID")
                 {
                     langId = int.Parse(value);
