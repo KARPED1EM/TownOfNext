@@ -80,7 +80,10 @@ public sealed class Divinator : RoleBase
                 CustomRoles.God or
                 CustomRoles.Judge or
                 CustomRoles.Observer or
-                CustomRoles.DoveOfPeace
+                CustomRoles.DoveOfPeace or
+                CustomRoles.NekoKabocha or
+                CustomRoles.Messenger or
+                CustomRoles.Insider
                 => "HideMsg",
 
                 CustomRoles.Miner or
@@ -91,7 +94,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Jackal or
                 CustomRoles.Mario or
                 CustomRoles.Cleaner or
-                CustomRoles.Crewpostor
+                CustomRoles.Crewpostor or
+                CustomRoles.Penguin
                 => "Honest",
 
                 CustomRoles.SerialKiller or
@@ -114,7 +118,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Bodyguard or
                 CustomRoles.Opportunist or
                 CustomRoles.Pelican or
-                CustomRoles.ImperiusCurse
+                CustomRoles.ImperiusCurse or
+                CustomRoles.Stealth
                 => "Weirdo",
 
                 CustomRoles.EvilGuesser or
@@ -125,7 +130,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Terrorist or
                 CustomRoles.Revolutionist or
                 CustomRoles.Gamer or
-                CustomRoles.Eraser
+                CustomRoles.Eraser or
+                CustomRoles.PlagueDoctor
                 => "Blockbuster",
 
                 CustomRoles.Warlock or
@@ -149,7 +155,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Executioner or
                 CustomRoles.BallLightning or
                 CustomRoles.Workaholic or
-                CustomRoles.Provocateur
+                CustomRoles.Provocateur or
+                CustomRoles.SchrodingerCat
                 => "Incomprehensible",
 
                 CustomRoles.FireWorks or
