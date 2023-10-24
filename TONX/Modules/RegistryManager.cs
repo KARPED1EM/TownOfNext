@@ -38,8 +38,11 @@ public static class RegistryManager
         List<string> FoldersToDel = new()
             {
                 @"./TOH_DATA",
-                @"./TONX_DATA"
+                @"./TOHE_DATA",
+                @"./TONX_DATA",
             };
+
+        Logger.Warn("上次启动的TONX版本：" + LastVersion, "Registry Manager");
 
         if (LastVersion < new Version(3, 0, 0))
         {
