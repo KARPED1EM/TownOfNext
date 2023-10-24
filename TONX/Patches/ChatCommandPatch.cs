@@ -300,11 +300,6 @@ internal class ChatCommands
                     Utils.SendMessage(GetString("Message.CanNotUseByHost"), PlayerControl.LocalPlayer.PlayerId);
                     break;
 
-                case "/xf":
-                    canceled = true;
-                    SetAllNamesManual();
-                    break;
-
                 case "/id":
                     canceled = true;
                     string msgText = GetString("PlayerIdList");
@@ -505,35 +500,6 @@ internal class ChatCommands
             coms.DoIf(c => c.Trim() != "", roleCommands[role.RoleName].Add);
         }
     }
-    private static void SetAllNamesManual()
-    {
-        if (!GameStates.IsInGame)
-        {
-            Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
-            return;
-        }
-        ChatUpdatePatch.DoBlockChat = true;
-        if (GameStates.IsMeeting)
-        {
-            foreach (var seer in Main.AllPlayerControls)
-            {
-                foreach (var seen in Main.AllPlayerControls)
-                {
-                    var seenName = seen.GetTrueName();
-                    var coloredName = Utils.ColorString(seen.GetRoleColor(), seenName);
-                    seen.RpcSetNamePrivate(
-                        seer == seen ? coloredName : seenName,
-                        true, seer);
-                }
-            }
-        }
-        else
-        {
-            Utils.NotifyRoles();
-        }
-        ChatUpdatePatch.DoBlockChat = false;
-        Utils.SendMessage(GetString("Message.TryFixName"), PlayerControl.LocalPlayer.PlayerId);
-    }
     public static void OnReceiveChat(PlayerControl player, string text, out bool canceled)
     {
         if (roleCommands == null) InitRoleCommands();
@@ -660,10 +626,6 @@ internal class ChatCommands
                 {
                     Utils.SendMessage(string.Format(GetString("SureUse.quit"), cid), player.PlayerId);
                 }
-                break;
-
-            case "/xf":
-                SetAllNamesManual();
                 break;
 
             case "/say":

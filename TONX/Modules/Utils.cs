@@ -826,7 +826,6 @@ public static class Utils
             + $"\n  ○ /n {GetString("Command.now")}"
             + $"\n  ○ /r {GetString("Command.roles")}"
             + $"\n  ○ /m {GetString("Command.myrole")}"
-            + $"\n  ○ /xf {GetString("Command.solvecover")}"
             + $"\n  ○ /l {GetString("Command.lastresult")}"
             + $"\n  ○ /win {GetString("Command.winner")}"
             + "\n\n" + GetString("CommandOtherList")
@@ -849,7 +848,6 @@ public static class Utils
             + $"\n  ○ /qt {GetString("Command.quit")}"
             + "\n\n" + GetString("CommandHostList")
             + $"\n  ○ /rn {GetString("Command.rename")}"
-            + $"\n  ○ /xf {GetString("Command.solvecover")}"
             + $"\n  ○ /mw {GetString("Command.mw")}"
             + $"\n  ○ /kill {GetString("Command.kill")}"
             + $"\n  ○ /exe {GetString("Command.exe")}"
