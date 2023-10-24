@@ -262,6 +262,8 @@ public class Main : BasePlugin
             ExceptionMessageIsShown = false;
         }
 
+        RegistryManager.Init(); // 这是优先级最高的模块初始化方法，不能使用模块初始化属性
+
         PluginModuleInitializerAttribute.InitializeAll();
 
         IRandom.SetInstance(new NetRandomWrapper());
