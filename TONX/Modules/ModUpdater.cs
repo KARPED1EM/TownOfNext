@@ -3,7 +3,6 @@ using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -78,7 +77,7 @@ public class ModUpdater
     }
     public static void SetUpdateButtonStatus()
     {
-        MainMenuManagerPatch.UpdateButton.SetActive(isChecked && hasUpdate && firstStart);
+        MainMenuManagerPatch.UpdateButton.SetActive(isChecked && hasUpdate && (firstStart || forceUpdate));
         MainMenuManagerPatch.PlayButton.SetActive(!MainMenuManagerPatch.UpdateButton.activeSelf);
         var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
         buttonText.text = $"{GetString("updateButton")}\nv{latestVersion?.ToString() ?? "???"}";
