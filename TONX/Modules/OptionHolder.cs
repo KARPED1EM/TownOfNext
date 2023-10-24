@@ -53,7 +53,7 @@ public static class Options
 
     public static readonly string[] gameModes =
     {
-        "Standard", "SoloKombat"
+        "Standard"
     };
 
     // 地图启用

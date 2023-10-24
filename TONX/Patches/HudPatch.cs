@@ -323,35 +323,6 @@ class TaskPanelBehaviourPatch
                     }
 
                     break;
-
-                    //TODO: FIXME
-                    //case CustomGameMode.SoloKombat:
-
-                    //    var lpc = PlayerControl.LocalPlayer;
-
-                    //    AllText += "\r\n";
-                    //    AllText += $"\r\n{GetString("PVP.ATK")}: {lpc.ATK()}";
-                    //    AllText += $"\r\n{GetString("PVP.DF")}: {lpc.DF()}";
-                    //    AllText += $"\r\n{GetString("PVP.RCO")}: {lpc.HPRECO()}";
-                    //    AllText += "\r\n";
-
-                    //    Dictionary<byte, string> SummaryText = new();
-                    //    foreach (var id in PlayerState.AllPlayerStates.Keys)
-                    //    {
-                    //        string name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
-                    //        string summary = $"{Utils.GetProgressText(id)}  {Utils.ColorString(Main.PlayerColors[id], name)}";
-                    //        if (Utils.GetProgressText(id).Trim() == "") continue;
-                    //        SummaryText[id] = summary;
-                    //    }
-
-                    //    List<(int, byte)> list = new();
-                    //    foreach (var id in PlayerState.AllPlayerStates.Keys) list.Add((SoloKombatManager.GetRankOfScore(id), id));
-                    //    list.Sort();
-                    //    foreach (var id in list.Where(x => SummaryText.ContainsKey(x.Item2))) AllText += "\r\n" + SummaryText[id.Item2];
-
-                    //    AllText = $"<size=80%>{AllText}</size>";
-
-                    //    break;
             }
 
             __instance.taskText.text = AllText;
