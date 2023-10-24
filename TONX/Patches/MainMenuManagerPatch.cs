@@ -1,10 +1,9 @@
 using HarmonyLib;
 using System;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using static TONX.Translator;
+using Object = UnityEngine.Object;
 
 namespace TONX;
 
