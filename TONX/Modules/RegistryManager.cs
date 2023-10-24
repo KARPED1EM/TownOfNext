@@ -37,14 +37,13 @@ public static class RegistryManager
             {
                 @"./TOH_DATA",
                 @"./TOHE_DATA",
-                @"./TONX_DATA",
             };
 
         Logger.Warn("上次启动的TONX版本：" + LastVersion, "Registry Manager");
 
-        if (LastVersion < new Version(3, 0, 0))
+        if (LastVersion < new Version(1, 0, 0))
         {
-            Logger.Warn("v3.0.0 New Version Operation Needed", "Registry Manager");
+            Logger.Warn("v1.0.0 New Version Operation Needed", "Registry Manager");
             FoldersToDel.Add(@"./BepInEx/config");
         }
 
