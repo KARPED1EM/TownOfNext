@@ -31,16 +31,7 @@ public static class SpamManager
                 if (File.Exists(@"./BanWords.txt")) File.Move(@"./BanWords.txt", BANEDWORDS_FILE_PATH);
                 else
                 {
-                    string fileName;
-                    string[] name = CultureInfo.CurrentCulture.Name.Split("-");
-                    if (name.Count() >= 2)
-                        fileName = name[0] switch
-                        {
-                            "zh" => "SChinese",
-                            "ru" => "Russian",
-                            _ => "English"
-                        };
-                    else fileName = "English";
+                    string fileName = GetUserLangByRegion().ToString();
                     Logger.Warn($"Create New BanWords: {fileName}", "SpamManager");
                     File.WriteAllText(BANEDWORDS_FILE_PATH, GetResourcesTxt($"TONX.Resources.Config.BanWords.{fileName}.txt"));
                 }
