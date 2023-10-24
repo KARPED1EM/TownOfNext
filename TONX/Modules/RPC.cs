@@ -196,7 +196,7 @@ internal class RPCHandlerPatch
                     if (AmongUsClient.Instance.AmHost && tag != $"{ThisAssembly.Git.Commit}({ThisAssembly.Git.Branch})")
                     {
                         if (forkId != Main.ForkId)
-                            new LateTask(() =>
+                            _ = new LateTask(() =>
                             {
                                 if (__instance?.Data?.Disconnected is not null and not true)
                                 {
@@ -212,7 +212,7 @@ internal class RPCHandlerPatch
                 catch
                 {
                     Logger.Warn($"{__instance?.Data?.PlayerName}({__instance.PlayerId}): バージョン情報が無効です", "RpcVersionCheck");
-                    new LateTask(() =>
+                    _ = new LateTask(() =>
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RequestRetryVersionCheck, SendOption.Reliable, __instance.GetClientId());
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -344,12 +344,20 @@ internal static class RPC
     }
     static void SyncOptionsBetween(int startAmount, int lastAmount, int targetId = -1)
     {
+        //判断发送请求是否有效
+        if (
+            Main.AllPlayerControls.Count() <= 1 ||
+            AmongUsClient.Instance.AmHost == false ||
+            PlayerControl.LocalPlayer == null
+        ) return;
+        //判断发送目标是否有效
         if (targetId != -1)
         {
             var client = Utils.GetClientById(targetId);
-            if (client == null || client.Character == null || !Main.playerVersion.ContainsKey(client.Character.PlayerId)) return;
+            if (client == null || client.Character == null || !Main.playerVersion.ContainsKey(client.Character.PlayerId))
+                return;
         }
-        if (!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)) return;
+
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 80, SendOption.Reliable, targetId);
         List<OptionItem> list = new();
         writer.Write(startAmount);
