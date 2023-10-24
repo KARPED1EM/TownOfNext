@@ -4,6 +4,7 @@ using System.Globalization;
 using TMPro;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using static TONX.Translator;
 
 namespace TONX;
 
@@ -82,12 +83,11 @@ public class MainMenuManagerPatch
             return button;
         }
 
-        bool china = Translator.GetUserLangByRegion() == SupportedLangs.SChinese;
-        if (InviteButton == null) InviteButton = CreatButton(china ? "QQ群" : "Discord", () => { Application.OpenURL(china ? Main.QQInviteUrl : Main.DiscordInviteUrl); });
-        InviteButton.gameObject.SetActive(china ? Main.ShowQQButton : Main.ShowDiscordButton);
+        if (InviteButton == null) InviteButton = CreatButton(IsChineseUser ? "QQ群" : "Discord", () => { Application.OpenURL(IsChineseUser ? Main.QQInviteUrl : Main.DiscordInviteUrl); });
+        InviteButton.gameObject.SetActive(IsChineseUser ? Main.ShowQQButton : Main.ShowDiscordButton);
         InviteButton.name = "TONX Invite Button";
 
-        if (WebsiteButton == null) WebsiteButton = CreatButton(Translator.GetString("Website"), () => Application.OpenURL(Translator.GetUserLangByRegion() is SupportedLangs.SChinese or SupportedLangs.TChinese ? "https://tonx.cc/zh" : "https://tonx.cc"));
+        if (WebsiteButton == null) WebsiteButton = CreatButton(GetString("Website"), () => Application.OpenURL(IsChineseLanguageUser ? "https://tonx.cc/zh" : "https://tonx.cc"));
         WebsiteButton.gameObject.SetActive(Main.ShowWebsiteButton);
         WebsiteButton.name = "TONX Website Button";
 

@@ -138,6 +138,8 @@ public static class Translator
             return SupportedLangs.English;
         }
     }
+    public static bool IsChineseUser => GetUserLangByRegion() == SupportedLangs.SChinese;
+    public static bool IsChineseLanguageUser => GetUserLangByRegion() is SupportedLangs.SChinese or SupportedLangs.TChinese;
     public static void LoadCustomTranslation(string filename, SupportedLangs lang)
     {
         string path = @$"./{LANGUAGE_FOLDER_NAME}/{filename}";

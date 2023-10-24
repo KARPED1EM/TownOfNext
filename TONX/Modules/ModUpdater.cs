@@ -21,7 +21,6 @@ namespace TONX;
 [HarmonyPatch]
 public class ModUpdater
 {
-    public static bool IsInChina => CultureInfo.CurrentCulture.Name == "zh-CN";
     public static string DownloadFileTempPath = "BepInEx/plugins/TONX.dll.temp";
     private static IReadOnlyList<string> URLs => new List<string>
     {
@@ -38,7 +37,7 @@ public class ModUpdater
     private static IReadOnlyList<string> GetInfoFileUrlList()
     {
         var list = URLs.ToList();
-        if (IsInChina) list.Reverse();
+        if (IsChineseUser) list.Reverse();
         return list;
     }
 
@@ -123,7 +122,7 @@ public class ModUpdater
             if ((!Main.AlreadyShowMsgBox || isBroken))
             {
                 Main.AlreadyShowMsgBox = true;
-                var annos = IsInChina ? announcement_zh : announcement_en;
+                var annos = IsChineseUser ? announcement_zh : announcement_en;
                 if (isBroken) CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.ExitGame), Application.Quit) });
                 else CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.Okay), null) });
             }
