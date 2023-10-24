@@ -272,16 +272,16 @@ public static class MeetingHudPatch
                 FixedUpdatePatch.LoversSuicide(playerId, true);
         }
     }
+}
 
-    [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetHighlighted))]
-    class SetHighlightedPatch
+[HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetHighlighted))]
+class SetHighlightedPatch
+{
+    public static bool Prefix(PlayerVoteArea __instance, bool value)
     {
-        public static bool Prefix(PlayerVoteArea __instance, bool value)
-        {
-            if (!AmongUsClient.Instance.AmHost) return true;
-            if (!__instance.HighlightedFX) return false;
-            __instance.HighlightedFX.enabled = value;
-            return false;
-        }
+        if (!AmongUsClient.Instance.AmHost) return true;
+        if (!__instance.HighlightedFX) return false;
+        __instance.HighlightedFX.enabled = value;
+        return false;
     }
 }

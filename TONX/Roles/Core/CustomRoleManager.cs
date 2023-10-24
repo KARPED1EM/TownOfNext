@@ -512,7 +512,6 @@ public enum CustomRoles
     Crewpostor,
     Penguin,
     Stealth,
-    NekoKabocha,
     Messenger,
     Insider,
     //Crewmate(Vanilla)

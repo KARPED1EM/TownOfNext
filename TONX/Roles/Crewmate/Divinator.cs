@@ -81,7 +81,6 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Judge or
                 CustomRoles.Observer or
                 CustomRoles.DoveOfPeace or
-                CustomRoles.NekoKabocha or
                 CustomRoles.Messenger or
                 CustomRoles.Insider
                 => "HideMsg",

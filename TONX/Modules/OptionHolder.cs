@@ -171,7 +171,6 @@ public static class Options
     public static OptionItem DisableAirshipVital;
     public static OptionItem DisableDevicesIgnoreConditions;
     public static OptionItem DisableDevicesIgnoreImpostors;
-    public static OptionItem DisableDevicesIgnoreMadmates;
     public static OptionItem DisableDevicesIgnoreNeutrals;
     public static OptionItem DisableDevicesIgnoreCrewmates;
     public static OptionItem DisableDevicesIgnoreAfterAnyoneDied;
