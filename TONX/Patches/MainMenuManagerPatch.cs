@@ -87,7 +87,7 @@ public class MainMenuManagerPatch
         InviteButton.gameObject.SetActive(china ? Main.ShowQQButton : Main.ShowDiscordButton);
         InviteButton.name = "TONX Invite Button";
 
-        if (WebsiteButton == null) WebsiteButton = CreatButton(Translator.GetString("Website"), () => Application.OpenURL("https://tonx.cc"));
+        if (WebsiteButton == null) WebsiteButton = CreatButton(Translator.GetString("Website"), () => Application.OpenURL(Translator.GetUserLangByRegion() is SupportedLangs.SChinese or SupportedLangs.TChinese ? "https://tonx.cc/zh" : "https://tonx.cc"));
         WebsiteButton.gameObject.SetActive(Main.ShowWebsiteButton);
         WebsiteButton.name = "TONX Website Button";
 
