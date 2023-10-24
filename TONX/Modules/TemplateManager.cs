@@ -55,16 +55,7 @@ public static class TemplateManager
                 if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
                 else
                 {
-                    string fileName;
-                    string[] name = CultureInfo.CurrentCulture.Name.Split("-");
-                    if (name.Length >= 2)
-                        fileName = name[0] switch
-                        {
-                            "zh" => "SChinese",
-                            "ru" => "Russian",
-                            _ => "English"
-                        };
-                    else fileName = "English";
+                    string fileName = GetUserLangByRegion().ToString();
                     Logger.Warn($"Create New Template: {fileName}", "TemplateManager");
                     File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt($"TONX.Resources.Config.template.{fileName}.txt"));
                 }

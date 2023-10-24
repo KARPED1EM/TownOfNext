@@ -82,7 +82,7 @@ public class MainMenuManagerPatch
             return button;
         }
 
-        bool china = CultureInfo.CurrentCulture.Name == "zh-CN";
+        bool china = Translator.GetUserLangByRegion() == SupportedLangs.SChinese;
         if (InviteButton == null) InviteButton = CreatButton(china ? "QQ群" : "Discord", () => { Application.OpenURL(china ? Main.QQInviteUrl : Main.DiscordInviteUrl); });
         InviteButton.gameObject.SetActive(china ? Main.ShowQQButton : Main.ShowDiscordButton);
         InviteButton.name = "TONX Invite Button";
