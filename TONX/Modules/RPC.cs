@@ -86,11 +86,6 @@ public enum CustomRPC
     SyncEscapee,
     OnClickMeetingButton,
     SyncMarioVentedTimes,
-
-    //SoloKombat
-    SyncKBPlayer,
-    SyncKBBackCountdown,
-    SyncKBNameNotify,
 }
 public enum Sounds
 {
