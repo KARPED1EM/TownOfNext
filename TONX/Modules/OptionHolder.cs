@@ -978,7 +978,8 @@ public static class Options
             .SetColor(new Color32(85, 170, 255, byte.MaxValue));
         DoorsResetMode = StringOptionItem.Create(3_030_004, "DoorsResetMode", EnumHelper.GetAllNames<DoorsReset.ResetMode>(), 0, TabGroup.GameSettings, false).SetParent(ResetDoorsEveryTurns)
             .SetColor(new Color32(85, 170, 255, byte.MaxValue));
-        DisableFungleSporeTrigger = BooleanOptionItem.Create(3_030_005, "DisableFungleSporeTrigger", false, TabGroup.GameSettings, false);
+        DisableFungleSporeTrigger = BooleanOptionItem.Create(3_030_005, "DisableFungleSporeTrigger", false, TabGroup.GameSettings, false)
+            .SetColor(new Color32(85, 170, 255, byte.MaxValue));
         EnableRandomSpawn = BooleanOptionItem.Create(3_030_006, "RandomSpawn", false, TabGroup.GameSettings, false)
             .SetColor(new Color32(85, 170, 255, byte.MaxValue))
             .SetGameMode(CustomGameMode.All);
