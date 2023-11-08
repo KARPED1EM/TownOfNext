@@ -762,3 +762,15 @@ public static class PlayerControlMixupOutfitPatch
         }
     }
 }
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckSporeTrigger))]
+public static class PlayerControlCheckSporeTriggerPatch
+{
+    public static bool Prefix()
+    {
+        if (Options.DisableFungleSporeTrigger.GetBool())
+        {
+            return false;
+        }
+        return true;
+    }
+}

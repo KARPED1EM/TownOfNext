@@ -7,7 +7,12 @@ namespace TONX;
 
 static class CustomRolesHelper
 {
-    public static readonly CustomRoles[] AllRoles = EnumHelper.GetAllValues<CustomRoles>();
+    /// <summary>¤¹¤Ù¤Æ¤ÎÒÛÂš(ÊôÐÔ¤Ïº¬¤Þ¤Ê¤¤)</summary>
+    public static readonly CustomRoles[] AllRoles = EnumHelper.GetAllValues<CustomRoles>().Where(role => role < CustomRoles.NotAssigned).ToArray();
+    /// <summary>¤¹¤Ù¤Æ¤ÎÊôÐÔ</summary>
+    public static readonly CustomRoles[] AllAddOns = EnumHelper.GetAllValues<CustomRoles>().Where(role => role > CustomRoles.NotAssigned).ToArray();
+    /// <summary>¥¹¥¿¥ó¥À©`¥É¥â©`¥É¤Ç³ö¬F¤Ç¤­¤ë¤¹¤Ù¤Æ¤ÎÒÛÂš</summary>
+    public static readonly CustomRoles[] AllStandardRoles = AllRoles.ToArray();
     public static readonly CustomRoleTypes[] AllRoleTypes = EnumHelper.GetAllValues<CustomRoleTypes>();
 
     public static bool IsImpostor(this CustomRoles role)

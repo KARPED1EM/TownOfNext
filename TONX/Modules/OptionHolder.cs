@@ -219,6 +219,7 @@ public static class Options
     public static OptionItem DisableAirshipMovingPlatform;
     public static OptionItem ResetDoorsEveryTurns;
     public static OptionItem DoorsResetMode;
+    public static OptionItem DisableFungleSporeTrigger;
 
     // 随机出生相关设定
     public static OptionItem EnableRandomSpawn;
@@ -977,6 +978,7 @@ public static class Options
             .SetColor(new Color32(85, 170, 255, byte.MaxValue));
         DoorsResetMode = StringOptionItem.Create(3_030_004, "DoorsResetMode", EnumHelper.GetAllNames<DoorsReset.ResetMode>(), 0, TabGroup.GameSettings, false).SetParent(ResetDoorsEveryTurns)
             .SetColor(new Color32(85, 170, 255, byte.MaxValue));
+        DisableFungleSporeTrigger = BooleanOptionItem.Create(3_030_005, "DisableFungleSporeTrigger", false, TabGroup.GameSettings, false);
 
         // 随机出生相关设定
         TextOptionItem.Create(3_100_006, "MenuTitle.RandomSpawn", TabGroup.GameSettings)

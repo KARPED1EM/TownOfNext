@@ -230,7 +230,7 @@ internal class RPCHandlerPatch
                 for (var i = startAmount; i < OptionItem.AllOptions.Count && i <= lastAmount; i++)
                     list.Add(OptionItem.AllOptions[i]);
                 Logger.Info($"{startAmount}-{lastAmount}:{list.Count}/{OptionItem.AllOptions.Count}", "SyncCustomSettings");
-                foreach (var co in list) co.SetValue(reader.ReadInt32());
+                foreach (var co in list) co.SetValue(reader.ReadPackedInt32());
                 OptionShower.BuildText();
                 break;
             case CustomRPC.SetDeathReason:
@@ -365,7 +365,7 @@ internal static class RPC
         for (var i = startAmount; i < OptionItem.AllOptions.Count && i <= lastAmount; i++)
             list.Add(OptionItem.AllOptions[i]);
         Logger.Info($"{startAmount}-{lastAmount}:{list.Count}/{OptionItem.AllOptions.Count}", "SyncCustomSettings");
-        foreach (var co in list) writer.Write(co.GetValue());
+        foreach (var co in list) writer.WritePacked(co.GetValue());
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void PlaySoundRPC(byte PlayerID, Sounds sound)

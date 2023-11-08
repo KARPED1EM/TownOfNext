@@ -198,10 +198,10 @@ internal class ChatCommands
                 case "/m":
                 case "/myrole":
                     canceled = true;
-                    var role = PlayerControl.LocalPlayer.GetCustomRole();
                     if (GameStates.IsInGame)
                     {
                         var lp = PlayerControl.LocalPlayer;
+                        var role = PlayerControl.LocalPlayer.GetCustomRole();
                         var sb = new StringBuilder();
                         sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + lp.GetRoleInfo(true));
                         if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
@@ -215,7 +215,9 @@ internal class ChatCommands
                         Utils.SendMessage(sb.ToString(), lp.PlayerId);
                     }
                     else
+                    {
                         Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+                    }
                     break;
 
                 case "/t":

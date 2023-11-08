@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using System;
 using System.Linq;
+using TONX.Roles.Core.Descriptions;
 using UnityEngine;
 using static TONX.Options;
 
@@ -41,6 +42,8 @@ public class SimpleRoleInfo
     /// ŒgëH¤Ë¥¢¥µ¥¤¥ó¤µ¤ì¤ëÒÛÂš¤ÎÄÚÔU
     /// </summary>
     public CustomRoles[] AssignUnitRoles;
+    /// <summary>ÒÛÂš¤ÎÕhÃ÷év‚S</summary>
+    public RoleDescription Description { get; private set; }
 
     private SimpleRoleInfo(
         Type classType,
@@ -130,8 +133,7 @@ public class SimpleRoleInfo
             new(1, 3, 1) :
             new(1, 15, 1);
         assignUnitRoles ??= Enumerable.Repeat(roleName, assignCountRule.Step).ToArray();
-        return
-            new(
+        var roleInfo = new SimpleRoleInfo(
                 classType,
                 createInstance,
                 roleName,
@@ -150,6 +152,8 @@ public class SimpleRoleInfo
                 assignCountRule,
                 assignUnitRoles
             );
+        roleInfo.Description = new SingleRoleDescription(roleInfo);
+        return roleInfo;
     }
     public static SimpleRoleInfo CreateForVanilla(
         Type classType,
@@ -191,8 +195,7 @@ public class SimpleRoleInfo
                 customRoleType = CustomRoleTypes.Crewmate;
                 break;
         }
-        return
-            new(
+        var roleInfo = new SimpleRoleInfo(
                 classType,
                 createInstance,
                 roleName,
@@ -211,6 +214,8 @@ public class SimpleRoleInfo
                 new(1, 15, 1),
                 new CustomRoles[1] { roleName }
             );
+        roleInfo.Description = new VanillaRoleDescription(roleInfo, baseRoleType);
+        return roleInfo;
     }
     public delegate void OptionCreatorDelegate();
 }
