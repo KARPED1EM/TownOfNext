@@ -241,3 +241,12 @@ internal class ModManagerLateUpdatePatch
             new Vector3(0.4f, offset_y, __instance.localCamera.nearClipPlane + 0.1f));
     }
 }
+[HarmonyPatch(typeof(CreditsScreenPopUp))]
+internal class CreditsScreenPopUpPatch
+{
+    [HarmonyPatch(nameof(CreditsScreenPopUp.OnEnable))]
+    public static void Postfix(CreditsScreenPopUp __instance)
+    {
+        __instance.BackButton.transform.parent.FindChild("Background").gameObject.SetActive(false);
+    }
+}
