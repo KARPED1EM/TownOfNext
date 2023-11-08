@@ -64,7 +64,7 @@ public sealed class DoveOfPeace : RoleBase
         if (SkillLimit >= 1)
         {
             SkillLimit--;
-            Player.RpcGuardAndKill();
+            Player.RpcProtectedMurderPlayer();
             Main.AllAlivePlayerControls.Where(x =>
             Player.Is(CustomRoles.Madmate) ?
             (x.CanUseKillButton() && x.GetCustomRole().IsCrewmate()) :

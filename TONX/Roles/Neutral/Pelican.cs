@@ -64,7 +64,7 @@ public sealed class Pelican : RoleBase, IKiller, ISchrodingerCatOwner
         return OptionKillCooldown.GetFloat();
     }
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
-    public static void SetHudActive(HudManager __instance, bool isActive) => __instance.SabotageButton.ToggleVisible(false);
+    public bool CanUseSabotageButton() => false;
     public bool CanUseKillButton() => Player.IsAlive();
     private void SendRPC()
     {

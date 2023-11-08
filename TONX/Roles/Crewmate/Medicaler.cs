@@ -65,9 +65,6 @@ public sealed class Medicaler : RoleBase, IKiller
     {
         var playerId = Player.PlayerId;
         ProtectLimit = OptionProtectNums.GetInt();
-
-        if (!Main.ResetCamPlayerList.Contains(playerId))
-            Main.ResetCamPlayerList.Add(playerId);
     }
     private void SendRPC_SyncLimit()
     {
@@ -108,7 +105,7 @@ public sealed class Medicaler : RoleBase, IKiller
     public bool CanUseKillButton()
        => Player.IsAlive()
        && ProtectLimit > 0;
-    public override bool OnInvokeSabotage(SystemTypes systemType) => false;
+    public bool CanUseSabotageButton() => false;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
     public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? RoleInfo.RoleColor : Color.gray, $"({ProtectLimit})");
     public static bool InProtect(byte id) => ProtectList.Contains(id) && !(PlayerState.GetByPlayerId(id)?.IsDead ?? true);
@@ -144,10 +141,10 @@ public sealed class Medicaler : RoleBase, IKiller
         SendRPC_SyncList();
 
         killer.SetKillCooldownV2(target: target, forceAnime: true);
-        killer.RpcGuardAndKill(target);
+        killer.RpcProtectedMurderPlayer(target);
 
         if (OptionTargetCanSeeProtect.GetBool())
-            target.RpcGuardAndKill(target);
+            target.RpcProtectedMurderPlayer(target);
 
         Utils.NotifyRoles(target);
 

@@ -101,9 +101,9 @@ public sealed class Gangster : RoleBase, IImpostor
 
             killer.ResetKillCooldown();
             killer.SetKillCooldown();
-            killer.RpcGuardAndKill(target);
-            target.RpcGuardAndKill(killer);
-            target.RpcGuardAndKill(target);
+            killer.RpcProtectedMurderPlayer(target);
+            target.RpcProtectedMurderPlayer(killer);
+            target.RpcProtectedMurderPlayer(target);
 
             Logger.Info($"注册附加职业：{target.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
             Logger.Info($"{killer.GetNameWithRole()} : 剩余{RecruitLimit}次招募机会", "Gangster");

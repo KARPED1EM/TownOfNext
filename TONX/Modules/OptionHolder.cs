@@ -979,15 +979,10 @@ public static class Options
         DoorsResetMode = StringOptionItem.Create(3_030_004, "DoorsResetMode", EnumHelper.GetAllNames<DoorsReset.ResetMode>(), 0, TabGroup.GameSettings, false).SetParent(ResetDoorsEveryTurns)
             .SetColor(new Color32(85, 170, 255, byte.MaxValue));
         DisableFungleSporeTrigger = BooleanOptionItem.Create(3_030_005, "DisableFungleSporeTrigger", false, TabGroup.GameSettings, false);
-
-        // 随机出生相关设定
-        TextOptionItem.Create(3_100_006, "MenuTitle.RandomSpawn", TabGroup.GameSettings)
-            .SetGameMode(CustomGameMode.Standard)
-            .SetColor(new Color32(85, 170, 255, byte.MaxValue));
-        EnableRandomSpawn = BooleanOptionItem.Create(101300, "RandomSpawn", false, TabGroup.GameSettings, false)
-                .SetHeader(true)
-                .SetGameMode(CustomGameMode.All);
-        RandomSpawn.SetupCustomOption();
+        EnableRandomSpawn = BooleanOptionItem.Create(3_030_006, "RandomSpawn", false, TabGroup.GameSettings, false)
+            .SetColor(new Color32(85, 170, 255, byte.MaxValue))
+            .SetGameMode(CustomGameMode.All);
+        RandomSpawn.SetupCustomOption(3_031_000);
 
         // 其它设定
         TextOptionItem.Create(3_100_007, "MenuTitle.Other", TabGroup.GameSettings)
@@ -1075,7 +1070,7 @@ public static class Options
         CustomRoleCounts.Add(role, countOption);
     }
     public static void SetupRoleOptions(SimpleRoleInfo info) =>
-        SetupRoleOptions(info.ConfigId, info.Tab, info.RoleName, info.AssignInfo.AssignCountRule);
+        SetupRoleOptions(info.ConfigId, info.Tab, info.RoleName);
     public static void SetupRoleOptions(int id, TabGroup tab, CustomRoles role, IntegerValueRule assignCountRule = null, CustomGameMode customGameMode = CustomGameMode.Standard)
     {
         if (role.IsVanilla()) return;

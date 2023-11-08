@@ -102,21 +102,21 @@ class GameEndChecker
                     }
                 }
 
-                //Lovers follow winner
+                // Lovers follow winner
                 if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Lovers and not CustomWinner.Crewmate and not CustomWinner.Impostor)
                 {
                     foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Lovers)))
                     {
-                        if (CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x).Is(CustomRoles.Lovers)).Count() > 0)
+                        if (CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x).Is(CustomRoles.Lovers)).Any())
                         {
                             CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                            CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Lovers);
+                            CustomWinnerHolder.AdditionalWinnerRoles.Add(CustomRoles.Lovers);
                         }
                     }
                 }
 
-                //中立共同胜利
-                if (Options.NeutralWinTogether.GetBool() && CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x) != null && Utils.GetPlayerById(x).GetCustomRole().IsNeutral()).Count() >= 1)
+                // 中立共同胜利
+                if (Options.NeutralWinTogether.GetBool() && CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x) != null && Utils.GetPlayerById(x).GetCustomRole().IsNeutral()).Any())
                 {
                     foreach (var pc in Main.AllPlayerControls)
                         if (pc.GetCustomRole().IsNeutral() && !CustomWinnerHolder.WinnerIds.Contains(pc.PlayerId))
@@ -133,15 +133,6 @@ class GameEndChecker
                                 CustomWinnerHolder.WinnerIds.Add(tar.PlayerId);
                     }
                 }
-
-                //补充恋人胜利名单
-                if (CustomWinnerHolder.WinnerTeam == CustomWinner.Lovers || CustomWinnerHolder.AdditionalWinnerTeams.Contains(AdditionalWinners.Lovers))
-                {
-                    Main.AllPlayerControls
-                                .Where(p => p.Is(CustomRoles.Lovers) && !CustomWinnerHolder.WinnerIds.Contains(p.PlayerId))
-                                .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
-                }
-
             }
             ShipStatus.Instance.enabled = false;
             StartEndGame(reason);

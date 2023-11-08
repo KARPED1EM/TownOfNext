@@ -98,7 +98,7 @@ public sealed class BallLightning : RoleBase, IImpostor
             {
                 Ghosts.TryAdd(target.PlayerId, killer.PlayerId);
                 (killer.GetRoleClass() as BallLightning)?.SendRPC();
-                if (!killer.inVent) killer.RpcGuardAndKill(killer);
+                if (!killer.inVent) killer.RpcProtectedMurderPlayer(killer);
                 Utils.NotifyRoles();
                 Logger.Info($"{target.GetNameWithRole()} 转化为量子幽灵", "BallLightning.StartConvertCountDown");
             }

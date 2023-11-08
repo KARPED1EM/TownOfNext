@@ -76,7 +76,7 @@ public sealed class Veteran : RoleBase
         {
             SkillLimit--;
             ProtectStartTime = Utils.GetTimeStamp();
-            if (!Player.IsModClient()) Player.RpcGuardAndKill(Player);
+            if (!Player.IsModClient()) Player.RpcProtectedMurderPlayer(Player);
             Player.RPCPlayCustomSound("Gunload");
             Player.Notify(GetString("VeteranOnGuard"), SkillLimit);
             return true;
@@ -94,7 +94,7 @@ public sealed class Veteran : RoleBase
         if (ProtectStartTime + OptionSkillDuration.GetFloat() < Utils.GetTimeStamp())
         {
             ProtectStartTime = 0;
-            player.RpcGuardAndKill();
+            player.RpcProtectedMurderPlayer();
             player.Notify(string.Format(GetString("VeteranOffGuard"), SkillLimit));
         }
     }

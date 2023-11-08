@@ -95,7 +95,7 @@ public class CreditsScreenPatch
             };
 
             var template = GameObject.Find("logoImage");
-            TONXLogo = Object.Instantiate(template, __instance.CreditsParent.transform);
+            TONXLogo = Object.Instantiate(template, __instance.transform);
             TONXLogo.name = "TONX Logo Image";
             TONXLogo.transform.localPosition = template.transform.localPosition;
             var logoRenderer = TONXLogo.GetComponent<SpriteRenderer>();
@@ -103,8 +103,8 @@ public class CreditsScreenPatch
 
             GameObject CreateBlock(string header, List<string> lines)
             {
-                var template = __instance.CreditsParent.transform.GetChild(2).gameObject;
-                var block = Object.Instantiate(template, __instance.CreditsParent.transform);
+                var template = __instance.transform.GetChild(2).gameObject;
+                var block = Object.Instantiate(template, __instance.transform);
                 block.name = $"TONX CreditsBlock";
                 string content = "";
                 lines.Do(l => content += "\n" + l);
@@ -129,7 +129,7 @@ public class CreditsScreenPatch
             Acknowledgements.transform.localPosition = TONXLogo.transform.localPosition - new Vector3(0f, offset, 0f);
             offset += 0.35f * acList.Count + 3f;
 
-            __instance.CreditsParent.ForEachChild((Il2CppSystem.Action<GameObject>)Move);
+            __instance.gameObject.ForEachChild((Il2CppSystem.Action<GameObject>)Move);
             void Move(GameObject obj)
             {
                 if (obj.name.StartsWith("TONX")) return;

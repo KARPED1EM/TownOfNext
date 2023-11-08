@@ -11,17 +11,10 @@ public interface IImpostor : IKiller, ISchrodingerCatOwner
 {
     /// インポスターは基本サボタージュボタンを使える
     bool IKiller.CanUseSabotageButton() => true;
-
     /// <summary>
     /// 是否可以成为绝境者
     /// </summary>
     public bool CanBeLastImpostor => true;
-
-    /// <summary>
-    /// 可以作为内鬼使用通风管
-    /// </summary>
-    public bool CanUseImpostorVentButton => true;
-
     /// <summary>
     /// 击杀猫猫的时候职业发生了变化<br/>
     /// デフォルト<see cref="SchrodingerCat.TeamType.TeamImpostor"/>

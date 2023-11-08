@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using Hazel;
 using TONX.Roles.Core;
+using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Patches.ISystemType;
 
@@ -22,3 +23,4 @@ public static class LifeSuppSystemUpdateSystemPatch
         }
         return true;
     }
+}

@@ -33,9 +33,6 @@ public sealed class SwordsMan : RoleBase, IKiller
     {
         var playerId = Player.PlayerId;
         IsKilled = false;
-
-        if (!Main.ResetCamPlayerList.Contains(playerId))
-            Main.ResetCamPlayerList.Add(playerId);
     }
     private void SendRPC()
     {
@@ -49,7 +46,7 @@ public sealed class SwordsMan : RoleBase, IKiller
     }
     public float CalculateKillCooldown() => CanUseKillButton() ? 0f : 255f;
     public bool CanUseKillButton() => Player.IsAlive() && !IsKilled;
-    public override bool OnInvokeSabotage(SystemTypes systemType) => false;
+    public bool CanUseSabotageButton() => false;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
     public bool OnCheckMurderAsKiller(MurderInfo info)
     {

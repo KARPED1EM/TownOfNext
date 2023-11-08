@@ -81,7 +81,7 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
         return cd;
     }
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
-    public static void SetHudActive(HudManager __instance, bool isActive) => __instance.SabotageButton.ToggleVisible(false);
+    public bool CanUseSabotageButton() => false;
     private void SendRPC()
     {
         var sender = CreateSender(CustomRPC.SyncTotocalcioTargetAndTimes);
@@ -137,9 +137,8 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
             ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), "♦") : "";
     }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Utils.ShadeColor(RoleInfo.RoleColor, 0.25f) : Color.gray, $"({BetLimit})");
-    public bool CheckWin(out AdditionalWinners winnerType)
+    public bool CheckWin(ref CustomRoles winnerRole)
     {
-        winnerType = AdditionalWinners.Totocalcio;
         if (BetTarget == byte.MaxValue) return false;
         var targetPs = PlayerState.GetByPlayerId(BetTarget);
         return (CustomWinnerHolder.WinnerIds?.Contains(BetTarget) ?? false)

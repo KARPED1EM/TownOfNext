@@ -79,7 +79,7 @@ public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
     }
     public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(OptionHasImpostorVision.GetBool());
-    public static void SetHudActive(HudManager __instance, bool isActive) => __instance.SabotageButton.ToggleVisible(false);
+    public bool CanUseSabotageButton() => false;
     public bool CanUseKillButton() => Player.IsAlive();
     private void SendRPC(byte id)
     {

@@ -220,7 +220,7 @@ class IntroCutscenePatch
             __instance.overlayHandle.color = Palette.ImpostorRed;
             return true;
         }
-        else if (role.IsCrewmate() && role.IsDesyncRole())
+        else if (role.IsCrewmate() && role.GetRoleInfo().IsDesyncImpostor)
         {
             yourTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             yourTeam.Add(PlayerControl.LocalPlayer);

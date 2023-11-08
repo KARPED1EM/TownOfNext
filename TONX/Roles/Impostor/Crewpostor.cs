@@ -19,7 +19,6 @@ public sealed class Crewpostor : RoleBase, IImpostor
             4800,
             SetupOptionItem,
             "ca|舰长",
-            requireResetCam: true,
             experimental: true
         );
     public Crewpostor(PlayerControl player)
@@ -57,7 +56,7 @@ public sealed class Crewpostor : RoleBase, IImpostor
                 );
 
             if (Player.IsModClient()) RPC.PlaySoundRPC(Player.PlayerId, Sounds.KillSound);
-            else Player.RpcGuardAndKill();
+            else Player.RpcProtectedMurderPlayer();
 
             Logger.Info($"船鬼完成任务击杀：{Player.GetNameWithRole()} => {target.GetNameWithRole()}", "Crewpostor.OnCompleteTask");
         }
