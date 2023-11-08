@@ -30,7 +30,7 @@ public static class CustomRoleManager
     /// </summary>
     /// <param name="attemptKiller">实际击杀者，不变</param>
     /// <param name="attemptTarget">>实际被击杀的玩家，不变</param>
-    public static void OnCheckMurder(PlayerControl attemptKiller, PlayerControl attemptTarget)
+    public static bool OnCheckMurder(PlayerControl attemptKiller, PlayerControl attemptTarget)
         => OnCheckMurder(attemptKiller, attemptTarget, attemptKiller, attemptTarget);
     /// <summary>
     ///
@@ -39,7 +39,7 @@ public static class CustomRoleManager
     /// <param name="attemptTarget">>实际被击杀的玩家，不变</param>
     /// <param name="appearanceKiller">视觉上的击杀者，可变</param>
     /// <param name="appearanceTarget">视觉上被击杀的玩家，可变</param>
-    public static void OnCheckMurder(PlayerControl attemptKiller, PlayerControl attemptTarget, PlayerControl appearanceKiller, PlayerControl appearanceTarget, Action actionAfterAll = null)
+    public static bool OnCheckMurder(PlayerControl attemptKiller, PlayerControl attemptTarget, PlayerControl appearanceKiller, PlayerControl appearanceTarget, Action actionAfterAll = null)
     {
         Logger.Info($"Attempt：{attemptKiller.GetNameWithRole()} => {attemptTarget.GetNameWithRole()}", "CheckMurder");
         if (appearanceKiller != attemptKiller || appearanceTarget != attemptTarget)
@@ -50,34 +50,51 @@ public static class CustomRoleManager
         appearanceKiller.ResetKillCooldown();
 
         // 無効なキルをブロックする処理 必ず最初に実行する
-        if (!CheckMurderPatch.CheckForInvalidMurdering(info)) return;
+        if (!CheckMurderPatch.CheckForInvalidMurdering(info))
+        {
+            return false;
+        }
 
         var killerRole = attemptKiller.GetRoleClass();
         var targetRole = attemptTarget.GetRoleClass();
 
         // 其他职业类对击杀事件的事先检查
         if (killerRole is not IKiller killerCheck || killerCheck.IsKiller)
+        {
             foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
             {
-                if (!onCheckMurderPlayer(info)) return;
+                if (!onCheckMurderPlayer(info))
+                {
+                    return false;
+                }
             }
+        }
 
         // キラーがキル能力持ちなら
         if (killerRole is IKiller killer)
         {
             // キラーのキルチェック処理実行
-            if (!killer.OnCheckMurderAsKiller(info)) return;
+            if (!killer.OnCheckMurderAsKiller(info))
+            {
+                return false;
+            }
             if (killer.IsKiller && targetRole != null)
             {
                 // ターゲットのキルチェック処理実行
-                if (!targetRole.OnCheckMurderAsTarget(info)) return;
+                if (!targetRole.OnCheckMurderAsTarget(info))
+                {
+                    return false;
+                }
             }
         }
 
         // 其他职业类对击杀事件的事后检查
         foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_After)
         {
-            if (!onCheckMurderPlayer(info)) return;
+            if (!onCheckMurderPlayer(info))
+            {
+                return false;
+            }
         }
 
         // 调用职业类对击杀发生前进行预处理如设置冷却等操作
@@ -89,13 +106,15 @@ public static class CustomRoleManager
         {
             //MurderPlayer用にinfoを保存
             CheckMurderInfos[appearanceKiller.PlayerId] = info;
-            appearanceKiller.RpcMurderPlayerEx(appearanceTarget);
+            appearanceKiller.RpcMurderPlayer(appearanceTarget);
             actionAfterAll?.Invoke();
+            return true;
         }
         else
         {
             if (!info.CanKill) Logger.Info($"{appearanceTarget.GetNameWithRole()} 无法被击杀", "CheckMurder");
             if (!info.DoKill) Logger.Info($"{appearanceKiller.GetNameWithRole()} 无法击杀", "CheckMurder");
+            return false;
         }
     }
     /// <summary>
@@ -209,12 +228,12 @@ public static class CustomRoleManager
     /// </summary>
     public static HashSet<Action<PlayerControl>> OnFixedUpdateOthers = new();
 
-    public static bool OnSabotage(PlayerControl player, SystemTypes systemType, byte amount)
+    public static bool OnSabotage(PlayerControl player, SystemTypes systemType)
     {
         bool cancel = false;
         foreach (var roleClass in AllActiveRoles.Values)
         {
-            if (!roleClass.OnSabotage(player, systemType, amount))
+            if (!roleClass.OnSabotage(player, systemType))
             {
                 cancel = true;
             }

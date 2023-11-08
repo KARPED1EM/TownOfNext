@@ -22,7 +22,8 @@ public class SimpleRoleInfo
     public bool IsEnable = false;
     public OptionCreatorDelegate OptionCreator;
     public string ChatCommand;
-    public bool RequireResetCam;
+    /// <summary>±æ»À“ïµ„§Œ§ﬂ•§•Û•›•π•ø©`§À“ä§®§Î“€¬ö</summary>
+    public bool IsDesyncImpostor;
     private Func<AudioClip> introSound;
     public AudioClip IntroSound => introSound?.Invoke();
     public bool Experimental;
@@ -52,7 +53,7 @@ public class SimpleRoleInfo
         OptionCreatorDelegate optionCreator,
         string chatCommand,
         string colorCode,
-        bool requireResetCam,
+        bool isDesyncImpostor,
         TabGroup tab,
         Func<AudioClip> introSound,
         bool experimental,
@@ -69,7 +70,7 @@ public class SimpleRoleInfo
         CountType = countType;
         ConfigId = configId;
         OptionCreator = optionCreator;
-        RequireResetCam = requireResetCam;
+        IsDesyncImpostor = isDesyncImpostor;
         this.introSound = introSound;
         ChatCommand = chatCommand;
         Experimental = experimental;
@@ -112,7 +113,7 @@ public class SimpleRoleInfo
         OptionCreatorDelegate optionCreator,
         string chatCommand,
         string colorCode = "",
-        bool requireResetCam = false,
+        bool isDesyncImpostor = false,
         TabGroup tab = TabGroup.GameSettings,
         Func<AudioClip> introSound = null,
         CountTypes? countType = null,
@@ -141,7 +142,7 @@ public class SimpleRoleInfo
                 optionCreator,
                 chatCommand,
                 colorCode,
-                requireResetCam,
+                isDesyncImpostor,
                 tab,
                 introSound,
                 experimental,

@@ -267,7 +267,7 @@ class IntroCutscenePatch
                 PlayerControl.LocalPlayer.RpcExile();
                 PlayerState.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId).SetDead();
             }
-            if (Options.RandomSpawn.GetBool())
+            if (RandomSpawn.IsRandomSpawn())
             {
                 RandomSpawn.SpawnMap map;
                 switch (Main.NormalOptions.MapId)
@@ -285,7 +285,7 @@ class IntroCutscenePatch
 
             // そのままだとホストのみDesyncImpostorの暗室内での視界がクルー仕様になってしまう
             var roleInfo = PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo();
-            var amDesyncImpostor = roleInfo?.RequireResetCam == true || Main.ResetCamPlayerList.Contains(PlayerControl.LocalPlayer.PlayerId);
+            var amDesyncImpostor = roleInfo?.IsDesyncImpostor == true;
             if (amDesyncImpostor)
             {
                 PlayerControl.LocalPlayer.Data.Role.AffectedByLightAffectors = false;

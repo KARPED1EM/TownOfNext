@@ -238,7 +238,7 @@ public sealed class Sniper : RoleBase, IImpostor
 
             //あたった通知
             Player.RPCPlayCustomSound("AWP");
-            if (!Player.IsModClient() && killed) Player.RpcGuardAndKill();
+            if (!Player.IsModClient() && killed) Player.RpcProtectedMurderPlayer();
             if (killed) RPC.PlaySoundRPC(Player.PlayerId, Sounds.KillSound);
             else Player.Notify(GetString("SniperKillFaild"));
 

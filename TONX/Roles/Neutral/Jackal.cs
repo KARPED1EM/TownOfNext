@@ -70,11 +70,9 @@ public sealed class Jackal : RoleBase, IKiller, ISchrodingerCatOwner
         OptionResetKillCooldownWhenSbGetKilled = BooleanOptionItem.Create(RoleInfo, 15, OptionName.ResetKillCooldownWhenPlayerGetKilled, true, false);
     }
     public float CalculateKillCooldown() => KillCooldown;
+    public bool CanUseSabotageButton() => CanUseSabotage;
+    public bool CanUseImpostorVentButton() => CanVent;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(HasImpostorVision);
-    public static void SetHudActive(HudManager __instance, bool isActive)
-    {
-        __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage);
-    }
     public override bool OnInvokeSabotage(SystemTypes systemType) => CanUseSabotage;
     public void ApplySchrodingerCatOptions(IGameOptions option) => ApplyGameOptions(option);
     public static void OnMurderPlayerOthers(MurderInfo info)

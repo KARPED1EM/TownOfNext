@@ -81,8 +81,7 @@ public sealed class Executioner : RoleBase, IAdditionalWinner
             if (playerId == target.PlayerId) continue;
             else if (!CanTargetImpostor && target.Is(CustomRoleTypes.Impostor)) continue;
             else if (!CanTargetNeutralKiller && target.IsNeutralKiller()) continue;
-            else if (target.Is(CustomRoles.GM) || target.Is(CustomRoles.SuperStar)) continue;
-            else if (Player.Is(CustomRoles.Lovers) && target.Is(CustomRoles.Lovers)) continue;
+            if (target.Is(CustomRoles.GM)) continue;
 
             targetList.Add(target);
         }
@@ -153,22 +152,24 @@ public sealed class Executioner : RoleBase, IAdditionalWinner
         }
         CustomWinnerHolder.WinnerIds.Add(Player.PlayerId);
     }
-    public override void OnPlayerDeath(PlayerControl player, CustomDeathReason deathReason, bool isOnMeeting)
+    public bool CheckWin(ref CustomRoles winnerRole)
     {
-        if (!CustomRoles.Executioner.IsExist()) return;
-        foreach (var executioner in Executioners.Where(x => x.TargetId == player.PlayerId))
-        {
-            executioner.ChangeRole();
-        }
-    }
-    public bool CheckWin(out AdditionalWinners winnerType)
-    {
-        winnerType = AdditionalWinners.Executioner;
         return TargetExiled && CustomWinnerHolder.WinnerTeam != CustomWinner.Default;
     }
     public void ChangeRole()
     {
         Player.RpcSetCustomRole(ChangeRolesAfterTargetKilled);
         Utils.NotifyRoles();
+    }
+
+    public static void ChangeRoleByTarget(byte targetId)
+    {
+        foreach (var executioner in Executioners)
+        {
+            if (executioner.TargetId != targetId) continue;
+
+            executioner.ChangeRole();
+            break;
+        }
     }
 }

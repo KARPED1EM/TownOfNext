@@ -120,7 +120,7 @@ public sealed class FireWorks : RoleBase, IImpostor
                             {
                                 PlayerState.GetByPlayerId(fireTarget.PlayerId).DeathReason = CustomDeathReason.Bombed;
                                 fireTarget.SetRealKiller(Player);
-                                fireTarget.RpcMurderPlayerEx(fireTarget);
+                                fireTarget.RpcMurderPlayer(fireTarget);
                             }
                         }
                     }
@@ -131,7 +131,7 @@ public sealed class FireWorks : RoleBase, IImpostor
                         if (totalAlive != 1)
                         {
                             MyState.DeathReason = CustomDeathReason.Misfire;
-                            Player.RpcMurderPlayerEx(Player);
+                            Player.RpcMurderPlayer(Player);
                         }
                     }
                     Player.MarkDirtySettings();

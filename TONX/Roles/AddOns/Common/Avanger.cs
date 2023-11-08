@@ -88,7 +88,7 @@ public static class Avanger
         {
             pc.SetRealKiller(target);
             pc.SetDeathReason(CustomDeathReason.Revenge);
-            target.RpcMurderPlayerEx(pc);
+            target.RpcMurderPlayer(pc);
             Logger.Info($"Avanger {target.GetNameWithRole()} revenged => {pc.GetNameWithRole()}", "Avanger.OnMurderPlayerOthers");
         }
     }

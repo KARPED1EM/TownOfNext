@@ -74,8 +74,9 @@ public sealed class Arsonist : RoleBase, IKiller
             IsDoused.Add(ar.PlayerId, false);
     }
     public bool CanUseKillButton() => !IsDouseDone(Player);
+    public bool CanUseImpostorVentButton() => IsDouseDone(Player) && !Player.inVent;
     public float CalculateKillCooldown() => DouseCooldown;
-    public override bool OnInvokeSabotage(SystemTypes systemType) => false;
+    public bool CanUseSabotageButton() => false;
     public override string GetProgressText(bool comms = false)
     {
         var doused = GetDousedPlayerCount();
@@ -184,7 +185,7 @@ public sealed class Arsonist : RoleBase, IKiller
                 {
                     //生存者は焼殺
                     pc.SetRealKiller(Player);
-                    pc.RpcMurderPlayerEx(pc);
+                    pc.RpcMurderPlayer(pc);
                     var state = PlayerState.GetByPlayerId(pc.PlayerId);
                     state.DeathReason = CustomDeathReason.Torched;
                     state.SetDead();

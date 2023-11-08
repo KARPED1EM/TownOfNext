@@ -2,6 +2,7 @@ using AmongUs.Data;
 using HarmonyLib;
 
 using TONX.Roles.Core;
+using TONX.Roles.Neutral;
 
 namespace TONX;
 
@@ -54,7 +55,7 @@ class ExileControllerWrapUpPatch
             var role = exiled.GetCustomRole();
             var info = role.GetRoleInfo();
             //霊界用暗転バグ対処
-            if (!AntiBlackout.OverrideExiledPlayer && (Main.ResetCamPlayerList.Contains(exiled.PlayerId) || (info?.RequireResetCam ?? false)))
+            if (!AntiBlackout.OverrideExiledPlayer && info?.IsDesyncImpostor == true)
                 exiled.Object?.ResetPlayerCam(1f);
 
             exiled.IsDead = true;
@@ -72,7 +73,7 @@ class ExileControllerWrapUpPatch
         {
             pc.ResetKillCooldown();
         }
-        if (Options.RandomSpawn.GetBool())
+        if (RandomSpawn.IsRandomSpawn())
         {
             RandomSpawn.SpawnMap map;
             switch (Main.NormalOptions.MapId)
@@ -87,6 +88,10 @@ class ExileControllerWrapUpPatch
                     break;
                 case 2:
                     map = new RandomSpawn.PolusSpawnMap();
+                    Main.AllPlayerControls.Do(map.RandomTeleport);
+                    break;
+                case 5:
+                    map = new RandomSpawn.FungleSpawnMap();
                     Main.AllPlayerControls.Do(map.RandomTeleport);
                     break;
             }
@@ -120,7 +125,7 @@ class ExileControllerWrapUpPatch
                 {
                     var player = Utils.GetPlayerById(x.Key);
                     var roleClass = CustomRoleManager.GetByPlayerId(x.Key);
-                    var requireResetCam = player?.GetCustomRole().GetRoleInfo()?.RequireResetCam;
+                    var requireResetCam = player?.GetCustomRole().GetRoleInfo()?.IsDesyncImpostor == true;
                     var state = PlayerState.GetByPlayerId(x.Key);
                     Logger.Info($"{player.GetNameWithRole()}を{x.Value}で死亡させました", "AfterMeetingDeath");
                     state.DeathReason = x.Value;
@@ -128,8 +133,10 @@ class ExileControllerWrapUpPatch
                     player?.RpcExileV2();
                     if (x.Value == CustomDeathReason.Suicide)
                         player?.SetRealKiller(player, true);
-                    if (Main.ResetCamPlayerList.Contains(x.Key) || (requireResetCam.HasValue && requireResetCam.Value))
+                    if (requireResetCam)
                         player?.ResetPlayerCam(1f);
+                    if (roleClass is Executioner executioner && executioner.TargetId == x.Key)
+                        Executioner.ChangeRoleByTarget(x.Key);
                 });
                 Main.AfterMeetingDeathPlayers.Clear();
             }, 0.5f, "AfterMeetingDeathPlayers Task");

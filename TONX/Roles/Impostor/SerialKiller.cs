@@ -87,7 +87,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
             {
                 //自爆時間が来たとき
                 MyState.DeathReason = CustomDeathReason.Suicide;//死因：自殺
-                Player.RpcMurderPlayerEx(Player);//自殺させる
+                Player.RpcMurderPlayer(Player);//自殺させる
                 SuicideTimer = null;
             }
             else

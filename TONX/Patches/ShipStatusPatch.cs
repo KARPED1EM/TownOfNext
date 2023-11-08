@@ -5,6 +5,7 @@ using System.Linq;
 using TONX.Roles.AddOns.Common;
 using TONX.Roles.Core;
 using UnityEngine;
+using Hazel;
 
 namespace TONX;
 
@@ -18,72 +19,23 @@ class ShipFixedUpdatePatch
         //ここより下、ホストのみが実行する
     }
 }
-[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.RepairSystem))]
-class RepairSystemPatch
+[HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.UpdateSystem), typeof(SystemTypes), typeof(PlayerControl), typeof(byte))]
+class ShipStatusUpdateSystemPatch
 {
-    public static bool Prefix(ShipStatus __instance,
+    public static void Prefix(ShipStatus __instance,
         [HarmonyArgument(0)] SystemTypes systemType,
         [HarmonyArgument(1)] PlayerControl player,
         [HarmonyArgument(2)] byte amount)
     {
-        if (systemType == SystemTypes.Sabotage)
+        if (systemType != SystemTypes.Sabotage)
         {
-            Logger.Info("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole() + ", SabotageType: " + (SystemTypes)amount, "RepairSystem");
-        }
-        else
-        {
-            Logger.Info("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole() + ", amount: " + amount, "RepairSystem");
+            Logger.Info("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole() + ", amount: " + amount, "UpdateSystem");
         }
 
         if (RepairSender.enabled && AmongUsClient.Instance.NetworkMode != NetworkModes.OnlineGame)
         {
             Logger.SendInGame("SystemType: " + systemType.ToString() + ", PlayerName: " + player.GetNameWithRole() + ", amount: " + amount);
         }
-
-        if (!AmongUsClient.Instance.AmHost) return true; //以下、ホストのみ実行
-
-        if (!player.Is(CustomRoleTypes.Impostor) && player.Is(CustomRoles.Fool))
-        {
-            if (systemType is SystemTypes.Reactor or SystemTypes.Comms or SystemTypes.Electrical or SystemTypes.Laboratory or SystemTypes.LifeSupp) return false;
-            if (systemType is SystemTypes.Doors && Fool.OptionImpFoolCanNotOpenDoor.GetBool()) return false;
-        }
-
-        if (systemType == SystemTypes.Sabotage)
-        {
-            if (player.Is(CustomRoleTypes.Impostor) && player.Is(CustomRoles.Fool) && Fool.OptionImpFoolCanNotSabotage.GetBool())
-                return false;
-            if (Options.DisableSabotage.GetBool()) return false;
-            var nextSabotage = (SystemTypes)amount;
-            var roleClass = player.GetRoleClass();
-            if (roleClass != null)
-            {
-                return roleClass.OnInvokeSabotage(nextSabotage);
-            }
-            else
-            {
-                return CanSabotage(player, nextSabotage);
-            }
-        }
-        // カメラ無効時，バニラプレイヤーはカメラを開けるので点滅させない
-        else if (systemType == SystemTypes.Security && amount == 1)
-        {
-            var camerasDisabled = (MapNames)Main.NormalOptions.MapId switch
-            {
-                MapNames.Skeld => Options.DisableSkeldCamera.GetBool(),
-                MapNames.Polus => Options.DisablePolusCamera.GetBool(),
-                MapNames.Airship => Options.DisableAirshipCamera.GetBool(),
-                _ => false,
-            };
-            return !camerasDisabled;
-        }
-        else
-        {
-            return CustomRoleManager.OnSabotage(player, systemType, amount);
-        }
-    }
-    public static void Postfix(ShipStatus __instance)
-    {
-        Camouflage.CheckCamouflage();
     }
     public static void CheckAndOpenDoorsRange(ShipStatus __instance, int amount, int min, int max)
     {
@@ -98,35 +50,8 @@ class RepairSystemPatch
     {
         if (DoorIds.Contains(amount)) foreach (var id in DoorIds)
             {
-                __instance.RpcRepairSystem(SystemTypes.Doors, id);
+                __instance.RpcUpdateSystem(SystemTypes.Doors, (byte)id);
             }
-    }
-    private static bool CanSabotage(PlayerControl player, SystemTypes systemType)
-    {
-        //サボタージュ出来ないキラー役職はサボタージュ自体をキャンセル
-        if (!player.Is(CustomRoleTypes.Impostor))
-        {
-            return false;
-        }
-        return true;
-    }
-    public static bool OnSabotage(PlayerControl player, SystemTypes systemType, byte amount)
-    {
-        // 停電サボタージュが鳴らされた場合は関係なし(ホスト名義で飛んでくるため誤爆注意)
-        if (systemType == SystemTypes.Electrical && amount.HasBit(SwitchSystem.DamageSystem))
-        {
-            return true;
-        }
-
-        //Airshipの特定の停電を直せないならキャンセル
-        if (systemType == SystemTypes.Electrical && Main.NormalOptions.MapId == 4)
-        {
-            var truePosition = player.GetTruePosition();
-            if (Options.DisableAirshipViewingDeckLightsPanel.GetBool() && Vector2.Distance(truePosition, new(-12.93f, -11.28f)) <= 2f) return false;
-            if (Options.DisableAirshipGapRoomLightsPanel.GetBool() && Vector2.Distance(truePosition, new(13.92f, 6.43f)) <= 2f) return false;
-            if (Options.DisableAirshipCargoLightsPanel.GetBool() && Vector2.Distance(truePosition, new(30.56f, 2.12f)) <= 2f) return false;
-        }
-        return true;
     }
 }
 [HarmonyPatch(typeof(ShipStatus), nameof(ShipStatus.CloseDoorsOfType))]

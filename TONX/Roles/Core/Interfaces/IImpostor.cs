@@ -9,6 +9,9 @@ namespace TONX.Roles.Core.Interfaces;
 /// </summary>
 public interface IImpostor : IKiller, ISchrodingerCatOwner
 {
+    /// インポスターは基本サボタージュボタンを使える
+    bool IKiller.CanUseSabotageButton() => true;
+
     /// <summary>
     /// 是否可以成为绝境者
     /// </summary>

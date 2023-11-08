@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TMPro;
 using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Templates;
@@ -83,6 +84,8 @@ class SetEverythingUpPatch
 {
     public static string LastWinsText = "";
     public static string LastWinsReason = "";
+    private static TextMeshPro roleSummary;
+    private static SimpleButton showHideButton;
 
     public static void Postfix(EndGameManager __instance)
     {
@@ -91,22 +94,21 @@ class SetEverythingUpPatch
         //          ==勝利陣営表示==
         //#######################################
 
-        __instance.WinText.alignment = TMPro.TextAlignmentOptions.Right;
         var WinnerTextObject = UnityEngine.Object.Instantiate(__instance.WinText.gameObject);
-        WinnerTextObject.transform.position = new(__instance.WinText.transform.position.x + 2.4f, __instance.WinText.transform.position.y - 0.5f, __instance.WinText.transform.position.z);
+        WinnerTextObject.transform.position = new(__instance.WinText.transform.position.x, __instance.WinText.transform.position.y - 0.5f, __instance.WinText.transform.position.z);
         WinnerTextObject.transform.localScale = new(0.6f, 0.6f, 0.6f);
         var WinnerText = WinnerTextObject.GetComponent<TMPro.TextMeshPro>(); //WinTextと同じ型のコンポーネントを取得
         WinnerText.fontSizeMin = 3f;
         WinnerText.text = "";
 
         string CustomWinnerText = "";
-        string AdditionalWinnerText = "";
+        var AdditionalWinnerText = new StringBuilder(32);
         string CustomWinnerColor = Utils.GetRoleColorCode(CustomRoles.Crewmate);
 
         var winnerRole = (CustomRoles)CustomWinnerHolder.WinnerTeam;
         if (winnerRole >= 0)
         {
-            CustomWinnerText = GetWinnerRoleName(winnerRole);
+            CustomWinnerText = Utils.GetRoleName(winnerRole);
             CustomWinnerColor = Utils.GetRoleColorCode(winnerRole);
             if (winnerRole.IsNeutral())
             {
@@ -157,25 +159,17 @@ class SetEverythingUpPatch
                 break;
         }
 
-        foreach (var additionalWinners in CustomWinnerHolder.AdditionalWinnerTeams)
+        foreach (var role in CustomWinnerHolder.AdditionalWinnerRoles)
         {
-            var addWinnerRole = (CustomRoles)additionalWinners;
-            AdditionalWinnerText += "＆" + Utils.ColorString(Utils.GetRoleColor(addWinnerRole), GetWinnerRoleName(addWinnerRole));
+            AdditionalWinnerText.Append('＆').Append(Utils.ColorString(Utils.GetRoleColor(role), Utils.GetRoleName(role)));
         }
         if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Draw and not CustomWinner.None and not CustomWinner.Error)
         {
-            if (AdditionalWinnerText == "") WinnerText.text = $"<color={CustomWinnerColor}>{CustomWinnerText}{GetString("Win")}</color>";
+            if (AdditionalWinnerText.Length < 1) WinnerText.text = $"<color={CustomWinnerColor}>{CustomWinnerText}{GetString("Win")}</color>";
             else WinnerText.text = $"<color={CustomWinnerColor}>{CustomWinnerText}</color>{AdditionalWinnerText}{GetString("Win")}";
         }
+        LastWinsText = WinnerText.text.RemoveHtmlTags();
 
-        static string GetWinnerRoleName(CustomRoles role)
-        {
-            var name = GetString($"WinnerRoleText.{Enum.GetName(typeof(CustomRoles), role)}");
-            if (name == "" || name.StartsWith("*") || name.StartsWith("<INVALID")) name = Utils.GetRoleName(role);
-            return name;
-        }
-
-        LastWinsText = WinnerText.text;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -183,7 +177,25 @@ class SetEverythingUpPatch
         //           ==最終結果表示==
         //#######################################
 
-        var Pos = Camera.main.ViewportToWorldPoint(new Vector3(0f, 1f, Camera.main.nearClipPlane));
+        var showInitially = Main.ShowResults.Value;
+        showHideButton = new SimpleButton(
+           __instance.transform,
+           "ShowHideResultsButton",
+           new(-4.5f, 2.6f, -14f),  // BackgroundLayer(z=-13)より手前
+           new(0, 136, 209, byte.MaxValue),
+           new(0, 196, byte.MaxValue, byte.MaxValue),
+           () =>
+           {
+               var setToActive = !roleSummary.gameObject.activeSelf;
+               roleSummary.gameObject.SetActive(setToActive);
+               Main.ShowResults.Value = setToActive;
+               showHideButton.Label.text = GetString(setToActive ? "HideResults" : "ShowResults");
+           },
+           GetString(showInitially ? "HideResults" : "ShowResults"))
+        {
+            Scale = new(1.5f, 0.5f),
+            FontSize = 2f,
+        };
 
         StringBuilder sb = new($"{GetString("RoleSummaryText")}");
         List<byte> cloneRoles = new(PlayerState.AllPlayerStates.Keys);
@@ -198,15 +210,16 @@ class SetEverythingUpPatch
             if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
             sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id]);
         }
-        var RoleSummary = TMPTemplate.Create(
+        roleSummary = TMPTemplate.Create(
                 "RoleSummaryText",
                 sb.ToString(),
                 Color.white,
                 1.25f,
-                TMPro.TextAlignmentOptions.TopLeft,
-                setActive: true);
-        RoleSummary.transform.position = new Vector3(__instance.Navigation.ExitButton.transform.position.x + -0.05f, Pos.y - 0.13f, -15f);
-        RoleSummary.transform.localScale = new Vector3(1f, 1f, 1f);
+                TextAlignmentOptions.TopLeft,
+                setActive: showInitially,
+                parent: showHideButton.Button.transform);
+        roleSummary.transform.localPosition = new(1.7f, -0.4f, 0f);
+        roleSummary.transform.localScale = new Vector3(1.2f, 1.2f, 1f);
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

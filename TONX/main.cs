@@ -34,7 +34,9 @@ public class Main : BasePlugin
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
     public const string PluginGuid = "cn.karped1em.tonx";
-    public const string LowestSupportedVersion = "2023.7.12";
+    public const string LowestSupportedVersion = "2023.10.24";
+    // このバージョンのみで公開ルームを無効にする場合
+    public static readonly bool IsPublicAvailableOnThisVersion = false;
     public const string PluginVersion = "1.0.0";
     public const int PluginCreation = 1;
 
@@ -57,6 +59,7 @@ public class Main : BasePlugin
     public static ConfigEntry<string> HideName { get; private set; }
     public static ConfigEntry<string> HideColor { get; private set; }
     public static ConfigEntry<int> MessageWait { get; private set; }
+    public static ConfigEntry<bool> ShowResults { get; private set; }
     public static ConfigEntry<bool> UnlockFPS { get; private set; }
     public static ConfigEntry<bool> HorseMode { get; private set; }
     public static ConfigEntry<bool> AutoStartGame { get; private set; }
@@ -86,7 +89,6 @@ public class Main : BasePlugin
     public static Dictionary<byte, Color32> PlayerColors = new();
     public static Dictionary<byte, CustomDeathReason> AfterMeetingDeathPlayers = new();
     public static Dictionary<CustomRoles, string> roleColors;
-    public static List<byte> ResetCamPlayerList = new();
     public static List<byte> winnerList = new();
     public static List<string> winnerNameList = new();
     public static List<int> clientIdList = new();
@@ -146,6 +148,7 @@ public class Main : BasePlugin
         HideName = Config.Bind("Client Options", "Hide Game Code Name", "TONX");
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
         DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
+        ShowResults = Config.Bind("Result", "Show Results", true);
         UnlockFPS = Config.Bind("Client Options", "UnlockFPS", false);
         HorseMode = Config.Bind("Client Options", "HorseMode", false);
         AutoStartGame = Config.Bind("Client Options", "AutoStartGame", false);
@@ -198,6 +201,7 @@ public class Main : BasePlugin
         Preset5 = Config.Bind("Preset Name Options", "Preset5", "Preset_5");
         WebhookURL = Config.Bind("Other", "WebhookURL", "none");
         MessageWait = Config.Bind("Other", "MessageWait", 1);
+
         LastKillCooldown = Config.Bind("Other", "LastKillCooldown", (float)30);
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
@@ -349,18 +353,6 @@ public enum CustomWinner
     BloodKnight = CustomRoles.BloodKnight,
     Succubus = CustomRoles.Succubus,
     PlagueDoctor = CustomRoles.PlagueDoctor,
-}
-public enum AdditionalWinners
-{
-    None = -1,
-    Lovers = CustomRoles.Lovers,
-    Opportunist = CustomRoles.Opportunist,
-    Executioner = CustomRoles.Executioner,
-    FFF = CustomRoles.FFF,
-    Provocateur = CustomRoles.Provocateur,
-    Sunnyboy = CustomRoles.Sunnyboy,
-    Totocalcio = CustomRoles.Totocalcio,
-    SchrodingerCat = CustomRoles.SchrodingerCat,
 }
 public enum SuffixModes
 {

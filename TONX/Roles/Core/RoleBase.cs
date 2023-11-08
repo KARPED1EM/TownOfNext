@@ -300,15 +300,12 @@ public abstract class RoleBase : IDisposable
     public virtual bool OnInvokeSabotage(SystemTypes systemType) => true;
 
     /// <summary>
-    /// 当有人造成破坏时调用
-    /// amount&0x80!=0 则为破坏开始
-    /// 其他数值则是修复
+    /// 当有人破坏时调用
     /// </summary>
-    /// <param name="player">操作的玩家</param>
-    /// <param name="systemType">操作的设施类型</param>
-    /// <param name="amount">当前状态</param>
-    /// <returns>false：取消本次操作</returns>
-    public virtual bool OnSabotage(PlayerControl player, SystemTypes systemType, byte amount) => true;
+    /// <param name="player">造成破坏的玩家</param>
+    /// <param name="systemType">造成破坏的设施</param>
+    /// <returns>返回false取消破坏</returns>
+    public virtual bool OnSabotage(PlayerControl player, SystemTypes systemType) => true;
 
     // NameSystem
     // 显示的名字结构如下

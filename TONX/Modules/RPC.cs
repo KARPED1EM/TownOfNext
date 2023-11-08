@@ -15,9 +15,9 @@ namespace TONX;
 
 public enum CustomRPC
 {
-    VersionCheck = 60,
-    RequestRetryVersionCheck = 61,
-    SyncCustomSettings = 80,
+    VersionCheck = 80,
+    RequestRetryVersionCheck = 81,
+    SyncCustomSettings = 100,
     SetDeathReason,
     EndGame,
     PlaySound,
@@ -358,7 +358,7 @@ internal static class RPC
                 return;
         }
 
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 80, SendOption.Reliable, targetId);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncCustomSettings, SendOption.Reliable, targetId);
         List<OptionItem> list = new();
         writer.Write(startAmount);
         writer.Write(lastAmount);

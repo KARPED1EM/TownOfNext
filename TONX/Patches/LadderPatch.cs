@@ -1,5 +1,5 @@
-using HarmonyLib;
 using System.Collections.Generic;
+using HarmonyLib;
 using TONX.Attributes;
 using UnityEngine;
 
@@ -51,6 +51,7 @@ public class FallFromLadder
                     .EndRpc();
                     sender.AutoStartRpc(player.NetId, (byte)RpcCalls.MurderPlayer)
                             .WriteNetObject(player)
+                            .Write((int)ExtendedPlayerControl.SucceededFlags)
                     .EndRpc();
                     sender.SendMessage();
                     player.NetTransform.SnapTo(targetPos);
