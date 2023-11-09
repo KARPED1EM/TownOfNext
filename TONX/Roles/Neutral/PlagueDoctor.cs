@@ -149,7 +149,7 @@ public sealed class PlagueDoctor : RoleBase, IKiller
         var rate = reader.ReadSingle();
         InfectInfos[targetId] = rate;
     }
-    public void OnCheckMurderAsKiller(MurderInfo info)
+    public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         var (killer, target) = info.AttemptTuple;
         if (InfectCount > 0)
@@ -159,6 +159,7 @@ public sealed class PlagueDoctor : RoleBase, IKiller
             DirectInfect(target);
         }
         info.DoKill = false;
+        return false;
     }
     public override void OnMurderPlayerAsTarget(MurderInfo info)
     {
