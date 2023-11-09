@@ -58,7 +58,7 @@ internal class ControllerManagerUpdatePatch
         {
             try
             {
-                HudManager.Instance.ShowPopUp(PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo()?.Description?.GetFullFormatHelpWithAddons(PlayerControl.LocalPlayer) ?? GetString(PlayerControl.LocalPlayer.GetCustomRole().ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
+                HudManager.Instance.ShowPopUp(PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo()?.Description?.FullFormatHelp ?? GetString(PlayerControl.LocalPlayer.GetCustomRole().ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
             }
             catch (Exception ex)
             {

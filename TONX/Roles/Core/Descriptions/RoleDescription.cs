@@ -49,8 +49,9 @@ public abstract class RoleDescription
 
         foreach (var subRole in subRoles)
         {
-            builder.AppendFormat("<size={0}>{1}\n", FirstHeaderSize, Translator.GetRoleString(subRole.ToString()).Color(subRole.GetRoleInfo().RoleColor.ToReadableColor()));
-            builder.AppendFormat("<size={0}>{1}\n", BodySize, subRole.GetRoleInfo().Description.Description);
+            builder.AppendFormat("<size={0}>\n", BlankLineSize);
+            builder.AppendFormat("<size={0}>{1}\n", FirstHeaderSize, Translator.GetRoleString(subRole.ToString()).Color(Utils.GetRoleColor(subRole)));
+            builder.AppendFormat("<size={0}>{1}\n", BodySize, Translator.GetString($"{subRole}InfoLong"));
         }
 
         return builder.ToString();

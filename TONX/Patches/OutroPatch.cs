@@ -41,7 +41,7 @@ class EndGamePatch
                 sb.Append($"\n\t⇐ {Main.AllPlayerNames[killerId]}({Utils.GetTrueRoleName(targetId, false)}{Utils.GetSubRolesText(killerId, summary: true)})".RemoveHtmlTags());
         }
         KillLog = sb.ToString();
-        if (!KillLog.Contains('\n')) KillLog = "";
+        if (!KillLog.Contains('\n')) KillLog = string.Empty;
 
         Main.NormalOptions.KillCooldown = Options.DefaultKillCooldown;
         //winnerListリセット

@@ -233,17 +233,6 @@ class CreatePlayerPatch
                     }
                 }, 3f, "DisplayKillLog");
             }
-            if (Options.AutoDisplayLastRoles.GetBool())
-            {
-                _ = new LateTask(() =>
-                {
-                    if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
-                    {
-                        Main.isChatCommand = true;
-                        Utils.ShowLastRoles(client.Character.PlayerId);
-                    }
-                }, 3.1f, "DisplayLastRoles");
-            }
             if (Options.AutoDisplayLastResult.GetBool())
             {
                 _ = new LateTask(() =>
@@ -253,7 +242,7 @@ class CreatePlayerPatch
                         Main.isChatCommand = true;
                         Utils.ShowLastResult(client.Character.PlayerId);
                     }
-                }, 3.2f, "DisplayLastResult");
+                }, 3.1f, "DisplayLastResult");
             }
             if (Options.EnableDirectorMode.GetBool())
             {
@@ -264,7 +253,7 @@ class CreatePlayerPatch
                         Main.isChatCommand = true;
                         Utils.SendMessage($"{GetString("Message.DirectorModeNotice")}", client.Character.PlayerId);
                     }
-                }, 3.3f, "DisplayUpWarnning");
+                }, 3.2f, "DisplayUpWarnning");
             }
         }
     }

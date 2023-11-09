@@ -94,7 +94,6 @@ internal class ChatCommands
                 case "/lastresult":
                     canceled = true;
                     Utils.ShowKillLog();
-                    Utils.ShowLastRoles();
                     Utils.ShowLastResult();
                     break;
 
@@ -191,11 +190,11 @@ internal class ChatCommands
                     if (GameStates.IsInGame)
                     {
                         var role = PlayerControl.LocalPlayer.GetCustomRole();
-                        HudManager.Instance.Chat.AddChat(
-                            PlayerControl.LocalPlayer,
+                        Utils.SendMessage(
                             role.GetRoleInfo()?.Description?.GetFullFormatHelpWithAddons(PlayerControl.LocalPlayer) ??
                             // roleInfoがない役職
-                            GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
+                            GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true),
+                            PlayerControl.LocalPlayer.PlayerId);
                     }
                     else
                     {
@@ -524,7 +523,6 @@ internal class ChatCommands
             case "/l":
             case "/lastresult":
                 Utils.ShowKillLog(player.PlayerId);
-                Utils.ShowLastRoles(player.PlayerId);
                 Utils.ShowLastResult(player.PlayerId);
                 break;
 

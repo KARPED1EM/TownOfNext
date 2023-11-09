@@ -735,11 +735,11 @@ public static class Utils
             if (opt.Value.GetBool()) ShowChildrenSettings(opt.Value, ref sb, deep + 1);
         }
     }
-    public static void ShowLastRoles(byte PlayerId = byte.MaxValue)
+    public static void ShowLastResult(byte PlayerId = byte.MaxValue)
     {
         if (AmongUsClient.Instance.IsGameStarted)
         {
-            SendMessage(GetString("CantUse.lastroles"), PlayerId);
+            SendMessage(GetString("CantUse.lastresult"), PlayerId);
             return;
         }
         var sb = new StringBuilder();
@@ -747,21 +747,21 @@ public static class Utils
 
         sb.Append("""<align="center">""");
         sb.Append("<size=150%>").Append(GetString("PlayerInfo")).Append("</size>");
-        sb.Append('\n').Append(SetEverythingUpPatch.LastWinsText.Mark(winnerColor, false));
+        string winText = SetEverythingUpPatch.LastWinsText + (!string.IsNullOrEmpty(SetEverythingUpPatch.LastWinsReason)
+            ? $" ({SetEverythingUpPatch.LastWinsReason})" : string.Empty);
+        sb.Append('\n').Append(winText.Mark(winnerColor, false));
         sb.Append("</align>");
 
         sb.Append("<size=70%>\n");
         List<byte> cloneRoles = new(PlayerState.AllPlayerStates.Keys);
-        foreach (var id in Main.winnerList)
+        foreach (var id in Main.winnerList.Where(i => !EndGamePatch.SummaryText[i].Contains("NotAssigned")))
         {
-            if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-            sb.Append($"\n★ ".Color(winnerColor)).Append(SummaryTexts(id, true));
+            sb.Append($"\n★ ".Color(winnerColor)).Append(SummaryTexts(id, false));
             cloneRoles.Remove(id);
         }
-        foreach (var id in cloneRoles)
+        foreach (var id in cloneRoles.Where(i => !EndGamePatch.SummaryText[i].Contains("NotAssigned")))
         {
-            if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
-            sb.Append($"\n　 ").Append(SummaryTexts(id, true));
+            sb.Append($"\n　 ").Append(SummaryTexts(id, false));
         }
         SendMessage(sb.ToString(), PlayerId);
     }
@@ -772,19 +772,7 @@ public static class Utils
             SendMessage(GetString("CantUse.killlog"), PlayerId);
             return;
         }
-        if (EndGamePatch.KillLog != "") SendMessage(EndGamePatch.KillLog, PlayerId);
-    }
-    public static void ShowLastResult(byte PlayerId = byte.MaxValue)
-    {
-        if (GameStates.IsInGame)
-        {
-            SendMessage(GetString("CantUse.lastresult"), PlayerId);
-            return;
-        }
-        var sb = new StringBuilder();
-        if (SetEverythingUpPatch.LastWinsText != "") sb.Append($"{GetString("LastResult")}: {SetEverythingUpPatch.LastWinsText}");
-        if (SetEverythingUpPatch.LastWinsReason != "") sb.Append($"\n{GetString("LastEndReason")}: {SetEverythingUpPatch.LastWinsReason}");
-        if (sb.Length > 0) SendMessage(sb.ToString(), PlayerId);
+        if (!string.IsNullOrEmpty(EndGamePatch.KillLog)) SendMessage(EndGamePatch.KillLog, PlayerId);
     }
     public static string GetSubRolesText(byte id, bool disableColor = false, bool intro = false, bool summary = false)
     {
@@ -880,10 +868,10 @@ public static class Utils
             + $"\n  ○ /up {GetString("Command.up")}"
             , ID);
     }
-    public static void SendMessage(string text, byte sendTo = byte.MaxValue, string title = "", bool removeTags = false)
+    public static void SendMessage(string text, byte sendTo = byte.MaxValue, string title = "<Default>", bool removeTags = false)
     {
         if (!AmongUsClient.Instance.AmHost) return;
-        if (title == "") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
+        if (title == "<Default>") title = "<color=#aaaaff>" + GetString("DefaultSystemMessageTitle") + "</color>";
         Main.MessagesToSend.Add((removeTags ? text.RemoveHtmlTags() : text, sendTo, title + '\0'));
     }
     public static void AddChatMessage(string text, string title = "")
@@ -1205,7 +1193,8 @@ public static class Utils
         // "(00/00) " = 4em
         pos += 4f;
         builder.AppendFormat("<pos={0}em> ", pos).Append(GetKillCountText(id)).Append("</pos>");
-        pos += 6f;
+        // "击杀: 5 " = 4em
+        pos += 4.5f;
         builder.AppendFormat("<pos={0}em> ", pos).Append(GetVitalText(id)).Append("</pos>");
         // "Lover's Suicide " = 8em
         // "回線切断 " = 4.5em

@@ -361,7 +361,6 @@ public static class Options
 
     // 游戏信息相关设定
     public static OptionItem AutoDisplayKillLog;
-    public static OptionItem AutoDisplayLastRoles;
     public static OptionItem AutoDisplayLastResult;
     public static OptionItem ChangeNameToRoleInfo;
     public static OptionItem SendRoleDescriptionFirstMeeting;
@@ -696,17 +695,15 @@ public static class Options
         AutoDisplayKillLog = BooleanOptionItem.Create(2_002_001, "AutoDisplayKillLog", true, TabGroup.SystemSettings, false)
             .SetHeader(true)
             .SetColor(new Color32(246, 250, 112, byte.MaxValue));
-        AutoDisplayLastRoles = BooleanOptionItem.Create(2_002_002, "AutoDisplayLastRoles", true, TabGroup.SystemSettings, false)
+        AutoDisplayLastResult = BooleanOptionItem.Create(2_002_002, "AutoDisplayLastResult", true, TabGroup.SystemSettings, false)
             .SetColor(new Color32(246, 250, 112, byte.MaxValue));
-        AutoDisplayLastResult = BooleanOptionItem.Create(2_002_003, "AutoDisplayLastResult", true, TabGroup.SystemSettings, false)
+        ChangeNameToRoleInfo = BooleanOptionItem.Create(2_002_003, "ChangeNameToRoleInfo", false, TabGroup.SystemSettings, false)
             .SetColor(new Color32(246, 250, 112, byte.MaxValue));
-        ChangeNameToRoleInfo = BooleanOptionItem.Create(2_002_004, "ChangeNameToRoleInfo", false, TabGroup.SystemSettings, false)
+        SendRoleDescriptionFirstMeeting = BooleanOptionItem.Create(2_002_004, "SendRoleDescriptionFirstMeeting", false, TabGroup.SystemSettings, false)
             .SetColor(new Color32(246, 250, 112, byte.MaxValue));
-        SendRoleDescriptionFirstMeeting = BooleanOptionItem.Create(2_002_005, "SendRoleDescriptionFirstMeeting", false, TabGroup.SystemSettings, false)
+        HideGameSettings = BooleanOptionItem.Create(2_002_005, "HideGameSettings", false, TabGroup.SystemSettings, false)
             .SetColor(new Color32(246, 250, 112, byte.MaxValue));
-        HideGameSettings = BooleanOptionItem.Create(2_002_006, "HideGameSettings", false, TabGroup.SystemSettings, false)
-            .SetColor(new Color32(246, 250, 112, byte.MaxValue));
-        DIYGameSettings = BooleanOptionItem.Create(2_002_007, "DIYGameSettings", false, TabGroup.SystemSettings, false)
+        DIYGameSettings = BooleanOptionItem.Create(2_002_006, "DIYGameSettings", false, TabGroup.SystemSettings, false)
             .SetColor(new Color32(246, 250, 112, byte.MaxValue));
 
         // 个性化相关设定
