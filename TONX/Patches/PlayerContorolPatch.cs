@@ -448,9 +448,6 @@ class FixedUpdatePatch
                 //自分自身の名前の色を変更
                 if (target.AmOwner && GameStates.IsInTask)
                 { //targetが自分自身
-                    //TODO: FIXME
-                    //if (target.Is(CustomRoles.Revolutionist) && target.IsDrawDone())
-                    //    RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Revolutionist), string.Format(GetString("EnterVentWinCountDown"), Main.RevolutionistCountdown.TryGetValue(seer.PlayerId, out var x) ? x : 10));
                     if (seer.IsEaten())
                         RealName = Utils.ColorString(Utils.GetRoleColor(CustomRoles.Pelican), GetString("EatenByPelican"));
                     if (NameNotifyManager.GetNameNotify(target, out var name))

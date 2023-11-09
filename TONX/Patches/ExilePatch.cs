@@ -1,6 +1,7 @@
 using AmongUs.Data;
 using HarmonyLib;
-
+using System;
+using System.Collections.Generic;
 using TONX.Roles.Core;
 using TONX.Roles.Neutral;
 
@@ -8,6 +9,7 @@ namespace TONX;
 
 class ExileControllerWrapUpPatch
 {
+    public static List<Action> ActionsOnWrapUp = new();
     public static GameData.PlayerInfo AntiBlackout_LastExiled;
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     class BaseExileControllerPatch
@@ -60,6 +62,9 @@ class ExileControllerWrapUpPatch
 
             exiled.IsDead = true;
             PlayerState.GetByPlayerId(exiled.PlayerId).DeathReason = CustomDeathReason.Vote;
+
+            ActionsOnWrapUp.Do(f => f.Invoke());
+            ActionsOnWrapUp = new();
 
             foreach (var roleClass in CustomRoleManager.AllActiveRoles.Values)
             {

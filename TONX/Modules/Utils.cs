@@ -306,9 +306,6 @@ public static class Utils
 
                     || (seer.Is(CustomRoles.Charmed) && seen.Is(CustomRoles.Charmed) && Succubus.OptionTargetKnowOtherTarget.GetBool());
 
-        //TODO: FIXME
-        //|| (seen.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
-
         var (roleColor, roleText) = GetTrueRoleNameData(seen.PlayerId, seer == seen || !seer.IsAlive());
 
         //seen側による変更

@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
 using Hazel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TONX.Roles.Core;
@@ -136,21 +137,21 @@ public sealed class Executioner : RoleBase, IAdditionalWinner
 
         return TargetId == seen.PlayerId ? Utils.ColorString(RoleInfo.RoleColor, "♦") : "";
     }
-    public override void OnExileWrapUp(GameData.PlayerInfo exiled, ref bool DecidedWinner)
+    public override Action CheckExile(GameData.PlayerInfo exiled, ref bool DecidedWinner, ref List<string> WinDescriptionText)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (Player?.IsAlive() != true) return;
-        if (exiled.PlayerId != TargetId) return;
+        if (!AmongUsClient.Instance.AmHost) return null;
+        if (Player?.IsAlive() != true) return null;
+        if (exiled.PlayerId != TargetId) return null;
 
         TargetExiled = true;
+        WinDescriptionText.Add(Translator.GetString("ExiledExeTarget"));
+        DecidedWinner = true;
 
-        if (!DecidedWinner)
+        return () =>
         {
-            if (CustomWinnerHolder.WinnerTeam != CustomWinner.Default) return; //勝者がいるなら処理をスキップ
-
-            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Executioner);
-        }
-        CustomWinnerHolder.WinnerIds.Add(Player.PlayerId);
+            CustomWinnerHolder.SetWinnerOrAdditonalWinner(CustomWinner.Executioner);
+            CustomWinnerHolder.WinnerIds.Add(Player.PlayerId);
+        };
     }
     public bool CheckWin(ref CustomRoles winnerRole)
     {

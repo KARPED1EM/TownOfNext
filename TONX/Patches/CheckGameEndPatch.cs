@@ -64,21 +64,6 @@ class GameEndChecker
             }
             if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Draw and not CustomWinner.None and not CustomWinner.Error)
             {
-                //恋人抢夺胜利
-                if (CustomRoles.Lovers.IsExist() && !reason.Equals(GameOverReason.HumansByTask))
-                {
-                    if (!(!Main.LoversPlayers.ToArray().All(p => p.IsAlive()) && Options.LoverSuicide.GetBool()))
-                    {
-                        if (CustomWinnerHolder.WinnerTeam is CustomWinner.Crewmate or CustomWinner.Impostor or CustomWinner.Jackal or CustomWinner.Pelican)
-                        {
-                            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Lovers);
-                            Main.AllPlayerControls
-                                .Where(p => p.Is(CustomRoles.Lovers))
-                                .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
-                        }
-                    }
-                }
-
                 //抢夺胜利
                 foreach (var pc in Main.AllPlayerControls)
                 {
@@ -102,36 +87,27 @@ class GameEndChecker
                     }
                 }
 
-                // Lovers follow winner
-                if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Lovers and not CustomWinner.Crewmate and not CustomWinner.Impostor)
-                {
-                    foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Lovers)))
-                    {
-                        if (CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x).Is(CustomRoles.Lovers)).Any())
-                        {
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                            CustomWinnerHolder.AdditionalWinnerRoles.Add(CustomRoles.Lovers);
-                        }
-                    }
-                }
-
                 // 中立共同胜利
-                if (Options.NeutralWinTogether.GetBool() && CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x) != null && Utils.GetPlayerById(x).GetCustomRole().IsNeutral()).Any())
+                if (Options.NeutralWinTogether.GetBool() && Main.AllPlayerControls.Any(p => CustomWinnerHolder.WinnerIds.Contains(p.PlayerId) && p.IsNeutral()))
                 {
-                    foreach (var pc in Main.AllPlayerControls)
-                        if (pc.GetCustomRole().IsNeutral() && !CustomWinnerHolder.WinnerIds.Contains(pc.PlayerId))
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
+                    Main.AllPlayerControls.Where(p => p.IsNeutral())
+                        .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
                 }
                 else if (Options.NeutralRoleWinTogether.GetBool())
                 {
-                    foreach (var id in CustomWinnerHolder.WinnerIds)
+                    foreach (var pc in Main.AllPlayerControls.Where(p => CustomWinnerHolder.WinnerIds.Contains(p.PlayerId) && p.IsNeutral()))
                     {
-                        var pc = Utils.GetPlayerById(id);
-                        if (pc == null || !pc.GetCustomRole().IsNeutral()) continue;
-                        foreach (var tar in Main.AllPlayerControls)
-                            if (!CustomWinnerHolder.WinnerIds.Contains(tar.PlayerId) && tar.GetCustomRole() == pc.GetCustomRole())
-                                CustomWinnerHolder.WinnerIds.Add(tar.PlayerId);
+                        Main.AllPlayerControls.Where(p => p.GetCustomRole() == pc.GetCustomRole())
+                            .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
                     }
+                }
+
+                // 恋人胜利
+                if (Main.AllPlayerControls.Any(p => CustomWinnerHolder.WinnerIds.Contains(p.PlayerId) && p.Is(CustomRoles.Lovers)))
+                {
+                    CustomWinnerHolder.AdditionalWinnerRoles.Add(CustomRoles.Lovers);
+                    Main.AllPlayerControls.Where(p => p.Is(CustomRoles.Lovers))
+                        .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
                 }
             }
             ShipStatus.Instance.enabled = false;

@@ -199,15 +199,13 @@ class SetEverythingUpPatch
 
         StringBuilder sb = new($"{GetString("RoleSummaryText")}");
         List<byte> cloneRoles = new(PlayerState.AllPlayerStates.Keys);
-        foreach (var id in Main.winnerList)
+        foreach (var id in Main.winnerList.Where(i => !EndGamePatch.SummaryText[i].Contains("NotAssigned")))
         {
-            if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
             sb.Append($"\n<color={CustomWinnerColor}>★</color> ").Append(EndGamePatch.SummaryText[id]);
             cloneRoles.Remove(id);
         }
-        foreach (var id in cloneRoles)
+        foreach (var id in cloneRoles.Where(i => !EndGamePatch.SummaryText[i].Contains("NotAssigned")))
         {
-            if (EndGamePatch.SummaryText[id].Contains("<INVALID:NotAssigned>")) continue;
             sb.Append($"\n　 ").Append(EndGamePatch.SummaryText[id]);
         }
         roleSummary = TMPTemplate.Create(

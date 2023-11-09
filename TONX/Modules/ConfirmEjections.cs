@@ -1,5 +1,6 @@
-﻿using TONX.Roles.Core;
-using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using TONX.Roles.Core;
 using static TONX.Translator;
 
 namespace TONX;
@@ -7,95 +8,84 @@ namespace TONX;
 public static class ConfirmEjections
 {
     // 参考：https://github.com/music-discussion/TownOfHost-TheOtherRoles
-    public static void Eject(GameData.PlayerInfo exiledPlayer)
+
+    public static void Apply(GameData.PlayerInfo exiledPlayer, bool decidedWinner, List<string> winDescriptionText)
     {
         if (!AmongUsClient.Instance.AmHost) return;
         if (exiledPlayer == null) return;
         var exileId = exiledPlayer.PlayerId;
         if (exileId is < 0 or > 254) return;
-        var realName = exiledPlayer.Object.GetRealName(isMeeting: true);
 
-        var player = Utils.GetPlayerById(exiledPlayer.PlayerId);
-        var role = GetString(exiledPlayer.GetCustomRole().ToString());
-        var crole = exiledPlayer.GetCustomRole();
-        var coloredRole = Utils.GetTrueRoleName(exileId, false);
-        var name = "";
-        int impnum = 0;
-        int neutralnum = 0;
+        var player = exiledPlayer.Object;
+        var playerName = player.GetRealName(isMeeting: true);
+        var coloredPlayerName = Utils.ColorString(Main.PlayerColors[player.PlayerId], playerName);
+        var role = exiledPlayer.GetCustomRole();
+        var roleName = GetRoleString(role.ToString());
+        var coloredRoleName = Utils.GetTrueRoleName(exileId, false);
+        var roleType = player.Is(CustomRoles.Madmate) ? CustomRoleTypes.Impostor
+            : player.Is(CustomRoles.Charmed) ? CustomRoleTypes.Neutral
+            : role.GetCustomRoleTypes();
+        var coloredTeamName = GetString($"Team{roleType}").Color(Utils.GetCustomRoleTypeColor(roleType));
 
-        // 吟游诗人创作
-        if (CustomRoles.Bard.IsExist())
+        string text = string.Empty;
+        int impNum = Main.AllAlivePlayerControls.Count(p => p.Is(CustomRoleTypes.Impostor) || p.Is(CustomRoles.Madmate));
+        int neutralNum = Main.AllAlivePlayerControls.Count(p => p.Is(CustomRoleTypes.Neutral) || p.Is(CustomRoles.Charmed));
+
+        if (CustomRoles.Bard.IsExist()) // 吟游诗人创作
         {
-            try { name = ModUpdater.Get("https://v1.hitokoto.cn/?encode=text"); }
-            catch { name = GetString("ByBardGetFailed"); }
-            name += "\n\t\t——" + GetString("ByBard");
+            try { text = ModUpdater.Get("https://v1.hitokoto.cn/?encode=text"); }
+            catch { text = GetString("ByBardGetFailed"); }
+            text += "\n\t\t——" + GetString("ByBard");
             goto EndOfSession;
         }
-
-        foreach (var pc in Main.AllAlivePlayerControls)
+        else if (decidedWinner) // 已经决定胜利者
         {
-            var pc_role = pc.GetCustomRole();
-            if (pc_role.IsImpostor() && pc != exiledPlayer.Object)
-                impnum++;
-            else if (pc.IsNeutralKiller() && pc != exiledPlayer.Object)
-                neutralnum++;
+            text = string.Format(GetString("ExiledWrongPerson"), coloredPlayerName, coloredRoleName);
+            winDescriptionText.Do(t => text += $"\n{t}");
         }
-        switch (Options.CEMode.GetInt())
+        else // 没有胜利者，游戏继续
         {
-            case 0:
-                name = string.Format(GetString("PlayerExiled"), realName);
-                break;
-            case 1:
-                if (player.GetCustomRole().IsImpostor())
-                    name = string.Format(GetString("BelongTo"), realName, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Impostor), GetString("TeamImpostor")));
-                else if (player.GetCustomRole().IsCrewmate())
-                    name = string.Format(GetString("IsGood"), realName);
-                else if (player.GetCustomRole().IsNeutral())
-                    name = string.Format(GetString("BelongTo"), realName, Utils.ColorString(new Color32(255, 171, 27, byte.MaxValue), GetString("TeamNeutral")));
-                break;
-            case 2:
-                name = string.Format(GetString("PlayerIsRole"), realName, coloredRole);
-                if (Options.ShowTeamNextToRoleNameOnEject.GetBool())
-                {
-                    name += " (";
-                    if (player.GetCustomRole().IsImpostor() || player.Is(CustomRoles.Madmate))
-                        name += Utils.ColorString(new Color32(255, 25, 25, byte.MaxValue), GetString("TeamImpostor"));
-                    else if (player.GetCustomRole().IsNeutral() || player.Is(CustomRoles.Charmed))
-                        name += Utils.ColorString(new Color32(255, 171, 27, byte.MaxValue), GetString("TeamNeutral"));
-                    else if (player.GetCustomRole().IsCrewmate())
-                        name += Utils.ColorString(new Color32(140, 255, 255, byte.MaxValue), GetString("TeamCrewmate"));
-                    name += ")";
-                }
-                break;
+            switch (Options.CEMode.GetInt())
+            {
+                case 0: // 不确认身份
+                    text = string.Format(GetString("PlayerExiled"), coloredPlayerName);
+                    break;
+                case 1: // 确认阵营
+                    text = roleType is CustomRoleTypes.Crewmate
+                        ? string.Format(GetString("IsGood"), coloredPlayerName)
+                        : string.Format(GetString("BelongTo"), coloredPlayerName, coloredTeamName);
+                    break;
+                case 2: // 确认职业
+                    text = string.Format(GetString("PlayerIsRole"), coloredPlayerName, coloredRoleName);
+                    if (Options.ShowTeamNextToRoleNameOnEject.GetBool())
+                        text += $" ({coloredTeamName})";
+                    break;
+            }
         }
-        var DecidedWinner = false;
 
-        //TODO: FIXME
-
-        if (DecidedWinner) name += "<size=0>";
-        if (Options.ShowImpRemainOnEject.GetBool() && !DecidedWinner)
+        if (Options.ShowImpRemainOnEject.GetBool() && !decidedWinner)
         {
-            name += "\n";
-            string comma = neutralnum > 0 ? "，" : "";
-            if (impnum == 0) name += GetString("NoImpRemain") + comma;
-            else name += string.Format(GetString("ImpRemain"), impnum) + comma;
-            if (Options.ShowNKRemainOnEject.GetBool() && neutralnum > 0)
-                name += string.Format(GetString("NeutralRemain"), neutralnum);
+            text += "\n";
+            string comma = neutralNum > 0 ? "，" : "";
+            if (impNum == 0) text += GetString("NoImpRemain") + comma;
+            else text += string.Format(GetString("ImpRemain"), impNum) + comma;
+            if (Options.ShowNKRemainOnEject.GetBool() && neutralNum > 0)
+                text += string.Format(GetString("NeutralRemain"), neutralNum);
         }
 
     EndOfSession:
 
-        name += "<size=0>";
-        new LateTask(() =>
+        text += "<size=0>";
+        _ = new LateTask(() =>
         {
             Main.DoBlockNameChange = true;
-            if (GameStates.IsInGame) player.RpcSetName(name);
+            if (GameStates.IsInGame) player.RpcSetName(text);
         }, 3.0f, "Change Exiled Player Name");
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             if (GameStates.IsInGame && !player.Data.Disconnected)
             {
-                player.RpcSetName(realName);
+                player.RpcSetName(playerName);
                 Main.DoBlockNameChange = false;
             }
         }, 11.5f, "Change Exiled Player Name Back");

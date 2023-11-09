@@ -151,7 +151,15 @@ public class MeetingVoteManager
         if (result.Exiled != null)
         {
             MeetingHudPatch.CheckForDeathOnExile(CustomDeathReason.Vote, result.Exiled.PlayerId);
-            ConfirmEjections.Eject(result.Exiled);
+
+            bool DecidedWinner = false;
+            List<string> WinDescriptionText = new();
+            foreach (var roleClass in CustomRoleManager.AllActiveRoles.Values)
+            {
+                var action = roleClass.CheckExile(result.Exiled, ref DecidedWinner, ref WinDescriptionText);
+                if (action != null) ExileControllerWrapUpPatch.ActionsOnWrapUp.Add(action);
+            }
+            ConfirmEjections.Apply(result.Exiled, DecidedWinner, WinDescriptionText);
         }
         Destroy();
     }

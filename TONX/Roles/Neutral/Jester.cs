@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
-
+using System;
+using System.Collections.Generic;
 using TONX.Roles.Core;
 
 namespace TONX.Roles.Neutral;
@@ -32,13 +33,17 @@ public sealed class Jester : RoleBase
     {
         OptionCanUseButton = BooleanOptionItem.Create(RoleInfo, 10, OptionName.JesterCanUseButton, false, false);
     }
-    public override void OnExileWrapUp(GameData.PlayerInfo exiled, ref bool DecidedWinner)
+    public override Action CheckExile(GameData.PlayerInfo exiled, ref bool DecidedWinner, ref List<string> WinDescriptionText)
     {
-        if (!AmongUsClient.Instance.AmHost || Player.PlayerId != exiled.PlayerId) return;
+        if (!AmongUsClient.Instance.AmHost || Player.PlayerId != exiled.PlayerId) return null;
 
-        CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Jester);
-        CustomWinnerHolder.WinnerIds.Add(exiled.PlayerId);
         DecidedWinner = true;
+        WinDescriptionText.Add(Translator.GetString("ExiledJester"));
+        return () =>
+        {
+            CustomWinnerHolder.SetWinnerOrAdditonalWinner(CustomWinner.Jester);
+            CustomWinnerHolder.WinnerIds.Add(Player.PlayerId);
+        };
     }
     public override bool OnCheckReportDeadBody(PlayerControl reporter, GameData.PlayerInfo target)
     {

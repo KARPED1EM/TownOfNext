@@ -1459,15 +1459,15 @@ PlayerIsRole: "{0} 是 {1}"
 
 ## 驱逐确认 / Ejections
 PlayerExiled: "{0} 被驱逐了..."
-ExiledJester: "票出 {0} 让您有种不详的预感\n{1} 在狂笑着..."
-ExiledExeTarget: "票出 {0} 让您有种不详的预感\n他是 {1}，而他的背后传来<color=#611c3a>处刑人</color>阴沉的笑声..."
-ExiledInnocentTargetAddBelow: "\n回头一看，<color=#8f815e>冤罪师</color> 正数着手里的钱呢"
-ExiledInnocentTargetInOneLine: "票出 {0} 让您有种不详的预感\n他是 {1}，而回头一看，<color=#8f815e>冤罪师</color> 正数着手里的钱呢"
 NoImpRemain: "已经没有内鬼啦"
 ImpRemain: "剩余 {0} 个内鬼"
 NeutralRemain: "剩余 {0} 个邪恶中立"
 IsGood: "{0} 是个好人"
 BelongTo: "{0} 属于 {1}"
+ExiledWrongPerson: "票出 {0} 让您有种不详的预感，他是 {1}"
+ExiledJester: "<color=#ec62a5>小丑</color> 在狂笑着..."
+ExiledExeTarget: "而他的背后传来<color=#611c3a>处刑人</color>阴沉的笑声..."
+ExiledInnocentTarget: "回头一看，<color=#8f815e>冤罪师</color> 正数着手里的钱呢..."
 
 ## 游戏结束原因 / Game Overs
 GameOverReason.HumansByTask: "船员完成了任务"
