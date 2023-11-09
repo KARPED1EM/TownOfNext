@@ -27,7 +27,7 @@ public static class Translator
     public static void LoadLangs()
     {
         var assembly = Assembly.GetExecutingAssembly();
-        var fileNames = assembly.GetManifestResourceNames().Where(x => x.StartsWith($"TONX.Resources.Lang."));
+        var fileNames = assembly.GetManifestResourceNames().Where(x => x.StartsWith($"TONX.Resources.Languages."));
         foreach (var fileName in fileNames)
         {
             var yaml = new YamlStream();
