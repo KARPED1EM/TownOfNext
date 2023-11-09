@@ -2,7 +2,6 @@
 using Hazel;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
-using TONX.Roles.Neutral;
 using UnityEngine;
 
 namespace TONX.Patches.ISystemType;

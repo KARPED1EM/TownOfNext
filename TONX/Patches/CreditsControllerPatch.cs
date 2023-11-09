@@ -113,7 +113,7 @@ public class CreditsControllerPatch
         }
         void AddPersonToCredits(List<string> list)
         {
-            foreach(var line in list)
+            foreach (var line in list)
             {
                 var cols = line.Split(" - ").ToList();
                 if (cols.Count < 2) cols.Add(string.Empty);
@@ -131,7 +131,7 @@ public class CreditsControllerPatch
     {
         if (originalCredit.columns[0] != "logoImage") return;
 
-        foreach(var credit in GetModCredits())
+        foreach (var credit in GetModCredits())
         {
             __instance.AddCredit(credit);
             __instance.AddFormat(credit.format);

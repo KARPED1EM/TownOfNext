@@ -2,10 +2,6 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TONX.Roles.AddOns.Common;
-using TONX.Roles.Core;
-using UnityEngine;
-using Hazel;
 
 namespace TONX;
 

@@ -2,9 +2,8 @@
 using Hazel;
 using TONX.Attributes;
 using TONX.Modules;
-using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Core;
-using TONX;
+using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Patches.ISystemType;
 
