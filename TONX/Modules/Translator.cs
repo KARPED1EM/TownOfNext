@@ -94,7 +94,7 @@ public static class Translator
             if (translateMaps[(int)langId].TryGetValue(str, out var trans))
                 res = trans;
             // 繁中用户寻找简中翻译替代
-            else if(langId is SupportedLangs.TChinese && translateMaps[(int)SupportedLangs.SChinese].TryGetValue(str, out trans))
+            else if (langId is SupportedLangs.TChinese && translateMaps[(int)SupportedLangs.SChinese].TryGetValue(str, out trans))
                 res = "*" + trans;
             // 非中文用户寻找英语翻译替代
             else if (langId is not SupportedLangs.English and not SupportedLangs.TChinese && translateMaps[(int)SupportedLangs.English].TryGetValue(str, out trans))
