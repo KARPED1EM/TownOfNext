@@ -105,7 +105,7 @@ class Penguin : RoleBase, IImpostor
         Player.RpcResetAbilityCooldown();
         SendRPC();
     }
-    public void OnCheckMurderAsKiller(MurderInfo info)
+    public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         var target = info.AttemptTarget;
         if (AbductVictim != null)
@@ -116,13 +116,16 @@ class Penguin : RoleBase, IImpostor
                 Player.RpcMurderPlayer(AbductVictim);
                 Player.ResetKillCooldown();
                 info.DoKill = false;
+                return false;
             }
             RemoveVictim();
+            return true;
         }
         else
         {
             info.DoKill = false;
             AddVictim(target);
+            return false;
         }
     }
     public bool OverrideKillButtonText(out string text)
