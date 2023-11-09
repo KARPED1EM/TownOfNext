@@ -11,7 +11,7 @@
 > This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.
 >
 
-<p align="center">
+<p align="left">
 <a href="https://tonx.cc" target="_blank"><img src="https://img.shields.io/badge/Website%20-%231DA1F2.svg?&style=for-the-badge&logo=vuedotjs&logoColor=white&color=3aa675"/></a>
 <a href="https://jq.qq.com/?_wv=1027&k=2RpigaN6" target="_blank"><img src="https://img.shields.io/badge/QQ%20-%231DA1F2.svg?&style=for-the-badge&logo=tencent-qq&logoColor=white&color=357ded"/></a>
 <a href="https://github.com/KARPED1EM/TownOfNext/releases/latest" target="_blank"><img src="https://img.shields.io/badge/Github Latest Version%20-%231DA1F2.svg?&style=for-the-badge&logo=github&logoColor=white&color=181717"/></a>
