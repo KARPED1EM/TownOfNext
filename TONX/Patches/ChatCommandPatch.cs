@@ -170,23 +170,13 @@ internal class ChatCommands
                 case "/r":
                     canceled = true;
                     subArgs = text.Remove(0, 2);
-                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.IsDev());
+                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer.PlayerId);
                     break;
 
                 case "/up":
                     canceled = true;
                     subArgs = text.Remove(0, 3);
-                    if (!Options.EnableDirectorMode.GetBool())
-                    {
-                        Utils.SendMessage(string.Format(GetString("Message.DirectorModeDisabled"), GetString("EnableDirectorMode")));
-                        break;
-                    }
-                    if (!GameStates.IsLobby)
-                    {
-                        Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"));
-                        break;
-                    }
-                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer.PlayerId, isUp: true);
+                    SpecifyRole(subArgs, PlayerControl.LocalPlayer.PlayerId);
                     break;
 
                 case "/h":
@@ -200,19 +190,12 @@ internal class ChatCommands
                     canceled = true;
                     if (GameStates.IsInGame)
                     {
-                        var lp = PlayerControl.LocalPlayer;
                         var role = PlayerControl.LocalPlayer.GetCustomRole();
-                        var sb = new StringBuilder();
-                        sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + lp.GetRoleInfo(true));
-                        if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                            Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
-                        var txt = sb.ToString();
-                        sb.Clear().Append(txt.RemoveHtmlTags());
-                        foreach (var subRole in PlayerState.AllPlayerStates[lp.PlayerId].SubRoles)
-                            sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                        if (CustomRoles.Ntr.IsExist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                            sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
-                        Utils.SendMessage(sb.ToString(), lp.PlayerId);
+                        HudManager.Instance.Chat.AddChat(
+                            PlayerControl.LocalPlayer,
+                            role.GetRoleInfo()?.Description?.GetFullFormatHelpWithAddons(PlayerControl.LocalPlayer) ??
+                            // roleInfoがない役職
+                            GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
                     }
                     else
                     {
@@ -441,54 +424,64 @@ internal class ChatCommands
         roleCommands.Add(CustomRoles.TicketsStealer, new() { "ts", "竊票者", "偷票", "偷票者", "窃票师", "窃票" });
 #pragma warning restore IDE0028
     }
-    public static void SendRolesInfo(string input, byte playerId, bool isDev = false, bool isUp = false)
+    public static void SendRolesInfo(string input, byte playerId)
     {
-        if (input.Trim() == "" || input.Trim() == string.Empty)
+        if (string.IsNullOrWhiteSpace(input))
         {
             Utils.ShowActiveRoles(playerId);
             return;
         }
-
-        if (!GetRoleByInputName(input, out var role))
+        else if (!GetRoleByInputName(input, out var role))
         {
-            if (isUp) Utils.SendMessage(GetString("Message.DirectorModeCanNotFindRoleThePlayerEnter"), playerId);
-            else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
+            Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
             return;
         }
-
-        var sb = new StringBuilder();
-        string roleName = GetString(Enum.GetName(typeof(CustomRoles), role));
-        string info = GetString($"{role}InfoLong");
-        info = info.Insert(info.IndexOf("\n"), "</color>").Insert(0, $"<color={(Utils.GetRoleTeamColorCode(role))}>");
-        sb.Append(Utils.ColorString(role.GetRoleInfo()?.RoleColor ?? Color.white, roleName) + Utils.GetRoleDisplaySpawnMode(role) + info);
-        if (Options.CustomRoleSpawnChances.ContainsKey(role))
+        else
         {
-            Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
-            var txt = sb.ToString();
-            sb.Clear().Append(txt);
+            Utils.SendMessage(role.GetRoleInfo().Description.FullFormatHelp, playerId);
         }
-
-        bool canSpecify = false;
-        if ((isDev || isUp) && GameStates.IsLobby)
+    }
+    public static void SpecifyRole(string input, byte playerId)
+    {
+        if (string.IsNullOrWhiteSpace(input))
         {
-            canSpecify = true;
-            if (!role.IsEnable() || role.IsAddon() || role.IsVanilla() || role is CustomRoles.GM or CustomRoles.NotAssigned || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
-            if (canSpecify)
+            Utils.ShowActiveRoles(playerId);
+            return;
+        }
+        else if (!GetRoleByInputName(input, out var role))
+        {
+            Utils.SendMessage(GetString("Message.DirectorModeCanNotFindRoleThePlayerEnter"), playerId);
+            return;
+        }
+        else if (!Options.EnableDirectorMode.GetBool())
+        {
+            Utils.SendMessage(string.Format(GetString("Message.DirectorModeDisabled"), GetString("EnableDirectorMode")));
+        }
+        else if (!GameStates.IsLobby)
+        {
+            Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"), playerId);
+        }
+        else
+        {
+            string roleName = GetString(Enum.GetName(typeof(CustomRoles), role));
+            if (
+                !role.IsEnable()
+                || role.IsAddon()
+                || role.IsVanilla()
+                || role is CustomRoles.GM or CustomRoles.NotAssigned
+                || !Options.CustomRoleSpawnChances.ContainsKey(role))
+            {
+                Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelectFailed"), roleName), playerId);
+            }
+            else
             {
                 byte pid = playerId == byte.MaxValue ? byte.MinValue : playerId;
                 Main.DevRole.Remove(pid);
                 Main.DevRole.Add(pid, role);
-            }
-            if (isUp)
-            {
-                if (canSpecify) Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelected"), roleName), playerId);
-                else Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelectFailed"), roleName), playerId);
-                return;
+
+                Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelected"), roleName), playerId);
             }
         }
-
-        Utils.SendMessage((canSpecify ? "▲" : "") + sb.ToString(), playerId);
-        return;
     }
     private static void ConcatCommands(CustomRoleTypes roleType)
     {
@@ -552,7 +545,7 @@ internal class ChatCommands
 
             case "/r":
                 subArgs = text.Remove(0, 2);
-                SendRolesInfo(subArgs, player.PlayerId, player.IsDev());
+                SendRolesInfo(subArgs, player.PlayerId);
                 break;
 
             case "/h":
@@ -562,23 +555,23 @@ internal class ChatCommands
 
             case "/m":
             case "/myrole":
-                var role = player.GetCustomRole();
                 if (GameStates.IsInGame)
                 {
-                    var sb = new StringBuilder();
-                    sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + player.GetRoleInfo(true));
-                    if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                        Utils.ShowChildrenSettings(opt, ref sb, command: true);
-                    var txt = sb.ToString();
-                    sb.Clear().Append(txt);
-                    foreach (var subRole in PlayerState.AllPlayerStates[player.PlayerId].SubRoles)
-                        sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                    if (CustomRoles.Ntr.IsExist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                        sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
-                    Utils.SendMessage(sb.ToString(), player.PlayerId);
+                    var role = player.GetCustomRole();
+                    if (role.GetRoleInfo()?.Description is { } description)
+                    {
+                        Utils.SendMessage(description.GetFullFormatHelpWithAddons(player), player.PlayerId, removeTags: false);
+                    }
+                    // roleInfoがない役職
+                    else
+                    {
+                        Utils.SendMessage(GetString(role.ToString()) + player.GetRoleInfo(true), player.PlayerId);
+                    }
                 }
                 else
+                {
                     Utils.SendMessage(GetString("Message.CanNotUseInLobby"), player.PlayerId);
+                }
                 break;
 
             case "/t":

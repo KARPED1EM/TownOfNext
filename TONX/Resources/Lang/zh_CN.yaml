@@ -1204,7 +1204,7 @@ ERR-001-000-3: "在主目录出现重复密钥"
 ERR-002-000-1: "您的 AmongUs 版本与 TONX 不兼容，请更新游戏"
 
 ## 其它 / Other things
-Team: "阵营"
+BaseOn: "基于"
 DefaultSystemMessageTitle: "【 ★ 系统消息 ★ 】"
 MessageFromTheHost: "【 ★ 房主消息 ★ 】"
 MessageFromEAC: "【 ★ EAC ★ 】"

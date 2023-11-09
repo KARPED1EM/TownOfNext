@@ -26,7 +26,7 @@ public static class MeetingStartNotify
                 var sb = new StringBuilder();
                 sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + pc.GetRoleInfo(true));
                 if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                    Utils.ShowChildrenSettings(opt, ref sb, command: true);
+                    Utils.ShowChildrenSettings(opt, ref sb, forChat: true);
                 var txt = sb.ToString();
                 sb.Clear().Append(txt.RemoveHtmlTags());
                 foreach (var subRole in PlayerState.AllPlayerStates[pc.PlayerId].SubRoles)

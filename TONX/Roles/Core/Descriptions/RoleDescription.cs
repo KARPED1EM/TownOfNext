@@ -22,22 +22,38 @@ public abstract class RoleDescription
         get
         {
             var builder = new StringBuilder(256);
-            // 役職名と説明文
             builder.AppendFormat("<size={0}>\n", BlankLineSize);
-            builder.AppendFormat("<size={0}>{1}\n", FirstHeaderSize, Translator.GetRoleString(RoleInfo.RoleName.ToString()).Color(RoleInfo.RoleColor.ToReadableColor()));
-            builder.AppendFormat("<size={0}>{1}\n", BodySize, Description);
-            // 陣営
-            builder.AppendFormat("<size={0}>\n", BlankLineSize);
-            builder.AppendFormat("<size={0}>{1}\n", SecondHeaderSize, Translator.GetString("Team"));
-            //   FIXME: 叛徒需要显示为内鬼阵营
+            // 职业名
+            builder.AppendFormat("<size={0}>{1}", FirstHeaderSize, Translator.GetRoleString(RoleInfo.RoleName.ToString()).Color(RoleInfo.RoleColor.ToReadableColor()));
+            // 职业阵营 / 原版职业
             var roleTeam = RoleInfo.CustomRoleType;
-            builder.AppendFormat("<size={0}>{1}\n", BodySize, Translator.GetString($"CustomRoleTypes.{roleTeam}"));
-            // バニラ役職判定
-            builder.AppendFormat("<size={0}>\n", BlankLineSize);
-            builder.AppendFormat("<size={0}>{1}\n", SecondHeaderSize, Translator.GetString("Basis"));
-            builder.AppendFormat("<size={0}>{1}\n", BodySize, Translator.GetString(RoleInfo.BaseRoleType.Invoke().ToString()));
+            builder.AppendFormat("<size={0}> ({1}, {2})\n", BodySize, Translator.GetString($"Team{roleTeam}"), Translator.GetString("BaseOn") + Translator.GetString(RoleInfo.BaseRoleType.Invoke().ToString()));
+            builder.AppendFormat("<size={0}>{1}\n", BodySize, Description);
+            // 职业设定
+            if (Options.CustomRoleSpawnChances.TryGetValue(RoleInfo.RoleName, out var opt))
+                Utils.ShowChildrenSettings(opt, ref builder, forChat: true);
+
             return builder.ToString();
         }
+    }
+    public string GetFullFormatHelpWithAddons(PlayerControl player)
+    {
+        var builder = new StringBuilder(512);
+        builder.Append(FullFormatHelp);
+
+        var subRoles = player.GetCustomSubRoles();
+        if (CustomRoles.Ntr.IsExist() && !subRoles.Contains(CustomRoles.Lovers) && !player.Is(CustomRoles.GM) && !player.Is(CustomRoles.Ntr))
+        {
+            subRoles.Add(CustomRoles.Lovers);
+        }
+
+        foreach (var subRole in subRoles)
+        {
+            builder.AppendFormat("<size={0}>{1}\n", FirstHeaderSize, Translator.GetRoleString(subRole.ToString()).Color(subRole.GetRoleInfo().RoleColor.ToReadableColor()));
+            builder.AppendFormat("<size={0}>{1}\n", BodySize, subRole.GetRoleInfo().Description.Description);
+        }
+
+        return builder.ToString();
     }
 
     public const string FirstHeaderSize = "130%";
