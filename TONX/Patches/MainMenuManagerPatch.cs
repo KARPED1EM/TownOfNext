@@ -1,6 +1,7 @@
 using HarmonyLib;
 using System;
 using TMPro;
+using TONX.Templates;
 using UnityEngine;
 using static TONX.Translator;
 using Object = UnityEngine.Object;
@@ -65,6 +66,8 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
     public static void Start_Postfix(MainMenuManager __instance)
     {
+        SimpleButton.SetBase(__instance.quitButton);
+
         int row = 1; int col = 0;
         GameObject CreatButton(string text, Action action)
         {
