@@ -27,8 +27,8 @@ public class ModUpdater
         "file:///D:/Desktop/TONX/info.json",
         "file:///D:/Desktop/info.json",
 #else
-        "https://raw.githubusercontent.com/KARPED1EM/TONX/TONX/info.json",
-        "https://cdn.jsdelivr.net/gh/KARPED1EM/TONX/info.json",
+        "https://raw.githubusercontent.com/KARPED1EM/TownOfNext/TONX/info.json",
+        "https://cdn.jsdelivr.net/gh/KARPED1EM/TownOfNext/info.json",
         "https://tonx-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
         "https://gitee.com/leeverz/TONX/raw/TONX/info.json",
 #endif
@@ -53,7 +53,7 @@ public class ModUpdater
     public static Version minimumVersion = null;
     public static int creation = 0;
     public static string md5 = "";
-    public static int visit => isChecked ? 216822 : 0; //你他妈不是说改了吗
+    public static int visit => isChecked ? 216822 : 0;
 
     public static string announcement_zh = "";
     public static string announcement_en = "";
