@@ -41,10 +41,13 @@ public class Main : BasePlugin
     public const int PluginCreation = 1;
 
     public static readonly bool ShowWebsiteButton = true;
-    public static readonly bool ShowQQButton = true;
+    public static readonly string WebsiteUrl = Translator.IsChineseLanguageUser ? "https://tonx.cc/zh" : "https://tonx.cc";
+    public static readonly bool ShowQQButton = false;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
     public static readonly bool ShowDiscordButton = false;
     public static readonly string DiscordInviteUrl = "https://discord.gg/hkk2p9ggv4";
+    public static readonly bool ShowGithubUrl = true;
+    public static readonly string GithubRepoUrl = "https://github.com/KARPED1EM/TownOfHostEdited";
 
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
