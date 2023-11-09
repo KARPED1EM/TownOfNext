@@ -1260,7 +1260,7 @@ onSetPublicNoLatest: "我们有一个重要的更新，请更新本模组\n否�
 CanNotJoinPublicRoomNoLatest: "我们有一个重要的更新，请更新本模组\n否则您无法加入公开房间"
 ModBrokenMessage: "模组文件损坏，请重启游戏或重装本模组"
 UnsupportedVersion: "您的 AmongUs 版本与 TONX 不兼容\n请更新游戏"
-PublicNotAvailableOnThisVersion: "该版本的 TONX 不可以创建公开房间"
+PublicNotAvailableOnThisVersion: "该版本的 TONX 暂不支持公开游玩"
 DisabledByProgram: "公开房间的操作已被程序禁用"
 EnterVentToWin: "跳管道来获得胜利！"
 EatenByPelican: "您被鹈鹕吞了，请等待鹈鹕死亡或会议..."
