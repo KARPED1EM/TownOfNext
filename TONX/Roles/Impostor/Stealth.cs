@@ -50,24 +50,25 @@ public sealed class Stealth : RoleBase, IImpostor
     /// <summary>暗くしている部屋</summary>
     private SystemTypes? darkenedRoom = null;
 
-    public void OnCheckMurderAsKiller(MurderInfo info)
+    public bool OnCheckMurderAsKiller(MurderInfo info)
     {
         // キルできない，もしくは普通のキルじゃないならreturn
         if (!info.CanKill || !info.DoKill || info.IsSuicide || info.IsAccident || info.IsFakeSuicide)
         {
-            return;
+            return true;
         }
         var playersToDarken = FindPlayersInSameRoom(info.AttemptTarget);
         if (playersToDarken == null)
         {
             logger.Info("部屋の当たり判定を取得できないため暗転を行いません");
-            return;
+            return true;
         }
         if (excludeImpostors)
         {
             playersToDarken = playersToDarken.Where(player => !player.Is(CustomRoles.Impostor));
         }
         DarkenPlayers(playersToDarken);
+        return true;
     }
     /// <summary>自分と同じ部屋にいるプレイヤー全員を取得する</summary>
     private IEnumerable<PlayerControl> FindPlayersInSameRoom(PlayerControl killedPlayer)
