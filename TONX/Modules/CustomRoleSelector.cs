@@ -42,6 +42,7 @@ internal static class CustomRoleSelector
             CustomRoles role = (CustomRoles)Enum.Parse(typeof(CustomRoles), cr.ToString());
             if (role.IsVanilla() || role.IsAddon() || !Options.CustomRoleSpawnChances.TryGetValue(role, out var option) || option.Selections.Length != 3) continue;
             if (role is CustomRoles.GM or CustomRoles.NotAssigned) continue;
+            if (role is CustomRoles.Mare && Main.NormalOptions.MapId == 5) continue;
             for (int i = 0; i < role.GetAssignCount(); i++)
                 roleList.Add(role);
         }
