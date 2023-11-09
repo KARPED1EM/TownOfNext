@@ -8,9 +8,6 @@ namespace TONX;
 [HarmonyPatch(typeof(CreditsController))]
 public class CreditsControllerPatch
 {
-    private static bool ModCreditsAdded = false;
-    private static List<CreditsController.CreditStruct> ModCredits = GetModCredits();
-
     private static List<CreditsController.CreditStruct> GetModCredits()
     {
         var devList = new List<string>()
@@ -132,10 +129,9 @@ public class CreditsControllerPatch
     [HarmonyPatch(nameof(CreditsController.AddCredit)), HarmonyPrefix]
     public static void AddCreditPrefix(CreditsController __instance, [HarmonyArgument(0)] CreditsController.CreditStruct originalCredit)
     {
-        if (ModCreditsAdded) return;
-        ModCreditsAdded = true;
+        if (originalCredit.columns[0] != "logoImage") return;
 
-        foreach(var credit in ModCredits)
+        foreach(var credit in GetModCredits())
         {
             __instance.AddCredit(credit);
             __instance.AddFormat(credit.format);
