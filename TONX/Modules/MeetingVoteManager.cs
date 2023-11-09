@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TONX.Roles.AddOns.Common;
+using TONX.Roles.AddOns.Impostor;
 using TONX.Roles.Core;
 
 namespace TONX.Modules;
@@ -92,8 +93,7 @@ public class MeetingVoteManager
         }
 
         //SubRoles
-        //FIXME
-        //doVote = TicketsStealer.OnVote(voter, voteFor, ref voteFor, ref numVotes, ref clearVote);
+        TicketsStealer.ModifyVote(ref voter, ref voteFor, ref isIntentional, ref numVotes, ref doVote);
 
         if (doVote)
         {
