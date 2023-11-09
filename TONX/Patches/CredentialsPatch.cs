@@ -64,6 +64,14 @@ internal class VersionShowerStartPatch
         Main.CredentialsText = $"\r\n<color=#00a4ff>{ThisAssembly.Git.Branch}</color> - {ThisAssembly.Git.Commit}";
 #endif
 
+#if RELEASE
+        string additionalCredentials = GetString("TextBelowVersionText");
+        if (additionalCredentials != null && additionalCredentials != "*TextBelowVersionText")
+        {
+            Main.CredentialsText += $"\r\n{additionalCredentials}";
+        }
+#endif
+
         ErrorText.Create(__instance.text);
         if (Main.hasArgumentException && ErrorText.Instance != null)
             ErrorText.Instance.AddError(ErrorCode.Main_DictionaryError);

@@ -90,14 +90,20 @@ public static class Translator
         var res = $"<INVALID:{str}>";
         try
         {
-            if (!translateMaps.ContainsKey((int)langId))
-                langId = SupportedLangs.English;
-
+            // 在当前语言中寻找翻译
             if (translateMaps[(int)langId].TryGetValue(str, out var trans))
                 res = trans;
-            else if (langId != SupportedLangs.English && translateMaps[0].TryGetValue(str, out trans))
-                res = trans;
-            else //translateMapsにない場合、StringNamesにあれば取得する
+            // 繁中用户寻找简中翻译替代
+            else if(langId is SupportedLangs.TChinese && translateMaps[(int)SupportedLangs.SChinese].TryGetValue(str, out trans))
+                res = "*" + trans;
+            // 非中文用户寻找英语翻译替代
+            else if (langId is not SupportedLangs.English and not SupportedLangs.TChinese && translateMaps[(int)SupportedLangs.English].TryGetValue(str, out trans))
+                res = "*" + trans;
+            // 非中文用户寻找中文（原生）字符串替代
+            else if (langId is not SupportedLangs.SChinese && translateMaps[(int)SupportedLangs.SChinese].TryGetValue(str, out trans))
+                res = "*" + trans;
+            // 在游戏自带的字符串中寻找
+            else
             {
                 var stringNames = EnumHelper.GetAllValues<StringNames>().Where(x => x.ToString() == str);
                 if (stringNames != null && stringNames.Any())
