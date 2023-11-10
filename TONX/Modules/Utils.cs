@@ -1186,17 +1186,15 @@ public static class Utils
 
         var builder = new StringBuilder();
         builder.Append(isForChat ? Main.AllPlayerNames[id] : ColorString(Main.PlayerColors[id], Main.AllPlayerNames[id]));
-        builder.AppendFormat("<pos={0}em> ", pos).Append(isForChat ? GetProgressText(id).RemoveColorTags() : GetProgressText(id)).Append("</pos>");
+        string progressText = string.IsNullOrEmpty(GetProgressText(id)) ? GetProgressText(id) : GetKillCountText(id);
+        builder.AppendFormat("<pos={0}em>", pos).Append(isForChat ? progressText.RemoveColorTags() : progressText).Append("</pos>");
         // "(00/00) " = 4em
         pos += 4f;
-        builder.AppendFormat("<pos={0}em> ", pos).Append(GetKillCountText(id)).Append("</pos>");
-        // "击杀: 5 " = 4em
-        pos += 4.5f;
-        builder.AppendFormat("<pos={0}em> ", pos).Append(GetVitalText(id)).Append("</pos>");
+        builder.AppendFormat("<pos={0}em>", pos).Append(GetVitalText(id)).Append("</pos>");
         // "Lover's Suicide " = 8em
         // "回線切断 " = 4.5em
         pos += DestroyableSingleton<TranslationController>.Instance.currentLanguage.languageID is SupportedLangs.English or SupportedLangs.Russian ? 8f : 4.5f;
-        builder.AppendFormat("<pos={0}em> ", pos);
+        builder.AppendFormat("<pos={0}em>", pos);
         builder.Append(isForChat ? GetTrueRoleName(id, false).RemoveColorTags() : GetTrueRoleName(id, false));
         builder.Append(isForChat ? GetSubRolesText(id).RemoveColorTags() : GetSubRolesText(id));
         builder.Append("</pos>");
