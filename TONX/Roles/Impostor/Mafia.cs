@@ -103,7 +103,7 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
         Logger.Info($"{killer.GetNameWithRole()} 复仇了 {target.GetNameWithRole()}", "Mafia");
         CustomSoundsManager.RPCPlayCustomSoundAll("AWP");
         string Name = target.GetRealName();
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             var state = PlayerState.GetByPlayerId(target.PlayerId);
             state.DeathReason = CustomDeathReason.Revenge;
@@ -119,7 +119,7 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
                 target.RpcMurderPlayer(target);
                 state.SetDead();
             }
-            new LateTask(() => { Utils.SendMessage(string.Format(GetString("MafiaKillSucceed"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), GetString("MafiaRevengeTitle"))); }, 0.6f, "Mafia Kill");
+            _ = new LateTask(() => { Utils.SendMessage(string.Format(GetString("MafiaKillSucceed"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Mafia), GetString("MafiaRevengeTitle"))); }, 0.6f, "Mafia Kill");
         }, 0.2f, "Mafia Kill");
     }
     private bool CanRevenge(PlayerControl target, out string reason)
