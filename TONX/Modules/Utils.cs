@@ -1137,7 +1137,7 @@ public static class Utils
         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetKickReason, SendOption.Reliable, -1);
         writer.Write(GetString($"DCNotify.{reason}"));
         AmongUsClient.Instance.FinishRpcImmediately(writer);
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             AmongUsClient.Instance.KickPlayer(playerId, ban);
         }, Math.Max(AmongUsClient.Instance.Ping / 500f, 1f), "Kick Player");
