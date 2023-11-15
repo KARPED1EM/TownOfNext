@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -20,6 +21,7 @@ public static class Fool
         OptionImpFoolCanNotSabotage = BooleanOptionItem.Create(Id + 20, "ImpFoolCanNotSabotage", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Fool]);
         OptionImpFoolCanNotOpenDoor = BooleanOptionItem.Create(Id + 21, "FoolCanNotOpenDoor", false, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Fool]);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

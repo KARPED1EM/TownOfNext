@@ -94,7 +94,7 @@ public sealed class Sniper : RoleBase, IImpostor
         using var sender = CreateSender(CustomRPC.SniperSync);
 
         var snList = ShotNotify;
-        sender.Writer.Write(snList.Count());
+        sender.Writer.Write(snList.Count);
         foreach (var sn in snList)
         {
             sender.Writer.Write(sn);
@@ -238,7 +238,7 @@ public sealed class Sniper : RoleBase, IImpostor
 
             //あたった通知
             Player.RPCPlayCustomSound("AWP");
-            if (!Player.IsModClient() && killed) Player.RpcGuardAndKill();
+            if (!Player.IsModClient() && killed) Player.RpcProtectedMurderPlayer();
             if (killed) RPC.PlaySoundRPC(Player.PlayerId, Sounds.KillSound);
             else Player.Notify(GetString("SniperKillFaild"));
 
@@ -252,7 +252,7 @@ public sealed class Sniper : RoleBase, IImpostor
                 Utils.NotifyRoles(SpecifySeer: otherPc);
             }
             SendRPC();
-            new LateTask(
+            _ = new LateTask(
                 () =>
                 {
                     snList.Clear();

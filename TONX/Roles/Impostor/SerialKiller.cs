@@ -1,6 +1,7 @@
 using AmongUs.GameOptions;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
+using TONX.Roles.Neutral;
 using UnityEngine;
 using static TONX.Translator;
 
@@ -70,7 +71,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
     }
     public override void OnFixedUpdate(PlayerControl player)
     {
-        if (AmongUsClient.Instance.AmHost)
+        if (AmongUsClient.Instance.AmHost && !ExileController.Instance)
         {
             if (!HasKilled())
             {
@@ -86,7 +87,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
             {
                 //自爆時間が来たとき
                 MyState.DeathReason = CustomDeathReason.Suicide;//死因：自殺
-                Player.RpcMurderPlayerEx(Player);//自殺させる
+                Player.RpcMurderPlayer(Player);//自殺させる
                 SuicideTimer = null;
             }
             else
@@ -107,5 +108,9 @@ public sealed class SerialKiller : RoleBase, IImpostor
             if (HasKilled())
                 SuicideTimer = 0f;
         }
+    }
+    public void OnSchrodingerCatKill(SchrodingerCat schrodingerCat)
+    {
+        SuicideTimer = null;
     }
 }

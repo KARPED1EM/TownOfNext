@@ -3,7 +3,7 @@ using HarmonyLib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using TONX.Attributes;
 using TONX.Roles.Core;
 using TONX.Roles.Neutral;
 
@@ -14,11 +14,21 @@ public class PlayerState
     byte PlayerId;
     public CustomRoles MainRole;
     public List<CustomRoles> SubRoles;
-    public CountTypes countTypes;
+    public CountTypes CountType { get; private set; }
     public bool IsDead { get; set; }
     public CustomDeathReason DeathReason { get; set; }
     public TaskState taskState;
     public bool IsBlackOut { get; set; }
+    private bool _canUseMovingPlatform = true;
+    public bool CanUseMovingPlatform
+    {
+        get => _canUseMovingPlatform;
+        set
+        {
+            Logger.Info($"ID: {PlayerId} の昇降機可用性を {value} に設定", nameof(PlayerState));
+            _canUseMovingPlatform = value;
+        }
+    }
     public (DateTime, byte) RealKiller;
     public PlainShipRoom LastRoom;
     public Dictionary<byte, string> TargetColorData;
@@ -26,7 +36,7 @@ public class PlayerState
     {
         MainRole = CustomRoles.NotAssigned;
         SubRoles = new();
-        countTypes = CountTypes.OutOfGame;
+        CountType = CountTypes.OutOfGame;
         PlayerId = playerId;
         IsDead = false;
         DeathReason = CustomDeathReason.etc;
@@ -56,15 +66,13 @@ public class PlayerState
     {
         MainRole = role;
 
-        // 役職クラスのコンストラクタでセット済なら不要
-        if (CustomRoleManager.GetByPlayerId(PlayerId) == null)
-        {
-            countTypes = role switch
-            {
-                CustomRoles.GM => CountTypes.OutOfGame,
-                _ => role.IsImpostor() ? CountTypes.Impostor : CountTypes.Crew,
-            };
-        }
+        CountType = CustomRoleManager.GetRoleInfo(role) is SimpleRoleInfo roleInfo ?
+               roleInfo.CountType :
+               role switch
+               {
+                   CustomRoles.GM => CountTypes.OutOfGame,
+                   _ => role.IsImpostor() ? CountTypes.Impostor : CountTypes.Crew,
+               };
     }
     public void SetSubRole(CustomRoles role, bool AllReplace = false)
     {
@@ -76,7 +84,7 @@ public class PlayerState
 
         if (role == CustomRoles.Madmate)
         {
-            countTypes = Options.MadmateCountMode.GetInt() switch
+            CountType = Options.MadmateCountMode.GetInt() switch
             {
                 0 => CountTypes.OutOfGame,
                 1 => CountTypes.Impostor,
@@ -87,11 +95,11 @@ public class PlayerState
         }
         if (role == CustomRoles.Charmed)
         {
-            countTypes = Succubus.OptionCharmedCountMode.GetInt() switch
+            CountType = Succubus.OptionCharmedCountMode.GetInt() switch
             {
                 0 => CountTypes.OutOfGame,
                 1 => CountTypes.Succubus,
-                2 => countTypes,
+                2 => CountType,
                 _ => throw new NotImplementedException()
             };
             SubRoles.Remove(CustomRoles.Madmate);
@@ -133,11 +141,14 @@ public class PlayerState
                 count++;
         return count;
     }
+    public void SetCountType(CountTypes countType) => CountType = countType;
 
     private static Dictionary<byte, PlayerState> allPlayerStates = new(15);
     public static IReadOnlyDictionary<byte, PlayerState> AllPlayerStates => allPlayerStates;
 
     public static PlayerState GetByPlayerId(byte playerId) => AllPlayerStates.TryGetValue(playerId, out var state) ? state : null;
+
+    [GameModuleInitializer]
     public static void Clear() => allPlayerStates.Clear();
     public static void Create(byte playerId)
     {
@@ -181,9 +192,6 @@ public class TaskState
     public void Update(PlayerControl player)
     {
         Logger.Info($"{player.GetNameWithRole()}: UpdateTask", "TaskState.Update");
-        GameData.Instance.RecomputeTaskCounts();
-        //PlayerControl.CompleteTask Prefixから呼ばれるのでGameDataとは1ずれている
-        Logger.Info($"TotalTaskCounts = {GameData.Instance.CompletedTasks + 1}/{GameData.Instance.TotalTasks}", "TaskState.Update");
 
         //初期化出来ていなかったら初期化
         if (AllTasksCount == -1) Init(player);
@@ -199,14 +207,14 @@ public class TaskState
         CompletedTasksCount = Math.Min(AllTasksCount, CompletedTasksCount);
         Logger.Info($"{player.GetNameWithRole()}: TaskCounts = {CompletedTasksCount}/{AllTasksCount}", "TaskState.Update");
     }
+    public bool HasCompletedEnoughCountOfTasks(int count) =>
+            IsTaskFinished || CompletedTasksCount >= count;
 }
 public class PlayerVersion
 {
     public readonly Version version;
     public readonly string tag;
     public readonly string forkId;
-    [Obsolete] public PlayerVersion(string ver, string tag_str) : this(Version.Parse(ver), tag_str, "") { }
-    [Obsolete] public PlayerVersion(Version ver, string tag_str) : this(ver, tag_str, "") { }
     public PlayerVersion(string ver, string tag_str, string forkId) : this(Version.Parse(ver), tag_str, forkId) { }
     public PlayerVersion(Version ver, string tag_str, string forkId)
     {

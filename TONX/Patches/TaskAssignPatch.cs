@@ -80,7 +80,7 @@ class RpcSetTasksPatch
         }
 
         //管理员和摆烂人没有任务
-        if (pc.Is(CustomRoles.GM) || pc.Is(CustomRoles.Needy) || Options.CurrentGameMode == CustomGameMode.SoloKombat)
+        if (pc.Is(CustomRoles.GM) || pc.Is(CustomRoles.Needy))
         {
             hasCommonTasks = false;
             NumShortTasks = 0;
@@ -126,7 +126,7 @@ class RpcSetTasksPatch
 
         //割り当て可能なショートタスクのリスト
         Il2CppSystem.Collections.Generic.List<NormalPlayerTask> ShortTasks = new();
-        foreach (var task in ShipStatus.Instance.NormalTasks)
+        foreach (var task in ShipStatus.Instance.ShortTasks)
             ShortTasks.Add(task);
         Shuffle<NormalPlayerTask>(ShortTasks);
 

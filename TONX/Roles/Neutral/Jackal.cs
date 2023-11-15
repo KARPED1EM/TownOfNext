@@ -5,7 +5,7 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Roles.Neutral;
-public sealed class Jackal : RoleBase, IKiller
+public sealed class Jackal : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
@@ -18,14 +18,15 @@ public sealed class Jackal : RoleBase, IKiller
             SetupOptionItem,
             "jac|²òÀÇ",
             "#00b4eb",
-            true
+            true,
+            countType: CountTypes.Jackal,
+            assignCountRule: new(1, 1, 1)
         );
     public Jackal(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Jackal
+        () => HasTask.False
     )
     {
         KillCooldown = OptionKillCooldown.GetFloat();
@@ -55,6 +56,9 @@ public sealed class Jackal : RoleBase, IKiller
     public static bool WinBySabotage;
     private static bool HasImpostorVision;
     private static bool ResetKillCooldown;
+
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Jackal;
+
     private static void SetupOptionItem()
     {
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, GeneralOption.KillCooldown, new(2.5f, 180f, 2.5f), 20f, false)
@@ -66,12 +70,11 @@ public sealed class Jackal : RoleBase, IKiller
         OptionResetKillCooldownWhenSbGetKilled = BooleanOptionItem.Create(RoleInfo, 15, OptionName.ResetKillCooldownWhenPlayerGetKilled, true, false);
     }
     public float CalculateKillCooldown() => KillCooldown;
+    public bool CanUseSabotageButton() => CanUseSabotage;
+    public bool CanUseImpostorVentButton() => CanVent;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(HasImpostorVision);
-    public static void SetHudActive(HudManager __instance, bool isActive)
-    {
-        __instance.SabotageButton.ToggleVisible(isActive && CanUseSabotage);
-    }
-    public override bool CanSabotage(SystemTypes systemType) => CanUseSabotage;
+    public override bool OnInvokeSabotage(SystemTypes systemType) => CanUseSabotage;
+    public void ApplySchrodingerCatOptions(IGameOptions option) => ApplyGameOptions(option);
     public static void OnMurderPlayerOthers(MurderInfo info)
     {
         if (!ResetKillCooldown || info.IsSuicide || info.IsAccident) return;

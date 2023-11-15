@@ -58,9 +58,6 @@ public sealed class Counterfeiter : RoleBase, IKiller
     {
         var playerId = Player.PlayerId;
         SellLimit = OptionSellNums.GetInt();
-
-        if (!Main.ResetCamPlayerList.Contains(playerId))
-            Main.ResetCamPlayerList.Add(playerId);
     }
     private void SendRPC()
     {
@@ -74,7 +71,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
     }
     public float CalculateKillCooldown() => CanUseKillButton() ? OptionSellCooldown.GetFloat() : 255f;
     public bool CanUseKillButton() => Player.IsAlive() && SellLimit >= 1;
-    public override bool CanSabotage(SystemTypes systemType) => false;
+    public bool CanUseSabotageButton() => false;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
     public bool OverrideKillButtonText(out string text)
     {

@@ -61,8 +61,8 @@ public sealed class CursedWolf : RoleBase, IImpostor
         SpellLimit--;
         SendRPC();
 
-        killer.RpcGuardAndKill(target);
-        target.RpcGuardAndKill(target);
+        killer.RpcProtectedMurderPlayer(target);
+        target.RpcProtectedMurderPlayer(target);
 
         killer.SetDeathReason(CustomDeathReason.Spell);
         target.RpcMurderPlayerV2(killer);

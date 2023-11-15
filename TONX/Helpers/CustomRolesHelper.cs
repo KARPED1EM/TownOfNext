@@ -7,7 +7,12 @@ namespace TONX;
 
 static class CustomRolesHelper
 {
-    public static readonly CustomRoles[] AllRoles = EnumHelper.GetAllValues<CustomRoles>();
+    /// <summary>¤¹¤Ù¤Æ¤ÎÒÛÂš(ÊôÐÔ¤Ïº¬¤Þ¤Ê¤¤)</summary>
+    public static readonly CustomRoles[] AllRoles = EnumHelper.GetAllValues<CustomRoles>().Where(role => role < CustomRoles.NotAssigned).ToArray();
+    /// <summary>¤¹¤Ù¤Æ¤ÎÊôÐÔ</summary>
+    public static readonly CustomRoles[] AllAddOns = EnumHelper.GetAllValues<CustomRoles>().Where(role => role > CustomRoles.NotAssigned).ToArray();
+    /// <summary>¥¹¥¿¥ó¥À©`¥É¥â©`¥É¤Ç³ö¬F¤Ç¤­¤ë¤¹¤Ù¤Æ¤ÎÒÛÂš</summary>
+    public static readonly CustomRoles[] AllStandardRoles = AllRoles.ToArray();
     public static readonly CustomRoleTypes[] AllRoleTypes = EnumHelper.GetAllValues<CustomRoleTypes>();
 
     public static bool IsImpostor(this CustomRoles role)
@@ -36,9 +41,8 @@ static class CustomRolesHelper
             CustomRoles.Scientist;
     }
     public static bool IsAddon(this CustomRoles role) => (int)role > 500;
-    public static bool IsValid(this CustomRoles role) => role is not CustomRoles.KB_Normal and not CustomRoles.GM and not CustomRoles.NotAssigned;
-    public static bool Exist(this CustomRoles role, bool CountDeath = false) => Main.AllPlayerControls.Any(x => x.Is(role) && x.IsAlive() || CountDeath);
-    public static bool IsDesyncRole(this CustomRoles role) => role.GetRoleInfo()?.CustomRoleType != CustomRoleTypes.Impostor && role.GetRoleInfo()?.BaseRoleType.Invoke() is RoleTypes.Impostor or RoleTypes.Shapeshifter or RoleTypes.ImpostorGhost;
+    public static bool IsValid(this CustomRoles role) => role is not CustomRoles.GM and not CustomRoles.NotAssigned;
+    public static bool IsExist(this CustomRoles role, bool CountDeath = false) => Main.AllPlayerControls.Any(x => x.Is(role) && x.IsAlive() || CountDeath);
     public static bool IsVanilla(this CustomRoles role)
     {
         return

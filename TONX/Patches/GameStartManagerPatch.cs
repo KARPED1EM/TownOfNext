@@ -44,8 +44,9 @@ public class GameStartManagerPatch
             HideName = Object.Instantiate(__instance.GameRoomNameCode, __instance.GameRoomNameCode.transform);
             HideName.gameObject.SetActive(true);
             HideName.name = "HideName";
-            ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor);
-            HideName.color = ColorUtility.TryParseHtmlString(Main.HideColor.Value, out var color) ? color : modColor;
+            HideName.color =
+                    ColorUtility.TryParseHtmlString(Main.HideColor.Value, out var color) ? color :
+                    ColorUtility.TryParseHtmlString(Main.ModColor, out var modColor) ? modColor : HideName.color;
             HideName.text = Main.HideName.Value;
 
             warningText = Object.Instantiate(__instance.GameStartText, __instance.transform);
@@ -77,7 +78,7 @@ public class GameStartManagerPatch
             if (!AmongUsClient.Instance.AmHost) return;
 
             // Make Public Button
-            if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !Main.AllowPublicRoom || !VersionChecker.IsSupported)
+            if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !Main.AllowPublicRoom || !VersionChecker.IsSupported || !Main.IsPublicAvailableOnThisVersion)
             {
                 __instance.MakePublicButton.color = Palette.DisabledClear;
                 __instance.privatePublicText.color = Palette.DisabledClear;
@@ -212,7 +213,7 @@ public static class GameStartManagerBeginGamePatch
     public static bool Prefix(GameStartManager __instance)
     {
         var invalidColor = Main.AllPlayerControls.Where(p => p.Data.DefaultOutfit.ColorId < 0 || Palette.PlayerColors.Length <= p.Data.DefaultOutfit.ColorId);
-        if (invalidColor.Count() != 0)
+        if (invalidColor.Any())
         {
             Logger.SendInGame(GetString("Error.InvalidColorPreventStart"));
             var msg = GetString("Error.InvalidColor");
@@ -250,12 +251,14 @@ public static class GameStartManagerBeginGamePatch
             MIRAHQ     = 1
             Polus      = 2
             Dleks      = 3
-            TheAirShip = 4*/
+            TheAirShip = 4
+            TheFungle  = 5*/
             if (Options.AddedTheSkeld.GetBool()) randomMaps.Add(0);
             if (Options.AddedMiraHQ.GetBool()) randomMaps.Add(1);
             if (Options.AddedPolus.GetBool()) randomMaps.Add(2);
             // if (Options.AddedDleks.GetBool()) RandomMaps.Add(3);
             if (Options.AddedTheAirShip.GetBool()) randomMaps.Add(4);
+            if (Options.AddedTheFungle.GetBool()) randomMaps.Add(5);
 
             if (randomMaps.Count <= 0) return;
             var mapsId = randomMaps[rand.Next(randomMaps.Count)];

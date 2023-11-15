@@ -1,8 +1,9 @@
 using HarmonyLib;
 using System;
-using System.Globalization;
 using TMPro;
+using TONX.Templates;
 using UnityEngine;
+using static TONX.Translator;
 using Object = UnityEngine.Object;
 
 namespace TONX;
@@ -65,6 +66,8 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
     public static void Start_Postfix(MainMenuManager __instance)
     {
+        SimpleButton.SetBase(__instance.quitButton);
+
         int row = 1; int col = 0;
         GameObject CreatButton(string text, Action action)
         {
@@ -82,12 +85,21 @@ public class MainMenuManagerPatch
             return button;
         }
 
-        bool china = CultureInfo.CurrentCulture.Name == "zh-CN";
-        if (InviteButton == null) InviteButton = CreatButton(china ? "QQ群" : "Discord", () => { Application.OpenURL(china ? Main.QQInviteUrl : Main.DiscordInviteUrl); });
-        InviteButton.gameObject.SetActive(china ? Main.ShowQQButton : Main.ShowDiscordButton);
-        InviteButton.name = "TONX Invite Button";
+        string extraLinkName = "Github";
+        string extraLinkUrl = Main.GithubRepoUrl;
+        bool extraLinkEnabled = Main.ShowGithubUrl;
+        if (IsChineseUser ? Main.ShowQQButton : Main.ShowDiscordButton)
+        {
+            extraLinkName = IsChineseUser ? "QQ群" : "Discord";
+            extraLinkUrl = IsChineseUser ? Main.QQInviteUrl : Main.DiscordInviteUrl;
+            extraLinkEnabled = true;
+        }
 
-        if (WebsiteButton == null) WebsiteButton = CreatButton(Translator.GetString("Website"), () => Application.OpenURL("https://tonx.cc"));
+        if (InviteButton == null) InviteButton = CreatButton(extraLinkName, () => { Application.OpenURL(extraLinkUrl); });
+        InviteButton.gameObject.SetActive(extraLinkEnabled);
+        InviteButton.name = "TONX Extra Link Button";
+
+        if (WebsiteButton == null) WebsiteButton = CreatButton(GetString("Website"), () => Application.OpenURL(Main.WebsiteUrl));
         WebsiteButton.gameObject.SetActive(Main.ShowWebsiteButton);
         WebsiteButton.name = "TONX Website Button";
 

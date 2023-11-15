@@ -18,14 +18,14 @@ public sealed class Succubus : RoleBase, IKiller
             SetupOptionItem,
             "su",
             "#ff00ff",
-            true
+            true,
+            countType: CountTypes.Succubus
         );
     public Succubus(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Succubus
+        () => HasTask.False
     )
     { }
 
@@ -73,7 +73,7 @@ public sealed class Succubus : RoleBase, IKiller
         return OptionCharmCooldown.GetFloat() + (OptionCharmMax.GetInt() - CharmLimit) * OptionCharmCooldownIncrese.GetFloat();
     }
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
-    public static void SetHudActive(HudManager __instance, bool isActive) => __instance.SabotageButton.ToggleVisible(false);
+    public bool CanUseSabotageButton() => false;
     private void SendRPC()
     {
         var sender = CreateSender(CustomRPC.SetSuccubusCharmLimit);
@@ -102,9 +102,9 @@ public sealed class Succubus : RoleBase, IKiller
 
             killer.ResetKillCooldown();
             killer.SetKillCooldown();
-            killer.RpcGuardAndKill(target);
-            target.RpcGuardAndKill(killer);
-            target.RpcGuardAndKill(target);
+            killer.RpcProtectedMurderPlayer(target);
+            target.RpcProtectedMurderPlayer(killer);
+            target.RpcProtectedMurderPlayer(target);
 
             Logger.Info($"注册附加职业：{target.GetNameWithRole()} => {CustomRoles.Charmed}", "AssignCustomSubRoles");
             Logger.Info($"{killer.GetNameWithRole()} : 剩余{CharmLimit}次魅惑机会", "Succubus");
@@ -114,11 +114,11 @@ public sealed class Succubus : RoleBase, IKiller
         Logger.Info($"{killer.GetNameWithRole()} : 剩余{CharmLimit}次魅惑机会", "Succubus");
         return false;
     }
-    public override void OverrideRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
+    public override void OverrideDisplayRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
     {
         if (OptionKnowTargetRole.GetBool() && seen.Is(CustomRoles.Charmed)) enabled = true;
     }
-    public override void OverrideRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
+    public override void OverrideDisplayRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
     {
         if (seer.Is(CustomRoles.Charmed)) enabled = true;
     }

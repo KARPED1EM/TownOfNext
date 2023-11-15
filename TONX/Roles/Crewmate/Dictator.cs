@@ -24,25 +24,27 @@ public sealed class Dictator : RoleBase
     )
     { }
 
-    public override void OnStartMeeting() => LastVoted = byte.MaxValue;
-    private byte LastVoted;
-    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
+    public override void OnStartMeeting() => lastVoted = byte.MaxValue;
+    private byte lastVoted;
+    public override bool CheckVoteAsVoter(PlayerControl votedFor)
     {
-        if (voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive()) return true;
-
-        if (LastVoted == roleVoteFor)
+        if (votedFor != null && lastVoted == votedFor.PlayerId) return true;
+        lastVoted = votedFor.PlayerId;
+        ModifyVote(Player.PlayerId, votedFor.PlayerId, true);
+        Utils.SendMessage(Translator.GetString("DictatorOnVote"), Player.PlayerId);
+        return false;
+    }
+    public override (byte? votedForId, int? numVotes, bool doVote) ModifyVote(byte voterId, byte sourceVotedForId, bool isIntentional)
+    {
+        var (votedForId, numVotes, doVote) = base.ModifyVote(voterId, sourceVotedForId, isIntentional);
+        var baseVote = (votedForId, numVotes, doVote);
+        if (!isIntentional || voterId != Player.PlayerId || sourceVotedForId == Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive())
         {
-            MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Suicide, Player.PlayerId);
-            Utils.GetPlayerById(sourceVotedForId).SetRealKiller(Player);
-            MeetingVoteManager.Instance.ClearAndExile(Player.PlayerId, sourceVotedForId);
-            return false;
+            return baseVote;
         }
-        else
-        {
-            Utils.SendMessage(Translator.GetString("DictatorOnVote"), Player.PlayerId);
-            LastVoted = roleVoteFor;
-            clearVote = true;
-            return true;
-        }
+        MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Suicide, Player.PlayerId);
+        Utils.GetPlayerById(sourceVotedForId).SetRealKiller(Player);
+        MeetingVoteManager.Instance.ClearAndExile(Player.PlayerId, sourceVotedForId);
+        return (votedForId, numVotes, false);
     }
 }

@@ -2,6 +2,7 @@ using HarmonyLib;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
+using TONX.Templates;
 using UnityEngine;
 
 using static TONX.Translator;
@@ -43,7 +44,7 @@ internal class PingTrackerUpdatePatch
         }
 
         var offset_x = 1.2f; //右端からのオフセット
-        if (HudManager.InstanceExists && HudManager._instance.Chat.ChatButton.active) offset_x += 0.8f; //チャットボタンがある場合の追加オフセット
+        if (HudManager.InstanceExists && HudManager._instance.Chat.chatButton.active) offset_x += 0.8f; //チャットボタンがある場合の追加オフセット
         if (FriendsListManager.InstanceExists && FriendsListManager._instance.FriendsListButton.Button.active) offset_x += 0.8f; //フレンドリストボタンがある場合の追加オフセット
         __instance.GetComponent<AspectPosition>().DistanceFromEdge = new Vector3(offset_x, 0f, 0f);
 
@@ -57,9 +58,18 @@ internal class VersionShowerStartPatch
     private static TextMeshPro VisitText;
     private static void Postfix(VersionShower __instance)
     {
+        TMPTemplate.SetBase(__instance.text);
         Main.CredentialsText = $"\r\n<color={Main.ModColor}>{Main.ModName}</color> - {Main.PluginVersion}";
 #if DEBUG
         Main.CredentialsText = $"\r\n<color=#00a4ff>{ThisAssembly.Git.Branch}</color> - {ThisAssembly.Git.Commit}";
+#endif
+
+#if RELEASE
+        string additionalCredentials = GetString("TextBelowVersionText");
+        if (additionalCredentials != null && additionalCredentials != "*TextBelowVersionText")
+        {
+            Main.CredentialsText += $"\r\n{additionalCredentials}";
+        }
 #endif
 
         ErrorText.Create(__instance.text);
@@ -237,5 +247,14 @@ internal class ModManagerLateUpdatePatch
         __instance.ModStamp.transform.position = AspectPosition.ComputeWorldPosition(
             __instance.localCamera, AspectPosition.EdgeAlignments.RightTop,
             new Vector3(0.4f, offset_y, __instance.localCamera.nearClipPlane + 0.1f));
+    }
+}
+[HarmonyPatch(typeof(CreditsScreenPopUp))]
+internal class CreditsScreenPopUpPatch
+{
+    [HarmonyPatch(nameof(CreditsScreenPopUp.OnEnable))]
+    public static void Postfix(CreditsScreenPopUp __instance)
+    {
+        __instance.BackButton.transform.parent.FindChild("Background").gameObject.SetActive(false);
     }
 }

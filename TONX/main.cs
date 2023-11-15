@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 
@@ -32,16 +33,21 @@ public class Main : BasePlugin
     public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
-    public const string PluginGuid = "com.karped1em.tonx";
-    public const string LowestSupportedVersion = "2023.6.13";
-    public const string PluginVersion = "1.0.0";
+    public const string PluginGuid = "cn.karped1em.tonx";
+    public const string LowestSupportedVersion = "2023.10.24";
+    // このバージョンのみで公開ルームを無効にする場合
+    public static readonly bool IsPublicAvailableOnThisVersion = false;
+    public const string PluginVersion = "3.0.0";
     public const int PluginCreation = 1;
 
     public static readonly bool ShowWebsiteButton = true;
-    public static readonly bool ShowQQButton = true;
+    public static readonly string WebsiteUrl = Translator.IsChineseLanguageUser ? "https://tonx.cc/zh" : "https://tonx.cc";
+    public static readonly bool ShowQQButton = false;
     public static readonly string QQInviteUrl = "https://jq.qq.com/?_wv=1027&k=2RpigaN6";
-    public static readonly bool ShowDiscordButton = true;
+    public static readonly bool ShowDiscordButton = false;
     public static readonly string DiscordInviteUrl = "https://discord.gg/hkk2p9ggv4";
+    public static readonly bool ShowGithubUrl = true;
+    public static readonly string GithubRepoUrl = "https://github.com/KARPED1EM/TownOfNext";
 
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
@@ -56,6 +62,7 @@ public class Main : BasePlugin
     public static ConfigEntry<string> HideName { get; private set; }
     public static ConfigEntry<string> HideColor { get; private set; }
     public static ConfigEntry<int> MessageWait { get; private set; }
+    public static ConfigEntry<bool> ShowResults { get; private set; }
     public static ConfigEntry<bool> UnlockFPS { get; private set; }
     public static ConfigEntry<bool> HorseMode { get; private set; }
     public static ConfigEntry<bool> AutoStartGame { get; private set; }
@@ -85,7 +92,6 @@ public class Main : BasePlugin
     public static Dictionary<byte, Color32> PlayerColors = new();
     public static Dictionary<byte, CustomDeathReason> AfterMeetingDeathPlayers = new();
     public static Dictionary<CustomRoles, string> roleColors;
-    public static List<byte> ResetCamPlayerList = new();
     public static List<byte> winnerList = new();
     public static List<string> winnerNameList = new();
     public static List<int> clientIdList = new();
@@ -145,6 +151,7 @@ public class Main : BasePlugin
         HideName = Config.Bind("Client Options", "Hide Game Code Name", "TONX");
         HideColor = Config.Bind("Client Options", "Hide Game Code Color", $"{ModColor}");
         DebugKeyInput = Config.Bind("Authentication", "Debug Key", "");
+        ShowResults = Config.Bind("Result", "Show Results", true);
         UnlockFPS = Config.Bind("Client Options", "UnlockFPS", false);
         HorseMode = Config.Bind("Client Options", "HorseMode", false);
         AutoStartGame = Config.Bind("Client Options", "AutoStartGame", false);
@@ -197,6 +204,7 @@ public class Main : BasePlugin
         Preset5 = Config.Bind("Preset Name Options", "Preset5", "Preset_5");
         WebhookURL = Config.Bind("Other", "WebhookURL", "none");
         MessageWait = Config.Bind("Other", "MessageWait", 1);
+
         LastKillCooldown = Config.Bind("Other", "LastKillCooldown", (float)30);
         LastShapeshifterCooldown = Config.Bind("Other", "LastShapeshifterCooldown", (float)30);
 
@@ -206,9 +214,6 @@ public class Main : BasePlugin
         {
             roleColors = new Dictionary<CustomRoles, string>()
             {
-                //SoloKombat
-                {CustomRoles.KB_Normal, "#f55252"},
-
                 //GM
                 {CustomRoles.GM, "#ff5b70"},
 
@@ -264,14 +269,9 @@ public class Main : BasePlugin
             ExceptionMessageIsShown = false;
         }
 
-        Translator.Init();
-        CustomWinnerHolder.Reset();
-        RegistryManager.Init();
-        ServerAddManager.Init();
-        BanManager.Init();
-        TemplateManager.Init();
-        SpamManager.Init();
-        Cloud.Init();
+        RegistryManager.Init(); // 这是优先级最高的模块初始化方法，不能使用模块初始化属性
+
+        PluginModuleInitializerAttribute.InitializeAll();
 
         IRandom.SetInstance(new NetRandomWrapper());
 
@@ -309,6 +309,7 @@ public enum CustomDeathReason
     Sniped,
     Revenge,
     Execution,
+    Infected,
     Disconnected,
     Fall,
 
@@ -354,17 +355,7 @@ public enum CustomWinner
     Collector = CustomRoles.Collector,
     BloodKnight = CustomRoles.BloodKnight,
     Succubus = CustomRoles.Succubus,
-}
-public enum AdditionalWinners
-{
-    None = -1,
-    Lovers = CustomRoles.Lovers,
-    Opportunist = CustomRoles.Opportunist,
-    Executioner = CustomRoles.Executioner,
-    FFF = CustomRoles.FFF,
-    Provocateur = CustomRoles.Provocateur,
-    Sunnyboy = CustomRoles.Sunnyboy,
-    Totocalcio = CustomRoles.Totocalcio,
+    PlagueDoctor = CustomRoles.PlagueDoctor,
 }
 public enum SuffixModes
 {

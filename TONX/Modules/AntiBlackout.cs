@@ -1,12 +1,10 @@
-using AmongUs.GameOptions;
 using Hazel;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
+using TONX.Attributes;
 using TONX.Modules;
 using TONX.Roles.Core;
-
 namespace TONX;
 
 public static class AntiBlackout
@@ -14,32 +12,8 @@ public static class AntiBlackout
     ///<summary>
     ///追放処理を上書きするかどうか
     ///</summary>
-    public static bool OverrideExiledPlayer => IsRequired && (IsSingleImpostor || Diff_CrewImp == 1);
-    ///<summary>
-    ///インポスターが一人しか存在しない設定かどうか
-    ///</summary>
-    public static bool IsSingleImpostor => (Main.RealOptionsData != null ? Main.RealOptionsData.GetInt(Int32OptionNames.NumImpostors) : Main.NormalOptions.NumImpostors) - Main.AllPlayerControls.Count(x => GameStates.IsInGame && x.Is(CustomRoles.Crewpostor)) <= 1;
-    ///<summary>
-    ///AntiBlackout内の処理が必要であるかどうか
-    ///</summary>
-    public static bool IsRequired => Options.NoGameEnd.GetBool() || CustomRoles.Jackal.Exist(true) || CustomRoles.Pelican.Exist(true) || CustomRoles.Gamer.Exist(true) || CustomRoles.BloodKnight.Exist(true) || CustomRoles.Succubus.Exist(true);
-    ///<summary>
-    ///インポスター以外の人数とインポスターの人数の差
-    ///</summary>
-    public static int Diff_CrewImp
-    {
-        get
-        {
-            int numImpostors = 0;
-            int numCrewmates = 0;
-            foreach (var pc in Main.AllPlayerControls)
-            {
-                if (pc.Data.Role.IsImpostor) numImpostors++;
-                else numCrewmates++;
-            }
-            return numCrewmates - numImpostors;
-        }
-    }
+    public static bool OverrideExiledPlayer => Options.NoGameEnd.GetBool() || CustomRoles.Jackal.IsExist(true) || CustomRoles.Pelican.IsExist(true) || CustomRoles.Gamer.IsExist(true) || CustomRoles.BloodKnight.IsExist(true) || CustomRoles.Succubus.IsExist(true);
+
     public static bool IsCached { get; private set; } = false;
     private static Dictionary<byte, (bool isDead, bool Disconnected)> isDeadCache = new();
     private readonly static LogHandler logger = Logger.Handler("AntiBlackout");
@@ -136,6 +110,7 @@ public static class AntiBlackout
         }
     }
 
+    [GameModuleInitializer]
     public static void Reset()
     {
         logger.Info("==Reset==");

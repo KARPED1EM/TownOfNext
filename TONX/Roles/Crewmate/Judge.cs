@@ -117,7 +117,6 @@ public sealed class Judge : RoleBase, IMeetingButton
             dp.RpcSuicideWithAnime();
 
             //死者检查
-            Utils.AfterPlayerDeathTasks(dp, true);
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
             new LateTask(() => { Utils.SendMessage(string.Format(GetString("TrialKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Judge), GetString("TrialKillTitle"))); }, 0.6f, "Guess Msg");

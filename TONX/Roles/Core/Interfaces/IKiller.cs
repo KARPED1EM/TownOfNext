@@ -28,6 +28,17 @@ public interface IKiller
     /// </summary>
     /// <returns>击杀冷却时间（秒）</returns>
     public float CalculateKillCooldown() => CanUseKillButton() ? Options.DefaultKillCooldown : 255f;
+    /// <summary>
+    /// サボタージュボタンを使えるかどうか
+    /// </summary>
+    /// <returns>trueを返した場合，サボタージュボタンを使える</returns>
+    public bool CanUseSabotageButton();
+    /// <summary>
+    /// ベントボタンを使えるかどうか
+    /// デフォルトでは使用可能
+    /// </summary>
+    /// <returns>trueを返した場合，ベントボタンを使える</returns>
+    public bool CanUseImpostorVentButton() => true;
 
     /// <summary>
     /// CheckMurder 作为击杀者时的处理函数<br/>

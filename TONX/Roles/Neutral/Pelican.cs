@@ -8,7 +8,7 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Neutral;
-public sealed class Pelican : RoleBase, IKiller
+public sealed class Pelican : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
@@ -21,14 +21,14 @@ public sealed class Pelican : RoleBase, IKiller
             SetupOptionItem,
             "pe|鵜鶘",
             "#34c84b",
-            true
+            true,
+            countType: CountTypes.Pelican
         );
     public Pelican(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Pelican
+        () => HasTask.False
     )
     {
         OriginalSpeed = new();
@@ -48,6 +48,8 @@ public sealed class Pelican : RoleBase, IKiller
 
     public static bool CanVent;
 
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Pelican;
+
     private static void SetupOptionItem()
     {
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.PelicanKillCooldown, new(2.5f, 180f, 2.5f), 30f, false)
@@ -62,7 +64,7 @@ public sealed class Pelican : RoleBase, IKiller
         return OptionKillCooldown.GetFloat();
     }
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
-    public static void SetHudActive(HudManager __instance, bool isActive) => __instance.SabotageButton.ToggleVisible(false);
+    public bool CanUseSabotageButton() => false;
     public bool CanUseKillButton() => Player.IsAlive();
     private void SendRPC()
     {
@@ -127,7 +129,6 @@ public sealed class Pelican : RoleBase, IKiller
             target.SetRealKiller(Player);
             target.SetDeathReason(CustomDeathReason.Eaten);
             PlayerState.GetByPlayerId(id)?.SetDead();
-            Utils.AfterPlayerDeathTasks(target, true);
 
             Logger.Info($"{Player.GetRealName()} 消化了 {target.GetRealName()}", "Pelican.OnReportDeadBody");
         }

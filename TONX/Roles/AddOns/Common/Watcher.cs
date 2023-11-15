@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -15,6 +16,7 @@ public static class Watcher
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Watcher);
         AddOnsAssignData.Create(Id + 10, CustomRoles.Watcher, true, true, true);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

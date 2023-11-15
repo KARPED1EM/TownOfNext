@@ -29,7 +29,15 @@ public static class MovingPlatformBehaviourPatch
         return true;
     }
     [HarmonyPatch(nameof(MovingPlatformBehaviour.Use), typeof(PlayerControl)), HarmonyPrefix]
-    public static bool UsePrefix() => !isDisabled;
+    public static bool UsePrefix([HarmonyArgument(0)] PlayerControl player)
+    {
+        // プレイヤーがぬーん使用不可状態のときに使用をブロック
+        if (!PlayerState.GetByPlayerId(player.PlayerId).CanUseMovingPlatform)
+        {
+            return false;
+        }
+        return !isDisabled;
+    }
     [HarmonyPatch(nameof(MovingPlatformBehaviour.SetSide)), HarmonyPrefix]
     public static bool SetSidePrefix() => !isDisabled;
 }

@@ -12,6 +12,7 @@ public static class RegistryManager
     public static RegistryKey SoftwareKeys => Registry.CurrentUser.OpenSubKey("Software", true);
     public static RegistryKey Keys = SoftwareKeys.OpenSubKey("AU-TONX", true);
     public static Version LastVersion;
+
     public static void Init()
     {
         if (Keys == null)
@@ -35,12 +36,14 @@ public static class RegistryManager
         List<string> FoldersToDel = new()
             {
                 @"./TOH_DATA",
-                @"./TONX_DATA"
+                @"./TOHE_DATA",
             };
 
-        if (LastVersion < new Version(3, 0, 0))
+        Logger.Warn("上次启动的TONX版本：" + LastVersion, "Registry Manager");
+
+        if (LastVersion < new Version(1, 0, 0))
         {
-            Logger.Warn("v3.0.0 New Version Operation Needed", "Registry Manager");
+            Logger.Warn("v1.0.0 New Version Operation Needed", "Registry Manager");
             FoldersToDel.Add(@"./BepInEx/config");
         }
 

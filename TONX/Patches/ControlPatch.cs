@@ -1,9 +1,8 @@
 using HarmonyLib;
 using Hazel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using TONX.Modules;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Translator;
@@ -16,14 +15,12 @@ internal class ControllerManagerUpdatePatch
     private static readonly (int, int)[] resolutions = { (480, 270), (640, 360), (800, 450), (1280, 720), (1600, 900), (1920, 1080) };
     private static int resolutionIndex = 0;
 
-    public static List<string> addDes = new();
-    public static int addonIndex = -1;
-
     public static void Postfix(ControllerManager __instance)
     {
         //切换自定义设置的页面
         if (GameStates.IsLobby && !ChatUpdatePatch.Active)
         {
+            //カスタム設定切り替え
             if (Input.GetKeyDown(KeyCode.Tab))
             {
                 if (Input.GetKey(KeyCode.LeftControl)) OptionShower.Previous();
@@ -38,44 +35,28 @@ internal class ControllerManagerUpdatePatch
                     OptionShowerPatch.Scroller.ScrollToTop();
                 }
             }
+            // 現在の設定を文字列形式のデータに変換してコピー
+            if (GetKeysDown(KeyCode.O, KeyCode.LeftAlt))
+            {
+                OptionSerializer.SaveToClipboard();
+            }
+            // 現在の設定を文字列形式のデータに変換してファイルに出力
+            if (GetKeysDown(KeyCode.L, KeyCode.LeftAlt))
+            {
+                OptionSerializer.SaveToFile();
+            }
+            // クリップボードから文字列形式の設定データを読み込む
+            if (GetKeysDown(KeyCode.P, KeyCode.LeftAlt))
+            {
+                OptionSerializer.LoadFromClipboard();
+            }
         }
         //职业介绍
         if (Input.GetKeyDown(KeyCode.F1) && GameStates.InGame && Options.CurrentGameMode == CustomGameMode.Standard)
         {
             try
             {
-                var role = PlayerControl.LocalPlayer.GetCustomRole();
-                var lp = PlayerControl.LocalPlayer;
-                var sb = new StringBuilder();
-                sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + lp.GetRoleInfo(true));
-                if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                    Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
-                HudManager.Instance.ShowPopUp(sb.ToString());
-            }
-            catch (Exception ex)
-            {
-                Logger.Exception(ex, "ControllerManagerUpdatePatch");
-                throw;
-            }
-        }
-        //附加职业介绍
-        if (Input.GetKeyDown(KeyCode.F2) && GameStates.InGame && Options.CurrentGameMode == CustomGameMode.Standard)
-        {
-            try
-            {
-                var role = PlayerControl.LocalPlayer.GetCustomRole();
-                var lp = PlayerControl.LocalPlayer;
-                if (PlayerState.GetByPlayerId(lp.PlayerId).SubRoles.Count < 1) return;
-
-                addDes = new();
-                foreach (var subRole in PlayerState.GetByPlayerId(lp.PlayerId).SubRoles.Where(x => x is not CustomRoles.Charmed))
-                    addDes.Add(GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                    addDes.Add(GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
-
-                addonIndex++;
-                if (addonIndex >= addDes.Count) addonIndex = 0;
-                HudManager.Instance.ShowPopUp(addDes[addonIndex]);
+                HudManager.Instance.ShowPopUp(PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo()?.Description?.FullFormatHelp ?? GetString(PlayerControl.LocalPlayer.GetCustomRole().ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
             }
             catch (Exception ex)
             {
@@ -166,7 +147,7 @@ internal class ControllerManagerUpdatePatch
         //将 TONX 选项设置为默认值
         if (GetKeysDown(KeyCode.Delete, KeyCode.LeftControl))
         {
-            OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValueNoRpc(x.DefaultValue));
+            OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValue(x.DefaultValue, false));
             Logger.SendInGame(GetString("RestTONXSetting"));
             if (!(!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)))
             {
@@ -211,10 +192,10 @@ internal class ControllerManagerUpdatePatch
         //打开飞艇所有的门
         if (GetKeysDown(KeyCode.Return, KeyCode.D, KeyCode.LeftShift) && GameStates.IsInGame)
         {
-            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 79);
-            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 80);
-            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 81);
-            ShipStatus.Instance.RpcRepairSystem(SystemTypes.Doors, 82);
+            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Doors, 79);
+            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Doors, 80);
+            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Doors, 81);
+            ShipStatus.Instance.RpcUpdateSystem(SystemTypes.Doors, 82);
         }
 
         //将击杀冷却设定为0秒

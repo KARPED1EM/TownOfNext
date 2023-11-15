@@ -1,5 +1,4 @@
 using HarmonyLib;
-using Hazel;
 using System.Collections.Generic;
 using System.Text;
 using TONX.Modules;
@@ -31,6 +30,8 @@ public static class MeetingHudPatch
             if (!AmongUsClient.Instance.AmHost) return true;
 
             var voter = Utils.GetPlayerById(srcPlayerId);
+            var voted = Utils.GetPlayerById(suspectPlayerId);
+
             if (voter != null)
             {
                 //主动叛变模式
@@ -50,36 +51,20 @@ public static class MeetingHudPatch
                         voter.ShowPopUp(GetString("MadmateSelfVoteModeMutinyFailed"));
                         Utils.SendMessage(GetString("MadmateSelfVoteModeMutinyFailed"), voter.PlayerId);
                     }
-                    ClearVote(__instance, voter);
+                    __instance.RpcClearVote(voter.GetClientId());
+                    Logger.Info($"{voter.GetNameWithRole()} 的投票被清除", nameof(CastVotePatch));
+                    return false;
+                }
+                if (voter.GetRoleClass()?.CheckVoteAsVoter(voted) == false)
+                {
+                    __instance.RpcClearVote(voter.GetClientId());
+                    Logger.Info($"{voter.GetNameWithRole()} 的投票被清除", nameof(CastVotePatch));
                     return false;
                 }
             }
 
-            if (MeetingVoteManager.Instance.AddVote(srcPlayerId, suspectPlayerId)) return true;
-            else
-            {
-                ClearVote(__instance, voter);
-                return false;
-            }
-        }
-        private static void ClearVote(MeetingHud hud, PlayerControl target)
-        {
-            new LateTask(() => { ClearVote(hud, target); }, 0.4f, "ClearVote First");
-            new LateTask(() => { ClearVote(hud, target); }, 0.6f, "ClearVote Second");
-            static void ClearVote(MeetingHud hud, PlayerControl target)
-            {
-                Logger.Info($"Clear Vote For: {target.GetNameWithRole()}", "ClearVote");
-                MessageWriter writer = MessageWriter.Get(SendOption.Reliable);
-                writer.StartMessage(6);
-                writer.Write(AmongUsClient.Instance.GameId);
-                writer.WritePacked(target.GetClientId());
-                {
-                    writer.StartMessage(2);
-                    writer.WritePacked(hud.NetId);
-                    writer.WritePacked((uint)RpcCalls.ClearVote);
-                }
-                AmongUsClient.Instance.FinishRpcImmediately(writer);
-            }
+            MeetingVoteManager.Instance?.SetVote(srcPlayerId, suspectPlayerId);
+            return true;
         }
     }
     [HarmonyPatch(typeof(MeetingHud), nameof(MeetingHud.Start))]
@@ -148,15 +133,16 @@ public static class MeetingHudPatch
             {
                 _ = new LateTask(() =>
                 {
-                    foreach (var seer in Main.AllPlayerControls)
+                    foreach (var seen in Main.AllPlayerControls)
                     {
-                        foreach (var target in Main.AllPlayerControls)
+                        var seenName = seen.GetRealName(isMeeting: true);
+                        var coloredName = Utils.ColorString(seen.GetRoleColor(), seenName);
+                        foreach (var seer in Main.AllPlayerControls)
                         {
-                            var targetName = target.GetTrueName();
-                            var coloredName = Utils.ColorString(target.GetRoleColor(), targetName);
-                            target.RpcSetNamePrivate(
-                                seer == target ? coloredName : targetName,
-                                true, seer);
+                            seen.RpcSetNamePrivate(
+                                seer == seen ? coloredName : seenName,
+                                true,
+                                seer);
                         }
                     }
                     ChatUpdatePatch.DoBlockChat = false;
@@ -219,7 +205,7 @@ public static class MeetingHudPatch
                 //海王相关显示
                 if ((seer.Is(CustomRoles.Ntr) || target.Is(CustomRoles.Ntr)) && !seer.Data.IsDead && !isLover)
                     sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), "♡"));
-                else if (seer == target && CustomRoles.Ntr.Exist() && !isLover)
+                else if (seer == target && CustomRoles.Ntr.IsExist() && !isLover)
                     sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), "♡"));
 
                 //会議画面ではインポスター自身の名前にSnitchマークはつけません。
@@ -261,7 +247,7 @@ public static class MeetingHudPatch
             if (AmongUsClient.Instance.AmHost)
             {
                 AntiBlackout.SetIsDead();
-                Main.AllPlayerControls.Do(pc => RandomSpawn.CustomNetworkTransformPatch.NumOfTP[pc.PlayerId] = 0);
+                Main.AllPlayerControls.Do(pc => RandomSpawn.CustomNetworkTransformPatch.FirstTP[pc.PlayerId] = false);
                 EAC.MeetingTimes = 0;
             }
             // MeetingVoteManagerを通さずに会議が終了した場合の後処理
@@ -282,20 +268,20 @@ public static class MeetingHudPatch
         foreach (var playerId in playerIds)
         {
             //Loversの後追い
-            if (CustomRoles.Lovers.Exist(true) && !Main.isLoversDead && Main.LoversPlayers.Find(lp => lp.PlayerId == playerId) != null)
+            if (CustomRoles.Lovers.IsExist(true) && !Main.isLoversDead && Main.LoversPlayers.Find(lp => lp.PlayerId == playerId) != null)
                 FixedUpdatePatch.LoversSuicide(playerId, true);
         }
     }
+}
 
-    [HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetHighlighted))]
-    class SetHighlightedPatch
+[HarmonyPatch(typeof(PlayerVoteArea), nameof(PlayerVoteArea.SetHighlighted))]
+class SetHighlightedPatch
+{
+    public static bool Prefix(PlayerVoteArea __instance, bool value)
     {
-        public static bool Prefix(PlayerVoteArea __instance, bool value)
-        {
-            if (!AmongUsClient.Instance.AmHost) return true;
-            if (!__instance.HighlightedFX) return false;
-            __instance.HighlightedFX.enabled = value;
-            return false;
-        }
+        if (!AmongUsClient.Instance.AmHost) return true;
+        if (!__instance.HighlightedFX) return false;
+        __instance.HighlightedFX.enabled = value;
+        return false;
     }
 }

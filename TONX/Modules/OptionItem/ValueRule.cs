@@ -69,7 +69,11 @@ public class FloatValueRule : ValueRule<float>
     }
 
     public override float GetValueByIndex(int index)
-        => RepeatIndex(index) * Step + MinValue;
+    {
+        //ÕË§·’`≤Óåù≤ﬂ§«decimal–Õ§À§∑§∆”ãÀ„§∑°¢float–Õ§À§∑§∆∑µ§π
+        decimal ss = RepeatIndex(index) * (decimal)Step + (decimal)MinValue;
+        return (float)ss;
+    }
 
     public override int GetNearestIndex(float num)
     {

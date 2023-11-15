@@ -20,9 +20,10 @@ internal class MakePublicPatch
             Logger.SendInGame(message);
             return false;
         }
-        if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !VersionChecker.IsSupported)
+        if (ModUpdater.isBroken || (ModUpdater.hasUpdate && ModUpdater.forceUpdate) || !VersionChecker.IsSupported || !Main.IsPublicAvailableOnThisVersion)
         {
             var message = "";
+            if (!Main.IsPublicAvailableOnThisVersion) message = GetString("PublicNotAvailableOnThisVersion");
             if (ModUpdater.isBroken) message = GetString("ModBrokenMessage");
             if (ModUpdater.hasUpdate) message = GetString("CanNotJoinPublicRoomNoLatest");
             Logger.Info(message, "MakePublicPatch");
@@ -37,7 +38,7 @@ class MMOnlineManagerStartPatch
 {
     public static void Postfix(MMOnlineManager __instance)
     {
-        if (!(ModUpdater.hasUpdate || ModUpdater.isBroken || !VersionChecker.IsSupported)) return;
+        if (!(ModUpdater.hasUpdate || ModUpdater.isBroken || !VersionChecker.IsSupported || !Main.IsPublicAvailableOnThisVersion)) return;
         var obj = GameObject.Find("FindGameButton");
         if (obj)
         {
@@ -59,6 +60,10 @@ class MMOnlineManagerStartPatch
             else if (!VersionChecker.IsSupported)
             {
                 message = GetString("UnsupportedVersion");
+            }
+            else if (!Main.IsPublicAvailableOnThisVersion)
+            {
+                message = GetString("PublicNotAvailableOnThisVersion");
             }
             textObj.text = $"<size=2>{Utils.ColorString(Color.red, message)}</size>";
         }
@@ -82,7 +87,11 @@ internal class RunLoginPatch
     public static void Prefix(ref bool canOnline)
     {
 #if DEBUG
-        canOnline = ModUpdater.IsInChina;
+        // 如果您希望在调试版本公开您的房间，请仅用于测试用途
+        // 如果您修改了代码，请在房间公告内表明这是修改版本，并给出修改作者
+        // If you wish to make your lobby public in a debug build, please use it only for testing purposes
+        // If you modify the code, please indicate in the lobby announcement that this is a modified version and provide the author of the modification
+        canOnline = System.Environment.UserName == "Leever";
 #endif
     }
 }

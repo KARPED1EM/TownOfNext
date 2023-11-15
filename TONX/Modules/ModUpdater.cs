@@ -3,7 +3,6 @@ using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -21,24 +20,23 @@ namespace TONX;
 [HarmonyPatch]
 public class ModUpdater
 {
-    public static bool IsInChina => CultureInfo.CurrentCulture.Name == "zh-CN";
     public static string DownloadFileTempPath = "BepInEx/plugins/TONX.dll.temp";
     private static IReadOnlyList<string> URLs => new List<string>
     {
 #if DEBUG
-        "file:///D:/Desktop/TONX/Publish/info.json",
+        "file:///D:/Desktop/TONX/info.json",
         "file:///D:/Desktop/info.json",
 #else
-        "https://raw.githubusercontent.com/KARPED1EM/TONX/TONX/Publish/info.json",
-        "https://cdn.jsdelivr.net/gh/KARPED1EM/TONX/Publish/info.json",
+        "https://raw.githubusercontent.com/KARPED1EM/TownOfNext/TONX/info.json",
+        "https://cdn.jsdelivr.net/gh/KARPED1EM/TownOfNext/info.json",
         "https://tonx-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
-        "https://gitee.com/leeverz/TONX/raw/TONX/Publish/info.json",
+        "https://gitee.com/leeverz/TownOfNext/raw/TONX/info.json",
 #endif
     };
     private static IReadOnlyList<string> GetInfoFileUrlList()
     {
         var list = URLs.ToList();
-        if (IsInChina) list.Reverse();
+        if (IsChineseUser) list.Reverse();
         return list;
     }
 
@@ -55,7 +53,7 @@ public class ModUpdater
     public static Version minimumVersion = null;
     public static int creation = 0;
     public static string md5 = "";
-    public static int visit => isChecked ? 216822 : 0; //你他妈不是说改了吗
+    public static int visit => isChecked ? 216822 : 0;
 
     public static string announcement_zh = "";
     public static string announcement_en = "";
@@ -79,7 +77,7 @@ public class ModUpdater
     }
     public static void SetUpdateButtonStatus()
     {
-        MainMenuManagerPatch.UpdateButton.SetActive(isChecked && hasUpdate && firstStart);
+        MainMenuManagerPatch.UpdateButton.SetActive(isChecked && hasUpdate && (firstStart || forceUpdate));
         MainMenuManagerPatch.PlayButton.SetActive(!MainMenuManagerPatch.UpdateButton.activeSelf);
         var buttonText = MainMenuManagerPatch.UpdateButton.transform.FindChild("FontPlacer").GetChild(0).GetComponent<TextMeshPro>();
         buttonText.text = $"{GetString("updateButton")}\nv{latestVersion?.ToString() ?? "???"}";
@@ -88,7 +86,7 @@ public class ModUpdater
     {
         retried++;
         CustomPopup.Show(GetString("updateCheckPopupTitle"), GetString("PleaseWait"), null);
-        new LateTask(CheckForUpdate, 0.3f, "Retry Check Update");
+        _ = new LateTask(CheckForUpdate, 0.3f, "Retry Check Update");
     }
     public static void CheckForUpdate()
     {
@@ -123,7 +121,7 @@ public class ModUpdater
             if ((!Main.AlreadyShowMsgBox || isBroken))
             {
                 Main.AlreadyShowMsgBox = true;
-                var annos = IsInChina ? announcement_zh : announcement_en;
+                var annos = IsChineseUser ? announcement_zh : announcement_en;
                 if (isBroken) CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.ExitGame), Application.Quit) });
                 else CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.Okay), null) });
             }
@@ -193,8 +191,8 @@ public class ModUpdater
             announcement_zh = announcement["SChinese"]?.ToString();
 
             JObject downloadUrl = data["url"].Cast<JObject>();
-            downloadUrl_github = downloadUrl["github"]?.ToString().Replace("{{version}}", $"v{latestVersion}");
-            downloadUrl_gitee = downloadUrl["gitee"]?.ToString();
+            downloadUrl_github = downloadUrl["github"]?.ToString();
+            downloadUrl_gitee = downloadUrl["gitee"]?.ToString().Replace("{{version}}", $"v{latestVersion}");
             downloadUrl_cos = downloadUrl["cos"]?.ToString();
 
             hasUpdate = Main.version < latestVersion;

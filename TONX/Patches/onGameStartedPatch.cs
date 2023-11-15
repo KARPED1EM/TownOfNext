@@ -4,11 +4,9 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Attributes;
 using TONX.Modules;
 using TONX.Roles.AddOns;
-using TONX.Roles.AddOns.Common;
-using TONX.Roles.AddOns.Crewmate;
-using TONX.Roles.AddOns.Impostor;
 using TONX.Roles.Core;
 using static TONX.Modules.CustomRoleSelector;
 using static TONX.Translator;
@@ -31,8 +29,6 @@ internal class ChangeRoleSettings
                 Main.NormalOptions.roleOptions.SetRoleRate(RoleTypes.Shapeshifter, 0, 0);
             }
 
-            PlayerState.Clear();
-
             Main.OverrideWelcomeMsg = "";
             Main.AllPlayerKillCooldown = new();
             Main.AllPlayerSpeed = new();
@@ -41,7 +37,6 @@ internal class ChangeRoleSettings
             Main.LastEnteredVentLocation = new();
 
             Main.AfterMeetingDeathPlayers = new();
-            Main.ResetCamPlayerList = new();
             Main.clientIdList = new();
 
             Main.CheckShapeshift = new();
@@ -60,9 +55,8 @@ internal class ChangeRoleSettings
 
             Main.introDestroyed = false;
 
-            RandomSpawn.CustomNetworkTransformPatch.NumOfTP = new();
+            RandomSpawn.CustomNetworkTransformPatch.FirstTP = new();
 
-            MeetingTimeManager.Init();
             Main.DefaultCrewmateVision = Main.RealOptionsData.GetFloat(FloatOptionNames.CrewLightMod);
             Main.DefaultImpostorVision = Main.RealOptionsData.GetFloat(FloatOptionNames.ImpostorLightMod);
 
@@ -72,15 +66,17 @@ internal class ChangeRoleSettings
             //名前の記録
             RPC.SyncAllPlayerNames();
 
-            Camouflage.Init();
             //var invalidColor = Main.AllPlayerControls.Where(p => p.Data.DefaultOutfit.ColorId < 0 || Palette.PlayerColors.Length <= p.Data.DefaultOutfit.ColorId);
-            //if (invalidColor.Count() != 0)
+            //if (invalidColor.Any())
             //{
-            //    var msg = GetString("Error.InvalidColor");
+            //    var msg = Translator.GetString("Error.InvalidColor");
             //    Logger.SendInGame(msg);
+            //    msg += "\n" + string.Join(",", invalidColor.Select(p => $"{p.name}({p.Data.DefaultOutfit.ColorId})"));
             //    Utils.SendMessage(msg);
             //    Logger.Error(msg, "CoStartGame");
             //}
+
+            GameModuleInitializerAttribute.InitializeAll();
 
             foreach (var target in Main.AllPlayerControls)
             {
@@ -102,7 +98,7 @@ internal class ChangeRoleSettings
                 ReportDeadBodyPatch.WaitReport[pc.PlayerId] = new();
                 pc.cosmetics.nameText.text = pc.name;
 
-                RandomSpawn.CustomNetworkTransformPatch.NumOfTP.Add(pc.PlayerId, 0);
+                RandomSpawn.CustomNetworkTransformPatch.FirstTP.Add(pc.PlayerId, false);
                 var outfit = pc.Data.DefaultOutfit;
                 Camouflage.PlayerSkins[pc.PlayerId] = new GameData.PlayerOutfit().Set(outfit.PlayerName, outfit.ColorId, outfit.HatId, outfit.SkinId, outfit.VisorId, outfit.PetId);
                 Main.clientIdList.Add(pc.GetClientId());
@@ -112,37 +108,6 @@ internal class ChangeRoleSettings
             {
                 RPC.SyncCustomSettingsRPC();
             }
-            CustomRoleManager.Initialize();
-            FallFromLadder.Reset();
-            TargetArrow.Init();
-            LocateArrow.Init();
-            DoubleTrigger.Init();
-            CustomWinnerHolder.Reset();
-            NameNotifyManager.Reset();
-            AntiBlackout.Reset();
-            SoloKombatManager.Init();
-
-            //SubRoles
-            Watcher.Init();
-            Workhorse.Init();
-            LastImpostor.Init();
-            Avanger.Init();
-            Bait.Init();
-            Bewilder.Init();
-            Brakar.Init();
-            DualPersonality.Init();
-            Egoist.Init();
-            Flashman.Init();
-            Fool.Init();
-            Lighter.Init();
-            Ntr.Init();
-            Oblivious.Init();
-            Reach.Init();
-            Seer.Init();
-            Trapper.Init();
-            Youtuber.Init();
-            Mimic.Init();
-            TicketsStealer.Init();
 
             IRandom.SetInstanceById(Options.RoleAssigningAlgorithm.GetValue());
 
@@ -199,7 +164,7 @@ internal class SelectRolesPatch
             Dictionary<(byte, byte), RoleTypes> rolesMap = new();
 
             // 注册反职业
-            foreach (var kv in RoleResult.Where(x => x.Value.IsDesyncRole()))
+            foreach (var kv in RoleResult.Where(x => x.Value.GetRoleInfo().IsDesyncImpostor))
                 AssignDesyncRole(kv.Value, kv.Key, senders, rolesMap, BaseRole: kv.Value.GetRoleInfo().BaseRoleType.Invoke());
 
             foreach (var cp in RoleResult.Where(x => x.Value == CustomRoles.Crewpostor))
@@ -226,7 +191,7 @@ internal class SelectRolesPatch
             foreach (var sd in RpcSetRoleReplacer.StoragedData)
             {
                 var kp = RoleResult.Where(x => x.Key.PlayerId == sd.Item1.PlayerId).FirstOrDefault();
-                if (kp.Value.IsDesyncRole() || kp.Value == CustomRoles.Crewpostor)
+                if (kp.Value.GetRoleInfo().IsDesyncImpostor || kp.Value == CustomRoles.Crewpostor)
                 {
                     Logger.Warn($"反向原版职业 => {sd.Item1.GetRealName()}: {sd.Item2}", "Override Role Select");
                     continue;
@@ -282,19 +247,11 @@ internal class SelectRolesPatch
                 PlayerState.GetByPlayerId(pc.PlayerId).SetMainRole(role);
             }
 
-            // 个人竞技模式用
-            if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-            {
-                foreach (var pair in PlayerState.AllPlayerStates)
-                    ExtendedPlayerControl.RpcSetCustomRole(pair.Key, pair.Value.MainRole);
-                goto EndOfSelectRolePatch;
-            }
-
             var rd = IRandom.Instance;
 
             foreach (var kv in RoleResult)
             {
-                if (kv.Value.IsDesyncRole()) continue;
+                if (kv.Value.GetRoleInfo().IsDesyncImpostor) continue;
                 AssignCustomRole(kv.Value, kv.Key);
             }
 
@@ -310,8 +267,6 @@ internal class SelectRolesPatch
                 foreach (var subRole in pair.Value.SubRoles)
                     ExtendedPlayerControl.RpcSetCustomRole(pair.Key, subRole);
             }
-
-        EndOfSelectRolePatch:
 
             CustomRoleManager.CreateInstance();
             foreach (var pc in Main.AllPlayerControls)
@@ -331,9 +286,6 @@ internal class SelectRolesPatch
             {
                 case CustomGameMode.Standard:
                     GameEndChecker.SetPredicateToNormal();
-                    break;
-                case CustomGameMode.SoloKombat:
-                    GameEndChecker.SetPredicateToSoloKombat();
                     break;
             }
 
@@ -367,7 +319,7 @@ internal class SelectRolesPatch
     }
     private static void AssignDesyncRole(CustomRoles role, PlayerControl player, Dictionary<byte, CustomRpcSender> senders, Dictionary<(byte, byte), RoleTypes> rolesMap, RoleTypes BaseRole, RoleTypes hostBaseRole = RoleTypes.Crewmate)
     {
-        if (!role.Exist(true)) return;
+        if (!role.IsExist(true)) return;
 
         var hostId = PlayerControl.LocalPlayer.PlayerId;
 

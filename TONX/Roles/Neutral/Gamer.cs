@@ -8,7 +8,7 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Neutral;
-public sealed class Gamer : RoleBase, IKiller
+public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
@@ -21,14 +21,14 @@ public sealed class Gamer : RoleBase, IKiller
             SetupOptionItem,
             "dm",
             "#68bc71",
-            true
+            true,
+            countType: CountTypes.Gamer
         );
     public Gamer(PlayerControl player)
     : base(
         RoleInfo,
         player,
-        () => HasTask.False,
-        CountTypes.Gamer
+        () => HasTask.False
     )
     {
         CanVent = OptionCanVent.GetBool();
@@ -54,6 +54,8 @@ public sealed class Gamer : RoleBase, IKiller
     private static Dictionary<byte, int> PlayerHP;
     private int GamerHP;
 
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Gamer;
+
     private static void SetupOptionItem()
     {
         OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.GamerKillCooldown, new(1f, 180f, 1f), 2f, false)
@@ -77,7 +79,7 @@ public sealed class Gamer : RoleBase, IKiller
     }
     public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(OptionHasImpostorVision.GetBool());
-    public static void SetHudActive(HudManager __instance, bool isActive) => __instance.SabotageButton.ToggleVisible(false);
+    public bool CanUseSabotageButton() => false;
     public bool CanUseKillButton() => Player.IsAlive();
     private void SendRPC(byte id)
     {

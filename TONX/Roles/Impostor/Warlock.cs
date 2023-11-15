@@ -2,6 +2,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using UnityEngine;
@@ -96,7 +97,9 @@ public sealed class Warlock : RoleBase, IImpostor
                 SendRPC();
                 CursedPlayer = target;
                 //呪える相手は一人だけなのでキルボタン無効化
-                killer.SetKillCooldown(255f);
+                killer.SetKillCooldownV2(255f);
+                killer.RpcResetAbilityCooldown();
+                killer.RPCPlayCustomSound("Line");
             }
             //どちらにしてもキルは無効
             return false;

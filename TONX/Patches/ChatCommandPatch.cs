@@ -23,9 +23,18 @@ internal class ChatCommands
     {
         if (roleCommands == null) InitRoleCommands();
 
-        if (__instance.TextArea.text.Trim() == "") return false;
-        __instance.TimeSinceLastMessage = 3f;
-        var text = __instance.TextArea.text;
+        // クイックチャットなら横流し
+        if (__instance.quickChatField.Visible)
+        {
+            return true;
+        }
+        // 入力欄に何も書かれてなければブロック
+        if (__instance.freeChatField.textArea.text == "")
+        {
+            return false;
+        }
+        __instance.timeSinceLastMessage = 3f;
+        var text = __instance.freeChatField.textArea.text;
         if (ChatHistory.Count == 0 || ChatHistory[^1] != text) ChatHistory.Add(text);
         ChatControllerUpdatePatch.CurrentHistorySelection = ChatHistory.Count;
         string[] args = text.Split(' ');
@@ -85,7 +94,6 @@ internal class ChatCommands
                 case "/lastresult":
                     canceled = true;
                     Utils.ShowKillLog();
-                    Utils.ShowLastRoles();
                     Utils.ShowLastResult();
                     break;
 
@@ -156,29 +164,18 @@ internal class ChatCommands
                             cancelVal = "/dis";
                             break;
                     }
-                    ShipStatus.Instance.RpcRepairSystem(SystemTypes.Admin, 0);
                     break;
 
                 case "/r":
                     canceled = true;
                     subArgs = text.Remove(0, 2);
-                    SendRolesInfo(subArgs, 255, PlayerControl.LocalPlayer.IsDev());
+                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer.PlayerId);
                     break;
 
                 case "/up":
                     canceled = true;
                     subArgs = text.Remove(0, 3);
-                    if (!Options.EnableDirectorMode.GetBool())
-                    {
-                        Utils.SendMessage(string.Format(GetString("Message.DirectorModeDisabled"), GetString("EnableDirectorMode")));
-                        break;
-                    }
-                    if (!GameStates.IsLobby)
-                    {
-                        Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"));
-                        break;
-                    }
-                    SendRolesInfo(subArgs, PlayerControl.LocalPlayer.PlayerId, isUp: true);
+                    SpecifyRole(subArgs, PlayerControl.LocalPlayer.PlayerId);
                     break;
 
                 case "/h":
@@ -190,24 +187,19 @@ internal class ChatCommands
                 case "/m":
                 case "/myrole":
                     canceled = true;
-                    var role = PlayerControl.LocalPlayer.GetCustomRole();
                     if (GameStates.IsInGame)
                     {
-                        var lp = PlayerControl.LocalPlayer;
-                        var sb = new StringBuilder();
-                        sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + lp.GetRoleInfo(true));
-                        if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                            Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
-                        var txt = sb.ToString();
-                        sb.Clear().Append(txt.RemoveHtmlTags());
-                        foreach (var subRole in PlayerState.AllPlayerStates[lp.PlayerId].SubRoles)
-                            sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                        if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                            sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
-                        Utils.SendMessage(sb.ToString(), lp.PlayerId);
+                        var role = PlayerControl.LocalPlayer.GetCustomRole();
+                        Utils.SendMessage(
+                            role.GetRoleInfo()?.Description?.GetFullFormatHelpWithAddons(PlayerControl.LocalPlayer) ??
+                            // roleInfoがない役職
+                            GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true),
+                            PlayerControl.LocalPlayer.PlayerId);
                     }
                     else
+                    {
                         Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
+                    }
                     break;
 
                 case "/t":
@@ -260,7 +252,7 @@ internal class ChatCommands
                     var target = Utils.GetPlayerById(id2);
                     if (target != null)
                     {
-                        target.RpcMurderPlayerEx(target);
+                        target.RpcMurderPlayer(target);
                         if (target.AmOwner) Utils.SendMessage(GetString("HostKillSelfByCommand"), title: $"<color=#ff0000>{GetString("DefaultSystemMessageTitle")}</color>");
                         else Utils.SendMessage(string.Format(GetString("Message.Executed"), target.Data.PlayerName));
                     }
@@ -289,11 +281,6 @@ internal class ChatCommands
                 case "/qt":
                     canceled = true;
                     Utils.SendMessage(GetString("Message.CanNotUseByHost"), PlayerControl.LocalPlayer.PlayerId);
-                    break;
-
-                case "/xf":
-                    canceled = true;
-                    SetAllNamesManual();
                     break;
 
                 case "/id":
@@ -356,9 +343,8 @@ internal class ChatCommands
         if (canceled)
         {
             Logger.Info("Command Canceled", "ChatCommand");
-            __instance.TextArea.Clear();
-            __instance.TextArea.SetText(cancelVal);
-            __instance.quickChatMenu.ResetGlyphs();
+            __instance.freeChatField.textArea.Clear();
+            __instance.freeChatField.textArea.SetText(cancelVal);
         }
         else if (SendTargetPatch.SendTarget != SendTargetPatch.SendTargets.Default)
         {
@@ -373,9 +359,8 @@ internal class ChatCommands
                         );
                     break;
             }
-            __instance.TextArea.Clear();
-            __instance.TextArea.SetText(cancelVal);
-            __instance.quickChatMenu.ResetGlyphs();
+            __instance.freeChatField.textArea.Clear();
+            __instance.freeChatField.textArea.SetText(cancelVal);
             return false;
         }
         return !canceled;
@@ -438,60 +423,64 @@ internal class ChatCommands
         roleCommands.Add(CustomRoles.TicketsStealer, new() { "ts", "竊票者", "偷票", "偷票者", "窃票师", "窃票" });
 #pragma warning restore IDE0028
     }
-    public static void SendRolesInfo(string input, byte playerId, bool isDev = false, bool isUp = false)
+    public static void SendRolesInfo(string input, byte playerId)
     {
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-        {
-            Utils.SendMessage(GetString("ModeDescribe.SoloKombat"), playerId);
-            return;
-        }
-
-        if (input.Trim() == "" || input.Trim() == string.Empty)
+        if (string.IsNullOrWhiteSpace(input))
         {
             Utils.ShowActiveRoles(playerId);
             return;
         }
-
-        if (!GetRoleByInputName(input, out var role))
+        else if (!GetRoleByInputName(input, out var role))
         {
-            if (isUp) Utils.SendMessage(GetString("Message.DirectorModeCanNotFindRoleThePlayerEnter"), playerId);
-            else Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
+            Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
             return;
         }
-
-        var sb = new StringBuilder();
-        string roleName = GetString(Enum.GetName(typeof(CustomRoles), role));
-        string info = GetString($"{role}InfoLong");
-        info = info.Insert(info.IndexOf("\n"), "</color>").Insert(0, $"<color={(Utils.GetRoleTeamColorCode(role))}>");
-        sb.Append(Utils.ColorString(role.GetRoleInfo()?.RoleColor ?? Color.white, roleName) + Utils.GetRoleDisplaySpawnMode(role) + info);
-        if (Options.CustomRoleSpawnChances.ContainsKey(role))
+        else
         {
-            Utils.ShowChildrenSettings(Options.CustomRoleSpawnChances[role], ref sb, command: true);
-            var txt = sb.ToString();
-            sb.Clear().Append(txt);
+            Utils.SendMessage(role.GetRoleInfo().Description.FullFormatHelp, playerId);
         }
-
-        bool canSpecify = false;
-        if ((isDev || isUp) && GameStates.IsLobby)
+    }
+    public static void SpecifyRole(string input, byte playerId)
+    {
+        if (string.IsNullOrWhiteSpace(input))
         {
-            canSpecify = true;
-            if (!role.IsEnable() || role.IsAddon() || role.IsVanilla() || role is CustomRoles.GM or CustomRoles.NotAssigned or CustomRoles.KB_Normal || !Options.CustomRoleSpawnChances.ContainsKey(role)) canSpecify = false;
-            if (canSpecify)
+            Utils.ShowActiveRoles(playerId);
+            return;
+        }
+        else if (!GetRoleByInputName(input, out var role))
+        {
+            Utils.SendMessage(GetString("Message.DirectorModeCanNotFindRoleThePlayerEnter"), playerId);
+            return;
+        }
+        else if (!Options.EnableDirectorMode.GetBool())
+        {
+            Utils.SendMessage(string.Format(GetString("Message.DirectorModeDisabled"), GetString("EnableDirectorMode")));
+        }
+        else if (!GameStates.IsLobby)
+        {
+            Utils.SendMessage(GetString("Message.OnlyCanUseInLobby"), playerId);
+        }
+        else
+        {
+            string roleName = GetString(Enum.GetName(typeof(CustomRoles), role));
+            if (
+                !role.IsEnable()
+                || role.IsAddon()
+                || role.IsVanilla()
+                || role is CustomRoles.GM or CustomRoles.NotAssigned
+                || !Options.CustomRoleSpawnChances.ContainsKey(role))
+            {
+                Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelectFailed"), roleName), playerId);
+            }
+            else
             {
                 byte pid = playerId == byte.MaxValue ? byte.MinValue : playerId;
                 Main.DevRole.Remove(pid);
                 Main.DevRole.Add(pid, role);
-            }
-            if (isUp)
-            {
-                if (canSpecify) Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelected"), roleName), playerId);
-                else Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelectFailed"), roleName), playerId);
-                return;
+
+                Utils.SendMessage(string.Format(GetString("Message.DirectorModeSelected"), roleName), playerId);
             }
         }
-
-        Utils.SendMessage((canSpecify ? "▲" : "") + sb.ToString(), playerId);
-        return;
     }
     private static void ConcatCommands(CustomRoleTypes roleType)
     {
@@ -503,35 +492,6 @@ internal class ChatCommands
             roleCommands[role.RoleName] = new();
             coms.DoIf(c => c.Trim() != "", roleCommands[role.RoleName].Add);
         }
-    }
-    private static void SetAllNamesManual()
-    {
-        if (!GameStates.IsInGame)
-        {
-            Utils.SendMessage(GetString("Message.CanNotUseInLobby"), PlayerControl.LocalPlayer.PlayerId);
-            return;
-        }
-        ChatUpdatePatch.DoBlockChat = true;
-        if (GameStates.IsMeeting)
-        {
-            foreach (var seer in Main.AllPlayerControls)
-            {
-                foreach (var seen in Main.AllPlayerControls)
-                {
-                    var seenName = seen.GetTrueName();
-                    var coloredName = Utils.ColorString(seen.GetRoleColor(), seenName);
-                    seen.RpcSetNamePrivate(
-                        seer == seen ? coloredName : seenName,
-                        true, seer);
-                }
-            }
-        }
-        else
-        {
-            Utils.NotifyRoles();
-        }
-        ChatUpdatePatch.DoBlockChat = false;
-        Utils.SendMessage(GetString("Message.TryFixName"), PlayerControl.LocalPlayer.PlayerId);
     }
     public static void OnReceiveChat(PlayerControl player, string text, out bool canceled)
     {
@@ -563,7 +523,6 @@ internal class ChatCommands
             case "/l":
             case "/lastresult":
                 Utils.ShowKillLog(player.PlayerId);
-                Utils.ShowLastRoles(player.PlayerId);
                 Utils.ShowLastResult(player.PlayerId);
                 break;
 
@@ -584,7 +543,7 @@ internal class ChatCommands
 
             case "/r":
                 subArgs = text.Remove(0, 2);
-                SendRolesInfo(subArgs, player.PlayerId, player.IsDev());
+                SendRolesInfo(subArgs, player.PlayerId);
                 break;
 
             case "/h":
@@ -594,23 +553,23 @@ internal class ChatCommands
 
             case "/m":
             case "/myrole":
-                var role = player.GetCustomRole();
                 if (GameStates.IsInGame)
                 {
-                    var sb = new StringBuilder();
-                    sb.Append(GetString(role.ToString()) + Utils.GetRoleDisplaySpawnMode(role) + player.GetRoleInfo(true));
-                    if (Options.CustomRoleSpawnChances.TryGetValue(role, out var opt))
-                        Utils.ShowChildrenSettings(opt, ref sb, command: true);
-                    var txt = sb.ToString();
-                    sb.Clear().Append(txt);
-                    foreach (var subRole in PlayerState.AllPlayerStates[player.PlayerId].SubRoles)
-                        sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                    if (CustomRoles.Ntr.Exist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
-                        sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
-                    Utils.SendMessage(sb.ToString(), player.PlayerId);
+                    var role = player.GetCustomRole();
+                    if (role.GetRoleInfo()?.Description is { } description)
+                    {
+                        Utils.SendMessage(description.GetFullFormatHelpWithAddons(player), player.PlayerId, removeTags: false);
+                    }
+                    // roleInfoがない役職
+                    else
+                    {
+                        Utils.SendMessage(GetString(role.ToString()) + player.GetRoleInfo(true), player.PlayerId);
+                    }
                 }
                 else
+                {
                     Utils.SendMessage(GetString("Message.CanNotUseInLobby"), player.PlayerId);
+                }
                 break;
 
             case "/t":
@@ -661,10 +620,6 @@ internal class ChatCommands
                 }
                 break;
 
-            case "/xf":
-                SetAllNamesManual();
-                break;
-
             case "/say":
             case "/s":
                 if (player.IsDev() && args.Length > 1)
@@ -683,12 +638,12 @@ internal class ChatUpdatePatch
     public static bool DoBlockChat = false;
     public static void Postfix(ChatController __instance)
     {
-        Active = __instance.IsOpen;
+        Active = __instance.IsOpenOrOpening;
 
-        __instance.TextArea.AllowPaste = true;
-        __instance.chatBubPool.Prefab.Cast<ChatBubble>().TextArea.overrideColorTags = false;
+        __instance.freeChatField.textArea.AllowPaste = true;
+        __instance.chatBubblePool.Prefab.Cast<ChatBubble>().TextArea.overrideColorTags = false;
 
-        if (!AmongUsClient.Instance.AmHost || Main.MessagesToSend.Count < 1 || (Main.MessagesToSend[0].Item2 == byte.MaxValue && Main.MessageWait.Value > __instance.TimeSinceLastMessage)) return;
+        if (!AmongUsClient.Instance.AmHost || Main.MessagesToSend.Count < 1 || (Main.MessagesToSend[0].Item2 == byte.MaxValue && Main.MessageWait.Value > __instance.timeSinceLastMessage)) return;
         if (DoBlockChat) return;
         var player = Main.AllAlivePlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault() ?? Main.AllPlayerControls.OrderBy(x => x.PlayerId).FirstOrDefault();
         if (player == null) return;
@@ -737,22 +692,22 @@ internal class ChatUpdatePatch
             writer.SendMessage();
         }
 
-        __instance.TimeSinceLastMessage = 0f;
+        __instance.timeSinceLastMessage = 0f;
     }
 }
-[HarmonyPatch(typeof(ChatController), nameof(ChatController.UpdateCharCount))]
+[HarmonyPatch(typeof(FreeChatInputField), nameof(FreeChatInputField.UpdateCharCount))]
 internal class UpdateCharCountPatch
 {
-    public static void Postfix(ChatController __instance)
+    public static void Postfix(FreeChatInputField __instance)
     {
-        int length = __instance.TextArea.text.Length;
-        __instance.CharCount.SetText($"{length}/{__instance.TextArea.characterLimit}");
+        int length = __instance.textArea.text.Length;
+        __instance.charCountText.SetText($"{length}/{__instance.textArea.characterLimit}");
         if (length < (AmongUsClient.Instance.AmHost ? 888 : 250))
-            __instance.CharCount.color = Color.black;
+            __instance.charCountText.color = Color.black;
         else if (length < (AmongUsClient.Instance.AmHost ? 999 : 300))
-            __instance.CharCount.color = new Color(1f, 1f, 0f, 1f);
+            __instance.charCountText.color = new Color(1f, 1f, 0f, 1f);
         else
-            __instance.CharCount.color = Color.red;
+            __instance.charCountText.color = Color.red;
     }
 }
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.AddChat))]
@@ -782,8 +737,8 @@ internal class RpcSendChatPatch
         chatText = new StringBuilder(chatText).Insert(0, "\n", return_count).ToString();
         if (AmongUsClient.Instance.AmClient && DestroyableSingleton<HudManager>.Instance)
             DestroyableSingleton<HudManager>.Instance.Chat.AddChat(__instance, chatText);
-        if (chatText.IndexOf("who", StringComparison.OrdinalIgnoreCase) >= 0)
-            DestroyableSingleton<Telemetry>.Instance.SendWho();
+        if (chatText.Contains("who", StringComparison.OrdinalIgnoreCase))
+            DestroyableSingleton<UnityTelemetry>.Instance.SendWho();
         MessageWriter messageWriter = AmongUsClient.Instance.StartRpc(__instance.NetId, (byte)RpcCalls.SendChat, SendOption.None);
         messageWriter.Write(chatText);
         messageWriter.EndMessage();

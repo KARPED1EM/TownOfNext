@@ -1,5 +1,6 @@
 using AmongUs.GameOptions;
 using Hazel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TONX.Roles.Core;
@@ -81,8 +82,7 @@ public sealed class Executioner : RoleBase, IAdditionalWinner
             if (playerId == target.PlayerId) continue;
             else if (!CanTargetImpostor && target.Is(CustomRoleTypes.Impostor)) continue;
             else if (!CanTargetNeutralKiller && target.IsNeutralKiller()) continue;
-            else if (target.Is(CustomRoles.GM) || target.Is(CustomRoles.SuperStar)) continue;
-            else if (Player.Is(CustomRoles.Lovers) && target.Is(CustomRoles.Lovers)) continue;
+            if (target.Is(CustomRoles.GM)) continue;
 
             targetList.Add(target);
         }
@@ -137,38 +137,40 @@ public sealed class Executioner : RoleBase, IAdditionalWinner
 
         return TargetId == seen.PlayerId ? Utils.ColorString(RoleInfo.RoleColor, "♦") : "";
     }
-    public override void OnExileWrapUp(GameData.PlayerInfo exiled, ref bool DecidedWinner)
+    public override Action CheckExile(GameData.PlayerInfo exiled, ref bool DecidedWinner, ref List<string> WinDescriptionText)
     {
-        if (!AmongUsClient.Instance.AmHost) return;
-        if (Player?.IsAlive() != true) return;
-        if (exiled.PlayerId != TargetId) return;
+        if (!AmongUsClient.Instance.AmHost) return null;
+        if (Player?.IsAlive() != true) return null;
+        if (exiled.PlayerId != TargetId) return null;
 
         TargetExiled = true;
+        WinDescriptionText.Add(Translator.GetString("ExiledExeTarget"));
+        DecidedWinner = true;
 
-        if (!DecidedWinner)
+        return () =>
         {
-            if (CustomWinnerHolder.WinnerTeam != CustomWinner.Default) return; //勝者がいるなら処理をスキップ
-
-            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Executioner);
-        }
-        CustomWinnerHolder.WinnerIds.Add(Player.PlayerId);
+            CustomWinnerHolder.SetWinnerOrAdditonalWinner(CustomWinner.Executioner);
+            CustomWinnerHolder.WinnerIds.Add(Player.PlayerId);
+        };
     }
-    public override void OnPlayerDeath(PlayerControl player, CustomDeathReason deathReason, bool isOnMeeting)
+    public bool CheckWin(ref CustomRoles winnerRole)
     {
-        if (!CustomRoles.Executioner.Exist()) return;
-        foreach (var executioner in Executioners.Where(x => x.TargetId == player.PlayerId))
-        {
-            executioner.ChangeRole();
-        }
-    }
-    public bool CheckWin(out AdditionalWinners winnerType)
-    {
-        winnerType = AdditionalWinners.Executioner;
         return TargetExiled && CustomWinnerHolder.WinnerTeam != CustomWinner.Default;
     }
     public void ChangeRole()
     {
         Player.RpcSetCustomRole(ChangeRolesAfterTargetKilled);
         Utils.NotifyRoles();
+    }
+
+    public static void ChangeRoleByTarget(byte targetId)
+    {
+        foreach (var executioner in Executioners)
+        {
+            if (executioner.TargetId != targetId) continue;
+
+            executioner.ChangeRole();
+            break;
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -19,6 +20,7 @@ public static class Flashman
         OptionSpeed = FloatOptionItem.Create(Id + 20, "FlashmanSpeed", new(0.25f, 5f, 0.25f), 2.5f, TabGroup.OtherRoles, false).SetParent(CustomRoleSpawnChances[CustomRoles.Flashman])
             .SetValueFormat(OptionFormat.Multiplier);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TONX.Attributes;
 using UnityEngine;
 
 namespace TONX;
@@ -12,6 +13,7 @@ static class DoubleTrigger
     public static Dictionary<byte, byte> FirstTriggerTarget = new();
     public static Dictionary<byte, Action> FirstTriggerAction = new();
 
+    [GameModuleInitializer]
     public static void Init()
     {
         PlayerIdList = new();

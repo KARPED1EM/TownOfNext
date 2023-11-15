@@ -53,13 +53,13 @@ public class MeetingVoteManager
         EndMeeting(false);
     }
     /// <summary>
-    /// 新增投票数据
+    /// 玩家投票，如果已经投票，则覆盖先前投票
     /// </summary>
     /// <param name="voter">投票者</param>
     /// <param name="voteFor">投票目标</param>
     /// <param name="numVotes">票数</param>
-    /// <returns>false: 请撤销本次投票以允许投票者重新投票</returns>
-    public bool AddVote(byte voter, byte voteFor, int numVotes = 1)
+    /// /// <param name="isIntentional">这是玩家自愿的投票吗</param>
+    public void SetVote(byte voter, byte voteFor, int numVotes = 1, bool isIntentional = true)
     {
         if (!allVotes.TryGetValue(voter, out var vote))
         {
@@ -72,37 +72,33 @@ public class MeetingVoteManager
         }
 
         bool doVote = true;
-        bool clearVote = false;
-
         foreach (var role in CustomRoleManager.AllActiveRoles.Values)
         {
-            var (roleVoteFor, roleNumVotes) = (voteFor, numVotes);
-            doVote = role.OnVote(voter, voteFor, ref roleVoteFor, ref roleNumVotes, ref clearVote);
-            if (roleVoteFor != voteFor)
+            var (roleVoteFor, roleNumVotes, roleDoVote) = role.ModifyVote(voter, voteFor, isIntentional);
+            if (roleVoteFor.HasValue)
             {
-                logger.Info($"{role.Player.GetNameWithRole()} 将 {Utils.GetPlayerById(voter).GetNameWithRole()} 的投票目标修改为 {GetVoteName(roleVoteFor)}");
-                voteFor = roleVoteFor;
+                logger.Info($"{role.Player.GetNameWithRole()} が {Utils.GetPlayerById(voter).GetNameWithRole()} の投票先を {GetVoteName(roleVoteFor.Value)} に変更します");
+                voteFor = roleVoteFor.Value;
             }
-            if (roleNumVotes != numVotes)
+            if (roleNumVotes.HasValue)
             {
-                logger.Info($"{role.Player.GetNameWithRole()} 将 {Utils.GetPlayerById(voter).GetNameWithRole()} 的票数修改为 {roleNumVotes}");
-                numVotes = roleNumVotes;
+                logger.Info($"{role.Player.GetNameWithRole()} が {Utils.GetPlayerById(voter).GetNameWithRole()} の投票数を {roleNumVotes.Value} に変更します");
+                numVotes = roleNumVotes.Value;
             }
-            if (!doVote)
+            if (!roleDoVote)
             {
-                logger.Info($"{role.Player.GetNameWithRole()} 阻塞了投票，本次投票数据不计入");
-            }
-            if (clearVote)
-            {
-                logger.Info($"{role.Player.GetNameWithRole()} 撤销了投票，允许重新投票");
+                logger.Info($"{role.Player.GetNameWithRole()} によって投票は取り消されます");
+                doVote = roleDoVote;
             }
         }
 
         //SubRoles
-        doVote = TicketsStealer.OnVote(voter, voteFor, ref voteFor, ref numVotes, ref clearVote);
+        TicketsStealer.ModifyVote(ref voter, ref voteFor, ref isIntentional, ref numVotes, ref doVote);
 
-        if (doVote) vote.DoVote(voteFor, numVotes);
-        return !clearVote;
+        if (doVote)
+        {
+            vote.DoVote(voteFor, numVotes);
+        }
     }
     /// <summary>
     /// 如果会议时间耗尽或每个人都已投票，则结束会议
@@ -155,7 +151,15 @@ public class MeetingVoteManager
         if (result.Exiled != null)
         {
             MeetingHudPatch.CheckForDeathOnExile(CustomDeathReason.Vote, result.Exiled.PlayerId);
-            ConfirmEjections.Eject(result.Exiled);
+
+            bool DecidedWinner = false;
+            List<string> WinDescriptionText = new();
+            foreach (var roleClass in CustomRoleManager.AllActiveRoles.Values)
+            {
+                var action = roleClass.CheckExile(result.Exiled, ref DecidedWinner, ref WinDescriptionText);
+                if (action != null) ExileControllerWrapUpPatch.ActionsOnWrapUp.Add(action);
+            }
+            ConfirmEjections.Apply(result.Exiled, DecidedWinner, WinDescriptionText);
         }
         Destroy();
     }
@@ -216,11 +220,11 @@ public class MeetingVoteManager
                         logger.Info($"根据房间设定，{voterName} 因未投票自杀");
                         break;
                     case VoteMode.SelfVote:
-                        vote.ChangeVoteTarget(vote.Voter);
+                        SetVote(vote.Voter, vote.Voter, isIntentional: false);
                         logger.Info($"根据房间设定，{voterName} 未投票算作自票");
                         break;
                     case VoteMode.Skip:
-                        vote.ChangeVoteTarget(Skip);
+                        SetVote(vote.Voter, Skip, isIntentional: false);
                         logger.Info($"根据房间设定，{voterName} 未投票算作跳过");
                         break;
                 }
@@ -235,7 +239,7 @@ public class MeetingVoteManager
                         logger.Info($"根据房间设定，{voterName} 因跳过投票自杀");
                         break;
                     case VoteMode.SelfVote:
-                        vote.ChangeVoteTarget(vote.Voter);
+                        SetVote(vote.Voter, vote.Voter, isIntentional: false);
                         logger.Info($"根据房间设定，{voterName} 跳过投票算作自票");
                         break;
                 }
@@ -274,12 +278,6 @@ public class MeetingVoteManager
             VotedFor = voteTo;
             NumVotes = numVotes;
             Brakar.OnVote(Voter, voteTo);
-        }
-        public void ChangeVoteTarget(byte voteTarget)
-        {
-            logger.Info($"{Utils.GetPlayerById(Voter).GetNameWithRole()} 的投票目标由 {GetVoteName(VotedFor)} 变为 {GetVoteName(voteTarget)}");
-            VotedFor = voteTarget;
-            Brakar.OnVote(Voter, voteTarget);
         }
     }
 

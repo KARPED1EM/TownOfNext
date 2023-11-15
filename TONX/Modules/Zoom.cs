@@ -10,11 +10,13 @@ namespace TONX;
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]
 public static class Zoom
 {
+    private static bool ResetButtons = false;
     public static void Postfix()
     {
         if (GameStates.IsLobby && OptionShowerPatch.Allow) return;
         if ((GameStates.IsShip || GameStates.IsLobby) && !GameStates.IsMeeting && GameStates.IsCanMove)
         {
+            if (Camera.main.orthographicSize > 3.0f) ResetButtons = true;
             if (Input.mouseScrollDelta.y > 0)
             {
                 if (Camera.main.orthographicSize > 3.0f) SetZoomSize(times: false);
@@ -31,7 +33,7 @@ public static class Zoom
             }
             Flag.NewFlag("Zoom");
         }
-        else
+        else //if (!DestroyableSingleton<ChatController>.Instance.IsOpenOrOpening)
         {
             Flag.Run(() =>
             {
@@ -57,7 +59,11 @@ public static class Zoom
             HudManager.Instance.UICamera.orthographicSize *= size;
         }
         DestroyableSingleton<HudManager>.Instance?.ShadowQuad?.gameObject?.SetActive((reset || Camera.main.orthographicSize == 3.0f) && PlayerControl.LocalPlayer.IsAlive());
-        ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height);
+        if (ResetButtons)
+        {
+            ResolutionManager.ResolutionChanged.Invoke((float)Screen.width / Screen.height, Screen.width, Screen.height, Screen.fullScreen);
+            ResetButtons = false;
+        }
     }
 
     public static void OnFixedUpdate()

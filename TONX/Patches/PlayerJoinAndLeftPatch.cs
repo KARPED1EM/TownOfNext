@@ -204,7 +204,7 @@ class CreatePlayerPatch
         Main.AllPlayerNames.TryAdd(client.Character.PlayerId, name);
         if (!name.Equals(client.PlayerName))
         {
-            new LateTask(() =>
+            _ = new LateTask(() =>
             {
                 if (client.Character == null) return;
                 Logger.Warn($"规范昵称：{client.PlayerName} => {name}", "Name Format");
@@ -212,9 +212,9 @@ class CreatePlayerPatch
             }, 1f, "Name Format");
         }
 
-        new LateTask(() => { if (client.Character == null || !GameStates.IsLobby) return; OptionItem.SyncAllOptions(client.Id); }, 3f, "Sync All Options For New Player");
+        _ = new LateTask(() => { if (client.Character == null || !GameStates.IsLobby) return; OptionItem.SyncAllOptions(client.Id); }, 3f, "Sync All Options For New Player");
 
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             if (client.Character == null) return;
             if (Main.OverrideWelcomeMsg != "") Utils.SendMessage(Main.OverrideWelcomeMsg, client.Character.PlayerId);
@@ -224,7 +224,7 @@ class CreatePlayerPatch
         {
             if (Options.AutoDisplayKillLog.GetBool() && PlayerState.AllPlayerStates.Count != 0 && Main.clientIdList.Contains(client.Id))
             {
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
@@ -233,38 +233,27 @@ class CreatePlayerPatch
                     }
                 }, 3f, "DisplayKillLog");
             }
-            if (Options.AutoDisplayLastRoles.GetBool())
-            {
-                new LateTask(() =>
-                {
-                    if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
-                    {
-                        Main.isChatCommand = true;
-                        Utils.ShowLastRoles(client.Character.PlayerId);
-                    }
-                }, 3.1f, "DisplayLastRoles");
-            }
             if (Options.AutoDisplayLastResult.GetBool())
             {
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
                         Main.isChatCommand = true;
                         Utils.ShowLastResult(client.Character.PlayerId);
                     }
-                }, 3.2f, "DisplayLastResult");
+                }, 3.1f, "DisplayLastResult");
             }
             if (Options.EnableDirectorMode.GetBool())
             {
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
                         Main.isChatCommand = true;
                         Utils.SendMessage($"{GetString("Message.DirectorModeNotice")}", client.Character.PlayerId);
                     }
-                }, 3.3f, "DisplayUpWarnning");
+                }, 3.2f, "DisplayUpWarnning");
             }
         }
     }

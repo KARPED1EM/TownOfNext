@@ -15,9 +15,9 @@ namespace TONX;
 
 public enum CustomRPC
 {
-    VersionCheck = 60,
-    RequestRetryVersionCheck = 61,
-    SyncCustomSettings = 80,
+    VersionCheck = 80,
+    RequestRetryVersionCheck = 81,
+    SyncCustomSettings = 100,
     SetDeathReason,
     EndGame,
     PlaySound,
@@ -34,6 +34,12 @@ public enum CustomRPC
     SetEvilTrackerTarget,
     SetRealKiller,
     SyncPuppet,
+    SetSchrodingerCatTeam,
+    StealthDarken,
+    MessengerCreateMurderNotify,
+    PenguinSync,
+    MareSync,
+    SyncPlagueDoctor,
 
     //TONX
     AntiBlackout,
@@ -80,11 +86,6 @@ public enum CustomRPC
     SyncEscapee,
     OnClickMeetingButton,
     SyncMarioVentedTimes,
-
-    //SoloKombat
-    SyncKBPlayer,
-    SyncKBBackCountdown,
-    SyncKBNameNotify,
 }
 public enum Sounds
 {
@@ -158,11 +159,11 @@ internal class RPCHandlerPatch
                     Logger.Fatal($"{__instance?.Data?.PlayerName}({__instance.PlayerId}): {reader.ReadString()} 错误，根据设定终止游戏", "Anti-black");
                     ChatUpdatePatch.DoBlockChat = true;
                     Main.OverrideWelcomeMsg = string.Format(GetString("RpcAntiBlackOutNotifyInLobby"), __instance?.Data?.PlayerName, GetString("EndWhenPlayerBug"));
-                    new LateTask(() =>
+                    _ = new LateTask(() =>
                     {
                         Logger.SendInGame(string.Format(GetString("RpcAntiBlackOutEndGame"), __instance?.Data?.PlayerName), true);
                     }, 3f, "Anti-Black Msg SendInGame");
-                    new LateTask(() =>
+                    _ = new LateTask(() =>
                     {
                         CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Error);
                         GameManager.Instance.LogicFlow.CheckEndCriteria();
@@ -172,7 +173,7 @@ internal class RPCHandlerPatch
                 else
                 {
                     Logger.Fatal($"{__instance?.Data?.PlayerName}({__instance.PlayerId}): Change Role Setting Postfix 错误，根据设定继续游戏", "Anti-black");
-                    new LateTask(() =>
+                    _ = new LateTask(() =>
                     {
                         Logger.SendInGame(string.Format(GetString("RpcAntiBlackOutIgnored"), __instance?.Data?.PlayerName), true);
                     }, 3f, "Anti-Black Msg SendInGame");
@@ -195,7 +196,7 @@ internal class RPCHandlerPatch
                     if (AmongUsClient.Instance.AmHost && tag != $"{ThisAssembly.Git.Commit}({ThisAssembly.Git.Branch})")
                     {
                         if (forkId != Main.ForkId)
-                            new LateTask(() =>
+                            _ = new LateTask(() =>
                             {
                                 if (__instance?.Data?.Disconnected is not null and not true)
                                 {
@@ -211,7 +212,7 @@ internal class RPCHandlerPatch
                 catch
                 {
                     Logger.Warn($"{__instance?.Data?.PlayerName}({__instance.PlayerId}): バージョン情報が無効です", "RpcVersionCheck");
-                    new LateTask(() =>
+                    _ = new LateTask(() =>
                     {
                         MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.RequestRetryVersionCheck, SendOption.Reliable, __instance.GetClientId());
                         AmongUsClient.Instance.FinishRpcImmediately(writer);
@@ -229,7 +230,7 @@ internal class RPCHandlerPatch
                 for (var i = startAmount; i < OptionItem.AllOptions.Count && i <= lastAmount; i++)
                     list.Add(OptionItem.AllOptions[i]);
                 Logger.Info($"{startAmount}-{lastAmount}:{list.Count}/{OptionItem.AllOptions.Count}", "SyncCustomSettings");
-                foreach (var co in list) co.SetValue(reader.ReadInt32());
+                foreach (var co in list) co.SetValue(reader.ReadPackedInt32());
                 OptionShower.BuildText();
                 break;
             case CustomRPC.SetDeathReason:
@@ -270,7 +271,7 @@ internal class RPCHandlerPatch
                 CustomSoundsManager.ReceiveRPC(reader);
                 break;
             case CustomRPC.RestTONXSetting:
-                OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValueNoRpc(x.DefaultValue));
+                OptionItem.AllOptions.ToArray().Where(x => x.Id > 0).Do(x => x.SetValue(x.DefaultValue, false));
                 OptionShower.BuildText();
                 break;
             case CustomRPC.SuicideWithAnime:
@@ -282,20 +283,11 @@ internal class RPCHandlerPatch
                 float time = reader.ReadSingle();
                 PlayerControl.LocalPlayer.SetKillTimer(time);
                 break;
-            case CustomRPC.SyncKBPlayer:
-                SoloKombatManager.ReceiveRPCSyncKBPlayer(reader);
-                break;
             case CustomRPC.SyncAllPlayerNames:
                 Main.AllPlayerNames = new();
                 int num = reader.ReadInt32();
                 for (int i = 0; i < num; i++)
                     Main.AllPlayerNames.TryAdd(reader.ReadByte(), reader.ReadString());
-                break;
-            case CustomRPC.SyncKBBackCountdown:
-                SoloKombatManager.ReceiveRPCSyncBackCountdown(reader);
-                break;
-            case CustomRPC.SyncKBNameNotify:
-                SoloKombatManager.ReceiveRPCSyncNameNotify(reader);
                 break;
             case CustomRPC.SyncNameNotify:
                 NameNotifyManager.ReceiveRPC(reader);
@@ -352,20 +344,28 @@ internal static class RPC
     }
     static void SyncOptionsBetween(int startAmount, int lastAmount, int targetId = -1)
     {
+        //判断发送请求是否有效
+        if (
+            Main.AllPlayerControls.Count() <= 1 ||
+            AmongUsClient.Instance.AmHost == false ||
+            PlayerControl.LocalPlayer == null
+        ) return;
+        //判断发送目标是否有效
         if (targetId != -1)
         {
             var client = Utils.GetClientById(targetId);
-            if (client == null || client.Character == null || !Main.playerVersion.ContainsKey(client.Character.PlayerId)) return;
+            if (client == null || client.Character == null || !Main.playerVersion.ContainsKey(client.Character.PlayerId))
+                return;
         }
-        if (!AmongUsClient.Instance.AmHost || PlayerControl.AllPlayerControls.Count <= 1 || (AmongUsClient.Instance.AmHost == false && PlayerControl.LocalPlayer == null)) return;
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, 80, SendOption.Reliable, targetId);
+
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SyncCustomSettings, SendOption.Reliable, targetId);
         List<OptionItem> list = new();
         writer.Write(startAmount);
         writer.Write(lastAmount);
         for (var i = startAmount; i < OptionItem.AllOptions.Count && i <= lastAmount; i++)
             list.Add(OptionItem.AllOptions[i]);
         Logger.Info($"{startAmount}-{lastAmount}:{list.Count}/{OptionItem.AllOptions.Count}", "SyncCustomSettings");
-        foreach (var co in list) writer.Write(co.GetValue());
+        foreach (var co in list) writer.WritePacked(co.GetValue());
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void PlaySoundRPC(byte PlayerID, Sounds sound)

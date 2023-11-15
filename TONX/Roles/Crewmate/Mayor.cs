@@ -71,10 +71,15 @@ public sealed class Mayor : RoleBase
         }
         return false;
     }
-    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
+    public override (byte? votedForId, int? numVotes, bool doVote) ModifyVote(byte voterId, byte sourceVotedForId, bool isIntentional)
     {
-        if (voterId == Player.PlayerId) roleNumVotes = AdditionalVote + 1;
-        return true;
+        // ¼È¶¨‚Ž
+        var (votedForId, numVotes, doVote) = base.ModifyVote(voterId, sourceVotedForId, isIntentional);
+        if (voterId == Player.PlayerId)
+        {
+            numVotes = AdditionalVote + 1;
+        }
+        return (votedForId, numVotes, doVote);
     }
     public override void AfterMeetingTasks()
     {

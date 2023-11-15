@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -15,6 +16,7 @@ public static class Ntr
         SetupAddonOptions(Id, TabGroup.OtherRoles, CustomRoles.Ntr);
         AddOnsAssignData.Create(Id + 10, TabGroup.OtherRoles, CustomRoles.Ntr, true, true, true);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();

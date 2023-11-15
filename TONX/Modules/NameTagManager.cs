@@ -222,7 +222,6 @@ public static class NameTagManager
                 var upper = $"<size=80%><color=#ffd6ec>{Main.ModName}</color><color=#baf7ca>★</color>";
                 upper += Options.CurrentGameMode switch
                 {
-                    CustomGameMode.SoloKombat => $"<color=#f55252>{GetString("ModeSoloKombat")}</color>",
                     _ => $"<color=#87cefa>{Main.PluginVersion}</color>",
                 };
                 name = upper + "</size>\r\n" + name;

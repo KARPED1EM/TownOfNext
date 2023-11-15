@@ -45,30 +45,19 @@ public sealed class Divinator : RoleBase
         Options.OverrideTasksData.Create(RoleInfo, 20);
     }
     public override void Add() => CheckLimit = OptionCheckNums.GetInt();
-    public override void OnStartMeeting() => DidVote = false;
-    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
+    public override void OnStartMeeting() => DidVote = CheckLimit < 1;
+    public override bool CheckVoteAsVoter(PlayerControl votedFor)
     {
-        if (voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive() || DidVote) return true;
+        if (votedFor == null || !Player.IsAlive() || DidVote || CheckLimit < 1) return true;
 
         DidVote = true;
-
-        var target = Utils.GetPlayerById(sourceVotedForId);
-        if (target == null) return true;
-
-        if (CheckLimit < 1)
-        {
-            Utils.SendMessage(GetString("DivinatorCheckReachLimit"), Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
-            return true;
-        }
-
         CheckLimit--;
 
-        if (Is(target))
+        if (Is(votedFor))
         {
             string notice1 = GetString("DivinatorCheckSelfMsg") + "\n\n" + string.Format(GetString("DivinatorCheckLimit"), CheckLimit) + GetString("SkillDoneAndYouCanVoteNormallyNow");
             Player.ShowPopUp(notice1);
             Utils.SendMessage(notice1, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
-            clearVote = true;
             return false;
         }
 
@@ -76,11 +65,11 @@ public sealed class Divinator : RoleBase
 
         if (Player.AllTasksCompleted() || OptionAccurateCheck.GetBool())
         {
-            msg = string.Format(GetString("DivinatorCheck.TaskDone"), target.GetRealName(), GetString(target.GetCustomRole().ToString()));
+            msg = string.Format(GetString("DivinatorCheck.TaskDone"), votedFor.GetRealName(), GetString(votedFor.GetCustomRole().ToString()));
         }
         else
         {
-            string text = target.GetCustomRole() switch
+            string text = votedFor.GetCustomRole() switch
             {
                 CustomRoles.TimeThief or
                 CustomRoles.AntiAdminer or
@@ -91,7 +80,9 @@ public sealed class Divinator : RoleBase
                 CustomRoles.God or
                 CustomRoles.Judge or
                 CustomRoles.Observer or
-                CustomRoles.DoveOfPeace
+                CustomRoles.DoveOfPeace or
+                CustomRoles.Messenger or
+                CustomRoles.Insider
                 => "HideMsg",
 
                 CustomRoles.Miner or
@@ -102,7 +93,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Jackal or
                 CustomRoles.Mario or
                 CustomRoles.Cleaner or
-                CustomRoles.Crewpostor
+                CustomRoles.Crewpostor or
+                CustomRoles.Penguin
                 => "Honest",
 
                 CustomRoles.SerialKiller or
@@ -125,7 +117,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Bodyguard or
                 CustomRoles.Opportunist or
                 CustomRoles.Pelican or
-                CustomRoles.ImperiusCurse
+                CustomRoles.ImperiusCurse or
+                CustomRoles.Stealth
                 => "Weirdo",
 
                 CustomRoles.EvilGuesser or
@@ -136,7 +129,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Terrorist or
                 CustomRoles.Revolutionist or
                 CustomRoles.Gamer or
-                CustomRoles.Eraser
+                CustomRoles.Eraser or
+                CustomRoles.PlagueDoctor
                 => "Blockbuster",
 
                 CustomRoles.Warlock or
@@ -160,7 +154,8 @@ public sealed class Divinator : RoleBase
                 CustomRoles.Executioner or
                 CustomRoles.BallLightning or
                 CustomRoles.Workaholic or
-                CustomRoles.Provocateur
+                CustomRoles.Provocateur or
+                CustomRoles.SchrodingerCat
                 => "Incomprehensible",
 
                 CustomRoles.FireWorks or
@@ -198,14 +193,13 @@ public sealed class Divinator : RoleBase
 
                 _ => "None",
             };
-            msg = string.Format(GetString("DivinatorCheck." + text), target.GetRealName());
+            msg = string.Format(GetString("DivinatorCheck." + text), votedFor.GetRealName());
         }
 
         string notice2 = GetString("DivinatorCheck") + "\n" + msg + "\n\n" + string.Format(GetString("DivinatorCheckLimit"), CheckLimit) + GetString("SkillDoneAndYouCanVoteNormallyNow");
         Player.ShowPopUp(notice2);
         Utils.SendMessage(notice2, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Divinator), GetString("DivinatorCheckMsgTitle")));
 
-        clearVote = true;
         return false;
     }
 }

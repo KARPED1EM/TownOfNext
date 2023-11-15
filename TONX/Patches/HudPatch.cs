@@ -3,7 +3,6 @@ using System.Linq;
 using System.Text;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
-using TONX.Roles.Neutral;
 using UnityEngine;
 using static TONX.Translator;
 
@@ -82,9 +81,8 @@ class HudManagerPatch
                     LowerInfoText.fontSizeMax = 2.0f;
                 }
 
-                LowerInfoText.text = roleClass?.GetLowerText(player, isForHud: true) ?? "";
-                if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-                    LowerInfoText.text = SoloKombatManager.GetHudText();
+                LowerInfoText.text = roleClass?.GetLowerText(player, isForMeeting: GameStates.IsMeeting, isForHud: true) ?? "";
+
                 LowerInfoText.enabled = LowerInfoText.text != "";
 
                 if ((!AmongUsClient.Instance.IsGameStarted && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) || GameStates.IsMeeting)
@@ -200,48 +198,9 @@ class SetHudActivePatch
         if (!isActive) return;
 
         var player = PlayerControl.LocalPlayer;
-        if (player == null) return;
-        switch (player.GetCustomRole())
-        {
-            case CustomRoles.Sheriff:
-            case CustomRoles.SwordsMan:
-            case CustomRoles.Arsonist:
-            case CustomRoles.Innocent:
-            case CustomRoles.Pelican:
-            case CustomRoles.Revolutionist:
-            case CustomRoles.FFF:
-            case CustomRoles.Medicaler:
-            case CustomRoles.Gamer:
-            case CustomRoles.DarkHide:
-            case CustomRoles.Provocateur:
-                __instance.SabotageButton.ToggleVisible(false);
-                __instance.AbilityButton.ToggleVisible(false);
-                break;
-            case CustomRoles.Minimalism:
-            case CustomRoles.KB_Normal:
-                __instance.SabotageButton.ToggleVisible(false);
-                __instance.AbilityButton.ToggleVisible(false);
-                __instance.ReportButton.ToggleVisible(false);
-                break;
-            case CustomRoles.Jackal:
-                Jackal.SetHudActive(__instance, isActive);
-                break;
-            case CustomRoles.Bomber:
-                __instance.KillButton.ToggleVisible(false);
-                break;
-        }
-
-        foreach (var subRole in PlayerState.AllPlayerStates[player.PlayerId].SubRoles)
-        {
-            switch (subRole)
-            {
-                case CustomRoles.Oblivious:
-                    __instance.ReportButton.ToggleVisible(false);
-                    break;
-            }
-        }
         __instance.KillButton.ToggleVisible(player.CanUseKillButton());
         __instance.ImpostorVentButton.ToggleVisible(player.CanUseImpostorVentButton());
+        __instance.SabotageButton.ToggleVisible(player.CanUseSabotageButton());
     }
 }
 [HarmonyPatch(typeof(VentButton), nameof(VentButton.DoClick))]
@@ -269,7 +228,7 @@ class MapBehaviourShowPatch
         if (opts.Mode is MapOptions.Modes.Normal or MapOptions.Modes.Sabotage)
         {
             var player = PlayerControl.LocalPlayer;
-            if (player.Is(CustomRoleTypes.Impostor) || (player.Is(CustomRoles.Jackal) && Jackal.CanUseSabotage))
+            if (player.GetRoleClass() is IKiller killer && killer.CanUseSabotageButton())
                 opts.Mode = MapOptions.Modes.Sabotage;
             else
                 opts.Mode = MapOptions.Modes.Normal;
@@ -325,35 +284,6 @@ class TaskPanelBehaviourPatch
                     }
 
                     break;
-
-                    //TODO: FIXME
-                    //case CustomGameMode.SoloKombat:
-
-                    //    var lpc = PlayerControl.LocalPlayer;
-
-                    //    AllText += "\r\n";
-                    //    AllText += $"\r\n{GetString("PVP.ATK")}: {lpc.ATK()}";
-                    //    AllText += $"\r\n{GetString("PVP.DF")}: {lpc.DF()}";
-                    //    AllText += $"\r\n{GetString("PVP.RCO")}: {lpc.HPRECO()}";
-                    //    AllText += "\r\n";
-
-                    //    Dictionary<byte, string> SummaryText = new();
-                    //    foreach (var id in PlayerState.AllPlayerStates.Keys)
-                    //    {
-                    //        string name = Main.AllPlayerNames[id].RemoveHtmlTags().Replace("\r\n", string.Empty);
-                    //        string summary = $"{Utils.GetProgressText(id)}  {Utils.ColorString(Main.PlayerColors[id], name)}";
-                    //        if (Utils.GetProgressText(id).Trim() == "") continue;
-                    //        SummaryText[id] = summary;
-                    //    }
-
-                    //    List<(int, byte)> list = new();
-                    //    foreach (var id in PlayerState.AllPlayerStates.Keys) list.Add((SoloKombatManager.GetRankOfScore(id), id));
-                    //    list.Sort();
-                    //    foreach (var id in list.Where(x => SummaryText.ContainsKey(x.Item2))) AllText += "\r\n" + SummaryText[id.Item2];
-
-                    //    AllText = $"<size=80%>{AllText}</size>";
-
-                    //    break;
             }
 
             __instance.taskText.text = AllText;
@@ -403,7 +333,7 @@ class RepairSender
     }
     public static void Send()
     {
-        ShipStatus.Instance.RpcRepairSystem((SystemTypes)SystemType, amount);
+        ShipStatus.Instance.RpcUpdateSystem((SystemTypes)SystemType, (byte)amount);
         Reset();
     }
     public static void Reset()

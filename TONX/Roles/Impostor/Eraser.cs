@@ -56,40 +56,38 @@ public sealed class Eraser : RoleBase, IImpostor
         EraseLimit = reader.ReadInt32();
     }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(EraseLimit >= 1 ? Color.red : Color.gray, $"({EraseLimit})");
-    public override bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote)
+    public override bool CheckVoteAsVoter(PlayerControl votedFor)
     {
-        var target = Utils.GetPlayerById(sourceVotedForId);
-        if (target == null || voterId != Player.PlayerId || sourceVotedForId >= 253 || !Player.IsAlive() || EraseLimit < 1 || PlayerToErase != byte.MaxValue) return true;
+        if (votedFor == null || !Player.IsAlive() || EraseLimit < 1 || PlayerToErase != byte.MaxValue) return true;
 
-        if (Is(target))
+        if (Is(votedFor))
         {
-            string notice1 = GetString("EraserEraseSelf") + GetString("SkillDoneAndYouCanVoteNormallyNow");
-            Player.ShowPopUp(notice1);
-            Utils.SendMessage(notice1, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
-            clearVote = true;
-            return false;
+            // 抹除自己
+            ShowMsg(GetString("EraserEraseSelf") + GetString("TargetInvalidAndYouShouldChooseAnotherTarget"));
+        }
+        else if (votedFor.Is(CustomRoleTypes.Neutral))
+        {
+            // 抹除中立阵营玩家
+            ShowMsg(string.Format(GetString("EraserEraseNeutralNotice"), votedFor.GetRealName()) + GetString("TargetInvalidAndYouShouldChooseAnotherTarget"));
+        }
+        else
+        {
+            // 正常抹除
+            EraseLimit--;
+            SendRPC();
+
+            PlayerToErase = votedFor.PlayerId;
+
+            ShowMsg(string.Format(GetString("EraserEraseNotice"), votedFor.GetRealName()) + GetString("SkillDoneAndYouCanVoteNormallyNow"));
         }
 
-        if (target.Is(CustomRoleTypes.Neutral))
-        {
-            string notice2 = string.Format(GetString("EraserEraseNeutralNotice"), target.GetRealName()) + GetString("SkillDoneAndYouCanVoteNormallyNow");
-            Player.ShowPopUp(notice2);
-            Utils.SendMessage(notice2, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
-            clearVote = true;
-            return false;
-        }
-
-        EraseLimit--;
-        SendRPC();
-
-        PlayerToErase = target.PlayerId;
-
-        string notice3 = string.Format(GetString("EraserEraseNotice"), target.GetRealName()) + GetString("SkillDoneAndYouCanVoteNormallyNow");
-        Player.ShowPopUp(notice3);
-        Utils.SendMessage(notice3, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
-
-        clearVote = true;
         return false;
+
+        void ShowMsg(string msg)
+        {
+            Player.ShowPopUp(msg);
+            Utils.SendMessage(msg, Player.PlayerId, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Eraser), GetString("EraserEraseMsgTitle")));
+        }
     }
     public override void OnStartMeeting()
     {

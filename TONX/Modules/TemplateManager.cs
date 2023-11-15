@@ -2,12 +2,12 @@ using AmongUs.Data;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using TONX.Attributes;
 using static TONX.Translator;
 
 namespace TONX;
@@ -38,6 +38,7 @@ public static class TemplateManager
         ["Time"] = () => DateTime.Now.ToShortTimeString(),
     };
 
+    [PluginModuleInitializer]
     public static void Init()
     {
         CreateIfNotExists();
@@ -53,16 +54,7 @@ public static class TemplateManager
                 if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
                 else
                 {
-                    string fileName;
-                    string[] name = CultureInfo.CurrentCulture.Name.Split("-");
-                    if (name.Count() >= 2)
-                        fileName = name[0] switch
-                        {
-                            "zh" => "SChinese",
-                            "ru" => "Russian",
-                            _ => "English"
-                        };
-                    else fileName = "English";
+                    string fileName = GetUserLangByRegion().ToString();
                     Logger.Warn($"Create New Template: {fileName}", "TemplateManager");
                     File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt($"TONX.Resources.Config.template.{fileName}.txt"));
                 }
@@ -92,7 +84,7 @@ public static class TemplateManager
         CreateIfNotExists();
         using StreamReader sr = new(TEMPLATE_FILE_PATH, Encoding.GetEncoding("UTF-8"));
         string text;
-        string[] tmp = { };
+        string[] tmp = Array.Empty<string>();
         List<string> sendList = new();
         HashSet<string> tags = new();
         while ((text = sr.ReadLine()) != null)

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using TONX.Attributes;
 using static TONX.Translator;
 
 namespace TONX;
@@ -13,6 +13,8 @@ public static class SpamManager
 {
     private static readonly string BANEDWORDS_FILE_PATH = "./TONX_Data/BanWords.txt";
     public static List<string> BanWords = new();
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         CreateIfNotExists();
@@ -28,16 +30,7 @@ public static class SpamManager
                 if (File.Exists(@"./BanWords.txt")) File.Move(@"./BanWords.txt", BANEDWORDS_FILE_PATH);
                 else
                 {
-                    string fileName;
-                    string[] name = CultureInfo.CurrentCulture.Name.Split("-");
-                    if (name.Count() >= 2)
-                        fileName = name[0] switch
-                        {
-                            "zh" => "SChinese",
-                            "ru" => "Russian",
-                            _ => "English"
-                        };
-                    else fileName = "English";
+                    string fileName = GetUserLangByRegion().ToString();
                     Logger.Warn($"Create New BanWords: {fileName}", "SpamManager");
                     File.WriteAllText(BANEDWORDS_FILE_PATH, GetResourcesTxt($"TONX.Resources.Config.BanWords.{fileName}.txt"));
                 }

@@ -42,6 +42,12 @@ public static class GameOptionsMenuPatch
                 case StringNames.GameKillCooldown:
                     ob.Cast<NumberOption>().ValidRange = new FloatRange(0, 180);
                     break;
+                case StringNames.GameNumImpostors:
+                    if (DebugModeManager.IsDebugMode)
+                    {
+                        ob.Cast<NumberOption>().ValidRange.min = 0;
+                    }
+                    break;
                 default:
                     break;
             }
@@ -273,7 +279,7 @@ public class StringOptionIncreasePatch
         var option = OptionItem.AllOptions.FirstOrDefault(opt => opt.OptionBehaviour == __instance);
         if (option == null) return true;
 
-        option.SetValue(option.CurrentValue + 1);
+        option.SetValue(option.CurrentValue + (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 5 : 1));
         return false;
     }
     public static void Postfix(StringOption __instance) => OptionShower.BuildText();
@@ -287,7 +293,7 @@ public class StringOptionDecreasePatch
         var option = OptionItem.AllOptions.FirstOrDefault(opt => opt.OptionBehaviour == __instance);
         if (option == null) return true;
 
-        option.SetValue(option.CurrentValue - 1);
+        option.SetValue(option.CurrentValue - (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? 5 : 1));
         return false;
     }
     public static void Postfix(StringOption __instance) => OptionShower.BuildText();
@@ -354,17 +360,6 @@ public static class SetRecommendationsPatch
         __instance.roleOptions.SetRoleRecommended(RoleTypes.GuardianAngel);
         __instance.roleOptions.SetRoleRecommended(RoleTypes.Engineer);
 
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat) //SoloKombat
-        {
-            __instance.PlayerSpeedMod = 1.75f;
-            __instance.CrewLightMod = 1f;
-            __instance.ImpostorLightMod = 1f;
-            __instance.NumImpostors = 3;
-            __instance.NumCommonTasks = 0;
-            __instance.NumLongTasks = 0;
-            __instance.NumShortTasks = 0;
-            __instance.KillCooldown = 0f;
-        }
         return false;
     }
 }

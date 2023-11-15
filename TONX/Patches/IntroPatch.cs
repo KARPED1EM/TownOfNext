@@ -16,38 +16,25 @@ class IntroCutscenePatch
     public static void ShowRole_Postfix(IntroCutscene __instance)
     {
         if (!GameStates.IsModHost) return;
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
-            if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
+            CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
+            if (!role.IsVanilla())
             {
-                var color = ColorUtility.TryParseHtmlString("#f55252", out var c) ? c : new(255, 255, 255, 255);
-                CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
-                __instance.YouAreText.color = color;
+                __instance.YouAreText.color = Utils.GetRoleColor(role);
                 __instance.RoleText.text = Utils.GetRoleName(role);
                 __instance.RoleText.color = Utils.GetRoleColor(role);
-                __instance.RoleBlurbText.color = color;
+                __instance.RoleText.fontWeight = TMPro.FontWeight.Thin;
+                __instance.RoleText.SetOutlineColor(Utils.ShadeColor(Utils.GetRoleColor(role), 0.1f).SetAlpha(0.38f));
+                __instance.RoleText.SetOutlineThickness(0.17f);
+                __instance.RoleBlurbText.color = Utils.GetRoleColor(role);
                 __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
             }
-            else
-            {
-                CustomRoles role = PlayerControl.LocalPlayer.GetCustomRole();
-                if (!role.IsVanilla())
-                {
-                    __instance.YouAreText.color = Utils.GetRoleColor(role);
-                    __instance.RoleText.text = Utils.GetRoleName(role);
-                    __instance.RoleText.color = Utils.GetRoleColor(role);
-                    __instance.RoleText.fontWeight = TMPro.FontWeight.Thin;
-                    __instance.RoleText.SetOutlineColor(Utils.ShadeColor(Utils.GetRoleColor(role), 0.1f).SetAlpha(0.38f));
-                    __instance.RoleText.SetOutlineThickness(0.17f);
-                    __instance.RoleBlurbText.color = Utils.GetRoleColor(role);
-                    __instance.RoleBlurbText.text = PlayerControl.LocalPlayer.GetRoleInfo();
-                }
-                foreach (var subRole in PlayerState.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId).SubRoles)
-                    __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(subRole), GetString($"{subRole}Info"));
-                if (!PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && !PlayerControl.LocalPlayer.Is(CustomRoles.Ntr) && CustomRoles.Ntr.Exist())
-                    __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), GetString($"{CustomRoles.Lovers}Info"));
-                __instance.RoleText.text += Utils.GetSubRolesText(PlayerControl.LocalPlayer.PlayerId, false, true);
-            }
+            foreach (var subRole in PlayerState.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId).SubRoles)
+                __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(subRole), GetString($"{subRole}Info"));
+            if (!PlayerControl.LocalPlayer.Is(CustomRoles.Lovers) && !PlayerControl.LocalPlayer.Is(CustomRoles.Ntr) && CustomRoles.Ntr.IsExist())
+                __instance.RoleBlurbText.text += "\n" + Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), GetString($"{CustomRoles.Lovers}Info"));
+            __instance.RoleText.text += Utils.GetSubRolesText(PlayerControl.LocalPlayer.PlayerId, false, true);
         }, 0.0001f, "Override Role Text");
     }
     [HarmonyPatch(nameof(IntroCutscene.CoBegin)), HarmonyPrefix]
@@ -88,7 +75,9 @@ class IntroCutscenePatch
         logger.Info("------------详细设置------------");
         foreach (var o in OptionItem.AllOptions)
             if (!o.IsHiddenOn(Options.CurrentGameMode) && (o.Parent == null ? !o.GetString().Equals("0%") : o.Parent.GetBool()))
-                logger.Info($"{(o.Parent == null ? o.GetName(true, true).RemoveHtmlTags().PadRightV2(40) : $"┗ {o.GetName(true, true).RemoveHtmlTags()}".PadRightV2(41))}:{o.GetString().RemoveHtmlTags()}");
+                logger.Info(
+                    $"{(o.Parent == null ? o.GetName(true, true).RemoveHtmlTags().PadRightV2(40) : $"┗ {o.GetName(true, true).RemoveHtmlTags()}".PadRightV2(41))}:{o.GetString().RemoveHtmlTags()}"
+                    );
         logger.Info("-------------其它信息-------------");
         logger.Info($"玩家人数: {Main.AllPlayerControls.Count()}");
         Main.AllPlayerControls.Do(x => PlayerState.GetByPlayerId(x.PlayerId).InitTask(x));
@@ -173,17 +162,6 @@ class IntroCutscenePatch
             PlayerControl.LocalPlayer.Data.Role.IntroSound = GetIntroSound(RoleTypes.Impostor);
         }
 
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-        {
-            var color = ColorUtility.TryParseHtmlString("#f55252", out var c) ? c : new(255, 255, 255, 255);
-            __instance.TeamTitle.text = Utils.GetRoleName(role);
-            __instance.TeamTitle.color = Utils.GetRoleColor(role);
-            __instance.ImpostorText.gameObject.SetActive(true);
-            __instance.ImpostorText.text = GetString("ModeSoloKombat");
-            __instance.BackgroundBar.material.color = color;
-            PlayerControl.LocalPlayer.Data.Role.IntroSound = DestroyableSingleton<HnSImpostorScreamSfx>.Instance.HnSOtherImpostorTransformSfx;
-        }
-
         if (Input.GetKey(KeyCode.RightShift))
         {
             __instance.TeamTitle.text = "明天就跑路啦";
@@ -242,7 +220,7 @@ class IntroCutscenePatch
             __instance.overlayHandle.color = Palette.ImpostorRed;
             return true;
         }
-        else if (role.IsCrewmate() && role.IsDesyncRole())
+        else if (role.IsCrewmate() && role.GetRoleInfo().IsDesyncImpostor)
         {
             yourTeam = new Il2CppSystem.Collections.Generic.List<PlayerControl>();
             yourTeam.Add(PlayerControl.LocalPlayer);
@@ -269,8 +247,8 @@ class IntroCutscenePatch
             if (Main.NormalOptions.MapId != 4)
             {
                 Main.AllPlayerControls.Do(pc => pc.RpcResetAbilityCooldown());
-                if (Options.FixFirstKillCooldown.GetBool() && Options.CurrentGameMode != CustomGameMode.SoloKombat)
-                    new LateTask(() =>
+                if (Options.FixFirstKillCooldown.GetBool())
+                    _ = new LateTask(() =>
                     {
                         if (GameStates.IsInTask)
                         {
@@ -278,18 +256,18 @@ class IntroCutscenePatch
                             Main.AllPlayerControls.Where(x => (Main.AllPlayerKillCooldown[x.PlayerId] - 2f) > 0f).Do(pc => pc.SetKillCooldownV2(Main.AllPlayerKillCooldown[pc.PlayerId] - 2f));
                         }
                     }, 2f, "FixKillCooldownTask");
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     CustomRoleManager.AllActiveRoles.Values.Do(x => x?.OnGameStart());
                 }, 0.1f, "RoleClassOnGameStartTask");
             }
-            new LateTask(() => Main.AllPlayerControls.Do(pc => pc.RpcSetRoleDesync(RoleTypes.Shapeshifter, -3)), 2f, "SetImpostorForServer");
+            _ = new LateTask(() => Main.AllPlayerControls.Do(pc => pc.RpcSetRoleDesync(RoleTypes.Shapeshifter, -3)), 2f, "SetImpostorForServer");
             if (PlayerControl.LocalPlayer.Is(CustomRoles.GM))
             {
                 PlayerControl.LocalPlayer.RpcExile();
                 PlayerState.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId).SetDead();
             }
-            if (Options.RandomSpawn.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat)
+            if (RandomSpawn.IsRandomSpawn())
             {
                 RandomSpawn.SpawnMap map;
                 switch (Main.NormalOptions.MapId)
@@ -307,7 +285,7 @@ class IntroCutscenePatch
 
             // そのままだとホストのみDesyncImpostorの暗室内での視界がクルー仕様になってしまう
             var roleInfo = PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo();
-            var amDesyncImpostor = roleInfo?.RequireResetCam == true || Main.ResetCamPlayerList.Contains(PlayerControl.LocalPlayer.PlayerId);
+            var amDesyncImpostor = roleInfo?.IsDesyncImpostor == true;
             if (amDesyncImpostor)
             {
                 PlayerControl.LocalPlayer.Data.Role.AffectedByLightAffectors = false;

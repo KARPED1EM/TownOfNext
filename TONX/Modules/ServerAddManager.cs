@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
+using TONX.Attributes;
 using UnityEngine;
 
 namespace TONX;
@@ -9,12 +9,14 @@ namespace TONX;
 public static class ServerAddManager
 {
     private static ServerManager serverManager = DestroyableSingleton<ServerManager>.Instance;
+
+    [PluginModuleInitializer]
     public static void Init()
     {
         serverManager.AvailableRegions = ServerManager.DefaultRegions;
         List<IRegionInfo> regionInfos = new();
 
-        if (CultureInfo.CurrentCulture.Name.StartsWith("zh"))
+        if (Translator.IsChineseUser)
         {
             regionInfos.Add(CreateHttp("au-sh.pafyx.top", "梦服上海 (新)", 22000, false));
             regionInfos.Add(CreateHttp("124.222.148.195", "小猫私服", 22000, false));

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
+using TONX.Roles.Neutral;
 using UnityEngine;
 using static TONX.Translator;
 
@@ -157,7 +158,7 @@ public sealed class BountyHunter : RoleBase, IImpostor
 
         var cTargets = new List<PlayerControl>(Main.AllAlivePlayerControls.Where(pc => !pc.Is(CountTypes.Impostor)));
 
-        if (cTargets.Count() >= 2)
+        if (cTargets.Count >= 2)
             cTargets.RemoveAll(x => x == Target); //前回のターゲットは除外
 
         if (cTargets.Count <= 0)
@@ -214,5 +215,12 @@ public sealed class BountyHunter : RoleBase, IImpostor
         //seerがtarget自身でBountyHunterのとき、
         //矢印オプションがありミーティング以外で矢印表示
         return TargetArrow.GetArrows(Player, target.PlayerId);
+    }
+    public void OnSchrodingerCatKill(SchrodingerCat schrodingerCat)
+    {
+        if (GetTarget() == schrodingerCat.Player)
+        {
+            ResetTarget();  // ターゲットの選びなおし
+        }
     }
 }

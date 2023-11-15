@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -19,6 +20,7 @@ public static class Trapper
         OptionBlockMoveTime = FloatOptionItem.Create(Id + 20, "TrapperBlockMoveTime", new(1f, 180f, 1f), 5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper])
             .SetValueFormat(OptionFormat.Seconds);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();
@@ -38,7 +40,7 @@ public static class Trapper
         Main.AllPlayerSpeed[killer.PlayerId] = Main.MinSpeed;    //tmpSpeed¤Çáá¤Û¤É‚Ž¤ò‘ø¤¹¤Î¤Ç´úÈë¤·¤Æ¤¤¤Þ¤¹¡£
         ReportDeadBodyPatch.CanReport[killer.PlayerId] = false;
         killer.MarkDirtySettings();
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             Main.AllPlayerSpeed[killer.PlayerId] = tmpSpeed;
             ReportDeadBodyPatch.CanReport[killer.PlayerId] = true;

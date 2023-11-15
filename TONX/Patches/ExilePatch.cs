@@ -1,12 +1,15 @@
 using AmongUs.Data;
 using HarmonyLib;
-
+using System;
+using System.Collections.Generic;
 using TONX.Roles.Core;
+using TONX.Roles.Neutral;
 
 namespace TONX;
 
 class ExileControllerWrapUpPatch
 {
+    public static List<Action> ActionsOnWrapUp = new();
     public static GameData.PlayerInfo AntiBlackout_LastExiled;
     [HarmonyPatch(typeof(ExileController), nameof(ExileController.WrapUp))]
     class BaseExileControllerPatch
@@ -54,11 +57,14 @@ class ExileControllerWrapUpPatch
             var role = exiled.GetCustomRole();
             var info = role.GetRoleInfo();
             //霊界用暗転バグ対処
-            if (!AntiBlackout.OverrideExiledPlayer && (Main.ResetCamPlayerList.Contains(exiled.PlayerId) || (info?.RequireResetCam ?? false)))
+            if (!AntiBlackout.OverrideExiledPlayer && info?.IsDesyncImpostor == true)
                 exiled.Object?.ResetPlayerCam(1f);
 
             exiled.IsDead = true;
             PlayerState.GetByPlayerId(exiled.PlayerId).DeathReason = CustomDeathReason.Vote;
+
+            ActionsOnWrapUp.Do(f => f.Invoke());
+            ActionsOnWrapUp = new();
 
             foreach (var roleClass in CustomRoleManager.AllActiveRoles.Values)
             {
@@ -72,7 +78,7 @@ class ExileControllerWrapUpPatch
         {
             pc.ResetKillCooldown();
         }
-        if (Options.RandomSpawn.GetBool() || Options.CurrentGameMode == CustomGameMode.SoloKombat)
+        if (RandomSpawn.IsRandomSpawn())
         {
             RandomSpawn.SpawnMap map;
             switch (Main.NormalOptions.MapId)
@@ -89,6 +95,10 @@ class ExileControllerWrapUpPatch
                     map = new RandomSpawn.PolusSpawnMap();
                     Main.AllPlayerControls.Do(map.RandomTeleport);
                     break;
+                case 5:
+                    map = new RandomSpawn.FungleSpawnMap();
+                    Main.AllPlayerControls.Do(map.RandomTeleport);
+                    break;
             }
         }
         FallFromLadder.Reset();
@@ -103,7 +113,7 @@ class ExileControllerWrapUpPatch
         //WrapUpPostfixで例外が発生しても、この部分だけは確実に実行されます。
         if (AmongUsClient.Instance.AmHost)
         {
-            new LateTask(() =>
+            _ = new LateTask(() =>
             {
                 exiled = AntiBlackout_LastExiled;
                 AntiBlackout.SendGameData();
@@ -114,13 +124,13 @@ class ExileControllerWrapUpPatch
                     exiled.Object.RpcExileV2();
                 }
             }, 0.5f, "Restore IsDead Task");
-            new LateTask(() =>
+            _ = new LateTask(() =>
             {
                 Main.AfterMeetingDeathPlayers.Do(x =>
                 {
                     var player = Utils.GetPlayerById(x.Key);
                     var roleClass = CustomRoleManager.GetByPlayerId(x.Key);
-                    var requireResetCam = player?.GetCustomRole().GetRoleInfo()?.RequireResetCam;
+                    var requireResetCam = player?.GetCustomRole().GetRoleInfo()?.IsDesyncImpostor == true;
                     var state = PlayerState.GetByPlayerId(x.Key);
                     Logger.Info($"{player.GetNameWithRole()}を{x.Value}で死亡させました", "AfterMeetingDeath");
                     state.DeathReason = x.Value;
@@ -128,9 +138,10 @@ class ExileControllerWrapUpPatch
                     player?.RpcExileV2();
                     if (x.Value == CustomDeathReason.Suicide)
                         player?.SetRealKiller(player, true);
-                    if (Main.ResetCamPlayerList.Contains(x.Key) || (requireResetCam.HasValue && requireResetCam.Value))
+                    if (requireResetCam)
                         player?.ResetPlayerCam(1f);
-                    Utils.AfterPlayerDeathTasks(player);
+                    if (roleClass is Executioner executioner && executioner.TargetId == x.Key)
+                        Executioner.ChangeRoleByTarget(x.Key);
                 });
                 Main.AfterMeetingDeathPlayers.Clear();
             }, 0.5f, "AfterMeetingDeathPlayers Task");

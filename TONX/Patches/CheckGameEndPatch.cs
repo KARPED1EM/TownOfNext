@@ -30,25 +30,13 @@ class GameEndChecker
         //ゲーム終了判定
         predicate.CheckForEndGame(out reason);
 
-        // SoloKombat
-        if (Options.CurrentGameMode == CustomGameMode.SoloKombat)
-        {
-            if (CustomWinnerHolder.WinnerIds.Count > 0 || CustomWinnerHolder.WinnerTeam != CustomWinner.Default)
-            {
-                ShipStatus.Instance.enabled = false;
-                StartEndGame(reason);
-                predicate = null;
-            }
-            return false;
-        }
-
         //ゲーム終了時
         if (CustomWinnerHolder.WinnerTeam != CustomWinner.Default)
         {
             //カモフラージュ強制解除
             Main.AllPlayerControls.Do(pc => Camouflage.RpcSetSkin(pc, ForceRevert: true, RevertToDefault: true));
 
-            if (reason == GameOverReason.ImpostorBySabotage && CustomRoles.Jackal.Exist() && Jackal.WinBySabotage && !Main.AllAlivePlayerControls.Any(x => x.GetCustomRole().IsImpostorTeam()))
+            if (reason == GameOverReason.ImpostorBySabotage && CustomRoles.Jackal.IsExist() && Jackal.WinBySabotage && !Main.AllAlivePlayerControls.Any(x => x.GetCustomRole().IsImpostorTeam()))
             {
                 reason = GameOverReason.ImpostorByKill;
                 CustomWinnerHolder.WinnerIds.Clear();
@@ -76,21 +64,6 @@ class GameEndChecker
             }
             if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Draw and not CustomWinner.None and not CustomWinner.Error)
             {
-                //恋人抢夺胜利
-                if (CustomRoles.Lovers.Exist() && !reason.Equals(GameOverReason.HumansByTask))
-                {
-                    if (!(!Main.LoversPlayers.ToArray().All(p => p.IsAlive()) && Options.LoverSuicide.GetBool()))
-                    {
-                        if (CustomWinnerHolder.WinnerTeam is CustomWinner.Crewmate or CustomWinner.Impostor or CustomWinner.Jackal or CustomWinner.Pelican)
-                        {
-                            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Lovers);
-                            Main.AllPlayerControls
-                                .Where(p => p.Is(CustomRoles.Lovers))
-                                .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
-                        }
-                    }
-                }
-
                 //抢夺胜利
                 foreach (var pc in Main.AllPlayerControls)
                 {
@@ -105,54 +78,37 @@ class GameEndChecker
                 {
                     if (pc.GetRoleClass() is IAdditionalWinner additionalWinner)
                     {
-                        if (additionalWinner.CheckWin(out var winnerType))
+                        var winnerRole = pc.GetCustomRole();
+                        if (additionalWinner.CheckWin(ref winnerRole))
                         {
                             CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                            CustomWinnerHolder.AdditionalWinnerTeams.Add(winnerType);
+                            CustomWinnerHolder.AdditionalWinnerRoles.Add(winnerRole);
                         }
                     }
                 }
 
-                //Lovers follow winner
-                if (CustomWinnerHolder.WinnerTeam is not CustomWinner.Lovers and not CustomWinner.Crewmate and not CustomWinner.Impostor)
+                // 中立共同胜利
+                if (Options.NeutralWinTogether.GetBool() && Main.AllPlayerControls.Any(p => CustomWinnerHolder.WinnerIds.Contains(p.PlayerId) && p.IsNeutral()))
                 {
-                    foreach (var pc in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Lovers)))
-                    {
-                        if (CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x).Is(CustomRoles.Lovers)).Count() > 0)
-                        {
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
-                            CustomWinnerHolder.AdditionalWinnerTeams.Add(AdditionalWinners.Lovers);
-                        }
-                    }
-                }
-
-                //中立共同胜利
-                if (Options.NeutralWinTogether.GetBool() && CustomWinnerHolder.WinnerIds.Where(x => Utils.GetPlayerById(x) != null && Utils.GetPlayerById(x).GetCustomRole().IsNeutral()).Count() >= 1)
-                {
-                    foreach (var pc in Main.AllPlayerControls)
-                        if (pc.GetCustomRole().IsNeutral() && !CustomWinnerHolder.WinnerIds.Contains(pc.PlayerId))
-                            CustomWinnerHolder.WinnerIds.Add(pc.PlayerId);
+                    Main.AllPlayerControls.Where(p => p.IsNeutral())
+                        .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
                 }
                 else if (Options.NeutralRoleWinTogether.GetBool())
                 {
-                    foreach (var id in CustomWinnerHolder.WinnerIds)
+                    foreach (var pc in Main.AllPlayerControls.Where(p => CustomWinnerHolder.WinnerIds.Contains(p.PlayerId) && p.IsNeutral()))
                     {
-                        var pc = Utils.GetPlayerById(id);
-                        if (pc == null || !pc.GetCustomRole().IsNeutral()) continue;
-                        foreach (var tar in Main.AllPlayerControls)
-                            if (!CustomWinnerHolder.WinnerIds.Contains(tar.PlayerId) && tar.GetCustomRole() == pc.GetCustomRole())
-                                CustomWinnerHolder.WinnerIds.Add(tar.PlayerId);
+                        Main.AllPlayerControls.Where(p => p.GetCustomRole() == pc.GetCustomRole())
+                            .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
                     }
                 }
 
-                //补充恋人胜利名单
-                if (CustomWinnerHolder.WinnerTeam == CustomWinner.Lovers || CustomWinnerHolder.AdditionalWinnerTeams.Contains(AdditionalWinners.Lovers))
+                // 恋人胜利
+                if (Main.AllPlayerControls.Any(p => CustomWinnerHolder.WinnerIds.Contains(p.PlayerId) && p.Is(CustomRoles.Lovers)))
                 {
-                    Main.AllPlayerControls
-                                .Where(p => p.Is(CustomRoles.Lovers) && !CustomWinnerHolder.WinnerIds.Contains(p.PlayerId))
-                                .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
+                    CustomWinnerHolder.AdditionalWinnerRoles.Add(CustomRoles.Lovers);
+                    Main.AllPlayerControls.Where(p => p.Is(CustomRoles.Lovers))
+                        .Do(p => CustomWinnerHolder.WinnerIds.Add(p.PlayerId));
                 }
-
             }
             ShipStatus.Instance.enabled = false;
             StartEndGame(reason);
@@ -242,7 +198,6 @@ class GameEndChecker
     }
 
     public static void SetPredicateToNormal() => predicate = new NormalGameEndPredicate();
-    public static void SetPredicateToSoloKombat() => predicate = new SoloKombatGameEndPredicate();
 
     // ===== ゲーム終了条件 =====
     // 通常ゲーム用
@@ -263,7 +218,7 @@ class GameEndChecker
         {
             reason = GameOverReason.ImpostorByKill;
 
-            if (CustomRoles.Sunnyboy.Exist() && Main.AllAlivePlayerControls.Count() > 1) return false;
+            if (CustomRoles.Sunnyboy.IsExist() && Main.AllAlivePlayerControls.Count() > 1) return false;
 
             int Imp = Utils.AlivePlayersCount(CountTypes.Impostor);
             int Crew = Utils.AlivePlayersCount(CountTypes.Crew);
@@ -334,37 +289,6 @@ class GameEndChecker
             return true;
         }
     }
-
-    // 个人竞技模式用
-    class SoloKombatGameEndPredicate : GameEndPredicate
-    {
-        public override bool CheckForEndGame(out GameOverReason reason)
-        {
-            reason = GameOverReason.ImpostorByKill;
-            if (CustomWinnerHolder.WinnerIds.Count > 0) return false;
-            if (CheckGameEndByLivingPlayers(out reason)) return true;
-            return false;
-        }
-
-        public bool CheckGameEndByLivingPlayers(out GameOverReason reason)
-        {
-            reason = GameOverReason.ImpostorByKill;
-
-            if (SoloKombatManager.RoundTime > 0) return false;
-
-            var list = Main.AllPlayerControls.Where(x => !x.Is(CustomRoles.GM) && SoloKombatManager.GetRankOfScore(x.PlayerId) == 1);
-            var winner = list.FirstOrDefault();
-
-            CustomWinnerHolder.WinnerIds = new()
-            {
-                winner.PlayerId
-            };
-
-            Main.DoBlockNameChange = true;
-
-            return true;
-        }
-    }
 }
 
 public abstract class GameEndPredicate
@@ -411,6 +335,7 @@ public abstract class GameEndPredicate
         ISystemType sys = null;
         if (systems.ContainsKey(SystemTypes.Reactor)) sys = systems[SystemTypes.Reactor];
         else if (systems.ContainsKey(SystemTypes.Laboratory)) sys = systems[SystemTypes.Laboratory];
+        else if (systems.ContainsKey(SystemTypes.HeliSabotage)) sys = systems[SystemTypes.HeliSabotage];
 
         ICriticalSabotage critical;
         if (sys != null && // サボタージュ存在確認

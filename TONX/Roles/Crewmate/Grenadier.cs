@@ -79,7 +79,7 @@ public sealed class Grenadier : RoleBase
             BlindingStartTime = Utils.GetTimeStamp();
             Main.AllPlayerControls.Where(x => x.IsModClient()).Where(x => x.IsImp() || (x.IsNeutral() && OptionCanAffectNeutral.GetBool())).Do(x => x.RPCPlayCustomSound("FlashBang"));
         }
-        if (!Player.IsModClient()) Player.RpcGuardAndKill();
+        if (!Player.IsModClient()) Player.RpcProtectedMurderPlayer();
         Player.RPCPlayCustomSound("FlashBang");
         Player.Notify(GetString("GrenadierSkillInUse"), OptionSkillDuration.GetFloat());
         Utils.MarkEveryoneDirtySettings();
@@ -91,14 +91,14 @@ public sealed class Grenadier : RoleBase
         if (BlindingStartTime != 0 && BlindingStartTime + OptionSkillDuration.GetFloat() < Utils.GetTimeStamp())
         {
             BlindingStartTime = 0;
-            Player.RpcGuardAndKill();
+            Player.RpcProtectedMurderPlayer();
             Player.Notify(GetString("GrenadierSkillStop"));
             Utils.MarkEveryoneDirtySettings();
         }
         if (MadBlindingStartTime != 0 && MadBlindingStartTime + OptionSkillDuration.GetFloat() < Utils.GetTimeStamp())
         {
             MadBlindingStartTime = 0;
-            Player.RpcGuardAndKill();
+            Player.RpcProtectedMurderPlayer();
             Player.Notify(GetString("GrenadierSkillStop"));
             Utils.MarkEveryoneDirtySettings();
         }

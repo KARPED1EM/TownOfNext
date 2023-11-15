@@ -40,15 +40,10 @@ public abstract class RoleBase : IDisposable
     /// 是否拥有技能按钮
     /// </summary>
     public bool HasAbility { get; private set; }
-    /// <summary>
-    /// 在人数上被计为
-    /// </summary>
-    public CountTypes CountType => MyState.countTypes;
     public RoleBase(
         SimpleRoleInfo roleInfo,
         PlayerControl player,
         Func<HasTask> hasTasks = null,
-        CountTypes? countType = null,
         bool? hasAbility = null,
         bool? canBeMadmate = null
     )
@@ -67,16 +62,16 @@ public abstract class RoleBase : IDisposable
         MyState = PlayerState.GetByPlayerId(player.PlayerId);
         MyTaskState = MyState.GetTaskState();
 
-        MyState.countTypes = countType ?? (roleInfo.RoleName.IsImpostor() ? CountTypes.Impostor : CountTypes.Crew);
-
         CustomRoleManager.AllActiveRoles.Add(Player.PlayerId, this);
     }
+#pragma warning disable CA1816
     public void Dispose()
     {
         OnDestroy();
         CustomRoleManager.AllActiveRoles.Remove(Player.PlayerId);
         Player = null;
     }
+#pragma warning restore CA1816
     public bool Is(PlayerControl player)
     {
         return player.PlayerId == Player.PlayerId;
@@ -235,6 +230,24 @@ public abstract class RoleBase : IDisposable
     { }
 
     /// <summary>
+    /// 在玩家投票时触发，此时还未计票<br/>
+    /// 如果返回 false，本次投票将被忽略，玩家可以再次投票<br/>
+    /// 如果不想忽略投票操作本身，也不希望计票，请使用 <see cref="ModifyVote"/> 并将 doVote 设置为 false
+    /// </summary>
+    /// <param name="votedForId">投票给</param>
+    /// <returns>如果返回 false，则假装什么都没发生，除了投票者本身谁也不知道本次投票，并且投票者可以重新投票</returns>
+    public virtual bool CheckVoteAsVoter(PlayerControl votedFor) => true;
+
+    /// <summary>
+    /// 玩家投票并确定计票时调用，并可以在此处修改投票<br/>
+    /// 如果希望忽略投票操作本身，请使用 <see cref="CheckVoteAsVoter"/>
+    /// </summary>
+    /// <param name="voterId">投票人的ID</param>
+    /// <param name="sourceVotedForId">被投票人的ID</param>
+    /// <returns>(修改后的被票者的ID(不修改则为 null), 修改后的票数(不修改则为 null), 是否玩家自行操作)</returns>
+    public virtual (byte? votedForId, int? numVotes, bool doVote) ModifyVote(byte voterId, byte sourceVotedForId, bool isIntentional) => (null, null, true);
+
+    /// <summary>
     /// 当有人投票时触发
     /// </summary>
     /// <param name="voterId">投票者的ID</param>
@@ -243,7 +256,7 @@ public abstract class RoleBase : IDisposable
     /// <param name="roleNumVotes">修改此值以更改票数</param>
     /// <param name="clearVote">改为 true 则将投票者视为未投票状态，允许其再次进行投票。但投票数据还是会计入，若多次投票将以最后一次投票的数据为准</param>
     /// <returns>false: 忽略本次投票，不计入数据</returns>
-    public virtual bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote) => true;
+    //public virtual bool OnVote(byte voterId, byte sourceVotedForId, ref byte roleVoteFor, ref int roleNumVotes, ref bool clearVote) => true;
 
     /// <summary>
     /// 驱逐玩家后调用的函数
@@ -252,6 +265,15 @@ public abstract class RoleBase : IDisposable
     /// <param name="DecidedWinner">是否决定了胜利玩家</param>
     public virtual void OnExileWrapUp(GameData.PlayerInfo exiled, ref bool DecidedWinner)
     { }
+
+    /// <summary>
+    /// 将要驱逐玩家调用的函数
+    /// </summary>
+    /// <param name="exiled">被驱逐的玩家</param>
+    /// <param name="DecidedWinner">是否决定了胜利玩家</param>
+    /// <param name="winDescriptionText">胜利描述文本</param>
+    /// <returns>OnExileWrapUp 将要执行的函数</returns>
+    public virtual Action CheckExile(GameData.PlayerInfo exiled, ref bool DecidedWinner, ref List<string> WinDescriptionText) => null;
 
     /// <summary>
     /// 每次会议结束后调用的函数
@@ -279,23 +301,20 @@ public abstract class RoleBase : IDisposable
 
     // == 破坏相关处理 ==
     /// <summary>
-    /// 是否可以破坏
+    /// 当玩家造成破坏时调用
     /// 若禁止将无法关门
     /// </summary>
     /// <param name="systemType">破坏的设施类型</param>
     /// <returns>false：取消破坏</returns>
-    public virtual bool CanSabotage(SystemTypes systemType) => true;
+    public virtual bool OnInvokeSabotage(SystemTypes systemType) => true;
 
     /// <summary>
-    /// 当有人造成破坏时调用
-    /// amount&0x80!=0 则为破坏开始
-    /// 其他数值则是修复
+    /// 当有人破坏时调用
     /// </summary>
-    /// <param name="player">操作的玩家</param>
-    /// <param name="systemType">操作的设施类型</param>
-    /// <param name="amount">当前状态</param>
-    /// <returns>false：取消本次操作</returns>
-    public virtual bool OnSabotage(PlayerControl player, SystemTypes systemType, byte amount) => true;
+    /// <param name="player">造成破坏的玩家</param>
+    /// <param name="systemType">造成破坏的设施</param>
+    /// <returns>返回false取消破坏</returns>
+    public virtual bool OnSabotage(PlayerControl player, SystemTypes systemType) => true;
 
     // NameSystem
     // 显示的名字结构如下
@@ -308,22 +327,29 @@ public abstract class RoleBase : IDisposable
     // Suffix：其他信息，例如箭头
 
     /// <summary>
-    /// 作为 seen 重写 RoleName
+    /// 作为 seen 重写显示上的 RoleName
     /// </summary>
     /// <param name="seer">将要看到您的 RoleName 的玩家</param>
     /// <param name="enabled">是否显示 RoleName</param>
     /// <param name="roleColor">RoleName 的颜色</param>
     /// <param name="roleText">RoleName 的文本</param>
-    public virtual void OverrideRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
+    public virtual void OverrideDisplayRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
     { }
     /// <summary>
-    /// 作为 seer 重写 RoleName
+    /// 作为 seer 重写显示上的 RoleName
     /// </summary>
     /// <param name="seen">您将要看到其 RoleName 的玩家</param>
     /// <param name="enabled">是否显示 RoleName</param>
     /// <param name="roleColor">RoleName 的颜色</param>
     /// <param name="roleText">RoleName 的文本</param>
-    public virtual void OverrideRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
+    public virtual void OverrideDisplayRoleNameAsSeer(PlayerControl seen, ref bool enabled, ref Color roleColor, ref string roleText)
+    { }
+    /// <summary>
+    /// 重写原来的职业名
+    /// </summary>
+    /// <param name="roleColor">RoleName 的颜色</param>
+    /// <param name="roleText">RoleName 的文本</param>
+    public virtual void OverrideTrueRoleName(ref Color roleColor, ref string roleText)
     { }
     /// <summary>
     /// 作为 seer 重写 ProgressText

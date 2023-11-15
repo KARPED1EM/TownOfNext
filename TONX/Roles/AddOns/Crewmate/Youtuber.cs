@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TONX.Attributes;
 using TONX.Roles.Core;
 using UnityEngine;
 using static TONX.Options;
@@ -15,6 +16,7 @@ public static class Youtuber
         SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Youtuber);
         AddOnsAssignData.Create(Id + 10, CustomRoles.Youtuber, true, false, false);
     }
+    [GameModuleInitializer]
     public static void Init()
     {
         playerIdList = new();
