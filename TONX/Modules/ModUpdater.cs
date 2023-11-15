@@ -30,7 +30,7 @@ public class ModUpdater
         "https://raw.githubusercontent.com/KARPED1EM/TownOfNext/TONX/info.json",
         "https://cdn.jsdelivr.net/gh/KARPED1EM/TownOfNext/info.json",
         "https://tonx-1301425958.cos.ap-shanghai.myqcloud.com/info.json",
-        "https://gitee.com/leeverz/TONX/raw/TONX/info.json",
+        "https://gitee.com/leeverz/TownOfNext/raw/TONX/info.json",
 #endif
     };
     private static IReadOnlyList<string> GetInfoFileUrlList()
@@ -191,8 +191,8 @@ public class ModUpdater
             announcement_zh = announcement["SChinese"]?.ToString();
 
             JObject downloadUrl = data["url"].Cast<JObject>();
-            downloadUrl_github = downloadUrl["github"]?.ToString().Replace("{{version}}", $"v{latestVersion}");
-            downloadUrl_gitee = downloadUrl["gitee"]?.ToString();
+            downloadUrl_github = downloadUrl["github"]?.ToString();
+            downloadUrl_gitee = downloadUrl["gitee"]?.ToString().Replace("{{version}}", $"v{latestVersion}");
             downloadUrl_cos = downloadUrl["cos"]?.ToString();
 
             hasUpdate = Main.version < latestVersion;
