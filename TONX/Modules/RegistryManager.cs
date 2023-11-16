@@ -33,11 +33,11 @@ public static class RegistryManager
         Keys.SetValue("Last launched version", Main.version.ToString());
         Keys.SetValue("Path", Path.GetFullPath("./"));
 
-        List<string> FoldersNFileToDel = new()
-            {
+        List<string> FoldersNFileToDel =
+            [
                 @"./TOH_DATA",
                 @"./TOHE_DATA",
-            };
+            ];
 
         Logger.Warn("上次启动的TONX版本：" + LastVersion, "Registry Manager");
 
