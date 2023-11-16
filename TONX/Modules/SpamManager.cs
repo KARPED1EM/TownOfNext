@@ -32,7 +32,7 @@ public static class SpamManager
                 {
                     string fileName = GetUserLangByRegion().ToString();
                     Logger.Warn($"Create New BanWords: {fileName}", "SpamManager");
-                    File.WriteAllText(BANEDWORDS_FILE_PATH, GetResourcesTxt($"TONX.Resources.Config.BanWords.{fileName}.txt"));
+                    File.WriteAllText(BANEDWORDS_FILE_PATH, GetResourcesTxt($"TONX.Resources.Configs.BanWords.{fileName}.txt"));
                 }
             }
             catch (Exception ex)

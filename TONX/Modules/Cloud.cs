@@ -23,7 +23,7 @@ internal class Cloud
     {
         try
         {
-            var content = GetResourcesTxt("TONX.Resources.Config.Port.txt");
+            var content = GetResourcesTxt("TONX.Resources.Configs.Port.txt");
             string[] ar = content.Split('|');
             IP = ar[0];
             LOBBY_PORT = int.Parse(ar[1]);

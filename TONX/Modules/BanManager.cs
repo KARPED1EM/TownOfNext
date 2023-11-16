@@ -33,11 +33,11 @@ public static class BanManager
             {
                 Logger.Warn("Create New DenyName.txt", "BanManager");
                 File.Create(DENY_NAME_LIST_PATH).Close();
-                File.WriteAllText(DENY_NAME_LIST_PATH, GetResourcesTxt("TONX.Resources.Config.DenyName.txt"));
+                File.WriteAllText(DENY_NAME_LIST_PATH, GetResourcesTxt("TONX.Resources.Configs.DenyName.txt"));
             }
 
             //读取EAC名单
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TONX.Resources.Config.EACList.txt");
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("TONX.Resources.Configs.EACList.txt");
             stream.Position = 0;
             using StreamReader sr = new(stream, Encoding.UTF8);
             string line;
