@@ -1,2 +1,2 @@
-welcome:★ Добро пожаловать! У нас тут мод TONX v{{ModVersion}}\n○ Посетите сайт мода：tonx.cc\n● Напишите：/help → Покажет все комманды
-OnMeeting:● Дискорд: discord.gg/hkk2p9ggv4\n○ Сайт：tonx.cc\n————————————————————\n★ Напишите：/r → Покажет все роли\n★ Напишите：/r [role] → Покажет описание роли\n★ Напиши：/m → Покажет описание ТВОЕЙ роли!
+welcome:<color=#fab6ea>❀ Добро пожаловать! У нас тут мод <color=#fc83d0><b>TONX v{{ModVersion}}</b></color></color>\n<color=#baf7ca>☀ Посетите сайт мода：<color=#73f595><b>tonx.cc</b></color></color>\n<color=#83e8fc>☞ <b>/help</b> → Покажет <color=#17a1e6>все комманды</color></color>
+OnMeeting:☀ Посетите сайт мода：<color=#73f595><b>tonx.cc</b></color></color>\n————————————————————\n<color=#83e8fc>☞ Напишите：<b>/r</b> → Покажет все роли\n☞ Напишите：<b>/r</b> [role] → Покажет описание роли\n☞ Напиши：<b>/m</b> → Покажет описание ТВОЕЙ роли
