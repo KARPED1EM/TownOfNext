@@ -1,0 +1,2 @@
+welcome:★ Bem Vindo! Este lobby tem o mod TONX v{{ModVersion}}\n○ Acesse o site para obter mais informações：tonx.cc\n● /help → Mostra todos os comandos
+OnMeeting:● Discord: discord.gg/hkk2p9ggv4\n○ Site：tonx.cc\n————————————————————\n★ Envie：/r → Mostra a lista de funções\n★ Envie：/r [role] → Exibir descrição da função \n★ Envie：/m → Veja a sua função

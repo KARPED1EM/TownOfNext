@@ -1,3 +1,3 @@
-welcome:<color=#fab6ea>❀ 欢迎回家！这里是<color=#fc83d0> <b>TONX v{{ModVersion}}</b></color></color>\n<color=#baf7ca>☀ <color=#73f595>职业介绍</color>&<color=#73f595>安装教程</color>都在官网：<color=#73f595><b>tonx.cc</b></color></color>\n<color=#83e8fc>☞ 输入：<b>/h</b> → 查看<color=#17a1e6>指令列表</color></color>
-OnMeeting:<color=#548aff>☃ QQ群：</color><color=#2063f5><b>134830517</b></color>\n<color=#20f57c>♬ 下MOD玩MOD</color><color=#20f5b1>都可以来凑凑热闹</color>\n<color=#baf7ca>☀ <color=#73f595>职业介绍</color>&<color=#73f595>安装教程</color>都在官网：<color=#73f595><b>tonx.cc</b></color></color>\n————————————————————\n<color=#83e8fc>☞ 输入：<b>/r</b> → 显示所有职业\n☞ 输入：<b>/r</b> [职业名] → 某职业的介绍\n☞ 输入：<b>/m</b> → 您职业的介绍</color>
-qq:<color=#548aff>☃ QQ群：</color><color=#2063f5><b>134830517</b></color>\n<color=#20f57c>♬ 下MOD玩MOD</color><color=#20f5b1>都可以来凑凑热闹</color>
+welcome:
+<color=#fab6ea>❀ 欢迎回家！这里是 <color=#fc83d0><b>TONX v{{ModVersion}}</b></color></color>\n<color=#baf7ca>☀ <color=#73f595>职业介绍</color>&<color=#73f595>安装教程</color>都在官网：<color=#73f595><b>tonx.cc</b></color></color>\n<color=#83e8fc>☞ 输入：<b>/h</b> → 查看<color=#17a1e6>指令列表</color></color>
+OnMeeting:☀ <color=#73f595>职业介绍</color>&<color=#73f595>安装教程</color>都在官网：<color=#73f595><b>tonx.cc</b></color></color>\n————————————————————\n<color=#83e8fc>☞ 输入：<b>/r</b> → 显示所有职业\n☞ 输入：<b>/r</b> [职业名] → 某职业的介绍\n☞ 输入：<b>/m</b> → 您职业的介绍</color>
