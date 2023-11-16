@@ -80,7 +80,7 @@ internal class Cloud
     {
         if (connecting || EacClientSocket != null && EacClientSocket.Connected) return;
         connecting = true;
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame)
             {
@@ -110,10 +110,10 @@ internal class Cloud
     }
     public static void SendData(string msg)
     {
-        StartConnect();
+        //StartConnect();
         if (EacClientSocket == null || !EacClientSocket.Connected)
         {
-            Logger.Warn("未连接至TONX服务器，报告被取消", "EAC Cloud");
+            //Logger.Warn("未连接至TONX服务器，报告被取消", "EAC Cloud");
             return;
         }
         EacClientSocket.Send(Encoding.Default.GetBytes(msg));

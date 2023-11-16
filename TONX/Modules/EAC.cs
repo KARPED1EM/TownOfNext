@@ -234,7 +234,7 @@ internal class EAC
     {
         string msg = $"{pc.GetClientId()}|{pc.FriendCode}|{pc.Data.PlayerName}|{reason}";
         Cloud.SendData(msg);
-        Logger.Fatal($"EAC报告：{pc.GetRealName()}: {reason}", "EAC Cloud");
+        Logger.Warn($"EAC报告：{pc.GetRealName()}: {reason}", "EAC Cloud");
     }
     public static bool ReceiveInvalidRpc(PlayerControl pc, byte callId)
     {
