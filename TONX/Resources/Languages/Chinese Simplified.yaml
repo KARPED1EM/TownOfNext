@@ -1184,7 +1184,7 @@ Message.DirectorModeCanNotFindRoleThePlayerEnter: "请正确拼写您要指定�
 Message.DirectorModeNotice: "提示：该房间启用了【导演模式】，房主可以指定自己的职业。"
 
 ## 警告 / Warnings
-Warning.OverrideExiledPlayer: "警告：由于设置内鬼数量为1（船鬼计算为船员），为了避免黑屏错误，将会将驱逐动画显示为平票或跳过（只会影响视觉，不会影响投票结果）。请设置更多的内鬼人数或禁用船鬼以避免该问题。"
+Warning.OverrideExiledPlayer: "警告：由于启用了豺狼、鹈鹕、魅魔等拥有独立阵营的职业，为了避免黑屏错误，将会将驱逐动画显示为跳过（只会影响视觉，不会影响投票结果）"
 Warning.InvalidRpc: "【{0}】被踢出，因其试图发送无效的数据，请确保您没有安装 TONX 以外的模组。"
 Warning.NoModHost: "非TONX房"
 Warning.MismatchedVersion: "{0}\n安装了其它版本的 {1}"
