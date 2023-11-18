@@ -153,7 +153,7 @@ public sealed class Judge : RoleBase, IMeetingButton
         else if (operate == 2)
         {
 
-            if (OptionHideMsg.GetBool()) GuesserHelper.TryHideMsg();
+            if (Options.BlockMsgPlus.GetBool()) ChatManager.SendPreviousMessagesToAll();
             else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
 
             if (!MsgToPlayer(msg, out byte targetId, out string error))

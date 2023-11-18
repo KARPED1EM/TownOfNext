@@ -97,9 +97,9 @@ public static class GuesserHelper
         else if (operate == 2)
         {
             if (
-            pc.Is(CustomRoles.NiceGuesser) && NiceGuesser.OptionHideMsg.GetBool() ||
-            pc.Is(CustomRoles.EvilGuesser) && EvilGuesser.OptionHideMsg.GetBool()
-            ) TryHideMsg();
+            pc.Is(CustomRoles.NiceGuesser) && Options.BlockMsgPlus.GetBool() ||
+            pc.Is(CustomRoles.EvilGuesser) && Options.BlockMsgPlus.GetBool()
+            ) ChatManager.SendPreviousMessagesToAll();
             else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
 
             if (!MsgToPlayerAndRole(msg, out byte targetId, out CustomRoles role, out string error))
@@ -261,7 +261,7 @@ public static class GuesserHelper
         return true;
     }
 
-    public static void TryHideMsg()
+    public static void TryHideMessage()
     {
         ChatUpdatePatch.DoBlockChat = true;
         List<CustomRoles> roles = Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x is not CustomRoles.NotAssigned).ToList();
