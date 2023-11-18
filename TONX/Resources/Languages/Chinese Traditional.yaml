@@ -1143,7 +1143,7 @@ Message.DirectorModeSelectFailed: "無法將您分配為【{0}】\n可能是因�
 Message.DirectorModeCanNotFindRoleThePlayerEnter: "請正確拼寫您要指定的職業喔~\n查看所有職業請直接輸入/r"
 Message.DirectorModeNotice: "提醒: 該房間已啟用【創作者素材保護計畫】，房主可以指定自己的職業。\n該功能只允許創作者錄製影片素材，如有濫用情況，請退出遊戲或舉報。\n目前創作者認證:"
 ## 警告 / Warnings
-Warning.OverrideExiledPlayer: "警告: 由於偽裝者數量為1(船鬼計算為船員)，為了避免黑屏錯誤，將會將逐出動畫顯示為平票或跳過(只影響視覺不影響投票結果)。請設定更多的偽裝者人數或是禁用船鬼以避免該問題。"
+Warning.OverrideExiledPlayer: "警告：由於啟用了豺狼、鵜鶘、魅魔等擁有獨立陣營的職業，為了避免黑屏錯誤，將將驅逐動畫顯示為跳過（只會影響視覺，不會影響投票結果）"
 Warning.InvalidRpc: "{0} 被踢出，因其 RPC 無效，請確保沒有 TONX 以外的模組。"
 Warning.NoModHost: "非TONX房"
 Warning.MismatchedVersion: "{0}\n安裝了其他版本的 {1}"
