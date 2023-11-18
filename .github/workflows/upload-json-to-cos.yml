@@ -1,4 +1,4 @@
-name: Upload info.json To Cos When File Changed
+name: Upload info.json to cos when file changed
 
 on:
   push:

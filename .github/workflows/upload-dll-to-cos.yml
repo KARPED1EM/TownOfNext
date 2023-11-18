@@ -1,4 +1,4 @@
-name: Upload Dll To Cos After Release
+name: Upload dll to cos after release
 
 on:
   release:
