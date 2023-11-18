@@ -41,7 +41,7 @@ public sealed class ImperiusCurse : RoleBase, IImpostor
         AURoleOptions.ShapeshifterCooldown = OptionShapeshiftCooldown.GetFloat();
         AURoleOptions.ShapeshifterDuration = OptionShapeshiftDuration.GetFloat();
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = Translator.GetString("ImperiusCurseButtonText");
         return !Shapeshifting;

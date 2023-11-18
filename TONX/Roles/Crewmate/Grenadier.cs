@@ -62,7 +62,7 @@ public sealed class Grenadier : RoleBase
         AURoleOptions.EngineerCooldown = OptionSkillCooldown.GetFloat();
         AURoleOptions.EngineerInVentMaxTime = 1f;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("GrenadierVetnButtonText");
         return true;

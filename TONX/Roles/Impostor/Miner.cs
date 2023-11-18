@@ -24,7 +24,7 @@ public sealed class Miner : RoleBase, IImpostor
     )
     { }
 
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = Translator.GetString("MinerTeleButtonText");
         return Main.LastEnteredVent.ContainsKey(Player.PlayerId);

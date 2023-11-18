@@ -116,7 +116,7 @@ public sealed class Assassin : RoleBase, IImpostor
         text = GetString("AssassinMarkButtonText");
         return !Shapeshifting;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("AssassinShapeshiftText");
         return MarkedPlayer != byte.MaxValue && !Shapeshifting;
@@ -126,7 +126,7 @@ public sealed class Assassin : RoleBase, IImpostor
         buttonName = "Mark";
         return !Shapeshifting;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Assassinate";
         return MarkedPlayer != byte.MaxValue && !Shapeshifting;

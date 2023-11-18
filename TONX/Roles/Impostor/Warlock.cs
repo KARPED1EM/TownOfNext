@@ -69,12 +69,12 @@ public sealed class Warlock : RoleBase, IImpostor
         buttonName = "Curse";
         return !Shapeshifting;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("WarlockShapeshiftButtonText");
         return !Shapeshifting && IsCursed;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "CurseKill";
         return !Shapeshifting && IsCursed;

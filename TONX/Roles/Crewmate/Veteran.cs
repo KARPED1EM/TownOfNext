@@ -60,12 +60,12 @@ public sealed class Veteran : RoleBase
             : OptionSkillCooldown.GetFloat();
         AURoleOptions.EngineerInVentMaxTime = 1f;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("VeteranVetnButtonText");
         return true;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Veteran";
         return true;

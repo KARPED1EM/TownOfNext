@@ -24,6 +24,7 @@ class HudManagerPatch
         if (!GameStates.IsModHost) return;
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
+        var TaskTextPrefix = "";
         //壁抜け
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -47,8 +48,6 @@ class HudManagerPatch
 
         Utils.CountAlivePlayers();
 
-        bool shapeshifting = Main.CheckShapeshift.TryGetValue(player.PlayerId, out bool ss) && ss;
-
         if (SetHudActivePatch.IsActive)
         {
             if (player.IsAlive())
@@ -56,14 +55,14 @@ class HudManagerPatch
                 var roleClass = player.GetRoleClass();
                 if (roleClass != null)
                 {
-                    var killLabel = (roleClass as IKiller)?.OverrideKillButtonText(out string text1) == true ? text1 : GetString(StringNames.KillLabel);
+                    var killLabel = (roleClass as IKiller)?.OverrideKillButtonText(out string text) == true ? text : GetString(StringNames.KillLabel);
                     __instance.KillButton.OverrideText(killLabel);
                     var reportLabel = roleClass?.GetReportButtonText() ?? GetString(StringNames.ReportLabel);
                     __instance.ReportButton.OverrideText(reportLabel);
                     if (roleClass.HasAbility)
                     {
-                        if (roleClass.OverrideAbilityButtonText(out var abilityLabel)) __instance.AbilityButton.OverrideText(abilityLabel);
-                        __instance.AbilityButton.ToggleVisible(roleClass.CanUseAbilityButton() && GameStates.IsInTask);
+                        if (roleClass.GetAbilityButtonText(out var abilityLabel)) __instance.AbilityButton.OverrideText(abilityLabel);
+                        __instance.AbilityButton.ToggleVisible(roleClass?.CanUseAbilityButton() ?? false && GameStates.IsInTask);
                     }
                 }
 
@@ -82,7 +81,6 @@ class HudManagerPatch
                 }
 
                 LowerInfoText.text = roleClass?.GetLowerText(player, isForMeeting: GameStates.IsMeeting, isForHud: true) ?? "";
-
                 LowerInfoText.enabled = LowerInfoText.text != "";
 
                 if ((!AmongUsClient.Instance.IsGameStarted && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) || GameStates.IsMeeting)
@@ -100,14 +98,19 @@ class HudManagerPatch
                     __instance.KillButton.SetDisabled();
                     __instance.KillButton.ToggleVisible(false);
                 }
+                if (player.Is(CustomRoles.Madmate) || player.GetCustomRole() is CustomRoles.Jester)
+                {
+                    TaskTextPrefix += GetString(StringNames.FakeTasks);
+                }
 
                 bool CanUseVent = player.CanUseImpostorVentButton();
                 __instance.ImpostorVentButton.ToggleVisible(CanUseVent);
                 player.Data.Role.CanVent = CanUseVent;
 
                 // 调用职业类对 Hud Manger 进行操作
-                player.GetRoleClass()?.ChangeHudManager(__instance);
-
+                int usesRemain = player.GetRoleClass()?.OverrideAbilityButtonUsesRemaining() ?? -1;
+                if (usesRemain == -1) __instance.AbilityButton.SetInfiniteUses();
+                else __instance.AbilityButton.SetUsesRemaining(usesRemain);
             }
             else
             {
@@ -116,7 +119,7 @@ class HudManagerPatch
                 __instance.KillButton.Hide();
                 __instance.AbilityButton.Show();
                 __instance.AbilityButton.OverrideText(GetString(StringNames.HauntAbilityName));
-                LowerInfoText.enabled = false;
+                if (LowerInfoText != null) LowerInfoText.enabled = false;
             }
         }
 

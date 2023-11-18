@@ -165,12 +165,12 @@ public sealed class EvilTracker : RoleBase, IImpostor, IKillFlashSeeable
         AURoleOptions.ShapeshifterCooldown = CanTarget() ? 1f : 255f;
         AURoleOptions.ShapeshifterDuration = 1f;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("EvilTrackerChangeButtonText");
         return true;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Track";
         return true;

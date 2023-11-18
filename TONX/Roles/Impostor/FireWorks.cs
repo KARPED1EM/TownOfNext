@@ -171,14 +171,14 @@ public sealed class FireWorks : RoleBase, IImpostor
         }
         return retText;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = State == FireWorksState.ReadyFire
             ? GetString("FireWorksExplosionButtonText")
             : GetString("FireWorksInstallAtionButtonText");
         return true;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = State == FireWorksState.ReadyFire ? "FireworkD" : "FireworkP";
         return true;

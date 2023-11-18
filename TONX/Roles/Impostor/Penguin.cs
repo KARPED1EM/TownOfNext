@@ -140,7 +140,7 @@ class Penguin : RoleBase, IImpostor
         }
         return true;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("PenguinTimerText");
         return true;

@@ -46,7 +46,7 @@ public sealed class Escapee : RoleBase, IImpostor
         if (rpcType != CustomRPC.SyncEscapee) return;
         Marked = reader.ReadBoolean();
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = Marked ? Translator.GetString("EscapeeTeleportButtonText") : Translator.GetString("EscapeeMarkButtonText");
         return !Shapeshifting;
