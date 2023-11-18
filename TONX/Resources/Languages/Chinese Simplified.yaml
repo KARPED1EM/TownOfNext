@@ -599,6 +599,7 @@ KickPlayerFriendCodeNotExist: "踢出没有登录的玩家"
 ApplyBanList: "踢出被封禁的玩家"
 EndWhenPlayerBug: "当有玩家因Bug无法游戏时终止游戏"
 KillFlashDuration: "击杀闪烁持续时间"
+BlockMsgPlus: "特殊消息屏蔽"
 ConfirmEjectionsMode: "驱逐确认模式"
 ConfirmEjections.None: "不确认"
 ConfirmEjections.Team: "确认阵营"
@@ -1137,6 +1138,8 @@ MadmateSelfVoteModeSuccessfulMutiny: "您已成为叛徒，本次投票不计入
 MadmateSelfVoteModeMutinyFailed: "很抱歉，目前您无法成为叛徒，本次投票不计入，请重新投票"
 SkillDoneAndYouCanVoteNormallyNow: "\n您现在可以正常投票了"
 TargetInvalidAndYouShouldChooseAnotherTarget: "\n请重新选择一个目标"
+HideMessage: "该消息为功能<color=#F0FF00>特殊消息屏蔽</color>的屏蔽用消息，为保障该功能正常运行而出现，请无视该消息"
+PlayerIdNF: "<color=#FF0000>玩家数据异常</color>"
 
 ## 信息 / Message
 Message.SetToSeconds: "信息发送冷却时间为【{0}】秒"

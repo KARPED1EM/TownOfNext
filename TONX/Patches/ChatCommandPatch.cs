@@ -8,8 +8,10 @@ using System.Text;
 using System.Text.RegularExpressions;
 using TONX.Modules;
 using TONX.Roles.Core;
+using TONX.Roles.Crewmate;
 using UnityEngine;
 using static TONX.Translator;
+using static UnityEngine.GraphicsBuffer;
 
 namespace TONX;
 
@@ -43,13 +45,11 @@ internal class ChatCommands
         var cancelVal = "";
         Main.isChatCommand = true;
         Logger.Info(text, "SendChat");
+        ChatManager.GetMessage(PlayerControl.LocalPlayer, text);
+        if (ChatManager.cancel == true) { canceled = true; ChatManager.cancel = false; }
+        if (ChatManager.end == true) { ChatManager.end = false; goto End; }
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
         if (text.Length >= 4) if (text[..3] == "/up") args[0] = "/up";
-        if (CustomRoleManager.GetByPlayerId(PlayerControl.LocalPlayer.PlayerId)?.OnSendMessage(text) ?? false)
-        {
-            canceled = true;
-            goto End;
-        }
         foreach (var func in CustomRoleManager.ReceiveMessage)
         {
             if (!func(PlayerControl.LocalPlayer, text))
@@ -504,12 +504,10 @@ internal class ChatCommands
         if (!text.StartsWith("/")) return;
         string[] args = text.Split(' ');
         string subArgs = "";
+        ChatManager.GetMessage(player, text);
+        if (ChatManager.cancel == true) { canceled = true; ChatManager.cancel = false; }
+        if (ChatManager.end == true) { ChatManager.end = false; return; }
         if (text.Length >= 3) if (text[..2] == "/r" && text[..3] != "/rn") args[0] = "/r";
-        if (CustomRoleManager.GetByPlayerId(player.PlayerId)?.OnSendMessage(text) ?? false)
-        {
-            canceled = true;
-            return;
-        }
         foreach (var func in CustomRoleManager.ReceiveMessage)
         {
             if (!func(player, text))
@@ -745,4 +743,149 @@ internal class RpcSendChatPatch
         __result = true;
         return false;
     }
+}
+public static class ChatManager
+{
+    public static bool cancel = false;
+    public static bool end = false;
+    private static List<string> chatHistory = new();
+    private const int maxHistorySize = 20;
+    private static Dictionary<string, bool> ismatch = new();
+    #region 检查
+    public static bool CheckCommond(ref string msg, string command, bool exact = true)
+    {
+        var comList = command.Split('|');
+        for (int i = 0; i < comList.Count(); i++)
+        {
+            if (exact)
+            {
+                if (msg == "/" + comList[i]) return true;
+            }
+            else
+            {
+                if (msg.StartsWith("/" + comList[i]))
+                {
+                    msg = msg.Replace("/" + comList[i], string.Empty);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    #endregion
+    public static void GetMessage(PlayerControl player, string message)
+    {
+        if (!player.IsAlive() || !AmongUsClient.Instance.AmHost) return;
+        if (!Options.BlockMsgPlus.GetBool()) return;
+        int operate;
+        string msg = message;
+        message = message.ToLower().TrimStart().TrimEnd();
+        if (!GameStates.IsInGame) operate = 1;
+        else if (Judge.DoTrial(player,message) || GuesserHelper.GuesserMsg(player, message)) operate = 2;
+        else if (CheckCommond(ref message, "up", false)) operate = 3;
+        else if (CheckCommond(ref message, "r|role|m|myrole|n|now")) operate = 4;
+        else if (CheckCommond(ref message, "", false)) operate = 5;
+        else operate = 1;
+        if (operate == 1)
+        {
+            message = msg;
+            string chatEntry = $"{player.PlayerId}: {message}";
+            chatHistory.Add(chatEntry);
+            if (chatHistory.Count > maxHistorySize)
+            {
+                chatHistory.RemoveAt(0);
+            }
+            cancel = false;
+        }
+        else if (operate == 2)
+        {
+            Logger.Info($"指令{msg}，不记录", "ChatManager");
+            message = msg;
+            cancel = true;
+            end = true;
+        }
+        else if (operate == 3)
+        {
+            Logger.Info($"指令{msg}，不记录", "ChatManager");
+            message = msg;
+            cancel = false;
+        }
+        else if (operate == 4)
+        {
+            Logger.Info($"指令{msg}，不记录", "ChatManager");
+            message = msg;
+            SendPreviousMessagesToAll();
+            cancel = false;
+        }
+        else if (operate == 5)
+        {
+            Logger.Info($"包含特殊信息，不记录", "ChatManager");
+            message = msg;
+            SendPreviousMessagesToAll();
+            cancel = true;
+        }
+    }
+    public static void SendPreviousMessagesToAll()
+    {
+        ismatch = new();
+        PlayerState state = null;
+        List<PlayerControl> playerControls = new();
+        Dictionary<byte, CustomDeathReason> PlayerDeathReason = new();
+        for (int i = 0; i < 20; i++) 
+        {
+            Utils.SendMessage(GetString("HideMessage"), 255);
+        }
+        foreach (var reviveplayer in Main.AllPlayerControls)
+        {
+            state = PlayerState.GetByPlayerId(reviveplayer.PlayerId);
+            PlayerDeathReason.Add(reviveplayer.PlayerId, state.DeathReason);
+            playerControls.Add(reviveplayer);
+            reviveplayer.Data.IsDead = false;
+            reviveplayer.Revive();
+            
+        }
+        AntiBlackout.SendGameData();
+        foreach (var entry in chatHistory)
+        {
+            var entryParts = entry.Split(':');
+            var senderId = entryParts[0].Trim();
+            var senderMessage = entryParts[1].Trim();
+            ismatch.Add(senderId, false);
+            foreach (var senderPlayer in Main.AllPlayerControls)
+            {
+                if (senderPlayer.PlayerId.ToString() == senderId)
+                {
+                    if (!senderPlayer.Data.IsDead)
+                    {
+                        ismatch[senderPlayer.PlayerId.ToString()] = true;
+                        DestroyableSingleton<HudManager>.Instance.Chat.AddChat(senderPlayer, senderMessage);
+                        var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+                        writer.StartMessage(-1);
+                        writer.StartRpc(senderPlayer.NetId, (byte)RpcCalls.SendChat)
+                            .Write(senderMessage)
+                            .EndRpc();
+                        writer.EndMessage();
+                        writer.SendMessage();
+                    }
+                    else
+                    {
+                        Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
+                    }
+                }
+                if (!ismatch[senderPlayer.PlayerId.ToString()])
+                {
+                    Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
+                }
+            }
+        }
+        foreach (var deadplayer in playerControls)
+        {
+            state = PlayerState.GetByPlayerId(deadplayer.PlayerId);
+            deadplayer.Data.IsDead = true;
+            deadplayer.RpcExileV2();
+            state.DeathReason = PlayerDeathReason[deadplayer.PlayerId];
+        }
+        AntiBlackout.SendGameData();
+    }
+   
 }

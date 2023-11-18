@@ -331,7 +331,7 @@ public static class Options
     public static OptionItem FixFirstKillCooldown;
     public static OptionItem ShieldPersonDiedFirst;
     public static OptionItem KillFlashDuration;
-
+    public static OptionItem BlockMsgPlus;
     // 幽灵相关设定
     public static OptionItem GhostIgnoreTasks;
     public static OptionItem GhostCanSeeOtherRoles;
@@ -1020,6 +1020,11 @@ public static class Options
            .SetColor(new Color32(193, 255, 209, byte.MaxValue))
             .SetValueFormat(OptionFormat.Seconds)
             .SetGameMode(CustomGameMode.Standard);
+
+        // 消息屏蔽
+        BlockMsgPlus = BooleanOptionItem.Create(3_046_001, "BlockMsgPlus", true, TabGroup.GameSettings, false)
+            .SetGameMode(CustomGameMode.Standard)
+           .SetColor(new Color32(193, 255, 209, byte.MaxValue));
 
         // 幽灵相关设定
         TextOptionItem.Create(3_100_008, "MenuTitle.Ghost", TabGroup.GameSettings)

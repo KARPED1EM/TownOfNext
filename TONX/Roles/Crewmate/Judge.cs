@@ -71,7 +71,7 @@ public sealed class Judge : RoleBase, IMeetingButton
     public string ButtonName { get; private set; } = "Judge";
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
-    public override bool OnSendMessage(string msg) => TrialMsg(Player, msg);
+    //public override bool OnSendMessage(string msg) => TrialMsg(Player, msg);
     public void OnClickButton(PlayerControl target)
     {
         if (!Trial(target, out var reason, true))
@@ -153,7 +153,7 @@ public sealed class Judge : RoleBase, IMeetingButton
         else if (operate == 2)
         {
 
-            if (OptionHideMsg.GetBool()) GuesserHelper.TryHideMsg();
+            if (Options.BlockMsgPlus.GetBool()) ChatManager.SendPreviousMessagesToAll();
             else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
 
             if (!MsgToPlayer(msg, out byte targetId, out string error))
@@ -167,6 +167,13 @@ public sealed class Judge : RoleBase, IMeetingButton
                 Utils.SendMessage(reason, pc.PlayerId);
         }
         return true;
+    }
+    public static bool DoTrial(PlayerControl pc, string msg)
+    {
+        Judge judge = new(pc);
+        if (judge.TrialMsg(pc, msg))
+            return true;
+        return false;
     }
     private static bool MsgToPlayer(string msg, out byte id, out string error)
     {
