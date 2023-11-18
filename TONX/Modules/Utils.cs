@@ -1334,6 +1334,7 @@ public static class Utils
             1 => new(-11.4f, 8.2f), // MIRA HQ
             2 => new(42.6f, -19.9f), // Polus
             4 => new(-16.8f, -6.2f), // Airship
+            5 => new(9.4f, 17.9f), // The Fungle
             _ => throw new System.NotImplementedException(),
         };
     }
