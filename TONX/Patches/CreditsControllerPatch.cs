@@ -55,6 +55,7 @@ public class CreditsControllerPatch
                 $"法师",
                 $"沐煊",
                 $"SolarFlare",
+                $"侠客",
                 $"林林林",
                 $"撒币",
                 $"斯卡蒂Skadi",
@@ -81,6 +82,8 @@ public class CreditsControllerPatch
                 $"shiftyrose",
                 $"M ™",
                 $"yunfi",
+
+                $"...",
             };
 
         var credits = new List<CreditsController.CreditStruct>();
