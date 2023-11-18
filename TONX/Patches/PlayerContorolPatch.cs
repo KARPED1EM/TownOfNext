@@ -732,11 +732,6 @@ public static class PlayerControlDiePatch
 {
     public static void Postfix(PlayerControl __instance)
     {
-        if (AmongUsClient.Instance.AmHost)
-        {
-            // 死者の最終位置にペットが残るバグ対応
-            __instance.RpcSetPet("");
-        }
     }
 }
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.MixUpOutfit))]
