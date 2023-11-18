@@ -86,7 +86,6 @@ public static class MeetingHudPatch
             SoundManager.Instance.ChangeAmbienceVolume(0f);
             if (!GameStates.IsModHost) return;
             var myRole = PlayerControl.LocalPlayer.GetRoleClass();
-
             foreach (var pva in __instance.playerStates)
             {
                 var pc = Utils.GetPlayerById(pva.TargetPlayerId);
@@ -96,7 +95,7 @@ public static class MeetingHudPatch
                 roleTextMeeting.transform.localPosition = new Vector3(0f, -0.18f, 0f);
                 roleTextMeeting.fontSize = 1.5f;
                 (roleTextMeeting.enabled, roleTextMeeting.text)
-                        = Utils.GetRoleNameAndProgressTextData(PlayerControl.LocalPlayer, pc);
+                    = Utils.GetRoleNameAndProgressTextData(PlayerControl.LocalPlayer, pc);
                 roleTextMeeting.gameObject.name = "RoleTextMeeting";
                 roleTextMeeting.enableWordWrapping = false;
 
@@ -121,7 +120,7 @@ public static class MeetingHudPatch
             }
             if (AntiBlackout.OverrideExiledPlayer && !Options.NoGameEnd.GetBool())
             {
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     Utils.SendMessage(GetString("Warning.OverrideExiledPlayer"), 255, Utils.ColorString(Color.red, GetString("DefaultSystemMessageTitle")));
                 }, 5f, "Warning OverrideExiledPlayer");
