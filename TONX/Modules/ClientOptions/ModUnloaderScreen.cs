@@ -48,9 +48,16 @@ public static class ModUnloaderScreen
         {
             ClientActionItem.CustomBackground.gameObject.SetActive(false);
             ClientActionItem.ModOptionsButton.gameObject.SetActive(false);
-            Logger.Info("ModをUnloadします", nameof(ModUnloaderScreen));
-            Harmony.UnpatchAll();
-            Main.Instance.Unload();
+
+            MainMenuManagerPatch.ShowRightPanelImmediately();
+
+            _ = new LateTask(() =>
+            {
+                Logger.Info("模组将要禁用", nameof(ModUnloaderScreen));
+                Harmony.UnpatchAll();
+                Main.Instance.Unload();
+            }, 1f);
+            
         }));
     }
 

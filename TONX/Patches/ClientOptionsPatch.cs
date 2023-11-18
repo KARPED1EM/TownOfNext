@@ -40,14 +40,14 @@ public static class OptionsMenuBehaviourStartPatch
         {
             UnlockFPS = ClientOptionItem.Create("UnlockFPS", Main.UnlockFPS, __instance, UnlockFPSButtonToggle);
             static void UnlockFPSButtonToggle()
-            {
-                Application.targetFrameRate = Main.UnlockFPS.Value ? 165 : 60;
+            {    
+                Application.targetFrameRate = Main.UnlockFPS.Value ? 240 : 60;
                 Logger.SendInGame(string.Format(Translator.GetString("FPSSetTo"), Application.targetFrameRate));
             }
         }
         if (HorseMode == null || HorseMode.ToggleButton == null)
         {
-            HorseMode = ClientOptionItem.Create("HorseMode", Main.HorseMode, __instance, () => HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode);
+            HorseMode = ClientOptionItem.Create("HorseMode", Main.HorseMode, __instance);
         }
         if (AutoStartGame == null || AutoStartGame.ToggleButton == null)
         {

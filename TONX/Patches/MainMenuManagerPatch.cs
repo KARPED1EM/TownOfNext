@@ -11,6 +11,8 @@ namespace TONX;
 [HarmonyPatch]
 public class MainMenuManagerPatch
 {
+    public static MainMenuManager Instance { get; private set; }
+
     public static GameObject InviteButton;
     public static GameObject WebsiteButton;
     public static GameObject UpdateButton;
@@ -30,6 +32,13 @@ public class MainMenuManagerPatch
     {
         ShowingPanel = false;
         AccountManager.Instance?.transform?.FindChild("AccountTab/AccountWindow")?.gameObject?.SetActive(false);
+    }
+
+    public static void ShowRightPanelImmediately()
+    {
+        ShowingPanel = true;
+        TitleLogoPatch.RightPanel.transform.localPosition = TitleLogoPatch.RightPanelOp;
+        Instance.OpenGameModeMenu();
     }
 
     private static bool isOnline = false;
@@ -66,6 +75,8 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
     public static void Start_Postfix(MainMenuManager __instance)
     {
+        Instance = __instance;
+
         SimpleButton.SetBase(__instance.quitButton);
 
         int row = 1; int col = 0;
