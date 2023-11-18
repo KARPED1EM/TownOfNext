@@ -96,6 +96,7 @@ public static class Options
 
     public static float DefaultKillCooldown = Main.NormalOptions?.KillCooldown ?? 20;
     public static OptionItem DefaultShapeshiftCooldown;
+    public static OptionItem GhostsDoTasks; //Fake optionitem to prevent game from loading it
 
     public static OptionItem DeadImpCantSabotage;
     public static OptionItem ImpKnowAlliesRole;

@@ -47,7 +47,7 @@ public static class OptionsMenuBehaviourStartPatch
         }
         if (HorseMode == null || HorseMode.ToggleButton == null)
         {
-            HorseMode = ClientOptionItem.Create("HorseMode", Main.HorseMode, __instance, () => HorseModePatch.isHorseMode = !HorseModePatch.isHorseMode);
+            HorseMode = ClientOptionItem.Create("HorseMode", Main.HorseMode, __instance);
         }
         if (AutoStartGame == null || AutoStartGame.ToggleButton == null)
         {
