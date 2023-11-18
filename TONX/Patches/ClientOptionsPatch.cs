@@ -40,7 +40,7 @@ public static class OptionsMenuBehaviourStartPatch
         {
             UnlockFPS = ClientOptionItem.Create("UnlockFPS", Main.UnlockFPS, __instance, UnlockFPSButtonToggle);
             static void UnlockFPSButtonToggle()
-            {    
+            {
                 Application.targetFrameRate = Main.UnlockFPS.Value ? 240 : 60;
                 Logger.SendInGame(string.Format(Translator.GetString("FPSSetTo"), Application.targetFrameRate));
             }
