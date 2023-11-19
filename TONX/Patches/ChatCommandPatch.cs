@@ -86,7 +86,6 @@ internal class ChatUpdatePatch
     public static void Postfix(ChatController __instance)
     {
         Active = __instance.IsOpenOrOpening;
-
         __instance.freeChatField.textArea.AllowPaste = true;
         __instance.chatBubblePool.Prefab.Cast<ChatBubble>().TextArea.overrideColorTags = false;
 
@@ -98,47 +97,25 @@ internal class ChatUpdatePatch
         Main.MessagesToSend.RemoveAt(0);
         int clientId = sendTo == byte.MaxValue ? -1 : Utils.GetPlayerById(sendTo).GetClientId();
         var name = player.Data.PlayerName;
-
-        Dictionary<int, bool> receiver = new();
         if (clientId == -1)
         {
-            if (msg.RemoveHtmlTags() == msg) receiver.TryAdd(-1, false);
-            else if (Main.AllPlayerControls.All(p => !p.AmOwner && !p.IsModClient())) receiver.TryAdd(-1, false);
-            else if (Main.AllPlayerControls.All(p => p.IsModClient())) receiver.TryAdd(-1, true);
-            else Main.AllPlayerControls.Do(p => receiver.TryAdd(p.GetClientId(), p.IsModClient()));
+            player.SetName(title);
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
+            player.SetName(name);
         }
-        else
-        {
-            Main.AllPlayerControls.DoIf(p => p.GetClientId() == clientId, p => receiver.TryAdd(p.GetClientId(), p.IsModClient()));
-            receiver.Remove(-1);
-        }
-
-        foreach (var kvp in receiver)
-        {
-            var (id, isMod) = kvp;
-
-            if (id == -1)
-            {
-                player.SetName(title);
-                DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
-                player.SetName(name);
-            }
-
-            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-            writer.StartMessage(id);
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                .Write(title)
-                .EndRpc();
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-                .Write(isMod ? msg : msg.RemoveHtmlTags())
-                .EndRpc();
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
-                .Write(player.Data.PlayerName)
-                .EndRpc();
-            writer.EndMessage();
-            writer.SendMessage();
-        }
-
+        var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+        writer.StartMessage(clientId);
+        writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+            .Write(title)
+            .EndRpc();
+        writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
+            .Write(msg)
+            .EndRpc();
+        writer.StartRpc(player.NetId, (byte)RpcCalls.SetName)
+            .Write(player.Data.PlayerName)
+            .EndRpc();
+        writer.EndMessage();
+        writer.SendMessage();
         __instance.timeSinceLastMessage = 0f;
     }
 }
