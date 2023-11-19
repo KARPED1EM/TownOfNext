@@ -337,6 +337,9 @@ class FixedUpdatePatch
     {
         var player = __instance;
 
+        if (player.AmOwner && player.IsEACPlayer() && (GameStates.IsLobby || GameStates.IsInGame) && GameStates.IsOnlineGame)
+            AmongUsClient.Instance.ExitGame(DisconnectReasons.Error);
+
         if (!GameStates.IsModHost) return;
 
         Zoom.OnFixedUpdate();

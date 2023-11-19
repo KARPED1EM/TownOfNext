@@ -46,12 +46,6 @@ class OnGameJoinedPatch
             if (AURoleOptions.ShapeshifterCooldown == 0f)
                 AURoleOptions.ShapeshifterCooldown = Main.LastShapeshifterCooldown.Value;
         }
-
-        _ = new LateTask(() =>
-        {
-            if (PlayerControl.LocalPlayer.IsEACPlayer())
-                AmongUsClient.Instance.ExitGame(DisconnectReasons.Error);
-        }, 0.01f);
     }
 }
 [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.OnBecomeHost))]
