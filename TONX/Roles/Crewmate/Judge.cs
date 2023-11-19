@@ -73,7 +73,10 @@ public sealed class Judge : RoleBase, IMeetingButton
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
     public override void OnSendMessage(string msg, out MsgRecallMode recallMode)
-        => recallMode = TrialMsg(Player, msg) ? MsgRecallMode.Spam : MsgRecallMode.None;
+    {
+        TrialMsg(Player, msg, out bool spam);
+        recallMode = spam ? MsgRecallMode.Spam : MsgRecallMode.None;
+    }
     public void OnClickButton(PlayerControl target)
     {
         if (!Trial(target, out var reason, true))
@@ -127,8 +130,9 @@ public sealed class Judge : RoleBase, IMeetingButton
 
         return true;
     }
-    public bool TrialMsg(PlayerControl pc, string msg)
+    public bool TrialMsg(PlayerControl pc, string msg, out bool spam)
     {
+        spam = false;
         var originMsg = msg;
 
         if (!AmongUsClient.Instance.AmHost) return false;
@@ -154,9 +158,7 @@ public sealed class Judge : RoleBase, IMeetingButton
         }
         else if (operate == 2)
         {
-
-            if (OptionHideMsg.GetBool()) GuesserHelper.TryHideMsg();
-            else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
+            spam = true;
 
             if (!MsgToPlayer(msg, out byte targetId, out string error))
             {

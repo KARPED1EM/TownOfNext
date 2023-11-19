@@ -1,4 +1,7 @@
 ﻿using HarmonyLib;
+using Hazel;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using TONX.Roles.Core;
 
@@ -61,7 +64,36 @@ public class MessageControl
 
     public static void Spam()
     {
-        return;
+        List<CustomRoles> roles = Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x is not CustomRoles.NotAssigned).ToList();
+        var rd = IRandom.Instance;
+        string msg;
+        string[] command = new string[] { "bet", "bt", "guess", "gs", "shoot", "st", "赌", "猜", "审判", "tl", "判", "审" };
+        for (int i = 0; i < 20; i++)
+        {
+            msg = "/";
+            if (rd.Next(1, 100) < 20)
+            {
+                msg += "id";
+            }
+            else
+            {
+                msg += command[rd.Next(0, command.Length - 1)];
+                msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
+                msg += rd.Next(0, 15).ToString();
+                msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
+                CustomRoles role = roles[rd.Next(0, roles.Count)];
+                msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
+                msg += Utils.GetRoleName(role);
+            }
+            var player = Main.AllAlivePlayerControls.ToArray()[rd.Next(0, Main.AllAlivePlayerControls.Count())];
+            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+            writer.StartMessage(-1);
+            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
+                .Write(msg)
+                .EndRpc();
+            writer.EndMessage();
+            writer.SendMessage();
+        }
     }
 }
 

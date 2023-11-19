@@ -67,12 +67,16 @@ internal class ChatCommands
         if (!AmongUsClient.Instance.AmHost) return;
         if (text.StartsWith("\n")) text = text[1..];
 
+        ChatUpdatePatch.DoBlockChat = true;
+
         var mc = new MessageControl(player, text);
         if (mc.RecallMode == MsgRecallMode.Spam)
         {
             blockForLocalPlayer = true;
             MessageControl.Spam();
         }
+
+        ChatUpdatePatch.DoBlockChat = false;
 
         if (!mc.IsCommand && SpamManager.CheckSpam(player, text))
             blockForLocalPlayer = true;

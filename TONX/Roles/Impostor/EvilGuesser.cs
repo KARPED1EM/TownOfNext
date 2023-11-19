@@ -67,7 +67,10 @@ public sealed class EvilGuesser : RoleBase, IImpostor, IMeetingButton
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
     public override void OnSendMessage(string msg, out MsgRecallMode recallMode)
-        => recallMode = GuesserMsg(Player, msg) ? MsgRecallMode.Spam : MsgRecallMode.None;
+    {
+        GuesserMsg(Player, msg, out bool spam);
+        recallMode = spam ? MsgRecallMode.Spam : MsgRecallMode.None;
+    }
     public bool OnClickButtonLocal(PlayerControl target)
     {
         ShowGuessPanel(target.PlayerId, MeetingHud.Instance);
