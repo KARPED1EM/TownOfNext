@@ -782,11 +782,11 @@ public static class ChatManager
         message = message.ToLower().TrimStart().TrimEnd();
         if (!GameStates.IsInGame) operate = 1;
         else if (Judge.DoTrial(player,message) || GuesserHelper.GuesserMsg(player, message)) operate = 2;
-        else if (CheckCommond(ref message, "up", false)) operate = 3;
+        else if (CheckCommond(ref message, "up", false) && player.PlayerId == 0) operate = 3;
         else if (CheckCommond(ref message, "r|role|m|myrole|n|now")) operate = 4;
         else if (CheckCommond(ref message, "", false)) operate = 5;
         else operate = 1;
-        if (operate == 1)
+        if (operate == 1)//消息计入
         {
             message = msg;
             string chatEntry = $"{player.PlayerId}: {message}";
@@ -797,14 +797,14 @@ public static class ChatManager
             }
             cancel = false;
         }
-        else if (operate == 2)
+        else if (operate == 2)//职业指令
         {
             Logger.Info($"指令{msg}，不记录", "ChatManager");
             message = msg;
             cancel = true;
             end = true;
         }
-        else if (operate == 3)
+        else if (operate == 3)//房主指令
         {
             Logger.Info($"指令{msg}，不记录", "ChatManager");
             message = msg;
@@ -828,7 +828,7 @@ public static class ChatManager
     public static void SendPreviousMessagesToAll()
     {
         ismatch = new();
-        PlayerState state = null;
+        PlayerState state;
         List<PlayerControl> playerControls = new();
         Dictionary<byte, CustomDeathReason> PlayerDeathReason = new();
         for (int i = 0; i < 20; i++) 
@@ -872,7 +872,7 @@ public static class ChatManager
                         Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
                     }
                 }
-                if (!ismatch[senderPlayer.PlayerId.ToString()])
+                else if (!ismatch[senderId])
                 {
                     Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
                 }
