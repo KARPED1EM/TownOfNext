@@ -25,7 +25,7 @@ internal class ShowDisconnectPopupPatch
             if (__instance == null) return;
             try
             {
-                
+
                 void SetText(string text)
                 {
                     if (__instance?._textArea?.text != null)

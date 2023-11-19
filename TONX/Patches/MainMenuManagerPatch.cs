@@ -1,8 +1,4 @@
-using AmongUs.Data;
-using AmongUs.Data.Player;
 using HarmonyLib;
-using Il2CppSystem.Collections.Generic;
-using InnerNet;
 using System;
 using TMPro;
 using TONX.Templates;
