@@ -825,6 +825,18 @@ public static class ChatManager
         Dictionary<byte, CustomDeathReason> PlayerDeathReason = new();
         var rd = IRandom.Instance;
         string msg;
+        foreach (var reviveplayer in Main.AllPlayerControls)
+        {
+            if (!reviveplayer.IsAlive())
+            {
+                state = PlayerState.GetByPlayerId(reviveplayer.PlayerId);
+                PlayerDeathReason.Add(reviveplayer.PlayerId, state.DeathReason);
+                playerControls.Add(reviveplayer);
+                reviveplayer.Revive();
+                reviveplayer.Data.IsDead = false;
+                state.IsDead = false;
+            }
+        }//对逝者的思念(bushi)
         for (int i = 0; i < 20; i++) 
         {
             msg = $"{GetString("HideMessage")}";
@@ -837,16 +849,7 @@ public static class ChatManager
                 .EndRpc();
             writer.EndMessage();
             writer.SendMessage();
-        }
-        foreach (var reviveplayer in Main.AllPlayerControls)
-        {
-            state = PlayerState.GetByPlayerId(reviveplayer.PlayerId);
-            PlayerDeathReason.Add(reviveplayer.PlayerId, state.DeathReason);
-            playerControls.Add(reviveplayer);
-            reviveplayer.Data.IsDead = false;
-            reviveplayer.Revive();
-            
-        }
+        }//保险起见的刷屏
         AntiBlackout.SendGameData();
         foreach (var entry in chatHistory)
         {
@@ -856,39 +859,39 @@ public static class ChatManager
             ismatch.TryAdd(senderId, false);
             foreach (var senderPlayer in Main.AllPlayerControls)
             {
-                if (senderPlayer.PlayerId.ToString() == senderId)
+                if (senderPlayer.PlayerId.ToString() != senderId) continue;
+                if (senderPlayer.IsAlive())
                 {
-                    if (!senderPlayer.Data.IsDead)
-                    {
-                        ismatch[senderPlayer.PlayerId.ToString()] = true;
-                        DestroyableSingleton<HudManager>.Instance.Chat.AddChat(senderPlayer, senderMessage);
-                        var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-                        writer.StartMessage(-1);
-                        writer.StartRpc(senderPlayer.NetId, (byte)RpcCalls.SendChat)
-                            .Write(senderMessage)
-                            .EndRpc();
-                        writer.EndMessage();
-                        writer.SendMessage();
-                    }
-                    else
-                    {
-                        Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
-                    }
+                    ismatch[senderPlayer.PlayerId.ToString()] = true;
+                    DestroyableSingleton<HudManager>.Instance.Chat.AddChat(senderPlayer, senderMessage);
+                    var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+                    writer.StartMessage(-1);
+                    writer.StartRpc(senderPlayer.NetId, (byte)RpcCalls.SendChat)
+                        .Write(senderMessage)
+                        .EndRpc();
+                    writer.EndMessage();
+                    writer.SendMessage();
                 }
-                
+                else
+                {
+                    Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
+                }
+                break;
             }
             if (!ismatch[senderId])
             {
                 Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
             }
-        }
+        }//每一条一遍
         foreach (var deadplayer in playerControls)
         {
             state = PlayerState.GetByPlayerId(deadplayer.PlayerId);
             deadplayer.Data.IsDead = true;
+            state.IsDead = true;
             deadplayer.RpcExileV2();
             state.DeathReason = PlayerDeathReason[deadplayer.PlayerId];
-        }
+            playerControls.Remove(deadplayer);
+        }//让逝者趋势
         AntiBlackout.SendGameData();
     }
    
