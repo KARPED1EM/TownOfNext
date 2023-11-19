@@ -30,7 +30,6 @@ public sealed class EvilGuesser : RoleBase, IImpostor, IMeetingButton
     public static OptionItem OptionCanGuessAddons;
     public static OptionItem OptionCanGuessVanilla;
     public static OptionItem OptionCanGuessTaskDoneSnitch;
-    public static OptionItem OptionHideMsg;
     enum OptionName
     {
         GuesserCanGuessTimes,
@@ -38,7 +37,6 @@ public sealed class EvilGuesser : RoleBase, IImpostor, IMeetingButton
         EGCanGuessAdt,
         EGCanGuessVanilla,
         EGCanGuessTaskDoneSnitch,
-        EGGuesserTryHideMsg,
     }
 
     public int GuessLimit;
@@ -50,7 +48,6 @@ public sealed class EvilGuesser : RoleBase, IImpostor, IMeetingButton
         OptionCanGuessAddons = BooleanOptionItem.Create(RoleInfo, 12, OptionName.EGCanGuessAdt, false, false);
         OptionCanGuessVanilla = BooleanOptionItem.Create(RoleInfo, 13, OptionName.EGCanGuessVanilla, true, false);
         OptionCanGuessTaskDoneSnitch = BooleanOptionItem.Create(RoleInfo, 14, OptionName.EGCanGuessTaskDoneSnitch, true, false);
-        OptionHideMsg = BooleanOptionItem.Create(RoleInfo, 15, OptionName.EGGuesserTryHideMsg, true, false);
     }
     public override void Add()
     {

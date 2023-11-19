@@ -31,7 +31,6 @@ public sealed class Judge : RoleBase, IMeetingButton
     { }
 
     static OptionItem OptionTrialLimitPerMeeting;
-    static OptionItem OptionHideMsg;
     static OptionItem OptionCanTrialMadmate;
     static OptionItem OptionCanTrialCharmed;
     static OptionItem OptionCanTrialCrewKilling;
@@ -45,7 +44,6 @@ public sealed class Judge : RoleBase, IMeetingButton
         JudgeCanTrialnCrewKilling,
         JudgeCanTrialNeutralB,
         JudgeCanTrialNeutralK,
-        JudgeTryHideMsg,
     }
 
     private int TrialLimit;
@@ -58,7 +56,6 @@ public sealed class Judge : RoleBase, IMeetingButton
         OptionCanTrialCrewKilling = BooleanOptionItem.Create(RoleInfo, 14, OptionName.JudgeCanTrialnCrewKilling, true, false);
         OptionCanTrialNeutralB = BooleanOptionItem.Create(RoleInfo, 15, OptionName.JudgeCanTrialNeutralB, false, false);
         OptionCanTrialNeutralK = BooleanOptionItem.Create(RoleInfo, 16, OptionName.JudgeCanTrialNeutralK, true, false);
-        OptionHideMsg = BooleanOptionItem.Create(RoleInfo, 11, OptionName.JudgeTryHideMsg, true, false);
     }
     public override void Add() => TrialLimit = OptionTrialLimitPerMeeting.GetInt();
     public override void OnStartMeeting() => TrialLimit = OptionTrialLimitPerMeeting.GetInt();
