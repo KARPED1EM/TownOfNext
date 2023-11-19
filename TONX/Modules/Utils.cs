@@ -637,6 +637,8 @@ public static class Utils
         }
 
         var sb = new StringBuilder().AppendFormat("<line-height={0}>", ActiveSettingsLineHeight);
+        sb.AppendFormat("<size={0}>", ActiveSettingsSize);
+        sb.Append("<size=100%>").Append(GetString("Settings")).Append('\n').Append("</size>");
         foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 2000000 and < 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
         {
             if (opt.IsHeader) sb.Append('\n');
@@ -799,7 +801,7 @@ public static class Utils
     {
         text = text.ToLowerInvariant();
         text = text.Replace("色", string.Empty);
-        int color = -1;
+        int color;
         try { color = int.Parse(text); } catch { color = -1; }
         switch (text)
         {
