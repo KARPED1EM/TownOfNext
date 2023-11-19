@@ -37,7 +37,7 @@ public class MessageControl
                 _ => true,
             }) continue;
 
-            string keyword = command.KeyWords.Find(k => Message.StartsWith("/" + k));
+            string keyword = command.KeyWords.Find(k => Message.ToLower().StartsWith("/" + k.ToLower()));
             if (string.IsNullOrEmpty(keyword)) continue;
 
             Args = Message[(keyword.Length + 1)..].Trim();
