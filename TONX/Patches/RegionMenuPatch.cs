@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using UnityEngine;
 
-namespace TONX.Patches;
+namespace TONX;
 
 [HarmonyPatch(typeof(RegionMenu))]
 public static class RegionMenuPatch

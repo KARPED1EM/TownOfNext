@@ -46,6 +46,12 @@ class OnGameJoinedPatch
             if (AURoleOptions.ShapeshifterCooldown == 0f)
                 AURoleOptions.ShapeshifterCooldown = Main.LastShapeshifterCooldown.Value;
         }
+
+        _ = new LateTask(() =>
+        {
+            if (PlayerControl.LocalPlayer.IsEACPlayer())
+                AmongUsClient.Instance.ExitGame(DisconnectReasons.Error);
+        }, 0.01f);
     }
 }
 [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.OnBecomeHost))]
@@ -253,7 +259,7 @@ class CreatePlayerPatch
                         Main.isChatCommand = true;
                         Utils.SendMessage($"{GetString("Message.DirectorModeNotice")}", client.Character.PlayerId);
                     }
-                }, 3.2f, "DisplayUpWarnning");
+                }, 3.2f, "DisplayDirectorModeWarnning");
             }
         }
     }

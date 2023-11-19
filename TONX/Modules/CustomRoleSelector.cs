@@ -150,15 +150,6 @@ internal static class CustomRoleSelector
             if (rd.Next(0, 100) < 5 && rolesToAssign.Remove(CustomRoles.Sans)) rolesToAssign.Add(CustomRoles.Bard);
         }
 
-        // EAC封禁名单玩家开房将被分配为小丑
-        if (BanManager.CheckEACList(PlayerControl.LocalPlayer.FriendCode, PlayerControl.LocalPlayer.GetClient().GetHashedPuid()))
-        {
-            if (!rolesToAssign.Contains(CustomRoles.Jester))
-                rolesToAssign.Add(CustomRoles.Jester);
-            Main.DevRole.Remove(PlayerControl.LocalPlayer.PlayerId);
-            Main.DevRole.Add(PlayerControl.LocalPlayer.PlayerId, CustomRoles.Jester);
-        } //整房主有什么用，直接禁用公开不香吗
-
         // Dev Roles List Edit
         foreach (var dr in Main.DevRole)
         {
@@ -190,7 +181,7 @@ internal static class CustomRoleSelector
 
         var AllPlayer = Main.AllAlivePlayerControls.ToList();
 
-        while (AllPlayer.Count() > 0 && rolesToAssign.Count > 0)
+        while (AllPlayer.Count > 0 && rolesToAssign.Count > 0)
         {
             PlayerControl delPc = null;
             foreach (var pc in AllPlayer)
@@ -220,7 +211,7 @@ internal static class CustomRoleSelector
             }
         }
 
-        if (AllPlayer.Count() > 0)
+        if (AllPlayer.Count > 0)
             Logger.Error("职业分配错误：存在未被分配职业的玩家", "CustomRoleSelector");
         if (rolesToAssign.Count > 0)
             Logger.Error("职业分配错误：存在未被分配的职业", "CustomRoleSelector");

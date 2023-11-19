@@ -1,4 +1,8 @@
+using AmongUs.Data;
+using AmongUs.Data.Player;
 using HarmonyLib;
+using Il2CppSystem.Collections.Generic;
+using InnerNet;
 using System;
 using TMPro;
 using TONX.Templates;
@@ -45,7 +49,7 @@ public class MainMenuManagerPatch
     public static bool ShowedBak = false;
     private static bool ShowingPanel = false;
     [HarmonyPatch(typeof(SignInStatusComponent), nameof(SignInStatusComponent.SetOnline)), HarmonyPostfix]
-    public static void SetOnline_Postfix() => new LateTask(() => { isOnline = true; NameTagManager.Init(); }, 0.1f, "Set Online Status");
+    public static void SetOnline_Postfix() { _ = new LateTask(() => { isOnline = true; NameTagManager.Init(); }, 0.1f, "Set Online Status"); }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void MainMenuManager_LateUpdate()
     {
