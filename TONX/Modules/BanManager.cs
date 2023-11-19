@@ -1,9 +1,11 @@
 using HarmonyLib;
+using InnerNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using TONX.Attributes;
@@ -61,12 +63,31 @@ public static class BanManager
         using StreamReader reader = new(stream, Encoding.UTF8);
         return reader.ReadToEnd();
     }
+
+    public static string GetHashedPuid(this ClientData player)
+    {
+        if (player == null) return "";
+        return GetHashedPuid(player.ProductUserId);
+    }
+    public static string GetHashedPuid(string puid)
+    {
+        if (puid == "") return puid;
+        using (SHA256 sha256 = SHA256.Create())
+        {
+            // get sha-256 hash
+            byte[] sha256Bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(puid));
+            string sha256Hash = BitConverter.ToString(sha256Bytes).Replace("-", "").ToLower();
+
+            // pick front 5 and last 4
+            return string.Concat(sha256Hash.AsSpan(0, 5), sha256Hash.AsSpan(sha256Hash.Length - 4));
+        }
+    }
     public static void AddBanPlayer(InnerNet.ClientData player)
     {
         if (!AmongUsClient.Instance.AmHost || player == null) return;
-        if (!CheckBanList(player?.FriendCode) && player.FriendCode != "")
+        if (!CheckBanList(player?.FriendCode, player?.GetHashedPuid()))
         {
-            File.AppendAllText(BAN_LIST_PATH, $"{player.FriendCode},{player.PlayerName}\n");
+            File.AppendAllText(BAN_LIST_PATH, $"{player.FriendCode},{player.GetHashedPuid()},{player.PlayerName}\n");
             Logger.SendInGame(string.Format(GetString("Message.AddedPlayerToBanList"), player.PlayerName));
         }
     }
@@ -100,14 +121,14 @@ public static class BanManager
     public static void CheckBanPlayer(InnerNet.ClientData player)
     {
         if (!AmongUsClient.Instance.AmHost || !Options.ApplyBanList.GetBool()) return;
-        if (CheckBanList(player?.FriendCode))
+        if (CheckBanList(player?.FriendCode, player?.GetHashedPuid()))
         {
             Utils.KickPlayer(player.Id, true, "BanList");
             RPC.NotificationPop(string.Format(GetString("Message.BanedByBanList"), player.PlayerName));
             Logger.Info($"{player.PlayerName}は過去にBAN済みのためBANされました。", "BAN");
             return;
         }
-        if (CheckEACList(player?.FriendCode))
+        if (CheckEACList(player?.FriendCode, player?.GetHashedPuid()))
         {
             Utils.KickPlayer(player.Id, true, "EACList");
             RPC.NotificationPop(string.Format(GetString("Message.BanedByEACList"), player.PlayerName));
@@ -115,20 +136,23 @@ public static class BanManager
             return;
         }
     }
-    public static bool CheckBanList(string code)
+    public static bool CheckBanList(string code, string hashedpuid = "")
     {
-        if (code == "") return false;
+        bool OnlyCheckPuid = false;
+        if (code == "" && hashedpuid != "") OnlyCheckPuid = true;
+        else if (code == "") return false;
         try
         {
-            Directory.CreateDirectory("TONX_Data");
+            Directory.CreateDirectory("TOHE-DATA");
             if (!File.Exists(BAN_LIST_PATH)) File.Create(BAN_LIST_PATH).Close();
             using StreamReader sr = new(BAN_LIST_PATH);
             string line;
             while ((line = sr.ReadLine()) != null)
             {
                 if (line == "") continue;
-                if (Main.AllPlayerControls.Any(p => p.IsDev() && line.Contains(p.FriendCode))) continue;
-                if (line.Contains(code)) return true;
+                if (!OnlyCheckPuid)
+                    if (line.Contains(code)) return true;
+                if (line.Contains(hashedpuid)) return true;
             }
         }
         catch (Exception ex)
@@ -137,10 +161,12 @@ public static class BanManager
         }
         return false;
     }
-    public static bool CheckEACList(string code)
+    public static bool CheckEACList(string code, string hashedPuid = "")
     {
-        if (code == "") return false;
-        return EACList.Any(x => x.Contains(code));
+        bool OnlyCheckPuid = false;
+        if (code == "" && hashedPuid == "") OnlyCheckPuid = true;
+        else if (code == "") return false;
+        return (EACList.Any(x => x.Contains(code) && !OnlyCheckPuid) || EACList.Any(x => x.Contains(hashedPuid) && hashedPuid != ""));
     }
 }
 [HarmonyPatch(typeof(BanMenu), nameof(BanMenu.Select))]
@@ -150,6 +176,6 @@ class BanMenuSelectPatch
     {
         InnerNet.ClientData recentClient = AmongUsClient.Instance.GetRecentClient(clientId);
         if (recentClient == null) return;
-        if (!BanManager.CheckBanList(recentClient?.FriendCode)) __instance.BanButton.GetComponent<ButtonRolloverHandler>().SetEnabledColors();
+        if (!BanManager.CheckBanList(recentClient?.FriendCode, recentClient?.GetHashedPuid())) __instance.BanButton.GetComponent<ButtonRolloverHandler>().SetEnabledColors();
     }
 }

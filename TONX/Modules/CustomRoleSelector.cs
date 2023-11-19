@@ -151,13 +151,13 @@ internal static class CustomRoleSelector
         }
 
         // EAC封禁名单玩家开房将被分配为小丑
-        if (BanManager.CheckEACList(PlayerControl.LocalPlayer.FriendCode))
+        if (BanManager.CheckEACList(PlayerControl.LocalPlayer.FriendCode, PlayerControl.LocalPlayer.GetClient().GetHashedPuid()))
         {
             if (!rolesToAssign.Contains(CustomRoles.Jester))
                 rolesToAssign.Add(CustomRoles.Jester);
             Main.DevRole.Remove(PlayerControl.LocalPlayer.PlayerId);
             Main.DevRole.Add(PlayerControl.LocalPlayer.PlayerId, CustomRoles.Jester);
-        }
+        } //整房主有什么用，直接禁用公开不香吗
 
         // Dev Roles List Edit
         foreach (var dr in Main.DevRole)
