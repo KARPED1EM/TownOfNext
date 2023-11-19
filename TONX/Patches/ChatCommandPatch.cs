@@ -783,8 +783,7 @@ public static class ChatManager
         if (!GameStates.IsInGame) operate = 1;
         else if (Judge.DoTrial(player,message) || GuesserHelper.GuesserMsg(player, message)) operate = 2;
         else if (CheckCommond(ref message, "up", false) && player.PlayerId == 0) operate = 3;
-        else if (CheckCommond(ref message, "r|role|m|myrole|n|now")) operate = 4;
-        else if (CheckCommond(ref message, "", false)) operate = 5;
+        else if (CheckCommond(ref message, "", false)) operate = 4;
         else operate = 1;
         if (operate == 1)//消息计入
         {
@@ -812,13 +811,6 @@ public static class ChatManager
         }
         else if (operate == 4)
         {
-            Logger.Info($"指令{msg}，不记录", "ChatManager");
-            message = msg;
-            SendPreviousMessagesToAll();
-            cancel = false;
-        }
-        else if (operate == 5)
-        {
             Logger.Info($"包含特殊信息，不记录", "ChatManager");
             message = msg;
             SendPreviousMessagesToAll();
@@ -831,9 +823,20 @@ public static class ChatManager
         PlayerState state;
         List<PlayerControl> playerControls = new();
         Dictionary<byte, CustomDeathReason> PlayerDeathReason = new();
+        var rd = IRandom.Instance;
+        string msg;
         for (int i = 0; i < 20; i++) 
         {
-            Utils.SendMessage(GetString("HideMessage"), 255);
+            msg = $"{GetString("HideMessage")}";
+            var player = Main.AllAlivePlayerControls.ToArray()[rd.Next(0, Main.AllAlivePlayerControls.Count())];
+            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
+            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+            writer.StartMessage(-1);
+            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
+                .Write(msg)
+                .EndRpc();
+            writer.EndMessage();
+            writer.SendMessage();
         }
         foreach (var reviveplayer in Main.AllPlayerControls)
         {
@@ -850,7 +853,7 @@ public static class ChatManager
             var entryParts = entry.Split(':');
             var senderId = entryParts[0].Trim();
             var senderMessage = entryParts[1].Trim();
-            ismatch.Add(senderId, false);
+            ismatch.TryAdd(senderId, false);
             foreach (var senderPlayer in Main.AllPlayerControls)
             {
                 if (senderPlayer.PlayerId.ToString() == senderId)
@@ -872,10 +875,11 @@ public static class ChatManager
                         Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
                     }
                 }
-                else if (!ismatch[senderId])
-                {
-                    Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
-                }
+                
+            }
+            if (!ismatch[senderId])
+            {
+                Utils.SendMessage(senderMessage, 255, GetString("PlayerIdNF"));
             }
         }
         foreach (var deadplayer in playerControls)

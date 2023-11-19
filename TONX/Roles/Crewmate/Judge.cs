@@ -170,7 +170,8 @@ public sealed class Judge : RoleBase, IMeetingButton
     }
     public static bool DoTrial(PlayerControl pc, string msg)
     {
-        Judge judge = new(pc);
+        if (!pc.Is(CustomRoles.Judge)) return false;
+        Judge judge = new Judge(pc);
         if (judge.TrialMsg(pc, msg))
             return true;
         return false;
