@@ -1,7 +1,7 @@
 ﻿using AmongUs.GameOptions;
 using System.Collections.Generic;
 using System.Linq;
-
+using TONX.Modules;
 using TONX.Roles.Core;
 using static TONX.Translator;
 
@@ -77,9 +77,11 @@ public sealed class Mediumshiper : RoleBase
             Utils.ColorString(RoleInfo.RoleColor, GetString("MediumshipTitle"))
             ));
     }
-    private static bool OnReceiveMessage(PlayerControl player, string msg)
+    private static void OnReceiveMessage(MessageControl mc)
     {
-        if (player.IsAlive()) return true;
+        var (player, msg) = (mc.Player, mc.Message);
+
+        if (player.IsAlive()) return;
         foreach (var medium in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Mediumshiper)))
         {
             var roleClass = medium.GetRoleClass() as Mediumshiper;
@@ -87,7 +89,7 @@ public sealed class Mediumshiper : RoleBase
             if (OptionOnlyReceiveMsgFromCrew.GetBool() && !player.IsCrew()) continue;
 
             msg = msg.ToLower().Trim();
-            if (!CheckCommond(ref msg, "通灵|ms|mediumship|medium", false)) return true;
+            if (!CheckCommond(ref msg, "通灵|ms|mediumship|medium", false)) return;
 
             bool ans;
             if (msg.Contains('n') || msg.Contains(GetString("No")) || msg.Contains('错') || msg.Contains("不是")) ans = false;
@@ -95,16 +97,14 @@ public sealed class Mediumshiper : RoleBase
             else
             {
                 Utils.SendMessage(GetString("MediumshipHelp"), player.PlayerId);
-                return false;
+                return;
             }
 
             Utils.SendMessage(GetString("Mediumship" + (ans ? "Yes" : "No")), medium.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("MediumshipTitle")));
             Utils.SendMessage(GetString("MediumshipDone"), player.PlayerId, Utils.ColorString(RoleInfo.RoleColor, GetString("MediumshipTitle")));
 
             roleClass.ContactPlayer = byte.MaxValue;
-            return false;
         }
-        return true;
     }
     public static bool CheckCommond(ref string msg, string command, bool exact = true)
     {

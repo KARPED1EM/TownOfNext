@@ -56,14 +56,15 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
 
         return livingImpostorsNum <= 0;
     }
-    public override bool OnSendMessage(string msg)
+    public override void OnSendMessage(string msg, out MsgRecallMode recallMode)
     {
+        recallMode = MsgRecallMode.None;
+
         var pc = Player;
-        if (!AmongUsClient.Instance.AmHost || !GameStates.IsInGame || pc == null || !pc.Is(CustomRoles.Mafia)) return false;
+        if (!AmongUsClient.Instance.AmHost || !GameStates.IsInGame || pc == null || !pc.Is(CustomRoles.Mafia)) return;
 
         msg = msg.Trim().ToLower();
-        if (msg.Length < 3 || msg[..3] != "/rv") return false;
-
+        if (msg.Length < 3 || msg[..3] != "/rv") return;
 
         if (msg == "/rv")
         {
@@ -71,7 +72,7 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
             foreach (var npc in Main.AllAlivePlayerControls)
                 text += "\n" + npc.PlayerId.ToString() + " → (" + Utils.GetTrueRoleName(npc.PlayerId, false) + ") " + npc.GetRealName();
             Utils.SendMessage(text, pc.PlayerId);
-            return true;
+            return;
         }
 
         int targetId;
@@ -84,19 +85,19 @@ public sealed class Mafia : RoleBase, IImpostor, IMeetingButton
         catch
         {
             Utils.SendMessage(GetString("MafiaKillDead"), pc.PlayerId);
-            return true;
+            return;
         }
 
         if (!CanRevenge(target, out var reason))
         {
             Utils.SendMessage(reason, pc.PlayerId);
-            return true;
+            return;
         }
 
         RevengeLimit--;
         RevengeKill(pc, target);
 
-        return true;
+        return;
     }
     private static void RevengeKill(PlayerControl killer, PlayerControl target)
     {

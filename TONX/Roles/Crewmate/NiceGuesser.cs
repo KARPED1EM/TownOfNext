@@ -1,5 +1,5 @@
 ﻿using AmongUs.GameOptions;
-
+using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using static TONX.GuesserHelper;
@@ -64,7 +64,8 @@ public sealed class NiceGuesser : RoleBase, IMeetingButton
     public string ButtonName { get; private set; } = "Target";
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
-    public override bool OnSendMessage(string msg) => GuesserMsg(Player, msg);
+    public override void OnSendMessage(string msg, out MsgRecallMode recallMode)
+        => recallMode = GuesserMsg(Player, msg) ? MsgRecallMode.Spam : MsgRecallMode.None;
     public bool OnClickButtonLocal(PlayerControl target)
     {
         ShowGuessPanel(target.PlayerId, MeetingHud.Instance);

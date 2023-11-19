@@ -251,7 +251,7 @@ public static class GuesserHelper
             return false;
         }
 
-        if (!ChatCommands.GetRoleByInputName(msg, out role, true))
+        if (!ChatCommand.GetRoleByInputName(msg, out role, true))
         {
             error = GetString("GuessHelp");
             return false;

@@ -228,7 +228,6 @@ class CreatePlayerPatch
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
-                        Main.isChatCommand = true;
                         Utils.ShowKillLog(client.Character.PlayerId);
                     }
                 }, 3f, "DisplayKillLog");
@@ -239,7 +238,6 @@ class CreatePlayerPatch
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
-                        Main.isChatCommand = true;
                         Utils.ShowLastResult(client.Character.PlayerId);
                     }
                 }, 3.1f, "DisplayLastResult");
@@ -250,7 +248,6 @@ class CreatePlayerPatch
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
-                        Main.isChatCommand = true;
                         Utils.SendMessage($"{GetString("Message.DirectorModeNotice")}", client.Character.PlayerId);
                     }
                 }, 3.2f, "DisplayDirectorModeWarnning");

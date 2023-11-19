@@ -135,13 +135,11 @@ internal class ControllerManagerUpdatePatch
         //显示当前有效设置的说明
         if (GetKeysDown(KeyCode.N, KeyCode.LeftShift, KeyCode.LeftControl))
         {
-            Main.isChatCommand = true;
             Utils.ShowActiveSettingsHelp();
         }
         //显示当前有效设置
         if (GetKeysDown(KeyCode.N, KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift))
         {
-            Main.isChatCommand = true;
             Utils.ShowActiveSettings();
         }
         //将 TONX 选项设置为默认值

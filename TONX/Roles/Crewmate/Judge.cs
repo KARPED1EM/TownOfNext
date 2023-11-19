@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using UnityEngine;
@@ -71,7 +72,8 @@ public sealed class Judge : RoleBase, IMeetingButton
     public string ButtonName { get; private set; } = "Judge";
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
-    public override bool OnSendMessage(string msg) => TrialMsg(Player, msg);
+    public override void OnSendMessage(string msg, out MsgRecallMode recallMode)
+        => recallMode = TrialMsg(Player, msg) ? MsgRecallMode.Spam : MsgRecallMode.None;
     public void OnClickButton(PlayerControl target)
     {
         if (!Trial(target, out var reason, true))
@@ -133,7 +135,7 @@ public sealed class Judge : RoleBase, IMeetingButton
         if (!GameStates.IsInGame || pc == null) return false;
         if (!pc.Is(CustomRoles.Judge)) return false;
 
-        int operate = 0; // 1:ID 2:猜测
+        int operate; // 1:ID 2:猜测
         msg = msg.ToLower().TrimStart().TrimEnd();
         if (CheckCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
         else if (CheckCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌|sp|jj|tl|trial|审判|判|审", false)) operate = 2;

@@ -69,16 +69,16 @@ public static class ChatControllerUpdatePatch
             ClipboardHelper.PutClipboardString(__instance.freeChatField.textArea.text);
             __instance.freeChatField.textArea.SetText("");
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow) && ChatCommands.ChatHistory.Count > 0)
+        if (Input.GetKeyDown(KeyCode.UpArrow) && ChatCommands.SentHistory.Count > 0)
         {
-            CurrentHistorySelection = Mathf.Clamp(--CurrentHistorySelection, 0, ChatCommands.ChatHistory.Count - 1);
-            __instance.freeChatField.textArea.SetText(ChatCommands.ChatHistory[CurrentHistorySelection]);
+            CurrentHistorySelection = Mathf.Clamp(--CurrentHistorySelection, 0, ChatCommands.SentHistory.Count - 1);
+            __instance.freeChatField.textArea.SetText(ChatCommands.SentHistory[CurrentHistorySelection]);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && ChatCommands.ChatHistory.Count > 0)
+        if (Input.GetKeyDown(KeyCode.DownArrow) && ChatCommands.SentHistory.Count > 0)
         {
             CurrentHistorySelection++;
-            if (CurrentHistorySelection < ChatCommands.ChatHistory.Count)
-                __instance.freeChatField.textArea.SetText(ChatCommands.ChatHistory[CurrentHistorySelection]);
+            if (CurrentHistorySelection < ChatCommands.SentHistory.Count)
+                __instance.freeChatField.textArea.SetText(ChatCommands.SentHistory[CurrentHistorySelection]);
             else __instance.freeChatField.textArea.SetText("");
         }
     }

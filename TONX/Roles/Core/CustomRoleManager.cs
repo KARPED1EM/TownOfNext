@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TONX.Attributes;
+using TONX.Modules;
 using TONX.Roles.AddOns.Common;
 using TONX.Roles.AddOns.Crewmate;
 using TONX.Roles.AddOns.Impostor;
@@ -411,14 +412,15 @@ public static class CustomRoleManager
         return sb.ToString();
     }
     //ChatMessages
-    public static HashSet<Func<PlayerControl, string, bool>> ReceiveMessage = new();
+    public static HashSet<Action<MessageControl>> ReceiveMessage = new();
     /// <summary>
     /// 玩家收到消息后调用的函数
     /// 无论您是否发送者都会调用，因此您可能需要判断该消息是否是您自己发送的
     /// </summary>
-    /// <param name="msg">收到的消息内容</param>
-    /// <returns>true：阻塞该消息，并不继续向下判断</returns>
-    public static bool OnReceiveMessage(PlayerControl player, string msg) => false;
+    public static void OnReceiveMessage(MessageControl msgControl, out MsgRecallMode recallMode)
+    {
+        recallMode = MsgRecallMode.None;
+    }
 
     /// <summary>
     /// 全部对象的销毁事件

@@ -3,6 +3,7 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Modules;
 using UnityEngine;
 using static TONX.Translator;
 
@@ -284,9 +285,10 @@ public abstract class RoleBase : IDisposable
     /// <summary>
     /// 玩家发送消息后调用的函数
     /// </summary>
-    /// <param name="msg">发送的消息内容</param>
-    /// <returns>true：阻塞该消息，并不继续向下判断</returns>
-    public virtual bool OnSendMessage(string msg) => false;
+    public virtual void OnSendMessage(string msg, out MsgRecallMode recallMode)
+    {
+        recallMode = MsgRecallMode.None;
+    }
 
     /// <summary>
     /// 每次任务完成时调用的函数
