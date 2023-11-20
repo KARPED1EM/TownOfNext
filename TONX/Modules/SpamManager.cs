@@ -60,7 +60,7 @@ public static class SpamManager
     }
     public static bool CheckSpam(PlayerControl player, string text)
     {
-        if (player.PlayerId == PlayerControl.LocalPlayer.PlayerId) return false;
+        if (player.AmOwner || !AmongUsClient.Instance.AmHost) return false;
         string name = player.GetRealName();
         bool kick = false;
         string msg = "";

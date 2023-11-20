@@ -29,41 +29,48 @@ public class MessageControl
         if (ChatCommand.AllCommands == null || !ChatCommand.AllCommands.Any())
             ChatCommand.Init();
 
-        foreach (var command in ChatCommand.AllCommands)
-        {
-            if (command.Access switch
-            {
-                CommandAccess.All => false,
-                CommandAccess.LocalMod => !IsFromSelf,
-                CommandAccess.Host => !AmongUsClient.Instance.AmHost || !IsFromSelf,
-                CommandAccess.Debugger => !DebugModeManager.AmDebugger,
-                _ => true,
-            }) continue;
-
-            string keyword = command.KeyWords.Find(k => Message.ToLower().StartsWith("/" + k.ToLower()));
-            if (string.IsNullOrEmpty(keyword)) continue;
-
-            Args = Message[(keyword.Length + 1)..].Trim();
-            HasValidArgs = !string.IsNullOrWhiteSpace(Args);
-
-            Logger.Info($"Command: /{keyword}, Args: {Args}", "ChatControl");
-
-            (RecallMode, string msg) = command.Command(this);
-            if (!string.IsNullOrEmpty(msg)) Utils.SendMessage(msg, Player.PlayerId);
-            IsCommand = true;
-            return;
-        }
-
         MsgRecallMode recallMode = MsgRecallMode.None;
-        Player.GetRoleClass()?.OnSendMessage(Message, out recallMode);
+        // Check if it is a role command
+        IsCommand = Player.GetRoleClass()?.OnSendMessage(Message, out recallMode) ?? false;
         CustomRoleManager.ReceiveMessage.Do(a => a.Invoke(this));
 
-        IsCommand = recallMode != MsgRecallMode.None;
         RecallMode = recallMode;
+        if (IsCommand || !AmongUsClient.Instance.AmHost) return;
+
+        if (!IsCommand && AmongUsClient.Instance.AmHost)
+        {
+            // Not a role command, check for command list
+            foreach (var command in ChatCommand.AllCommands)
+            {
+                if (command.Access switch
+                {
+                    CommandAccess.All => false,
+                    CommandAccess.LocalMod => !IsFromSelf,
+                    CommandAccess.Host => !AmongUsClient.Instance.AmHost || !IsFromSelf,
+                    CommandAccess.Debugger => !DebugModeManager.AmDebugger,
+                    _ => true,
+                }) continue;
+
+                string keyword = command.KeyWords.Find(k => Message.ToLower().StartsWith("/" + k.ToLower()));
+                if (string.IsNullOrEmpty(keyword)) continue;
+
+                Args = Message[(keyword.Length + 1)..].Trim();
+                HasValidArgs = !string.IsNullOrWhiteSpace(Args);
+
+                Logger.Info($"Command: /{keyword}, Args: {Args}", "ChatControl");
+
+                (RecallMode, string msg) = command.Command(this);
+                if (!string.IsNullOrEmpty(msg)) Utils.SendMessage(msg, Player.PlayerId);
+                IsCommand = true;
+                return;
+            }
+        }
     }
 
     public static void Spam(bool includeHost = false)
     {
+        if (!AmongUsClient.Instance.AmHost) return;
+
         List<CustomRoles> roles = Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x is not CustomRoles.NotAssigned).ToList();
         var rd = IRandom.Instance;
         string msg;

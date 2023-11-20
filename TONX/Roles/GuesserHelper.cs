@@ -26,7 +26,7 @@ public static class GuesserHelper
         }
         return text;
     }
-    public static bool CheckCommond(ref string msg, string command, bool exact = true)
+    public static bool MatchCommond(ref string msg, string command, bool exact = true)
     {
         var comList = command.Split('|');
         for (int i = 0; i < comList.Length; i++)
@@ -73,15 +73,16 @@ public static class GuesserHelper
     {
         spam = false;
 
-        if (!AmongUsClient.Instance.AmHost) return false;
         if (!GameStates.IsInGame || pc == null) return false;
         if (!pc.Is(CustomRoles.NiceGuesser) && !pc.Is(CustomRoles.EvilGuesser)) return false;
 
         int operate; // 1:ID 2:猜测
-        msg = msg.ToLower().TrimStart().TrimEnd();
-        if (CheckCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
-        else if (CheckCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌", false)) operate = 2;
+        msg = msg.ToLower().Trim();
+        if (MatchCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
+        else if (MatchCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌", false)) operate = 2;
         else return false;
+
+        if (!AmongUsClient.Instance.AmHost) return true;
 
         if (!pc.IsAlive())
         {

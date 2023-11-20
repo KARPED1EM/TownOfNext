@@ -64,7 +64,6 @@ internal class ChatCommands
     {
         blockForLocalPlayer = false;
 
-        if (!AmongUsClient.Instance.AmHost) return;
         if (text.StartsWith("\n")) text = text[1..];
 
         ChatUpdatePatch.DoBlockChat = true;

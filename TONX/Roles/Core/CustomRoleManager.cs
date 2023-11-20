@@ -417,9 +417,13 @@ public static class CustomRoleManager
     /// 玩家收到消息后调用的函数
     /// 无论您是否发送者都会调用，因此您可能需要判断该消息是否是您自己发送的
     /// </summary>
-    public static void OnReceiveMessage(MessageControl msgControl, out MsgRecallMode recallMode)
+    /// <param name="msgControl">收到的消息</param>
+    /// <param name="recallMode">该消息应该做何处理</param>
+    /// <returns>true: 阻塞该消息并停止向下判断</returns>
+    public static bool OnReceiveMessage(MessageControl msgControl, out MsgRecallMode recallMode)
     {
         recallMode = MsgRecallMode.None;
+        return false;
     }
 
     /// <summary>

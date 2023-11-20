@@ -285,9 +285,13 @@ public abstract class RoleBase : IDisposable
     /// <summary>
     /// 玩家发送消息后调用的函数
     /// </summary>
-    public virtual void OnSendMessage(string msg, out MsgRecallMode recallMode)
+    /// <param name="msg">玩家发送的消息</param>
+    /// <param name="recallMode">该消息应该做何处理</param>
+    /// <returns>true: 阻塞该消息并停止向下判断</returns>
+    public virtual bool OnSendMessage(string msg, out MsgRecallMode recallMode)
     {
         recallMode = MsgRecallMode.None;
+        return false;
     }
 
     /// <summary>

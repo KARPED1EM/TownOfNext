@@ -69,10 +69,11 @@ public sealed class Judge : RoleBase, IMeetingButton
     public string ButtonName { get; private set; } = "Judge";
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
-    public override void OnSendMessage(string msg, out MsgRecallMode recallMode)
+    public override bool OnSendMessage(string msg, out MsgRecallMode recallMode)
     {
-        TrialMsg(Player, msg, out bool spam);
+        bool isCommand = TrialMsg(Player, msg, out bool spam);
         recallMode = spam ? MsgRecallMode.Spam : MsgRecallMode.None;
+        return isCommand;
     }
     public void OnClickButton(PlayerControl target)
     {
@@ -111,7 +112,7 @@ public sealed class Judge : RoleBase, IMeetingButton
 
         TrialLimit--;
 
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             var state = PlayerState.GetByPlayerId(dp.PlayerId);
             state.DeathReason = CustomDeathReason.Trialed;
@@ -121,7 +122,7 @@ public sealed class Judge : RoleBase, IMeetingButton
             //死者检查
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
-            new LateTask(() => { Utils.SendMessage(string.Format(GetString("TrialKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Judge), GetString("TrialKillTitle"))); }, 0.6f, "Guess Msg");
+            _ = new LateTask(() => { Utils.SendMessage(string.Format(GetString("TrialKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Judge), GetString("TrialKillTitle"))); }, 0.6f, "Guess Msg");
 
         }, 0.2f, "Trial Kill");
 
@@ -130,17 +131,16 @@ public sealed class Judge : RoleBase, IMeetingButton
     public bool TrialMsg(PlayerControl pc, string msg, out bool spam)
     {
         spam = false;
-        var originMsg = msg;
-
-        if (!AmongUsClient.Instance.AmHost) return false;
         if (!GameStates.IsInGame || pc == null) return false;
         if (!pc.Is(CustomRoles.Judge)) return false;
 
         int operate; // 1:ID 2:猜测
         msg = msg.ToLower().TrimStart().TrimEnd();
-        if (CheckCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
-        else if (CheckCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌|sp|jj|tl|trial|审判|判|审", false)) operate = 2;
+        if (MatchCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
+        else if (MatchCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌|sp|jj|tl|trial|审判|判|审", false)) operate = 2;
         else return false;
+
+        if (!AmongUsClient.Instance.AmHost) return true;
 
         if (!pc.IsAlive())
         {
@@ -206,10 +206,10 @@ public sealed class Judge : RoleBase, IMeetingButton
         error = string.Empty;
         return true;
     }
-    public static bool CheckCommond(ref string msg, string command, bool exact = true)
+    public static bool MatchCommond(ref string msg, string command, bool exact = true)
     {
         var comList = command.Split('|');
-        for (int i = 0; i < comList.Count(); i++)
+        for (int i = 0; i < comList.Length; i++)
         {
             if (exact)
             {
