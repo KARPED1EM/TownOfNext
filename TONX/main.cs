@@ -37,7 +37,7 @@ public class Main : BasePlugin
     public const string LowestSupportedVersion = "2023.10.24";
     // このバージョンのみで公開ルームを無効にする場合
     public static readonly bool IsPublicAvailableOnThisVersion = false;
-    public const string PluginVersion = "2.0.0";
+    public const string PluginVersion = "3.0.0";
     public const int PluginCreation = 1;
 
     public static readonly bool ShowWebsiteButton = true;
