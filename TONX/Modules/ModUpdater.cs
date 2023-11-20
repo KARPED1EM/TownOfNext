@@ -4,13 +4,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
+using TONX.Modules;
 using UnityEngine;
 using static TONX.Translator;
 
@@ -112,8 +114,8 @@ public class ModUpdater
             Logger.Info("Force Update: " + forceUpdate, "CheckRelease");
             Logger.Info("File MD5: " + md5, "CheckRelease");
             Logger.Info("Github Url: " + downloadUrl_github, "CheckRelease");
-            Logger.Info("Gitee Url: " + downloadUrl_github, "CheckRelease");
-            Logger.Info("COS Url: " + downloadUrl_gitee, "CheckRelease");
+            Logger.Info("Gitee Url: " + downloadUrl_gitee, "CheckRelease");
+            Logger.Info("COS Url: " + downloadUrl_cos, "CheckRelease");
             Logger.Info("Announcement (English): " + announcement_en, "CheckRelease");
             Logger.Info("Announcement (SChinese): " + announcement_zh, "CheckRelease");
 
@@ -135,7 +137,7 @@ public class ModUpdater
     }
     public static string Get(string url)
     {
-        string result = "";
+        string result = string.Empty;
         HttpClient req = new HttpClient();
         var res = req.GetAsync(url).Result;
         Stream stream = res.Content.ReadAsStreamAsync().Result;
@@ -199,15 +201,14 @@ public class ModUpdater
 
             return true;
         }
-        catch (Exception ex)
+        catch
         {
-            Logger.Error($"Exception:\n{ex.Message}", "CheckRelease", false);
             return false;
         }
     }
-    public static void StartUpdate(string url = "")
+    public static void StartUpdate(string url = "waitToSelect")
     {
-        if (url.Trim() == "")
+        if (url == "waitToSelect")
         {
             CustomPopup.Show(GetString("updatePopupTitle"), GetString("updateChoseSource"), new()
             {
@@ -219,17 +220,23 @@ public class ModUpdater
             return;
         }
 
+        Regex r = new Regex(@"^(http|https|ftp)\://([a-zA-Z0-9\.\-]+(\:[a-zA-Z0-9\.&%\$\-]+)*@)?((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9\-]+\.)*[a-zA-Z0-9\-]+\.[a-zA-Z]{2,4})(\:[0-9]+)?(/[^/][a-zA-Z0-9\.\,\?\'\\/\+&%\$#\=~_\-@]*)*$");
+        if (!r.IsMatch(url))
+        {
+            CustomPopup.ShowLater(GetString("updatePopupTitleFialed"), string.Format(GetString("updatePingFialed"), "404 Not Found"), new() { (GetString(StringNames.Okay), SetUpdateButtonStatus) });
+            return;
+        }
+
         CustomPopup.Show(GetString("updatePopupTitle"), GetString("updatePleaseWait"), null);
 
         var task = DownloadDLL(url);
         task.ContinueWith(t =>
         {
-            var (done, reason) = task.GetAwaiter().GetResult();
-            if (!done)
-            {
-                CustomPopup.ShowLater(GetString("updatePopupTitleFialed"), reason, new() { (GetString(StringNames.Okay), null) });
-                SetUpdateButtonStatus();
-            }
+            var (done, reason) = t.Result;
+            string title = done ? GetString("updatePopupTitleDone") : GetString("updatePopupTitleFialed");
+            string desc = done ? GetString("updateRestart") : reason;
+            CustomPopup.ShowLater(title, desc, new() { (GetString(done ? StringNames.ExitGame : StringNames.Okay), done ? Application.Quit : null) });
+            SetUpdateButtonStatus();
         });
     }
     public static void DeleteOldFiles()
@@ -255,45 +262,16 @@ public class ModUpdater
         File.Delete(DownloadFileTempPath);
         File.Create(DownloadFileTempPath).Close();
 
+        Logger.Msg("Start Downlaod From: " + url, "DownloadDLL");
+        Logger.Msg("Save To: " + DownloadFileTempPath, "DownloadDLL");
+
         try
         {
-            HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync(url);
-            if (!response.IsSuccessStatusCode)
-            {
-                string msg = response.StatusCode switch
-                {
-                    HttpStatusCode.NotFound => GetString("HttpNotFound"),
-                    HttpStatusCode.Forbidden => GetString("HttpForbidden"),
-                    _ => response.StatusCode.ToString()
-                };
+            using var client = new HttpClientDownloadWithProgress(url, DownloadFileTempPath);
+            client.ProgressChanged += OnDownloadProgressChanged;
+            await client.StartDownload();
 
-                return (false, msg);
-            }
-
-            Logger.Warn("Start Downlaod From: " + url, "DownloadDLL");
-            Logger.Warn("Save To: " + DownloadFileTempPath, "DownloadDLL");
-
-            var downloadOpt = new DownloadConfiguration()
-            {
-                MaxTryAgainOnFailover = 1,
-                MaximumMemoryBufferBytes = 1024 * 1024 * 50,
-                ClearPackageOnCompletionWithFailure = true,
-            };
-            var downloader = new DownloadService(downloadOpt);
-            downloader.DownloadProgressChanged += OnDownloadProgressChanged;
-
-            cts = new();
-            CustomPopup.ShowLater(GetString("updatePopupTitle"), GetString("updatePleaseWait"), new() { (GetString(StringNames.Cancel), () =>
-            {
-                cts.Cancel();
-                SetUpdateButtonStatus();
-            }) });
-
-            await downloader.DownloadFileTaskAsync(url, DownloadFileTempPath, cts.Token);
             Thread.Sleep(100);
-            if (cts.IsCancellationRequested) return (true, null);
-
             if (GetMD5HashFromFile(DownloadFileTempPath) != md5)
             {
                 File.Delete(DownloadFileTempPath);
@@ -309,13 +287,16 @@ public class ModUpdater
         }
         catch (Exception ex)
         {
-            Logger.Error($"更新失败\n{ex}", "DownloadDLL", false);
+            File.Delete(DownloadFileTempPath);
+            Logger.Error($"更新失败\n{ex.Message}", "DownloadDLL", false);
             return (false, GetString("downloadFailed"));
         }
     }
-    private static void OnDownloadProgressChanged(object sender, Downloader.DownloadProgressChangedEventArgs e)
+    private static void OnDownloadProgressChanged(long? totalFileSize, long totalBytesDownloaded, double? progressPercentage)
     {
-        CustomPopup.UpdateTextLater($"{GetString("updateInProgress")}\n{(int)(e.BytesPerSecondSpeed / 1024)}KB/s  -  {(int)e.ProgressPercentage}%");
+        string msg = $"{GetString("updateInProgress")}\n{totalFileSize / 1000}KB / {totalBytesDownloaded / 1000}KB  -  {(int)progressPercentage}%";
+        Logger.Info(msg, "DownloadDLL");
+        CustomPopup.UpdateTextLater(msg);
     }
     public static string GetMD5HashFromFile(string fileName)
     {
