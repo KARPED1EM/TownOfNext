@@ -62,7 +62,7 @@ public class MessageControl
         RecallMode = recallMode;
     }
 
-    public static void Spam()
+    public static void Spam(bool includeHost = false)
     {
         List<CustomRoles> roles = Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x is not CustomRoles.NotAssigned).ToList();
         var rd = IRandom.Instance;
@@ -86,6 +86,7 @@ public class MessageControl
                 msg += Utils.GetRoleName(role);
             }
             var player = Main.AllAlivePlayerControls.ToArray()[rd.Next(0, Main.AllAlivePlayerControls.Count())];
+            if (includeHost) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
             var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
             writer.StartMessage(-1);
             writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
