@@ -12,8 +12,6 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include=".\Resources\**" />
-		<Compile Remove="Properties\**" />
-		<EmbeddedResource Remove="Properties\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -25,7 +23,6 @@
 		<PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="all" />
 		<PackageReference Include="GitInfo" Version="3.3.3" />
 		<PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="17.5.33428.366" />
-		<PackageReference Include="Downloader" Version="3.0.6" />
 		<PackageReference Include="YamlDotNet" Version="13.7.1" />
 	</ItemGroup>
 
