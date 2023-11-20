@@ -1,4 +1,3 @@
-using Downloader;
 using HarmonyLib;
 using Newtonsoft.Json.Linq;
 using System;

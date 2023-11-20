@@ -1,6 +1,5 @@
 ﻿using AmongUs.GameOptions;
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
 using TONX.Modules;
 using TONX.Roles.Core;
