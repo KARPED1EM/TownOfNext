@@ -1439,8 +1439,7 @@ Website: "模组官网"
 NextPage: "下一页"
 PreviousPage: "上一页"
 EAC.CheatDetected.EAC: "开挂（使用AUM）"
-PressF1ShowMainRoleDes: "按F1查看您的主职业介绍"
-PressF2ShowAddRoleDes: "按F2查看您的附加职业介绍"
+PressF1ShowRoleDescription: "按F1查看您的职业介绍"
 FakeTask: "假任务："
 PVP.ATK: "攻击力"
 PVP.DF: "防御力"
@@ -1505,7 +1504,6 @@ DivinatorCheck.Love: "♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡�
 DivinatorCheck.TaskDone: "【{0}】的职业是【{1}】"
 
 ## 模组信息 / Mod Info
-FromChina: "一个来自中国的模组"
 Creater: "开创者"
 Collaborators: "开发者"
 PullRequester: "参与开发"
@@ -1518,9 +1516,7 @@ TownOfHost-TheOtherRoles: "<color=#4FF918>TOH-TOR</color> 及其全体开发者"
 TownOfHost_Y: "<color=#ffff00>TOH_Y</color> 及其全体开发者"
 SuperNewRoles: "<color=#ff7f00>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> 及其全体开发者"
 Project-Lotus: "<color=#db985c>Project Lotus</color> 及其全体开发者"
-TranEN: "英语"
-TranRU: "俄语"
-TranCHT: "繁体中文"
+LangTChinese: "繁体中文"
 
 ## 断连提示 / Disconect reasons
 DCNotify.Hacking: "您被树懒的反作弊系统踢了\n（树懒还在持续发疯）"

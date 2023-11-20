@@ -279,12 +279,7 @@ class TaskPanelBehaviourPatch
                     }
 
                     if (MeetingStates.FirstMeeting)
-                    {
-                        AllText += $"\r\n\r\n</color><size=70%>{GetString("PressF1ShowMainRoleDes")}";
-                        if (PlayerState.AllPlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
-                            AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
-                        AllText += "</size>";
-                    }
+                        AllText += $"\r\n\r\n</color><size=70%>{GetString("PressF1ShowRoleDescription")}</size>";
 
                     break;
             }

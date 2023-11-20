@@ -54,15 +54,8 @@ internal class ControllerManagerUpdatePatch
         //职业介绍
         if (Input.GetKeyDown(KeyCode.F1) && GameStates.InGame && Options.CurrentGameMode == CustomGameMode.Standard)
         {
-            try
-            {
-                HudManager.Instance.ShowPopUp(PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo()?.Description?.FullFormatHelp ?? GetString(PlayerControl.LocalPlayer.GetCustomRole().ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
-            }
-            catch (Exception ex)
-            {
-                Logger.Exception(ex, "ControllerManagerUpdatePatch");
-                throw;
-            }
+            if (InGameRoleInfoMenu.Showing) InGameRoleInfoMenu.Hide();
+            else InGameRoleInfoMenu.Show();
         }
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
