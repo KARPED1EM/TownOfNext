@@ -36,9 +36,9 @@ internal class ChatCommands
         ChatControllerUpdatePatch.CurrentHistorySelection = SentHistory.Count;
 
         Logger.Info(text, "SendChat");
-        var mc = new MessageControl(PlayerControl.LocalPlayer, text);
+        var mc = MessageControl.Create(PlayerControl.LocalPlayer, text);
 
-        if (mc.RecallMode != MsgRecallMode.None)
+        if (mc.RecallMode != MsgRecallMode.None && !mc.ForceSend)
         {
             Logger.Info("Message Sendding Canceled", "SendChat");
             __instance.freeChatField.textArea.Clear();
@@ -64,15 +64,20 @@ internal class ChatCommands
     {
         blockForLocalPlayer = false;
 
-        if (text.StartsWith("\n")) text = text[1..];
+        if (text.StartsWith("\n")) text = text[1..].Trim();
+        if (text.EndsWith('\0'))
+        {
+            blockForLocalPlayer = true;
+            return;
+        }
 
         ChatUpdatePatch.DoBlockChat = true;
 
-        var mc = new MessageControl(player, text);
+        var mc = MessageControl.Create(player, text);
         if (mc.RecallMode == MsgRecallMode.Spam)
         {
             blockForLocalPlayer = true;
-            MessageControl.Spam();
+            MessageControl.TryHideMessage(false, false);
         }
 
         ChatUpdatePatch.DoBlockChat = false;

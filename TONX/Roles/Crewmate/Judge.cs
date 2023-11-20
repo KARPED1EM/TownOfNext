@@ -140,8 +140,6 @@ public sealed class Judge : RoleBase, IMeetingButton
         else if (MatchCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌|sp|jj|tl|trial|审判|判|审", false)) operate = 2;
         else return false;
 
-        if (!AmongUsClient.Instance.AmHost) return true;
-
         if (!pc.IsAlive())
         {
             Utils.SendMessage(GetString("JudgeDead"), pc.PlayerId);
@@ -156,6 +154,7 @@ public sealed class Judge : RoleBase, IMeetingButton
         else if (operate == 2)
         {
             spam = true;
+            if (!AmongUsClient.Instance.AmHost) return true;
 
             if (!MsgToPlayer(msg, out byte targetId, out string error))
             {

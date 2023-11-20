@@ -19,6 +19,7 @@ public class MessageControl
     public bool IsFromSelf { get => Player.AmOwner; }
 
     public bool IsCommand { get; set; } = false;
+    public bool ForceSend { get; set; } = false;
     public MsgRecallMode RecallMode { get; set; } = MsgRecallMode.None;
 
     public MessageControl(PlayerControl player, string message)
@@ -32,12 +33,13 @@ public class MessageControl
         MsgRecallMode recallMode = MsgRecallMode.None;
         // Check if it is a role command
         IsCommand = Player.GetRoleClass()?.OnSendMessage(Message, out recallMode) ?? false;
+        if (IsCommand && !AmongUsClient.Instance.AmHost) ForceSend = true;
         CustomRoleManager.ReceiveMessage.Do(a => a.Invoke(this));
 
         RecallMode = recallMode;
         if (IsCommand || !AmongUsClient.Instance.AmHost) return;
 
-        if (!IsCommand && AmongUsClient.Instance.AmHost)
+        if (!IsCommand)
         {
             // Not a role command, check for command list
             foreach (var command in ChatCommand.AllCommands)
@@ -67,7 +69,42 @@ public class MessageControl
         }
     }
 
-    public static void Spam(bool includeHost = false)
+    public static List<MessageControl> History;
+    public static MessageControl Create(PlayerControl player, string message)
+    {
+        var mc = new MessageControl(player, message);
+        if (!AmongUsClient.Instance.AmHost) return mc;
+        History ??= new();
+        if (!message.EndsWith('\0') && !(player?.Data?.PlayerName?.EndsWith('\0') ?? true)) History.Add(mc);
+        if (History?.Count > 50) History.RemoveAt(0);
+        return mc;
+    }
+
+    public static void TryHideMessage(bool includeHost, bool includeModded)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        SendHistoryMessages(includeHost, includeModded);
+    }
+
+    public static void SendHistoryMessages(bool includeHost = false, bool includeModded = false)
+    {
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        var sendList = History.Where(m => m.IsAlive && m.RecallMode == MsgRecallMode.None);
+        for (int i = 0; i <= 20 - sendList.Count(); i++)
+        {
+            // The number of historical messages is not enough to cover all messages
+            var player = Main.AllAlivePlayerControls.ToArray()[IRandom.Instance.Next(0, Main.AllAlivePlayerControls.Count())];
+            SendMessageAsPlayerImmediately(player, "Hello " + Main.ModName, includeHost, includeModded);
+        }
+        foreach (var mc in sendList)
+        {
+            SendMessageAsPlayerImmediately(mc.Player, mc.Message, includeHost, includeModded);
+        }
+    }
+
+    public static void SpamFakeCommands(bool includeHost = false, bool includeModded = false)
     {
         if (!AmongUsClient.Instance.AmHost) return;
 
@@ -93,15 +130,22 @@ public class MessageControl
                 msg += Utils.GetRoleName(role);
             }
             var player = Main.AllAlivePlayerControls.ToArray()[rd.Next(0, Main.AllAlivePlayerControls.Count())];
-            if (includeHost) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
-            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-            writer.StartMessage(-1);
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-                .Write(msg)
-                .EndRpc();
-            writer.EndMessage();
-            writer.SendMessage();
+            SendMessageAsPlayerImmediately(player, msg, includeHost, includeModded);
         }
+    }
+
+    public static void SendMessageAsPlayerImmediately(PlayerControl player, string text, bool hostCanSee = true, bool sendToModded = true)
+    {
+        if (hostCanSee) DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, text);
+        if (!sendToModded) text += "\0";
+
+        var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
+        writer.StartMessage(-1);
+        writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
+            .Write(text)
+            .EndRpc();
+        writer.EndMessage();
+        writer.SendMessage();
     }
 }
 

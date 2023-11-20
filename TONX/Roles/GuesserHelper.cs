@@ -82,8 +82,6 @@ public static class GuesserHelper
         else if (MatchCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌", false)) operate = 2;
         else return false;
 
-        if (!AmongUsClient.Instance.AmHost) return true;
-
         if (!pc.IsAlive())
         {
             Utils.SendMessage(GetString("GuessDead"), pc.PlayerId);
@@ -98,6 +96,8 @@ public static class GuesserHelper
         else if (operate == 2)
         {
             spam = true;
+            if (!AmongUsClient.Instance.AmHost) return true;
+
             if (!MsgToPlayerAndRole(msg, out byte targetId, out CustomRoles role, out string error))
             {
                 Utils.SendMessage(error, pc.PlayerId);
