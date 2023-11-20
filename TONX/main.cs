@@ -13,7 +13,7 @@ using TONX.Roles.Core;
 using UnityEngine;
 
 [assembly: AssemblyFileVersion(TONX.Main.PluginVersion)]
-[assembly: AssemblyInformationalVersion(TONX.Main.LowestSupportedVersion)]
+[assembly: AssemblyInformationalVersion(TONX.Main.PluginVersion)]
 [assembly: AssemblyVersion(TONX.Main.PluginVersion)]
 namespace TONX;
 
