@@ -11,7 +11,7 @@ public sealed class SabotageMaster : RoleBase, ISystemTypeUpdateHook
             typeof(SabotageMaster),
             player => new SabotageMaster(player),
             CustomRoles.SabotageMaster,
-            () => RoleTypes.Crewmate,
+            () => RoleTypes.Engineer,
             CustomRoleTypes.Crewmate,
             20600,
             SetupOptionItem,
@@ -70,6 +70,11 @@ public sealed class SabotageMaster : RoleBase, ISystemTypeUpdateHook
         OptionFixesOxygens = BooleanOptionItem.Create(RoleInfo, 13, OptionName.SabotageMasterFixesOxygens, false, false);
         OptionFixesComms = BooleanOptionItem.Create(RoleInfo, 14, OptionName.SabotageMasterFixesCommunications, false, false);
         OptionFixesElectrical = BooleanOptionItem.Create(RoleInfo, 15, OptionName.SabotageMasterFixesElectrical, false, false);
+    }
+    public override void ApplyGameOptions(IGameOptions opt)
+    {
+        AURoleOptions.EngineerCooldown = 0f;
+        AURoleOptions.EngineerInVentMaxTime = 0f;
     }
     bool ISystemTypeUpdateHook.UpdateReactorSystem(ReactorSystemType reactorSystem, byte amount)
     {
