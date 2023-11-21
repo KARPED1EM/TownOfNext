@@ -11,7 +11,6 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Impostor;
 using UnityEngine;
-using static Il2CppSystem.Globalization.CultureInfo;
 using static TONX.Translator;
 
 namespace TONX;
