@@ -124,10 +124,10 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                 string text = GetString("Message.CanNotUseInLobby");
                 if (GameStates.IsInGame)
                 {
-                    var role = PlayerControl.LocalPlayer.GetCustomRole();
-                    text = role.GetRoleInfo()?.Description?.GetFullFormatHelpWithAddons(PlayerControl.LocalPlayer) ??
+                    var role = mc.Player.GetCustomRole();
+                    text = role.GetRoleInfo()?.Description?.GetFullFormatHelpWithAddons(mc.Player) ??
                         // roleInfoがない役職
-                        GetString(role.ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true);
+                        GetString(role.ToString()) + mc.Player.GetRoleInfo(true);
                 }
                 return (MsgRecallMode.Block, text);
             }),
@@ -243,7 +243,7 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
             }),
             new(["cosid"], CommandAccess.Host, mc =>
             {
-                var of = PlayerControl.LocalPlayer.Data.DefaultOutfit;
+                var of =mc.Player.Data.DefaultOutfit;
                 Logger.Warn($"ColorId: {of.ColorId}", "Get Cos Id");
                 Logger.Warn($"PetId: {of.PetId}", "Get Cos Id");
                 Logger.Warn($"HatId: {of.HatId}", "Get Cos Id");
