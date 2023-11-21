@@ -3,13 +3,13 @@
 using TONX.Roles.Core;
 
 namespace TONX.Roles.Crewmate;
-public sealed class Needy : RoleBase
+public sealed class LazyGuy : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Needy),
-            player => new Needy(player),
-            CustomRoles.Needy,
+            typeof(LazyGuy),
+            player => new LazyGuy(player),
+            CustomRoles.LazyGuy,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
             20200,
@@ -17,7 +17,7 @@ public sealed class Needy : RoleBase
             "lg|擺爛人|摆烂",
             "#a4dffe"
         );
-    public Needy(PlayerControl player)
+    public LazyGuy(PlayerControl player)
     : base(
         RoleInfo,
         player

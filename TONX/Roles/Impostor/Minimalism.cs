@@ -4,20 +4,20 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Roles.Impostor;
-public sealed class Minimalism : RoleBase, IImpostor
+public sealed class KillingMachine : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Minimalism),
-            player => new Minimalism(player),
-            CustomRoles.Minimalism,
+            typeof(KillingMachine),
+            player => new KillingMachine(player),
+            CustomRoles.KillingMachine,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
             4000,
             SetupOptionItem,
             "km|殺戮機器|杀戮|机器|杀戮兵器|杀人机器"
         );
-    public Minimalism(PlayerControl player)
+    public KillingMachine(PlayerControl player)
     : base(
         RoleInfo,
         player

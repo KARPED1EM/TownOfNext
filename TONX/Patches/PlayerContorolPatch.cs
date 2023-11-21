@@ -186,10 +186,10 @@ class MurderPlayerPatch
         CustomRoleManager.OnMurderPlayer(__instance, target);
 
         //看看UP是不是被首刀了
-        if (Main.FirstDied == byte.MaxValue && target.Is(CustomRoles.Youtuber))
+        if (Main.FirstDied == byte.MaxValue && target.Is(CustomRoles.YouTuber))
         {
             CustomSoundsManager.RPCPlayCustomSoundAll("Congrats");
-            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.Youtuber); //UP主被首刀了，哈哈哈哈哈
+            CustomWinnerHolder.ResetAndSetWinner(CustomWinner.YouTuber); //UP主被首刀了，哈哈哈哈哈
             CustomWinnerHolder.WinnerIds.Add(target.PlayerId);
         }
 
@@ -475,11 +475,11 @@ class FixedUpdatePatch
                 {
                     Mark.Append($"<color={Utils.GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                 }
-                else if (__instance.Is(CustomRoles.Ntr) || PlayerControl.LocalPlayer.Is(CustomRoles.Ntr))
+                else if (__instance.Is(CustomRoles.Neptune) || PlayerControl.LocalPlayer.Is(CustomRoles.Neptune))
                 {
                     Mark.Append($"<color={Utils.GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                 }
-                else if (__instance == PlayerControl.LocalPlayer && CustomRoles.Ntr.IsExist())
+                else if (__instance == PlayerControl.LocalPlayer && CustomRoles.Neptune.IsExist())
                 {
                     Mark.Append($"<color={Utils.GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                 }
@@ -655,7 +655,7 @@ class PlayerControlCompleteTaskPatch
         }
         //属性クラスの扱いを決定するまで仮置き
         ret &= Workhorse.OnCompleteTask(pc);
-        ret &= Capitalism.OnCompleteTask(pc);
+        ret &= Capitalist.OnCompleteTask(pc);
 
         Utils.NotifyRoles();
         return ret;

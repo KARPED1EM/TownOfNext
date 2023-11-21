@@ -4,13 +4,13 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Roles.Impostor;
-public sealed class ImperiusCurse : RoleBase, IImpostor
+public sealed class SoulCatcher : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(ImperiusCurse),
-            player => new ImperiusCurse(player),
-            CustomRoles.ImperiusCurse,
+            typeof(SoulCatcher),
+            player => new SoulCatcher(player),
+            CustomRoles.SoulCatcher,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
             3600,
@@ -18,7 +18,7 @@ public sealed class ImperiusCurse : RoleBase, IImpostor
             "st|奪魂者|多混|夺魂",
             experimental: true
         );
-    public ImperiusCurse(PlayerControl player)
+    public SoulCatcher(PlayerControl player)
     : base(
         RoleInfo,
         player
@@ -43,7 +43,7 @@ public sealed class ImperiusCurse : RoleBase, IImpostor
     }
     public override bool GetAbilityButtonText(out string text)
     {
-        text = Translator.GetString("ImperiusCurseButtonText");
+        text = Translator.GetString("SoulCatcherButtonText");
         return !Shapeshifting;
     }
     private bool Shapeshifting = false;
@@ -63,7 +63,7 @@ public sealed class ImperiusCurse : RoleBase, IImpostor
                     Utils.TP(target.NetTransform, Player.GetTruePosition());
                     Utils.TP(Player.NetTransform, originPs);
                 }
-            }, 1.5f, "ImperiusCurse.OnShapeshift");
+            }, 1.5f, "SoulCatcher.OnShapeshift");
         }
     }
 }

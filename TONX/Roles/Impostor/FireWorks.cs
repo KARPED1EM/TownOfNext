@@ -8,12 +8,12 @@ using UnityEngine;
 using static TONX.Translator;
 
 namespace TONX.Roles.Impostor;
-public sealed class FireWorks : RoleBase, IImpostor
+public sealed class Fireworker : RoleBase, IImpostor
 {
-    public enum FireWorksState
+    public enum FireworkerState
     {
         Initial = 1,
-        SettingFireWorks = 2,
+        SettingFireworker = 2,
         WaitTime = 4,
         ReadyFire = 8,
         FireEnd = 16,
@@ -22,94 +22,94 @@ public sealed class FireWorks : RoleBase, IImpostor
 
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(FireWorks),
-            player => new FireWorks(player),
-            CustomRoles.FireWorks,
+            typeof(Fireworker),
+            player => new Fireworker(player),
+            CustomRoles.Fireworker,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
             2300,
             SetupCustomOption,
             "fw|煙花商人|烟火商人|烟花|烟火"
         );
-    public FireWorks(PlayerControl player)
+    public Fireworker(PlayerControl player)
     : base(
         RoleInfo,
         player
     )
     {
-        FireWorksCount = OptionFireWorksCount.GetInt();
-        FireWorksRadius = OptionFireWorksRadius.GetFloat();
+        FireworkerCount = OptionFireworkerCount.GetInt();
+        FireworkerRadius = OptionFireworkerRadius.GetFloat();
     }
 
-    static OptionItem OptionFireWorksCount;
-    static OptionItem OptionFireWorksRadius;
+    static OptionItem OptionFireworkerCount;
+    static OptionItem OptionFireworkerRadius;
     enum OptionName
     {
-        FireWorksMaxCount,
-        FireWorksRadius,
+        FireworkerMaxCount,
+        FireworkerRadius,
     }
 
-    int FireWorksCount;
-    float FireWorksRadius;
-    int NowFireWorksCount;
-    List<Vector3> FireWorksPosition = new();
-    FireWorksState State = FireWorksState.Initial;
+    int FireworkerCount;
+    float FireworkerRadius;
+    int NowFireworkerCount;
+    List<Vector3> FireworkerPosition = new();
+    FireworkerState State = FireworkerState.Initial;
 
     public static void SetupCustomOption()
     {
-        OptionFireWorksCount = IntegerOptionItem.Create(RoleInfo, 10, OptionName.FireWorksMaxCount, new(1, 99, 1), 3, false)
+        OptionFireworkerCount = IntegerOptionItem.Create(RoleInfo, 10, OptionName.FireworkerMaxCount, new(1, 99, 1), 3, false)
             .SetValueFormat(OptionFormat.Pieces);
-        OptionFireWorksRadius = FloatOptionItem.Create(RoleInfo, 11, OptionName.FireWorksRadius, new(0.5f, 5f, 0.5f), 2f, false)
+        OptionFireworkerRadius = FloatOptionItem.Create(RoleInfo, 11, OptionName.FireworkerRadius, new(0.5f, 5f, 0.5f), 2f, false)
             .SetValueFormat(OptionFormat.Multiplier);
     }
 
     public override void Add()
     {
-        NowFireWorksCount = FireWorksCount;
-        FireWorksPosition.Clear();
-        State = FireWorksState.Initial;
+        NowFireworkerCount = FireworkerCount;
+        FireworkerPosition.Clear();
+        State = FireworkerState.Initial;
     }
 
     public bool CanUseKillButton()
     {
         if (!Player.IsAlive()) return false;
-        return (State & FireWorksState.CanUseKill) != 0;
+        return (State & FireworkerState.CanUseKill) != 0;
     }
     public override void ApplyGameOptions(IGameOptions opt)
     {
-        AURoleOptions.ShapeshifterDuration = State != FireWorksState.FireEnd ? 1f : 30f;
+        AURoleOptions.ShapeshifterDuration = State != FireworkerState.FireEnd ? 1f : 30f;
     }
 
     public override void OnShapeshift(PlayerControl target)
     {
         var shapeshifting = !Is(target);
-        Logger.Info($"FireWorks ShapeShift", "FireWorks");
+        Logger.Info($"Fireworker ShapeShift", "Fireworker");
         if (!shapeshifting) return;
         switch (State)
         {
-            case FireWorksState.Initial:
-            case FireWorksState.SettingFireWorks:
-                Logger.Info("花火を一個設置", "FireWorks");
-                FireWorksPosition.Add(Player.transform.position);
-                NowFireWorksCount--;
-                if (NowFireWorksCount == 0)
-                    State = Main.AliveImpostorCount <= 1 ? FireWorksState.ReadyFire : FireWorksState.WaitTime;
+            case FireworkerState.Initial:
+            case FireworkerState.SettingFireworker:
+                Logger.Info("花火を一個設置", "Fireworker");
+                FireworkerPosition.Add(Player.transform.position);
+                NowFireworkerCount--;
+                if (NowFireworkerCount == 0)
+                    State = Main.AliveImpostorCount <= 1 ? FireworkerState.ReadyFire : FireworkerState.WaitTime;
                 else
-                    State = FireWorksState.SettingFireWorks;
+                    State = FireworkerState.SettingFireworker;
                 break;
-            case FireWorksState.ReadyFire:
+            case FireworkerState.ReadyFire:
                 CustomSoundsManager.RPCPlayCustomSoundAll("Boom");
-                Logger.Info("花火を爆破", "FireWorks");
+                Logger.Info("花火を爆破", "Fireworker");
                 if (AmongUsClient.Instance.AmHost)
                 {
                     //爆破処理はホストのみ
                     bool suicide = false;
                     foreach (var fireTarget in Main.AllAlivePlayerControls)
                     {
-                        foreach (var pos in FireWorksPosition)
+                        foreach (var pos in FireworkerPosition)
                         {
                             var dis = Vector2.Distance(pos, fireTarget.transform.position);
-                            if (dis > FireWorksRadius) continue;
+                            if (dis > FireworkerRadius) continue;
 
                             if (fireTarget == Player)
                             {
@@ -136,7 +136,7 @@ public sealed class FireWorks : RoleBase, IImpostor
                     }
                     Player.MarkDirtySettings();
                 }
-                State = FireWorksState.FireEnd;
+                State = FireworkerState.FireEnd;
                 break;
             default:
                 break;
@@ -148,39 +148,39 @@ public sealed class FireWorks : RoleBase, IImpostor
     {
         string retText = "";
 
-        if (State == FireWorksState.WaitTime && Main.AliveImpostorCount <= 1)
+        if (State == FireworkerState.WaitTime && Main.AliveImpostorCount <= 1)
         {
-            Logger.Info("爆破準備OK", "FireWorks");
-            State = FireWorksState.ReadyFire;
+            Logger.Info("爆破準備OK", "Fireworker");
+            State = FireworkerState.ReadyFire;
             Utils.NotifyRoles();
         }
         switch (State)
         {
-            case FireWorksState.Initial:
-            case FireWorksState.SettingFireWorks:
-                retText = string.Format(GetString("FireworksPutPhase"), NowFireWorksCount);
+            case FireworkerState.Initial:
+            case FireworkerState.SettingFireworker:
+                retText = string.Format(GetString("FireworksPutPhase"), NowFireworkerCount);
                 break;
-            case FireWorksState.WaitTime:
+            case FireworkerState.WaitTime:
                 retText = GetString("FireworksWaitPhase");
                 break;
-            case FireWorksState.ReadyFire:
+            case FireworkerState.ReadyFire:
                 retText = GetString("FireworksReadyFirePhase");
                 break;
-            case FireWorksState.FireEnd:
+            case FireworkerState.FireEnd:
                 break;
         }
         return retText;
     }
     public override bool GetAbilityButtonText(out string text)
     {
-        text = State == FireWorksState.ReadyFire
-            ? GetString("FireWorksExplosionButtonText")
-            : GetString("FireWorksInstallAtionButtonText");
+        text = State == FireworkerState.ReadyFire
+            ? GetString("FireworkerExplosionButtonText")
+            : GetString("FireworkerInstallAtionButtonText");
         return true;
     }
     public override bool GetAbilityButtonSprite(out string buttonName)
     {
-        buttonName = State == FireWorksState.ReadyFire ? "FireworkD" : "FireworkP";
+        buttonName = State == FireworkerState.ReadyFire ? "FireworkD" : "FireworkP";
         return true;
     }
 }

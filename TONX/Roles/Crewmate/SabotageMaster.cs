@@ -4,13 +4,13 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Roles.Crewmate;
-public sealed class SabotageMaster : RoleBase, ISystemTypeUpdateHook
+public sealed class Repairman : RoleBase, ISystemTypeUpdateHook
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(SabotageMaster),
-            player => new SabotageMaster(player),
-            CustomRoles.SabotageMaster,
+            typeof(Repairman),
+            player => new Repairman(player),
+            CustomRoles.Repairman,
             () => RoleTypes.Engineer,
             CustomRoleTypes.Crewmate,
             20600,
@@ -19,7 +19,7 @@ public sealed class SabotageMaster : RoleBase, ISystemTypeUpdateHook
             "#0000ff",
             introSound: () => ShipStatus.Instance.SabotageSound
         );
-    public SabotageMaster(PlayerControl player)
+    public Repairman(PlayerControl player)
     : base(
         RoleInfo,
         player
@@ -43,12 +43,12 @@ public sealed class SabotageMaster : RoleBase, ISystemTypeUpdateHook
     public static OptionItem OptionFixesElectrical;
     enum OptionName
     {
-        SabotageMasterSkillLimit,
-        SabotageMasterFixesDoors,
-        SabotageMasterFixesReactors,
-        SabotageMasterFixesOxygens,
-        SabotageMasterFixesCommunications,
-        SabotageMasterFixesElectrical,
+        RepairmanSkillLimit,
+        RepairmanFixesDoors,
+        RepairmanFixesReactors,
+        RepairmanFixesOxygens,
+        RepairmanFixesCommunications,
+        RepairmanFixesElectrical,
     }
     private int SkillLimit;
     private bool FixesDoors;
@@ -63,13 +63,13 @@ public sealed class SabotageMaster : RoleBase, ISystemTypeUpdateHook
 
     public static void SetupOptionItem()
     {
-        OptionSkillLimit = IntegerOptionItem.Create(RoleInfo, 10, OptionName.SabotageMasterSkillLimit, new(0, 99, 1), 1, false)
+        OptionSkillLimit = IntegerOptionItem.Create(RoleInfo, 10, OptionName.RepairmanSkillLimit, new(0, 99, 1), 1, false)
             .SetValueFormat(OptionFormat.Times);
-        OptionFixesDoors = BooleanOptionItem.Create(RoleInfo, 11, OptionName.SabotageMasterFixesDoors, false, false);
-        OptionFixesReactors = BooleanOptionItem.Create(RoleInfo, 12, OptionName.SabotageMasterFixesReactors, false, false);
-        OptionFixesOxygens = BooleanOptionItem.Create(RoleInfo, 13, OptionName.SabotageMasterFixesOxygens, false, false);
-        OptionFixesComms = BooleanOptionItem.Create(RoleInfo, 14, OptionName.SabotageMasterFixesCommunications, false, false);
-        OptionFixesElectrical = BooleanOptionItem.Create(RoleInfo, 15, OptionName.SabotageMasterFixesElectrical, false, false);
+        OptionFixesDoors = BooleanOptionItem.Create(RoleInfo, 11, OptionName.RepairmanFixesDoors, false, false);
+        OptionFixesReactors = BooleanOptionItem.Create(RoleInfo, 12, OptionName.RepairmanFixesReactors, false, false);
+        OptionFixesOxygens = BooleanOptionItem.Create(RoleInfo, 13, OptionName.RepairmanFixesOxygens, false, false);
+        OptionFixesComms = BooleanOptionItem.Create(RoleInfo, 14, OptionName.RepairmanFixesCommunications, false, false);
+        OptionFixesElectrical = BooleanOptionItem.Create(RoleInfo, 15, OptionName.RepairmanFixesElectrical, false, false);
     }
     public override void ApplyGameOptions(IGameOptions opt)
     {
@@ -188,7 +188,7 @@ public sealed class SabotageMaster : RoleBase, ISystemTypeUpdateHook
             var openedDoor = shipStatus.AllDoors.FirstOrDefault(door => door.Id == openedDoorId);
             if (openedDoor == null)
             {
-                Logger.Warn($"不明なドアが開けられました: {openedDoorId}", nameof(SabotageMaster));
+                Logger.Warn($"不明なドアが開けられました: {openedDoorId}", nameof(Repairman));
             }
             else
             {

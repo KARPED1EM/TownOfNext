@@ -8,13 +8,13 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Neutral;
-public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
+public sealed class Demon : RoleBase, IKiller, ISchrodingerCatOwner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Gamer),
-            player => new Gamer(player),
-            CustomRoles.Gamer,
+            typeof(Demon),
+            player => new Demon(player),
+            CustomRoles.Demon,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Neutral,
             51300,
@@ -22,9 +22,9 @@ public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
             "dm",
             "#68bc71",
             true,
-            countType: CountTypes.Gamer
+            countType: CountTypes.Demon
         );
-    public Gamer(PlayerControl player)
+    public Demon(PlayerControl player)
     : base(
         RoleInfo,
         player,
@@ -43,37 +43,37 @@ public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
     private static OptionItem OptionSelfDamage;
     enum OptionName
     {
-        GamerKillCooldown,
-        GamerHealthMax,
-        GamerDamage,
-        GamerSelfHealthMax,
-        GamerSelfDamage,
+        DemonKillCooldown,
+        DemonHealthMax,
+        DemonDamage,
+        DemonSelfHealthMax,
+        DemonSelfDamage,
     }
 
     public static bool CanVent;
     private static Dictionary<byte, int> PlayerHP;
-    private int GamerHP;
+    private int DemonHP;
 
-    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Gamer;
+    public SchrodingerCat.TeamType SchrodingerCatChangeTo => SchrodingerCat.TeamType.Demon;
 
     private static void SetupOptionItem()
     {
-        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.GamerKillCooldown, new(1f, 180f, 1f), 2f, false)
+        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.DemonKillCooldown, new(1f, 180f, 1f), 2f, false)
             .SetValueFormat(OptionFormat.Seconds);
         OptionCanVent = BooleanOptionItem.Create(RoleInfo, 11, GeneralOption.CanVent, true, false);
         OptionHasImpostorVision = BooleanOptionItem.Create(RoleInfo, 12, GeneralOption.ImpostorVision, false, false);
-        OptionHealthMax = IntegerOptionItem.Create(RoleInfo, 13, OptionName.GamerHealthMax, new(5, 990, 5), 100, false)
+        OptionHealthMax = IntegerOptionItem.Create(RoleInfo, 13, OptionName.DemonHealthMax, new(5, 990, 5), 100, false)
             .SetValueFormat(OptionFormat.Health);
-        OptionDamage = IntegerOptionItem.Create(RoleInfo, 14, OptionName.GamerDamage, new(1, 100, 1), 15, false)
+        OptionDamage = IntegerOptionItem.Create(RoleInfo, 14, OptionName.DemonDamage, new(1, 100, 1), 15, false)
             .SetValueFormat(OptionFormat.Health);
-        OptionSelfHealthMax = IntegerOptionItem.Create(RoleInfo, 15, OptionName.GamerSelfHealthMax, new(100, 100, 5), 100, false)
+        OptionSelfHealthMax = IntegerOptionItem.Create(RoleInfo, 15, OptionName.DemonSelfHealthMax, new(100, 100, 5), 100, false)
             .SetValueFormat(OptionFormat.Health);
-        OptionSelfDamage = IntegerOptionItem.Create(RoleInfo, 16, OptionName.GamerSelfDamage, new(1, 100, 1), 35, false)
+        OptionSelfDamage = IntegerOptionItem.Create(RoleInfo, 16, OptionName.DemonSelfDamage, new(1, 100, 1), 35, false)
             .SetValueFormat(OptionFormat.Health);
     }
     public override void Add()
     {
-        GamerHP = OptionSelfHealthMax.GetInt();
+        DemonHP = OptionSelfHealthMax.GetInt();
         PlayerHP = new();
         Main.AllPlayerControls.Do(p => PlayerHP.Add(p.PlayerId, OptionHealthMax.GetInt()));
     }
@@ -83,19 +83,19 @@ public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
     public bool CanUseKillButton() => Player.IsAlive();
     private void SendRPC(byte id)
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetGamerHealth, SendOption.Reliable, -1);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetDemonHealth, SendOption.Reliable, -1);
         writer.Write(Player.PlayerId);
         writer.Write(id);
-        writer.Write(Player.PlayerId == id ? GamerHP : PlayerHP[id]);
+        writer.Write(Player.PlayerId == id ? DemonHP : PlayerHP[id]);
         AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        if (rpcType != CustomRPC.SetGamerHealth) return;
+        if (rpcType != CustomRPC.SetDemonHealth) return;
         byte id = reader.ReadByte();
         int hp = reader.ReadInt32();
         if (Player.PlayerId == id)
-            GamerHP = hp;
+            DemonHP = hp;
         else
             PlayerHP[id] = hp;
     }
@@ -120,7 +120,7 @@ public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
         RPC.PlaySoundRPC(killer.PlayerId, Sounds.KillSound);
         Utils.NotifyRoles(killer);
 
-        Logger.Info($"{killer.GetNameWithRole()} 对玩家 {target.GetNameWithRole()} 造成了 {OptionDamage.GetInt()} 点伤害", "Gamer");
+        Logger.Info($"{killer.GetNameWithRole()} 对玩家 {target.GetNameWithRole()} 造成了 {OptionDamage.GetInt()} 点伤害", "Demon");
         return false;
     }
     public override bool OnCheckMurderAsTarget(MurderInfo info)
@@ -128,23 +128,23 @@ public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
         var (killer, target) = info.AttemptTuple;
         if (info.IsSuicide) return true;
 
-        if (GamerHP - OptionDamage.GetInt() < 1) return true;
+        if (DemonHP - OptionDamage.GetInt() < 1) return true;
 
-        GamerHP -= OptionSelfDamage.GetInt();
+        DemonHP -= OptionSelfDamage.GetInt();
         SendRPC(Player.PlayerId);
 
         RPC.PlaySoundRPC(target.PlayerId, Sounds.KillSound);
         killer.SetKillCooldownV2(target: target, forceAnime: true);
         Utils.NotifyRoles(target);
 
-        Logger.Info($"{killer.GetNameWithRole()} 对玩家 {target.GetNameWithRole()} 造成了 {OptionSelfDamage.GetInt()} 点伤害", "Gamer");
+        Logger.Info($"{killer.GetNameWithRole()} 对玩家 {target.GetNameWithRole()} 造成了 {OptionSelfDamage.GetInt()} 点伤害", "Demon");
         return false;
     }
     public override string GetSuffix(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
         if (!Player.IsAlive()) return "";
         int max = OptionSelfHealthMax.GetInt();
-        int now = GamerHP;
+        int now = DemonHP;
         if (seen != null)
         {
             max = OptionHealthMax.GetInt();
@@ -159,7 +159,7 @@ public sealed class Gamer : RoleBase, IKiller, ISchrodingerCatOwner
     }
     public bool OverrideKillButtonText(out string text)
     {
-        text = Translator.GetString("GamerButtonText");
+        text = Translator.GetString("DemonButtonText");
         return true;
     }
 }

@@ -179,9 +179,9 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
         {
             candidates.Add(TeamType.BloodKnight);
         }
-        if (CustomRoles.Gamer.IsExist())
+        if (CustomRoles.Demon.IsExist())
         {
-            candidates.Add(TeamType.Gamer);
+            candidates.Add(TeamType.Demon);
         }
         var team = candidates[rand.Next(candidates.Count)];
         RpcSetTeam(team);
@@ -196,7 +196,7 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
             TeamType.Jackal => CustomWinnerHolder.WinnerTeam == CustomWinner.Jackal,
             TeamType.Pelican => CustomWinnerHolder.WinnerTeam == CustomWinner.Pelican,
             TeamType.BloodKnight => CustomWinnerHolder.WinnerTeam == CustomWinner.BloodKnight,
-            TeamType.Gamer => CustomWinnerHolder.WinnerTeam == CustomWinner.Gamer,
+            TeamType.Demon => CustomWinnerHolder.WinnerTeam == CustomWinner.Demon,
             _ => null,
         };
         if (!won.HasValue)
@@ -239,7 +239,7 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
         Jackal = 50,
         Pelican,
         BloodKnight,
-        Gamer,
+        Demon,
 
     }
     public static Color GetCatColor(TeamType catType)
@@ -252,7 +252,7 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
             TeamType.Jackal => Utils.GetRoleColor(CustomRoles.Jackal),
             TeamType.Pelican => Utils.GetRoleColor(CustomRoles.Pelican),
             TeamType.BloodKnight => Utils.GetRoleColor(CustomRoles.BloodKnight),
-            TeamType.Gamer => Utils.GetRoleColor(CustomRoles.Gamer),
+            TeamType.Demon => Utils.GetRoleColor(CustomRoles.Demon),
             _ => null,
         };
         if (!color.HasValue)

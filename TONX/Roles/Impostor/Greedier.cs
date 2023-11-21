@@ -5,20 +5,20 @@ using TONX.Roles.Core.Interfaces;
 
 // 来源：https://github.com/Yumenopai/TownOfHost_Y
 namespace TONX.Roles.Impostor;
-public sealed class Greedier : RoleBase, IImpostor
+public sealed class Greedy : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Greedier),
-            player => new Greedier(player),
-            CustomRoles.Greedier,
+            typeof(Greedy),
+            player => new Greedy(player),
+            CustomRoles.Greedy,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
             3400,
             SetupOptionItem,
             "gr|貪婪者|贪婪"
         );
-    public Greedier(PlayerControl player)
+    public Greedy(PlayerControl player)
     : base(
         RoleInfo,
         player

@@ -152,7 +152,7 @@ public static class MeetingHudPatch
             {
                 CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnStartMeeting());
                 MeetingStartNotify.OnMeetingStart();
-                Brakar.OnMeetingStart();
+                Tiebreaker.OnMeetingStart();
             }
 
             foreach (var pva in __instance.playerStates)
@@ -202,9 +202,9 @@ public static class MeetingHudPatch
                 }
 
                 //海王相关显示
-                if ((seer.Is(CustomRoles.Ntr) || target.Is(CustomRoles.Ntr)) && !seer.Data.IsDead && !isLover)
+                if ((seer.Is(CustomRoles.Neptune) || target.Is(CustomRoles.Neptune)) && !seer.Data.IsDead && !isLover)
                     sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), "♡"));
-                else if (seer == target && CustomRoles.Ntr.IsExist() && !isLover)
+                else if (seer == target && CustomRoles.Neptune.IsExist() && !isLover)
                     sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), "♡"));
 
                 //会議画面ではインポスター自身の名前にSnitchマークはつけません。

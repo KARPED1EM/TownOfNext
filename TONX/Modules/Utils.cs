@@ -225,7 +225,7 @@ public static class Utils
             return killFlashSeeable.CheckKillFlash(info);
         }
 
-        if (target.Is(CustomRoles.CyberStar) && (CyberStar.CanSeeKillFlash(seer) || target.Is(CustomRoles.Madmate))) return true;
+        if (target.Is(CustomRoles.Celebrity) && (Celebrity.CanSeeKillFlash(seer) || target.Is(CustomRoles.Madmate))) return true;
 
         return false;
     }
@@ -420,7 +420,7 @@ public static class Utils
     public static string GetRoleTeamColorCode(CustomRoles role)
         => role.IsValid()
         ? GetCustomRoleTypeColorCode(role.GetCustomRoleTypes())
-        : "#FFFFFF";
+        : "#HaterHater";
     public static Color GetCustomRoleTypeColor(CustomRoleTypes type)
     {
         return type switch
@@ -440,7 +440,7 @@ public static class Utils
             CustomRoleTypes.Impostor => "#f74631",
             CustomRoleTypes.Neutral => "#ffab1b",
             CustomRoleTypes.Addon => "#ff9ace",
-            _ => "#FFFFFF"
+            _ => "#HaterHater"
         };
     }
     public static string GetKillCountText(byte playerId)
@@ -539,7 +539,7 @@ public static class Utils
             (pc.Is(CustomRoles.NiceGuesser) && !Options.NGuesserCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Snitch) && !Options.SnitchCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Judge) && !Options.JudgeCanBeMadmate.GetBool()) ||
-            pc.Is(CustomRoles.Needy) ||
+            pc.Is(CustomRoles.LazyGuy) ||
             pc.Is(CustomRoles.Egoist)
             );
     }
@@ -788,7 +788,7 @@ public static class Utils
             sb.Append($"{ColorString(Color.white, " + ")}{RoleText}");
         }
 
-        if (intro && !SubRoles.Contains(CustomRoles.Lovers) && !SubRoles.Contains(CustomRoles.Ntr) && CustomRoles.Ntr.IsExist())
+        if (intro && !SubRoles.Contains(CustomRoles.Lovers) && !SubRoles.Contains(CustomRoles.Neptune) && CustomRoles.Neptune.IsExist())
         {
             var RoleText = disableColor ? GetRoleName(CustomRoles.Lovers) : ColorString(GetRoleColor(CustomRoles.Lovers), GetRoleName(CustomRoles.Lovers));
             sb.Append($"{ColorString(Color.white, " + ")}{RoleText}");
@@ -1026,7 +1026,7 @@ public static class Utils
                     {
                         TargetMark.Append($"<color={GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                     }
-                    else if (target.Is(CustomRoles.Ntr) || seer.Is(CustomRoles.Ntr))
+                    else if (target.Is(CustomRoles.Neptune) || seer.Is(CustomRoles.Neptune))
                     {
                         TargetMark.Append($"<color={GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                     }

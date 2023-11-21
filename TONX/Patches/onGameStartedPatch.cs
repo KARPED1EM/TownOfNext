@@ -167,7 +167,7 @@ internal class SelectRolesPatch
             foreach (var kv in RoleResult.Where(x => x.Value.GetRoleInfo().IsDesyncImpostor))
                 AssignDesyncRole(kv.Value, kv.Key, senders, rolesMap, BaseRole: kv.Value.GetRoleInfo().BaseRoleType.Invoke());
 
-            foreach (var cp in RoleResult.Where(x => x.Value == CustomRoles.Crewpostor))
+            foreach (var cp in RoleResult.Where(x => x.Value == CustomRoles.CrewPostor))
                 AssignDesyncRole(cp.Value, cp.Key, senders, rolesMap, BaseRole: RoleTypes.Crewmate, hostBaseRole: RoleTypes.Impostor);
 
             MakeDesyncSender(senders, rolesMap);
@@ -191,7 +191,7 @@ internal class SelectRolesPatch
             foreach (var sd in RpcSetRoleReplacer.StoragedData)
             {
                 var kp = RoleResult.Where(x => x.Key.PlayerId == sd.Item1.PlayerId).FirstOrDefault();
-                if (kp.Value.GetRoleInfo().IsDesyncImpostor || kp.Value == CustomRoles.Crewpostor)
+                if (kp.Value.GetRoleInfo().IsDesyncImpostor || kp.Value == CustomRoles.CrewPostor)
                 {
                     Logger.Warn($"反向原版职业 => {sd.Item1.GetRealName()}: {sd.Item2}", "Override Role Select");
                     continue;
@@ -255,7 +255,7 @@ internal class SelectRolesPatch
                 AssignCustomRole(kv.Value, kv.Key);
             }
 
-            if (CustomRoles.Lovers.IsEnable() && CustomRoles.FFF.IsEnable()) AssignLoversRoles();
+            if (CustomRoles.Lovers.IsEnable() && CustomRoles.Hater.IsEnable()) AssignLoversRoles();
             else if (CustomRoles.Lovers.IsEnable() && rd.Next(0, 100) < Options.GetRoleChance(CustomRoles.Lovers)) AssignLoversRoles();
             if (CustomRoles.Madmate.IsEnable() && Options.MadmateSpawnMode.GetInt() == 0) AssignMadmateRoles();
             AddOnsAssignData.AssignAddOnsFromList();
@@ -377,7 +377,7 @@ internal class SelectRolesPatch
         foreach (var pc in Main.AllPlayerControls)
         {
             if (pc.Is(CustomRoles.GM) || (PlayerState.GetByPlayerId(pc.PlayerId).SubRoles.Count >= Options.AddonsNumLimit.GetInt())
-                || pc.Is(CustomRoles.Needy) || pc.Is(CustomRoles.Ntr) || pc.Is(CustomRoles.God) || pc.Is(CustomRoles.FFF)) continue;
+                || pc.Is(CustomRoles.LazyGuy) || pc.Is(CustomRoles.Neptune) || pc.Is(CustomRoles.God) || pc.Is(CustomRoles.Hater)) continue;
             allPlayers.Add(pc);
         }
         var loversRole = CustomRoles.Lovers;

@@ -5,19 +5,19 @@ using UnityEngine;
 using static TONX.Options;
 
 namespace TONX.Roles.AddOns.Common;
-public static class Trapper
+public static class Beartrap
 {
     private static readonly int Id = 81800;
-    private static Color RoleColor = Utils.GetRoleColor(CustomRoles.Trapper);
+    private static Color RoleColor = Utils.GetRoleColor(CustomRoles.Beartrap);
     private static List<byte> playerIdList = new();
 
     public static OptionItem OptionBlockMoveTime;
 
     public static void SetupCustomOption()
     {
-        SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Trapper);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Trapper, true, true, true);
-        OptionBlockMoveTime = FloatOptionItem.Create(Id + 20, "TrapperBlockMoveTime", new(1f, 180f, 1f), 5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Trapper])
+        SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Beartrap);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.Beartrap, true, true, true);
+        OptionBlockMoveTime = FloatOptionItem.Create(Id + 20, "BeartrapBlockMoveTime", new(1f, 180f, 1f), 5f, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Beartrap])
             .SetValueFormat(OptionFormat.Seconds);
     }
     [GameModuleInitializer]
@@ -46,6 +46,6 @@ public static class Trapper
             ReportDeadBodyPatch.CanReport[killer.PlayerId] = true;
             killer.MarkDirtySettings();
             RPC.PlaySoundRPC(killer.PlayerId, Sounds.TaskComplete);
-        }, OptionBlockMoveTime.GetFloat(), "Trapper BlockMove");
+        }, OptionBlockMoveTime.GetFloat(), "Beartrap BlockMove");
     }
 }

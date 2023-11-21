@@ -9,13 +9,13 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Crewmate;
-public sealed class Medicaler : RoleBase, IKiller
+public sealed class Medic : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Medicaler),
-            player => new Medicaler(player),
-            CustomRoles.Medicaler,
+            typeof(Medic),
+            player => new Medic(player),
+            CustomRoles.Medic,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Crewmate,
             22100,
@@ -24,7 +24,7 @@ public sealed class Medicaler : RoleBase, IKiller
             "#00a4ff",
             true
         );
-    public Medicaler(PlayerControl player)
+    public Medic(PlayerControl player)
     : base(
         RoleInfo,
         player,
@@ -43,10 +43,10 @@ public sealed class Medicaler : RoleBase, IKiller
     static OptionItem OptionKnowTargetShieldBroken;
     enum OptionName
     {
-        MedicalerCooldown,
-        MedicalerSkillLimit,
-        MedicalerTargetCanSeeProtect,
-        MedicalerKnowTargetShieldBroken,
+        MedicCooldown,
+        MedicSkillLimit,
+        MedicTargetCanSeeProtect,
+        MedicKnowTargetShieldBroken,
     }
 
     private int ProtectLimit;
@@ -54,12 +54,12 @@ public sealed class Medicaler : RoleBase, IKiller
     public bool IsKiller { get; private set; } = false;
     private static void SetupOptionItem()
     {
-        OptionProtectCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.MedicalerCooldown, new(2.5f, 180f, 2.5f), 5f, false)
+        OptionProtectCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.MedicCooldown, new(2.5f, 180f, 2.5f), 5f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionProtectNums = IntegerOptionItem.Create(RoleInfo, 11, OptionName.MedicalerSkillLimit, new(1, 99, 1), 3, false)
+        OptionProtectNums = IntegerOptionItem.Create(RoleInfo, 11, OptionName.MedicSkillLimit, new(1, 99, 1), 3, false)
             .SetValueFormat(OptionFormat.Times);
-        OptionTargetCanSeeProtect = BooleanOptionItem.Create(RoleInfo, 12, OptionName.MedicalerTargetCanSeeProtect, true, false);
-        OptionKnowTargetShieldBroken = BooleanOptionItem.Create(RoleInfo, 13, OptionName.MedicalerKnowTargetShieldBroken, true, false);
+        OptionTargetCanSeeProtect = BooleanOptionItem.Create(RoleInfo, 12, OptionName.MedicTargetCanSeeProtect, true, false);
+        OptionKnowTargetShieldBroken = BooleanOptionItem.Create(RoleInfo, 13, OptionName.MedicKnowTargetShieldBroken, true, false);
     }
     public override void Add()
     {
@@ -68,17 +68,17 @@ public sealed class Medicaler : RoleBase, IKiller
     }
     private void SendRPC_SyncLimit()
     {
-        using var sender = CreateSender(CustomRPC.SetMedicalerProtectLimit);
+        using var sender = CreateSender(CustomRPC.SetMedicProtectLimit);
         sender.Writer.Write(ProtectLimit);
     }
     public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        if (rpcType != CustomRPC.SetMedicalerProtectLimit) return;
+        if (rpcType != CustomRPC.SetMedicProtectLimit) return;
         ProtectLimit = reader.ReadInt32();
     }
     private static void SendRPC_SyncList()
     {
-        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetMedicalerProtectList, SendOption.Reliable, -1);
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetMedicProtectList, SendOption.Reliable, -1);
         writer.Write(ProtectList.Count);
         for (int i = 0; i < ProtectList.Count; i++)
             writer.Write(ProtectList[i]);
@@ -93,7 +93,7 @@ public sealed class Medicaler : RoleBase, IKiller
     }
     public bool OverrideKillButtonText(out string text)
     {
-        text = Translator.GetString("MedicalerButtonText");
+        text = Translator.GetString("MedicButtonText");
         return true;
     }
     public bool OverrideKillButtonSprite(out string buttonName)
@@ -127,8 +127,8 @@ public sealed class Medicaler : RoleBase, IKiller
         Utils.NotifyRoles(killer);
         Utils.NotifyRoles(target);
 
-        Logger.Info($"{killer.GetNameWithRole()} : 将护盾发送给 {target.GetNameWithRole()}", "Medicaler.OnCheckMurderAsKiller");
-        Logger.Info($"{killer.GetNameWithRole()} : 剩余{ProtectLimit}个护盾", "Medicaler.OnCheckMurderAsKiller");
+        Logger.Info($"{killer.GetNameWithRole()} : 将护盾发送给 {target.GetNameWithRole()}", "Medic.OnCheckMurderAsKiller");
+        Logger.Info($"{killer.GetNameWithRole()} : 剩余{ProtectLimit}个护盾", "Medic.OnCheckMurderAsKiller");
         return false;
     }
     private static bool OnCheckMurderPlayerOthers_Before(MurderInfo info)
@@ -149,11 +149,11 @@ public sealed class Medicaler : RoleBase, IKiller
         Utils.NotifyRoles(target);
 
         if (OptionKnowTargetShieldBroken.GetBool())
-            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Medicaler) && x.PlayerId != target.PlayerId).Do(x => x.Notify(Translator.GetString("MedicalerTargetShieldBroken")));
+            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Medic) && x.PlayerId != target.PlayerId).Do(x => x.Notify(Translator.GetString("MedicTargetShieldBroken")));
         else
-            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Medicaler)).Do(x => Utils.NotifyRoles(x));
+            Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Medic)).Do(x => Utils.NotifyRoles(x));
 
-        Logger.Info($"{target.GetNameWithRole()} : 来自医生的盾破碎", "Medicaler.OnCheckMurderPlayerOthers_Before");
+        Logger.Info($"{target.GetNameWithRole()} : 来自医生的盾破碎", "Medic.OnCheckMurderPlayerOthers_Before");
 
         info.CanKill = false;
 
@@ -163,7 +163,7 @@ public sealed class Medicaler : RoleBase, IKiller
     {
         seen ??= seer;
         if (!InProtect(seen.PlayerId)) return "";
-        return (seer.Is(CustomRoles.Medicaler)
+        return (seer.Is(CustomRoles.Medic)
             || (seer == seen && OptionTargetCanSeeProtect.GetBool())
             ) ? Utils.ColorString(RoleInfo.RoleColor, "●") : "";
     }

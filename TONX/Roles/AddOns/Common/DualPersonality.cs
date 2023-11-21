@@ -5,16 +5,16 @@ using UnityEngine;
 using static TONX.Options;
 
 namespace TONX.Roles.AddOns.Common;
-public static class DualPersonality
+public static class Schizophrenic
 {
     private static readonly int Id = 81500;
-    private static Color RoleColor = Utils.GetRoleColor(CustomRoles.DualPersonality);
+    private static Color RoleColor = Utils.GetRoleColor(CustomRoles.Schizophrenic);
     private static List<byte> playerIdList = new();
 
     public static void SetupCustomOption()
     {
-        SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.DualPersonality);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.DualPersonality, true, true, false);
+        SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Schizophrenic);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.Schizophrenic, true, true, false);
     }
     [GameModuleInitializer]
     public static void Init()

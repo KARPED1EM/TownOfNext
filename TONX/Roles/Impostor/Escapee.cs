@@ -6,20 +6,20 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Impostor;
-public sealed class Escapee : RoleBase, IImpostor
+public sealed class Escapist : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Escapee),
-            player => new Escapee(player),
-            CustomRoles.Escapee,
+            typeof(Escapist),
+            player => new Escapist(player),
+            CustomRoles.Escapist,
             () => RoleTypes.Shapeshifter,
             CustomRoleTypes.Impostor,
             2000,
             null,
             "ec|逃逸"
         );
-    public Escapee(PlayerControl player)
+    public Escapist(PlayerControl player)
     : base(
         RoleInfo,
         player
@@ -38,17 +38,17 @@ public sealed class Escapee : RoleBase, IImpostor
     }
     private void SendRPC()
     {
-        using var sender = CreateSender(CustomRPC.SyncEscapee);
+        using var sender = CreateSender(CustomRPC.SyncEscapist);
         sender.Writer.Write(Marked);
     }
     public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        if (rpcType != CustomRPC.SyncEscapee) return;
+        if (rpcType != CustomRPC.SyncEscapist) return;
         Marked = reader.ReadBoolean();
     }
     public override bool GetAbilityButtonText(out string text)
     {
-        text = Marked ? Translator.GetString("EscapeeTeleportButtonText") : Translator.GetString("EscapeeMarkButtonText");
+        text = Marked ? Translator.GetString("EscapistTeleportButtonText") : Translator.GetString("EscapistMarkButtonText");
         return !Shapeshifting;
     }
     public override void OnShapeshift(PlayerControl target)
@@ -64,7 +64,7 @@ public sealed class Escapee : RoleBase, IImpostor
             Marked = false;
             Player.RPCPlayCustomSound("Teleport");
             Utils.TP(Player.NetTransform, MarkedPosition);
-            Logger.Msg($"{Player.GetNameWithRole()}：{MarkedPosition}", "Escapee.OnShapeshift");
+            Logger.Msg($"{Player.GetNameWithRole()}：{MarkedPosition}", "Escapist.OnShapeshift");
         }
         else
         {

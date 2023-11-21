@@ -8,13 +8,13 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Neutral;
-public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
+public sealed class Follower : RoleBase, IKiller, IAdditionalWinner
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Totocalcio),
-            player => new Totocalcio(player),
-            CustomRoles.Totocalcio,
+            typeof(Follower),
+            player => new Follower(player),
+            CustomRoles.Follower,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Neutral,
             51000,
@@ -23,7 +23,7 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
             "#ff9409",
             true
         );
-    public Totocalcio(PlayerControl player)
+    public Follower(PlayerControl player)
     : base(
         RoleInfo,
         player,
@@ -38,15 +38,15 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
     private static OptionItem OptionBetCooldownIncrese;
     private static OptionItem OptionMaxBetCooldown;
     private static OptionItem OptionKnowTargetRole;
-    private static OptionItem OptionBetTargetKnowTotocalcio;
+    private static OptionItem OptionBetTargetKnowFollower;
     enum OptionName
     {
-        TotocalcioMaxBetTimes,
-        TotocalcioBetCooldown,
-        TotocalcioMaxBetCooldown,
-        TotocalcioBetCooldownIncrese,
-        TotocalcioKnowTargetRole,
-        TotocalcioBetTargetKnowTotocalcio,
+        FollowerMaxBetTimes,
+        FollowerBetCooldown,
+        FollowerMaxBetCooldown,
+        FollowerBetCooldownIncrese,
+        FollowerKnowTargetRole,
+        FollowerBetTargetKnowFollower,
     }
 
 
@@ -55,16 +55,16 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
 
     private static void SetupOptionItem()
     {
-        OptionMaxBetTimes = IntegerOptionItem.Create(RoleInfo, 10, OptionName.TotocalcioMaxBetTimes, new(1, 99, 1), 3, false)
+        OptionMaxBetTimes = IntegerOptionItem.Create(RoleInfo, 10, OptionName.FollowerMaxBetTimes, new(1, 99, 1), 3, false)
             .SetValueFormat(OptionFormat.Times);
-        OptionBetCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.TotocalcioBetCooldown, new(2.5f, 180f, 2.5f), 10f, false)
+        OptionBetCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.FollowerBetCooldown, new(2.5f, 180f, 2.5f), 10f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionMaxBetCooldown = FloatOptionItem.Create(RoleInfo, 12, OptionName.TotocalcioMaxBetCooldown, new(0f, 990f, 2.5f), 50f, false)
+        OptionMaxBetCooldown = FloatOptionItem.Create(RoleInfo, 12, OptionName.FollowerMaxBetCooldown, new(0f, 990f, 2.5f), 50f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionBetCooldownIncrese = FloatOptionItem.Create(RoleInfo, 13, OptionName.TotocalcioBetCooldownIncrese, new(0f, 60f, 1f), 4f, false)
+        OptionBetCooldownIncrese = FloatOptionItem.Create(RoleInfo, 13, OptionName.FollowerBetCooldownIncrese, new(0f, 60f, 1f), 4f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionKnowTargetRole = BooleanOptionItem.Create(RoleInfo, 14, OptionName.TotocalcioKnowTargetRole, false, false);
-        OptionBetTargetKnowTotocalcio = BooleanOptionItem.Create(RoleInfo, 15, OptionName.TotocalcioBetTargetKnowTotocalcio, false, false);
+        OptionKnowTargetRole = BooleanOptionItem.Create(RoleInfo, 14, OptionName.FollowerKnowTargetRole, false, false);
+        OptionBetTargetKnowFollower = BooleanOptionItem.Create(RoleInfo, 15, OptionName.FollowerBetTargetKnowFollower, false, false);
     }
     public override void Add()
     {
@@ -84,13 +84,13 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
     public bool CanUseSabotageButton() => false;
     private void SendRPC()
     {
-        var sender = CreateSender(CustomRPC.SyncTotocalcioTargetAndTimes);
+        var sender = CreateSender(CustomRPC.SyncFollowerTargetAndTimes);
         sender.Writer.Write(BetLimit);
         sender.Writer.Write(BetTarget);
     }
     public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        if (rpcType != CustomRPC.SyncTotocalcioTargetAndTimes) return;
+        if (rpcType != CustomRPC.SyncFollowerTargetAndTimes) return;
         BetLimit = reader.ReadInt32();
         BetTarget = reader.ReadByte();
     }
@@ -117,24 +117,24 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
         killer.SetKillCooldownV2();
         killer.RPCPlayCustomSound("Bet");
 
-        killer.Notify(Translator.GetString("TotocalcioBetPlayer"));
-        if (OptionBetTargetKnowTotocalcio.GetBool())
-            target.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), Translator.GetString("TotocalcioBetOnYou")));
+        killer.Notify(Translator.GetString("FollowerBetPlayer"));
+        if (OptionBetTargetKnowFollower.GetBool())
+            target.Notify(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Follower), Translator.GetString("FollowerBetOnYou")));
 
-        Logger.Info($"赌徒下注：{killer.GetNameWithRole()} => {target.GetNameWithRole()}", "Totocalcio");
+        Logger.Info($"赌徒下注：{killer.GetNameWithRole()} => {target.GetNameWithRole()}", "Follower");
 
         return false;
     }
     public override string GetMark(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
         seen ??= seer;
-        return seen.PlayerId == BetTarget ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), "♦") : "";
+        return seen.PlayerId == BetTarget ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Follower), "♦") : "";
     }
     private static string GetMarkOthers(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)
     {
-        if (seen == null || !OptionBetTargetKnowTotocalcio.GetBool()) return "";
-        return (seen.GetRoleClass() is Totocalcio roleClass && roleClass.BetTarget == seer.PlayerId)
-            ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Totocalcio), "♦") : "";
+        if (seen == null || !OptionBetTargetKnowFollower.GetBool()) return "";
+        return (seen.GetRoleClass() is Follower roleClass && roleClass.BetTarget == seer.PlayerId)
+            ? Utils.ColorString(Utils.GetRoleColor(CustomRoles.Follower), "♦") : "";
     }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(CanUseKillButton() ? Utils.ShadeColor(RoleInfo.RoleColor, 0.25f) : Color.gray, $"({BetLimit})");
     public bool CheckWin(ref CustomRoles winnerRole)
@@ -146,7 +146,7 @@ public sealed class Totocalcio : RoleBase, IKiller, IAdditionalWinner
     }
     public bool OverrideKillButtonText(out string text)
     {
-        text = Translator.GetString("TotocalcioKillButtonText");
+        text = Translator.GetString("FollowerKillButtonText");
         return true;
     }
 }

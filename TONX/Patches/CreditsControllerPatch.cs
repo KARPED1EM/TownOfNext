@@ -45,7 +45,7 @@ public class CreditsControllerPatch
                 $"阿龍 - {GetString("LangTChinese")}",
                 $"法官 - {GetString("LangTChinese")}",
 
-                $"DopzyGamer - {GetString(StringNames.LangBrazPort)}",
+                $"DopzyDemon - {GetString(StringNames.LangBrazPort)}",
             };
         var acList = new List<string>()
             {

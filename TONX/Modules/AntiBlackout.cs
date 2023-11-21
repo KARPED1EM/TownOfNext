@@ -15,7 +15,7 @@ public static class AntiBlackout
     public static bool OverrideExiledPlayer => Options.NoGameEnd.GetBool()
         || CustomRoles.Jackal.IsExist(true)
         || CustomRoles.Pelican.IsExist(true)
-        || CustomRoles.Gamer.IsExist(true)
+        || CustomRoles.Demon.IsExist(true)
         || CustomRoles.BloodKnight.IsExist(true)
         || CustomRoles.Succubus.IsExist(true);
 

@@ -42,7 +42,7 @@ public abstract class RoleDescription
         builder.Append(FullFormatHelp);
 
         var subRoles = player.GetCustomSubRoles();
-        if (CustomRoles.Ntr.IsExist() && !subRoles.Contains(CustomRoles.Lovers) && !player.Is(CustomRoles.GM) && !player.Is(CustomRoles.Ntr))
+        if (CustomRoles.Neptune.IsExist() && !subRoles.Contains(CustomRoles.Lovers) && !player.Is(CustomRoles.GM) && !player.Is(CustomRoles.Neptune))
         {
             subRoles.Add(CustomRoles.Lovers);
         }

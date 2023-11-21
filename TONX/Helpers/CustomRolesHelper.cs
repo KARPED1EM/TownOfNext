@@ -145,7 +145,7 @@ public enum CountTypes
     Impostor,
     Jackal,
     Pelican,
-    Gamer,
+    Demon,
     BloodKnight,
     Succubus,
 }

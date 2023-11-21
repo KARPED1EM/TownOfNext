@@ -8,13 +8,13 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Impostor;
-public sealed class OverKiller : RoleBase, IImpostor
+public sealed class Butcher : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(OverKiller),
-            player => new OverKiller(player),
-            CustomRoles.OverKiller,
+            typeof(Butcher),
+            player => new Butcher(player),
+            CustomRoles.Butcher,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
             4700,
@@ -22,19 +22,19 @@ public sealed class OverKiller : RoleBase, IImpostor
             "bu|肢解",
             experimental: true
         );
-    public OverKiller(PlayerControl player)
+    public Butcher(PlayerControl player)
     : base(
         RoleInfo,
         player
     )
     { }
 
-    private List<byte> OverKillerKilledPlayers;
-    public override void OnDestroy() => OverKillerKilledPlayers.Clear();
-    public override void Add() => OverKillerKilledPlayers = new();
+    private List<byte> ButcherKilledPlayers;
+    public override void OnDestroy() => ButcherKilledPlayers.Clear();
+    public override void Add() => ButcherKilledPlayers = new();
     public bool OverrideKillButtonText(out string text)
     {
-        text = Translator.GetString("OverKillerButtonText");
+        text = Translator.GetString("ButcherButtonText");
         return true;
     }
     public void BeforeMurderPlayerAsKiller(MurderInfo info)
@@ -43,12 +43,12 @@ public sealed class OverKiller : RoleBase, IImpostor
         info.DoKill = false;
         var (killer, target) = info.AttemptTuple;
 
-        if (OverKillerKilledPlayers.Contains(target.PlayerId)) return;
+        if (ButcherKilledPlayers.Contains(target.PlayerId)) return;
 
         PlayerState.GetByPlayerId(target.PlayerId).DeathReason = CustomDeathReason.Dismembered;
         new LateTask(() =>
         {
-            if (!OverKillerKilledPlayers.Contains(target.PlayerId)) OverKillerKilledPlayers.Add(target.PlayerId);
+            if (!ButcherKilledPlayers.Contains(target.PlayerId)) ButcherKilledPlayers.Add(target.PlayerId);
             var ops = target.GetTruePosition();
             var rd = IRandom.Instance;
             for (int i = 0; i < 20; i++)
@@ -64,7 +64,7 @@ public sealed class OverKiller : RoleBase, IImpostor
                 target.NetTransform.SnapTo(location);
                 killer.MurderPlayer(target);
 
-                if (target.Is(CustomRoles.Avanger))
+                if (target.Is(CustomRoles.Avenger))
                 {
                     var pcList = Main.AllAlivePlayerControls.Where(x => x.PlayerId != target.PlayerId).ToList();
                     var rp = pcList[IRandom.Instance.Next(0, pcList.Count)];
@@ -78,7 +78,7 @@ public sealed class OverKiller : RoleBase, IImpostor
                 AmongUsClient.Instance.FinishRpcImmediately(messageWriter);
             }
             Utils.TP(killer.NetTransform, ops);
-        }, 0.05f, "OverKiller Murder");
+        }, 0.05f, "Butcher Murder");
 
         return;
     }

@@ -57,13 +57,13 @@ public enum CustomRPC
     SetDrawPlayer,
     SetCurrentDrawTarget,
     SyncPelicanEatenPlayers,
-    SwordsManKill,
-    SetGamerHealth,
-    SetCounterfeiterSellLimit,
-    SetMedicalerProtectLimit,
+    VigilanteKill,
+    SetDemonHealth,
+    SetDeceiverSellLimit,
+    SetMedicProtectLimit,
     SetGangsterRecruitLimit,
     SetGhostPlayer,
-    SetDarkHiderKillCount,
+    SetStalkerrKillCount,
     SetCursedWolfSpellCount,
     SetCollectorVotes,
     SetQuickShooterShotLimit,
@@ -71,7 +71,7 @@ public enum CustomRPC
     SuicideWithAnime,
     SetMarkedPlayer,
     SetConcealerTimer,
-    SetMedicalerProtectList,
+    SetMedicProtectList,
     SetHackerHackLimit,
     SyncPsychicRedList,
     SetMorticianArrow,
@@ -79,11 +79,11 @@ public enum CustomRPC
     Guess,
     SetSwooperTimer,
     SetBKTimer,
-    SyncTotocalcioTargetAndTimes,
+    SyncFollowerTargetAndTimes,
     SetSuccubusCharmLimit,
     SyncPuppeteerList,
     SyncWarlock,
-    SyncEscapee,
+    SyncEscapist,
     OnClickMeetingButton,
     SyncMarioVentedTimes,
 }
@@ -304,8 +304,8 @@ internal class RPCHandlerPatch
             case CustomRPC.Guess:
                 GuesserHelper.ReceiveRPC(reader, __instance);
                 break;
-            case CustomRPC.SetMedicalerProtectList:
-                Medicaler.ReceiveRPC_SyncList(reader);
+            case CustomRPC.SetMedicProtectList:
+                Medic.ReceiveRPC_SyncList(reader);
                 break;
             case CustomRPC.NotificationPop:
                 NotificationPopperPatch.AddItem(reader.ReadString());

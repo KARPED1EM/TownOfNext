@@ -6,10 +6,10 @@ using UnityEngine;
 using static TONX.Options;
 
 namespace TONX.Roles.AddOns.Common;
-public static class Avanger
+public static class Avenger
 {
     private static readonly int Id = 81400;
-    private static Color RoleColor = Utils.GetRoleColor(CustomRoles.Avanger);
+    private static Color RoleColor = Utils.GetRoleColor(CustomRoles.Avenger);
     private static List<byte> playerIdList = new();
 
     public static OptionItem OptionRevengeMode;
@@ -18,21 +18,21 @@ public static class Avanger
     public static OptionItem OptionRevengeOnSuicide;
     public static readonly string[] revengeModes =
     {
-        "AvangerMode.Killer",
-        "AvangerMode.Random",
-        "AvangerMode.Enimies",
-        "AvangerMode.Teammates",
+        "AvengerMode.Killer",
+        "AvengerMode.Random",
+        "AvengerMode.Enimies",
+        "AvengerMode.Teammates",
     };
 
     public static void SetupCustomOption()
     {
-        SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Avanger);
-        AddOnsAssignData.Create(Id + 10, CustomRoles.Avanger, true, true, true);
-        OptionRevengeMode = StringOptionItem.Create(Id + 20, "AvangerRevengeMode", revengeModes, 1, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger]);
-        OptionRevengeNums = IntegerOptionItem.Create(Id + 21, "AvangerRevengeNums", new(1, 3, 1), 1, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger])
+        SetupAddonOptions(Id, TabGroup.Addons, CustomRoles.Avenger);
+        AddOnsAssignData.Create(Id + 10, CustomRoles.Avenger, true, true, true);
+        OptionRevengeMode = StringOptionItem.Create(Id + 20, "AvengerRevengeMode", revengeModes, 1, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avenger]);
+        OptionRevengeNums = IntegerOptionItem.Create(Id + 21, "AvengerRevengeNums", new(1, 3, 1), 1, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avenger])
             .SetValueFormat(OptionFormat.Players);
-        OptionRevengeOnKilled = BooleanOptionItem.Create(Id + 22, "AvangerRevengeOnKilled", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger]);
-        OptionRevengeOnSuicide = BooleanOptionItem.Create(Id + 23, "AvangerRevengeOnSuicide", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avanger]);
+        OptionRevengeOnKilled = BooleanOptionItem.Create(Id + 22, "AvengerRevengeOnKilled", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avenger]);
+        OptionRevengeOnSuicide = BooleanOptionItem.Create(Id + 23, "AvengerRevengeOnSuicide", true, TabGroup.Addons, false).SetParent(CustomRoleSpawnChances[CustomRoles.Avenger]);
     }
     [GameModuleInitializer]
     public static void Init()
@@ -89,7 +89,7 @@ public static class Avanger
             pc.SetRealKiller(target);
             pc.SetDeathReason(CustomDeathReason.Revenge);
             target.RpcMurderPlayer(pc);
-            Logger.Info($"Avanger {target.GetNameWithRole()} revenged => {pc.GetNameWithRole()}", "Avanger.OnMurderPlayerOthers");
+            Logger.Info($"Avenger {target.GetNameWithRole()} revenged => {pc.GetNameWithRole()}", "Avenger.OnMurderPlayerOthers");
         }
     }
 }

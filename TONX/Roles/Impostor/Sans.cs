@@ -5,21 +5,21 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 
 namespace TONX.Roles.Impostor;
-public sealed class Sans : RoleBase, IImpostor
+public sealed class Arrogance : RoleBase, IImpostor
 {
 
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Sans),
-            player => new Sans(player),
-            CustomRoles.Sans,
+            typeof(Arrogance),
+            player => new Arrogance(player),
+            CustomRoles.Arrogance,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
             3000,
             SetupOptionItem,
             "ag|狂妄殺手|狂妄"
         );
-    public Sans(PlayerControl player)
+    public Arrogance(PlayerControl player)
     : base(
         RoleInfo,
         player
@@ -31,18 +31,18 @@ public sealed class Sans : RoleBase, IImpostor
     static OptionItem MinKillCooldown;
     enum OptionName
     {
-        SansDefaultKillCooldown,
-        SansReduceKillCooldown,
-        SansMinKillCooldown,
+        ArroganceDefaultKillCooldown,
+        ArroganceReduceKillCooldown,
+        ArroganceMinKillCooldown,
     }
     private float KillCooldown;
     private static void SetupOptionItem()
     {
-        DefaultKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.SansDefaultKillCooldown, new(2.5f, 180f, 2.5f), 65f, false)
+        DefaultKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.ArroganceDefaultKillCooldown, new(2.5f, 180f, 2.5f), 65f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        ReduceKillCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.SansReduceKillCooldown, new(2.5f, 180f, 2.5f), 15f, false)
+        ReduceKillCooldown = FloatOptionItem.Create(RoleInfo, 11, OptionName.ArroganceReduceKillCooldown, new(2.5f, 180f, 2.5f), 15f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        MinKillCooldown = FloatOptionItem.Create(RoleInfo, 12, OptionName.SansMinKillCooldown, new(2.5f, 180f, 2.5f), 2.5f, false)
+        MinKillCooldown = FloatOptionItem.Create(RoleInfo, 12, OptionName.ArroganceMinKillCooldown, new(2.5f, 180f, 2.5f), 2.5f, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
     public override void Add()

@@ -273,21 +273,21 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
         RoleCommands.Add(CustomRoles.Lovers, new() { "lo", "情人", "愛人", "链子" });
         RoleCommands.Add(CustomRoles.Watcher, new() { "wat", "窺視者", "窥视" });
         RoleCommands.Add(CustomRoles.Workhorse, new() { "wh", "加班" });
-        RoleCommands.Add(CustomRoles.Avanger, new() { "av", "復仇者", "复仇" });
+        RoleCommands.Add(CustomRoles.Avenger, new() { "av", "復仇者", "复仇" });
         RoleCommands.Add(CustomRoles.Bait, new() { "ba", "誘餌", "大奖", "头奖" });
         RoleCommands.Add(CustomRoles.Bewilder, new() { "bwd", "迷幻", "迷惑者" });
-        RoleCommands.Add(CustomRoles.Brakar, new() { "br", "破平" });
-        RoleCommands.Add(CustomRoles.DualPersonality, new() { "sp", "雙重人格", "双重", "双人格", "人格" });
+        RoleCommands.Add(CustomRoles.Tiebreaker, new() { "br", "破平" });
+        RoleCommands.Add(CustomRoles.Schizophrenic, new() { "sp", "雙重人格", "双重", "双人格", "人格" });
         RoleCommands.Add(CustomRoles.Egoist, new() { "ego", "利己主義者", "利己主义", "利己", "野心" });
         RoleCommands.Add(CustomRoles.Flashman, new() { "fl", "閃電俠", "闪电" });
         RoleCommands.Add(CustomRoles.Fool, new() { "fo", "蠢蛋", "笨蛋", "蠢狗", "傻逼" });
         RoleCommands.Add(CustomRoles.Lighter, new() { "li", "執燈人", "执灯", "灯人", "小灯人" });
-        RoleCommands.Add(CustomRoles.Ntr, new() { "np", "ntr", "渣男" });
+        RoleCommands.Add(CustomRoles.Neptune, new() { "np", "ntr", "渣男" });
         RoleCommands.Add(CustomRoles.Oblivious, new() { "pb", "膽小鬼", "胆小" });
         RoleCommands.Add(CustomRoles.Reach, new() { "re", "持槍", "手长" });
         RoleCommands.Add(CustomRoles.Seer, new() { "se", "靈媒" });
-        RoleCommands.Add(CustomRoles.Trapper, new() { "tra", "陷阱師", "陷阱", "小奖" });
-        RoleCommands.Add(CustomRoles.Youtuber, new() { "yt", "up" });
+        RoleCommands.Add(CustomRoles.Beartrap, new() { "tra", "陷阱師", "陷阱", "小奖" });
+        RoleCommands.Add(CustomRoles.YouTuber, new() { "yt", "up" });
         RoleCommands.Add(CustomRoles.Mimic, new() { "mi", "寶箱怪", "宝箱" });
         RoleCommands.Add(CustomRoles.TicketsStealer, new() { "ts", "竊票者", "偷票", "偷票者", "窃票师", "窃票" });
     }

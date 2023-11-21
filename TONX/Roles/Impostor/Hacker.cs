@@ -90,7 +90,7 @@ public sealed class Hacker : RoleBase, IImpostor
 
         if (!AmongUsClient.Instance.AmHost) return;
 
-        if (!Shapeshifting || HackLimit < 1 || target == null || target.Is(CustomRoles.Needy)) return;
+        if (!Shapeshifting || HackLimit < 1 || target == null || target.Is(CustomRoles.LazyGuy)) return;
 
         HackLimit--;
         SendRPC();

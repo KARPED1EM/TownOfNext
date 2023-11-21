@@ -6,13 +6,13 @@ using TONX.Roles.Core;
 using static TONX.Translator;
 
 namespace TONX.Roles.Crewmate;
-public sealed class Mediumshiper : RoleBase
+public sealed class Medium : RoleBase
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Mediumshiper),
-            player => new Mediumshiper(player),
-            CustomRoles.Mediumshiper,
+            typeof(Medium),
+            player => new Medium(player),
+            CustomRoles.Medium,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Crewmate,
             22500,
@@ -20,7 +20,7 @@ public sealed class Mediumshiper : RoleBase
             "me|通靈師|通灵",
             "#a200ff"
         );
-    public Mediumshiper(PlayerControl player)
+    public Medium(PlayerControl player)
     : base(
         RoleInfo,
         player
@@ -33,17 +33,17 @@ public sealed class Mediumshiper : RoleBase
     static OptionItem OptionOnlyReceiveMsgFromCrew;
     enum OptionName
     {
-        MediumshiperContactLimit,
-        MediumshiperOnlyReceiveMsgFromCrew,
+        MediumContactLimit,
+        MediumOnlyReceiveMsgFromCrew,
     }
 
     private int ContactLimit;
     private byte ContactPlayer;
     private static void SetupOptionItem()
     {
-        OptionContactNums = IntegerOptionItem.Create(RoleInfo, 10, OptionName.MediumshiperContactLimit, new(1, 15, 1), 15, false)
+        OptionContactNums = IntegerOptionItem.Create(RoleInfo, 10, OptionName.MediumContactLimit, new(1, 15, 1), 15, false)
             .SetValueFormat(OptionFormat.Times);
-        OptionOnlyReceiveMsgFromCrew = BooleanOptionItem.Create(RoleInfo, 11, OptionName.MediumshiperOnlyReceiveMsgFromCrew, true, false);
+        OptionOnlyReceiveMsgFromCrew = BooleanOptionItem.Create(RoleInfo, 11, OptionName.MediumOnlyReceiveMsgFromCrew, true, false);
     }
     public override void Add()
     {
@@ -58,7 +58,7 @@ public sealed class Mediumshiper : RoleBase
         ContactLimit--;
         ContactPlayer = target.PlayerId;
 
-        Logger.Info($"通灵师建立联系：{Player.GetNameWithRole()} => {target.PlayerName}", "Mediumshiper.OnReportDeadBody");
+        Logger.Info($"通灵师建立联系：{Player.GetNameWithRole()} => {target.PlayerName}", "Medium.OnReportDeadBody");
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)
     {
@@ -82,9 +82,9 @@ public sealed class Mediumshiper : RoleBase
         var (player, msg) = (mc.Player, mc.Message);
 
         if (player.IsAlive()) return;
-        foreach (var medium in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Mediumshiper)))
+        foreach (var medium in Main.AllAlivePlayerControls.Where(x => x.Is(CustomRoles.Medium)))
         {
-            var roleClass = medium.GetRoleClass() as Mediumshiper;
+            var roleClass = medium.GetRoleClass() as Medium;
             if (roleClass.ContactPlayer != player.PlayerId) continue;
             if (OptionOnlyReceiveMsgFromCrew.GetBool() && !player.IsCrew()) continue;
 

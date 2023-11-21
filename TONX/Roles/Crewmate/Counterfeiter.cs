@@ -9,13 +9,13 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Crewmate;
-public sealed class Counterfeiter : RoleBase, IKiller
+public sealed class Deceiver : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Counterfeiter),
-            player => new Counterfeiter(player),
-            CustomRoles.Counterfeiter,
+            typeof(Deceiver),
+            player => new Deceiver(player),
+            CustomRoles.Deceiver,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Crewmate,
             21700,
@@ -24,7 +24,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
             "#e0e0e0",
             true
         );
-    public Counterfeiter(PlayerControl player)
+    public Deceiver(PlayerControl player)
     : base(
         RoleInfo,
         player,
@@ -40,8 +40,8 @@ public sealed class Counterfeiter : RoleBase, IKiller
     static OptionItem OptionSellNums;
     enum OptionName
     {
-        CounterfeiterSkillCooldown,
-        CounterfeiterSkillLimitTimes,
+        DeceiverSkillCooldown,
+        DeceiverSkillLimitTimes,
     }
 
     private int SellLimit;
@@ -49,9 +49,9 @@ public sealed class Counterfeiter : RoleBase, IKiller
     public bool IsKiller { get; private set; } = false;
     private static void SetupOptionItem()
     {
-        OptionSellCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.CounterfeiterSkillCooldown, new(2.5f, 180f, 2.5f), 20f, false)
+        OptionSellCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.DeceiverSkillCooldown, new(2.5f, 180f, 2.5f), 20f, false)
             .SetValueFormat(OptionFormat.Seconds);
-        OptionSellNums = IntegerOptionItem.Create(RoleInfo, 11, OptionName.CounterfeiterSkillLimitTimes, new(1, 15, 1), 2, false)
+        OptionSellNums = IntegerOptionItem.Create(RoleInfo, 11, OptionName.DeceiverSkillLimitTimes, new(1, 15, 1), 2, false)
             .SetValueFormat(OptionFormat.Times);
     }
     public override void Add()
@@ -61,12 +61,12 @@ public sealed class Counterfeiter : RoleBase, IKiller
     }
     private void SendRPC()
     {
-        using var sender = CreateSender(CustomRPC.SetCounterfeiterSellLimit);
+        using var sender = CreateSender(CustomRPC.SetDeceiverSellLimit);
         sender.Writer.Write(SellLimit);
     }
     public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        if (rpcType != CustomRPC.SetCounterfeiterSellLimit) return;
+        if (rpcType != CustomRPC.SetDeceiverSellLimit) return;
         SellLimit = reader.ReadInt32();
     }
     public float CalculateKillCooldown() => CanUseKillButton() ? OptionSellCooldown.GetFloat() : 255f;
@@ -75,7 +75,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(false);
     public bool OverrideKillButtonText(out string text)
     {
-        text = Translator.GetString("CounterfeiterButtonText");
+        text = Translator.GetString("DeceiverButtonText");
         return true;
     }
     public bool OnCheckMurderAsKiller(MurderInfo info)
@@ -85,7 +85,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
 
         if (Customers.ContainsKey(target.PlayerId))
         {
-            killer.Notify(Translator.GetString("CounterfeiterRepeatSell"));
+            killer.Notify(Translator.GetString("DeceiverRepeatSell"));
             return false;
         }
 
@@ -98,23 +98,23 @@ public sealed class Counterfeiter : RoleBase, IKiller
 
         Customers.Add(target.PlayerId, false);
 
-        Logger.Info($"{killer.GetNameWithRole()}：将赝品售卖给 => {target.GetNameWithRole()}", "Counterfeiter.OnCheckMurderAsKille");
-        Logger.Info($"{killer.GetNameWithRole()}：剩余{SellLimit}个赝品", "Counterfeiter.OnCheckMurderAsKille");
+        Logger.Info($"{killer.GetNameWithRole()}：将赝品售卖给 => {target.GetNameWithRole()}", "Deceiver.OnCheckMurderAsKille");
+        Logger.Info($"{killer.GetNameWithRole()}：剩余{SellLimit}个赝品", "Deceiver.OnCheckMurderAsKille");
         return false;
     }
     private static bool OnCheckMurderPlayerOthers_Before(MurderInfo info)
     {
         var (killer, target) = info.AttemptTuple;
 
-        foreach (var deceiver in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Counterfeiter)))
+        foreach (var deceiver in Main.AllPlayerControls.Where(x => x.Is(CustomRoles.Deceiver)))
         {
-            if (deceiver.GetRoleClass() is not Counterfeiter roleClass) continue;
+            if (deceiver.GetRoleClass() is not Deceiver roleClass) continue;
             if (roleClass.Customers.TryGetValue(killer.PlayerId, out var x) && x)
             {
                 killer.SetRealKiller(deceiver);
                 killer.SetDeathReason(CustomDeathReason.Misfire);
                 killer.RpcMurderPlayerV2(killer);
-                Logger.Info($"{deceiver.GetNameWithRole()} 的客户：{killer.GetNameWithRole()} 因使用赝品走火自杀", "Counterfeiter.OnCheckMurderPlayerOthers_Before");
+                Logger.Info($"{deceiver.GetNameWithRole()} 的客户：{killer.GetNameWithRole()} 因使用赝品走火自杀", "Deceiver.OnCheckMurderPlayerOthers_Before");
                 return false;
             }
         }
@@ -131,7 +131,7 @@ public sealed class Counterfeiter : RoleBase, IKiller
             if (target.GetRoleClass() is IKiller x && x.IsKiller && x.CanKill) continue;
             MeetingHudPatch.TryAddAfterMeetingDeathPlayers(CustomDeathReason.Misfire, target.PlayerId);
             target.SetRealKiller(Player);
-            Logger.Info($"赝品商 {Player.GetRealName()} 的客户 {target.GetRealName()} 因不带刀将在会议结束后自杀", "Counterfeiter.OnStartMeeting");
+            Logger.Info($"赝品商 {Player.GetRealName()} 的客户 {target.GetRealName()} 因不带刀将在会议结束后自杀", "Deceiver.OnStartMeeting");
         }
     }
     public override string GetMark(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false)

@@ -52,7 +52,7 @@
 - Fixed the issue where non-mod players may not be able to see the Mare with the Red Name
 - Fixed the issue where the HUD text on the modded client does not disappear after death or in a meeting
 - Fixed the issue where Vigilante could still continue to kill after failing to kill.
-- Fixed the issue where the cooldown of the Bard, Sans, Greedier, etc. was still reset after the kill failed
+- Fixed the issue where the cooldown of the Bard, Arrogance, Greedy, etc. was still reset after the kill failed
 - Fixed the issue where some impostors or neutral players could be notified after the death of an Celebrity
 - Fixed the issue where the option "The Impostors Can Kill the Madmates" or "The Madmates Can Kill the Impostors" is not working for some roles.
 - Fixed the issue where when the Medic holds a shield and breaks it, if the option "The Medic can know that the target shield is broken" is enabled, you will also see a prompt
@@ -135,7 +135,7 @@
 - Modified chat message character limit on the modded client (999 for host, 300 for non-hosts)
 - Special messages from mods will have their message bubbles displayed with a black background to make them easier to distinguish
 - Smaller option preview fonts on the left side of the lobby to display more content on one page
-- Youtuber Plan => Director Mode (allows host to specify their own role)
+- YouTuber Plan => Director Mode (allows host to specify their own role)
 - When in a non-TONX room, other information will no longer be displayed in the upper right corner
 - Fine-tune the font of the starting role reveal screen
 - Increase the speed at which the text overlay is displayed on the starting role reveal screen to prevent the text from not being overlaid for several frames under high frame rates

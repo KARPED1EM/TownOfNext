@@ -45,11 +45,11 @@ Thank you for using TOHE!
 - Notify Quick Shooter when they storing bullet
 - Notify Vampire when their target dies
 - Notify Warlock when their target kills another player
-- Notify everyone when CyberStar is killed
+- Notify everyone when Celebrity is killed
 - Notify Notifies players teleported by Teleporter
 
 ## Role Changing
-- Mediumshiper are now notified when players are killed
+- Medium are now notified when players are killed
 - Cleaner no longer resets kill cooldown after cleaning dead body
 
 ## New Role

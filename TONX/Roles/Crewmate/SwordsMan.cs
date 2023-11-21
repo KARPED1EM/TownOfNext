@@ -5,13 +5,13 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Crewmate;
-public sealed class SwordsMan : RoleBase, IKiller
+public sealed class Vigilante : RoleBase, IKiller
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(SwordsMan),
-            player => new SwordsMan(player),
-            CustomRoles.SwordsMan,
+            typeof(Vigilante),
+            player => new Vigilante(player),
+            CustomRoles.Vigilante,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Crewmate,
             21400,
@@ -20,7 +20,7 @@ public sealed class SwordsMan : RoleBase, IKiller
             "#f0e68c",
             true
         );
-    public SwordsMan(PlayerControl player)
+    public Vigilante(PlayerControl player)
     : base(
         RoleInfo,
         player,
@@ -36,12 +36,12 @@ public sealed class SwordsMan : RoleBase, IKiller
     }
     private void SendRPC()
     {
-        using var sender = CreateSender(CustomRPC.SwordsManKill);
+        using var sender = CreateSender(CustomRPC.VigilanteKill);
         sender.Writer.Write(IsKilled);
     }
     public override void ReceiveRPC(MessageReader reader, CustomRPC rpcType)
     {
-        if (rpcType != CustomRPC.SwordsManKill) return;
+        if (rpcType != CustomRPC.VigilanteKill) return;
         IsKilled = reader.ReadBoolean();
     }
     public float CalculateKillCooldown() => CanUseKillButton() ? 0f : 255f;

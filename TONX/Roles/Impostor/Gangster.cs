@@ -122,8 +122,8 @@ public sealed class Gangster : RoleBase, IImpostor
             (pc.Is(CustomRoles.NiceGuesser) && !OptionNGuesserCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Judge) && !OptionJudgeCanBeMadmate.GetBool()) ||
             pc.Is(CustomRoles.Snitch) ||
-            pc.Is(CustomRoles.Needy) ||
-            pc.Is(CustomRoles.CyberStar) ||
+            pc.Is(CustomRoles.LazyGuy) ||
+            pc.Is(CustomRoles.Celebrity) ||
             pc.Is(CustomRoles.Egoist)
             );
     }

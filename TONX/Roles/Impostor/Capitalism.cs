@@ -6,13 +6,13 @@ using TONX.Roles.Core.Interfaces;
 using static TONX.Translator;
 
 namespace TONX.Roles.Impostor;
-public sealed class Capitalism : RoleBase, IImpostor
+public sealed class Capitalist : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Capitalism),
-            player => new Capitalism(player),
-            CustomRoles.Capitalism,
+            typeof(Capitalist),
+            player => new Capitalist(player),
+            CustomRoles.Capitalist,
             () => RoleTypes.Impostor,
             CustomRoleTypes.Impostor,
             4300,
@@ -20,7 +20,7 @@ public sealed class Capitalism : RoleBase, IImpostor
             "ca|資本家|资本|资本主义",
             experimental: true
         );
-    public Capitalism(PlayerControl player)
+    public Capitalist(PlayerControl player)
     : base(
         RoleInfo,
         player
@@ -33,7 +33,7 @@ public sealed class Capitalism : RoleBase, IImpostor
     static OptionItem OptionKillCooldown;
     enum OptionName
     {
-        CapitalismSkillCooldown,
+        CapitalistSkillCooldown,
     }
 
     public static Dictionary<byte, int> NumShortTasks;
@@ -41,19 +41,19 @@ public sealed class Capitalism : RoleBase, IImpostor
     public bool IsKiller { get; private set; } = false;
     private static void SetupOptionItem()
     {
-        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.CapitalismSkillCooldown, new(2.5f, 180f, 2.5f), 12.5f, false)
+        OptionKillCooldown = FloatOptionItem.Create(RoleInfo, 10, OptionName.CapitalistSkillCooldown, new(2.5f, 180f, 2.5f), 12.5f, false)
             .SetValueFormat(OptionFormat.Seconds);
     }
     public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
     public bool OverrideKillButtonText(out string text)
     {
-        text = GetString("CapitalismButtonText");
+        text = GetString("CapitalistButtonText");
         return true;
     }
     public static int GetShortTasks(byte playerId, int shortTasks) => (NumShortTasks != null && NumShortTasks.TryGetValue(playerId, out var x)) ? x : shortTasks;
     public static bool OnCompleteTask(PlayerControl pc)
     {
-        if (!CustomRoles.Capitalism.IsExist(true)) return true;
+        if (!CustomRoles.Capitalist.IsExist(true)) return true;
         if (pc.Is(CustomRoles.Workhorse)) return true;
         if (!Utils.HasTasks(pc.Data) || pc.AllTasksCompleted()) return true;
         if (TasksWaitToAdd == null || !TasksWaitToAdd.ContainsKey(pc.PlayerId)) return true;

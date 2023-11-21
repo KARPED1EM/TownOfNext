@@ -601,28 +601,28 @@ public static class Options
             .SetGameMode(CustomGameMode.Standard);
         #endregion
 
-        Ntr.SetupCustomOption();
+        Neptune.SetupCustomOption();
         Watcher.SetupCustomOption();
         Lighter.SetupCustomOption();
         Seer.SetupCustomOption();
         Flashman.SetupCustomOption();
-        Brakar.SetupCustomOption();
+        Tiebreaker.SetupCustomOption();
         Oblivious.SetupCustomOption();
         Bewilder.SetupCustomOption();
         Fool.SetupCustomOption();
-        Avanger.SetupCustomOption();
+        Avenger.SetupCustomOption();
         Egoist.SetupCustomOption();
-        DualPersonality.SetupCustomOption();
+        Schizophrenic.SetupCustomOption();
         Reach.SetupCustomOption();
         Bait.SetupCustomOption();
-        Trapper.SetupCustomOption();
+        Beartrap.SetupCustomOption();
 
         // 船员专属附加
         TextOptionItem.Create(5_100_002, "MenuTitle.Addon.Crew", TabGroup.Addons)
             .SetGameMode(CustomGameMode.Standard)
             .SetColor(Utils.GetCustomRoleTypeColor(CustomRoleTypes.Crewmate));
 
-        Youtuber.SetupCustomOption();
+        YouTuber.SetupCustomOption();
         Workhorse.SetupCustomOption();
         SetupMadmateRoleOptionsToggle(80200);
 

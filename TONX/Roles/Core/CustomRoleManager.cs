@@ -150,8 +150,8 @@ public static class CustomRoleManager
 
         //SubRoels
         Bait.OnMurderPlayerOthers(info);
-        Trapper.OnMurderPlayerOthers(info);
-        Avanger.OnMurderPlayerOthers(info);
+        Beartrap.OnMurderPlayerOthers(info);
+        Avenger.OnMurderPlayerOthers(info);
 
         //その他視点の処理があれば実行
         foreach (var onMurderPlayer in OnMurderPlayerOthers.ToArray())
@@ -291,8 +291,8 @@ public static class CustomRoleManager
                 case CustomRoles.Watcher:
                     Watcher.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Avanger:
-                    Avanger.Add(pc.PlayerId);
+                case CustomRoles.Avenger:
+                    Avenger.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Bait:
                     Bait.Add(pc.PlayerId);
@@ -300,11 +300,11 @@ public static class CustomRoleManager
                 case CustomRoles.Bewilder:
                     Bewilder.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Brakar:
-                    Brakar.Add(pc.PlayerId);
+                case CustomRoles.Tiebreaker:
+                    Tiebreaker.Add(pc.PlayerId);
                     break;
-                case CustomRoles.DualPersonality:
-                    DualPersonality.Add(pc.PlayerId);
+                case CustomRoles.Schizophrenic:
+                    Schizophrenic.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Egoist:
                     Egoist.Add(pc.PlayerId);
@@ -318,8 +318,8 @@ public static class CustomRoleManager
                 case CustomRoles.Lighter:
                     Lighter.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Ntr:
-                    Ntr.Add(pc.PlayerId);
+                case CustomRoles.Neptune:
+                    Neptune.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Oblivious:
                     Oblivious.Add(pc.PlayerId);
@@ -330,11 +330,11 @@ public static class CustomRoleManager
                 case CustomRoles.Seer:
                     Seer.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Trapper:
-                    Trapper.Add(pc.PlayerId);
+                case CustomRoles.Beartrap:
+                    Beartrap.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Youtuber:
-                    Youtuber.Add(pc.PlayerId);
+                case CustomRoles.YouTuber:
+                    YouTuber.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Mimic:
                     Mimic.Add(pc.PlayerId);
@@ -496,12 +496,12 @@ public enum CustomRoles
     Shapeshifter,
     //Impostor
     BountyHunter,
-    FireWorks,
+    Fireworker,
     Mafia,
     SerialKiller,
     ShapeMaster,
     EvilGuesser,
-    Minimalism,
+    KillingMachine,
     Zombie,
     Sniper,
     Vampire,
@@ -510,31 +510,31 @@ public enum CustomRoles
     Assassin,
     Hacker,
     Miner,
-    Escapee,
+    Escapist,
     Mare,
     Puppeteer,
     TimeThief,
     EvilTracker,
     AntiAdminer,
-    Sans,
+    Arrogance,
     Bomber,
     BoobyTrap,
     Scavenger,
-    Capitalism,
+    Capitalist,
     Gangster,
     Cleaner,
     BallLightning,
-    Greedier,
+    Greedy,
     CursedWolf,
-    ImperiusCurse,
+    SoulCatcher,
     QuickShooter,
     Concealer,
     Eraser,
-    OverKiller,
+    Butcher,
     Hangman,
     Bard,
     Swooper,
-    Crewpostor,
+    CrewPostor,
     Penguin,
     Stealth,
     Messenger,
@@ -545,33 +545,33 @@ public enum CustomRoles
     Scientist,
     //Crewmate
     Luckey,
-    Needy,
+    LazyGuy,
     SuperStar,
-    CyberStar,
+    Celebrity,
     Mayor,
     Paranoia,
     Psychic,
-    SabotageMaster,
+    Repairman,
     Sheriff,
     Snitch,
     SpeedBooster,
     Dictator,
     Doctor,
     Detective,
-    SwordsMan,
+    Vigilante,
     NiceGuesser,
     Transporter,
     TimeManager,
     Veteran,
     Bodyguard,
-    Counterfeiter,
+    Deceiver,
     Grenadier,
-    Medicaler,
-    Divinator,
+    Medic,
+    FortuneTeller,
     Glitch,
     Judge,
     Mortician,
-    Mediumshiper,
+    Medium,
     Observer,
     DoveOfPeace,
     //Neutral
@@ -586,16 +586,16 @@ public enum CustomRoles
     Innocent, //TODO
     Pelican,
     Revolutionist, //TODO
-    FFF, //TODO
+    Hater, //TODO
     Konan, //TODO
-    Gamer,
-    DarkHide, //TODO
+    Demon,
+    Stalker, //TODO
     Workaholic, //TODO
     Collector, //TODO
     Provocateur, //TODO
     Sunnyboy, //TODO
     BloodKnight,
-    Totocalcio,
+    Follower,
     Succubus,
     PlagueDoctor,
     SchrodingerCat,
@@ -607,27 +607,27 @@ public enum CustomRoles
     NotAssigned = 500,
     LastImpostor,
     Lovers,
-    Ntr,
+    Neptune,
     Madmate,
     Watcher,
     Flashman,
     Lighter,
     Seer,
-    Brakar,
+    Tiebreaker,
     Oblivious,
     Bewilder,
     Workhorse,
     Fool,
-    Avanger,
-    Youtuber,
+    Avenger,
+    YouTuber,
     Egoist,
     TicketsStealer,
-    DualPersonality,
+    Schizophrenic,
     Mimic,
     Reach,
     Charmed,
     Bait,
-    Trapper,
+    Beartrap,
 }
 public enum CustomRoleTypes
 {

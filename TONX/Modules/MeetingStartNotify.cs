@@ -31,7 +31,7 @@ public static class MeetingStartNotify
                 sb.Clear().Append(txt.RemoveHtmlTags());
                 foreach (var subRole in PlayerState.AllPlayerStates[pc.PlayerId].SubRoles)
                     sb.Append($"\n\n" + GetString($"{subRole}") + Utils.GetRoleDisplaySpawnMode(subRole) + GetString($"{subRole}InfoLong"));
-                if (CustomRoles.Ntr.IsExist() && (role is not CustomRoles.GM and not CustomRoles.Ntr))
+                if (CustomRoles.Neptune.IsExist() && (role is not CustomRoles.GM and not CustomRoles.Neptune))
                     sb.Append($"\n\n" + GetString($"Lovers") + Utils.GetRoleDisplaySpawnMode(CustomRoles.Lovers) + GetString($"LoversInfoLong"));
                 AddMsg(sb.ToString(), pc.PlayerId);
             }
