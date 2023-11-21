@@ -1,9 +1,9 @@
 # TONX 的语言文件 / Translation file of TONX
 
-## 当前翻译文件语言的ID / Language ID of current file
+# 当前翻译文件语言的ID / Language ID of current file
 LangID: "13"
 
-## 作者署名（不需要请留空）/ A sign of an author (Please leave blank when not needed)
+# 作者署名（不需要请留空）/ A sign of an author (Please leave blank when not needed)
 TextBelowVersionText: ""
 
 # 职业类型 / Role Type
@@ -17,16 +17,12 @@ TeamImpostor: "内鬼阵营"
 TeamNeutral: "中立阵营"
 TeamCrewmate: "船员阵营"
 
-## 职业 / Roles
+# 职业 / Roles
 
-# 其它 / Other
+## 其它 / Other
 GM: "管理员"
 
-# 隐藏 / Hidden
-Sunnyboy: "阳光开朗大男孩"
-Bard: "吟游诗人"
-
-# 原版职业 / Vanilla
+## 原版职业 / Vanilla
 Crewmate: "船员"
 Engineer: "工程师"
 Scientist: "科学家"
@@ -34,7 +30,7 @@ GuardianAngel: "守护天使"
 Impostor: "内鬼"
 Shapeshifter: "变形者"
 
-# 内鬼阵营 / Impostors
+## 内鬼阵营 / Impostors
 BountyHunter: "赏金猎人"
 Mare: "梦魇"
 Fireworker: "烟花商人"
@@ -78,8 +74,9 @@ Stealth: "暗杀者"
 Messenger: "情报贩子"
 Penguin: "企鹅"
 Insider: "内幕人"
+Bard: "吟游诗人"
 
-# 船员阵营 / Crewmates
+## 船员阵营 / Crewmates
 Luckey: "幸运儿"
 LazyGuy: "摆烂人"
 SuperStar: "大明星"
@@ -111,7 +108,7 @@ Medium: "通灵师"
 Observer: "观察者"
 DoveOfPeace: "和平之鸽"
 
-# 中立阵营 / Neutrals
+## 中立阵营 / Neutrals
 Jester: "小丑"
 Arsonist: "纵火犯"
 Terrorist: "恐怖分子"
@@ -135,8 +132,9 @@ Follower: "赌徒"
 Succubus: "魅魔"
 SchrodingerCat: "薛定谔的猫"
 PlagueDoctor: "疫医"
+Sunnyboy: "阳光开朗大男孩"
 
-# 附加职业 / Add-ons
+## 附加职业 / Add-ons
 LastImpostor: "绝境者"
 Lovers: "恋人"
 Madmate: "叛徒"
@@ -162,7 +160,6 @@ Bait: "诱饵"
 Beartrap: "陷阱师"
 
 ## 附加职业作为前缀时 / Prefixes for Add-ons
-
 Prefix.Neptune: "海王"
 Prefix.Watcher: "窥视"
 Prefix.Flashman: "闪电"
@@ -183,9 +180,37 @@ Prefix.Reach: "持枪"
 Prefix.Bait: "诱饵"
 Prefix.Beartrap: "陷阱"
 
-## 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate screen
+## 胜利界面职业名 / Role Name for End Screen
+WinnerRoleText.Impostor: "内鬼"
+WinnerRoleText.Crewmate: "船员"
+WinnerRoleText.Jester: "小丑"
+WinnerRoleText.Terrorist: "恐怖分子"
+WinnerRoleText.Lovers: "恋人"
+WinnerRoleText.Executioner: "处刑人"
+WinnerRoleText.Arsonist: "纵火犯"
+WinnerRoleText.Revolutionist: "革命者们"
+WinnerRoleText.Jackal: "豺狼"
+WinnerRoleText.God: "神"
+WinnerRoleText.Mario: "马里奥"
+WinnerRoleText.Innocent: "冤罪师"
+WinnerRoleText.Pelican: "鹈鹕"
+WinnerRoleText.YouTuber: "UP主"
+WinnerRoleText.Egoist: "利己主义者"
+WinnerRoleText.Demon: "玩家"
+WinnerRoleText.Stalker: "潜藏者"
+WinnerRoleText.Workaholic: "工作狂"
+WinnerRoleText.Collector: "集票者"
+WinnerRoleText.BloodKnight: "嗜血骑士"
+WinnerRoleText.Succubus: "魅魔和她的随从们"
+WinnerRoleText.Opportunist: "投机者"
+WinnerRoleText.Hater: "Hater团"
+WinnerRoleText.Provocateur: "自爆卡车"
+WinnerRoleText.Sunnyboy: "阳光开朗大男孩"
+WinnerRoleText.Follower: "赌徒"
 
-# 内鬼阵营 / Impostor descriptions
+# 以下是职业简介（显示在开局以及任务栏的文本）/ Shows at Impostor/Crewmate Screen
+
+## 内鬼阵营 / Impostor Blurbs
 BountyHunterInfo: "走，去拿下您的目标！"
 MareInfo: "Good Night~"
 FireworkerInfo: "一起来看最后的烟花吧"
@@ -231,8 +256,9 @@ StealthInfo: "降下黑暗！"
 MessengerInfo: "我知晓一切"
 PenguinInfo: "扑哧扑哧！"
 InsiderInfo: "让我看看你是谁"
+BardInfo: "请让我赋诗一首"
 
-# 船员阵营 / Crewmate descriptions
+## 船员阵营 / Crewmate Blurbs
 LuckeyInfo: "您擅长治疗内鬼的低血压"
 LazyGuyInfo: "摆烂快乐！摆烂万岁！"
 SuperStarInfo: "全体目光向我看齐！"
@@ -265,7 +291,7 @@ MediumInfo: "若君心存不甘，不妨和我谈谈"
 ObserverInfo: "亲眼所见，亦非真实"
 DoveOfPeaceInfo: "何必打打杀杀呢？"
 
-# 中立阵营 / Neutral descriptions
+## 中立阵营 / Neutral Blurbs
 ArsonistInfo: "乖乖站好！"
 JesterInfo: "我没有、我不是、我对跳"
 OpportunistInfo: "苟到最后就是胜利！"
@@ -289,8 +315,9 @@ FollowerInfo: "诶哟，您看人真准~"
 SuccubusInfo: "没事的啦，姐姐会护着您的~"
 SchrodingerCatInfo: "喵~"
 PlagueDoctorInfo: "你看着病得不轻啊"
+SunnyboyInfo: "这个角色的建立究竟有什么意义"
 
-# 附加职业 / Add-ons descriptions
+## 附加职业 / Add-ons Blurbs
 LoversInfo: "最重要的是，记得照顾好您的另一半"
 MadmateInfo: "结局掌握在您的手中"
 NeptuneInfo: "笨蛋，我只爱您亿个人哦"
@@ -314,17 +341,13 @@ ReachInfo: "大人，时代变啦！"
 BaitInfo: "好消息，杀了我可以吃席"
 BeartrapInfo: "大奖小奖，能记住就是好奖"
 
-# 其它 / Other descriptions
+## 其它 / Other Blurbs
 GMInfo: "开局死的冤魂隔岸观火"
 NotAssignedInfo: "未被分配职业"
 
-# 隐藏 / Hidden descriptions
-SunnyboyInfo: "这个角色的建立究竟有什么意义"
-BardInfo: "请让我赋诗一首"
+# 以下是职业描述（使用/m或/r指令后得到的文本）/ Role Descriptions
 
-## 以下是职业描述（使用/m或/r指令后得到的文本）
-
-# 内鬼阵营 / Long Impostors descriptions
+## 内鬼阵营 / Impostors Descriptions
 BountyHunterInfoLong: "赏金猎人会被随机分配一个悬赏目标，若在规定时间内击杀了悬赏目标，则击杀CD会变得很短，能立刻进行下一次击杀。若赏金猎人击杀的人不是赏金目标，则击杀CD会被延长。若赏金猎人在规定时间内没有完成任何击杀，则目标会被随机切换为另一个人。"
 FireworkerInfoLong: "烟花商人可以安放烟花炸弹，造成范围性杀伤。烟花商人使用变形可以安放至多三个烟花炸弹。当存活的内鬼阵营玩家仅剩烟花商人且烟花炸弹安置完毕时，烟花商人可以使用变形下引爆炸弹。烟花炸弹可以同样炸死烟花商人自己。但如果烟花炸弹炸死所有存活玩家，那也算内鬼阵营胜利。"
 SerialKillerInfoLong: "嗜血杀手的击杀冷却很短，但是在指定时间内没有杀人的话，嗜血杀手就会自杀。"
@@ -368,8 +391,9 @@ StealthInfoLong: "暗杀者击杀后，所在房间的其他玩家会失明一�
 MessengerInfoLong: "每次会议开始时，情报贩子都可以受到一条记录了所有人位置的信息。存在内鬼的房间会标记「★」，存在尸体的房间会标记尸体数量。当其他内鬼击杀时，情报贩子可以看到杀戮闪烁。根据房主设定，情报贩子可能可以在杀戮发生后看到谋杀发生的地点。"
 PenguinInfoLong: "企鹅可以通过击杀键将目标拖到任何地方，并在倒计时结束或再次按下击杀键后杀死目标。"
 InsiderInfoLong: "内幕人可以看到全场所有人的职业、技能状态与任务数量。并根据设定，内幕人可能可以在完成指定的击杀数后看到叛徒。"
+BardInfoLong: "吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。"
 
-# 船员阵营 / Crewmates descriptions
+## 船员阵营 / Crewmates Descriptions
 LuckeyInfoLong: "幸运儿被击杀时，有概率抵挡这次死亡，具体概率根据房主设定。抵挡生效时凶手会看到幸运儿的身上出现护盾破碎的效果，但幸运儿自己什么都不会知道。"
 LazyGuyInfoLong: "摆烂人只有一个任务。另外，懒得要死的摆烂人并不会参与那些繁琐的事情，比如当黑客的替罪羊、给术士或者傀儡师办事之类的。摆烂人也不会拥有附加职业。"
 SuperStarInfoLong: "明星的名字旁会有星星的标识，所以大家都知道谁是大明星。只有凶手与大明星独处的时候才可以击杀大明星（仅限常规击杀）。此外，大明星不会参与赌博这种事情哦。（无法被赌怪猜测）"
@@ -402,7 +426,7 @@ MediumInfoLong: "当场上有玩家被击杀，通灵师会收到提示。每次
 ObserverInfoLong: "观察者可以看到其他玩家的碎盾动画。首次会议召开前观察者的技能不会生效。"
 DoveOfPeaceInfoLong: "当和平之鸽可以通过使用通风管道进行歌颂，在场所有拥有击杀键的玩家的击杀/技能冷却时间会被重置。当和平之鸽成为叛徒时歌颂只对船员生效。"
 
-# 中立阵营 / Neutrals descriptions
+## 中立阵营 / Neutrals Descriptions
 ArsonistInfoLong: "纵火犯可以通过对玩家点击击杀按钮并跟随其数秒来完成涂油，开始涂油以及涂油成功时会显示护盾破碎的动画作为提示（仅自己可见）。当所有存活玩家都被纵火犯涂油后，纵火犯可以通过跳通风管来点火，并单独获得胜利。\n玩家名显示「△」表示涂油中\n玩家名显示「▲」表示已涂油。"
 JesterInfoLong: "小丑被票出则小丑单独游戏胜利。游戏结束时若小丑仍存活则小丑输掉游戏。请注意：小丑、处刑人、冤罪师可以共享胜利。"
 TerroristInfoLong: "恐怖分子完成所有任务后死亡，则恐怖分子单独获得胜利。（怎么死都行，包括票死，反正死了就行）"
@@ -425,8 +449,9 @@ FollowerInfoLong: "赌徒可以通过击杀键在任何玩家身上下注，且�
 SuccubusInfoLong: "仅剩魅魔阵营与船员阵营且魅魔阵营人数大于船员人数，魅魔阵营获得胜利。魅魔可以通过击杀键魅惑一位非中立玩家。被魅惑的玩家技能不会改变，并被视为魅魔阵营，且不再具有原先的胜利条件。"
 SchrodingerCatInfoLong: "薛定谔的猫被击杀后会加入凶手的阵营，并跟随凶手胜利。"
 PlagueDoctorInfoLong: "疫医的目标是感染所有活着的玩家。疫医首先选择一名玩家来感染，之后任何在受感染玩家范围内停留一定时间的人都会被感染。感染进度是累积的，且不会因距离或会议重置。"
+SunnyboyInfoLong: "阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。"
 
-# 附加职业 / Add-ons descriptions
+## 附加职业 / Add-ons Descriptions
 LastImpostorInfoLong: "这个效果在内鬼仅剩一人时赋予该内鬼。使其击杀冷却缩短。"
 LoversInfoLong: "恋人为两名玩家的组合，可以看到对方名字旁有「♡」标志。恋人其中一人胜利时另一人也一起胜利，恋人其中一人死亡则另一人殉情（根据房主设定）。恋人其中一人在会议中被放逐时，另一人也将死亡并变为不可以被报告的尸体。"
 MadmateInfoLong: "只有船员会成为叛徒，叛徒需要帮助内鬼阵营获得胜利，当内鬼阵营失败时叛徒也会失败。叛徒与内鬼是否互知根据房主设定。\n摆烂人不会成为叛徒，部分船员职业是否可以成为叛徒依据房主设定。此外，当以下职业成为叛徒后技能将发生变动：\n时间操控者 => 做任务减少会议时间。\n保镖 => 凶手是内鬼的时不发动技能。\n掷雷兵 => 闪光弹只对船员生效。\n警长 => 默认可以击杀任何人。（具体可以击杀的阵营根据房主设定）\n正义赌怪 => 可以猜测船员。\n告密者 => 完成任务后与内鬼互认。\n愚者 => 准确地看到所有邪恶中立以及带刀船员玩家显示为红名。\n法官 => 可以随意审判。\n和平之鸽 => 歌颂只对船员生效。\n网红 => 死亡通知所有人。"
@@ -450,14 +475,27 @@ ReachInfoLong: "只有拥有击杀键的玩家能持枪。持枪的玩家的击�
 BaitInfoLong: "诱饵被击杀时，击杀诱饵的凶手将被迫报告诱饵的尸体。但诱饵被清道夫或清理工击杀时技能会失效。"
 BeartrapInfoLong: "陷阱师被击杀时，凶手一段时间内将不能移动。"
 
-# 其它 / Other long description
+## 其它 / Other Descriptions
 GMInfoLong: "看我干啥，我只是个开局就死的冤魂，静静地吃瓜而已。"
 
-# 隐藏 / Hidden long descriptions
-SunnyboyInfoLong: "阳光开朗大男孩可以通过生命面板查看他人的生命状态。阳光开朗大男孩在场时游戏不会因人数优势结束（例如内鬼人数大于船员或没有存活内鬼），游戏结束时若阳光开朗大男孩死亡，则阳光开朗大男孩跟随胜利阵营一起胜利。"
-BardInfoLong: "吟游诗人在场时，驱逐确认将会显示为吟游诗人创作的句子。每当吟游诗人完成一次创作，则吟游诗人的击杀冷却永久减半。"
+# 选项菜单标题 / Option Menu Titles
+MenuTitle.Disable: "乂 禁用相关设定"
+MenuTitle.Sabotage: "⚠ 破坏相关设定"
+MenuTitle.Meeting: "♬ 会议相关设定"
+MenuTitle.Ghost: "☂ 幽灵相关设定"
+MenuTitle.Other: "※ 其它设定"
+MenuTitle.Ejections: "◈ 驱逐相关设定"
+MenuTitle.Map: "❀ 地图相关设定"
+MenuTitle.AutoKick: "♠ 自动踢出相关设定"
+MenuTitle.CloudServer: "☁ 云服务相关设定"
+MenuTitle.GameInfo: "☎ 游戏信息相关设定"
+MenuTitle.Personality: "☃ 个性化相关设定"
+MenuTitle.Advanced: "★ 高级设定"
+MenuTitle.Addon.Common: "◈ 通用附加"
+MenuTitle.Addon.Crew: "◇ 船员附加"
+MenuTitle.Addon.Imp: "◆ 内鬼附加"
 
-## 模式选项 / Settings
+# 游戏&系统选项 / System&Game Settings
 DisableMeeting: "禁用会议与报告尸体"
 DisableCloseDoor: "禁用关门"
 DisableSabotage: "禁用破坏"
@@ -613,26 +651,14 @@ NoticeEveryone: "通知所有人（除了它）"
 CheatResponses: "EAC检测到外挂时"
 NeutralRoleWinTogether: "同种职业<color=#ffab1b>中立</color>玩家共同胜利"
 NeutralWinTogether: "全体<color=#ffab1b>中立</color>阵营玩家共同胜利"
-MenuTitle.Disable: "乂 禁用相关设定"
-MenuTitle.Sabotage: "⚠ 破坏相关设定"
-MenuTitle.Meeting: "♬ 会议相关设定"
-MenuTitle.Ghost: "☂ 幽灵相关设定"
-MenuTitle.Other: "※ 其它设定"
-MenuTitle.Ejections: "◈ 驱逐相关设定"
-MenuTitle.Map: "❀ 地图相关设定"
-MenuTitle.AutoKick: "♠ 自动踢出相关设定"
-MenuTitle.CloudServer: "☁ 云服务相关设定"
-MenuTitle.GameInfo: "☎ 游戏信息相关设定"
-MenuTitle.Personality: "☃ 个性化相关设定"
-MenuTitle.Advanced: "★ 高级设定"
-MenuTitle.Addon.Common: "◈ 通用附加"
-MenuTitle.Addon.Crew: "◇ 船员附加"
-MenuTitle.Addon.Imp: "◆ 内鬼附加"
 ShieldPersonDiedFirst: "首刀保护（仅限被杀）"
 ModifySabotageCooldown: "修改破坏冷却"
 SabotageCooldown: "破坏冷却时长"
+SabotageTimeControl: "更改修理时限"
+PolusReactorTimeLimit: "波鲁斯抗震稳定器修理时限"
+AirshipReactorTimeLimit: "飞艇坠毁路线修理时限"
 
-## 详细设定 / Advanced Settings
+# 职业详细设定 / Role Settings
 AssignMode: "职业分配模式"
 AssignAlgorithm.Fixed: "固定"
 AssignAlgorithm.Random: "随机"
@@ -914,7 +940,7 @@ CanBeforeSchrodingerCatWinTheCrewmate: "无阵营时可以跟随<color=#8cffff>�
 SchrodingerCatExiledTeamChanges: "被票出时变为随机阵营"
 SchrodingerCatCanSeeKillableTeammate: "可以看见具有击杀能力的队友"
 
-## 随机出生点
+# 随机出生点 / Random Spawn Locations
 Junction: "三岔路"
 OfficeLeft: "办公室（左）"
 OfficeRight: "办公室（右）"
@@ -926,7 +952,7 @@ JungleTop: "丛林上"
 JungleBottom: "丛林下"
 Precipice: "悬崖"
 
-## 死因 / Death Reasons
+# 死因 / Death Reasons
 DeathReason.Kill: "被杀"
 DeathReason.Vote: "票出"
 DeathReason.Suicide: "自杀"
@@ -957,12 +983,7 @@ Alive: "存活"
 Win: "胜利"
 Last-: "仅存"
 
-## 反应时间控制 / Sabotages
-SabotageTimeControl: "更改修理时限"
-PolusReactorTimeLimit: "波鲁斯抗震稳定器修理时限"
-AirshipReactorTimeLimit: "飞艇坠毁路线修理时限"
-
-## 客户端设置 / Client Options
+# 客户端选项 / Client Options
 TONXOptions: "TONX 选项"
 Back: "返回"
 Yes: "是"
@@ -986,7 +1007,7 @@ FastBoot: "快速启动模式"
 EnableCustomButton: "使用模组按钮样式"
 EnableCustomSoundEffect: "开启模组技能音效"
 
-## 头衔管理 / Custom Name Tag
+# 头衔管理 / Custom Titles
 NameTagOptions: "头衔管理"
 NewNameTag: "新建"
 OnlyAvailableInMainMenu: "仅首页可用"
@@ -1007,7 +1028,7 @@ FriendCodeAlreadyExist: "该好友代码已拥有头衔"
 FriendCodeIncorrect: "请输入正确的好友代码"
 CustomNameTagHelp: "房主可以为其他玩家或自己添加头衔，头衔会在该房主开房时生效。每位房主设定的头衔不同，因此您设定的头衔不会在其他人的房间生效。请注意：私服里只会显示房主的头衔。（若有玩家自带头衔，那是系统发放的）"
 
-## 指令帮助 / Commands
+# 指令帮助 / Commands Help
 CommandList: "★ 主要指令:"
 Command.now: "→ 显示当前设置"
 Command.roles: "[职业名] → 显示职业介绍"
@@ -1028,7 +1049,7 @@ Command.qq: "→ 让车队姬在群里发房号"
 Command.dump: "→ 将游戏运行日志输出到桌面"
 Command.up: "[职业名] → 指定下局您的职业（导演模式）"
 
-# 给玩家的技能提示信息 / Skills in Meeting
+# 给玩家的技能提示信息 / Skill Notifications
 SkillUsedLeft: "您发动技能召开了会议。\n您的技能剩余使用次数："
 MafiaDeadMsg: "黑手党的死亡，意味着复仇的开始\n请使用/rv + [玩家编号] 以击杀指定玩家\n您可以在玩家名字前看到该玩家的编号\n或输入/rv获取玩家编号列表"
 MafiaAliveKill: "黑手党的复仇只能在死亡后发动"
@@ -1134,8 +1155,14 @@ MadmateSelfVoteModeSuccessfulMutiny: "您已成为叛徒，本次投票不计入
 MadmateSelfVoteModeMutinyFailed: "很抱歉，目前您无法成为叛徒，本次投票不计入，请重新投票"
 SkillDoneAndYouCanVoteNormallyNow: "\n您现在可以正常投票了"
 TargetInvalidAndYouShouldChooseAnotherTarget: "\n请重新选择一个目标"
+EnterVentToWin: "跳管道来获得胜利！"
+EatenByPelican: "您被鹈鹕吞了，请等待鹈鹕死亡或会议..."
+FireworksPutPhase: "还要安放{0}枚烟花"
+FireworksWaitPhase: "耐心等待...."
+FireworksReadyFirePhase: "烟花来咯，大型烟花秀开始！"
+EnterVentWinCountDown: "在{0}秒内跳管道胜利！"
 
-## 信息 / Message
+# 信息 / Messages
 Message.SetToSeconds: "信息发送冷却时间为【{0}】秒"
 Message.MessageWaitHelp: "指定一个数设定秒数"
 Message.TemplateNotFoundHost: "未找到与“{0}”对应的消息"
@@ -1180,7 +1207,24 @@ Message.DirectorModeSelectFailed: "无法将您分配为【{0}】\n可能是因�
 Message.DirectorModeCanNotFindRoleThePlayerEnter: "请正确拼写您要指定的职业哦~\n查看所有职业请直接输入/r"
 Message.DirectorModeNotice: "提示：该房间启用了【导演模式】，房主可以指定自己的职业。"
 
-## 警告 / Warnings
+# 通知 / Notifications
+PlayerLeft: "【{0}】离开了游戏"
+PlayerKickByHost: "【{0}】被房主踢出游戏"
+PlayerBanByHost: "【{0}】被房主封禁"
+PlayerLeftCuzError: "【{0}】因为发生错误离开了游戏"
+PlayerLeftByAU-Anticheat: "【{0}】被AmongUs官方的反作弊踢出（和TONX无关）"
+KickAndriodPlayer: "【{0}】因该房禁止安卓被请离房间"
+KickBecauseLowLevel: "【{0}】因未达到房主规定的等级限制被请离房间"
+KickBecauseDiffrentVersionOrMod: "【{0}】因安装了不同版本的模组被请离房间"
+RpcAntiBlackOutIgnored: "【{0}】发生未知错误，根据房主设置将忽略该玩家"
+RpcAntiBlackOutEndGame: "【{0}】发生未知错误，将终止游戏以防止黑屏"
+RpcAntiBlackOutNotifyInLobby: "由于玩家【{0}】发生未知错误，已终止游戏防止卡房。若您不希望在其他玩家发生错误时终止游戏，请在设置关闭【{1}】"
+AntiBlackOutNotifyInLobby: "由于未知错误发生，已终止游戏以防止黑屏。很抱歉，所有的H系列模组都存在这个问题，自动结束游戏是必要的保护措施，否则游戏将无法运行。"
+AntiBlackOutLoggerSendInGame: "由于未知错误发生，将终止游戏以防止黑屏"
+AntiBlackOutRequestHostToForceEnd: "您触发了黑屏Bug，正在请求房主终止游戏..."
+AntiBlackOutHostRejectForceEnd: "您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接"
+
+# 警告 / Warnings
 Warning.OverrideExiledPlayer: "警告：由于启用了豺狼、鹈鹕、魅魔等拥有独立阵营的职业，为了避免黑屏错误，将会将驱逐动画显示为跳过（只会影响视觉，不会影响投票结果）"
 Warning.InvalidRpc: "【{0}】被踢出，因其试图发送无效的数据，请确保您没有安装 TONX 以外的模组。"
 Warning.NoModHost: "非TONX房"
@@ -1188,30 +1232,29 @@ Warning.MismatchedVersion: "{0}\n安装了其它版本的 {1}"
 Warning.AutoExitAtMismatchedVersion: "您的 {0} 版本与房主不同\n您将在 {1} 秒内被踢出"
 Warning.CantKickDev: "很抱歉，您无法踢出开发者"
 
-## 错误 / Error
+# 错误 / Error
 Error.MeetingException: "错误: {0}\n使用 Shift+M+Enter 强制结束会议"
 Error.InvalidRoleAssignment: "错误：在分配职业时发现职业无效的玩家 ({0})"
 Error.InvalidColor: "警告：存在使用非法颜色的玩家，可能引起游戏错误"
 Error.InvalidColorPreventStart: "请等待其他玩家加载完毕后开始游戏\n（或存在非法颜色无法开始游戏）"
-### ErrorText関連, / Error Levels
+## ErrorText関連, / Error Levels
 ErrorLevel1: "可能同时产生多个bug"
 ErrorLevel2: "可能出现bug"
 ErrorLevel3: "未发布版本"
 TerminateCommand: "强制结束游戏快捷键"
-#### 000 Test,
+### 000 Test,
 ERR-000-000-0: "无错误"
 ERR-000-900-0: "测试错误Lv0"
 ERR-000-910-1: "测试错误Lv1"
 ERR-000-920-2: "测试错误Lv2"
 ERR-000-930-3: "测试错误Lv3"
 ERR-000-804-1: "测试错误未知"
-#### 001 Main,
+### 001 Main,
 ERR-001-000-3: "在主目录出现重复密钥"
-#### 002 Support
+### 002 Support
 ERR-002-000-1: "您的 AmongUs 版本与 TONX 不兼容，请更新游戏"
 
-## 其它 / Other things
-BaseOn: "基于"
+# 消息标题 / Messages Titles
 DefaultSystemMessageTitle: "【 ★ 系统消息 ★ 】"
 MessageFromTheHost: "【 ★ 房主消息 ★ 】"
 MessageFromEAC: "【 ★ EAC ★ 】"
@@ -1229,6 +1272,154 @@ MorticianCheckTitle: "【 ★ 尸体检查 ★ 】"
 MediumshipTitle: "【 ★ 冥界之声 ★ 】"
 MafiaRevengeTitle: "【 ★ 特供情报 ★ 】"
 OnPlayerJoinMsgTitle: "【 ★ {0} 您好！★ 】"
+
+# 单位 / Units
+Format.Players: "{0}人"
+Format.Seconds: "{0}秒"
+Format.Percent: "{0}%"
+Format.Times: "{0}次"
+Format.Multiplier: "{0}x"
+Format.Votes: "{0}票"
+Format.Pieces: "{0}个"
+Format.Health: "{0}点"
+Format.Level: "{0}级"
+
+# 按钮文本 / Buttons Texts
+KillButtonText: "击杀"
+SniperSnipeButtonText: "狙击"
+FireworkerExplosionButtonText: "引爆"
+FireworkerInstallAtionButtonText: "设置"
+SerialKillerSuicideButtonText: "自杀倒计时"
+WarlockCurseButtonText: "下咒"
+WarlockShapeshiftButtonText: "咒杀"
+AssassinMarkButtonText: "标记"
+WitchSpellButtonText: "诅咒"
+VampireBiteButtonText: "吸血"
+MinerTeleButtonText: "传送"
+ArsonistDouseButtonText: "涂油"
+PuppeteerOperateButtonText: "操控"
+BountyHunterChangeButtonText: "变更"
+EvilTrackerChangeButtonText: "追踪"
+InnocentButtonText: "栽赃"
+CapitalistButtonText: "压榨"
+PelicanButtonText: "吞下"
+DeceiverButtonText: "贩卖"
+GangsterButtonText: "招募"
+RevolutionistDrawButtonText: "拉拢"
+HaterButtonText: "制裁"
+MedicButtonText: "保护"
+DemonButtonText: "攻击"
+SoulCatcherButtonText: "夺舍"
+BallLightningButtonText: "汽化"
+ProvocateurButtonText: "问候"
+ButcherButtonText: "肢解"
+AssassinShapeshiftText: "刺杀"
+BomberShapeshiftText: "自爆"
+QuickShooterShapeshiftText: "储存"
+ConcealerShapeshiftText: "隐蔽"
+HackerShapeshiftText: "骇入"
+DefaultShapeshiftText: "变形"
+DefaultRevertShapeshiftText: "解除"
+CleanerReportButtonText: "清理"
+SwooperVentButtonText: "隐身"
+SwooperRevertVentButtonText: "解除"
+MarioVentButtonText: "快乐"
+VeteranVetnButtonText: "警戒"
+GrenadierVetnButtonText: "闪光弹"
+MayorVetnButtonText: "集合"
+ParanoiaVetnButtonText: "呼救"
+SheriffKillButtonText: "执法"
+ArsonistVetnButtonText: "点火"
+RevolutionistVetnButtonText: "革命"
+FollowerKillButtonText: "下注"
+SuccubusKillButtonText: "魅惑"
+DoveOfPeaceVentButtonText: "歌颂"
+EscapistTeleportButtonText: "传送"
+EscapistMarkButtonText: "标记"
+BoobyTrapKillButtonText: "设陷"
+PenguinKillButtonText: "拖拽"
+
+# 作弊 / EAC
+EAC.CheatDetected.HighLevel: "警告：EAC正在抵御炸房外挂"
+EAC.CheatDetected.LowLevel: "警告：EAC检测到可能存在作弊玩家"
+
+# 驱逐确认 / Ejections
+PlayerExiled: "{0} 被驱逐了..."
+PlayerIsRole: "{0} 是 {1}"
+BelongTo: "{0} 属于 {1}"
+IsGood: "{0} 是个好人"
+NoImpRemain: "已经没有内鬼啦"
+ImpRemain: "剩余 {0} 个内鬼"
+NeutralRemain: "剩余 {0} 个邪恶中立"
+ExiledWrongPerson: "票出 {0} 让您有种不详的预感，他是 {1}"
+ExiledJester: "<color=#ec62a5>小丑</color> 在狂笑着..."
+ExiledExeTarget: "而他的背后传来<color=#611c3a>处刑人</color>阴沉的笑声..."
+ExiledInnocentTarget: "回头一看，<color=#8f815e>冤罪师</color> 正数着手里的钱呢..."
+
+# 游戏结束原因 / Game Over Reasons
+GameOverReason.HumansByTask: "船员完成了任务"
+GameOverReason.HumansByVote: "内鬼被驱逐"
+GameOverReason.HumansDisconnect: "船员断线"
+GameOverReason.ImpostorByKill: "内鬼人数占优"
+GameOverReason.ImpostorBySabotage: "内鬼破坏了设施"
+GameOverReason.ImpostorByVote: "船员被驱逐"
+GameOverReason.ImpostorDisconnect: "内鬼断线"
+
+# 占卜师信息 / Fortune Teller Checks
+FortuneTellerCheck.HideMsg: "【{0}】似乎藏着不可告人的秘密"
+FortuneTellerCheck.Honest: "【{0}】似乎是个忠厚老实的人"
+FortuneTellerCheck.Impulse: "【{0}】正抑制着某种冲动"
+FortuneTellerCheck.Weirdo: "【{0}】有些突兀地混在人群中"
+FortuneTellerCheck.Blockbuster: "【{0}】渴望一鸣惊人而改变些什么"
+FortuneTellerCheck.Strong: "【{0}】藏匿着强大的力量却黯淡于社会"
+FortuneTellerCheck.Incomprehensible: "【{0}】令人十分难以理解"
+FortuneTellerCheck.Enthusiasm: "【{0}】热情似火地与人谈吐着"
+FortuneTellerCheck.Disturbed: "【{0}】有些令人感到异样且不详"
+FortuneTellerCheck.None: "【{0}】或许会就这么平凡一辈子"
+FortuneTellerCheck.Glitch: "TV2gPZ4wUJWYr{0}05gA6T5PKzBG17"
+FortuneTellerCheck.Love: "♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡"
+FortuneTellerCheck.TaskDone: "【{0}】的职业是【{1}】"
+
+# 模组信息 / Mod Infos
+Creater: "开创者"
+Collaborators: "开发者"
+PullRequester: "参与开发"
+Translator: "翻译支持"
+Contributor: "提供帮助"
+Art: "美术"
+Acknowledgement: "特别致谢"
+TownOfHost: "<color=#00bfff>TownOfHost</color> 及其全体开发者"
+TownOfHost-TheOtherRoles: "<color=#4FF918>TOH-TOR</color> 及其全体开发者"
+TownOfHost_Y: "<color=#ffff00>TOH_Y</color> 及其全体开发者"
+SuperNewRoles: "<color=#ff7f00>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> 及其全体开发者"
+Project-Lotus: "<color=#db985c>Project Lotus</color> 及其全体开发者"
+LangTChinese: "繁体中文"
+
+# 断连提示 / Disconect Reasons
+DCNotify.Hacking: "您被树懒的反作弊系统踢了\n（树懒还在持续发疯）"
+DCNotify.Banned: "您被该房间封禁"
+DCNotify.Kicked: "您被该房间踢出"
+DCNotify.DCFromServer: "您与服务器的连接已中断\n这可能是因为您的网络不稳定\n也可能是因为服务器不稳定或拒绝了您的访问"
+DCNotify.GameNotFound: "未找到指定房间，可能是房间已解散\n或检查您是否选择了与房间不同的服务器"
+DCNotify.GameStarted: "该房间正在游戏中，请等待游戏结束后加入"
+DCNotify.GameFull: "该房间已满人，请稍后重试"
+DCNotify.IncorrectVersion: "您的AmongUs版本与该房间不同"
+DCNotify.Description: "您被踢出房间\n理由：{0}"
+DCNotify.DenyName: "您的昵称含有违规字符"
+DCNotify.BanList: "您存在于该房间的黑名单"
+DCNotify.EACList: "您已被 EAC 封禁"
+DCNotify.CheatDetected: "您被 EAC 检测到疑似作弊行为"
+DCNotify.InvalidRPC: "您可能安装了与房主不同的模组或您的模组被恶意修改"
+DCNotify.ModVersionIncorrect: "您模组的版本与房主不同"
+DCNotify.SayStart: "您发送了太多的垃圾信息"
+DCNotify.BanWords: "您发送了太多的违禁消息"
+DCNotify.VoluntarilyQuit: "您选择主动离开\n没事的，有些房确实很令人厌恶，但这不是您的错\n去找到一个更好的房间吧"
+DCNotify.LowLevel: "您的等级未达到该房间的等级要求"
+DCNotify.NotLogin: "该房间不允许未登录的玩家加入"
+DCNotify.Andriod: "该房间不允许安卓玩家加入"
+
+# 其它 / Other Things
+BaseOn: "基于"
 TabGroup.SystemSettings: "系统设置"
 TabGroup.GameSettings: "游戏设置"
 TabGroup.CrewmateRoles: "船员阵营职业"
@@ -1271,12 +1462,6 @@ ModBrokenMessage: "模组文件损坏，请重启游戏或重装本模组"
 UnsupportedVersion: "您的 AmongUs 版本与 TONX 不兼容\n请更新游戏"
 DisabledByProgram: "公开房间的操作已被程序禁用"
 PublicNotAvailableOnThisVersion: "该版本的 TONX 暂不支持公开"
-EnterVentToWin: "跳管道来获得胜利！"
-EatenByPelican: "您被鹈鹕吞了，请等待鹈鹕死亡或会议..."
-FireworksPutPhase: "还要安放{0}枚烟花"
-FireworksWaitPhase: "耐心等待...."
-FireworksReadyFirePhase: "烟花来咯，大型烟花秀开始！"
-EnterVentWinCountDown: "在{0}秒内跳管道胜利！"
 InvalidArgs: "无效参数"
 On: "开启"
 Off: "关闭"
@@ -1332,68 +1517,6 @@ doOverride: "特别设置%role%的任务数"
 assignCommonTasks: "%role%的普通任务数"
 roleLongTasksNum: "%role%的长任务数"
 roleShortTasksNum: "%role%的短任务数"
-Format.Players: "{0}人"
-Format.Seconds: "{0}秒"
-Format.Percent: "{0}%"
-Format.Times: "{0}次"
-Format.Multiplier: "{0}x"
-Format.Votes: "{0}票"
-Format.Pieces: "{0}个"
-Format.Health: "{0}点"
-Format.Level: "{0}级"
-KillButtonText: "击杀"
-SniperSnipeButtonText: "狙击"
-FireworkerExplosionButtonText: "引爆"
-FireworkerInstallAtionButtonText: "设置"
-SerialKillerSuicideButtonText: "自杀倒计时"
-WarlockCurseButtonText: "下咒"
-WarlockShapeshiftButtonText: "咒杀"
-AssassinMarkButtonText: "标记"
-WitchSpellButtonText: "诅咒"
-VampireBiteButtonText: "吸血"
-MinerTeleButtonText: "传送"
-ArsonistDouseButtonText: "涂油"
-PuppeteerOperateButtonText: "操控"
-BountyHunterChangeButtonText: "变更"
-EvilTrackerChangeButtonText: "追踪"
-InnocentButtonText: "栽赃"
-CapitalistButtonText: "压榨"
-PelicanButtonText: "吞下"
-DeceiverButtonText: "贩卖"
-GangsterButtonText: "招募"
-RevolutionistDrawButtonText: "拉拢"
-HaterButtonText: "制裁"
-MedicButtonText: "保护"
-DemonButtonText: "攻击"
-SoulCatcherButtonText: "夺舍"
-BallLightningButtonText: "汽化"
-ProvocateurButtonText: "问候"
-ButcherButtonText: "肢解"
-AssassinShapeshiftText: "刺杀"
-BomberShapeshiftText: "自爆"
-QuickShooterShapeshiftText: "储存"
-ConcealerShapeshiftText: "隐蔽"
-HackerShapeshiftText: "骇入"
-DefaultShapeshiftText: "变形"
-DefaultRevertShapeshiftText: "解除"
-CleanerReportButtonText: "清理"
-SwooperVentButtonText: "隐身"
-SwooperRevertVentButtonText: "解除"
-MarioVentButtonText: "快乐"
-VeteranVetnButtonText: "警戒"
-GrenadierVetnButtonText: "闪光弹"
-MayorVetnButtonText: "集合"
-ParanoiaVetnButtonText: "呼救"
-SheriffKillButtonText: "执法"
-ArsonistVetnButtonText: "点火"
-RevolutionistVetnButtonText: "革命"
-FollowerKillButtonText: "下注"
-SuccubusKillButtonText: "魅惑"
-DoveOfPeaceVentButtonText: "歌颂"
-EscapistTeleportButtonText: "传送"
-EscapistMarkButtonText: "标记"
-BoobyTrapKillButtonText: "设陷"
-PenguinKillButtonText: "拖拽"
 DisabledBySettings: "已在设置被中禁用"
 Disabled: "禁用"
 FailToTrack: "无法追踪"
@@ -1419,22 +1542,7 @@ Mode: "模式"
 Target: "目标"
 PlayerInfo: "复盘信息"
 NoInfoExists: "没有存在的上局信息"
-PlayerLeft: "【{0}】离开了游戏"
-PlayerKickByHost: "【{0}】被房主踢出游戏"
-PlayerBanByHost: "【{0}】被房主封禁"
-PlayerLeftCuzError: "【{0}】因为发生错误离开了游戏"
-PlayerLeftByAU-Anticheat: "【{0}】被AmongUs官方的反作弊踢出（和TONX无关）"
-KickAndriodPlayer: "【{0}】因该房禁止安卓被请离房间"
-KickBecauseLowLevel: "【{0}】因未达到房主规定的等级限制被请离房间"
-KickBecauseDiffrentVersionOrMod: "【{0}】因安装了不同版本的模组被请离房间"
 GameOver: "游戏结束"
-RpcAntiBlackOutIgnored: "【{0}】发生未知错误，根据房主设置将忽略该玩家"
-RpcAntiBlackOutEndGame: "【{0}】发生未知错误，将终止游戏以防止黑屏"
-RpcAntiBlackOutNotifyInLobby: "由于玩家【{0}】发生未知错误，已终止游戏防止卡房。若您不希望在其他玩家发生错误时终止游戏，请在设置关闭【{1}】"
-AntiBlackOutNotifyInLobby: "由于未知错误发生，已终止游戏以防止黑屏。很抱歉，所有的H系列模组都存在这个问题，自动结束游戏是必要的保护措施，否则游戏将无法运行。"
-AntiBlackOutLoggerSendInGame: "由于未知错误发生，将终止游戏以防止黑屏"
-AntiBlackOutRequestHostToForceEnd: "您触发了黑屏Bug，正在请求房主终止游戏..."
-AntiBlackOutHostRejectForceEnd: "您触发了黑屏Bug，房主拒绝终止游戏，稍后将为您断开连接"
 Website: "模组官网"
 NextPage: "下一页"
 PreviousPage: "上一页"
@@ -1461,110 +1569,3 @@ MurderNotify: "谋杀"
 Deadbody: "死亡"
 PenguinTimerText: "拖拽倒计时"
 Infected: "感染"
-
-## 作弊 / EAC
-EAC.CheatDetected.HighLevel: "警告：EAC正在抵御炸房外挂"
-EAC.CheatDetected.LowLevel: "警告：EAC检测到可能存在作弊玩家"
-PlayerIsRole: "{0} 是 {1}"
-
-## 驱逐确认 / Ejections
-PlayerExiled: "{0} 被驱逐了..."
-NoImpRemain: "已经没有内鬼啦"
-ImpRemain: "剩余 {0} 个内鬼"
-NeutralRemain: "剩余 {0} 个邪恶中立"
-IsGood: "{0} 是个好人"
-BelongTo: "{0} 属于 {1}"
-ExiledWrongPerson: "票出 {0} 让您有种不详的预感，他是 {1}"
-ExiledJester: "<color=#ec62a5>小丑</color> 在狂笑着..."
-ExiledExeTarget: "而他的背后传来<color=#611c3a>处刑人</color>阴沉的笑声..."
-ExiledInnocentTarget: "回头一看，<color=#8f815e>冤罪师</color> 正数着手里的钱呢..."
-
-## 游戏结束原因 / Game Overs
-GameOverReason.HumansByTask: "船员完成了任务"
-GameOverReason.HumansByVote: "内鬼被驱逐"
-GameOverReason.HumansDisconnect: "船员断线"
-GameOverReason.ImpostorByKill: "内鬼人数占优"
-GameOverReason.ImpostorBySabotage: "内鬼破坏了设施"
-GameOverReason.ImpostorByVote: "船员被驱逐"
-GameOverReason.ImpostorDisconnect: "内鬼断线"
-FortuneTellerCheck.HideMsg: "【{0}】似乎藏着不可告人的秘密"
-
-## 占卜师信息 / FortuneTeller Checks
-FortuneTellerCheck.Honest: "【{0}】似乎是个忠厚老实的人"
-FortuneTellerCheck.Impulse: "【{0}】正抑制着某种冲动"
-FortuneTellerCheck.Weirdo: "【{0}】有些突兀地混在人群中"
-FortuneTellerCheck.Blockbuster: "【{0}】渴望一鸣惊人而改变些什么"
-FortuneTellerCheck.Strong: "【{0}】藏匿着强大的力量却黯淡于社会"
-FortuneTellerCheck.Incomprehensible: "【{0}】令人十分难以理解"
-FortuneTellerCheck.Enthusiasm: "【{0}】热情似火地与人谈吐着"
-FortuneTellerCheck.Disturbed: "【{0}】有些令人感到异样且不详"
-FortuneTellerCheck.None: "【{0}】或许会就这么平凡一辈子"
-FortuneTellerCheck.Glitch: "TV2gPZ4wUJWYr{0}05gA6T5PKzBG17"
-FortuneTellerCheck.Love: "♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡♡"
-FortuneTellerCheck.TaskDone: "【{0}】的职业是【{1}】"
-
-## 模组信息 / Mod Info
-Creater: "开创者"
-Collaborators: "开发者"
-PullRequester: "参与开发"
-Translator: "翻译支持"
-Contributor: "提供帮助"
-Art: "美术"
-Acknowledgement: "特别致谢"
-TownOfHost: "<color=#00bfff>TownOfHost</color> 及其全体开发者"
-TownOfHost-TheOtherRoles: "<color=#4FF918>TOH-TOR</color> 及其全体开发者"
-TownOfHost_Y: "<color=#ffff00>TOH_Y</color> 及其全体开发者"
-SuperNewRoles: "<color=#ff7f00>Super</color><color=#ff0000>New</color><color=#00ff00>Roles</color> 及其全体开发者"
-Project-Lotus: "<color=#db985c>Project Lotus</color> 及其全体开发者"
-LangTChinese: "繁体中文"
-
-## 断连提示 / Disconect reasons
-DCNotify.Hacking: "您被树懒的反作弊系统踢了\n（树懒还在持续发疯）"
-DCNotify.Banned: "您被该房间封禁"
-DCNotify.Kicked: "您被该房间踢出"
-DCNotify.DCFromServer: "您与服务器的连接已中断\n这可能是因为您的网络不稳定\n也可能是因为服务器不稳定或拒绝了您的访问"
-DCNotify.GameNotFound: "未找到指定房间，可能是房间已解散\n或检查您是否选择了与房间不同的服务器"
-DCNotify.GameStarted: "该房间正在游戏中，请等待游戏结束后加入"
-DCNotify.GameFull: "该房间已满人，请稍后重试"
-DCNotify.IncorrectVersion: "您的AmongUs版本与该房间不同"
-DCNotify.Description: "您被踢出房间\n理由：{0}"
-DCNotify.DenyName: "您的昵称含有违规字符"
-DCNotify.BanList: "您存在于该房间的黑名单"
-DCNotify.EACList: "您已被 EAC 封禁"
-DCNotify.CheatDetected: "您被 EAC 检测到疑似作弊行为"
-DCNotify.InvalidRPC: "您可能安装了与房主不同的模组或您的模组被恶意修改"
-DCNotify.ModVersionIncorrect: "您模组的版本与房主不同"
-DCNotify.SayStart: "您发送了太多的垃圾信息"
-DCNotify.BanWords: "您发送了太多的违禁消息"
-DCNotify.VoluntarilyQuit: "您选择主动离开\n没事的，有些房确实很令人厌恶，但这不是您的错\n去找到一个更好的房间吧"
-DCNotify.LowLevel: "您的等级未达到该房间的等级要求"
-DCNotify.NotLogin: "该房间不允许未登录的玩家加入"
-DCNotify.Andriod: "该房间不允许安卓玩家加入"
-
-## 胜利界面职业名 / Role name for end screen
-WinnerRoleText.Impostor: "内鬼"
-WinnerRoleText.Crewmate: "船员"
-WinnerRoleText.Jester: "小丑"
-WinnerRoleText.Terrorist: "恐怖分子"
-WinnerRoleText.Lovers: "恋人"
-WinnerRoleText.Executioner: "处刑人"
-WinnerRoleText.Arsonist: "纵火犯"
-WinnerRoleText.Revolutionist: "革命者们"
-WinnerRoleText.Jackal: "豺狼"
-WinnerRoleText.God: "神"
-WinnerRoleText.Mario: "马里奥"
-WinnerRoleText.Innocent: "冤罪师"
-WinnerRoleText.Pelican: "鹈鹕"
-WinnerRoleText.YouTuber: "UP主"
-WinnerRoleText.Egoist: "利己主义者"
-WinnerRoleText.Demon: "玩家"
-WinnerRoleText.Stalker: "潜藏者"
-WinnerRoleText.Workaholic: "工作狂"
-WinnerRoleText.Collector: "集票者"
-WinnerRoleText.BloodKnight: "嗜血骑士"
-WinnerRoleText.Succubus: "魅魔和她的随从们"
-WinnerRoleText.Opportunist: "投机者"
-WinnerRoleText.Hater: "Hater团"
-WinnerRoleText.Provocateur: "自爆卡车"
-WinnerRoleText.Sunnyboy: "阳光开朗大男孩"
-WinnerRoleText.Follower: "赌徒"
