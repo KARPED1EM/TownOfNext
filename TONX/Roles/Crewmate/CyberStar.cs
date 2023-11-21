@@ -48,9 +48,9 @@ public sealed class CyberStar : RoleBase
     {
         return !player.IsAlive()
             || player.IsCrew()
-            || player.IsImp() && OptionImpKnow.GetBool()
-            || player.IsNeutralKiller() && OptionNeutralKillerKnow.GetBool()
-            || player.IsNeutralNonKiller() && OptionNeutralNonKillerKnow.GetBool();
+            || (player.IsImp() && OptionImpKnow.GetBool())
+            || (player.IsNeutralKiller() && OptionNeutralKillerKnow.GetBool())
+            || (player.IsNeutralNonKiller() && OptionNeutralNonKillerKnow.GetBool());
     }
     public override void OnPlayerDeath(PlayerControl player, CustomDeathReason deathReason, bool isOnMeeting = false)
     {
@@ -71,8 +71,8 @@ public sealed class CyberStar : RoleBase
     }
     public override void NotifyOnMeetingStart(ref List<(string, byte, string)> msgToSend)
     {
-        if (MsgToSend != null && MsgToSend.Count >= 1)
-            foreach (var msg in MsgToSend) msgToSend.Add(msg);
+        if (MsgToSend?.Any() ?? false)
+            msgToSend.AddRange(MsgToSend.ToArray());
         MsgToSend = new();
     }
 }

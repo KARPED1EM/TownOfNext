@@ -11,6 +11,7 @@ using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Impostor;
 using UnityEngine;
+using static Il2CppSystem.Globalization.CultureInfo;
 using static TONX.Translator;
 
 namespace TONX;
@@ -737,6 +738,7 @@ public static class PlayerControlDiePatch
     {
         if (AmongUsClient.Instance.AmHost)
         {
+            CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnPlayerDeath(__instance, PlayerState.GetByPlayerId(__instance.PlayerId).DeathReason, GameStates.IsMeeting));
             // 死者の最終位置にペットが残るバグ対応
             __instance.RpcSetPet("");
         }
