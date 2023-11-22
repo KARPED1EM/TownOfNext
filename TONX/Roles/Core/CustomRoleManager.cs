@@ -63,12 +63,15 @@ public static class CustomRoleManager
         if (killerRole is IKiller killer)
         {
             // 其他职业类对击杀事件的事先检查
-            foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
+            if (killer.IsKiller)
             {
-                if (!onCheckMurderPlayer(info))
+                foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
                 {
-                    Logger.Info($"OtherBefore：{onCheckMurderPlayer.Method.Name} 阻塞了击杀", "CheckMurder");
-                    return false;
+                    if (!onCheckMurderPlayer(info))
+                    {
+                        Logger.Info($"OtherBefore：{onCheckMurderPlayer.Method.Name} 阻塞了击杀", "CheckMurder");
+                        return false;
+                    }
                 }
             }
             // 凶杀检查击杀
@@ -86,23 +89,27 @@ public static class CustomRoleManager
                     return false;
                 }
             }
-            // 其他职业类对击杀事件的事后检查
-            foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_After)
+            if (killer.IsKiller)
             {
-                if (!onCheckMurderPlayer(info))
+                // 其他职业类对击杀事件的事后检查
+                foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_After)
                 {
-                    Logger.Info($"OtherAfter：{onCheckMurderPlayer.Method.Name} 阻塞了击杀", "CheckMurder");
-                    return false;
+                    if (!onCheckMurderPlayer(info))
+                    {
+                        Logger.Info($"OtherAfter：{onCheckMurderPlayer.Method.Name} 阻塞了击杀", "CheckMurder");
+                        return false;
+                    }
                 }
             }
-            // 调用职业类对击杀发生前进行预处理如设置冷却等操作
-            killer?.BeforeMurderPlayerAsKiller(info);
-            targetRole?.BeforeMurderPlayerAsTarget(info);
         }
 
         //キル可能だった場合のみMurderPlayerに進む
         if (info.CanKill && info.DoKill)
         {
+            // 调用职业类对击杀发生前进行预处理如设置冷却等操作
+            if (killerRole is IKiller killer2) killer2?.BeforeMurderPlayerAsKiller(info);
+            targetRole?.BeforeMurderPlayerAsTarget(info);
+
             //MurderPlayer用にinfoを保存
             CheckMurderInfos[appearanceKiller.PlayerId] = info;
             appearanceKiller.RpcMurderPlayer(appearanceTarget);
