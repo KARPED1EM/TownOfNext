@@ -80,12 +80,8 @@ public sealed class Terrorist : RoleBase
     }
     public void Win()
     {
-        foreach (var otherPlayer in Main.AllAlivePlayerControls)
+        foreach (var otherPlayer in Main.AllAlivePlayerControls.Where(p => !Is(p)))
         {
-            if (otherPlayer.Is(CustomRoles.Terrorist))
-            {
-                continue;
-            }
             otherPlayer.SetRealKiller(Player);
             otherPlayer.RpcMurderPlayer(otherPlayer);
             var playerState = PlayerState.GetByPlayerId(otherPlayer.PlayerId);
