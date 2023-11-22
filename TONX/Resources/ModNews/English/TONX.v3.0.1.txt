@@ -1,0 +1,61 @@
+#Number:100044
+#Title:TownOfNext v3.0.1
+#SubTitle:★★★★TO The Next★★★★
+#ShortTitle:★TONX v3.0.1
+#Date:2023-11-23T00:00:00Z
+#-----------------------------
+
+## Base
+- Base on AmongUs v2023.10.24
+- Base on TOH v5.1.3
+
+## Warning
+- Create/join public lobbies is temporarily unavailable
+- This change is due to a server-side update that makes modded public lobbies unavailable for vanilla. Private lobbies are not affected.
+- Currently, this change is NOT permanent.
+
+## Fix
+- Fixed the bug of frame drops in the game when the host is a GM
+- Fixed the bug of incorrect translation of warnings for anti-black screen measures
+- Fixed the bug where Pelicans were unable to eat player on the Fungle map
+- Fixed the bug where the Scavenger could not use skills on the Fungle map
+- Fixed the bug of inoperability caused by switching the vanilla of the main page
+- Fixed the bug that some commands cannot be used
+- Fixed the bug caused by the window that showing the reason for disconnection
+- Fixed the bug of overlapping text due to incorrect text format of /n command
+- Fixed the bug where the game does not respond after update is completed
+- Fixed the bug where updates often failed due to reasons other than the network
+- Fixed the bug where no one would receive the prompt after the death of Celebrity
+- Fixed the bug where the Mortician would not receive a prompt after the player dies.
+- Fixed the bug where hacking skills would not report the dead players but forced self-reporting
+- Fixed the bug where players in the Pelican's belly would not be teleported back after pelican's death
+- Fixed the bug where Repairmen could not use vent
+- Fixed the bug where skill cooldown would be paused when using F1
+- Fixed the bug where sometimes the kill button would not respond
+- Fixed the bug where Jackal's skills would sometimes trigger when no one died
+- Fixed the bug that a large number of roles skills could not be triggered when addons enabled
+- Fixed the bug where the Blood Knight can directly see the Impostor and cannot kill the Impostor
+- Fixed the bug where vanilla players would not display themselves as lovers when there was Neptune on the field
+- Fixed the bug where sometimes player names were displayed as empty
+
+## Changing
+- Completely disable EAC and TONX-Chan to prevent false positives from anti-virus software
+- Colorize message templates in all languages
+- Color the /help command list
+- Players on the EAC list will not be able to create public lobbies
+- The mod side will no longer see Gusser/Judge commands sent by other players
+
+## Deletion
+- Options: Try Hide Gusser/Judge commands (enabled by default)
+
+## New Feature
+- Translation: Portuguese (Brazilian)
+- Players who tamper with friend codes or are not logged in can now be banned
+- Players of the vanilla can now see the format and colored text of system messages
+- Try to hide the Gusser/Judge command to keep messages logged if possible
+- New F1 roles introduction view page
+- Duplicate player nicknames will be modified to ensure there are no duplicate names
+
+## Role Changing
+- Directly display the SuperStar’s role name to all players
+- Workaholic & Hater has been fixed and added role option lists
