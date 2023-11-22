@@ -8,12 +8,6 @@ public static class ChatBubblePatch
 {
     private static bool IsModdedMsg(string name) => name.EndsWith('\0');
 
-    [HarmonyPatch(nameof(ChatBubble.SetLeft))]
-    [HarmonyPatch(nameof(ChatBubble.SetRight))]
-    [HarmonyPostfix]
-    public static void SetRightOrLeft_Postfix(ChatBubble __instance)
-        => __instance.TextArea.richText = true;
-
     [HarmonyPatch(nameof(ChatBubble.SetName)), HarmonyPostfix]
     public static void SetName_Postfix(ChatBubble __instance)
     {

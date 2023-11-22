@@ -46,11 +46,11 @@ public static class NameTagManager
         if (!player.AmOwner && !AllNameTags.ContainsKey(player.FriendCode)) return;
 
         string name = player.GetTrueName();
-        if (Main.nickName != "" && player.AmOwner) name = Main.nickName;
+        if (Main.HostNickName != "" && player.AmOwner) name = Main.HostNickName;
 
         if (AmongUsClient.Instance.IsGameStarted && player.AmOwner)
         {
-            if (Options.FormatNameMode.GetInt() == 1 && Main.nickName == "")
+            if (Options.FormatNameMode.GetInt() == 1 && Main.HostNickName == "")
                 name = Palette.GetColorName(Camouflage.PlayerSkins[PlayerControl.LocalPlayer.PlayerId].ColorId);
         }
 

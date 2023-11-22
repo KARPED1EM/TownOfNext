@@ -204,7 +204,7 @@ public sealed class Arsonist : RoleBase, IKiller
         text = GetString("ArsonistDouseButtonText");
         return true;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("ArsonistVetnButtonText");
         return true;
@@ -214,7 +214,7 @@ public sealed class Arsonist : RoleBase, IKiller
         buttonName = "Douse";
         return true;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Ignite";
         return true;

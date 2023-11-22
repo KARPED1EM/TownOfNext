@@ -26,7 +26,7 @@ public static class GuesserHelper
         }
         return text;
     }
-    public static bool CheckCommond(ref string msg, string command, bool exact = true)
+    public static bool MatchCommond(ref string msg, string command, bool exact = true)
     {
         var comList = command.Split('|');
         for (int i = 0; i < comList.Length; i++)
@@ -69,18 +69,17 @@ public static class GuesserHelper
         else return -1;
     }
     private static bool ComfirmIncludeMsg(string msg, string key) => key.Split('|').Any(msg.Contains);
-    public static bool GuesserMsg(PlayerControl pc, string msg)
+    public static bool GuesserMsg(PlayerControl pc, string msg, out bool spam)
     {
-        var originMsg = msg;
+        spam = false;
 
-        if (!AmongUsClient.Instance.AmHost) return false;
         if (!GameStates.IsInGame || pc == null) return false;
         if (!pc.Is(CustomRoles.NiceGuesser) && !pc.Is(CustomRoles.EvilGuesser)) return false;
 
         int operate; // 1:ID 2:猜测
-        msg = msg.ToLower().TrimStart().TrimEnd();
-        if (CheckCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
-        else if (CheckCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌", false)) operate = 2;
+        msg = msg.ToLower().Trim();
+        if (MatchCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
+        else if (MatchCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌", false)) operate = 2;
         else return false;
 
         if (!pc.IsAlive())
@@ -96,11 +95,8 @@ public static class GuesserHelper
         }
         else if (operate == 2)
         {
-            if (
-            pc.Is(CustomRoles.NiceGuesser) && NiceGuesser.OptionHideMsg.GetBool() ||
-            pc.Is(CustomRoles.EvilGuesser) && EvilGuesser.OptionHideMsg.GetBool()
-            ) TryHideMsg();
-            else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
+            spam = true;
+            if (!AmongUsClient.Instance.AmHost) return true;
 
             if (!MsgToPlayerAndRole(msg, out byte targetId, out CustomRoles role, out string error))
             {
@@ -190,17 +186,17 @@ public static class GuesserHelper
 
         CustomSoundsManager.RPCPlayCustomSoundAll("Gunfire");
 
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             var state = PlayerState.GetByPlayerId(dp.PlayerId);
             state.DeathReason = CustomDeathReason.Gambled;
-            dp.SetRealKiller(guesser);
             dp.RpcSuicideWithAnime();
+            dp.SetRealKiller(guesser);
 
             //死者检查
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
-            new LateTask(() => { Utils.SendMessage(string.Format(GetString("GuessKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.NiceGuesser), GetString("GuessKillTitle"))); }, 0.6f, "Guess Msg");
+            _ = new LateTask(() => { Utils.SendMessage(string.Format(GetString("GuessKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.NiceGuesser), GetString("GuessKillTitle"))); }, 0.6f, "Guess Msg");
 
         }, 0.2f, "Guesser Kill");
 
@@ -251,7 +247,7 @@ public static class GuesserHelper
             return false;
         }
 
-        if (!ChatCommands.GetRoleByInputName(msg, out role, true))
+        if (!ChatCommand.GetRoleByInputName(msg, out role, true))
         {
             error = GetString("GuessHelp");
             return false;
@@ -259,43 +255,6 @@ public static class GuesserHelper
 
         error = string.Empty;
         return true;
-    }
-
-    public static void TryHideMsg()
-    {
-        ChatUpdatePatch.DoBlockChat = true;
-        List<CustomRoles> roles = Enum.GetValues(typeof(CustomRoles)).Cast<CustomRoles>().Where(x => x is not CustomRoles.NotAssigned).ToList();
-        var rd = IRandom.Instance;
-        string msg;
-        string[] command = new string[] { "bet", "bt", "guess", "gs", "shoot", "st", "赌", "猜", "审判", "tl", "判", "审" };
-        for (int i = 0; i < 20; i++)
-        {
-            msg = "/";
-            if (rd.Next(1, 100) < 20)
-            {
-                msg += "id";
-            }
-            else
-            {
-                msg += command[rd.Next(0, command.Length - 1)];
-                msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
-                msg += rd.Next(0, 15).ToString();
-                msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
-                CustomRoles role = roles[rd.Next(0, roles.Count())];
-                msg += rd.Next(1, 100) < 50 ? string.Empty : " ";
-                msg += Utils.GetRoleName(role);
-            }
-            var player = Main.AllAlivePlayerControls.ToArray()[rd.Next(0, Main.AllAlivePlayerControls.Count())];
-            DestroyableSingleton<HudManager>.Instance.Chat.AddChat(player, msg);
-            var writer = CustomRpcSender.Create("MessagesToSend", SendOption.None);
-            writer.StartMessage(-1);
-            writer.StartRpc(player.NetId, (byte)RpcCalls.SendChat)
-                .Write(msg)
-                .EndRpc();
-            writer.EndMessage();
-            writer.SendMessage();
-        }
-        ChatUpdatePatch.DoBlockChat = false;
     }
 
     public const int MaxOneScreenRole = 40;

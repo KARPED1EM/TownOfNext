@@ -3,6 +3,7 @@ using Hazel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TONX.Modules;
 using UnityEngine;
 using static TONX.Translator;
 
@@ -284,9 +285,14 @@ public abstract class RoleBase : IDisposable
     /// <summary>
     /// 玩家发送消息后调用的函数
     /// </summary>
-    /// <param name="msg">发送的消息内容</param>
-    /// <returns>true：阻塞该消息，并不继续向下判断</returns>
-    public virtual bool OnSendMessage(string msg) => false;
+    /// <param name="msg">玩家发送的消息</param>
+    /// <param name="recallMode">该消息应该做何处理</param>
+    /// <returns>true: 阻塞该消息并停止向下判断</returns>
+    public virtual bool OnSendMessage(string msg, out MsgRecallMode recallMode)
+    {
+        recallMode = MsgRecallMode.None;
+        return false;
+    }
 
     /// <summary>
     /// 每次任务完成时调用的函数
@@ -414,55 +420,39 @@ public abstract class RoleBase : IDisposable
     public virtual string GetSuffix(PlayerControl seer, PlayerControl seen = null, bool isForMeeting = false) => "";
 
     /// <summary>
-    /// 修改 HUD Manager 的任意属性
+    /// 修改技能按钮的剩余次数
     /// </summary>
-    /// <param name="__instance">HudManager 的实例</param>
-    public virtual void ChangeHudManager(HudManager __instance)
-    { }
-
+    public virtual int OverrideAbilityButtonUsesRemaining() => -1;
     /// <summary>
     /// 更改变形/跳管/生命面板按钮的文本
     /// </summary>
-    public virtual bool OverrideAbilityButtonText(out string text)
+    public virtual bool GetAbilityButtonText(out string text)
     {
         text = default;
         return false;
-        //StringNames? str = Player.Data.Role.Role switch
-        //{
-        //    RoleTypes.Engineer => StringNames.VentAbility,
-        //    RoleTypes.Scientist => StringNames.VitalsAbility,
-        //    RoleTypes.Shapeshifter => StringNames.ShapeshiftAbility,
-        //    RoleTypes.GuardianAngel => StringNames.ProtectAbility,
-        //    RoleTypes.ImpostorGhost or RoleTypes.CrewmateGhost => StringNames.HauntAbilityName,
-        //    _ => null
-        //};
-        //return str.HasValue ? GetString(str.Value) : "Invalid";
     }
-
     /// <summary>
     /// 更改变形/跳管/生命面板按钮的图片
     /// </summary>
     /// <param name="buttonName">按钮图片名</param>
     /// <returns>true：确定要覆盖</returns>
-    public virtual bool OverrideAbilityButtonSprite(out string buttonName)
+    public virtual bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = default;
         return false;
     }
-
     /// <summary>
     /// 更改报告按钮的文本
     /// </summary>
     /// <param name="text">覆盖后的文本</param>
     /// <returns>true：确定要覆盖</returns>
     public virtual string GetReportButtonText() => GetString(StringNames.ReportLabel);
-
     /// <summary>
     /// 更改报告按钮的图片
     /// </summary>
     /// <param name="buttonName">按钮图片名</param>
     /// <returns>true：确定要覆盖</returns>
-    public virtual bool OverrideReportButtonSprite(out string buttonName)
+    public virtual bool GetReportButtonSprite(out string buttonName)
     {
         buttonName = default;
         return false;
@@ -490,6 +480,7 @@ public abstract class RoleBase : IDisposable
         Cooldown,
         KillCooldown,
         CanVent,
+        VentCooldown,
         ImpostorVision,
         CanUseSabotage,
         CanCreateMadmate,

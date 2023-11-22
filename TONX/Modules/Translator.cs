@@ -138,9 +138,10 @@ public static class Translator
         {
             var name = CultureInfo.CurrentUICulture.Name;
             if (name.StartsWith("en")) return SupportedLangs.English;
+            if (name.StartsWith("ru")) return SupportedLangs.Russian;
+            if (name.StartsWith("pt")) return SupportedLangs.Brazilian;
             if (name.StartsWith("zh_CHT")) return SupportedLangs.TChinese;
             if (name.StartsWith("zh")) return SupportedLangs.SChinese;
-            if (name.StartsWith("ru")) return SupportedLangs.Russian;
             return TranslationController.Instance?.currentLanguage?.languageID ?? SupportedLangs.English;
         }
         catch

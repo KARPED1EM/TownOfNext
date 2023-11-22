@@ -42,6 +42,8 @@ public sealed class SuperStar : RoleBase
         seen ??= seer;
         return (seen.Is(CustomRoles.SuperStar) && OptionEveryoneKnowSuperStar.GetBool()) ? Utils.ColorString(RoleInfo.RoleColor, "★") : "";
     }
+    public override void OverrideDisplayRoleNameAsSeen(PlayerControl seer, ref bool enabled, ref Color roleColor, ref string roleText)
+        => enabled |= OptionEveryoneKnowSuperStar.GetBool();
     public override bool OnCheckMurderAsTarget(MurderInfo info)
     {
         var (killer, target) = info.AttemptTuple;
@@ -52,4 +54,6 @@ public sealed class SuperStar : RoleBase
             Vector2.Distance(pc.GetTruePosition(), target.GetTruePosition()) < 2f
             );
     }
+    public static bool KnowTargetRoleColor(PlayerControl target, bool isMeeting)
+        => target.Is(CustomRoles.SuperStar) && OptionEveryoneKnowSuperStar.GetBool();
 }

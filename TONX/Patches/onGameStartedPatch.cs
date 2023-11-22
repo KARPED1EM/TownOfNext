@@ -44,14 +44,13 @@ internal class ChangeRoleSettings
 
             Main.ShieldPlayer = Options.ShieldPersonDiedFirst.GetBool() ? Main.FirstDied : byte.MaxValue;
             Main.FirstDied = byte.MaxValue;
-            Main.MadmateNum = 0;
 
             ReportDeadBodyPatch.CanReport = new();
 
             Options.UsedButtonCount = 0;
 
-            GameOptionsManager.Instance.currentNormalGameOptions.ConfirmImpostor = false;
             Main.RealOptionsData = new OptionBackupData(GameOptionsManager.Instance.CurrentGameOptions);
+            GameOptionsManager.Instance.currentNormalGameOptions.ConfirmImpostor = false;
 
             Main.introDestroyed = false;
 
@@ -167,16 +166,15 @@ internal class SelectRolesPatch
             foreach (var kv in RoleResult.Where(x => x.Value.GetRoleInfo().IsDesyncImpostor))
                 AssignDesyncRole(kv.Value, kv.Key, senders, rolesMap, BaseRole: kv.Value.GetRoleInfo().BaseRoleType.Invoke());
 
-            foreach (var cp in RoleResult.Where(x => x.Value == CustomRoles.Crewpostor))
+            foreach (var cp in RoleResult.Where(x => x.Value == CustomRoles.CrewPostor))
                 AssignDesyncRole(cp.Value, cp.Key, senders, rolesMap, BaseRole: RoleTypes.Crewmate, hostBaseRole: RoleTypes.Impostor);
 
             MakeDesyncSender(senders, rolesMap);
-
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
             Utils.ErrorEnd("Select Role Prefix");
-            Logger.Fatal(e.Message, "Select Role Prefix");
+            ex.Message.Split(@"\r\n").Do(line => Logger.Fatal(line, "Select Role Prefix"));
         }
         //以下、バニラ側の役職割り当てが入る
     }
@@ -191,7 +189,7 @@ internal class SelectRolesPatch
             foreach (var sd in RpcSetRoleReplacer.StoragedData)
             {
                 var kp = RoleResult.Where(x => x.Key.PlayerId == sd.Item1.PlayerId).FirstOrDefault();
-                if (kp.Value.GetRoleInfo().IsDesyncImpostor || kp.Value == CustomRoles.Crewpostor)
+                if (kp.Value.GetRoleInfo().IsDesyncImpostor || kp.Value == CustomRoles.CrewPostor)
                 {
                     Logger.Warn($"反向原版职业 => {sd.Item1.GetRealName()}: {sd.Item2}", "Override Role Select");
                     continue;
@@ -215,47 +213,30 @@ internal class SelectRolesPatch
 
             //Utils.ApplySuffix();
 
-            foreach (var pc in Main.AllPlayerControls)
-            {
-                pc.Data.IsDead = false; //プレイヤーの死を解除する
-                if (PlayerState.AllPlayerStates[pc.PlayerId].MainRole != CustomRoles.NotAssigned) continue; //既にカスタム役職が割り当てられていればスキップ
-                var role = CustomRoles.NotAssigned;
-                switch (pc.Data.Role.Role)
-                {
-                    case RoleTypes.Crewmate:
-                        role = CustomRoles.Crewmate;
-                        break;
-                    case RoleTypes.Impostor:
-                        role = CustomRoles.Impostor;
-                        break;
-                    case RoleTypes.Scientist:
-                        role = CustomRoles.Scientist;
-                        break;
-                    case RoleTypes.Engineer:
-                        role = CustomRoles.Engineer;
-                        break;
-                    case RoleTypes.GuardianAngel:
-                        role = CustomRoles.GuardianAngel;
-                        break;
-                    case RoleTypes.Shapeshifter:
-                        role = CustomRoles.Shapeshifter;
-                        break;
-                    default:
-                        Logger.SendInGame(string.Format(GetString("Error.InvalidRoleAssignment"), pc?.Data?.PlayerName));
-                        break;
-                }
-                PlayerState.GetByPlayerId(pc.PlayerId).SetMainRole(role);
-            }
-
             var rd = IRandom.Instance;
 
-            foreach (var kv in RoleResult)
+            foreach (var pc in Main.AllAlivePlayerControls)
             {
-                if (kv.Value.GetRoleInfo().IsDesyncImpostor) continue;
-                AssignCustomRole(kv.Value, kv.Key);
+                pc.Data.IsDead = false; //プレイヤーの死を解除する
+                var state = PlayerState.GetByPlayerId(pc.PlayerId);
+                if (state.MainRole != CustomRoles.NotAssigned) continue; //既にカスタム役職が割り当てられていればスキップ
+                var role = pc.Data.Role.Role.GetCustomRoleTypes();
+                if (role == CustomRoles.NotAssigned)
+                    Logger.SendInGame(string.Format(GetString("Error.InvalidRoleAssignment"), pc?.Data?.PlayerName));
+                state.SetMainRole(role);
             }
 
-            if (CustomRoles.Lovers.IsEnable() && CustomRoles.FFF.IsEnable()) AssignLoversRoles();
+            foreach (var (player, role) in RoleResult.Where(kvp => !(kvp.Value.GetRoleInfo()?.IsDesyncImpostor ?? false)))
+            {
+                SetColorPatch.IsAntiGlitchDisabled = true;
+
+                PlayerState.GetByPlayerId(player.PlayerId).SetMainRole(role);
+                Logger.Info($"注册模组职业：{player?.Data?.PlayerName} => {role}", "AssignCustomRoles");
+
+                SetColorPatch.IsAntiGlitchDisabled = false;
+            }
+
+            if (CustomRoles.Lovers.IsEnable() && CustomRoles.Hater.IsEnable()) AssignLoversRoles();
             else if (CustomRoles.Lovers.IsEnable() && rd.Next(0, 100) < Options.GetRoleChance(CustomRoles.Lovers)) AssignLoversRoles();
             if (CustomRoles.Madmate.IsEnable() && Options.MadmateSpawnMode.GetInt() == 0) AssignMadmateRoles();
             AddOnsAssignData.AssignAddOnsFromList();
@@ -314,7 +295,7 @@ internal class SelectRolesPatch
         catch (Exception ex)
         {
             Utils.ErrorEnd("Select Role Postfix");
-            Logger.Fatal(ex.ToString(), "Select Role Prefix");
+            ex.Message.Split(@"\r\n").Do(line => Logger.Fatal(line, "Select Role Postfix"));
         }
     }
     private static void AssignDesyncRole(CustomRoles role, PlayerControl player, Dictionary<byte, CustomRpcSender> senders, Dictionary<(byte, byte), RoleTypes> rolesMap, RoleTypes BaseRole, RoleTypes hostBaseRole = RoleTypes.Crewmate)
@@ -357,17 +338,6 @@ internal class SelectRolesPatch
             }
         }
     }
-
-    private static void AssignCustomRole(CustomRoles role, PlayerControl player)
-    {
-        if (player == null) return;
-        SetColorPatch.IsAntiGlitchDisabled = true;
-
-        PlayerState.GetByPlayerId(player.PlayerId).SetMainRole(role);
-        Logger.Info($"注册模组职业：{player?.Data?.PlayerName} => {role}", "AssignCustomRoles");
-
-        SetColorPatch.IsAntiGlitchDisabled = false;
-    }
     private static void AssignLoversRoles(int RawCount = -1)
     {
         //Loversを初期化
@@ -377,7 +347,7 @@ internal class SelectRolesPatch
         foreach (var pc in Main.AllPlayerControls)
         {
             if (pc.Is(CustomRoles.GM) || (PlayerState.GetByPlayerId(pc.PlayerId).SubRoles.Count >= Options.AddonsNumLimit.GetInt())
-                || pc.Is(CustomRoles.Needy) || pc.Is(CustomRoles.Ntr) || pc.Is(CustomRoles.God) || pc.Is(CustomRoles.FFF)) continue;
+                || pc.Is(CustomRoles.LazyGuy) || pc.Is(CustomRoles.Neptune) || pc.Is(CustomRoles.God) || pc.Is(CustomRoles.Hater)) continue;
             allPlayers.Add(pc);
         }
         var loversRole = CustomRoles.Lovers;

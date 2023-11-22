@@ -1,7 +1,7 @@
 ﻿using AmongUs.GameOptions;
 using System;
-using System.Linq;
 using System.Text.RegularExpressions;
+using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using UnityEngine;
@@ -30,7 +30,6 @@ public sealed class Judge : RoleBase, IMeetingButton
     { }
 
     static OptionItem OptionTrialLimitPerMeeting;
-    static OptionItem OptionHideMsg;
     static OptionItem OptionCanTrialMadmate;
     static OptionItem OptionCanTrialCharmed;
     static OptionItem OptionCanTrialCrewKilling;
@@ -44,7 +43,6 @@ public sealed class Judge : RoleBase, IMeetingButton
         JudgeCanTrialnCrewKilling,
         JudgeCanTrialNeutralB,
         JudgeCanTrialNeutralK,
-        JudgeTryHideMsg,
     }
 
     private int TrialLimit;
@@ -57,7 +55,6 @@ public sealed class Judge : RoleBase, IMeetingButton
         OptionCanTrialCrewKilling = BooleanOptionItem.Create(RoleInfo, 14, OptionName.JudgeCanTrialnCrewKilling, true, false);
         OptionCanTrialNeutralB = BooleanOptionItem.Create(RoleInfo, 15, OptionName.JudgeCanTrialNeutralB, false, false);
         OptionCanTrialNeutralK = BooleanOptionItem.Create(RoleInfo, 16, OptionName.JudgeCanTrialNeutralK, true, false);
-        OptionHideMsg = BooleanOptionItem.Create(RoleInfo, 11, OptionName.JudgeTryHideMsg, true, false);
     }
     public override void Add() => TrialLimit = OptionTrialLimitPerMeeting.GetInt();
     public override void OnStartMeeting() => TrialLimit = OptionTrialLimitPerMeeting.GetInt();
@@ -71,7 +68,12 @@ public sealed class Judge : RoleBase, IMeetingButton
     public string ButtonName { get; private set; } = "Judge";
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
-    public override bool OnSendMessage(string msg) => TrialMsg(Player, msg);
+    public override bool OnSendMessage(string msg, out MsgRecallMode recallMode)
+    {
+        bool isCommand = TrialMsg(Player, msg, out bool spam);
+        recallMode = spam ? MsgRecallMode.Spam : MsgRecallMode.None;
+        return isCommand;
+    }
     public void OnClickButton(PlayerControl target)
     {
         if (!Trial(target, out var reason, true))
@@ -109,7 +111,7 @@ public sealed class Judge : RoleBase, IMeetingButton
 
         TrialLimit--;
 
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             var state = PlayerState.GetByPlayerId(dp.PlayerId);
             state.DeathReason = CustomDeathReason.Trialed;
@@ -119,24 +121,22 @@ public sealed class Judge : RoleBase, IMeetingButton
             //死者检查
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
 
-            new LateTask(() => { Utils.SendMessage(string.Format(GetString("TrialKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Judge), GetString("TrialKillTitle"))); }, 0.6f, "Guess Msg");
+            _ = new LateTask(() => { Utils.SendMessage(string.Format(GetString("TrialKill"), Name), 255, Utils.ColorString(Utils.GetRoleColor(CustomRoles.Judge), GetString("TrialKillTitle"))); }, 0.6f, "Guess Msg");
 
         }, 0.2f, "Trial Kill");
 
         return true;
     }
-    public bool TrialMsg(PlayerControl pc, string msg)
+    public bool TrialMsg(PlayerControl pc, string msg, out bool spam)
     {
-        var originMsg = msg;
-
-        if (!AmongUsClient.Instance.AmHost) return false;
+        spam = false;
         if (!GameStates.IsInGame || pc == null) return false;
         if (!pc.Is(CustomRoles.Judge)) return false;
 
-        int operate = 0; // 1:ID 2:猜测
+        int operate; // 1:ID 2:猜测
         msg = msg.ToLower().TrimStart().TrimEnd();
-        if (CheckCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
-        else if (CheckCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌|sp|jj|tl|trial|审判|判|审", false)) operate = 2;
+        if (MatchCommond(ref msg, "id|guesslist|gl编号|玩家编号|玩家id|id列表|玩家列表|列表|所有id|全部id")) operate = 1;
+        else if (MatchCommond(ref msg, "shoot|guess|bet|st|gs|bt|猜|赌|sp|jj|tl|trial|审判|判|审", false)) operate = 2;
         else return false;
 
         if (!pc.IsAlive())
@@ -152,9 +152,8 @@ public sealed class Judge : RoleBase, IMeetingButton
         }
         else if (operate == 2)
         {
-
-            if (OptionHideMsg.GetBool()) GuesserHelper.TryHideMsg();
-            else if (pc.AmOwner) Utils.SendMessage(originMsg, 255, pc.GetRealName());
+            spam = true;
+            if (!AmongUsClient.Instance.AmHost) return true;
 
             if (!MsgToPlayer(msg, out byte targetId, out string error))
             {
@@ -205,10 +204,10 @@ public sealed class Judge : RoleBase, IMeetingButton
         error = string.Empty;
         return true;
     }
-    public static bool CheckCommond(ref string msg, string command, bool exact = true)
+    public static bool MatchCommond(ref string msg, string command, bool exact = true)
     {
         var comList = command.Split('|');
-        for (int i = 0; i < comList.Count(); i++)
+        for (int i = 0; i < comList.Length; i++)
         {
             if (exact)
             {

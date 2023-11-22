@@ -95,7 +95,7 @@ public sealed class SerialKiller : RoleBase, IImpostor
         }
     }
     public override bool CanUseAbilityButton() => HasKilled();
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("SerialKillerSuicideButtonText");
         return true;

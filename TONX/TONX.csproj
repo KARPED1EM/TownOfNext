@@ -1,35 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<langVersion>latest</langVersion>
-		<Configurations>Debug;Release</Configurations>
+		<LangVersion>latest</LangVersion>
+
+		<Description>An AmongUs mod with learning and love</Description>
+		<Authors>tukasa0001(EmptyBottle), integral0131, KARPED1EM</Authors>
+		
 		<GenerateAssemblyFileVersionAttribute>false</GenerateAssemblyFileVersionAttribute>
 		<GenerateAssemblyInformationalVersionAttribute>false</GenerateAssemblyInformationalVersionAttribute>
 		<GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+		
+		<Configurations>Debug;Release</Configurations>
 		<BaseOutputPath>..\Export</BaseOutputPath>
-		<NoWarn>MSB3246</NoWarn>
+		<NoWarn>MSB3246, CA2211, IDE0044, IDE0028, IDE0300</NoWarn>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<EmbeddedResource Include=".\Resources\**" />
-		<Compile Remove="Properties\**" />
-		<EmbeddedResource Remove="Properties\**" />
 	</ItemGroup>
 
 	<ItemGroup>
-		
 		<!-- nuget.bepinex.dev -->
 		<PackageReference Include="AmongUs.GameLibs.Steam" Version="2023.10.24" PrivateAssets="all" />
 		<PackageReference Include="BepInEx.IL2CPP.MSBuild" Version="2.0.1" PrivatPeAssets="all" ExcludeAssets="runtime" />
 		<PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.674" Private="false" ExcludeAssets="runtime;native" />
-		
 		<!-- nuget.org -->
 		<PackageReference Include="Costura.Fody" Version="5.7.0" PrivateAssets="all" />
 		<PackageReference Include="GitInfo" Version="3.3.3" />
 		<PackageReference Include="Microsoft.VisualStudio.VsixColorCompiler" Version="17.5.33428.366" />
-		<PackageReference Include="Downloader" Version="3.0.6" />
 		<PackageReference Include="YamlDotNet" Version="13.7.1" />
-		
 	</ItemGroup>
 
 	<Target Name="Copy" AfterTargets="Build" Condition="'$(AmongUs)' != ''">

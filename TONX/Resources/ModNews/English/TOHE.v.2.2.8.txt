@@ -20,7 +20,7 @@ Thank you for using TOHE!
 - Fixed bug that there was no skill end prompt after the Grenadier became a madmate
 - Fixed bug that 'Kick players whose level lower than' sometimes doesn't work
 - Fixed bug that players with mod sometimes can see through the wall
-- Fixed bug that Mediumshiper's skill notice doesn't work
+- Fixed bug that Medium's skill notice doesn't work
 - Fixed bug that the mod may not load when starting the game in some regions
 - Fixed some wrong English translations
 

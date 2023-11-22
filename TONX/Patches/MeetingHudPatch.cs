@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TONX.Modules;
 using TONX.Roles.AddOns.Common;
@@ -37,11 +38,9 @@ public static class MeetingHudPatch
                 //主动叛变模式
                 if (Options.MadmateSpawnMode.GetInt() == 2 && srcPlayerId == suspectPlayerId)
                 {
-                    if (Main.MadmateNum < CustomRoles.Madmate.GetCount() && voter.CanBeMadmate())
+                    if (Main.AllPlayerControls.Count(p => p.Is(CustomRoles.Madmate)) < CustomRoles.Madmate.GetCount() && voter.CanBeMadmate())
                     {
-                        Main.MadmateNum++;
                         voter.RpcSetCustomRole(CustomRoles.Madmate);
-                        ExtendedPlayerControl.RpcSetCustomRole(voter.PlayerId, CustomRoles.Madmate);
                         Logger.Info($"注册附加职业：{voter.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
                         voter.ShowPopUp(GetString("MadmateSelfVoteModeSuccessfulMutiny"));
                         Utils.SendMessage(GetString("MadmateSelfVoteModeSuccessfulMutiny"), voter.PlayerId);
@@ -86,7 +85,6 @@ public static class MeetingHudPatch
             SoundManager.Instance.ChangeAmbienceVolume(0f);
             if (!GameStates.IsModHost) return;
             var myRole = PlayerControl.LocalPlayer.GetRoleClass();
-
             foreach (var pva in __instance.playerStates)
             {
                 var pc = Utils.GetPlayerById(pva.TargetPlayerId);
@@ -96,7 +94,7 @@ public static class MeetingHudPatch
                 roleTextMeeting.transform.localPosition = new Vector3(0f, -0.18f, 0f);
                 roleTextMeeting.fontSize = 1.5f;
                 (roleTextMeeting.enabled, roleTextMeeting.text)
-                        = Utils.GetRoleNameAndProgressTextData(PlayerControl.LocalPlayer, pc);
+                    = Utils.GetRoleNameAndProgressTextData(PlayerControl.LocalPlayer, pc);
                 roleTextMeeting.gameObject.name = "RoleTextMeeting";
                 roleTextMeeting.enableWordWrapping = false;
 
@@ -121,7 +119,7 @@ public static class MeetingHudPatch
             }
             if (AntiBlackout.OverrideExiledPlayer && !Options.NoGameEnd.GetBool())
             {
-                new LateTask(() =>
+                _ = new LateTask(() =>
                 {
                     Utils.SendMessage(GetString("Warning.OverrideExiledPlayer"), 255, Utils.ColorString(Color.red, GetString("DefaultSystemMessageTitle")));
                 }, 5f, "Warning OverrideExiledPlayer");
@@ -153,7 +151,7 @@ public static class MeetingHudPatch
             {
                 CustomRoleManager.AllActiveRoles.Values.Do(role => role.OnStartMeeting());
                 MeetingStartNotify.OnMeetingStart();
-                Brakar.OnMeetingStart();
+                Tiebreaker.OnMeetingStart();
             }
 
             foreach (var pva in __instance.playerStates)
@@ -203,9 +201,9 @@ public static class MeetingHudPatch
                 }
 
                 //海王相关显示
-                if ((seer.Is(CustomRoles.Ntr) || target.Is(CustomRoles.Ntr)) && !seer.Data.IsDead && !isLover)
+                if ((seer.Is(CustomRoles.Neptune) || target.Is(CustomRoles.Neptune)) && !seer.Data.IsDead && !isLover)
                     sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), "♡"));
-                else if (seer == target && CustomRoles.Ntr.IsExist() && !isLover)
+                else if (seer == target && CustomRoles.Neptune.IsExist() && !isLover)
                     sb.Append(Utils.ColorString(Utils.GetRoleColor(CustomRoles.Lovers), "♡"));
 
                 //会議画面ではインポスター自身の名前にSnitchマークはつけません。

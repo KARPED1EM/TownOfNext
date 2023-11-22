@@ -30,7 +30,7 @@ public static class CustomPopup
     /// <param name="buttons">按钮（文字，点击事件）</param>
     public static void Show(string title, string info, List<(string, Action)>? buttons)
     {
-        if (busy || Fill == null || InfoScreen == null || ActionButtonPrefab == null || TitleTMP == null || InfoTMP == null) return;
+        if (busy || Fill == null || InfoScreen == null || ActionButtonPrefab == null || TitleTMP == null || InfoTMP == null) Init();
 
         busy = true;
 
@@ -85,7 +85,7 @@ public static class CustomPopup
     }
     private static (string title, string info, List<(string, Action)>? buttons)? waitToShow = null;
     public static void ShowLater(string title, string info, List<(string, Action)>? buttons) => waitToShow = (title, info, buttons);
-    private static string waitToUpdateText = "";
+    private static string waitToUpdateText = string.Empty;
     public static void UpdateTextLater(string info) => waitToUpdateText = info;
     public static void Update()
     {
@@ -94,10 +94,10 @@ public static class CustomPopup
             Show(waitToShow.Value.title, waitToShow.Value.info, waitToShow.Value.buttons);
             waitToShow = null;
         }
-        if (waitToUpdateText != "")
+        if (!string.IsNullOrEmpty(waitToUpdateText))
         {
             InfoTMP?.SetText(waitToUpdateText);
-            waitToUpdateText = "";
+            waitToUpdateText = string.Empty;
         }
     }
     public static void Init()

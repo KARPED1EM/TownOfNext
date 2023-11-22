@@ -66,12 +66,12 @@ public sealed class QuickShooter : RoleBase, IImpostor
         AURoleOptions.ShapeshifterCooldown = OptionShapeshiftCooldown.GetFloat();
     }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(ShotLimit >= 1 ? Color.red : Color.gray, $"({ShotLimit})");
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("QuickShooterShapeshiftText");
         return true;
     }
-    public override void ChangeHudManager(HudManager __instance) => __instance.AbilityButton.SetUsesRemaining(ShotLimit);
+    public override int OverrideAbilityButtonUsesRemaining() => ShotLimit;
     public override void OnShapeshift(PlayerControl target)
     {
         var shapeshifting = !Is(target);

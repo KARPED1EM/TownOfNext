@@ -68,7 +68,7 @@ class StartPatch
 
         Utils.CountAlivePlayers(true);
 
-        if (Options.AllowConsole.GetBool() || PlayerControl.LocalPlayer.IsDev())
+        if (Options.AllowConsole.GetBool() || Utils.AmDev())
         {
             if (!BepInEx.ConsoleManager.ConsoleActive && BepInEx.ConsoleManager.ConsoleEnabled)
                 BepInEx.ConsoleManager.CreateConsole();

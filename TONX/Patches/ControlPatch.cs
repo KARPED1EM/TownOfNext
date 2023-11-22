@@ -1,6 +1,5 @@
 using HarmonyLib;
 using Hazel;
-using System;
 using System.Linq;
 using TONX.Modules;
 using TONX.Roles.Core;
@@ -52,18 +51,17 @@ internal class ControllerManagerUpdatePatch
             }
         }
         //职业介绍
-        if (Input.GetKeyDown(KeyCode.F1) && GameStates.InGame && Options.CurrentGameMode == CustomGameMode.Standard)
+        if (GameStates.IsInGame && (GameStates.IsCanMove || GameStates.IsMeeting) && Options.CurrentGameMode == CustomGameMode.Standard)
         {
-            try
+            if (Input.GetKey(KeyCode.F1))
             {
-                HudManager.Instance.ShowPopUp(PlayerControl.LocalPlayer.GetCustomRole().GetRoleInfo()?.Description?.FullFormatHelp ?? GetString(PlayerControl.LocalPlayer.GetCustomRole().ToString()) + PlayerControl.LocalPlayer.GetRoleInfo(true));
+                if (!InGameRoleInfoMenu.Showing)
+                    InGameRoleInfoMenu.SetRoleInfoRef(PlayerControl.LocalPlayer);
+                InGameRoleInfoMenu.Show();
             }
-            catch (Exception ex)
-            {
-                Logger.Exception(ex, "ControllerManagerUpdatePatch");
-                throw;
-            }
+            else InGameRoleInfoMenu.Hide();
         }
+        else InGameRoleInfoMenu.Hide();
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
         {
@@ -135,13 +133,11 @@ internal class ControllerManagerUpdatePatch
         //显示当前有效设置的说明
         if (GetKeysDown(KeyCode.N, KeyCode.LeftShift, KeyCode.LeftControl))
         {
-            Main.isChatCommand = true;
             Utils.ShowActiveSettingsHelp();
         }
         //显示当前有效设置
         if (GetKeysDown(KeyCode.N, KeyCode.LeftControl) && !Input.GetKey(KeyCode.LeftShift))
         {
-            Main.isChatCommand = true;
             Utils.ShowActiveSettings();
         }
         //将 TONX 选项设置为默认值

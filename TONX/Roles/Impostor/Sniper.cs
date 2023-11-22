@@ -337,7 +337,7 @@ public sealed class Sniper : RoleBase, IImpostor
         }
         return "";
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString(BulletCount <= 0 ? "DefaultShapeshiftText" : "SniperSnipeButtonText");
         return true;

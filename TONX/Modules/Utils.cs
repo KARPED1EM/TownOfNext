@@ -1,3 +1,4 @@
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes;
@@ -225,7 +226,7 @@ public static class Utils
             return killFlashSeeable.CheckKillFlash(info);
         }
 
-        if (target.Is(CustomRoles.CyberStar) && (CyberStar.CanSeeKillFlash(seer) || target.Is(CustomRoles.Madmate))) return true;
+        if (target.Is(CustomRoles.Celebrity) && (Celebrity.CanSeeKillFlash(seer) || target.Is(CustomRoles.Madmate))) return true;
 
         return false;
     }
@@ -539,7 +540,7 @@ public static class Utils
             (pc.Is(CustomRoles.NiceGuesser) && !Options.NGuesserCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Snitch) && !Options.SnitchCanBeMadmate.GetBool()) ||
             (pc.Is(CustomRoles.Judge) && !Options.JudgeCanBeMadmate.GetBool()) ||
-            pc.Is(CustomRoles.Needy) ||
+            pc.Is(CustomRoles.LazyGuy) ||
             pc.Is(CustomRoles.Egoist)
             );
     }
@@ -637,6 +638,8 @@ public static class Utils
         }
 
         var sb = new StringBuilder().AppendFormat("<line-height={0}>", ActiveSettingsLineHeight);
+        sb.AppendFormat("<size={0}>", ActiveSettingsSize);
+        sb.Append("<size=100%>").Append(GetString("Settings")).Append('\n').Append("</size>");
         foreach (var opt in OptionItem.AllOptions.Where(x => x.Id is >= 2000000 and < 3000000 && !x.IsHiddenOn(Options.CurrentGameMode) && x.Parent == null))
         {
             if (opt.IsHeader) sb.Append('\n');
@@ -786,7 +789,7 @@ public static class Utils
             sb.Append($"{ColorString(Color.white, " + ")}{RoleText}");
         }
 
-        if (intro && !SubRoles.Contains(CustomRoles.Lovers) && !SubRoles.Contains(CustomRoles.Ntr) && CustomRoles.Ntr.IsExist())
+        if (intro && !SubRoles.Contains(CustomRoles.Lovers) && !SubRoles.Contains(CustomRoles.Neptune) && CustomRoles.Neptune.IsExist())
         {
             var RoleText = disableColor ? GetRoleName(CustomRoles.Lovers) : ColorString(GetRoleColor(CustomRoles.Lovers), GetRoleName(CustomRoles.Lovers));
             sb.Append($"{ColorString(Color.white, " + ")}{RoleText}");
@@ -799,7 +802,7 @@ public static class Utils
     {
         text = text.ToLowerInvariant();
         text = text.Replace("色", string.Empty);
-        int color = -1;
+        int color;
         try { color = int.Parse(text); } catch { color = -1; }
         switch (text)
         {
@@ -829,13 +832,13 @@ public static class Utils
     public static void ShowHelpToClient(byte ID)
     {
         SendMessage(
-            GetString("CommandList")
+            "<color=#c06fe8>" + GetString("CommandList")
             + $"\n  ○ /n {GetString("Command.now")}"
             + $"\n  ○ /r {GetString("Command.roles")}"
             + $"\n  ○ /m {GetString("Command.myrole")}"
             + $"\n  ○ /l {GetString("Command.lastresult")}"
             + $"\n  ○ /win {GetString("Command.winner")}"
-            + "\n\n" + GetString("CommandOtherList")
+            + "\n\n" + "<color=#12bee4>" + GetString("CommandOtherList")
             + $"\n  ○ /color {GetString("Command.color")}"
             + $"\n  ○ /qt {GetString("Command.quit")}"
             , ID);
@@ -843,17 +846,17 @@ public static class Utils
     public static void ShowHelp(byte ID)
     {
         SendMessage(
-            GetString("CommandList")
+            "<color=#c06fe8>" + GetString("CommandList")
             + $"\n  ○ /n {GetString("Command.now")}"
             + $"\n  ○ /r {GetString("Command.roles")}"
             + $"\n  ○ /m {GetString("Command.myrole")}"
             + $"\n  ○ /l {GetString("Command.lastresult")}"
             + $"\n  ○ /win {GetString("Command.winner")}"
-            + "\n\n" + GetString("CommandOtherList")
+            + "\n\n" + "<color=#12bee4>" + GetString("CommandOtherList")
             + $"\n  ○ /color {GetString("Command.color")}"
             + $"\n  ○ /rn {GetString("Command.rename")}"
             + $"\n  ○ /qt {GetString("Command.quit")}"
-            + "\n\n" + GetString("CommandHostList")
+            + "\n\n" + "<color=#f14d57>" + GetString("CommandHostList")
             + $"\n  ○ /rn {GetString("Command.rename")}"
             + $"\n  ○ /mw {GetString("Command.mw")}"
             + $"\n  ○ /kill {GetString("Command.kill")}"
@@ -952,7 +955,7 @@ public static class Utils
                 SelfMark.Append(CustomRoleManager.GetMarkOthers(seer, isForMeeting: isForMeeting));
 
                 //ハートマークを付ける(自分に)
-                if (seer.Is(CustomRoles.Lovers)) SelfMark.Append(ColorString(GetRoleColor(CustomRoles.Lovers), "♡"));
+                if (seer.Is(CustomRoles.Lovers) || CustomRoles.Neptune.IsExist(true)) SelfMark.Append(ColorString(GetRoleColor(CustomRoles.Lovers), "♡"));
 
                 //Markとは違い、改行してから追記されます。
                 SelfSuffix.Clear();
@@ -1024,7 +1027,7 @@ public static class Utils
                     {
                         TargetMark.Append($"<color={GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                     }
-                    else if (target.Is(CustomRoles.Ntr) || seer.Is(CustomRoles.Ntr))
+                    else if (target.Is(CustomRoles.Neptune) || seer.Is(CustomRoles.Neptune))
                     {
                         TargetMark.Append($"<color={GetRoleColorCode(CustomRoles.Lovers)}>♡</color>");
                     }
@@ -1319,8 +1322,9 @@ public static class Utils
     private const string ActiveSettingsSize = "70%";
     private const string ActiveSettingsLineHeight = "55%";
 
-    public static bool IsDev(this PlayerControl pc) =>
-        pc.FriendCode
+    public static bool AmDev() => IsDev(EOSManager.Instance.FriendCode);
+    public static bool IsDev(this PlayerControl pc) => IsDev(pc.FriendCode);
+    public static bool IsDev(string friendCode) => friendCode
         is "actorour#0029" //咔哥
         or "pinklaze#1776" //NCM
         or "sofaagile#3120" //天寸
@@ -1334,6 +1338,7 @@ public static class Utils
             1 => new(-11.4f, 8.2f), // MIRA HQ
             2 => new(42.6f, -19.9f), // Polus
             4 => new(-16.8f, -6.2f), // Airship
+            5 => new(9.4f, 17.9f), // The Fungle
             _ => throw new System.NotImplementedException(),
         };
     }

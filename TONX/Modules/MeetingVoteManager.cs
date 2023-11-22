@@ -277,7 +277,7 @@ public class MeetingVoteManager
             logger.Info($"投票：{Utils.GetPlayerById(Voter).GetNameWithRole()} => {GetVoteName(voteTo)} x {numVotes}");
             VotedFor = voteTo;
             NumVotes = numVotes;
-            Brakar.OnVote(Voter, voteTo);
+            Tiebreaker.OnVote(Voter, voteTo);
         }
     }
 
@@ -323,7 +323,7 @@ public class MeetingVoteManager
                 logger.Info($"得票最多者：{GetVoteName(mostVotedPlayers[0])}");
             }
 
-            if (IsTie && Brakar.ChooseExileTarget(mostVotedPlayers, out var brakarTarget))
+            if (IsTie && Tiebreaker.ChooseExileTarget(mostVotedPlayers, out var brakarTarget))
             {
                 IsTie = false;
                 Exiled = GameData.Instance.GetPlayerById(brakarTarget);

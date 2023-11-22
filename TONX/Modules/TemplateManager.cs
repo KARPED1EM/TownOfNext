@@ -14,7 +14,7 @@ namespace TONX;
 
 public static class TemplateManager
 {
-    private static readonly string TEMPLATE_FILE_PATH = "./TONX_Data/template.txt";
+    private static readonly string TEMPLATE_FILE_PATH = "./TONX_Data/MsgTemplate.txt";
     private static Dictionary<string, Func<string>> _replaceDictionary = new()
     {
         ["HostName"] = () => PlayerControl.LocalPlayer.GetRealName(),
@@ -51,12 +51,12 @@ public static class TemplateManager
             try
             {
                 if (!Directory.Exists(@"TONX_Data")) Directory.CreateDirectory(@"TONX_Data");
-                if (File.Exists(@"./template.txt")) File.Move(@"./template.txt", TEMPLATE_FILE_PATH);
+                if (File.Exists(@"./MsgTemplate.txt")) File.Move(@"./MsgTemplate.txt", TEMPLATE_FILE_PATH);
                 else
                 {
                     string fileName = GetUserLangByRegion().ToString();
                     Logger.Warn($"Create New Template: {fileName}", "TemplateManager");
-                    File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt($"TONX.Resources.Config.template.{fileName}.txt"));
+                    File.WriteAllText(TEMPLATE_FILE_PATH, GetResourcesTxt($"TONX.Resources.MsgTemplates.{fileName}.txt"));
                 }
             }
             catch (Exception ex)
@@ -67,7 +67,7 @@ public static class TemplateManager
         else
         {
             var text = File.ReadAllText(TEMPLATE_FILE_PATH, Encoding.GetEncoding("UTF-8"));
-            File.WriteAllText(TEMPLATE_FILE_PATH, text.Replace("5PNwUaN5", "hkk2p9ggv4"));
+            File.WriteAllText(TEMPLATE_FILE_PATH, text.Replace("tohe.cc", "tonx.cc"));
         }
     }
 

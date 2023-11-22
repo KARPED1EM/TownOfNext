@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TONX.Attributes;
+using TONX.Modules;
 using TONX.Roles.AddOns.Common;
 using TONX.Roles.AddOns.Crewmate;
 using TONX.Roles.AddOns.Impostor;
@@ -58,52 +59,57 @@ public static class CustomRoleManager
         var killerRole = attemptKiller.GetRoleClass();
         var targetRole = attemptTarget.GetRoleClass();
 
-        // 其他职业类对击杀事件的事先检查
-        if (killerRole is not IKiller killerCheck || killerCheck.IsKiller)
-        {
-            foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
-            {
-                if (!onCheckMurderPlayer(info))
-                {
-                    return false;
-                }
-            }
-        }
-
-        // キラーがキル能力持ちなら
+        // 首先凶手确实是击杀类型的职业
         if (killerRole is IKiller killer)
         {
-            // キラーのキルチェック処理実行
+            // 其他职业类对击杀事件的事先检查
+            if (killer.IsKiller)
+            {
+                foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_Before)
+                {
+                    if (!onCheckMurderPlayer(info))
+                    {
+                        Logger.Info($"OtherBefore：{onCheckMurderPlayer.Method.Name} 阻塞了击杀", "CheckMurder");
+                        return false;
+                    }
+                }
+            }
+            // 凶杀检查击杀
             if (!killer.OnCheckMurderAsKiller(info))
             {
+                Logger.Info($"凶手阻塞了击杀", "CheckMurder");
                 return false;
             }
             if (killer.IsKiller && targetRole != null)
             {
-                // ターゲットのキルチェック処理実行
+                // 被害者检查击杀
                 if (!targetRole.OnCheckMurderAsTarget(info))
                 {
+                    Logger.Info($"被害者阻塞了击杀", "CheckMurder");
                     return false;
+                }
+            }
+            if (killer.IsKiller)
+            {
+                // 其他职业类对击杀事件的事后检查
+                foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_After)
+                {
+                    if (!onCheckMurderPlayer(info))
+                    {
+                        Logger.Info($"OtherAfter：{onCheckMurderPlayer.Method.Name} 阻塞了击杀", "CheckMurder");
+                        return false;
+                    }
                 }
             }
         }
 
-        // 其他职业类对击杀事件的事后检查
-        foreach (var onCheckMurderPlayer in OnCheckMurderPlayerOthers_After)
-        {
-            if (!onCheckMurderPlayer(info))
-            {
-                return false;
-            }
-        }
-
-        // 调用职业类对击杀发生前进行预处理如设置冷却等操作
-        if (killerRole is IKiller) (killerRole as IKiller)?.BeforeMurderPlayerAsKiller(info);
-        targetRole.BeforeMurderPlayerAsTarget(info);
-
         //キル可能だった場合のみMurderPlayerに進む
         if (info.CanKill && info.DoKill)
         {
+            // 调用职业类对击杀发生前进行预处理如设置冷却等操作
+            if (killerRole is IKiller killer2) killer2?.BeforeMurderPlayerAsKiller(info);
+            targetRole?.BeforeMurderPlayerAsTarget(info);
+
             //MurderPlayer用にinfoを保存
             CheckMurderInfos[appearanceKiller.PlayerId] = info;
             appearanceKiller.RpcMurderPlayer(appearanceTarget);
@@ -149,8 +155,8 @@ public static class CustomRoleManager
 
         //SubRoels
         Bait.OnMurderPlayerOthers(info);
-        Trapper.OnMurderPlayerOthers(info);
-        Avanger.OnMurderPlayerOthers(info);
+        Beartrap.OnMurderPlayerOthers(info);
+        Avenger.OnMurderPlayerOthers(info);
 
         //その他視点の処理があれば実行
         foreach (var onMurderPlayer in OnMurderPlayerOthers.ToArray())
@@ -290,8 +296,8 @@ public static class CustomRoleManager
                 case CustomRoles.Watcher:
                     Watcher.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Avanger:
-                    Avanger.Add(pc.PlayerId);
+                case CustomRoles.Avenger:
+                    Avenger.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Bait:
                     Bait.Add(pc.PlayerId);
@@ -299,11 +305,11 @@ public static class CustomRoleManager
                 case CustomRoles.Bewilder:
                     Bewilder.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Brakar:
-                    Brakar.Add(pc.PlayerId);
+                case CustomRoles.Tiebreaker:
+                    Tiebreaker.Add(pc.PlayerId);
                     break;
-                case CustomRoles.DualPersonality:
-                    DualPersonality.Add(pc.PlayerId);
+                case CustomRoles.Schizophrenic:
+                    Schizophrenic.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Egoist:
                     Egoist.Add(pc.PlayerId);
@@ -317,8 +323,8 @@ public static class CustomRoleManager
                 case CustomRoles.Lighter:
                     Lighter.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Ntr:
-                    Ntr.Add(pc.PlayerId);
+                case CustomRoles.Neptune:
+                    Neptune.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Oblivious:
                     Oblivious.Add(pc.PlayerId);
@@ -329,11 +335,11 @@ public static class CustomRoleManager
                 case CustomRoles.Seer:
                     Seer.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Trapper:
-                    Trapper.Add(pc.PlayerId);
+                case CustomRoles.Beartrap:
+                    Beartrap.Add(pc.PlayerId);
                     break;
-                case CustomRoles.Youtuber:
-                    Youtuber.Add(pc.PlayerId);
+                case CustomRoles.YouTuber:
+                    YouTuber.Add(pc.PlayerId);
                     break;
                 case CustomRoles.Mimic:
                     Mimic.Add(pc.PlayerId);
@@ -411,14 +417,19 @@ public static class CustomRoleManager
         return sb.ToString();
     }
     //ChatMessages
-    public static HashSet<Func<PlayerControl, string, bool>> ReceiveMessage = new();
+    public static HashSet<Action<MessageControl>> ReceiveMessage = new();
     /// <summary>
     /// 玩家收到消息后调用的函数
     /// 无论您是否发送者都会调用，因此您可能需要判断该消息是否是您自己发送的
     /// </summary>
-    /// <param name="msg">收到的消息内容</param>
-    /// <returns>true：阻塞该消息，并不继续向下判断</returns>
-    public static bool OnReceiveMessage(PlayerControl player, string msg) => false;
+    /// <param name="msgControl">收到的消息</param>
+    /// <param name="recallMode">该消息应该做何处理</param>
+    /// <returns>true: 阻塞该消息并停止向下判断</returns>
+    public static bool OnReceiveMessage(MessageControl msgControl, out MsgRecallMode recallMode)
+    {
+        recallMode = MsgRecallMode.None;
+        return false;
+    }
 
     /// <summary>
     /// 全部对象的销毁事件
@@ -490,12 +501,12 @@ public enum CustomRoles
     Shapeshifter,
     //Impostor
     BountyHunter,
-    FireWorks,
+    Fireworker,
     Mafia,
     SerialKiller,
     ShapeMaster,
     EvilGuesser,
-    Minimalism,
+    KillingMachine,
     Zombie,
     Sniper,
     Vampire,
@@ -504,31 +515,31 @@ public enum CustomRoles
     Assassin,
     Hacker,
     Miner,
-    Escapee,
+    Escapist,
     Mare,
     Puppeteer,
     TimeThief,
     EvilTracker,
     AntiAdminer,
-    Sans,
+    Arrogance,
     Bomber,
     BoobyTrap,
     Scavenger,
-    Capitalism,
+    Capitalist,
     Gangster,
     Cleaner,
     BallLightning,
-    Greedier,
+    Greedy,
     CursedWolf,
-    ImperiusCurse,
+    SoulCatcher,
     QuickShooter,
     Concealer,
     Eraser,
-    OverKiller,
+    Butcher,
     Hangman,
     Bard,
     Swooper,
-    Crewpostor,
+    CrewPostor,
     Penguin,
     Stealth,
     Messenger,
@@ -539,33 +550,33 @@ public enum CustomRoles
     Scientist,
     //Crewmate
     Luckey,
-    Needy,
+    LazyGuy,
     SuperStar,
-    CyberStar,
+    Celebrity,
     Mayor,
     Paranoia,
     Psychic,
-    SabotageMaster,
+    Repairman,
     Sheriff,
     Snitch,
     SpeedBooster,
     Dictator,
     Doctor,
     Detective,
-    SwordsMan,
+    Vigilante,
     NiceGuesser,
     Transporter,
     TimeManager,
     Veteran,
     Bodyguard,
-    Counterfeiter,
+    Deceiver,
     Grenadier,
-    Medicaler,
-    Divinator,
+    Medic,
+    FortuneTeller,
     Glitch,
     Judge,
     Mortician,
-    Mediumshiper,
+    Medium,
     Observer,
     DoveOfPeace,
     //Neutral
@@ -580,16 +591,16 @@ public enum CustomRoles
     Innocent, //TODO
     Pelican,
     Revolutionist, //TODO
-    FFF, //TODO
+    Hater,
     Konan, //TODO
-    Gamer,
-    DarkHide, //TODO
-    Workaholic, //TODO
+    Demon,
+    Stalker, //TODO
+    Workaholic,
     Collector, //TODO
     Provocateur, //TODO
     Sunnyboy, //TODO
     BloodKnight,
-    Totocalcio,
+    Follower,
     Succubus,
     PlagueDoctor,
     SchrodingerCat,
@@ -601,27 +612,27 @@ public enum CustomRoles
     NotAssigned = 500,
     LastImpostor,
     Lovers,
-    Ntr,
+    Neptune,
     Madmate,
     Watcher,
     Flashman,
     Lighter,
     Seer,
-    Brakar,
+    Tiebreaker,
     Oblivious,
     Bewilder,
     Workhorse,
     Fool,
-    Avanger,
-    Youtuber,
+    Avenger,
+    YouTuber,
     Egoist,
     TicketsStealer,
-    DualPersonality,
+    Schizophrenic,
     Mimic,
     Reach,
     Charmed,
     Bait,
-    Trapper,
+    Beartrap,
 }
 public enum CustomRoleTypes
 {

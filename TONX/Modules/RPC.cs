@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Crewmate;
 using static TONX.Translator;
+
 namespace TONX;
 
 public enum CustomRPC
@@ -57,13 +57,13 @@ public enum CustomRPC
     SetDrawPlayer,
     SetCurrentDrawTarget,
     SyncPelicanEatenPlayers,
-    SwordsManKill,
-    SetGamerHealth,
-    SetCounterfeiterSellLimit,
-    SetMedicalerProtectLimit,
+    VigilanteKill,
+    SetDemonHealth,
+    SetDeceiverSellLimit,
+    SetMedicProtectLimit,
     SetGangsterRecruitLimit,
     SetGhostPlayer,
-    SetDarkHiderKillCount,
+    SetStalkerrKillCount,
     SetCursedWolfSpellCount,
     SetCollectorVotes,
     SetQuickShooterShotLimit,
@@ -71,7 +71,7 @@ public enum CustomRPC
     SuicideWithAnime,
     SetMarkedPlayer,
     SetConcealerTimer,
-    SetMedicalerProtectList,
+    SetMedicProtectList,
     SetHackerHackLimit,
     SyncPsychicRedList,
     SetMorticianArrow,
@@ -79,11 +79,11 @@ public enum CustomRPC
     Guess,
     SetSwooperTimer,
     SetBKTimer,
-    SyncTotocalcioTargetAndTimes,
+    SyncFollowerTargetAndTimes,
     SetSuccubusCharmLimit,
     SyncPuppeteerList,
     SyncWarlock,
-    SyncEscapee,
+    SyncEscapist,
     OnClickMeetingButton,
     SyncMarioVentedTimes,
 }
@@ -120,6 +120,7 @@ internal class RPCHandlerPatch
                 break;
             case RpcCalls.SendChat:
                 var text = subReader.ReadString();
+                if (string.IsNullOrEmpty(text) || text.EndsWith('\0')) return false;
                 Logger.Info($"{__instance.GetNameWithRole()}:{text}", "ReceiveChat");
                 ChatCommands.OnReceiveChat(__instance, text, out var canceled);
                 if (canceled) return false;
@@ -303,8 +304,8 @@ internal class RPCHandlerPatch
             case CustomRPC.Guess:
                 GuesserHelper.ReceiveRPC(reader, __instance);
                 break;
-            case CustomRPC.SetMedicalerProtectList:
-                Medicaler.ReceiveRPC_SyncList(reader);
+            case CustomRPC.SetMedicProtectList:
+                Medic.ReceiveRPC_SyncList(reader);
                 break;
             case CustomRPC.NotificationPop:
                 NotificationPopperPatch.AddItem(reader.ReadString());
@@ -479,23 +480,16 @@ internal static class RPC
     }
     public static void SetCustomRole(byte targetId, CustomRoles role)
     {
-        var roleClass = CustomRoleManager.GetByPlayerId(targetId);
-        if (roleClass != null)
-        {
-            var player = roleClass.Player;
-            roleClass.Dispose();
-            CustomRoleManager.CreateInstance(role, player);
-        }
-
         if (role < CustomRoles.NotAssigned)
         {
+            CustomRoleManager.GetByPlayerId(targetId)?.Dispose();
             PlayerState.GetByPlayerId(targetId).SetMainRole(role);
-            CustomRoleManager.CreateInstance(role, Utils.GetPlayerById(targetId));
         }
         else if (role >= CustomRoles.NotAssigned)   //500:NoSubRole 501~:SubRole
         {
             PlayerState.GetByPlayerId(targetId).SetSubRole(role);
         }
+        CustomRoleManager.CreateInstance(role, Utils.GetPlayerById(targetId));
 
         HudManager.Instance.SetHudActive(true);
         if (PlayerControl.LocalPlayer.PlayerId == targetId) RemoveDisableDevicesPatch.UpdateDisableDevices();

@@ -1,5 +1,5 @@
 ﻿using AmongUs.GameOptions;
-
+using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using static TONX.GuesserHelper;
@@ -30,14 +30,12 @@ public sealed class NiceGuesser : RoleBase, IMeetingButton
     public static OptionItem OptionCanGuessCrew;
     public static OptionItem OptionCanGuessAddons;
     public static OptionItem OptionCanGuessVanilla;
-    public static OptionItem OptionHideMsg;
     enum OptionName
     {
         GuesserCanGuessTimes,
         GGCanGuessCrew,
         GGCanGuessAdt,
         GGCanGuessVanilla,
-        GGGuesserTryHideMsg,
     }
 
     public int GuessLimit;
@@ -48,7 +46,6 @@ public sealed class NiceGuesser : RoleBase, IMeetingButton
         OptionCanGuessCrew = BooleanOptionItem.Create(RoleInfo, 11, OptionName.GGCanGuessCrew, true, false);
         OptionCanGuessAddons = BooleanOptionItem.Create(RoleInfo, 12, OptionName.GGCanGuessAdt, false, false);
         OptionCanGuessVanilla = BooleanOptionItem.Create(RoleInfo, 13, OptionName.GGCanGuessVanilla, true, false);
-        OptionHideMsg = BooleanOptionItem.Create(RoleInfo, 15, OptionName.GGGuesserTryHideMsg, true, false);
     }
     public override void Add()
     {
@@ -64,7 +61,12 @@ public sealed class NiceGuesser : RoleBase, IMeetingButton
     public string ButtonName { get; private set; } = "Target";
     public bool ShouldShowButton() => Player.IsAlive();
     public bool ShouldShowButtonFor(PlayerControl target) => target.IsAlive();
-    public override bool OnSendMessage(string msg) => GuesserMsg(Player, msg);
+    public override bool OnSendMessage(string msg, out MsgRecallMode recallMode)
+    {
+        bool isCommand = GuesserMsg(Player, msg, out bool spam);
+        recallMode = spam ? MsgRecallMode.Spam : MsgRecallMode.None;
+        return isCommand;
+    }
     public bool OnClickButtonLocal(PlayerControl target)
     {
         ShowGuessPanel(target.PlayerId, MeetingHud.Instance);

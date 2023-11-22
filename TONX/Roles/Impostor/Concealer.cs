@@ -50,7 +50,7 @@ public sealed class Concealer : RoleBase, IImpostor
 
         Camouflage.CheckCamouflage();
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Camo";
         return !Shapeshifting;

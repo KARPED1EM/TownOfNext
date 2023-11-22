@@ -22,40 +22,33 @@ static class ExtendedPlayerControl
 {
     public static void RpcSetCustomRole(this PlayerControl player, CustomRoles role)
     {
-        if (player.GetCustomRole() == role) return;
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (player.Is(role)) return;
 
         if (role < CustomRoles.NotAssigned)
         {
+            player.GetRoleClass()?.Dispose();
             PlayerState.GetByPlayerId(player.PlayerId).SetMainRole(role);
         }
         else if (role >= CustomRoles.NotAssigned)   //500:NoSubRole 501~:SubRole
         {
             PlayerState.GetByPlayerId(player.PlayerId).SetSubRole(role);
         }
-        if (AmongUsClient.Instance.AmHost)
-        {
-            var roleClass = player.GetRoleClass();
-            if (roleClass != null)
-            {
-                roleClass.Dispose();
-                CustomRoleManager.CreateInstance(role, player);
-            }
+        CustomRoleManager.CreateInstance(role, player);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
-            writer.Write(player.PlayerId);
-            writer.WritePacked((int)role);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
+        writer.Write(player.PlayerId);
+        writer.WritePacked((int)role);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void RpcSetCustomRole(byte PlayerId, CustomRoles role)
     {
-        if (AmongUsClient.Instance.AmHost)
-        {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
-            writer.Write(PlayerId);
-            writer.WritePacked((int)role);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
+        writer.Write(PlayerId);
+        writer.WritePacked((int)role);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
     public static void RpcExile(this PlayerControl player)
@@ -388,12 +381,11 @@ static class ExtendedPlayerControl
 
     public static string GetTrueName(this PlayerControl player)
     {
-        if (player?.AmOwner ?? false) return Main.nickName != "" ? Main.nickName : DataManager.player.Customization.Name;
-        return Main.AllPlayerNames.TryGetValue(player.PlayerId, out var name) ? name : GetRealName(player, true);
+        return Main.AllPlayerNames.TryGetValue(player.PlayerId, out var name) ? name : GetRealName(player, GameStates.IsMeeting);
     }
     public static string GetRealName(this PlayerControl player, bool isMeeting = false)
     {
-        return isMeeting ? ((player?.AmOwner ?? false && Main.nickName != "") ? Main.nickName : player?.Data?.PlayerName) : player?.name;
+        return isMeeting ? player?.Data?.PlayerName : player?.name;
     }
     public static bool CanUseKillButton(this PlayerControl pc)
     {
@@ -682,7 +674,7 @@ static class ExtendedPlayerControl
     public static bool Is(this PlayerControl target, CustomRoleTypes type) { return target.GetCustomRole().GetCustomRoleTypes() == type; }
     public static bool Is(this PlayerControl target, RoleTypes type) { return target.GetCustomRole().GetRoleTypes() == type; }
     public static bool Is(this PlayerControl target, CountTypes type) { return target.GetCountTypes() == type; }
-    public static bool IsEaten(this PlayerControl target) => Pelican.IsEaten(target.PlayerId);
+    public static bool IsEaten(this PlayerControl target) => GameStates.IsInGame && Pelican.IsEaten(target.PlayerId);
     public static bool IsAlive(this PlayerControl target)
     {
         //ロビーなら生きている

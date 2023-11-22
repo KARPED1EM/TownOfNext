@@ -7,13 +7,13 @@ using TONX.Roles.Core.Interfaces;
 using UnityEngine;
 
 namespace TONX.Roles.Impostor;
-public sealed class Crewpostor : RoleBase, IImpostor
+public sealed class CrewPostor : RoleBase, IImpostor
 {
     public static readonly SimpleRoleInfo RoleInfo =
         SimpleRoleInfo.Create(
-            typeof(Crewpostor),
-            player => new Crewpostor(player),
-            CustomRoles.Crewpostor,
+            typeof(CrewPostor),
+            player => new CrewPostor(player),
+            CustomRoles.CrewPostor,
             () => RoleTypes.Crewmate,
             CustomRoleTypes.Impostor,
             4800,
@@ -21,7 +21,7 @@ public sealed class Crewpostor : RoleBase, IImpostor
             "ca|舰长",
             experimental: true
         );
-    public Crewpostor(PlayerControl player)
+    public CrewPostor(PlayerControl player)
     : base(
         RoleInfo,
         player,
@@ -43,7 +43,7 @@ public sealed class Crewpostor : RoleBase, IImpostor
 
         if (list.Count < 1)
         {
-            Logger.Info($"船鬼没有可击杀目标", "Crewpostor");
+            Logger.Info($"船鬼没有可击杀目标", "CrewPostor");
         }
         else
         {
@@ -58,7 +58,7 @@ public sealed class Crewpostor : RoleBase, IImpostor
             if (Player.IsModClient()) RPC.PlaySoundRPC(Player.PlayerId, Sounds.KillSound);
             else Player.RpcProtectedMurderPlayer();
 
-            Logger.Info($"船鬼完成任务击杀：{Player.GetNameWithRole()} => {target.GetNameWithRole()}", "Crewpostor.OnCompleteTask");
+            Logger.Info($"船鬼完成任务击杀：{Player.GetNameWithRole()} => {target.GetNameWithRole()}", "CrewPostor.OnCompleteTask");
         }
 
         cancel = false;

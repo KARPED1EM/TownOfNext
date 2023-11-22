@@ -1,6 +1,7 @@
 ﻿using HarmonyLib;
 using System;
 using System.Collections.Generic;
+using TONX.Modules;
 using UnityEngine;
 
 namespace TONX;
@@ -14,7 +15,7 @@ public static class Zoom
     public static void Postfix()
     {
         if (GameStates.IsLobby && OptionShowerPatch.Allow) return;
-        if ((GameStates.IsShip || GameStates.IsLobby) && !GameStates.IsMeeting && GameStates.IsCanMove)
+        if ((GameStates.IsShip || GameStates.IsLobby) && !GameStates.IsMeeting && GameStates.IsCanMove && !InGameRoleInfoMenu.Showing)
         {
             if (Camera.main.orthographicSize > 3.0f) ResetButtons = true;
             if (Input.mouseScrollDelta.y > 0)

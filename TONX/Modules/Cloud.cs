@@ -23,7 +23,7 @@ internal class Cloud
     {
         try
         {
-            var content = GetResourcesTxt("TONX.Resources.Config.Port.txt");
+            var content = GetResourcesTxt("TONX.Resources.Configs.Port.txt");
             string[] ar = content.Split('|');
             IP = ar[0];
             LOBBY_PORT = int.Parse(ar[1]);
@@ -46,12 +46,12 @@ internal class Cloud
         try
         {
             if (!Options.ShareLobby.GetBool() && !command) return false;
-            if (!Main.newLobby || (GameData.Instance.PlayerCount < Options.ShareLobbyMinPlayer.GetInt() && !command) || !GameStates.IsLobby) return false;
+            if (!Main.NewLobby || (GameData.Instance.PlayerCount < Options.ShareLobbyMinPlayer.GetInt() && !command) || !GameStates.IsLobby) return false;
             if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) return false;
 
             if (IP == null || LOBBY_PORT == 0) throw new("Has no ip or port");
 
-            Main.newLobby = false;
+            Main.NewLobby = false;
             string msg = $"{GameStartManager.Instance.GameRoomNameCode.text}|{Main.PluginVersion}|{GameData.Instance.PlayerCount + 1}|{TranslationController.Instance.currentLanguage.languageID}|{ServerManager.Instance.CurrentRegion.Name}|{DataManager.player.customization.name}";
 
             if (msg.Length <= 60)
@@ -80,7 +80,7 @@ internal class Cloud
     {
         if (connecting || EacClientSocket != null && EacClientSocket.Connected) return;
         connecting = true;
-        new LateTask(() =>
+        _ = new LateTask(() =>
         {
             if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame)
             {
@@ -110,10 +110,10 @@ internal class Cloud
     }
     public static void SendData(string msg)
     {
-        StartConnect();
+        //StartConnect();
         if (EacClientSocket == null || !EacClientSocket.Connected)
         {
-            Logger.Warn("未连接至TONX服务器，报告被取消", "EAC Cloud");
+            //Logger.Warn("未连接至TONX服务器，报告被取消", "EAC Cloud");
             return;
         }
         EacClientSocket.Send(Encoding.Default.GetBytes(msg));

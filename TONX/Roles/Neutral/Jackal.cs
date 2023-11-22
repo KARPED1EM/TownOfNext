@@ -73,7 +73,6 @@ public sealed class Jackal : RoleBase, IKiller, ISchrodingerCatOwner
     public bool CanUseSabotageButton() => CanUseSabotage;
     public bool CanUseImpostorVentButton() => CanVent;
     public override void ApplyGameOptions(IGameOptions opt) => opt.SetVision(HasImpostorVision);
-    public override bool OnInvokeSabotage(SystemTypes systemType) => CanUseSabotage;
     public void ApplySchrodingerCatOptions(IGameOptions option) => ApplyGameOptions(option);
     public static void OnMurderPlayerOthers(MurderInfo info)
     {

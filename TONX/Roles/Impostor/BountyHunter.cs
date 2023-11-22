@@ -178,7 +178,7 @@ public sealed class BountyHunter : RoleBase, IImpostor
         SendRPC(targetId);
         return target;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("BountyHunterChangeButtonText");
         return true;

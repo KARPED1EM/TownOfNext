@@ -80,7 +80,7 @@ class RpcSetTasksPatch
         }
 
         //管理员和摆烂人没有任务
-        if (pc.Is(CustomRoles.GM) || pc.Is(CustomRoles.Needy))
+        if (pc.Is(CustomRoles.GM) || pc.Is(CustomRoles.LazyGuy))
         {
             hasCommonTasks = false;
             NumShortTasks = 0;
@@ -92,7 +92,7 @@ class RpcSetTasksPatch
             (hasCommonTasks, NumLongTasks, NumShortTasks) = Workhorse.TaskData;
 
         //资本主义要祸害人咯~
-        NumShortTasks = Capitalism.GetShortTasks(pc.PlayerId, NumShortTasks);
+        NumShortTasks = Capitalist.GetShortTasks(pc.PlayerId, NumShortTasks);
 
         if (taskTypeIds.Count == 0) hasCommonTasks = false; //タスク再配布時はコモンを0に
         if (!hasCommonTasks && NumLongTasks == 0 && NumShortTasks == 0) NumShortTasks = 1; //タスク0対策

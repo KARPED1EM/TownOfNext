@@ -42,7 +42,7 @@ public sealed class Cleaner : RoleBase, IImpostor
         OptionResetKillCooldownAfterClean = BooleanOptionItem.Create(RoleInfo, 11, OptionName.CleanerResetKillCooldownAfterClean, false, false);
     }
     public float CalculateKillCooldown() => OptionKillCooldown.GetFloat();
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = Translator.GetString("MinerTeleButtonText");
         return true;

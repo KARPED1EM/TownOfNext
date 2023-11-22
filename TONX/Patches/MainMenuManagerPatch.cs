@@ -11,6 +11,8 @@ namespace TONX;
 [HarmonyPatch]
 public class MainMenuManagerPatch
 {
+    public static MainMenuManager Instance { get; private set; }
+
     public static GameObject InviteButton;
     public static GameObject WebsiteButton;
     public static GameObject UpdateButton;
@@ -32,11 +34,18 @@ public class MainMenuManagerPatch
         AccountManager.Instance?.transform?.FindChild("AccountTab/AccountWindow")?.gameObject?.SetActive(false);
     }
 
+    public static void ShowRightPanelImmediately()
+    {
+        ShowingPanel = true;
+        TitleLogoPatch.RightPanel.transform.localPosition = TitleLogoPatch.RightPanelOp;
+        Instance.OpenGameModeMenu();
+    }
+
     private static bool isOnline = false;
     public static bool ShowedBak = false;
     private static bool ShowingPanel = false;
     [HarmonyPatch(typeof(SignInStatusComponent), nameof(SignInStatusComponent.SetOnline)), HarmonyPostfix]
-    public static void SetOnline_Postfix() => new LateTask(() => { isOnline = true; NameTagManager.Init(); }, 0.1f, "Set Online Status");
+    public static void SetOnline_Postfix() { _ = new LateTask(() => { isOnline = true; NameTagManager.Init(); }, 0.1f, "Set Online Status"); }
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.LateUpdate)), HarmonyPostfix]
     public static void MainMenuManager_LateUpdate()
     {
@@ -66,6 +75,8 @@ public class MainMenuManagerPatch
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
     public static void Start_Postfix(MainMenuManager __instance)
     {
+        Instance = __instance;
+
         SimpleButton.SetBase(__instance.quitButton);
 
         int row = 1; int col = 0;

@@ -66,13 +66,13 @@ public sealed class Hacker : RoleBase, IImpostor
         AURoleOptions.ShapeshifterDuration = 1f;
     }
     public override string GetProgressText(bool comms = false) => Utils.ColorString(HackLimit >= 1 ? Color.red : Color.gray, $"({HackLimit})");
-    public override void ChangeHudManager(HudManager __instance) => __instance.AbilityButton.SetUsesRemaining(HackLimit);
-    public override bool OverrideAbilityButtonText(out string text)
+    public override int OverrideAbilityButtonUsesRemaining() => HackLimit;
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("HackerShapeshiftText");
         return HackLimit >= 1;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Hack";
         return true;
@@ -90,7 +90,7 @@ public sealed class Hacker : RoleBase, IImpostor
 
         if (!AmongUsClient.Instance.AmHost) return;
 
-        if (!Shapeshifting || HackLimit < 1 || target == null || target.Is(CustomRoles.Needy)) return;
+        if (!Shapeshifting || HackLimit < 1 || target == null || target.Is(CustomRoles.LazyGuy)) return;
 
         HackLimit--;
         SendRPC();
@@ -110,8 +110,8 @@ public sealed class Hacker : RoleBase, IImpostor
             targetId = DeadBodyList[IRandom.Instance.Next(0, DeadBodyList.Count)];
 
         if (targetId == byte.MaxValue)
-            new LateTask(() => target?.NoCheckStartMeeting(target?.Data), 0.15f, "Hacker Hacking Report Self");
+            _ = new LateTask(() => target?.NoCheckStartMeeting(target?.Data), 0.15f, "Hacker Hacking Report Self");
         else
-            new LateTask(() => target?.NoCheckStartMeeting(Utils.GetPlayerById(targetId)?.Data), 0.15f, "Hacker Hacking Report");
+            _ = new LateTask(() => target?.NoCheckStartMeeting(Utils.GetPlayerById(targetId)?.Data), 0.15f, "Hacker Hacking Report");
     }
 }

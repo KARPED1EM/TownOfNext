@@ -33,82 +33,82 @@
 - Optimize the loading logic of the custom buttons
 
 ## Fix
-- Fixed a bug that modded players' names become "Gray" when in color name mode
-- Fixed a bug that host and client have different visibility in dark rooms such as Sheriff
+- Fixed the bug that modded players' names become "Gray" when in color name mode
+- Fixed the bug that host and client have different visibility in dark rooms such as Sheriff
 - Fixed the issue where Jackal cannot sabotage on the mod side
-- Fixed a bug that the final position of a non-host mod client "Failed To Track" when the mod client is an EvilTracker
+- Fixed the bug that the final position of a non-host mod client "Failed To Track" when the mod client is an EvilTracker
 - Fixed the issue where some roles were repeatedly displayed and the layout was abnormal when TONX options were displayed on the left side of the lobby in the modded client
-- Fixed an issue where Lightning’s markers were not visible in meetings
-- Fixed an issue where Observer could see the mod player's CD reset shield-broken animation before the first meeting
+- Fixed the issue where Lightning’s markers were not visible in meetings
+- Fixed the issue where Observer could see the mod player's CD reset shield-broken animation before the first meeting
 - Fixed the issue where Dove of Peace resets the cooldown of skills that should not be reset
 - Fixed the problem that the number of Mario jumps on the non-host modded client is out of sync with the host
 - Fixed the issue where the Mayor’s manual emergency meetings was counted into the number of skill uses
-- Fixed an issue where the kill button interaction for Lighting was not blocked
-- Fixed an issue where skills of some roles would be triggered by mistake when committing suicide
-- Fixed an issue where some impostors held a meeting during the shapeshifting process, resulting in the name being displayed as the name of the shapeshifting target
+- Fixed the issue where the kill button interaction for Lighting was not blocked
+- Fixed the issue where skills of some roles would be triggered by mistake when committing suicide
+- Fixed the issue where some impostors held a meeting during the shapeshifting process, resulting in the name being displayed as the name of the shapeshifting target
 - Fixed the issue where the cooldown of Quick Gunner's kills was sometimes abnormal
-- Fixed an issue where non-modded Guesser, Judge and Mafia were unable to see player IDs in meetings
-- Fixed an issue where the non-modded Psychic may not be able to see the red name
-- Fixed an issue where non-mod players may not be able to see the Mare with the Red Name
+- Fixed the issue where non-modded Guesser, Judge and Mafia were unable to see player IDs in meetings
+- Fixed the issue where the non-modded Psychic may not be able to see the red name
+- Fixed the issue where non-mod players may not be able to see the Mare with the Red Name
 - Fixed the issue where the HUD text on the modded client does not disappear after death or in a meeting
 - Fixed the issue where Vigilante could still continue to kill after failing to kill.
-- Fixed the issue where the cooldown of the Bard, Sans, Greedier, etc. was still reset after the kill failed
-- Fixed an issue where some impostors or neutral players could be notified after the death of an Celebrity
+- Fixed the issue where the cooldown of the Bard, Arrogance, Greedy, etc. was still reset after the kill failed
+- Fixed the issue where some impostors or neutral players could be notified after the death of an Celebrity
 - Fixed the issue where the option "The Impostors Can Kill the Madmates" or "The Madmates Can Kill the Impostors" is not working for some roles.
-- Fixed an issue where when the Medic holds a shield and breaks it, if the option "The Medic can know that the target shield is broken" is enabled, you will also see a prompt
-- Fixed an issue that caused some roles such as Detective and Mortician to make errors when reporting dead bodies, resulting in the roles of some players being exposed
+- Fixed the issue where when the Medic holds a shield and breaks it, if the option "The Medic can know that the target shield is broken" is enabled, you will also see a prompt
+- Fixed the issue that caused some roles such as Detective and Mortician to make errors when reporting dead bodies, resulting in the roles of some players being exposed
 - Fixed the issue where some roles with skills triggered by venting were ejected from the vent irregularly
 - Fixed the issue where the vanilla roles was regarded as a hidden roles when querying
-- Fix a series of problems that may occur after players exit the game
-- Fixed an issue where players were kicked out of the lobby multiple times if they did not reach the required level of the lobby
+- Fixed the problems that may occur after players exit the game
+- Fixed the issue where players were kicked out of the lobby multiple times if they did not reach the required level of the lobby
 - Fixed the issue where the start button is still displayed under the start countdown after enabling automatic start at full
 - Fixed the issue where entering numbers in the chat box caused the option pages to switch at the same time
-- Fixed an issue where the Eraser's skills would sometimes not activate
-- Fixed a bug where meetings do not proceed in games with the Dictator
-- Fixed a bug where the "Ghost Exempt From Tasks" option may not work
-- Fixed a bug where disconnected players' tasks may still count
-- Fixed a bug where roles with an ability button may not work correctly
-- Fixed an issue where other players’ names may be displayed incorrectly on the non-host modded client
+- Fixed the issue where the Eraser's skills would sometimes not activate
+- Fixed the bug where meetings do not proceed in games with the Dictator
+- Fixed the bug where the "Ghost Exempt From Tasks" option may not work
+- Fixed the bug where disconnected players' tasks may still count
+- Fixed the bug where roles with an ability button may not work correctly
+- Fixed the issue where other players’ names may be displayed incorrectly on the non-host modded client
 - Fixed the issue where the haunts button and use button on the modded client sometimes display abnormally
 - Fixed the issue where half of the color of the custom button sometimes displays abnormally
-- Fixed an issue where some system messages were not considered system messages and were displayed as messages sent by oneself
+- Fixed the issue where some system messages were not considered system messages and were displayed as messages sent by oneself
 - Fixed the issue where sometimes the name of a non-host modded client player changes to someone else’s name
 - Fixed the issue where some players' names displayed on the non-host modded client were different from their actual colors at the color name mode
 - Fixed the issue where sometimes the name suffix of the lobby setting is displayed under the name of the non-host player
-- Fixed an issue where the colors of some options were different from those displayed elsewhere
-- Fixed an issue where the title of the host obscured the content of the system message when using some commands.
-- Fix the problem of game crashing or crashing during update
+- Fixed the issue where the colors of some options were different from those displayed elsewhere
+- Fixed the issue where the title of the host obscured the content of the system message when using some commands.
+- Fixed the problem of game crashing or crashing during update
 - Fixed the issue where Tiebreaker's skills sometimes did not trigger or triggered incorrectly
 - Fixed the issue where the number of meetings will still be deducted if the emergency meeting is canceled due to a certain role skill when the number of meetings is shared among all members
-- Fixed an issue that caused Fool skills to sometimes not take effect or cause some facilities to be unusable.
+- Fixed the issue that caused Fool skills to sometimes not take effect or cause some facilities to be unusable.
 - Fixed the issue where when a Schizophrenic changes team midway, the number of people in the team increased by the Schizophrenic is still the original team, causing the skills to have the opposite effect or even the game does not end when only one dual personality is left
 - Fixed the problem of incomplete options displayed by the /n command
 - Fixed the issue where the Lighter's skills sometimes did not take effect
 - Fixed the issue where sometimes the screen would be black and unresponsive when entering a lobby.
-- Fixed an error in translation-related code that caused the game to revert to the vanilla after startup
-- Fixed a bug where /rename does not work
-- Fixed an issue where players on the vanilla may see other players’ names being displayed incorrectly in meetings
-- Fixed an issue where the color of the vanilla player’s name in a meeting did not match his role.
+- Fixed the error in translation-related code that caused the game to revert to the vanilla after startup
+- Fixed the bug where /rename does not work
+- Fixed the issue where players on the vanilla may see other players’ names being displayed incorrectly in meetings
+- Fixed the issue where the color of the vanilla player’s name in a meeting did not match his role.
 - Fixed the issue in the vanilla where the Lovers could not see the role of other players after suicide.
-- Fixed an issue where sometimes the player in the Pelican's belly was not teleported back to the map after it died or was disconnected.
+- Fixed the issue where sometimes the player in the Pelican's belly was not teleported back to the map after it died or was disconnected.
 - Fixed the issue where some settings of the Airship map were invalid
-- Fixed an issue where tasks of non-crewmate players were sometimes counted.
-- Fixed an issue where a Jackal turned into a Sidekick-Madmate would remain counted as a Jackal.
-- An issue where Workhorses are incorrectly assigned.
-- Fixed an issue where names cover chat texts during meetings
-- Fixed an issue where Arsonists and Jackals sometimes going to blackout
-- Fixed an issue where the dead body of a player who fell from a ladder and died sometimes appears in a position that cannot be reported
-- Fixed an issue where the kill button is sometimes not shown for Mares
-- Fixed an issue where the Serial Killer dies during the exile screen if the “Time Until Suicide” option is too short
-- Fixed an issue where the anti-black-screen sometimes does not work properly
-- Fixed an issue where the number of votes of the Mayor did not increase when the votes were changed according to the voting mode
+- Fixed the issue where tasks of non-crewmate players were sometimes counted.
+- Fixed the issue where a Jackal turned into a Sidekick-Madmate would remain counted as a Jackal.
+- Fixed the issue where Workhorses are incorrectly assigned.
+- Fixed the issue where names cover chat texts during meetings
+- Fixed the issue where Arsonists and Jackals sometimes going to blackout
+- Fixed the issue where the dead body of a player who fell from a ladder and died sometimes appears in a position that cannot be reported
+- Fixed the issue where the kill button is sometimes not shown for Mares
+- Fixed the issue where the Serial Killer dies during the exile screen if the “Time Until Suicide” option is too short
+- Fixed the issue where the anti-black-screen sometimes does not work properly
+- Fixed the issue where the number of votes of the Mayor did not increase when the votes were changed according to the voting mode
 - Fixed the issue where the management room map is displayed after the modded Impostor dies and cannot sabotage.
-- Fixed an issue where some neutral roles may win at the same time when the neutral role win together option is not enabled
-- Fixed an issue where a dead player's pet returned when camouflage ended
-- Fixed an issue where modded players could enter a vent that is being cleaned
-- Fixed an issue where buttons at vanilla roles were incorrectly displayed
-- Fixed an issue where a player killed during shapeshift remained shapeshifted
-- Fixed an issue where Random Spawn was not working on the initial spawn in Polus
+- Fixed the issue where some neutral roles may win at the same time when the neutral role win together option is not enabled
+- Fixed the issue where a dead player's pet returned when camouflage ended
+- Fixed the issue where modded players could enter a vent that is being cleaned
+- Fixed the issue where buttons at vanilla roles were incorrectly displayed
+- Fixed the issue where a player killed during shapeshift remained shapeshifted
+- Fixed the issue where Random Spawn was not working on the initial spawn in Polus
 
 ## Changing
 - Changed to if "Disable Camera" enabled, the camera does not blink.
@@ -135,7 +135,7 @@
 - Modified chat message character limit on the modded client (999 for host, 300 for non-hosts)
 - Special messages from mods will have their message bubbles displayed with a black background to make them easier to distinguish
 - Smaller option preview fonts on the left side of the lobby to display more content on one page
-- Youtuber Plan => Director Mode (allows host to specify their own role)
+- YouTuber Plan => Director Mode (allows host to specify their own role)
 - When in a non-TONX room, other information will no longer be displayed in the upper right corner
 - Fine-tune the font of the starting role reveal screen
 - Increase the speed at which the text overlay is displayed on the starting role reveal screen to prevent the text from not being overlaid for several frames under high frame rates

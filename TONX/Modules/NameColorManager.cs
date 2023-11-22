@@ -44,15 +44,14 @@ public static class NameColorManager
         if (seer.Is(CustomRoles.Succubus) && target.Is(CustomRoles.Charmed)) color = Main.roleColors[CustomRoles.Charmed];
         if (seer.Is(CustomRoles.Charmed) && target.Is(CustomRoles.Charmed) && Succubus.OptionTargetKnowOtherTarget.GetBool()) color = Main.roleColors[CustomRoles.Charmed];
 
-        if (color != "") return true;
+        if (!string.IsNullOrEmpty(color)) return true;
         else return seer == target
             || (Main.GodMode.Value && seer.AmOwner)
-            || target.Is(CustomRoles.GM)
-            || seer.Is(CustomRoles.GM)
+            || seer.Is(CustomRoles.GM) || target.Is(CustomRoles.GM)
             || seer.Is(CustomRoles.God)
 
-            || (target.Is(CustomRoles.SuperStar) && SuperStar.OptionEveryoneKnowSuperStar.GetBool())
-            //|| (target.Is(CustomRoles.Workaholic) && Options.WorkaholicVisibleToEveryone.GetBool())
+            || SuperStar.KnowTargetRoleColor(target, isMeeting)
+            || Workaholic.KnowTargetRoleColor(target, isMeeting)
             || Mare.KnowTargetRoleColor(target, isMeeting);
     }
     public static bool TryGetData(PlayerControl seer, PlayerControl target, out string colorCode)

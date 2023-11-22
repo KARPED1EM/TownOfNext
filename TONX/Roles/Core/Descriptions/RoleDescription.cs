@@ -38,21 +38,11 @@ public abstract class RoleDescription
     }
     public string GetFullFormatHelpWithAddons(PlayerControl player)
     {
-        var builder = new StringBuilder(512);
+        var builder = new StringBuilder(1024);
+
         builder.Append(FullFormatHelp);
-
-        var subRoles = player.GetCustomSubRoles();
-        if (CustomRoles.Ntr.IsExist() && !subRoles.Contains(CustomRoles.Lovers) && !player.Is(CustomRoles.GM) && !player.Is(CustomRoles.Ntr))
-        {
-            subRoles.Add(CustomRoles.Lovers);
-        }
-
-        foreach (var subRole in subRoles)
-        {
-            builder.AppendFormat("<size={0}>\n", BlankLineSize);
-            builder.AppendFormat("<size={0}>{1}\n", FirstHeaderSize, Translator.GetRoleString(subRole.ToString()).Color(Utils.GetRoleColor(subRole)));
-            builder.AppendFormat("<size={0}>{1}\n", BodySize, Translator.GetString($"{subRole}InfoLong"));
-        }
+        builder.AppendFormat("<size={0}>\n", BlankLineSize);
+        builder.Append(AddonDescription.FullFormatHelp(player));
 
         return builder.ToString();
     }

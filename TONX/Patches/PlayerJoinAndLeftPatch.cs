@@ -21,9 +21,6 @@ class OnGameJoinedPatch
         if (!Main.VersionCheat.Value) RPC.RpcVersionCheck();
         SoundManager.Instance.ChangeAmbienceVolume(DataManager.Settings.Audio.AmbienceVolume);
 
-        if (GameStates.IsModHost)
-            Main.HostClientId = Utils.GetPlayerById(0)?.GetClientId() ?? -1;
-
         Main.AllPlayerNames = new();
         ShowDisconnectPopupPatch.ReasonByHost = string.Empty;
         ChatUpdatePatch.DoBlockChat = false;
@@ -35,7 +32,7 @@ class OnGameJoinedPatch
         {
             GameStartManagerPatch.GameStartManagerUpdatePatch.exitTimer = -1;
             Main.DoBlockNameChange = false;
-            Main.newLobby = true;
+            Main.NewLobby = true;
             Main.DevRole = new();
             EAC.DeNum = new();
 
@@ -110,7 +107,7 @@ class OnPlayerJoinedPatch
         {
             if (Main.SayStartTimes.ContainsKey(client.Id)) Main.SayStartTimes.Remove(client.Id);
             if (Main.SayBanwordsTimes.ContainsKey(client.Id)) Main.SayBanwordsTimes.Remove(client.Id);
-            if (Main.newLobby && Options.ShareLobby.GetBool()) Cloud.ShareLobby();
+            if (Main.NewLobby && Options.ShareLobby.GetBool()) Cloud.ShareLobby();
         }
     }
 }
@@ -195,10 +192,23 @@ class CreatePlayerPatch
             name = Main.Get_TName_Snacks;
         else
         {
+            // 删除非法字符
             name = name.RemoveHtmlTags().Replace(@"\", string.Empty).Replace("/", string.Empty).Replace("\n", string.Empty).Replace("\r", string.Empty).Replace("\0", string.Empty).Replace("<", string.Empty).Replace(">", string.Empty);
+            // 删除超出10位的字符
             if (name.Length > 10) name = name[..10];
+            // 删除Emoji
             if (Options.DisableEmojiName.GetBool()) name = Regex.Replace(name, @"\p{Cs}", string.Empty);
+            // 若无有效字符则随机取名
             if (Regex.Replace(Regex.Replace(name, @"\s", string.Empty), @"[\x01-\x1F,\x7F]", string.Empty).Length < 1) name = Main.Get_TName_Snacks;
+            // 替换重名
+            string fixedName = name;
+            int suffixNumber = 0;
+            while (Main.AllPlayerNames.ContainsValue(fixedName))
+            {
+                suffixNumber++;
+                fixedName = $"{name} {suffixNumber}";
+            }
+            if (!fixedName.Equals(name)) name = fixedName;
         }
         Main.AllPlayerNames.Remove(client.Character.PlayerId);
         Main.AllPlayerNames.TryAdd(client.Character.PlayerId, name);
@@ -228,7 +238,6 @@ class CreatePlayerPatch
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
-                        Main.isChatCommand = true;
                         Utils.ShowKillLog(client.Character.PlayerId);
                     }
                 }, 3f, "DisplayKillLog");
@@ -239,7 +248,6 @@ class CreatePlayerPatch
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
-                        Main.isChatCommand = true;
                         Utils.ShowLastResult(client.Character.PlayerId);
                     }
                 }, 3.1f, "DisplayLastResult");
@@ -250,10 +258,9 @@ class CreatePlayerPatch
                 {
                     if (!AmongUsClient.Instance.IsGameStarted && client.Character != null)
                     {
-                        Main.isChatCommand = true;
                         Utils.SendMessage($"{GetString("Message.DirectorModeNotice")}", client.Character.PlayerId);
                     }
-                }, 3.2f, "DisplayUpWarnning");
+                }, 3.2f, "DisplayDirectorModeWarnning");
             }
         }
     }

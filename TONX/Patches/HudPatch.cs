@@ -24,6 +24,7 @@ class HudManagerPatch
         if (!GameStates.IsModHost) return;
         var player = PlayerControl.LocalPlayer;
         if (player == null) return;
+        var TaskTextPrefix = "";
         //壁抜け
         if (Input.GetKeyDown(KeyCode.LeftControl))
         {
@@ -47,23 +48,25 @@ class HudManagerPatch
 
         Utils.CountAlivePlayers();
 
-        bool shapeshifting = Main.CheckShapeshift.TryGetValue(player.PlayerId, out bool ss) && ss;
-
         if (SetHudActivePatch.IsActive)
         {
             if (player.IsAlive())
             {
+                //CustomRoleManager.AllActiveRoles.Do(r => Logger.Test(r.Key + " - " + r.Value.MyState.GetCustomRole().ToString()));
                 var roleClass = player.GetRoleClass();
                 if (roleClass != null)
                 {
-                    var killLabel = (roleClass as IKiller)?.OverrideKillButtonText(out string text1) == true ? text1 : GetString(StringNames.KillLabel);
+                    var killLabel = (roleClass as IKiller)?.OverrideKillButtonText(out string text) == true ? text : GetString(StringNames.KillLabel);
                     __instance.KillButton.OverrideText(killLabel);
                     var reportLabel = roleClass?.GetReportButtonText() ?? GetString(StringNames.ReportLabel);
                     __instance.ReportButton.OverrideText(reportLabel);
                     if (roleClass.HasAbility)
                     {
-                        if (roleClass.OverrideAbilityButtonText(out var abilityLabel)) __instance.AbilityButton.OverrideText(abilityLabel);
+                        if (roleClass.GetAbilityButtonText(out var abilityLabel)) __instance.AbilityButton.OverrideText(abilityLabel);
                         __instance.AbilityButton.ToggleVisible(roleClass.CanUseAbilityButton() && GameStates.IsInTask);
+                        int uses = roleClass.OverrideAbilityButtonUsesRemaining();
+                        if (uses != -1) __instance.AbilityButton.SetUsesRemaining(uses);
+                        else __instance.AbilityButton.SetInfiniteUses();
                     }
                 }
 
@@ -82,7 +85,6 @@ class HudManagerPatch
                 }
 
                 LowerInfoText.text = roleClass?.GetLowerText(player, isForMeeting: GameStates.IsMeeting, isForHud: true) ?? "";
-
                 LowerInfoText.enabled = LowerInfoText.text != "";
 
                 if ((!AmongUsClient.Instance.IsGameStarted && AmongUsClient.Instance.NetworkMode != NetworkModes.FreePlay) || GameStates.IsMeeting)
@@ -100,14 +102,14 @@ class HudManagerPatch
                     __instance.KillButton.SetDisabled();
                     __instance.KillButton.ToggleVisible(false);
                 }
+                if (player.Is(CustomRoles.Madmate) || player.GetCustomRole() is CustomRoles.Jester)
+                {
+                    TaskTextPrefix += GetString(StringNames.FakeTasks);
+                }
 
                 bool CanUseVent = player.CanUseImpostorVentButton();
                 __instance.ImpostorVentButton.ToggleVisible(CanUseVent);
                 player.Data.Role.CanVent = CanUseVent;
-
-                // 调用职业类对 Hud Manger 进行操作
-                player.GetRoleClass()?.ChangeHudManager(__instance);
-
             }
             else
             {
@@ -116,7 +118,7 @@ class HudManagerPatch
                 __instance.KillButton.Hide();
                 __instance.AbilityButton.Show();
                 __instance.AbilityButton.OverrideText(GetString(StringNames.HauntAbilityName));
-                LowerInfoText.enabled = false;
+                if (LowerInfoText != null) LowerInfoText.enabled = false;
             }
         }
 
@@ -276,12 +278,7 @@ class TaskPanelBehaviourPatch
                     }
 
                     if (MeetingStates.FirstMeeting)
-                    {
-                        AllText += $"\r\n\r\n</color><size=70%>{GetString("PressF1ShowMainRoleDes")}";
-                        if (PlayerState.AllPlayerStates.TryGetValue(PlayerControl.LocalPlayer.PlayerId, out var ps) && ps.SubRoles.Count >= 1)
-                            AllText += $"\r\n{GetString("PressF2ShowAddRoleDes")}";
-                        AllText += "</size>";
-                    }
+                        AllText += $"\r\n\r\n</color><size=70%>{GetString("PressF1ShowRoleDescription")}</size>";
 
                     break;
             }

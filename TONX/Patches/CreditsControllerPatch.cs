@@ -16,12 +16,16 @@ public class CreditsControllerPatch
 
                 $"KARPED1EM - {GetString("Creater")}",
                 $"SHAAARKY - {GetString("Collaborators")}",
+
                 $"IRIDESCENT - {GetString("Art")}",
                 $"Endrmen40409 - {GetString("Art")}",
-                $"天寸梦初 - {GetString("PullRequester")}",
+
                 $"NCSIMON - {GetString("PullRequester")}",
+                $"Niko233 - {GetString("PullRequester")}",
+                $"天寸梦初 - {GetString("PullRequester")}",
                 $"喜 - {GetString("PullRequester")}",
                 $"Tommy-XL - {GetString("PullRequester")}",
+
                 $"Commandf1 - {GetString("Contributor")}",
                 $"水木年华 - {GetString("Contributor")}",
                 $"SolarFlare - {GetString("Contributor")}",
@@ -29,13 +33,19 @@ public class CreditsControllerPatch
             };
         var translatorList = new List<string>()
             {
-                $"Tommy-XL - {GetString("TranEN")}&{GetString("TranRU")}",
-                $"Tem - {GetString("TranEN")}&{GetString("TranRU")}",
-                $"阿龍 - {GetString("TranCHT")}",
-                $"Gurge44 - {GetString("TranEN")}",
-                $"法官 - {GetString("TranCHT")}",
-                $"SolarFlare - {GetString("TranEN")}",
-                $"chill_ultimated - {GetString("TranRU")}"
+                $"Gurge44 - {GetString(StringNames.LangEnglish)}",
+                $"SolarFlare - {GetString(StringNames.LangEnglish)}",
+                $"Filipianosol - {GetString(StringNames.LangEnglish)}",
+
+                $"Tommy-XL - {GetString(StringNames.LangEnglish)}&{GetString(StringNames.LangRussian)}",
+                $"MogekoNik - {GetString(StringNames.LangEnglish)}&{GetString(StringNames.LangRussian)}",
+                $"Антон (chill_ultimated) - {GetString(StringNames.LangRussian)}",
+                $"Лагутин Виталий (lagutin1991) - {GetString(StringNames.LangRussian)}",
+
+                $"阿龍 - {GetString("LangTChinese")}",
+                $"法官 - {GetString("LangTChinese")}",
+
+                $"DopzyGamer - {GetString(StringNames.LangBrazPort)}",
             };
         var acList = new List<string>()
             {
@@ -55,6 +65,7 @@ public class CreditsControllerPatch
                 $"法师",
                 $"沐煊",
                 $"SolarFlare",
+                $"侠客",
                 $"林林林",
                 $"撒币",
                 $"斯卡蒂Skadi",
@@ -81,6 +92,8 @@ public class CreditsControllerPatch
                 $"shiftyrose",
                 $"M ™",
                 $"yunfi",
+
+                $"...",
             };
 
         var credits = new List<CreditsController.CreditStruct>();

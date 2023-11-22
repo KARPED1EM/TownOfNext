@@ -18,6 +18,7 @@ public sealed class BloodKnight : RoleBase, IKiller, ISchrodingerCatOwner
            SetupOptionItem,
            "bn|ÊÈÑªòTÊ¿|ÑªÆï|ÆïÊ¿",
            "#630000",
+           true,
            countType: CountTypes.BloodKnight
        );
     public BloodKnight(PlayerControl player)

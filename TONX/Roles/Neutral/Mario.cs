@@ -56,15 +56,12 @@ public sealed class Mario : RoleBase
         AURoleOptions.EngineerCooldown = 0f;
         AURoleOptions.EngineerInVentMaxTime = 0f;
     }
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("MarioVentButtonText");
         return true;
     }
-    public override void ChangeHudManager(HudManager __instance)
-    {
-        __instance.AbilityButton.SetUsesRemaining(OptionVentNums.GetInt() - VentedTimes);
-    }
+    public override int OverrideAbilityButtonUsesRemaining() => OptionVentNums.GetInt() - VentedTimes;
     public override string GetProgressText(bool comms = false) => Utils.ColorString(Utils.ShadeColor(RoleInfo.RoleColor, 0.25f), $"({VentedTimes}/{OptionVentNums.GetInt()})");
     public override bool OnEnterVent(PlayerPhysics physics, int ventId)
     {

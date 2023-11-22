@@ -40,12 +40,12 @@ public sealed class Bomber : RoleBase, IImpostor
     }
     public bool CanKill { get; private set; } = false;
     public float CalculateKillCooldown() => 255f;
-    public override bool OverrideAbilityButtonText(out string text)
+    public override bool GetAbilityButtonText(out string text)
     {
         text = GetString("BomberShapeshiftText");
         return true;
     }
-    public override bool OverrideAbilityButtonSprite(out string buttonName)
+    public override bool GetAbilityButtonSprite(out string buttonName)
     {
         buttonName = "Bomb";
         return true;
