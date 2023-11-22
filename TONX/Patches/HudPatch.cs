@@ -52,6 +52,7 @@ class HudManagerPatch
         {
             if (player.IsAlive())
             {
+                //CustomRoleManager.AllActiveRoles.Do(r => Logger.Test(r.Key + " - " + r.Value.MyState.GetCustomRole().ToString()));
                 var roleClass = player.GetRoleClass();
                 if (roleClass != null)
                 {

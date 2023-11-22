@@ -5,12 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
 using TONX.Modules;
 using TONX.Roles.Core;
 using TONX.Roles.Core.Interfaces;
 using TONX.Roles.Crewmate;
 using static TONX.Translator;
+
 namespace TONX;
 
 public enum CustomRPC
@@ -480,23 +480,16 @@ internal static class RPC
     }
     public static void SetCustomRole(byte targetId, CustomRoles role)
     {
-        var roleClass = CustomRoleManager.GetByPlayerId(targetId);
-        if (roleClass != null)
-        {
-            var player = roleClass.Player;
-            roleClass.Dispose();
-            CustomRoleManager.CreateInstance(role, player);
-        }
-
         if (role < CustomRoles.NotAssigned)
         {
+            CustomRoleManager.GetByPlayerId(targetId)?.Dispose();
             PlayerState.GetByPlayerId(targetId).SetMainRole(role);
-            CustomRoleManager.CreateInstance(role, Utils.GetPlayerById(targetId));
         }
         else if (role >= CustomRoles.NotAssigned)   //500:NoSubRole 501~:SubRole
         {
             PlayerState.GetByPlayerId(targetId).SetSubRole(role);
         }
+        CustomRoleManager.CreateInstance(role, Utils.GetPlayerById(targetId));
 
         HudManager.Instance.SetHudActive(true);
         if (PlayerControl.LocalPlayer.PlayerId == targetId) RemoveDisableDevicesPatch.UpdateDisableDevices();

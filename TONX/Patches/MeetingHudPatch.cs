@@ -41,7 +41,6 @@ public static class MeetingHudPatch
                     {
                         Main.MadmateNum++;
                         voter.RpcSetCustomRole(CustomRoles.Madmate);
-                        ExtendedPlayerControl.RpcSetCustomRole(voter.PlayerId, CustomRoles.Madmate);
                         Logger.Info($"注册附加职业：{voter.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
                         voter.ShowPopUp(GetString("MadmateSelfVoteModeSuccessfulMutiny"));
                         Utils.SendMessage(GetString("MadmateSelfVoteModeSuccessfulMutiny"), voter.PlayerId);

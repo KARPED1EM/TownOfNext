@@ -50,8 +50,8 @@ internal class ChangeRoleSettings
 
             Options.UsedButtonCount = 0;
 
-            GameOptionsManager.Instance.currentNormalGameOptions.ConfirmImpostor = false;
             Main.RealOptionsData = new OptionBackupData(GameOptionsManager.Instance.CurrentGameOptions);
+            GameOptionsManager.Instance.currentNormalGameOptions.ConfirmImpostor = false;
 
             Main.introDestroyed = false;
 
@@ -218,7 +218,8 @@ internal class SelectRolesPatch
             foreach (var pc in Main.AllPlayerControls)
             {
                 pc.Data.IsDead = false; //プレイヤーの死を解除する
-                if (PlayerState.AllPlayerStates[pc.PlayerId].MainRole != CustomRoles.NotAssigned) continue; //既にカスタム役職が割り当てられていればスキップ
+                var state = PlayerState.GetByPlayerId(pc.PlayerId);
+                if (state.MainRole != CustomRoles.NotAssigned) continue; //既にカスタム役職が割り当てられていればスキップ
                 var role = CustomRoles.NotAssigned;
                 switch (pc.Data.Role.Role)
                 {
@@ -244,7 +245,7 @@ internal class SelectRolesPatch
                         Logger.SendInGame(string.Format(GetString("Error.InvalidRoleAssignment"), pc?.Data?.PlayerName));
                         break;
                 }
-                PlayerState.GetByPlayerId(pc.PlayerId).SetMainRole(role);
+                state.SetMainRole(role);
             }
 
             var rd = IRandom.Instance;

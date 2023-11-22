@@ -22,40 +22,29 @@ static class ExtendedPlayerControl
 {
     public static void RpcSetCustomRole(this PlayerControl player, CustomRoles role)
     {
-        if (player.GetCustomRole() == role) return;
+        if (!AmongUsClient.Instance.AmHost) return;
+        if (player.Is(role)) return;
 
         if (role < CustomRoles.NotAssigned)
         {
+            player.GetRoleClass()?.Dispose();
             PlayerState.GetByPlayerId(player.PlayerId).SetMainRole(role);
         }
         else if (role >= CustomRoles.NotAssigned)   //500:NoSubRole 501~:SubRole
         {
             PlayerState.GetByPlayerId(player.PlayerId).SetSubRole(role);
         }
-        if (AmongUsClient.Instance.AmHost)
-        {
-            var roleClass = player.GetRoleClass();
-            if (roleClass != null)
-            {
-                roleClass.Dispose();
-                CustomRoleManager.CreateInstance(role, player);
-            }
+        CustomRoleManager.CreateInstance(role, player);
 
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
-            writer.Write(player.PlayerId);
-            writer.WritePacked((int)role);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
+        writer.Write(player.PlayerId);
+        writer.WritePacked((int)role);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
     public static void RpcSetCustomRole(byte PlayerId, CustomRoles role)
     {
-        if (AmongUsClient.Instance.AmHost)
-        {
-            MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
-            writer.Write(PlayerId);
-            writer.WritePacked((int)role);
-            AmongUsClient.Instance.FinishRpcImmediately(writer);
-        }
+        var player = Utils.GetPlayerById(PlayerId);
+        player?.RpcSetCustomRole(role);
     }
 
     public static void RpcExile(this PlayerControl player)
