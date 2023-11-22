@@ -36,7 +36,7 @@ public sealed class Hater : RoleBase, IKiller, IAdditionalWinner, ISchrodingerCa
 
     public bool OverrideKillButtonText(out string text)
     {
-        text = "HaterButtonText";
+        text = Translator.GetString("HaterButtonText");
         return true;
     }
     public void OnMurderPlayerAsKiller(MurderInfo info)
