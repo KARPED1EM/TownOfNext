@@ -17,7 +17,8 @@ public sealed class Hater : RoleBase, IKiller, IAdditionalWinner, ISchrodingerCa
             51700,
             null,
             "ht|fffˆF|fff|fffÍÅ",
-            "#414b66"
+            "#414b66",
+            true
         );
     public Hater(PlayerControl player)
     : base(

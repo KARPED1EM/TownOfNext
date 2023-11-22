@@ -18,7 +18,8 @@ public sealed class Vigilante : RoleBase, IKiller
             null,
             "vi|俠客",
             "#f0e68c",
-            true
+            true,
+            introSound: () => GetIntroSound(RoleTypes.Crewmate)
         );
     public Vigilante(PlayerControl player)
     : base(

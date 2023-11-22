@@ -63,7 +63,6 @@ public sealed class Medic : RoleBase, IKiller
     }
     public override void Add()
     {
-        var playerId = Player.PlayerId;
         ProtectLimit = OptionProtectNums.GetInt();
     }
     private void SendRPC_SyncLimit()

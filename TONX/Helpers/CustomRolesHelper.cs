@@ -121,7 +121,7 @@ static class CustomRolesHelper
             RoleTypes.GuardianAngel => CustomRoles.GuardianAngel,
             RoleTypes.Shapeshifter => CustomRoles.Shapeshifter,
             RoleTypes.Impostor => CustomRoles.Impostor,
-            _ => throw new System.NotImplementedException()
+            _ => CustomRoles.NotAssigned
         };
     }
     public static RoleTypes GetRoleTypes(this CustomRoles role)

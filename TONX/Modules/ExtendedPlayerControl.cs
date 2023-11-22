@@ -43,8 +43,12 @@ static class ExtendedPlayerControl
     }
     public static void RpcSetCustomRole(byte PlayerId, CustomRoles role)
     {
-        var player = Utils.GetPlayerById(PlayerId);
-        player?.RpcSetCustomRole(role);
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(PlayerControl.LocalPlayer.NetId, (byte)CustomRPC.SetCustomRole, SendOption.Reliable, -1);
+        writer.Write(PlayerId);
+        writer.WritePacked((int)role);
+        AmongUsClient.Instance.FinishRpcImmediately(writer);
     }
 
     public static void RpcExile(this PlayerControl player)

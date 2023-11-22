@@ -64,8 +64,6 @@ public class ModUpdater
     private static int retried = 0;
     private static bool firstLaunch = true;
 
-    private static CancellationTokenSource cts;
-
     [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix, HarmonyPriority(Priority.LowerThanNormal)]
     public static void StartPostfix()
     {

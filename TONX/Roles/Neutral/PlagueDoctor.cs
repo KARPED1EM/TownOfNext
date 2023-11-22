@@ -25,7 +25,7 @@ public sealed class PlagueDoctor : RoleBase, IKiller
             "pd",
             "#ff6633",
             true,
-            introSound: () => GetIntroSound(RoleTypes.Crewmate)
+            introSound: () => GetIntroSound(RoleTypes.Shapeshifter)
         );
     public PlagueDoctor(PlayerControl player)
     : base(

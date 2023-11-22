@@ -22,7 +22,8 @@ public sealed class Deceiver : RoleBase, IKiller
             SetupOptionItem,
             "de|贗品商|赝品",
             "#e0e0e0",
-            true
+            true,
+            introSound: () => GetIntroSound(RoleTypes.Crewmate)
         );
     public Deceiver(PlayerControl player)
     : base(
@@ -56,7 +57,6 @@ public sealed class Deceiver : RoleBase, IKiller
     }
     public override void Add()
     {
-        var playerId = Player.PlayerId;
         SellLimit = OptionSellNums.GetInt();
     }
     private void SendRPC()
