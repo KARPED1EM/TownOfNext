@@ -56,14 +56,12 @@ internal class ControllerManagerUpdatePatch
             if (Input.GetKey(KeyCode.F1))
             {
                 if (!InGameRoleInfoMenu.Showing)
-                {
                     InGameRoleInfoMenu.SetRoleInfoRef(PlayerControl.LocalPlayer);
-                    InGameRoleInfoMenu.Show();
-                }
+                InGameRoleInfoMenu.Show();
             }
-            else if (InGameRoleInfoMenu.Showing) InGameRoleInfoMenu.Hide();
+            else InGameRoleInfoMenu.Hide();
         }
-        else if (InGameRoleInfoMenu.Showing) InGameRoleInfoMenu.Show();
+        else InGameRoleInfoMenu.Hide();
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
         {

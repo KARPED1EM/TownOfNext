@@ -41,7 +41,7 @@ public static class InGameRoleInfoMenu
         MainInfo = Menu.transform.FindChild("InfoText_TMP").gameObject;
         MainInfo.name = "Main Role Info";
         MainInfo.DestroyTranslator();
-        MainInfo.transform.localPosition = new(-2.3f, 0.55f, 4f);
+        MainInfo.transform.localPosition = new(-2.3f, 0.8f, 4f);
         MainInfo.GetComponent<RectTransform>().sizeDelta = new(4.5f, 10f);
         MainInfoTMP.alignment = TextAlignmentOptions.Left;
         MainInfoTMP.fontSize = 2f;
@@ -51,7 +51,6 @@ public static class InGameRoleInfoMenu
         AddonsInfo.DestroyTranslator();
         AddonsInfo.transform.SetLocalX(2.3f);
         AddonsInfo.transform.localScale = new(0.7f, 0.7f, 0.7f);
-
     }
 
     public static void SetRoleInfoRef(PlayerControl player)
@@ -66,14 +65,20 @@ public static class InGameRoleInfoMenu
     public static void Show()
     {
         if (!Fill || !Menu) Init();
-        Fill?.SetActive(true);
-        Menu?.SetActive(true);
+        if (!Showing)
+        {
+            Fill?.SetActive(true);
+            Menu?.SetActive(true);
+        }
         //HudManager.Instance?.gameObject.SetActive(false);
     }
     public static void Hide()
     {
-        Fill?.SetActive(false);
-        Menu?.SetActive(false);
+        if (Showing)
+        {
+            Fill?.SetActive(false);
+            Menu?.SetActive(false);
+        }
         //HudManager.Instance?.gameObject?.SetActive(true);
     }
 }
