@@ -110,7 +110,7 @@ public class Main : BasePlugin
     public static Dictionary<byte, bool> CheckShapeshift = new();
     public static Dictionary<byte, byte> ShapeshiftTarget = new();
     public static bool VisibleTasksCount = false;
-    public static string nickName = "";
+    public static string HostNickName = "";
     public static bool introDestroyed = false;
     public static float DefaultCrewmateVision;
     public static float DefaultImpostorVision;

@@ -1,3 +1,4 @@
+using AmongUs.Data;
 using AmongUs.GameOptions;
 using Hazel;
 using Il2CppInterop.Runtime.InteropTypes;

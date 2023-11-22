@@ -381,13 +381,11 @@ static class ExtendedPlayerControl
 
     public static string GetTrueName(this PlayerControl player)
     {
-        return (player?.AmOwner ?? false)
-            ? (!string.IsNullOrWhiteSpace(Main.nickName) ? Main.nickName : DataManager.player.Customization.Name)
-            : Main.AllPlayerNames.TryGetValue(player.PlayerId, out var name) ? name : GetRealName(player, true);
+        return Main.AllPlayerNames.TryGetValue(player.PlayerId, out var name) ? name : GetRealName(player, GameStates.IsMeeting);
     }
     public static string GetRealName(this PlayerControl player, bool isMeeting = false)
     {
-        return isMeeting ? ((player?.AmOwner ?? false && Main.nickName != "") ? Main.nickName : player?.Data?.PlayerName) : player?.name;
+        return isMeeting ? player?.Data?.PlayerName : player?.name;
     }
     public static bool CanUseKillButton(this PlayerControl pc)
     {

@@ -53,7 +53,7 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
             new(["rn", "rename"], CommandAccess.Host, mc =>
             {
                 string text = mc.Args.Length is > 10 or < 1 ? GetString("Message.AllowNameLength") : null;
-                if (text == null) Main.nickName = mc.Args;
+                if (text == null) Main.HostNickName = mc.Args;
                 return (MsgRecallMode.Block, text);
             }),
             new(["hn", "hidename"], CommandAccess.Host, mc =>
