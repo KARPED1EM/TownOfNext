@@ -595,7 +595,7 @@ public enum CustomRoles
     Konan, //TODO
     Demon,
     Stalker, //TODO
-    Workaholic, //TODO
+    Workaholic,
     Collector, //TODO
     Provocateur, //TODO
     Sunnyboy, //TODO
