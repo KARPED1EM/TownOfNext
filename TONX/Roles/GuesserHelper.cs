@@ -190,8 +190,8 @@ public static class GuesserHelper
         {
             var state = PlayerState.GetByPlayerId(dp.PlayerId);
             state.DeathReason = CustomDeathReason.Gambled;
-            dp.SetRealKiller(guesser);
             dp.RpcSuicideWithAnime();
+            dp.SetRealKiller(guesser);
 
             //死者检查
             Utils.NotifyRoles(isForMeeting: true, NoCache: true);
