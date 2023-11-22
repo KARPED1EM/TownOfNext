@@ -35,7 +35,7 @@ class OnGameJoinedPatch
         {
             GameStartManagerPatch.GameStartManagerUpdatePatch.exitTimer = -1;
             Main.DoBlockNameChange = false;
-            Main.newLobby = true;
+            Main.NewLobby = true;
             Main.DevRole = new();
             EAC.DeNum = new();
 
@@ -110,7 +110,7 @@ class OnPlayerJoinedPatch
         {
             if (Main.SayStartTimes.ContainsKey(client.Id)) Main.SayStartTimes.Remove(client.Id);
             if (Main.SayBanwordsTimes.ContainsKey(client.Id)) Main.SayBanwordsTimes.Remove(client.Id);
-            if (Main.newLobby && Options.ShareLobby.GetBool()) Cloud.ShareLobby();
+            if (Main.NewLobby && Options.ShareLobby.GetBool()) Cloud.ShareLobby();
         }
     }
 }

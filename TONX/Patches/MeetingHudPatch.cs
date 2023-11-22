@@ -1,5 +1,6 @@
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TONX.Modules;
 using TONX.Roles.AddOns.Common;
@@ -37,9 +38,8 @@ public static class MeetingHudPatch
                 //主动叛变模式
                 if (Options.MadmateSpawnMode.GetInt() == 2 && srcPlayerId == suspectPlayerId)
                 {
-                    if (Main.MadmateNum < CustomRoles.Madmate.GetCount() && voter.CanBeMadmate())
+                    if (Main.AllPlayerControls.Count(p => p.Is(CustomRoles.Madmate)) < CustomRoles.Madmate.GetCount() && voter.CanBeMadmate())
                     {
-                        Main.MadmateNum++;
                         voter.RpcSetCustomRole(CustomRoles.Madmate);
                         Logger.Info($"注册附加职业：{voter.GetNameWithRole()} => {CustomRoles.Madmate}", "AssignCustomSubRoles");
                         voter.ShowPopUp(GetString("MadmateSelfVoteModeSuccessfulMutiny"));

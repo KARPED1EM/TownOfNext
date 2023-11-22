@@ -22,24 +22,25 @@ namespace TONX;
 [BepInProcess("Among Us.exe")]
 public class Main : BasePlugin
 {
-    // == プログラム設定 / Program Config ==
+    // == 程序基本设定 / Program Config ==
     public static readonly string ModName = "TONX";
     public static readonly string ModColor = "#ffc0cb";
     public static readonly Color32 ModColor32 = new(255, 192, 203, 255);
     public static readonly bool AllowPublicRoom = true;
     public static readonly string ForkId = "TONX";
     public const string OriginalForkId = "OriginalTOH";
+    public const string PluginGuid = "cn.karped1em.tonx";
+    // == 认证设定 / Authentication Config ==
     public static HashAuth DebugKeyAuth { get; private set; }
     public const string DebugKeyHash = "c0fd562955ba56af3ae20d7ec9e64c664f0facecef4b3e366e109306adeae29d";
     public const string DebugKeySalt = "59687b";
     public static ConfigEntry<string> DebugKeyInput { get; private set; }
-    public const string PluginGuid = "cn.karped1em.tonx";
+    // == 版本相关设定 / Version Config ==
     public const string LowestSupportedVersion = "2023.10.24";
-    // このバージョンのみで公開ルームを無効にする場合
     public static readonly bool IsPublicAvailableOnThisVersion = false;
     public const string PluginVersion = "3.0.0";
     public const int PluginCreation = 1;
-
+    // == 链接相关设定 / Link Config ==
     public static readonly bool ShowWebsiteButton = true;
     public static readonly string WebsiteUrl = Translator.IsChineseLanguageUser ? "https://tonx.cc/zh" : "https://tonx.cc";
     public static readonly bool ShowQQButton = false;
@@ -48,6 +49,7 @@ public class Main : BasePlugin
     public static readonly string DiscordInviteUrl = "https://discord.gg/hkk2p9ggv4";
     public static readonly bool ShowGithubUrl = true;
     public static readonly string GithubRepoUrl = "https://github.com/KARPED1EM/TownOfNext";
+    // ==========
 
     public Harmony Harmony { get; } = new Harmony(PluginGuid);
     public static Version version = Version.Parse(PluginVersion);
@@ -55,7 +57,6 @@ public class Main : BasePlugin
     public static bool hasArgumentException = false;
     public static string ExceptionMessage;
     public static bool ExceptionMessageIsShown = false;
-    public static bool AlreadyShowMsgBox = false;
     public static string CredentialsText;
     public static NormalGameOptionsV07 NormalOptions => GameOptionsManager.Instance.currentNormalGameOptions;
     //Client Options
@@ -99,12 +100,10 @@ public class Main : BasePlugin
     public static List<PlayerControl> LoversPlayers = new();
     public static bool isLoversDead = true;
     public static Dictionary<byte, float> AllPlayerKillCooldown = new();
-    public static Dictionary<byte, Vent> LastEnteredVent = new();
-    public static Dictionary<byte, Vector2> LastEnteredVentLocation = new();
-    public static bool DoBlockNameChange = false;
-    public static bool newLobby = false;
-    public static Dictionary<int, int> SayStartTimes = new();
-    public static Dictionary<int, int> SayBanwordsTimes = new();
+
+    /// <summary>
+    /// 基本的に速度の代入は禁止.スピードは増減で対応してください.
+    /// </summary>
     public static Dictionary<byte, float> AllPlayerSpeed = new();
     public const float MinSpeed = 0.0001f;
     public static int AliveImpostorCount;
@@ -113,16 +112,11 @@ public class Main : BasePlugin
     public static bool VisibleTasksCount = false;
     public static string nickName = "";
     public static bool introDestroyed = false;
-    public static int DiscussionTime;
-    public static int VotingTime;
     public static float DefaultCrewmateVision;
     public static float DefaultImpostorVision;
     public static bool IsInitialRelease = DateTime.Now.Month == 1 && DateTime.Now.Day is 17;
     public static bool IsAprilFools = DateTime.Now.Month == 4 && DateTime.Now.Day is 1;
     public const float RoleTextSize = 2f;
-    public static byte FirstDied = byte.MaxValue;
-    public static byte ShieldPlayer = byte.MaxValue;
-    public static int MadmateNum = 0;
 
     public static Dictionary<byte, CustomRoles> DevRole = new();
 
@@ -131,10 +125,18 @@ public class Main : BasePlugin
 
     public static Main Instance;
 
-    //一些很新的东东
+    //TONX
+
+    public static Dictionary<byte, Vent> LastEnteredVent = new();
+    public static Dictionary<byte, Vector2> LastEnteredVentLocation = new();
+    public static Dictionary<int, int> SayStartTimes = new();
+    public static Dictionary<int, int> SayBanwordsTimes = new();
 
     public static string OverrideWelcomeMsg = "";
-    public static int HostClientId;
+    public static bool DoBlockNameChange = false;
+    public static bool NewLobby = false;
+    public static byte FirstDied = byte.MaxValue;
+    public static byte ShieldPlayer = byte.MaxValue;
 
     public static List<string> TName_Snacks_CN = new() { "冰激凌", "奶茶", "巧克力", "蛋糕", "甜甜圈", "可乐", "柠檬水", "冰糖葫芦", "果冻", "糖果", "牛奶", "抹茶", "烧仙草", "菠萝包", "布丁", "椰子冻", "曲奇", "红豆土司", "三彩团子", "艾草团子", "泡芙", "可丽饼", "桃酥", "麻薯", "鸡蛋仔", "马卡龙", "雪梅娘", "炒酸奶", "蛋挞", "松饼", "西米露", "奶冻", "奶酥", "可颂", "奶糖" };
     public static List<string> TName_Snacks_EN = new() { "Ice cream", "Milk tea", "Chocolate", "Cake", "Donut", "Coke", "Lemonade", "Candied haws", "Jelly", "Candy", "Milk", "Matcha", "Burning Grass Jelly", "Pineapple Bun", "Pudding", "Coconut Jelly", "Cookies", "Red Bean Toast", "Three Color Dumplings", "Wormwood Dumplings", "Puffs", "Can be Crepe", "Peach Crisp", "Mochi", "Egg Waffle", "Macaron", "Snow Plum Niang", "Fried Yogurt", "Egg Tart", "Muffin", "Sago Dew", "panna cotta", "soufflé", "croissant", "toffee" };

@@ -62,6 +62,7 @@ public class ModUpdater
     public static string downloadUrl_cos = "";
 
     private static int retried = 0;
+    private static bool firstLaunch = true;
 
     private static CancellationTokenSource cts;
 
@@ -118,9 +119,9 @@ public class ModUpdater
             Logger.Info("Announcement (English): " + announcement_en, "CheckRelease");
             Logger.Info("Announcement (SChinese): " + announcement_zh, "CheckRelease");
 
-            if ((!Main.AlreadyShowMsgBox || isBroken))
+            if (firstLaunch || isBroken)
             {
-                Main.AlreadyShowMsgBox = true;
+                firstLaunch = false;
                 var annos = IsChineseUser ? announcement_zh : announcement_en;
                 if (isBroken) CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.ExitGame), Application.Quit) });
                 else CustomPopup.Show(GetString(StringNames.AnnouncementLabel), annos, new() { (GetString(StringNames.Okay), null) });

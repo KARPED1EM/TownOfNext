@@ -46,12 +46,12 @@ internal class Cloud
         try
         {
             if (!Options.ShareLobby.GetBool() && !command) return false;
-            if (!Main.newLobby || (GameData.Instance.PlayerCount < Options.ShareLobbyMinPlayer.GetInt() && !command) || !GameStates.IsLobby) return false;
+            if (!Main.NewLobby || (GameData.Instance.PlayerCount < Options.ShareLobbyMinPlayer.GetInt() && !command) || !GameStates.IsLobby) return false;
             if (!AmongUsClient.Instance.AmHost || !GameData.Instance || AmongUsClient.Instance.NetworkMode == NetworkModes.LocalGame) return false;
 
             if (IP == null || LOBBY_PORT == 0) throw new("Has no ip or port");
 
-            Main.newLobby = false;
+            Main.NewLobby = false;
             string msg = $"{GameStartManager.Instance.GameRoomNameCode.text}|{Main.PluginVersion}|{GameData.Instance.PlayerCount + 1}|{TranslationController.Instance.currentLanguage.languageID}|{ServerManager.Instance.CurrentRegion.Name}|{DataManager.player.customization.name}";
 
             if (msg.Length <= 60)
