@@ -420,7 +420,7 @@ public static class Utils
     public static string GetRoleTeamColorCode(CustomRoles role)
         => role.IsValid()
         ? GetCustomRoleTypeColorCode(role.GetCustomRoleTypes())
-        : "#HaterHater";
+        : "#FFFFFF";
     public static Color GetCustomRoleTypeColor(CustomRoleTypes type)
     {
         return type switch
@@ -440,7 +440,7 @@ public static class Utils
             CustomRoleTypes.Impostor => "#f74631",
             CustomRoleTypes.Neutral => "#ffab1b",
             CustomRoleTypes.Addon => "#ff9ace",
-            _ => "#HaterHater"
+            _ => "#FFFFFF"
         };
     }
     public static string GetKillCountText(byte playerId)
