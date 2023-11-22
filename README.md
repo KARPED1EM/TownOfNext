@@ -1,6 +1,7 @@
 <div align="center">
-  <img width="160" src="LOGO.png" alt="logo"></br>
-  <img width="160" src="Title.svg" alt="title"></br>
+  <img width="160" src="Assets/LOGO.png" alt="logo"></br>
+  <img width="160" src="Assets/Title.svg" alt="title"></br>
+
 
   </br></br>
 
@@ -11,7 +12,7 @@
 
   <h1>:fire: 𝓐𝓷𝓷𝓸𝓾𝓷𝓬𝓮𝓶𝓮𝓷𝓽 :fire:</h1>
   <p>Since May 20, TOHE stopped development due to some reasons. At the request of many players, TOHE will maintain the most basic adaptation and synchronize updates with TOH to ensure that players in need can still play normally. By the way, TOHE has renamed TONX</p>
-  
+
   </br></br>
 
   <h1>:memo: 𝓣𝓻𝓪𝓷𝓼𝓵𝓪𝓽𝓲𝓸𝓷𝓼 :memo:</h1>
@@ -19,7 +20,7 @@
   <a href="https://crowdin.com/translate/tohe/all/zhcn-en"><img alt="en translation" src="https://img.shields.io/badge/dynamic/json?color=blue&label=English&style=for-the-badge&logo=crowdin&query=%24.progress[?(@.data.languageId==%27en%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15439024-581283.json" ></crowdin-copy-button></a>
   <a href="https://crowdin.com/translate/tohe/all/zhcn-ru"><img alt="ru translation" src="https://img.shields.io/badge/dynamic/json?color=blue&label=Russian&style=for-the-badge&logo=crowdin&query=%24.progress[?(@.data.languageId==%27ru%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15439024-581283.json" ></crowdin-copy-button></a>
   <a href="https://crowdin.com/translate/toeh-2/all/zhcn-ptbr"><img alt="pt-BR translation" src="https://img.shields.io/badge/dynamic/json?color=blue&label=Brazilian&style=for-the-badge&logo=crowdin&query=%24.progress[?(@.data.languageId==%27pt-BR%27)].data.translationProgress&url=https%3A%2F%2Fbadges.awesome-crowdin.com%2Fstats-15789641-581493.json" ></crowdin-copy-button></a>
-  
+
 
   </br></br>
 
@@ -51,5 +52,5 @@
 
   <h1>:herb: 𝓡𝓮𝓰𝓪𝓻𝓭𝓲𝓷𝓰 :herb:</h1>
   <p>This mod is not affiliated with Among Us or Innersloth LLC, and the content contained therein is not endorsed or otherwise sponsored by Innersloth LLC. Portions of the materials contained herein are property of Innersloth LLC. © Innersloth LLC.</p>
-  
+
 </div>
