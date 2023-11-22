@@ -240,6 +240,7 @@ public sealed class SchrodingerCat : RoleBase, IAdditionalWinner, IDeathReasonSe
         Pelican,
         BloodKnight,
         Demon,
+        Hater,
 
     }
     public static Color GetCatColor(TeamType catType)

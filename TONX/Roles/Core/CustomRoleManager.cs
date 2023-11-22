@@ -591,7 +591,7 @@ public enum CustomRoles
     Innocent, //TODO
     Pelican,
     Revolutionist, //TODO
-    Hater, //TODO
+    Hater,
     Konan, //TODO
     Demon,
     Stalker, //TODO
