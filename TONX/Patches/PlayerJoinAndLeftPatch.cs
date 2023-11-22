@@ -21,9 +21,6 @@ class OnGameJoinedPatch
         if (!Main.VersionCheat.Value) RPC.RpcVersionCheck();
         SoundManager.Instance.ChangeAmbienceVolume(DataManager.Settings.Audio.AmbienceVolume);
 
-        if (GameStates.IsModHost)
-            Main.HostClientId = Utils.GetPlayerById(0)?.GetClientId() ?? -1;
-
         Main.AllPlayerNames = new();
         ShowDisconnectPopupPatch.ReasonByHost = string.Empty;
         ChatUpdatePatch.DoBlockChat = false;
