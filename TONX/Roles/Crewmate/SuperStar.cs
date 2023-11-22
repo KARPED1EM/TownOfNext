@@ -52,4 +52,6 @@ public sealed class SuperStar : RoleBase
             Vector2.Distance(pc.GetTruePosition(), target.GetTruePosition()) < 2f
             );
     }
+    public static bool KnowTargetRoleColor(PlayerControl target, bool isMeeting)
+        => target.Is(CustomRoles.SuperStar) && OptionEveryoneKnowSuperStar.GetBool();
 }
