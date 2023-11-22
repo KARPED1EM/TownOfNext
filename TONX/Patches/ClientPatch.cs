@@ -86,6 +86,10 @@ internal class RunLoginPatch
 {
     public static void Prefix(ref bool canOnline)
     {
+        // Ref: https://github.com/0xDrMoe/TownofHost-Enhanced/blob/main/Patches/ClientPatch.cs
+        var friendCode = EOSManager.Instance?.friendCode;
+        canOnline = !string.IsNullOrEmpty(friendCode) && !BanManager.CheckEACStatus(friendCode, null);
+
 #if DEBUG
         // 如果您希望在调试版本公开您的房间，请仅用于测试用途
         // 如果您修改了代码，请在房间公告内表明这是修改版本，并给出修改作者
