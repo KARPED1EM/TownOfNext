@@ -62,7 +62,10 @@ class HudManagerPatch
                     if (roleClass.HasAbility)
                     {
                         if (roleClass.GetAbilityButtonText(out var abilityLabel)) __instance.AbilityButton.OverrideText(abilityLabel);
-                        __instance.AbilityButton.ToggleVisible(roleClass?.CanUseAbilityButton() ?? false && GameStates.IsInTask);
+                        __instance.AbilityButton.ToggleVisible(roleClass.CanUseAbilityButton() && GameStates.IsInTask);
+                        int uses = roleClass.OverrideAbilityButtonUsesRemaining();
+                        if (uses != -1) __instance.AbilityButton.SetUsesRemaining(uses);
+                        else __instance.AbilityButton.SetInfiniteUses();
                     }
                 }
 
@@ -106,11 +109,6 @@ class HudManagerPatch
                 bool CanUseVent = player.CanUseImpostorVentButton();
                 __instance.ImpostorVentButton.ToggleVisible(CanUseVent);
                 player.Data.Role.CanVent = CanUseVent;
-
-                // 调用职业类对 Hud Manger 进行操作
-                int usesRemain = player.GetRoleClass()?.OverrideAbilityButtonUsesRemaining() ?? -1;
-                if (usesRemain == -1) __instance.AbilityButton.SetInfiniteUses();
-                else __instance.AbilityButton.SetUsesRemaining(usesRemain);
             }
             else
             {
