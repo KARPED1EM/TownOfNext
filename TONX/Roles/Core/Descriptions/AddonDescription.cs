@@ -7,7 +7,7 @@ public static class AddonDescription
     public static string FullFormatHelp(PlayerControl player)
     {
         var builder = new StringBuilder(512);
-        var subRoles = player.GetCustomSubRoles();
+        var subRoles = player?.GetCustomSubRoles();
         if (CustomRoles.Neptune.IsExist() && !subRoles.Contains(CustomRoles.Lovers) && !player.Is(CustomRoles.GM) && !player.Is(CustomRoles.Neptune))
         {
             subRoles.Add(CustomRoles.Lovers);

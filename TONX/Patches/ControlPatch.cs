@@ -51,11 +51,19 @@ internal class ControllerManagerUpdatePatch
             }
         }
         //职业介绍
-        if (Input.GetKeyDown(KeyCode.F1) && GameStates.InGame && Options.CurrentGameMode == CustomGameMode.Standard)
+        if (GameStates.IsInGame && (GameStates.IsCanMove || GameStates.IsMeeting) && Options.CurrentGameMode == CustomGameMode.Standard)
         {
-            if (InGameRoleInfoMenu.Showing) InGameRoleInfoMenu.Hide();
-            else InGameRoleInfoMenu.Show();
+            if (Input.GetKey(KeyCode.F1))
+            {
+                if (!InGameRoleInfoMenu.Showing)
+                {
+                    InGameRoleInfoMenu.SetRoleInfoRef(PlayerControl.LocalPlayer);
+                    InGameRoleInfoMenu.Show();
+                }
+            }
+            else if (InGameRoleInfoMenu.Showing) InGameRoleInfoMenu.Hide();
         }
+        else if (InGameRoleInfoMenu.Showing) InGameRoleInfoMenu.Show();
         //更改分辨率
         if (Input.GetKeyDown(KeyCode.F11))
         {

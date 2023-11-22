@@ -36,7 +36,7 @@ public abstract class RoleDescription
             return builder.ToString();
         }
     }
-    public string GetMainRoleFullFormatHelpWithAddons(PlayerControl player)
+    public string GetFullFormatHelpWithAddons(PlayerControl player)
     {
         var builder = new StringBuilder(1024);
 
