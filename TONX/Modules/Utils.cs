@@ -1321,8 +1321,9 @@ public static class Utils
     private const string ActiveSettingsSize = "70%";
     private const string ActiveSettingsLineHeight = "55%";
 
-    public static bool IsDev(this PlayerControl pc) =>
-        pc.FriendCode
+    public static bool AmDev() => IsDev(EOSManager.Instance.FriendCode);
+    public static bool IsDev(this PlayerControl pc) => IsDev(pc.FriendCode);
+    public static bool IsDev(string friendCode) => friendCode
         is "actorour#0029" //咔哥
         or "pinklaze#1776" //NCM
         or "sofaagile#3120" //天寸
