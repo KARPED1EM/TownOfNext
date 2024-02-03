@@ -323,13 +323,9 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                 Logger.Info("11-3(3/3)", "test");
                 Utils.SendMessage(rff, playerId);
             }
-            else
-            {
-                var text = ri?.Description?.GetFullFormatHelpWithAddonsByRole(role) ??
-                        // roleInfoがない役職
-                        GetString(role.ToString()) +":"+ role.GetRoleInfoByRole(true);
-                Utils.SendMessage(text, playerId);
-            }
+            Utils.SendMessage(AddonDescription.FullFormatHelpByRole(role) ??
+        // roleInfoがない役職
+        $"<size=130%><color={Utils.GetRoleColor(role)}>{GetString(role.ToString())}</color></size>:\n\n{role.GetRoleInfoWithRole()}", playerId);
         }
     }
     public static void SpecifyRole(string input, byte playerId)
