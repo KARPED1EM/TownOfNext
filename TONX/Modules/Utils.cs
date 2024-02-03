@@ -688,16 +688,20 @@ public static class Utils
     }
     public static void ShowActiveRoles(byte PlayerId = byte.MaxValue)
     {
+        Logger.Info("1", "test");
         if (Options.HideGameSettings.GetBool() && PlayerId != byte.MaxValue)
         {
             SendMessage(GetString("Message.HideGameSettings"), PlayerId);
+            Logger.Info("2", "test");
             return;
         }
         var sb = new StringBuilder(GetString("Roles")).Append(':');
         sb.AppendFormat("\n{0}:{1}", GetRoleName(CustomRoles.GM), Options.EnableGM.GetString().RemoveHtmlTags());
+        Logger.Info("3", "test");
         int headCount = -1;
         foreach (CustomRoles role in CustomRolesHelper.AllStandardRoles)
         {
+            Logger.Info("4", "test");
             headCount++;
             if (role.IsImpostor() && headCount == 0) sb.Append("\n\n● " + GetString("TabGroup.ImpostorRoles"));
             else if (role.IsCrewmate() && headCount == 1) sb.Append("\n\n● " + GetString("TabGroup.CrewmateRoles"));
@@ -707,6 +711,7 @@ public static class Utils
 
             if (role.IsEnable()) sb.AppendFormat("\n{0}:{1}x{2}", GetRoleName(role), $"{Utils.GetRoleDisplaySpawnMode(role, false)}", role.GetCount());
         }
+        Logger.Info("5", "test");
         SendMessage(sb.ToString(), PlayerId);
     }
     public static void ShowChildrenSettings(OptionItem option, ref StringBuilder sb, int deep = 0, bool forChat = false)

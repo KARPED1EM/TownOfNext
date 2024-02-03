@@ -37,8 +37,19 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                     sb.Append($"{kvp.Key}:{Main.AllPlayerNames[kvp.Key]}:{kvp.Value.forkId}/{kvp.Value.version}({kvp.Value.tag})\n");
                 return (MsgRecallMode.Block, sb.ToString());
             }),
+            new(["level"], CommandAccess.Host, mc =>
+            {
+                string text = GetString("Message.AllowLevelRange");
+                if (int.TryParse(mc.Args, out int level) && level is >= 1 and <= 999)
+                {
+                    text = string.Format(GetString("Message.SetLevel"), level);
+                    mc.Player.RpcSetLevel(Convert.ToUInt32(level) - 1);
+                }
+                return (MsgRecallMode.Block, text);
+            }),
             new(["win", "winner"], CommandAccess.All, mc =>
             {
+
                 string text = GetString("NoInfoExists");
                 if (Main.winnerNameList.Any())
                     text = "Winner: " + string.Join(",", Main.winnerNameList);
@@ -62,17 +73,8 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                 GameStartManagerPatch.HideName.text = Main.HideName.Value;
                 return (MsgRecallMode.Block, null);
             }),
-            new(["level"], CommandAccess.Host, mc =>
-            {
-                string text = GetString("Message.AllowLevelRange");
-                if (int.TryParse(mc.Args, out int level) && level is >= 1 and <= 999)
-                {
-                    text = string.Format(GetString("Message.SetLevel"), level);
-                    mc.Player.RpcSetLevel(Convert.ToUInt32(level) - 1);
-                }
-                return (MsgRecallMode.Block, text);
-            }),
-            new(["n", "now"], CommandAccess.All, mc =>
+            
+            new(["now", "n" ], CommandAccess.All, mc =>
             {
                 switch (mc.Args)
                 {
@@ -104,7 +106,7 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                 }
                 return (MsgRecallMode.Block, null);
             }),
-            new(["r", "role"], CommandAccess.All, mc =>
+            new(["role","r"], CommandAccess.All, mc =>
             {
                 SendRolesInfo(mc.Args, mc.Player.PlayerId);
                 return (MsgRecallMode.Block, null);
@@ -125,7 +127,7 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                 if (GameStates.IsInGame)
                 {
                     var role = mc.Player.GetCustomRole();
-                    text = role.GetRoleInfo()?.Description?.GetFullFormatHelpWithAddons(mc.Player) ??
+                    text = role.GetRoleInfo()?.Description?.GetFullFormatHelpWithAddonsByPlayer(mc.Player) ??
                         // roleInfoがない役職
                         GetString(role.ToString()) + mc.Player.GetRoleInfo(true);
                 }
@@ -187,7 +189,7 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                 }
                 return (MsgRecallMode.Block, text);
             }),
-            new(["color", "colour"], CommandAccess.All, mc =>
+            new(["color", "colour"], Options.PlayerCanSetColor.GetBool() ?CommandAccess.All : CommandAccess.Host, mc =>
             {
                 string text = GetString("Message.OnlyCanUseInLobby");
                 if (GameStates.IsLobby)
@@ -293,19 +295,37 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
     }
     public static void SendRolesInfo(string input, byte playerId)
     {
+        Logger.Info("0", "test");
         if (string.IsNullOrWhiteSpace(input))
         {
             Utils.ShowActiveRoles(playerId);
+            Logger.Info("0", "test");
             return;
         }
         else if (!GetRoleByInputName(input, out var role))
         {
+            Logger.Info("10", "test");
             Utils.SendMessage(GetString("Message.CanNotFindRoleThePlayerEnter"), playerId);
             return;
         }
         else
         {
-            Utils.SendMessage(role.GetRoleInfo().Description.FullFormatHelp, playerId);
+            var ri = role.GetRoleInfo();
+            if (!role.IsAddon())
+            {
+                Logger.Info("11", "test");
+
+                Logger.Info("11-1(1/3)", "test");
+
+                var rd = ri.Description;
+                Logger.Info("11-2(2/3)", "test");
+                var rff = rd.FullFormatHelp;
+                Logger.Info("11-3(3/3)", "test");
+                Utils.SendMessage(rff, playerId);
+            }
+            Utils.SendMessage(AddonDescription.FullFormatHelpByRole(role) ??
+        // roleInfoがない役職
+        $"<size=130%><color={Utils.GetRoleColor(role)}>{GetString(role.ToString())}</color></size>:\n\n{role.GetRoleInfoWithRole()}", playerId);
         }
     }
     public static void SpecifyRole(string input, byte playerId)
@@ -363,12 +383,15 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
     }
     public static bool GetRoleByInputName(string input, out CustomRoles output, bool includeVanilla = false)
     {
+        Logger.Info("6", "test");
         output = new();
         input = Regex.Replace(input, @"[0-9]+", string.Empty); //清除数字
         input = Regex.Replace(input, @"\s", string.Empty); //清除空字符
         input = Regex.Replace(input, @"[\x01-\x1F,\x7F]", string.Empty); //清除无效字符
         input = input.ToLower().Trim().Replace("是", string.Empty).Replace("着", "者");
+        Logger.Info("7", "test");
         if (string.IsNullOrEmpty(input)) return false;
+        Logger.Info("8", "test");
         foreach (CustomRoles role in Enum.GetValues(typeof(CustomRoles)))
         {
             if (!includeVanilla && role.IsVanilla()) continue;
@@ -376,6 +399,7 @@ public class ChatCommand(List<string> keywords, CommandAccess access, Func<Messa
                 || (RoleCommands.TryGetValue(role, out var com) && com.Any(c => input == c.Trim().ToLower())) //匹配到职业缩写
                 )
             {
+                Logger.Info("9", "test");
                 output = role;
                 return true;
             }
